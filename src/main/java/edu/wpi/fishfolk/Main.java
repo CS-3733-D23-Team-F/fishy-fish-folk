@@ -7,7 +7,6 @@ public class Main {
     Fapp.launch(Fapp.class, args);
   }
 
-
   // shortcut: psvm
 
 }
