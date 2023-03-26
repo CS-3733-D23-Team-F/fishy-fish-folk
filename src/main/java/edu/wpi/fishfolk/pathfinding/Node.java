@@ -33,4 +33,10 @@ public class Node {
   public int hashCode() {
     return id.hashCode();
   }
+
+  @Override
+  public boolean equals(Object o) {
+    Node other = (Node) o;
+    return id.equals(other.id);
+  }
 }

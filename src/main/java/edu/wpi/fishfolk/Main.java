@@ -3,6 +3,7 @@ package edu.wpi.fishfolk;
 import edu.wpi.fishfolk.pathfinding.Graph;
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
+import edu.wpi.fishfolk.pathfinding.Path;
 import java.io.*;
 import java.util.LinkedList;
 import javafx.geometry.Point2D;
@@ -10,17 +11,20 @@ import javafx.geometry.Point2D;
 public class Main {
   public static void main(String[] args) {
 
-    loadMapFromCSV();
+    Graph graph = loadMapFromCSV();
+
+    System.out.println(
+        bfs(graph, "fCONF001L1", "fCONF002L1")); // should be connected via elevator H
 
     // Fapp.launch(Fapp.class, args);
   }
 
-  public static void loadMapFromCSV(){
+  public static Graph loadMapFromCSV() {
     LinkedList<Node> nodes = new LinkedList<>();
     int count = 0;
 
     try (BufferedReader br =
-                 new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv"))) {
+        new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv"))) {
 
       String line = br.readLine(); // ignore column headers which are on the first line
       while ((line = br.readLine()) != null) {
@@ -58,7 +62,7 @@ public class Main {
     }
 
     try (BufferedReader br =
-                 new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Edges.csv"))) {
+        new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Edges.csv"))) {
 
       String line = br.readLine(); // ignore column headers which are on the first line
       while ((line = br.readLine()) != null) {
@@ -66,7 +70,11 @@ public class Main {
         String[] values = line.split(",");
 
         String n1 = values[1];
+        n1 = "f" + n1.substring(1);
         String n2 = values[2];
+        n2 = "f" + n2.substring(1);
+
+        //System.out.println(n1 + "-" + n2); // edge list for https://graphonline.ru/en/
 
         graph.addEdge(n1, n2);
       }
@@ -75,6 +83,11 @@ public class Main {
     }
 
     graph.print();
+    return graph;
+  }
+
+  public static Path bfs(Graph graph, String start, String end) {
+    return graph.bfs(start, end);
   }
 
   // shortcut: psvm
