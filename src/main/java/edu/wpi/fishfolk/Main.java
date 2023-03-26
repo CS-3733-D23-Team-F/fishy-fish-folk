@@ -10,11 +10,17 @@ import javafx.geometry.Point2D;
 public class Main {
   public static void main(String[] args) {
 
+    loadMapFromCSV();
+
+    // Fapp.launch(Fapp.class, args);
+  }
+
+  public static void loadMapFromCSV(){
     LinkedList<Node> nodes = new LinkedList<>();
     int count = 0;
 
     try (BufferedReader br =
-        new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv"))) {
+                 new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv"))) {
 
       String line = br.readLine(); // ignore column headers which are on the first line
       while ((line = br.readLine()) != null) {
@@ -52,7 +58,7 @@ public class Main {
     }
 
     try (BufferedReader br =
-        new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Edges.csv"))) {
+                 new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Edges.csv"))) {
 
       String line = br.readLine(); // ignore column headers which are on the first line
       while ((line = br.readLine()) != null) {
@@ -69,8 +75,6 @@ public class Main {
     }
 
     graph.print();
-
-    // Fapp.launch(Fapp.class, args);
   }
 
   // shortcut: psvm
