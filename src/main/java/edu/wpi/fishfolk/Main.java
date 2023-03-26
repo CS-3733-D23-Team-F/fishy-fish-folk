@@ -1,6 +1,6 @@
 package edu.wpi.fishfolk;
 
-import edu.wpi.fishfolk.database.DbConnections;
+import edu.wpi.fishfolk.database.Fdb;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -8,11 +8,13 @@ public class Main {
 
   public static void main(String[] args) {
     // Fapp.launch(Fapp.class, args);
-    DbConnections dbConnections = new DbConnections();
-    Connection connection = dbConnections.connect("teamfdb", "teamf", "teamf60");
+    Fdb fdb = new Fdb();
     try {
-      connection.setSchema("test");
-      System.out.println("Current schema: " + connection.getSchema());
+      Connection db = fdb.connect("teamfdb", "teamf", "teamf60");
+      db.setSchema("test");
+      System.out.println("Current schema: " + db.getSchema());
+      fdb.disconnect(db);
+      db.setSchema("test");
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
