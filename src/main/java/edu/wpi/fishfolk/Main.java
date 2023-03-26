@@ -14,7 +14,9 @@ public class Main {
     Graph graph = loadMapFromCSV();
 
     System.out.println(
-        bfs(graph, "fCONF001L1", "fCONF002L1")); // should be connected via elevator H
+        bfs(graph, "fHALL003L1", "fHALL006L1")); // should be connected via elevator H
+
+    System.out.println(graph.AStar("fHALL003L1", "fHALL006L1"));
 
     // Fapp.launch(Fapp.class, args);
   }
@@ -74,7 +76,7 @@ public class Main {
         String n2 = values[2];
         n2 = "f" + n2.substring(1);
 
-        //System.out.println(n1 + "-" + n2); // edge list for https://graphonline.ru/en/
+        // System.out.println(n1 + "-" + n2); // edge list for https://graphonline.ru/en/
 
         graph.addEdge(n1, n2);
       }
