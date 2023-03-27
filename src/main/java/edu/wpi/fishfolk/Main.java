@@ -13,6 +13,9 @@ public class Main {
       Connection db = fdb.connect("teamfdb", "teamf", "teamf60");
       db.setSchema("test");
       System.out.println("Current schema: " + db.getSchema());
+      fdb.createTable(db, "test1");
+      fdb.createTable(db, "test2");
+      fdb.createTable(db, "test3");
       fdb.disconnect(db);
       db.setSchema("test");
     } catch (SQLException e) {

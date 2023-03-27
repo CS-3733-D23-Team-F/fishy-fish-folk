@@ -8,13 +8,9 @@ package edu.wpi.fishfolk.database;
     "insert"
 */
 
-
-
 /**
  * @author: Charles Anderson
  * @Updated: 3/26/2023
  * @desc: The Database CLI interface.
  */
-
-
 public class DbIOCommands {}
