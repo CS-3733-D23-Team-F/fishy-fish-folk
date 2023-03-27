@@ -3,7 +3,10 @@ package edu.wpi.fishfolk.navigation;
 public enum Screen {
   ROOT("views/Root.fxml"),
   HOME("views/Home.fxml"),
-  SERVICE_REQUEST("views/ServiceRequest.fxml");
+  SERVICE_REQUEST("views/ServiceRequest.fxml"),
+  SIGNAGE("views/Signage.fxml"),
+  FOOD_ORDER_REQUEST("views/FoodOrder.fxml"),
+  SUPPLIES_REQUEST("views/SupplyRequestController");
 
   private final String filename;
 
