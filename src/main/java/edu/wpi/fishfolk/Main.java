@@ -3,7 +3,6 @@ package edu.wpi.fishfolk;
 import edu.wpi.fishfolk.pathfinding.Graph;
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
-import edu.wpi.fishfolk.pathfinding.Path;
 import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,10 +13,9 @@ public class Main {
 
     Graph graph = loadMapFromCSV();
 
-    System.out.println(graph.AStar("fHALL002L1", "fHALL006L1"));
-    System.out.println(graph.AStar("fHALL002L1", "fLABS003L1"));
-
-    System.out.println(graph.distance("fLABS003L1", "fHALL006L1"));
+    // System.out.println(graph.AStar("fHALL002L1", "fHALL006L1"));
+    // System.out.println(graph.AStar("fHALL002L1", "fLABS003L1"));
+    System.out.println(graph.AStar("fELEV00JL1", "fREST004L1"));
 
     // Fapp.launch(Fapp.class, args);
   }
@@ -111,10 +109,6 @@ public class Main {
 
     // graph.print();
     return graph;
-  }
-
-  public static Path bfs(Graph graph, String start, String end) {
-    return graph.bfs(start, end);
   }
 
   // shortcut: psvm

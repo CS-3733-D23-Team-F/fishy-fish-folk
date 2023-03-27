@@ -63,7 +63,9 @@ public class Graph {
     if (idx1 != null && idx2 != null) {
       adjMat[idx1][idx2] = point1.distance(point2);
       adjMat[idx2][idx1] = point1.distance(point2);
-      ;
+      nodes[idx1].degree++;
+      nodes[idx2].degree++;
+
       return true;
 
     } else {
@@ -95,11 +97,11 @@ public class Graph {
       if (cur.equals(end)) { // reached end
         Path path = new Path();
 
-        path.addFirst(end);
+        path.addFirst(end, nodes[id2idx.get(end)].point);
 
         while (!cur.equals(start)) { // retrace path from the end to the start
           String prev = previous[id2idx.get(cur)];
-          path.addFirst(prev);
+          path.addFirst(prev, nodes[id2idx.get(prev)].point);
           cur = prev;
         }
 
@@ -136,8 +138,6 @@ public class Graph {
     boolean[] visited = new boolean[size]; // true means found the shortest path to this node
     int[] lastVisited = new int[size];
     int current_node = id2idx.get(start);
-    double pathWeight = 0;
-    double min = -1;
 
     // initialize distance from start node and heuristic arrays
     // distance from start node: 0 for start, -MIN_INT for all others
@@ -181,7 +181,7 @@ public class Graph {
       }
 
       // choose the next node based off of distance to start and heuristic
-      min = Integer.MAX_VALUE;
+      double min = Integer.MAX_VALUE;
 
       for (int other = 0; other < size; other++) {
 
@@ -197,33 +197,20 @@ public class Graph {
     Path path = new Path();
 
     while (!(current_node == id2idx.get(start))) { // retrace path from the end to the start
-      path.addFirst(nodes[current_node].id);
+      path.addFirst(nodes[current_node].id, nodes[current_node].point);
       current_node = lastVisited[current_node];
     }
-    path.addFirst(start);
+    path.addFirst(start, nodes[id2idx.get(start)].point);
 
-    System.out.println(pathLength(path));
+    System.out.println(path.pathLength());
+
+    System.out.println(path.getDirections());
 
     return path;
   }
 
   public double distance(String n1, String n2) {
     return nodes[id2idx.get(n1)].point.distance(nodes[id2idx.get(n2)].point);
-  }
-
-  public double pathLength(Path p) {
-
-    LinkedList<String> nodesLst = (LinkedList<String>) p.getNodes().clone();
-    String prev = nodesLst.removeFirst();
-    double length = 0;
-
-    while (!nodesLst.isEmpty()) {
-      String cur = nodesLst.removeFirst();
-      length += distance(prev, cur);
-      prev = cur;
-    }
-
-    return length;
   }
 
   public void print() {

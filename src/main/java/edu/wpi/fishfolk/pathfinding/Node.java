@@ -12,6 +12,8 @@ public class Node {
   public String longName;
   public String shortName;
 
+  public int degree;
+
   public Node(
       String id,
       Point2D point,
@@ -20,6 +22,7 @@ public class Node {
       NodeType type,
       String longName,
       String shortName) {
+
     this.id = id;
     this.point = point;
     this.floor = floor;
@@ -27,6 +30,8 @@ public class Node {
     this.type = type;
     this.longName = longName;
     this.shortName = shortName;
+
+    this.degree = 0;
   }
 
   @Override
