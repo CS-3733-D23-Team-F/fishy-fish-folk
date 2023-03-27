@@ -6,16 +6,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:controller="edu.wpi.fishfolk.controllers.HomeController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="1024.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.HomeController">
    <children>
       <BorderPane />
-      <HBox prefHeight="106.0" prefWidth="1440.0" style="-fx-background-color: #6CD4BC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox style="-fx-background-color: #6CD4BC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" translateX="999.0" translateY="53.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>
@@ -26,41 +27,52 @@
                      </color>
                   </DropShadow>
                </effect>
+               <HBox.margin>
+                  <Insets left="1100.0" top="40.0" />
+               </HBox.margin>
             </Text>
          </children>
       </HBox>
-      <MFXButton fx:id="signageNav" alignment="BOTTOM_LEFT" buttonType="RAISED" layoutX="255.0" layoutY="218.0" prefHeight="203.0" prefWidth="929.0" style="-fx-background-color: #D9D9D9; -fx-border-radius: 40; -fx-background-radius: 31;" text="Signage" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="256.0">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets bottom="14.0" left="95.0" />
-         </padding>
-      </MFXButton>
-      <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" buttonType="RAISED" layoutX="255.0" layoutY="485.0" prefHeight="203.0" prefWidth="929.0" style="-fx-background-color: #D9D9D9; -fx-border-radius: 40; -fx-background-radius: 31;" text="Meal Delivery" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="256.0">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets bottom="14.0" left="95.0" />
-         </padding>
-      </MFXButton>
-      <MFXButton fx:id="officeNav" alignment="BOTTOM_LEFT" buttonType="RAISED" layoutX="255.0" layoutY="752.0" prefHeight="203.0" prefWidth="929.0" style="-fx-background-color: #D9D9D9; -fx-border-radius: 40; -fx-background-radius: 31;" text="Office Supplies" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="256.0">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets bottom="14.0" left="95.0" />
-         </padding>
-      </MFXButton>
+      <VBox>
+         <children>
+            <AnchorPane minHeight="914.0" minWidth="1440.0">
+               <children>
+                  <MFXButton fx:id="signageNav" alignment="BOTTOM_LEFT" buttonType="RAISED" layoutX="255.0" layoutY="70.0" minHeight="203.0" minWidth="929.0" style="-fx-background-color: #D9D9D9; -fx-border-radius: 40; -fx-background-radius: 31;" text="Signage" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="300.0">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="14.0" left="95.0" />
+                     </padding>
+                  </MFXButton>
+                  <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" buttonType="RAISED" layoutX="255.0" minHeight="203.0" minWidth="929.0" style="-fx-background-color: #D9D9D9; -fx-border-radius: 40; -fx-background-radius: 31;" text="Meal Delivery" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="50.0">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="14.0" left="95.0" />
+                     </padding>
+                  </MFXButton>
+                  <MFXButton fx:id="officeNav" alignment="BOTTOM_LEFT" buttonType="RAISED" layoutX="255.0" layoutY="752.0" minHeight="203.0" minWidth="929.0" style="-fx-background-color: #D9D9D9; -fx-border-radius: 40; -fx-background-radius: 31;" text="Office Supplies" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="550.0">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="14.0" left="95.0" />
+                     </padding>
+                  </MFXButton>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
    </children>
-</AnchorPane>
+</VBox>
