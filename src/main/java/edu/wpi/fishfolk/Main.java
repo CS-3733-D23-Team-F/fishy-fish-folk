@@ -18,7 +18,10 @@ public class Main {
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
+
+    System.out.println("Welcome to FFF Database CLI, type 'help' for more information on how to use this program\n");
   }
+
 
   // shortcut: psvm
 
