@@ -131,40 +131,67 @@ public class Graph {
       return null;
     }
 
-    double[] shortestDist = new double[size];
-    boolean[] RoomVisited = new boolean[size];
+    double[] fromStart = new double[size];
+    double[] heuristic = new double[size];
+    boolean[] visited = new boolean[size]; // true means found the shortest path to this node
     int[] lastVisited = new int[size];
     int current_node = id2idx.get(start);
-    Point2D endPoint = nodes[current_node].point;
     double pathWeight = 0;
     double min = -1;
 
-    while (!(current_node == id2idx.get(end))) {
+    // initialize distance from start node and heuristic arrays
+    // distance from start node: 0 for start, -MIN_INT for all others
+    // heuristic: approximate distances from all points to the target endpoint
+    String endFloor = nodes[id2idx.get(end)].floor;
 
-      // Sets the current node to check to the one with the least weight to reach
-      min = -1; // -1 as stand in for infinity since can't have negative distance
-      for (int dist = 0; dist < size; dist++) {
-        if (((shortestDist[dist] < min) || (min <= 0))
-            && !(shortestDist[dist] == 0)
-            && !(RoomVisited[dist])) {
-          current_node = dist;
-          min = shortestDist[dist];
-        }
+    for (int node = 0; node < size; node++) {
+
+      fromStart[node] = Integer.MIN_VALUE;
+
+      if (nodes[node].floor.equals(endFloor)) {
+        heuristic[node] = distance(nodes[node].id, end);
       }
 
-      for (int room = 0; room < size; room++) {
-        if (!(adjMat[current_node][room] == 0.0) // Check if nodes are adjacent
-            && !RoomVisited[room]) { // Make sure unvisited node
-          pathWeight = shortestDist[current_node] + adjMat[current_node][room]; // distance of total path to node
-          pathWeight = pathWeight + endPoint.distance(nodes[room].point); // A* adjusts weight by distance to end point
-          if (shortestDist[room] == 0 || shortestDist[room] > pathWeight) {
-            shortestDist[room] = pathWeight;
-            lastVisited[room] = current_node;
+      // TODO heuristic for two nodes on different floors
+
+    }
+
+    fromStart[id2idx.get(start)] = 0;
+
+    while (!(current_node == id2idx.get(end))) {
+
+      visited[current_node] = true;
+
+      // System.out.println(nodes[current_node].id);
+
+      // update adjacent nodes
+      for (int node = 0; node < size; node++) {
+        if (!(adjMat[current_node][node] == 0.0) // Check if nodes are adjacent
+            && !visited[node]) { // Make sure unvisited node
+
+          // if going to adjacent node via current is better than the previous path to node, update
+          // fromStart[node]
+          if (fromStart[node] < 0
+              || fromStart[current_node] + adjMat[current_node][node] < fromStart[node]) {
+
+            fromStart[node] = fromStart[current_node] + adjMat[current_node][node];
+            lastVisited[node] = current_node;
           }
         }
       }
 
-      RoomVisited[current_node] = true;
+      // choose the next node based off of distance to start and heuristic
+      min = Integer.MAX_VALUE;
+
+      for (int other = 0; other < size; other++) {
+
+        double cost = fromStart[other] + heuristic[other];
+
+        if (cost >= 0 && cost < min && !visited[other]) {
+          min = cost;
+          current_node = other;
+        }
+      }
     }
 
     Path path = new Path();
@@ -175,7 +202,28 @@ public class Graph {
     }
     path.addFirst(start);
 
+    System.out.println(pathLength(path));
+
     return path;
+  }
+
+  public double distance(String n1, String n2) {
+    return nodes[id2idx.get(n1)].point.distance(nodes[id2idx.get(n2)].point);
+  }
+
+  public double pathLength(Path p) {
+
+    LinkedList<String> nodesLst = (LinkedList<String>) p.getNodes().clone();
+    String prev = nodesLst.removeFirst();
+    double length = 0;
+
+    while (!nodesLst.isEmpty()) {
+      String cur = nodesLst.removeFirst();
+      length += distance(prev, cur);
+      prev = cur;
+    }
+
+    return length;
   }
 
   public void print() {
@@ -190,12 +238,9 @@ public class Graph {
 
      */
 
-    /*
     for (String id : id2idx.keySet()) {
 
       System.out.println(id);
     }
-
-     */
   }
 }

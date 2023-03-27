@@ -2,26 +2,25 @@ package edu.wpi.fishfolk.pathfinding;
 
 import java.util.LinkedList;
 import lombok.Getter;
-import lombok.Setter;
 
 public class Path {
 
-  public LinkedList<String> nodes;
+  @Getter private LinkedList<String> nodes;
 
-  @Getter @Setter private int length;
+  int numNodes;
 
   public Path() {
     nodes = new LinkedList<>();
-    length = 0;
+    numNodes = 0;
   }
 
   public void addFirst(String n) {
     nodes.addFirst(n);
-    length++;
+    numNodes++;
   }
 
   public String removeLast() {
-    length--;
+    numNodes--;
     return nodes.removeLast();
   }
 

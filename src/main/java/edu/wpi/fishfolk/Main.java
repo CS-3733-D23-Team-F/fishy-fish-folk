@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import edu.wpi.fishfolk.pathfinding.Path;
 import java.io.*;
+import java.util.HashMap;
 import java.util.LinkedList;
 import javafx.geometry.Point2D;
 
@@ -13,17 +14,24 @@ public class Main {
 
     Graph graph = loadMapFromCSV();
 
-    System.out.println(
-        bfs(graph, "fHALL003L1", "fHALL006L1")); // should be connected via elevator H
+    System.out.println(graph.AStar("fHALL002L1", "fHALL006L1"));
+    System.out.println(graph.AStar("fHALL002L1", "fLABS003L1"));
 
-    System.out.println(graph.AStar("fHALL003L1", "fHALL006L1"));
+    System.out.println(graph.distance("fLABS003L1", "fHALL006L1"));
 
     // Fapp.launch(Fapp.class, args);
   }
 
   public static Graph loadMapFromCSV() {
-    LinkedList<Node> nodes = new LinkedList<>();
+
+    LinkedList<Node> nodeLst = new LinkedList<>();
+
     int count = 0;
+
+    HashMap<String, String> idTranslation = new HashMap<>();
+
+    HashMap<String, Integer> nodeTypeCounts =
+        new HashMap<>(); // key: nodeType + floor, value is count
 
     try (BufferedReader br =
         new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv"))) {
@@ -33,9 +41,6 @@ public class Main {
 
         String[] values = line.split(",");
 
-        String id = values[0];
-        id = "f" + id.substring(1);
-
         Point2D point = new Point2D(Integer.parseInt(values[1]), Integer.parseInt(values[2]));
 
         String floor = values[3];
@@ -43,14 +48,36 @@ public class Main {
         String building = values[4];
 
         NodeType type = NodeType.valueOf(values[5]);
+        Integer prevCount = nodeTypeCounts.get(type.toString() + floor);
+        if (prevCount != null) {
+          nodeTypeCounts.put(type.toString() + floor, prevCount + 1);
+        } else {
+          nodeTypeCounts.put(type.toString() + floor, 1);
+        }
 
         String longName = values[6];
 
         String shortName = values[7];
 
+        // create id from scratch and map given id (which is also used in edges csv) to correct id
+
+        String nodeNum;
+
+        if (type == NodeType.ELEV) {
+          nodeNum = "00" + shortName.substring(9, 10);
+
+        } else {
+          nodeNum = "00" + nodeTypeCounts.get(type.toString() + floor);
+          nodeNum = nodeNum.substring(nodeNum.length() - 3);
+        }
+        String id = "f" + type.toString() + nodeNum + floor;
+
+        idTranslation.put(values[0], id); // map given id to correct id
+
         Node node = new Node(id, point, floor, building, type, longName, shortName);
 
-        nodes.add(node);
+        nodeLst.add(node);
+
         count++;
       }
     } catch (IOException e) {
@@ -59,7 +86,7 @@ public class Main {
 
     Graph graph = new Graph(count);
 
-    for (Node n : nodes) {
+    for (Node n : nodeLst) {
       graph.addNode(n);
     }
 
@@ -71,10 +98,8 @@ public class Main {
 
         String[] values = line.split(",");
 
-        String n1 = values[1];
-        n1 = "f" + n1.substring(1);
-        String n2 = values[2];
-        n2 = "f" + n2.substring(1);
+        String n1 = idTranslation.get(values[1]);
+        String n2 = idTranslation.get(values[2]);
 
         // System.out.println(n1 + "-" + n2); // edge list for https://graphonline.ru/en/
 
@@ -84,7 +109,7 @@ public class Main {
       throw new RuntimeException(e);
     }
 
-    graph.print();
+    // graph.print();
     return graph;
   }
 
