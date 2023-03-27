@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.pathfinding;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import javafx.geometry.Point2D;
 import lombok.Getter;
@@ -38,21 +39,23 @@ public class Path {
 
     for (int i = numNodes - 2; i >= 0; i--) {
       length += prev.distance(points.get(i));
+      // System.out.print(nodes.get(i + 1) + "_" + nodes.get(i) + "  ");
       prev = points.get(i);
-      ;
     }
 
     return length;
   }
 
-  public String createDirections() {
+  public String getDirections() {
 
     // split path into segments: three points determine a segment
     // to avoid overlaps, dont add the start->mid portion except for the first
 
     LinkedList<PathSegment> segments = new LinkedList<>();
 
-    for (int midx = 1; midx < numNodes - 2; midx++) { // keep track of middle index in each set of 3
+    for (int midx = 1;
+        midx <= numNodes - 2;
+        midx++) { // keep track of middle index in each set of 3
 
       Point2D start = points.get(midx - 1);
       Point2D mid = points.get(midx);
@@ -85,14 +88,34 @@ public class Path {
       }
     }
 
-    // now that the path has been split into segments, create directions
+    // now that the path has been split into segments, combine consecutive straight segments
+
+    Iterator<PathSegment> itr = segments.iterator();
+    PathSegment prev = itr.next(); // first segment
+
+    // combine  consecutive straight segments
+    while (itr.hasNext()) {
+      PathSegment cur = itr.next();
+
+      if (prev.type == PathSegmentType.STRAIGHT
+          && cur.type == PathSegmentType.STRAIGHT) { // two straights in a row
+        prev.end = cur.end; // extend prev to cover current
+        itr.remove(); // removes current
+
+      } else {
+        prev = cur;
+      }
+    }
+
+    // create directions from condensed segments
     String directions = "start at " + nodes.get(0) + "\n";
 
     for (PathSegment segment : segments) {
 
       switch (segment.type) {
         case STRAIGHT:
-          directions += "straight for " + segment.end.distance(segment.start) + "\n";
+          String dist = String.format("%.1f", segment.end.distance(segment.start));
+          directions += "straight for " + dist + "\n";
           break;
         case RIGHT:
           directions += "turn right \n";

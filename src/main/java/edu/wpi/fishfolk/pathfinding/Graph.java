@@ -63,7 +63,9 @@ public class Graph {
     if (idx1 != null && idx2 != null) {
       adjMat[idx1][idx2] = point1.distance(point2);
       adjMat[idx2][idx1] = point1.distance(point2);
-      ;
+      nodes[idx1].degree++;
+      nodes[idx2].degree++;
+
       return true;
 
     } else {
@@ -136,8 +138,6 @@ public class Graph {
     boolean[] visited = new boolean[size]; // true means found the shortest path to this node
     int[] lastVisited = new int[size];
     int current_node = id2idx.get(start);
-    double pathWeight = 0;
-    double min = -1;
 
     // initialize distance from start node and heuristic arrays
     // distance from start node: 0 for start, -MIN_INT for all others
@@ -181,7 +181,7 @@ public class Graph {
       }
 
       // choose the next node based off of distance to start and heuristic
-      min = Integer.MAX_VALUE;
+      double min = Integer.MAX_VALUE;
 
       for (int other = 0; other < size; other++) {
 
@@ -204,7 +204,7 @@ public class Graph {
 
     System.out.println(path.pathLength());
 
-    System.out.println(path.createDirections());
+    System.out.println(path.getDirections());
 
     return path;
   }
