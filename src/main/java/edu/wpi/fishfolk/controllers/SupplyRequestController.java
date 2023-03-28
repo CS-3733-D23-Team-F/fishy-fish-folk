@@ -1,4 +1,3 @@
 package edu.wpi.fishfolk.controllers;
 
-public class SupplyRequestController {
-}
+public class SupplyRequestController {}
