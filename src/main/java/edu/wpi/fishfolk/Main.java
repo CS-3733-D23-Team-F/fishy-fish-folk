@@ -1,22 +1,21 @@
 package edu.wpi.fishfolk;
 
+import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.pathfinding.Graph;
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.io.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import javafx.geometry.Point2D;
 
-import edu.wpi.fishfolk.database.Fdb;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 public class Main {
 
   public static void main(String[] args) {
-  
-  // Fapp.launch(Fapp.class, args);
+
+    // Fapp.launch(Fapp.class, args);
     Fdb fdb = new Fdb();
     try {
       Connection db = fdb.connect("teamfdb", "teamf", "teamf60");
@@ -31,8 +30,8 @@ public class Main {
       System.out.println(e.getMessage());
     }
 
-    System.out.println("Welcome to FFF Database CLI, type 'help' for more information on how to use this program\n");
-
+    System.out.println(
+        "Welcome to FFF Database CLI, type 'help' for more information on how to use this program\n");
   }
 
   public static Graph loadMapFromCSV() {
@@ -125,7 +124,6 @@ public class Main {
     // graph.print();
     return graph;
   }
-
 
   // shortcut: psvm
 
