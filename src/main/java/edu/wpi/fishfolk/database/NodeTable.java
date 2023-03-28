@@ -93,6 +93,9 @@ public class NodeTable {
       Point2D point = new Point2D(xcoord, ycoord);
       NodeType type = NodeType.valueOf(nodetype);
 
+      // i dont love how this returns a new object but i dont see a way around it
+      // and besides the Node .equals would return true for all nodes returned by getNode() with the
+      // same parameter
       Node newNode = new Node(nodeid, point, floor, building, type, longname, shortname);
       System.out.println(
           "[NodeTable.getNode]: Node " + id + " retrieved from table " + tableName + ".");
@@ -172,7 +175,7 @@ public class NodeTable {
     return false;
   }
 
-  // true if updated (maybe inserted new node) , false
+  // true if updated, false if had to insert
   public boolean updateNode(Node node) {
     Statement statement;
     try {
@@ -197,6 +200,7 @@ public class NodeTable {
                 + " doesn't exist in table "
                 + tableName
                 + ".");
+        insertNode(node);
         return false;
       }
 
