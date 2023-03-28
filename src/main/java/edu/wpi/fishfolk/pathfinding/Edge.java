@@ -2,10 +2,13 @@ package edu.wpi.fishfolk.pathfinding;
 
 public class Edge {
 
-  String node1id, node2id;
+  public String edgeid;
+  public String startnode;
+  public String endnode;
 
-  public Edge(String node1id, String node2id) {
-    this.node1id = node1id;
-    this.node2id = node2id;
+  public Edge(String edgeid, String startnode, String endnode) {
+    this.edgeid = edgeid;
+    this.startnode = startnode;
+    this.endnode = endnode;
   }
 }

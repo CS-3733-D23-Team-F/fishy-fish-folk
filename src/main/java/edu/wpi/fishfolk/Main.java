@@ -1,7 +1,9 @@
 package edu.wpi.fishfolk;
 
+import edu.wpi.fishfolk.database.EdgeTable;
 import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.database.NodeTable;
+import edu.wpi.fishfolk.pathfinding.Edge;
 import edu.wpi.fishfolk.pathfinding.Graph;
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
@@ -17,28 +19,29 @@ public class Main {
   public static void main(String[] args) {
 
     // Fapp.launch(Fapp.class, args);
-    Fdb fdb = new Fdb();
+
     try {
+
+      System.out.println("\n--- ESTABLISHING DATABASE CONNECTION ---\n");
+
+      Fdb fdb = new Fdb();
       Connection db = fdb.connect("teamfdb", "teamf", "teamf60");
       db.setSchema("test");
-      System.out.println("[Main]: Current schema: " + db.getSchema());
+      System.out.println("[Main]: Current schema: " + db.getSchema() + ".");
+
+      System.out.println("\n--- TESTING NODE TABLE ---\n");
 
       NodeTable nodeTable = new NodeTable(db, "nodetable");
       if (fdb.createTable(db, nodeTable.getTableName())) {
         nodeTable.addHeaders();
       }
 
-      // basic test for importCSV, once tested it will be used to test getNode, insert, update, and
-      // remove
       nodeTable.importCSV();
 
       Node existingNode = nodeTable.getNode("CCONF001L1");
-
-      System.out.println(existingNode == null);
-
       Node newNode =
           new Node(
-              "CDEPT002L1",
+              "CDEPT999L1",
               new Point2D(1980, 844),
               "L1",
               "Tower",
@@ -47,7 +50,7 @@ public class Main {
               "Department C002L1");
       Node newNodeUpdated =
           new Node(
-              "CDEPT002L1",
+              "CDEPT999L1",
               new Point2D(1980, 844),
               "L2",
               "Space",
@@ -63,6 +66,30 @@ public class Main {
       nodeTable.removeNode(existingNode);
 
       nodeTable.exportCSV();
+
+      System.out.println("\n--- TESTING EDGE TABLE ---\n");
+
+      EdgeTable edgeTable = new EdgeTable(db, "edgetable");
+      if (fdb.createTable(db, edgeTable.getTableName())) {
+        edgeTable.addHeaders();
+      }
+
+      edgeTable.importCSV();
+      edgeTable.testQuery();
+
+      Edge existingEdge = edgeTable.getEdge("CCONF002L1_WELEV00HL1");
+
+      Edge newEdge = new Edge("CDEPT002L1_CDEPT003L1", "CDEPT002L1", "CDEPT003L1");
+      Edge newEdgeUpdated = new Edge("CDEPT002L1_CDEPT003L1", "CDEPT002L1AAA", "CDEPT003L1AAA");
+
+      edgeTable.insertEdge(existingEdge);
+      edgeTable.insertEdge(newEdge);
+
+      edgeTable.updateEdge(newEdgeUpdated);
+
+      edgeTable.removeEdge(existingEdge);
+
+      edgeTable.exportCSV();
 
       fdb.disconnect(db);
 

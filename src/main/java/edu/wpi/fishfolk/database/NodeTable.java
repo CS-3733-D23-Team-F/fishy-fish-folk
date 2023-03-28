@@ -30,7 +30,7 @@ public class NodeTable {
 
   public NodeTable(Connection db, String tableName) {
     this.db = db;
-    this.tableName = tableName;
+    this.tableName = tableName.toLowerCase();
   }
 
   public void addHeaders() {
@@ -325,7 +325,7 @@ public class NodeTable {
               + headers.get(7));
 
       while (results.next()) {
-        System.out.println(results.getRow());
+        // System.out.println(results.getRow());  // Removed for cleanliness, feel free to restore
         out.println(
             results.getString(headers.get(0))
                 + ","
