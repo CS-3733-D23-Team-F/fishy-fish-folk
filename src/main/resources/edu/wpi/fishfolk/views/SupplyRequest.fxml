@@ -72,7 +72,7 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <MFXButton depthLevel="LEVEL0" layoutX="1255.0" layoutY="832.0" rippleColor="#a2e1cb" text="SUBMIT" textFill="#a2e1cb">
+      <MFXButton fx:id="supplySubmitButton" depthLevel="LEVEL0" layoutX="1255.0" layoutY="832.0" rippleColor="#a2e1cb" text="SUBMIT" textFill="#a2e1cb">
          <font>
             <Font name="Gill Sans MT Bold" size="30.0" />
          </font>
