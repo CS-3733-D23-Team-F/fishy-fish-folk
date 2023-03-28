@@ -1,0 +1,46 @@
+nodeid,xcoord,ycoord,floor,building,nodetype,longname,shortname
+CCONF002L1,2665.0,1043.0,L1,45 Francis,CONF,Medical Records Conference Room Floor L1,Conf C002L1
+CCONF003L1,2445.0,1245.0,L1,45 Francis,CONF,Abrams Conference Room,Conf C003L1
+CDEPT003L1,1845.0,844.0,L1,Tower,DEPT,Day Surgery Family Waiting Exit Floor L1,Department C003L1
+CDEPT004L1,2310.0,1043.0,L1,45 Francis,DEPT,Medical Records Film Library Floor L1,Department C004L1
+CHALL001L1,1732.0,924.0,L1,Tower,HALL,Hallway 1 Floor L1,Hallway C001L1
+CHALL002L1,2445.0,1043.0,L1,45 Francis,HALL,Hallway 2 Floor L1,Hallway C002L1
+CHALL003L1,2445.0,1284.0,L1,45 Francis,HALL,Hallway 3 Floor L1,Hallway C003L1
+CHALL004L1,2770.0,1070.0,L1,45 Francis,HALL,Hallway 4 Floor L1,Hallway C004L1
+CHALL005L1,1750.0,1284.0,L1,Tower,HALL,Hallway 5 Floor L1,Hallway C005L1
+CHALL006L1,2130.0,1284.0,L1,Tower,HALL,Hallway 6 Floor L1,Hallway C006L1
+CHALL007L1,2130.0,1045.0,L1,Tower,HALL,Hallway 7 Floor L1,Hallway C007L1
+CHALL008L1,2215.0,1045.0,L1,45 Francis,HALL,Hallway 8 Floor L1,Hallway C008L1
+CHALL009L1,2220.0,904.0,L1,45 Francis,HALL,Hallway 9 Floor L1,Hallway C009L1
+CHALL010L1,2265.0,904.0,L1,45 Francis,HALL,Hallway 10 Floor L1,Hallway C010L1
+CHALL011L1,2360.0,849.0,L1,45 Francis,HALL,Hallway 11 Floor L1,Hallway C011L1
+CHALL012L1,2130.0,904.0,L1,45 Francis,HALL,Hallway 12 Floor L1,Hallway C012L1
+CHALL013L1,2130.0,844.0,L1,45 Francis,HALL,Hallway 13 Floor L1,Hallway C013L1
+CHALL014L1,1845.0,924.0,L1,Tower,HALL,Hallway 14 Floor L1,Hallway C014L1
+CHALL015L1,2300.0,849.0,L1,45 Francis,HALL,Hallway 15 Floor L1,Hallway C015L1
+CLABS001L1,1965.0,1284.0,L1,Tower,LABS,Outpatient Fluoroscopy Floor L1,Lab C001L1
+CLABS002L1,1750.0,1090.0,L1,Tower,LABS,Pre-Op PACU Floor L1,Lab C002L1
+CLABS003L1,2290.0,1284.0,L1,45 Francis,LABS,Nuclear Medicine Floor L1,Lab C003L1
+CLABS004L1,2320.0,1284.0,L1,45 Francis,LABS,Ultrasound Floor L1,Lab C004L1
+CLABS005L1,2770.0,1284.0,L1,45 Francis,LABS,CSIR MRI Floor L1,Lab C005L1
+CREST001L1,1732.0,1019.0,L1,Tower,REST,Restroom L Elevator Floor L1,Restroom C001L1
+CREST002L1,2065.0,1284.0,L1,Tower,REST,Restroom M Elevator Floor L1,Restroom C002L1
+CREST003L1,2300.0,879.0,L1,45 Francis,REST,Restroom K Elevator Floor L1,Restroom C003L1
+CREST004L1,2770.0,1160.0,L1,45 Francis,REST,Restroom H Elevator Floor L1,Restroom C004L1
+CRETL001L1,2185.0,904.0,L1,45 Francis,RETL,Vending Machine 1 L1,Retail C001L1
+CSERV001L1,2490.0,1043.0,L1,45 Francis,SERV,Volunteers Floor L1,Service C001L1
+CSERV001L2,2015.0,1280.0,L2,45 Francis,SERV,Interpreter Services Floor L2,Service C001L2
+GELEV00QL1,1637.0,2116.0,L1,Shapiro,ELEV,Elevator Q MapNode 7 Floor L1,Elevator Q L1
+GEXIT001L1,1702.0,2260.0,L1,Shapiro,EXIT,Fenwood Road Exit MapNode 1 Floor L1,Fenwood Road EntranceExit L1
+GHALL002L1,1702.0,2167.0,L1,Shapiro,HALL,Hallway MapNode 2 Floor L1,Hall
+GHALL003L1,1688.0,2167.0,L1,Shapiro,HALL,Hallway MapNode 3 Floor L1,Hall
+GHALL004L1,1666.0,2167.0,L1,Shapiro,HALL,Hallway MapNode 4 Floor L1,Hall
+GHALL005L1,1688.0,2131.0,L1,Shapiro,HALL,Hallway MapNode 5 Floor L1,Hall
+GHALL006L1,1665.0,2116.0,L1,Shapiro,HALL,Hallway MapNode 6 Floor L1,Hall
+GSTAI008L1,1720.0,2131.0,L1,Shapiro,STAI,Stairs MapNode 8 Floor L1,L1 Stairs
+WELEV00HL1,2715.0,1070.0,L1,45 Francis,ELEV,Elevator H Floor L1,Elevator HL1
+WELEV00JL1,2360.0,799.0,L1,45 Francis,ELEV,Elevator J Floor L1,Elevator JL1
+WELEV00KL1,2220.0,974.0,L1,45 Francis,ELEV,Elevator K Floor L1,Elevator KL1
+WELEV00LL1,1785.0,924.0,L1,Tower,ELEV,Elevator L Floor L1,Elevator LL1
+WELEV00ML1,1820.0,1284.0,L1,Tower,ELEV,Elevator M Floor L1,Elevator ML1
+CDEPT002L1,1980.0,844.0,L2,Space,DEPT,Night Surgery Family Waiting Floor L1,Department C002L1

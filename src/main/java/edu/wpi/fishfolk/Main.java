@@ -8,7 +8,6 @@ import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.LinkedList;
 import javafx.geometry.Point2D;
@@ -29,16 +28,9 @@ public class Main {
         nodeTable.addHeaders();
       }
 
-      // set up basic test
-
-      String query =
-          "DELETE FROM test.nodetable *;\n"
-              + "INSERT INTO test.nodetable (nodeid, xcoord, ycoord, floor, building, nodetype, longname, shortname)\n"
-              + "VALUES ('CCONF001L1', '2255', '849', 'L1', '45 Francis', 'CONF', 'Anesthesia Conf Floor L1', 'Conf C001L1'),\n"
-              + "        ('CCONF002L1', '2665', '1043', 'L1', '45 Francis', 'CONF', 'Medical Records Conference Room Floor L1', 'Conf C002L1');\n"
-              + "SELECT * FROM test.nodetable;";
-      Statement statement = db.createStatement();
-      statement.execute(query);
+      // basic test for importCSV, once tested it will be used to test getNode, insert, update, and
+      // remove
+      nodeTable.importCSV();
 
       Node existingNode = nodeTable.getNode("CCONF001L1");
 
@@ -69,6 +61,8 @@ public class Main {
       nodeTable.updateNode(newNodeUpdated);
 
       nodeTable.removeNode(existingNode);
+
+      nodeTable.exportCSV();
 
       fdb.disconnect(db);
 

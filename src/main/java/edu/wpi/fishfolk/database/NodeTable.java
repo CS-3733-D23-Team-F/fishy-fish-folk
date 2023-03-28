@@ -2,6 +2,7 @@ package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -261,7 +262,94 @@ public class NodeTable {
     }
   }
 
-  public void importCSV(String fileName) {}
+  public void importCSV() {
 
-  public void exportCSV(String filename) {}
+    try (BufferedReader br =
+        new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv"))) {
+
+      String line = br.readLine(); // ignore column headers which are on the first line
+      while ((line = br.readLine()) != null) {
+
+        String[] values = line.split(",");
+
+        String nodeID = values[0];
+
+        Point2D point = new Point2D(Integer.parseInt(values[1]), Integer.parseInt(values[2]));
+
+        String floor = values[3];
+
+        String building = values[4];
+
+        NodeType type = NodeType.valueOf(values[5]);
+
+        String longName = values[6];
+
+        String shortName = values[7];
+
+        Node node = new Node(nodeID, point, floor, building, type, longName, shortName);
+
+        insertNode(node);
+      }
+      br.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void exportCSV() {
+    try {
+      PrintWriter out =
+          new PrintWriter(
+              new BufferedWriter(
+                  new FileWriter("src/main/resources/edu/wpi/fishfolk/csv/L1NodesOutput.csv")));
+      String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
+      Statement statement = db.createStatement();
+      statement.execute(grabAll);
+      ResultSet results = statement.getResultSet();
+
+      out.println(
+          headers.get(0)
+              + ","
+              + headers.get(1)
+              + ","
+              + headers.get(2)
+              + ","
+              + headers.get(3)
+              + ","
+              + headers.get(4)
+              + ","
+              + headers.get(5)
+              + ","
+              + headers.get(6)
+              + ","
+              + headers.get(7));
+
+      while (results.next()) {
+        System.out.println(results.getRow());
+        out.println(
+            results.getString(headers.get(0))
+                + ","
+                + results.getDouble(headers.get(1))
+                + ","
+                + results.getDouble(headers.get(2))
+                + ","
+                + results.getString(headers.get(3))
+                + ","
+                + results.getString(headers.get(4))
+                + ","
+                + results.getString(headers.get(5))
+                + ","
+                + results.getString(headers.get(6))
+                + ","
+                + results.getString(headers.get(7)));
+      }
+
+      out.close();
+
+    } catch (IOException e) {
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }
