@@ -109,8 +109,10 @@ jar {
 }
 
 def codeCoverageExcludes = [
-        'edu.wpi.teamname.App',
-        'edu.wpi.teamname.Main',
+        'edu.wpi.fishfolk.Fapp',
+        'edu.wpi.fishfolk.Main',
+        'edu.wpi.fishfolk.controllers.*',
+        'edu.wpi.fishfolk.navigation.*',
 ]
 
 jacoco {
@@ -161,6 +163,10 @@ spotless {
     }
 }
 
-tasks.withType(Jar).all {
-    duplicatesStrategy 'exclude'
+tasks.withType(Tar){
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.withType(Zip){
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
