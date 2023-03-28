@@ -75,12 +75,12 @@ public class Main {
       }
 
       edgeTable.importCSV();
-      edgeTable.testQuery();
+      // edgeTable.testQuery();
 
       Edge existingEdge = edgeTable.getEdge("CCONF002L1_WELEV00HL1");
 
-      Edge newEdge = new Edge("CDEPT002L1_CDEPT003L1", "CDEPT002L1", "CDEPT003L1");
-      Edge newEdgeUpdated = new Edge("CDEPT002L1_CDEPT003L1", "CDEPT002L1AAA", "CDEPT003L1AAA");
+      Edge newEdge = new Edge("CDEPT999L1_CDEPT999L1", "CDEPT002L1", "CDEPT003L1");
+      Edge newEdgeUpdated = new Edge("CDEPT999L1_CDEPT999L1", "CDEPT002L1AAA", "CDEPT003L1AAA");
 
       edgeTable.insertEdge(existingEdge);
       edgeTable.insertEdge(newEdge);
