@@ -20,9 +20,9 @@ public class Fdb {
       Class.forName("org.postgresql.Driver");
       db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
       if (db != null) {
-        System.out.println("Connection established.");
+        System.out.println("[Fdb.connect]: Connection established.");
       } else {
-        System.out.println("Connection failed.");
+        System.out.println("[Fdb.connect]: Connection failed.");
       }
     } catch (ClassNotFoundException | SQLException e) {
       System.out.println(e.getMessage());
@@ -38,7 +38,7 @@ public class Fdb {
   public void disconnect(Connection db) {
     try {
       db.close();
-      System.out.println("Connection closed.");
+      System.out.println("[Fdb.disconnect]: Connection closed.");
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
@@ -83,23 +83,17 @@ public class Fdb {
     try {
       statement = db.createStatement();
       if (tableExists(db, tbName)) {
-        System.out.println("Table " + tbName + " already exists.");
+        System.out.println("[Fdb.createTable]: Table " + tbName + " already exists.");
         return false;
       } else {
         String query = "CREATE TABLE " + tbName + " ();";
         statement.executeUpdate(query);
-        System.out.println("Table " + tbName + " created.");
+        System.out.println("[Fdb.createTable]: Table " + tbName + " created.");
         return true;
       }
     } catch (SQLException e) {
       System.out.println(e.getMessage());
       return false;
     }
-  }
-
-  public boolean insertRow(Connection db, String tbName, String tbEntry) {
-    // TODO: Is it possible to create a generic insert method?
-    // IDEA: Load the table first into a table class -> Class stores column headers
-    return false;
   }
 }

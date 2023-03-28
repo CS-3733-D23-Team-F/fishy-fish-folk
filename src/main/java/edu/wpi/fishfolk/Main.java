@@ -21,7 +21,7 @@ public class Main {
     try {
       Connection db = fdb.connect("teamfdb", "teamf", "teamf60");
       db.setSchema("test");
-      System.out.println("Current schema: " + db.getSchema());
+      System.out.println("[Main]: Current schema: " + db.getSchema());
 
       NodeTable nodeTable = new NodeTable(db, "nodetable");
       if (fdb.createTable(db, nodeTable.getTableName())) {
@@ -38,9 +38,22 @@ public class Main {
               NodeType.DEPT,
               "Day Surgery Family Waiting Floor L1",
               "Department C002L1");
+      Node newNodeUpdated =
+          new Node(
+              "CDEPT002L1",
+              new Point2D(1980, 844),
+              "L2",
+              "Space",
+              NodeType.DEPT,
+              "Night Surgery Family Waiting Floor L1",
+              "Department C002L1");
 
       nodeTable.insertNode(existingNode);
       nodeTable.insertNode(newNode);
+
+      nodeTable.updateNode(newNodeUpdated);
+
+      nodeTable.removeNode(existingNode);
 
       fdb.disconnect(db);
 

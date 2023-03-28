@@ -64,7 +64,8 @@ public class NodeTable {
               + " TEXT;";
       statement = db.createStatement();
       statement.executeUpdate(query);
-      System.out.println("Column headers generated for table " + tableName + ".");
+      System.out.println(
+          "[NodeTable.addHeaders]: Column headers generated for table " + tableName + ".");
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
@@ -93,7 +94,8 @@ public class NodeTable {
       NodeType type = NodeType.valueOf(nodetype);
 
       Node newNode = new Node(nodeid, point, floor, building, type, longname, shortname);
-      System.out.println("Node " + id + " retrieved from table " + tableName + ".");
+      System.out.println(
+          "[NodeTable.getNode]: Node " + id + " retrieved from table " + tableName + ".");
 
       return newNode;
     } catch (SQLException e) {
@@ -122,7 +124,12 @@ public class NodeTable {
       results.next();
 
       if (results.getBoolean("exists")) {
-        System.out.println("Node " + node.id + " already exists in table " + tableName + ".");
+        System.out.println(
+            "[NodeTable.insertNode]: Node "
+                + node.id
+                + " already exists in table "
+                + tableName
+                + ".");
         return false;
       }
 
@@ -153,7 +160,11 @@ public class NodeTable {
       statement.executeUpdate(query);
 
       System.out.println(
-          "Node " + node.id + " successfully inserted into table " + tableName + ".");
+          "[NodeTable.insertNode]: Node "
+              + node.id
+              + " successfully inserted into table "
+              + tableName
+              + ".");
       return true;
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -163,10 +174,88 @@ public class NodeTable {
 
   // true if updated (maybe inserted new node) , false
   public boolean updateNode(Node node) {
+    Statement statement;
+    try {
+      String exists =
+          "SELECT EXISTS (SELECT FROM "
+              + db.getSchema()
+              + "."
+              + tableName
+              + " WHERE nodeid = '"
+              + node.id
+              + "');";
+
+      statement = db.createStatement();
+      statement.execute(exists);
+      ResultSet results = statement.getResultSet();
+      results.next();
+
+      if (!results.getBoolean("exists")) {
+        System.out.println(
+            "[NodeTable.updateNode]: Node "
+                + node.id
+                + " doesn't exist in table "
+                + tableName
+                + ".");
+        return false;
+      }
+
+      String query =
+          "UPDATE "
+              + db.getSchema()
+              + "."
+              + tableName
+              + " SET"
+              + " nodeid = '"
+              + node.id
+              + "',xcoord = '"
+              + (int) node.point.getX()
+              + "',ycoord = '"
+              + (int) node.point.getY()
+              + "',floor = '"
+              + node.floor
+              + "',building = '"
+              + node.building
+              + "',longname = '"
+              + node.longName
+              + "',shortname = '"
+              + node.shortName
+              + "' WHERE nodeid = '"
+              + node.id
+              + "'";
+
+      statement.executeUpdate(query);
+      System.out.println(
+          "[NodeTable.updateNode]: Successfully updated node "
+              + node.id
+              + " in table "
+              + tableName
+              + ".");
+      return true;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
     return false;
   }
 
-  public void removeNode(Node node) {}
+  public void removeNode(Node node) {
+    Statement statement;
+    try {
+      String query =
+          "DELETE FROM " + db.getSchema() + "." + tableName + " WHERE nodeid = '" + node.id + "'";
+      statement = db.createStatement();
+      statement.executeUpdate(query);
+      System.out.println(
+          "[NodeTable.removeNode]: Node "
+              + node.id
+              + " has been successfully removed from table "
+              + tableName
+              + ".");
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
 
   public void importCSV(String fileName) {}
 
