@@ -12,6 +12,11 @@ import java.util.List;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 
+/**
+ * Represents a table of nodes in a PostgreSQL database.
+ * @author Christian
+ * @author Jon
+ */
 public class NodeTable {
 
   private Connection db;
@@ -28,11 +33,20 @@ public class NodeTable {
               "longname",
               "shortname"));
 
+  /**
+   * Creates a new representation of a node table.
+   * @param db Database connection object for this table
+   * @param tableName Name of the table
+   */
   public NodeTable(Connection db, String tableName) {
     this.db = db;
     this.tableName = tableName.toLowerCase();
   }
 
+  /**
+   * For empty tables only, generates new column headers for the node table.
+   * TODO: Check if table is empty before applying new headers
+   */
   public void addHeaders() {
     Statement statement;
     try {
@@ -72,6 +86,11 @@ public class NodeTable {
     }
   }
 
+  /**
+   * Returns a new Node from a specified entry in the table.
+   * @param id Node id
+   * @return New node object, returns null if specified Node does not exist in table
+   */
   public Node getNode(String id) {
     Statement statement;
     try {
@@ -109,7 +128,11 @@ public class NodeTable {
     return null;
   }
 
-  // true if inserted, false if duplicate or otherwise not added
+  /**
+   * Inserts a node into the table if it does not exist.
+   * @param node Node to insert
+   * @return True if inserted, false if the node already exists and/or is not added
+   */
   public boolean insertNode(Node node) {
     Statement statement;
     try {
