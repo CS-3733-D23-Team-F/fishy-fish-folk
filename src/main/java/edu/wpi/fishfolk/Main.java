@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk;
 
 import edu.wpi.fishfolk.database.Fdb;
+import edu.wpi.fishfolk.database.NodeTable;
 import edu.wpi.fishfolk.pathfinding.Graph;
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
@@ -21,17 +22,31 @@ public class Main {
       Connection db = fdb.connect("teamfdb", "teamf", "teamf60");
       db.setSchema("test");
       System.out.println("Current schema: " + db.getSchema());
-      fdb.createTable(db, "test1");
-      fdb.createTable(db, "test2");
-      fdb.createTable(db, "test3");
+
+      NodeTable nodeTable = new NodeTable(db, "nodetable");
+      if (fdb.createTable(db, nodeTable.getTableName())) {
+        nodeTable.addHeaders();
+      }
+
+      Node existingNode = nodeTable.getNode("CCONF001L1");
+      Node newNode =
+          new Node(
+              "CDEPT002L1",
+              new Point2D(1980, 844),
+              "L1",
+              "Tower",
+              NodeType.DEPT,
+              "Day Surgery Family Waiting Floor L1",
+              "Department C002L1");
+
+      nodeTable.insertNode(existingNode);
+      nodeTable.insertNode(newNode);
+
       fdb.disconnect(db);
-      db.setSchema("test");
+
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
-
-    System.out.println(
-        "Welcome to FFF Database CLI, type 'help' for more information on how to use this program\n");
   }
 
   public static Graph loadMapFromCSV() {
