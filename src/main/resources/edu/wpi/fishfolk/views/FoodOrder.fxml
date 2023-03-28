@@ -1,14 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.wpi.fishfolk.controllers.FoodOrderController"
-            prefHeight="1024.0" prefWidth="1440.0">
-
-</AnchorPane>
+<VBox prefHeight="1024.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FoodOrderController">
+   <children>
+       <HBox style="-fx-background-color: #6CD4BC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+           <children>
+               <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" HBox.hgrow="ALWAYS">
+                   <font>
+                       <Font name="System Bold" size="32.0" />
+                   </font>
+                   <effect>
+                       <DropShadow blurType="GAUSSIAN" height="4.64" offsetY="2.0" radius="0.6599999999999999" spread="0.13" width="0.0">
+                           <color>
+                               <Color red="0.6184210777282715" green="0.6126949191093445" blue="0.6126949191093445" />
+                           </color>
+                       </DropShadow>
+                   </effect>
+                   <HBox.margin>
+                       <Insets left="1100.0" top="40.0" />
+                   </HBox.margin>
+               </Text>
+           </children>
+       </HBox>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <MFXButton fx:id="nextPageButton" alignment="center" layoutX="604.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Next Page" />
+            <MFXButton fx:id="prevPageButton" alignment="center" layoutX="604.0" layoutY="20.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Previous Page" />
+            <Rectangle fill="#cccccc" height="100" layoutX="320.0" layoutY="110.0" width="800.0" />
+            <Rectangle fill="#cccccc" height="100" layoutX="320.0" layoutY="390.0" width="800.0" />
+            <Rectangle fill="#cccccc" height="100" layoutX="320.0" layoutY="250.0" width="800.0" />
+            <Text fx:id="itemText1" layoutX="349.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText1" wrappingWidth="300.0">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Text>
+            <Text fx:id="itemText3" layoutX="349.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText3" wrappingWidth="300.0">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Text>
+            <Text fx:id="itemText2" layoutX="349.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText2" wrappingWidth="300.0">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Text>
+            <Text fx:id="itemPrice1" layoutX="649.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyPrice1" wrappingWidth="221.796875">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Text>
+            <Text fx:id="itemPrice3" layoutX="649.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyPrice3" wrappingWidth="221.796875">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Text>
+            <Text fx:id="itemPrice2" layoutX="649.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyPrice2" wrappingWidth="221.796875">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Text>
+            <MFXButton fx:id="addOneButton" layoutX="1050.0" layoutY="135.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="+">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="removeOneButton" layoutX="900.0" layoutY="135.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="-">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </MFXButton>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="975.0" layoutY="135.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+            <Text fx:id="itemQuantity1" layoutX="975.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="50.0">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Text>
+            <MFXButton fx:id="addTwoButton" layoutX="1050.0" layoutY="275.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="+">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="removeTwoButton" layoutX="900.0" layoutY="275.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="-">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </MFXButton>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="975.0" layoutY="275.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+            <Text fx:id="itemQuantity2" layoutX="975.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="50.0">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Text>
+            <MFXButton fx:id="addThreeButton" layoutX="1050.0" layoutY="414.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="+">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="removeThreeButton" layoutX="900.0" layoutY="414.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="-">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </MFXButton>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="975.0" layoutY="414.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+            <Text fx:id="itemQuantity3" layoutX="975.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="50.0">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
