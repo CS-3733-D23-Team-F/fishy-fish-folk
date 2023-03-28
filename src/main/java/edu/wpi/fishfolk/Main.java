@@ -11,13 +11,6 @@ import javafx.geometry.Point2D;
 public class Main {
   public static void main(String[] args) {
 
-    Graph graph = loadMapFromCSV();
-
-    // System.out.println(graph.AStar("fHALL002L1", "fHALL006L1"));
-    // System.out.println(graph.AStar("fHALL002L1", "fLABS003L1"));
-    System.out.println(graph.AStar("fELEV00JL1", "fREST004L1"));
-
-    // Fapp.launch(Fapp.class, args);
   }
 
   public static Graph loadMapFromCSV() {
