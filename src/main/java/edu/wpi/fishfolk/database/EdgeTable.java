@@ -268,7 +268,7 @@ public class EdgeTable {
 
   public void exportCSV() {
 
-    System.out.println("[EdgeTable.importCSV]: Exporting CSV from table " + tableName + ".");
+    System.out.println("[EdgeTable.exportCSV]: Exporting CSV from table " + tableName + ".");
 
     try {
       PrintWriter out =
