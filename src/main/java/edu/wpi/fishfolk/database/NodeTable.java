@@ -287,6 +287,8 @@ public class NodeTable {
 
   public void importCSV() {
 
+    System.out.println("[NodeTable.importCSV]: Importing CSV to table " + tableName + ".");
+
     try (BufferedReader br =
         new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv"))) {
 
