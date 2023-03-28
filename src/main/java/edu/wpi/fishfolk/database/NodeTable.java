@@ -292,11 +292,14 @@ public class NodeTable {
       }
       br.close();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      System.out.println(e.getMessage());
     }
   }
 
   public void exportCSV() {
+
+    System.out.println("[NodeTable.exportCSV]: exporting CSV from table " + tableName + ".");
+
     try {
       PrintWriter out =
           new PrintWriter(
@@ -347,9 +350,9 @@ public class NodeTable {
       out.close();
 
     } catch (IOException e) {
-
+      System.out.println(e.getMessage());
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      System.out.println(e.getMessage());
     }
   }
 }

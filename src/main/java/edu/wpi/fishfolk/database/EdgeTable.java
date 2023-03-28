@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.pathfinding.Edge;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -238,10 +239,65 @@ public class EdgeTable {
   }
 
   public void importCSV() {
-    System.out.println("[EdgeTable.importCSV]: No Action performed.");
+
+    System.out.println("[EdgeTable.importCSV]: Importing CSV to table " + tableName + ".");
+
+    try (BufferedReader br =
+        new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Edges.csv"))) {
+
+      String line = br.readLine(); // ignore column headers which are on the first line
+      while ((line = br.readLine()) != null) {
+
+        String[] values = line.split(",");
+
+        String edgeID = values[0];
+
+        String startNode = values[1];
+
+        String endNode = values[2];
+
+        Edge edge = new Edge(edgeID, startNode, endNode);
+
+        insertEdge(edge);
+      }
+      br.close();
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   public void exportCSV() {
-    System.out.println("[EdgeTable.exportCSV]: No Action performed.");
+
+    System.out.println("[EdgeTable.importCSV]: Exporting CSV from table " + tableName + ".");
+
+    try {
+      PrintWriter out =
+          new PrintWriter(
+              new BufferedWriter(
+                  new FileWriter("src/main/resources/edu/wpi/fishfolk/csv/L1EdgesOutput.csv")));
+      String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
+      Statement statement = db.createStatement();
+      statement.execute(grabAll);
+      ResultSet results = statement.getResultSet();
+
+      out.println(headers.get(0) + "," + headers.get(1) + "," + headers.get(2));
+
+      while (results.next()) {
+        // System.out.println(results.getRow());  // Removed for cleanliness, feel free to restore
+        out.println(
+            results.getString(headers.get(0))
+                + ","
+                + results.getString(headers.get(1))
+                + ","
+                + results.getString(headers.get(2)));
+      }
+
+      out.close();
+
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
   }
 }
