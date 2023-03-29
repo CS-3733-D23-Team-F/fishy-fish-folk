@@ -33,39 +33,39 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="655.0" prefWidth="866.0">
                <children>
-                  <MFXCheckbox layoutX="20.0" layoutY="15.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
+                  <MFXCheckbox fx:id="check1" layoutX="20.0" layoutY="15.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
                      <font>
                         <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
-                  <MFXCheckbox layoutX="20.0" layoutY="100.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
+                  <MFXCheckbox fx:id="check2" layoutX="20.0" layoutY="100.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
                      <font>
                         <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
-                  <MFXCheckbox layoutX="20.0" layoutY="185.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
-                     <font>
-                        <Font name="Gill Sans MT Bold" size="40.0" />
-                     </font>
-                  </MFXCheckbox>
-                  <MFXCheckbox layoutX="20.0" layoutY="270.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
-                     <font>
-                        <Font name="Gill Sans MT Bold" size="40.0" />
-                     </font>
-                  </MFXCheckbox>
-                  <MFXCheckbox layoutX="20.0" layoutY="355.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
-                     <font>
-                        <Font name="Gill Sans MT Bold" size="40.0" />
-                     </font>
-                  </MFXCheckbox>
-                  <MFXCheckbox layoutX="20.0" layoutY="440.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
+                  <MFXCheckbox fx:id="check3" layoutX="20.0" layoutY="185.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
                      <font>
                         <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
-                  <MFXCheckbox layoutX="20.0" layoutY="525.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
+                  <MFXCheckbox fx:id="check4" layoutX="20.0" layoutY="270.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
                      <font>
-                        <Font name="Gill Sans MT Bold" size="40.0" />
+                        <Font name="Open Sans Regular" size="40.0" />
+                     </font>
+                  </MFXCheckbox>
+                  <MFXCheckbox fx:id="check5" layoutX="20.0" layoutY="355.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
+                     <font>
+                        <Font name="Open Sans Regular" size="40.0" />
+                     </font>
+                  </MFXCheckbox>
+                  <MFXCheckbox fx:id="check6" layoutX="20.0" layoutY="440.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
+                     <font>
+                        <Font name="Open Sans Regular" size="40.0" />
+                     </font>
+                  </MFXCheckbox>
+                  <MFXCheckbox fx:id="check7" layoutX="20.0" layoutY="525.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
+                     <font>
+                        <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
                </children>
