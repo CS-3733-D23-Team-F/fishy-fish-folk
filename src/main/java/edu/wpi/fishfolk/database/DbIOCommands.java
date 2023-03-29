@@ -72,6 +72,8 @@ public class DbIOCommands {
   // TODO: linechecker method (from Main.java) that waits for a user to type into a command, parses
   // that command and passes it to one of the other methods
   /**
+   * lineChk
+   *
    * @desc: waits and parses
    * @param: none
    */
@@ -94,10 +96,37 @@ public class DbIOCommands {
       case "insert":
         // code block
         break;
+      case "update":
+        //code block
+        break;
+      case "csv":
+        //code block
+        break;
+      case "show":
+        //code block
+        break;
       default:
         System.out.println("Could not recognize command, please try again\n");
     }
+
   }
+
+  //TODO: element specifier, this will take in and read for subcommands
+
+
+  //TODO: filepath parser
+  /**
+   * fpChk
+   *
+   * @desc: parses a filepath and is called after certian other method for pipeline that require FPs like import and export CSV.
+   * @param: none
+   */
+  public void fpChk(){
+
+  }
+
+  //=============================================HARDCODING CMD METHODS
+
 
   // TODO: exit method
   /**
@@ -129,17 +158,17 @@ public class DbIOCommands {
    * insert
    *
    * @param
-   * @desc
+   * @desc can be used before node or edge methods
    */
+
 
   //TODO: remove method
   /**
    * remove
    *
    * @param
-   * @desc
+   * @desc can be used before node or edge methods
    */
-
 
   //TODO: show method
   /**
@@ -149,7 +178,54 @@ public class DbIOCommands {
    * @param: (none)
    */
 
+  //TODO: node method (id only)
+  /**
+   * nodeid
+   *
+   * @param
+   * @desc
+   */
 
+  //TODO: node method (full attr)
+  /**
+   * nodeattr
+   *
+   * @param
+   * @desc
+   */
+
+  //TODO: edge method (id only)
+  /**
+   * edgeid
+   *
+   * @param
+   * @desc
+   */
+
+  //TODO: edge method (full attr)
+  /**
+   * edgeattr
+   *
+   * @param
+   * @desc
+   */
+
+  //TODO: csv export method
+  /**
+   * exportcsv
+   *
+   * @param
+   * @desc
+   */
+
+
+  //TODO: csv import method
+  /**
+   * importcsv
+   *
+   * @param
+   * @desc
+   */
 
   //TODO: input filepath for input CSV
   /**
