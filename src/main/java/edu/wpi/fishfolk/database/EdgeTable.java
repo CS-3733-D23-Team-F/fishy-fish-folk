@@ -10,17 +10,33 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
+/**
+ * Represents a table of edges in a PostgreSQL database.
+ *
+ * @author Christian
+ * @author Jon
+ */
 public class EdgeTable {
 
   private Connection db;
   @Getter private String tableName;
   private ArrayList<String> headers = new ArrayList<>(List.of("edgeid", "startnode", "endnode"));
 
+  /**
+   * Creates a new representation of an edge table.
+   *
+   * @param db Database connection object for this table
+   * @param tableName Name of the table
+   */
   public EdgeTable(Connection db, String tableName) {
     this.db = db;
     this.tableName = tableName.toLowerCase();
   }
 
+  /**
+   * For empty tables only, generates new column headers for the edge table. TODO: Check if table is
+   * empty before applying new headers
+   */
   public void addHeaders() {
     Statement statement;
     try {
@@ -45,6 +61,12 @@ public class EdgeTable {
     }
   }
 
+  /**
+   * Returns a new edge from a specified entry in the table.
+   *
+   * @param id Edge id
+   * @return New edge object, returns null if specified edge does not exist in table
+   */
   public Edge getEdge(String id) {
     Statement statement;
     try {
@@ -71,7 +93,12 @@ public class EdgeTable {
     return null;
   }
 
-  // True if inserted, false if duplicate or not added
+  /**
+   * Inserts an edge into the table if it does not exist.
+   *
+   * @param edge Edge to insert
+   * @return True if inserted, false if the edge already exists and/or is not added
+   */
   public boolean insertEdge(Edge edge) {
     Statement statement;
     try {
@@ -128,7 +155,12 @@ public class EdgeTable {
     return false;
   }
 
-  // True if updated, false if had to insert
+  /**
+   * Update the data for a specified edge, if it doesn't exist, add it.
+   *
+   * @param edge The edge to update
+   * @return True if the edge is updated, false if an insertion was needed
+   */
   public boolean updateEdge(Edge edge) {
     Statement statement;
     try {
@@ -188,6 +220,11 @@ public class EdgeTable {
     return false;
   }
 
+  /**
+   * Remove an edge from the table.
+   *
+   * @param edge Edge to remove
+   */
   public void removeEdge(Edge edge) {
     Statement statement;
     try {
@@ -238,6 +275,7 @@ public class EdgeTable {
     }
   }
 
+  /** Import a CSV as edges in the table. */
   public void importCSV() {
 
     System.out.println("[EdgeTable.importCSV]: Importing CSV to table " + tableName + ".");
@@ -266,6 +304,7 @@ public class EdgeTable {
     }
   }
 
+  /** Export edges in the table as a CSV */
   public void exportCSV() {
 
     System.out.println("[EdgeTable.importCSV]: Exporting CSV from table " + tableName + ".");

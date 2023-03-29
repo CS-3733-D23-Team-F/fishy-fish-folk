@@ -14,6 +14,7 @@ import lombok.Getter;
 
 /**
  * Represents a table of nodes in a PostgreSQL database.
+ *
  * @author Christian
  * @author Jon
  */
@@ -35,6 +36,7 @@ public class NodeTable {
 
   /**
    * Creates a new representation of a node table.
+   *
    * @param db Database connection object for this table
    * @param tableName Name of the table
    */
@@ -44,8 +46,8 @@ public class NodeTable {
   }
 
   /**
-   * For empty tables only, generates new column headers for the node table.
-   * TODO: Check if table is empty before applying new headers
+   * For empty tables only, generates new column headers for the node table. TODO: Check if table is
+   * empty before applying new headers
    */
   public void addHeaders() {
     Statement statement;
@@ -87,9 +89,10 @@ public class NodeTable {
   }
 
   /**
-   * Returns a new Node from a specified entry in the table.
+   * Returns a new node from a specified entry in the table.
+   *
    * @param id Node id
-   * @return New node object, returns null if specified Node does not exist in table
+   * @return New node object, returns null if specified node does not exist in table
    */
   public Node getNode(String id) {
     Statement statement;
@@ -130,6 +133,7 @@ public class NodeTable {
 
   /**
    * Inserts a node into the table if it does not exist.
+   *
    * @param node Node to insert
    * @return True if inserted, false if the node already exists and/or is not added
    */
@@ -200,6 +204,13 @@ public class NodeTable {
   }
 
   // true if updated, false if had to insert
+
+  /**
+   * Update the data for a specified node, if it doesn't exist, add it.
+   *
+   * @param node The node to update
+   * @return True if the node is updated, false if an insertion was needed
+   */
   public boolean updateNode(Node node) {
     Statement statement;
     try {
@@ -267,6 +278,11 @@ public class NodeTable {
     return false;
   }
 
+  /**
+   * Remove a node from the table.
+   *
+   * @param node Node to remove
+   */
   public void removeNode(Node node) {
     Statement statement;
     try {
@@ -285,6 +301,7 @@ public class NodeTable {
     }
   }
 
+  /** Import a CSV as nodes in the table. */
   public void importCSV() {
 
     System.out.println("[NodeTable.importCSV]: Importing CSV to table " + tableName + ".");
@@ -321,6 +338,7 @@ public class NodeTable {
     }
   }
 
+  /** Export nodes in the table as a CSV */
   public void exportCSV() {
 
     System.out.println("[NodeTable.exportCSV]: exporting CSV from table " + tableName + ".");
