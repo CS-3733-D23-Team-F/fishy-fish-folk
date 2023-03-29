@@ -1,15 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.HomeController">
+<VBox prefHeight="1024.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.HomeController">
    <children>
-      <MFXButton fx:id="navigateButton" text="Navigate">
-         <font>
-            <Font name="Nunito Sans Regular" size="16.0" />
-         </font>
-      </MFXButton>
+      <BorderPane />
+      <HBox maxHeight="106.0" minHeight="106.0" style="-fx-background-color: #6CD4BC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+         <children>
+            <AnchorPane prefHeight="106.0" prefWidth="1440.0" style="-fx-background-color: #6CD4BC;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="44.203125">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="4.64" offsetY="2.0" radius="0.6599999999999999" spread="0.13" width="0.0">
+                           <color>
+                              <Color red="0.6184210777282715" green="0.6126949191093445" blue="0.6126949191093445" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <VBox>
+         <children>
+            <AnchorPane minHeight="914.0" minWidth="1440.0">
+               <children>
+                  <MFXButton fx:id="signageNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="RIGHT" graphicTextGap="500.0" layoutX="255.0" layoutY="70.0" minHeight="203.0" minWidth="929.0" style="-fx-background-color: #D9D9D9; -fx-border-radius: 40; -fx-background-radius: 31;" text="Signage" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="300.0">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="14.0" left="95.0" />
+                     </padding>
+                     <graphic>
+                        <ImageView fitHeight="180.0" fitWidth="300.0" opacity="0.67" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/pathfinding.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D height="200.0" minX="500.0" />
+                           </viewport>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="RIGHT" graphicTextGap="440.0" layoutX="255.0" minHeight="203.0" minWidth="929.0" style="-fx-background-color: #D9D9D9; -fx-border-radius: 40; -fx-background-radius: 31; -fx-background-image: url(&quot;images/food.png&quot;);" text="Meal Delivery" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="50.0">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="14.0" left="95.0" />
+                     </padding>
+                     <graphic>
+                        <ImageView fitHeight="180.0" fitWidth="300.0" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/food.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D height="300.0" width="300.0" />
+                           </viewport>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="officeNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="RIGHT" graphicTextGap="420.0" layoutX="255.0" layoutY="752.0" minHeight="203.0" minWidth="929.0" style="-fx-background-color: #D9D9D9; -fx-border-radius: 40; -fx-background-radius: 31;" text="Office Supplies" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="550.0">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="14.0" left="95.0" />
+                     </padding>
+                     <graphic>
+                        <ImageView fitHeight="180.0" fitWidth="300.0" opacity="0.58" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/delivery.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
    </children>
-</StackPane>
+</VBox>
