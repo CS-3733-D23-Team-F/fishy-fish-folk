@@ -20,9 +20,9 @@ import lombok.Getter;
  */
 public class NodeTable {
 
-  private Connection db;
-  @Getter private String tableName;
-  private ArrayList<String> headers =
+  private final Connection db;
+  @Getter private final String tableName;
+  private final ArrayList<String> headers =
       new ArrayList<>(
           List.of(
               "nodeid",
@@ -301,13 +301,16 @@ public class NodeTable {
     }
   }
 
-  /** Import a CSV as nodes in the table. */
-  public void importCSV() {
+  /**
+   * Import a CSV as nodes in the table.
+   *
+   * @param filePath Path of the file to import from CSV
+   */
+  public void importCSV(String filePath) {
 
     System.out.println("[NodeTable.importCSV]: Importing CSV to table " + tableName + ".");
 
-    try (BufferedReader br =
-        new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv"))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
       String line = br.readLine(); // ignore column headers which are on the first line
       while ((line = br.readLine()) != null) {
@@ -338,16 +341,17 @@ public class NodeTable {
     }
   }
 
-  /** Export nodes in the table as a CSV */
-  public void exportCSV() {
+  /**
+   * Export nodes in the table as a CSV
+   *
+   * @param filePath Path of the file of the CSV to export to
+   */
+  public void exportCSV(String filePath) {
 
     System.out.println("[NodeTable.exportCSV]: exporting CSV from table " + tableName + ".");
 
     try {
-      PrintWriter out =
-          new PrintWriter(
-              new BufferedWriter(
-                  new FileWriter("src/main/resources/edu/wpi/fishfolk/csv/L1NodesOutput.csv")));
+      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filePath)));
       String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
       Statement statement = db.createStatement();
       statement.execute(grabAll);
