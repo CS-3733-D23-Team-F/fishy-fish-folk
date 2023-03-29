@@ -140,6 +140,7 @@ public class Fdb {
 
   /** Runs through all the methods to test their functionality. DEBUG ONLY */
   public void tests() {
+
     System.out.println("\n--- TESTING NODE TABLE ---\n");
 
     nodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv");
@@ -190,7 +191,5 @@ public class Fdb {
     edgeTable.removeEdge(existingEdge);
 
     edgeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/L1EdgesOutput.csv");
-
-    disconnect();
   }
 }
