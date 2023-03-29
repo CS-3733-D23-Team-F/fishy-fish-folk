@@ -33,7 +33,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="655.0" prefWidth="866.0">
                <children>
-                  <MFXCheckbox fx:id="check1" layoutX="20.0" layoutY="15.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
+                  <MFXCheckbox fx:id="check1" layoutX="20.0" layoutY="15.0" prefHeight="106.0" prefWidth="288.0" text="      PENCIL">
                      <font>
                         <Font name="Open Sans Regular" size="40.0" />
                      </font>
@@ -43,27 +43,27 @@
                         <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
-                  <MFXCheckbox fx:id="check3" layoutX="20.0" layoutY="185.0" prefHeight="106.0" prefWidth="288.0" text="ERASER">
+                  <MFXCheckbox fx:id="check3" layoutX="20.0" layoutY="185.0" prefHeight="106.0" prefWidth="288.0" text="      ERASER">
                      <font>
                         <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
-                  <MFXCheckbox fx:id="check4" layoutX="20.0" layoutY="270.0" prefHeight="106.0" prefWidth="288.0" text="MARKER">
+                  <MFXCheckbox fx:id="check4" layoutX="20.0" layoutY="270.0" prefHeight="106.0" prefWidth="288.0" text="       MARKER">
                      <font>
                         <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
-                  <MFXCheckbox fx:id="check5" layoutX="20.0" layoutY="355.0" prefHeight="106.0" prefWidth="288.0" text="NOTEPAD">
+                  <MFXCheckbox fx:id="check5" layoutX="20.0" layoutY="355.0" prefHeight="106.0" prefWidth="288.0" text="        NOTEPAD">
                      <font>
                         <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
-                  <MFXCheckbox fx:id="check6" layoutX="20.0" layoutY="440.0" prefHeight="106.0" prefWidth="288.0" text="CLIPBOARD">
+                  <MFXCheckbox fx:id="check6" layoutX="20.0" layoutY="440.0" prefHeight="106.0" prefWidth="288.0" text="        CLIPBOARD">
                      <font>
                         <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
-                  <MFXCheckbox fx:id="check7" layoutX="20.0" layoutY="525.0" prefHeight="106.0" prefWidth="288.0" text="APPLE">
+                  <MFXCheckbox fx:id="check7" layoutX="20.0" layoutY="525.0" prefHeight="106.0" prefWidth="288.0" text="   APPLE">
                      <font>
                         <Font name="Open Sans Regular" size="40.0" />
                      </font>

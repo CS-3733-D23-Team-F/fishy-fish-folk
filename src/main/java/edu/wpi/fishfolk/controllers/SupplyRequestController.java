@@ -68,25 +68,39 @@ public class SupplyRequestController {
     check7.setSelected(false);
   }
 
+  private boolean submittable() {
+    if (check1.isSelected()
+        || check2.isSelected()
+        || check3.isSelected()
+        || check4.isSelected()
+        || check5.isSelected()
+        || check6.isSelected()
+        || check7.isSelected()
+        || (!(currentSupplyOrder.link == null))) return true;
+    else return false;
+  }
+
   private void submit() {
-    if (check1.isSelected()) addToOrder(0);
-    else addToOrder(7);
-    if (check2.isSelected()) addToOrder(1);
-    else addToOrder(7);
-    if (check3.isSelected()) addToOrder(2);
-    else addToOrder(7);
-    if (check4.isSelected()) addToOrder(3);
-    else addToOrder(7);
-    if (check5.isSelected()) addToOrder(4);
-    else addToOrder(7);
-    if (check6.isSelected()) addToOrder(5);
-    else addToOrder(7);
-    if (check7.isSelected()) addToOrder(6);
-    else addToOrder(7);
-    currentSupplyOrder.roomNum = roomNumTextField.getText();
-    currentSupplyOrder.link = linkTextField.getText();
-    currentSupplyOrder.notes = notesTextField.getText();
-    System.out.println(currentSupplyOrder.toString());
-    Navigation.navigate(Screen.HOME);
+    if (submittable()) {
+      if (check1.isSelected()) addToOrder(0);
+      else addToOrder(7);
+      if (check2.isSelected()) addToOrder(1);
+      else addToOrder(7);
+      if (check3.isSelected()) addToOrder(2);
+      else addToOrder(7);
+      if (check4.isSelected()) addToOrder(3);
+      else addToOrder(7);
+      if (check5.isSelected()) addToOrder(4);
+      else addToOrder(7);
+      if (check6.isSelected()) addToOrder(5);
+      else addToOrder(7);
+      if (check7.isSelected()) addToOrder(6);
+      else addToOrder(7);
+      currentSupplyOrder.roomNum = roomNumTextField.getText();
+      currentSupplyOrder.link = linkTextField.getText();
+      currentSupplyOrder.notes = notesTextField.getText();
+      System.out.println(currentSupplyOrder.toString());
+      Navigation.navigate(Screen.HOME);
+    }
   }
 }
