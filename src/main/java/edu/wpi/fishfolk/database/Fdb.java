@@ -86,7 +86,7 @@ public class Fdb {
         System.out.println("[Fdb.createTable]: Table " + tbName + " already exists.");
         return false;
       } else {
-        String query = "CREATE TABLE " + tbName + " ();";
+        String query = "CREATE TABLE " + tbName + " (id SERIAL PRIMARY KEY);";
         statement.executeUpdate(query);
         System.out.println("[Fdb.createTable]: Table " + tbName + " created.");
         return true;
