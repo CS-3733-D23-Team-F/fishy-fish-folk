@@ -16,4 +16,5 @@ public class SupplyItem {
   public static SupplyItem supply5 = new SupplyItem("supply5", 1.99F);
   public static SupplyItem supply6 = new SupplyItem("supply6", 1.99F);
   public static SupplyItem supply7 = new SupplyItem("supply7", 1.99F);
+  public static SupplyItem supply8 = new SupplyItem("empty", 1.99F);
 }

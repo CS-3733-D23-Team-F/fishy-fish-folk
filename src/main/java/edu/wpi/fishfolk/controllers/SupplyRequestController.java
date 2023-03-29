@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import javafx.fxml.FXML;
 
 public class SupplyRequestController {
-  SupplyOrder currentSupplyOrder;
+  // SupplyOrder currentSupplyOrder;
+  SupplyOrder currentSupplyOrder = new SupplyOrder();
   ArrayList<SupplyItem> supplyOptions;
   @FXML MFXButton cancelButton;
   @FXML MFXButton supplySubmitButton;
@@ -24,6 +25,7 @@ public class SupplyRequestController {
   }
 
   void loadOptions() {
+    supplyOptions = new ArrayList<SupplyItem>();
     supplyOptions.add(SupplyItem.supply1);
     supplyOptions.add(SupplyItem.supply2);
     supplyOptions.add(SupplyItem.supply3);
@@ -31,6 +33,7 @@ public class SupplyRequestController {
     supplyOptions.add(SupplyItem.supply5);
     supplyOptions.add(SupplyItem.supply6);
     supplyOptions.add(SupplyItem.supply7);
+    supplyOptions.add(SupplyItem.supply8);
   }
 
   private void addToOrder(int supplyNum) {
@@ -40,13 +43,20 @@ public class SupplyRequestController {
 
   private void submit() {
     if (check1.isSelected()) addToOrder(0);
+    else addToOrder(7);
     if (check2.isSelected()) addToOrder(1);
+    else addToOrder(7);
     if (check3.isSelected()) addToOrder(2);
+    else addToOrder(7);
     if (check4.isSelected()) addToOrder(3);
+    else addToOrder(7);
     if (check5.isSelected()) addToOrder(4);
+    else addToOrder(7);
     if (check6.isSelected()) addToOrder(5);
+    else addToOrder(7);
     if (check7.isSelected()) addToOrder(6);
-    System.out.println(currentSupplyOrder);
+    else addToOrder(7);
+    System.out.println(currentSupplyOrder.toString());
     Navigation.navigate(Screen.HOME);
   }
 }
