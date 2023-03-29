@@ -1,17 +1,25 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.CreditCardInfo;
 import edu.wpi.fishfolk.FoodItem;
 import edu.wpi.fishfolk.FoodOrder;
+import edu.wpi.fishfolk.Room;
+import edu.wpi.fishfolk.navigation.Navigation;
+import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 
 public class FoodOrderController {
   FoodOrder currentOrder;
   ArrayList<FoodItem> menu;
+  ArrayList<Room> roomsServiced;
   int hoursAhead;
   int currentPage; // for menus with more than 3 items
   int[] itemQuantities;
@@ -19,9 +27,14 @@ public class FoodOrderController {
   @FXML MFXButton prevPageButton, nextPageButton;
   @FXML MFXButton addOneButton, addTwoButton, addThreeButton;
   @FXML MFXButton removeOneButton, removeTwoButton, removeThreeButton;
+  @FXML MFXButton plusHour, plusDay, minusHour, minusDay;
+  @FXML MFXButton clearButton, cancelButton, submitButton;
   @FXML Text itemText1, itemText2, itemText3;
   @FXML Text itemPrice1, itemPrice2, itemPrice3;
   @FXML Text itemQuantity1, itemQuantity2, itemQuantity3;
+  @FXML Text timeText;
+  @FXML ChoiceBox<Room> roomSelector;
+  @FXML PopOver notiPop;
   Text[] nameBoxes, priceBoxes, quantityBoxes;
 
   @FXML
@@ -34,7 +47,44 @@ public class FoodOrderController {
     removeOneButton.setOnAction(event -> removeFromOrder(0));
     removeTwoButton.setOnAction(event -> removeFromOrder(1));
     removeThreeButton.setOnAction(event -> removeFromOrder(2));
+    plusDay.setOnAction(event -> delayDay());
+    plusHour.setOnAction(event -> delayHour());
+    minusDay.setOnAction(event -> undelayDay());
+    minusHour.setOnAction(event -> undelayHour());
+    submitButton.setOnAction(
+        event -> {
+          if (currentOrder.submit()) {
+            // notify confirmation
+            Navigation.navigate(Screen.HOME);
+          } else {
+            String errors = "Could not submit order because:";
+            if (currentOrder.items.isEmpty()) {
+              errors += "\nOrder has no items";
+            }
+            if (currentOrder.deliveryLocation == null) {
+              errors += "\nDelivery location not specified";
+            }
+            if (LocalDateTime.now().isAfter(currentOrder.deliveryTime)) {
+              errors += "\nInvalid delivery time";
+            }
+            if (currentOrder.payer == null) {
+              errors += "\nPayer is not specified";
+            }
+            Text popText = new Text();
+            popText.setText(errors);
+            notiPop.setContentNode(popText);
+            notiPop.show(submitButton);
+          }
+        });
+    clearButton.setOnAction(event -> init());
+    cancelButton.setOnAction(
+        event -> {
+          init();
+          Navigation.navigate(Screen.HOME);
+        });
+    roomSelector.setOnAction(event -> currentOrder.deliveryLocation = roomSelector.getValue());
     loadMenu();
+    loadRooms();
     currentPage = 0;
     nameBoxes = new Text[] {itemText1, itemText2, itemText3};
     priceBoxes = new Text[] {itemPrice1, itemPrice2, itemPrice3};
@@ -44,9 +94,20 @@ public class FoodOrderController {
 
   void init() {
     currentOrder = new FoodOrder();
+    currentOrder.payer = CreditCardInfo.dummy;
     itemQuantities = new int[menu.size()];
     hoursAhead = 0;
+    roomSelector.setValue(null);
     updateDisplay();
+  }
+
+  void loadRooms() {
+    roomsServiced = new ArrayList<Room>();
+    roomsServiced.add(Room.generic1);
+    roomsServiced.add(Room.generic2);
+    roomsServiced.add(Room.generic3);
+    roomsServiced.add(Room.generic4);
+    roomSelector.getItems().addAll(roomsServiced);
   }
 
   void loadMenu() {
@@ -66,18 +127,13 @@ public class FoodOrderController {
     int index = 3 * currentPage;
     for (int i = 0; i < 3; i++) {
       nameBoxes[i].setText(menu.get(index + i).itemName);
-      priceBoxes[i].setText(
-          /*formatPrice(menu.get(index + i).price)*/ String.format(
-              "$%.2f", menu.get(index + i).price));
+      priceBoxes[i].setText(String.format("$%.2f", menu.get(index + i).price));
       quantityBoxes[i].setText("" + itemQuantities[index + i]);
     }
+    timeText.setText(
+        currentOrder.deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd\nh:ma")));
+    // System.out.println("\n\nCurrent order: \n" + currentOrder.toString());
   }
-
-  /*private static String formatPrice(float price) {
-    int whole = (int) price;
-    int twoDec = (int) ((price - whole) * 100);
-    return "$" + whole + "." + twoDec;
-  }*/
 
   private void nextPage() {
     if ((currentPage + 1) * 3 >= menu.size()) return;
@@ -93,10 +149,12 @@ public class FoodOrderController {
 
   void setTimeAsap() {
     currentOrder.deliveryTime = LocalDateTime.now().plusMinutes(15);
+    updateDisplay();
   }
 
   void setTimeHours(int hours) {
     currentOrder.deliveryTime = LocalDateTime.now().plusHours(hours);
+    updateDisplay();
   }
 
   private void delayHour() {
@@ -107,6 +165,21 @@ public class FoodOrderController {
   private void undelayHour() {
     if (hoursAhead > 1) {
       hoursAhead--;
+      setTimeHours(hoursAhead);
+    } else {
+      hoursAhead = 0;
+      setTimeAsap();
+    }
+  }
+
+  private void delayDay() {
+    hoursAhead += 24;
+    setTimeHours(hoursAhead);
+  }
+
+  private void undelayDay() {
+    if (hoursAhead > 25) {
+      hoursAhead -= 24;
       setTimeHours(hoursAhead);
     } else {
       hoursAhead = 0;
