@@ -4,7 +4,9 @@ import edu.wpi.fishfolk.database.EdgeTable;
 import edu.wpi.fishfolk.database.NodeTable;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import javafx.geometry.Point2D;
+import lombok.Setter;
 
 public class Graph {
 
@@ -18,15 +20,10 @@ public class Graph {
   HashMap<String, Integer> id2idx; // string id to index in nodes array and adjacency matrix
   private int lastIdx;
 
-  NodeTable nodeTable;
-  EdgeTable edgeTable;
+  @Setter NodeTable nodeTable;
+  @Setter EdgeTable edgeTable;
 
-  public Graph() {
-
-    nodeTable = new NodeTable("nodeTable");
-    edgeTable = new EdgeTable("edgeTable");
-
-    int size = nodeTable.getSize();
+  public Graph(int size) {
 
     this.size = size;
     adjMat = new double[size][size];
@@ -34,6 +31,22 @@ public class Graph {
     id2idx = new HashMap<>(size * 4 / 3 + 1); // default load factor is 75% = 3/4
 
     lastIdx = 0;
+  }
+
+  public Graph(NodeTable nodeTable, EdgeTable edgeTable) {
+
+    this.size = nodeTable.getSize();
+
+    adjMat = new double[size][size];
+    nodes = new Node[size];
+    id2idx = new HashMap<>(size * 4 / 3 + 1); // default load factor is 75% = 3/4
+
+    lastIdx = 0;
+
+    this.nodeTable = nodeTable;
+    this.edgeTable = edgeTable;
+
+    populateFromCSV();
   }
 
   public void populateFromCSV() {
@@ -49,6 +62,33 @@ public class Graph {
     for (Edge e : edgesLst) {
       addEdge(e);
     }
+  }
+
+  public void resize(int newSize) {
+
+    double[][] newAdjMat = new double[newSize][newSize];
+    Node[] newNodes = new Node[newSize];
+    HashMap<String, Integer> newid2idx = new HashMap<>(newSize * 4 / 3 + 1);
+
+    // copy adjmat
+    for (int i = 0; i < size; i++) {
+      for (int j = i + 1; j < size; j++) { // take advantage of symmetry across main diagonal
+        newAdjMat[i][j] = adjMat[i][j];
+        newAdjMat[j][i] = adjMat[i][j];
+      }
+    }
+
+    // copy array of nodes
+    for (int i = 0; i < size; i++) {
+      newNodes[i] = nodes[i];
+    }
+
+    // copy id2idx map
+    for (Map.Entry<String, Integer> entry : id2idx.entrySet()) {
+      newid2idx.put(entry.getKey(), entry.getValue());
+    }
+
+    size = newSize;
   }
 
   public boolean addNode(Node n) {
@@ -77,6 +117,8 @@ public class Graph {
   }
 
   public boolean addEdge(Edge edge) {
+
+    System.out.println(edge.edgeID);
 
     Integer idx1 = id2idx.get(edge.nodeID1);
     Integer idx2 = id2idx.get(edge.nodeID2);

@@ -112,7 +112,8 @@ public class NodeTable {
     int size = -1;
     try {
       String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
-      Statement statement = db.createStatement();
+      Statement statement =
+          db.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       statement.execute(grabAll);
       ResultSet results = statement.getResultSet();
 
