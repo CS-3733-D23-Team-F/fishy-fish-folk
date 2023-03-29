@@ -6,6 +6,7 @@ import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 
@@ -15,13 +16,16 @@ public class SupplyRequestController {
   ArrayList<SupplyItem> supplyOptions;
   @FXML MFXButton cancelButton;
   @FXML MFXButton supplySubmitButton;
+  @FXML MFXButton clearButton;
   @FXML MFXCheckbox check1, check2, check3, check4, check5, check6, check7;
+  @FXML MFXTextField linkTextField, roomNumTextField, notesTextField;
 
   @FXML
   public void initialize() {
     loadOptions();
     cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     supplySubmitButton.setOnMouseClicked(event -> submit());
+    clearButton.setOnMouseClicked(event -> clearAllFields());
   }
 
   void loadOptions() {
@@ -41,6 +45,29 @@ public class SupplyRequestController {
     currentSupplyOrder.addSupply(supply);
   }
 
+  // private void addTextFields() {}
+
+  private void clearAllFields() {
+    clearChecks();
+    clearTextFields();
+  }
+
+  private void clearTextFields() {
+    linkTextField.clear();
+    roomNumTextField.clear();
+    notesTextField.clear();
+  }
+
+  private void clearChecks() {
+    check1.setSelected(false);
+    check2.setSelected(false);
+    check3.setSelected(false);
+    check4.setSelected(false);
+    check5.setSelected(false);
+    check6.setSelected(false);
+    check7.setSelected(false);
+  }
+
   private void submit() {
     if (check1.isSelected()) addToOrder(0);
     else addToOrder(7);
@@ -56,6 +83,9 @@ public class SupplyRequestController {
     else addToOrder(7);
     if (check7.isSelected()) addToOrder(6);
     else addToOrder(7);
+    currentSupplyOrder.roomNum = roomNumTextField.getText();
+    currentSupplyOrder.link = linkTextField.getText();
+    currentSupplyOrder.notes = notesTextField.getText();
     System.out.println(currentSupplyOrder.toString());
     Navigation.navigate(Screen.HOME);
   }

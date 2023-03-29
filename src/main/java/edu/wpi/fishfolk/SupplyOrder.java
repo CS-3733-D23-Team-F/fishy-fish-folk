@@ -4,9 +4,16 @@ import java.util.LinkedList;
 
 public class SupplyOrder {
   public LinkedList<SupplyItem> supplies;
+  public String link;
+  public String roomNum;
+  public String notes;
 
   public SupplyOrder() {
+
     supplies = new LinkedList<SupplyItem>();
+    this.link = link;
+    this.roomNum = roomNum;
+    this.notes = notes;
   }
 
   public void addSupply(SupplyItem item) {
@@ -15,7 +22,9 @@ public class SupplyOrder {
 
   public String toString() {
     String string =
-        supplies.get(0).supplyName
+        "Supply List:"
+            + "\n"
+            + supplies.get(0).supplyName
             + "\n"
             + supplies.get(1).supplyName
             + "\n"
@@ -27,7 +36,16 @@ public class SupplyOrder {
             + "\n"
             + supplies.get(5).supplyName
             + "\n"
-            + supplies.get(6).supplyName;
+            + supplies.get(6).supplyName
+            + "\n"
+            + "Link if not in stock: "
+            + link
+            + "\n"
+            + "Room Number: "
+            + roomNum
+            + "\n"
+            + "Additional Notes: "
+            + notes;
     return string;
   }
 }

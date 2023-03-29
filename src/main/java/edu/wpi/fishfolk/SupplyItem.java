@@ -9,12 +9,12 @@ public class SupplyItem {
     this.supplyPrice = supplyPrice;
   }
 
-  public static SupplyItem supply1 = new SupplyItem("supply1", 1.99F);
-  public static SupplyItem supply2 = new SupplyItem("supply2", 1.99F);
-  public static SupplyItem supply3 = new SupplyItem("supply3", 1.99F);
-  public static SupplyItem supply4 = new SupplyItem("supply4", 1.99F);
-  public static SupplyItem supply5 = new SupplyItem("supply5", 1.99F);
-  public static SupplyItem supply6 = new SupplyItem("supply6", 1.99F);
-  public static SupplyItem supply7 = new SupplyItem("supply7", 1.99F);
-  public static SupplyItem supply8 = new SupplyItem("empty", 1.99F);
+  public static SupplyItem supply1 = new SupplyItem("Pencil", 1.99F);
+  public static SupplyItem supply2 = new SupplyItem("Pen", 1.99F);
+  public static SupplyItem supply3 = new SupplyItem("Eraser", 1.99F);
+  public static SupplyItem supply4 = new SupplyItem("Marker", 1.99F);
+  public static SupplyItem supply5 = new SupplyItem("Notepad", 1.99F);
+  public static SupplyItem supply6 = new SupplyItem("Clipboard", 1.99F);
+  public static SupplyItem supply7 = new SupplyItem("Apple", 1.99F);
+  public static SupplyItem supply8 = new SupplyItem("(empty)", 1.99F);
 }
