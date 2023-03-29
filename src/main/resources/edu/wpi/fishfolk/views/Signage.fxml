@@ -2,6 +2,8 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -34,9 +36,9 @@
             </AnchorPane>
          </children>
       </HBox>
-      <AnchorPane prefHeight="1020.0" prefWidth="1440.0">
+      <AnchorPane prefHeight="908.0" prefWidth="1425.0">
          <children>
-            <MFXButton fx:id="backButton" layoutX="541.0" layoutY="359.0" prefHeight="174.0" prefWidth="358.0" style="-fx-background-color: #D9D9D9;" text="Return Home" AnchorPane.leftAnchor="541.0" AnchorPane.rightAnchor="551.0">
+            <MFXButton fx:id="backButton" layoutX="541.0" layoutY="359.0" prefHeight="174.0" prefWidth="358.0" style="-fx-background-color: #D9D9D9;" text="Return Home" AnchorPane.leftAnchor="541.0" AnchorPane.rightAnchor="591.0">
                <font>
                   <Font size="45.0" />
                </font>
@@ -46,11 +48,16 @@
                   <Font size="60.0" />
                </font>
             </Text>
-            <Text layoutX="865.0" layoutY="471.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Front Desk -&gt;" textAlignment="RIGHT" wrappingWidth="540.5367584228516" AnchorPane.rightAnchor="44.46324157714844">
+            <Text layoutX="865.0" layoutY="471.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Front Desk -&gt;" textAlignment="RIGHT" wrappingWidth="540.5367584228516" AnchorPane.rightAnchor="184.46324157714844">
                <font>
                   <Font size="60.0" />
                </font>
             </Text>
+            <ImageView fitHeight="350.0" fitWidth="350.0" layoutX="540.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="680.180908203125" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="550.0" AnchorPane.topAnchor="40.0">
+               <image>
+                  <Image url="@../images/hospitalImg1.PNG" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>
