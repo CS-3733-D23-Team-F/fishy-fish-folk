@@ -1,9 +1,54 @@
 package edu.wpi.fishfolk.database;
 
+import edu.wpi.fishfolk.pathfinding.Edge;
+import edu.wpi.fishfolk.pathfinding.Node;
+import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.sql.*;
+import javafx.geometry.Point2D;
 
 /** @author Christian */
 public class Fdb {
+
+  public NodeTable nodeTable;
+  public EdgeTable edgeTable;
+
+  public Connection db;
+
+  public Fdb() {
+    initialize();
+  }
+
+  /**
+   * Initialize the class by connecting to the database and establishing objects for both the node
+   * and edge tables. TODO: Database name, user, password and table names are hardcoded -> Make them
+   * configurable
+   */
+  public void initialize() {
+
+    try {
+
+      // STEP 1: Connect to PostgreSQL database
+
+      db = connect("teamfdb", "teamf", "teamf60");
+      db.setSchema("test");
+      System.out.println("[Fdb.initialize]: Current schema: " + db.getSchema() + ".");
+
+      // STEP 2: Establish table objects
+
+      nodeTable = new NodeTable(db, "nodetable");
+      if (createTable(db, nodeTable.getTableName())) {
+        nodeTable.addHeaders();
+      }
+
+      edgeTable = new EdgeTable(db, "edgetable");
+      if (createTable(db, edgeTable.getTableName())) {
+        edgeTable.addHeaders();
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
 
   /**
    * Connect to a PostgreSQL database.
@@ -30,12 +75,8 @@ public class Fdb {
     return db;
   }
 
-  /**
-   * Disconnect from PostgreSQL database.
-   *
-   * @param db Database connection
-   */
-  public void disconnect(Connection db) {
+  /** Disconnect from PostgreSQL database. */
+  public void disconnect() {
     try {
       db.close();
       System.out.println("[Fdb.disconnect]: Connection closed.");
@@ -95,5 +136,61 @@ public class Fdb {
       System.out.println(e.getMessage());
       return false;
     }
+  }
+
+  /** Runs through all the methods to test their functionality. DEBUG ONLY */
+  public void tests() {
+    System.out.println("\n--- TESTING NODE TABLE ---\n");
+
+    nodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv");
+
+    Node existingNode = nodeTable.getNode("CCONF001L1");
+    Node newNode =
+        new Node(
+            "CDEPT999L1",
+            new Point2D(1980, 844),
+            "L1",
+            "Tower",
+            NodeType.DEPT,
+            "Day Surgery Family Waiting Floor L1",
+            "Department C002L1");
+    Node newNodeUpdated =
+        new Node(
+            "CDEPT999L1",
+            new Point2D(1980, 844),
+            "L2",
+            "Space",
+            NodeType.DEPT,
+            "Night Surgery Family Waiting Floor L1",
+            "Department C002L1");
+
+    nodeTable.insertNode(existingNode);
+    nodeTable.insertNode(newNode);
+
+    nodeTable.updateNode(newNodeUpdated);
+
+    nodeTable.removeNode(existingNode);
+
+    nodeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/L1NodesOutput.csv");
+
+    System.out.println("\n--- TESTING EDGE TABLE ---\n");
+
+    edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/L1Edges.csv");
+
+    Edge existingEdge = edgeTable.getEdge("CCONF002L1_WELEV00HL1");
+
+    Edge newEdge = new Edge("CDEPT999L1_CDEPT999L1", "CDEPT002L1", "CDEPT003L1");
+    Edge newEdgeUpdated = new Edge("CDEPT999L1_CDEPT999L1", "CDEPT002L1AAA", "CDEPT003L1AAA");
+
+    edgeTable.insertEdge(existingEdge);
+    edgeTable.insertEdge(newEdge);
+
+    edgeTable.updateEdge(newEdgeUpdated);
+
+    edgeTable.removeEdge(existingEdge);
+
+    edgeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/L1EdgesOutput.csv");
+
+    disconnect();
   }
 }
