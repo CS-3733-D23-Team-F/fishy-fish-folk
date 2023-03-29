@@ -138,8 +138,18 @@ public class Fdb {
     }
   }
 
+  /**
+   * Starts the command line interface where users can interact with the database.
+   */
+  public void startCLI() {
+    DbIOCommands cli = new DbIOCommands();
+    cli.setNt(nodeTable);
+    cli.setEt(edgeTable);
+    cli.cycleCLI();
+  }
+
   /** Runs through all the methods to test their functionality. DEBUG ONLY */
-  public void tests() {
+  public void runTests() {
 
     System.out.println("\n--- TESTING NODE TABLE ---\n");
 

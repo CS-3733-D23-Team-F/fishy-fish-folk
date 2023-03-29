@@ -9,14 +9,8 @@ public class Main {
 
     // Fapp.launch(Fapp.class, args);
 
-    Fdb fdb = new Fdb(); //create fdb object and connect to db
-    fdb.tests(); //test add, remove, update of nodes and edges
-
-    DbIOCommands cli = new DbIOCommands();
-    cli.setNt(fdb.nodeTable);
-    cli.setEt(fdb.edgeTable);
-    cli.cycleCLI();
-
-    fdb.disconnect();
+    Fdb fdb = new Fdb();  // Create fdb object and connect to db
+    // fdb.runTests();  // Test add, remove, update of nodes and edges
+    fdb.startCLI();  // Start the command line interface for database interaction
   }
 }
