@@ -6,12 +6,32 @@ package edu.wpi.fishfolk.database;
 
 // TODO: make this work with bash or WinCMD prompt
 // TODO: In GIT PUT THIS INTO YOUR OWN FEATURE BRANCH along with the other features you are working
-// on
+// TODO: This program assumes the user has all of the knowledge of the nodes.
+// TODO: this assumes that node and edge IDs are unique
 /*TODO: Implement these commands
     "help" - This should display all the commands and their options, do this second
     "exit" - This should exit to the CLI, do this first,
-    "remove"
-    "insert"
+    "remove" - this should remove an entry from the database (follows the same path as the insert), this just requires the ID
+          "node"
+          "edge"
+    "insert" - this should insert and entry into the database (follows the same path as remove), this requires the whole thing with attributes
+          "node"
+          "edge"
+     "update" - this should update the database this requires the whole thing with attributes
+          "node"
+          "edge"
+    "csv" - be able to insert or export CSVs
+           "import"
+                  -Await for filepath
+           "export"
+                  -Await for filepath
+    "show" - this should show something from the database, given an ID
+          "node"
+          "edge"
+
+
+
+    TODO: my idea was that for each command was that they would open into a sub-prompt and then you would type in more specified parameters from
 */
 
 // Import Statements
@@ -34,6 +54,8 @@ public class DbIOCommands {
   public void cycleCLI() {
     displayPrompt();
     lineChk();
+
+    //TODO: there might need to be a third function to flush out the cli
   }
 
   // TODO: display prompt method which appears upon enterance and when a command is complete.
@@ -101,4 +123,42 @@ public class DbIOCommands {
     // TODO: insert entries for commands.
     System.out.println("\n");
   }
+
+  //TODO: insert method
+  /**
+   * insert
+   *
+   * @param
+   * @desc
+   */
+
+  //TODO: remove method
+  /**
+   * remove
+   *
+   * @param
+   * @desc
+   */
+
+
+  //TODO: show method
+  /**
+   * show
+   *
+   * @desc: displays the information in the database
+   * @param: (none)
+   */
+
+
+
+  //TODO: input filepath for input CSV
+  /**
+   * filepath
+   *
+   * @desc: directs to the file where they would want to import a CSV from an already existing
+   * @param: (none)
+   */
+
+
+
 }
