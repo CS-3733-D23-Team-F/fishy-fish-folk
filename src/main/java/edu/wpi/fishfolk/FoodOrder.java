@@ -3,7 +3,6 @@ package edu.wpi.fishfolk;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import java.util.LinkedList;
 
 public class FoodOrder {
