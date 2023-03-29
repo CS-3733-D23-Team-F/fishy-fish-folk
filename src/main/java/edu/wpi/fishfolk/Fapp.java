@@ -35,7 +35,6 @@ public class Fapp extends Application {
 
     final Scene scene = new Scene(root);
     primaryStage.setScene(scene);
-    primaryStage.setFullScreen(true);
     primaryStage.show();
 
     Navigation.navigate(Screen.HOME);

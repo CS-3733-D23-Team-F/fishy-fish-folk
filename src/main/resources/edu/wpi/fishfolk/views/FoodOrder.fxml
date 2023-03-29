@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.*?>
-<?import javafx.geometry.Insets?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.PopOver?>
-<VBox prefHeight="1024.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FoodOrderController">
+
+<VBox minHeight="900.0" minWidth="1600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FoodOrderController">
    <children>
-       <HBox style="-fx-background-color: #6CD4BC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-           <children>
-               <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" HBox.hgrow="ALWAYS">
-                   <font>
-                       <Font name="System Bold" size="32.0" />
-                   </font>
-                   <effect>
-                       <DropShadow blurType="GAUSSIAN" height="4.64" offsetY="2.0" radius="0.6599999999999999" spread="0.13" width="0.0">
+      <HBox maxHeight="106.0" minHeight="106.0" minWidth="1600.0">
+         <children>
+            <AnchorPane maxHeight="106.0" minHeight="106.0" prefHeight="106.0" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="44.203125">
+                     <font>
+                        <Font name="Open Sans Bold" size="32.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="4.64" offsetY="2.0" radius="0.6599999999999999" spread="0.13" width="0.0">
                            <color>
-                               <Color red="0.6184210777282715" green="0.6126949191093445" blue="0.6126949191093445" />
+                              <Color red="0.6184210777282715" green="0.6126949191093445" blue="0.6126949191093445" />
                            </color>
-                       </DropShadow>
-                   </effect>
-                   <HBox.margin>
-                       <Insets left="1100.0" top="40.0" />
-                   </HBox.margin>
-               </Text>
-           </children>
-       </HBox>
+                        </DropShadow>
+                     </effect>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
             <MFXButton fx:id="nextPageButton" alignment="center" layoutX="888.0" layoutY="20.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Next Page" />
@@ -144,7 +148,7 @@
             <ChoiceBox fx:id="roomSelector" layoutX="925.0" layoutY="657.0" prefWidth="150.0" />
             <MFXButton fx:id="cancelButton" alignment="center" layoutX="320.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Cancel Order" />
             <MFXButton fx:id="clearButton" alignment="center" layoutX="604.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Clear Order" />
-            <MFXButton fx:id="submitButton" alignment="center" layoutX="888.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Submit Order" >
+            <MFXButton fx:id="submitButton" alignment="center" layoutX="888.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Submit Order">
                <PopOver fx:id="notiPop">
 
                </PopOver>
