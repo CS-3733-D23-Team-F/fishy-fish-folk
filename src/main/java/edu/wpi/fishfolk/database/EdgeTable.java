@@ -18,9 +18,10 @@ import lombok.Getter;
  */
 public class EdgeTable {
 
-  private Connection db;
-  @Getter private String tableName;
-  private ArrayList<String> headers = new ArrayList<>(List.of("edgeid", "startnode", "endnode"));
+  private final Connection db;
+  @Getter private final String tableName;
+  private final ArrayList<String> headers =
+      new ArrayList<>(List.of("edgeid", "startnode", "endnode"));
 
   /**
    * Creates a new representation of an edge table.
@@ -249,41 +250,18 @@ public class EdgeTable {
     }
   }
 
-  // DEBUG ONLY
-  public void testQuery() {
-    Statement statement;
-    try {
-      String query =
-          "DELETE FROM "
-              + db.getSchema()
-              + "."
-              + tableName
-              + " *; "
-              + "INSERT INTO "
-              + db.getSchema()
-              + "."
-              + tableName
-              + " (edgeid, startnode, endnode) "
-              + "VALUES ('CCONF002L1_WELEV00HL1', 'CCONF002L1', 'WELEV00HL1'),"
-              + "('CCONF003L1_CHALL002L1', 'CCONF003L1', 'CHALL002L1');";
-      statement = db.createStatement();
-      statement.executeUpdate(query);
-      System.out.println(
-          "[EdgeTable.testQuery]: Test environment set up successfully. (DEBUG ONLY)");
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
-  }
-
-  /** Import a CSV as edges in the table. */
-  public void importCSV() {
+  /**
+   * Import a CSV as edges in the table.
+   *
+   * @param filePath Path of the file to import from CSV
+   */
+  public void importCSV(String filePath) {
 
     System.out.println("[EdgeTable.importCSV]: Importing CSV to table " + tableName + ".");
 
-    try (BufferedReader br =
-        new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Edges.csv"))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
-      String line = br.readLine(); // ignore column headers which are on the first line
+      String line = br.readLine();
       while ((line = br.readLine()) != null) {
 
         String[] values = line.split(",");
@@ -304,16 +282,17 @@ public class EdgeTable {
     }
   }
 
-  /** Export edges in the table as a CSV */
-  public void exportCSV() {
+  /**
+   * Export edges in the table as a CSV
+   *
+   * @param filePath Path of the file to export the CSV to
+   */
+  public void exportCSV(String filePath) {
 
     System.out.println("[EdgeTable.exportCSV]: Exporting CSV from table " + tableName + ".");
 
     try {
-      PrintWriter out =
-          new PrintWriter(
-              new BufferedWriter(
-                  new FileWriter("src/main/resources/edu/wpi/fishfolk/csv/L1EdgesOutput.csv")));
+      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filePath)));
       String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
       Statement statement = db.createStatement();
       statement.execute(grabAll);
