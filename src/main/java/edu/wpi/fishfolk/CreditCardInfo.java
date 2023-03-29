@@ -8,6 +8,7 @@ public class CreditCardInfo {
   public int CCV;
 
   public CreditCardInfo(int mon, int yr, String name, String num, int ccv) {
+
     expMonth = mon;
     expYear = yr;
     nameOnCard = name;
@@ -16,4 +17,5 @@ public class CreditCardInfo {
   }
 
   public static CreditCardInfo dummy = new CreditCardInfo(7, 24, "Generic Payer", "1234123412341234", 666);
+
 }
