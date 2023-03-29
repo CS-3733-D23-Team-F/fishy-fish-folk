@@ -36,8 +36,13 @@ package edu.wpi.fishfolk.database;
 */
 
 // Import Statements
+import edu.wpi.fishfolk.pathfinding.Edge;
+import edu.wpi.fishfolk.pathfinding.Node;
+import edu.wpi.fishfolk.database.EdgeTable;
+import edu.wpi.fishfolk.database.NodeTable;
 import java.sql.*;
 import java.util.Scanner;
+
 
 public class DbIOCommands {
 
@@ -80,12 +85,10 @@ public class DbIOCommands {
    * @param: none
    */
   public boolean lineChk() {
-    // TODO: Parser
-    Scanner sc = new Scanner(System.in);
-    String userInput = sc.nextLine();
+    Scanner sc1 = new Scanner(System.in);
+    String userInput1 = sc1.nextLine();
 
-    // TODO: Decisions
-    switch (userInput) {
+    switch (userInput1) {
       case "exit":
         exitCmd();
         break;
@@ -93,19 +96,19 @@ public class DbIOCommands {
         helpCmd();
         break;
       case "remove":
-        // code block
+        eChk("remove");
         break;
       case "insert":
-        // code block
+        eChk("insert");
         break;
       case "update":
-        //code block
+        eChk("update");
         break;
       case "csv":
-        //code block
+        importExportChk();
         break;
       case "show":
-        //code block
+        eChk("show");
         break;
       default:
         System.out.println("Could not recognize command, please try again\n"); //Could be expanded with handling an exception.
@@ -122,17 +125,58 @@ public class DbIOCommands {
    * @param: previous command specified
    * @return: false if invalid input
    */
-  public boolean eChk(){
+  public boolean eChk(String prevCmd){
     // TODO: Parser
-    Scanner sc = new Scanner(System.in);
-    String userInput = sc.nextLine();
+    Scanner sc2 = new Scanner(System.in);
+    Scanner sc3 = new Scanner(System.in); //to be used inside the conditionals
+    String userInput2 = sc2.nextLine();
+    String userInput3; //to be referred to inside the conditionals
 
-    switch(userInput){
+    switch(userInput2){
       case "node":
-    //*code block*
+        if (prevCmd =="remove"){
+          System.out.println("give node id");
+          displayPrompt();
+          userInput3 = sc3.nextLine();
+          removeNode(userInput3);
+          return true;
+        } else if (prevCmd == "insert"){
+          System.out.println("give node details in this format without the brackets: {xcoord,ycoord,floor,building,nodetype,longname,shortname}");
+          displayPrompt();
+          userInput3 = sc3.nextLine();
+          insertNode(userInput3);
+          return true;
+        } else if (prevCmd == "update"){
+          System.out.println("give node details in this format without the brackets: {xcoord,ycoord,floor,building,nodetype,longname,shortname}");
+          displayPrompt();
+          userInput3 = sc3.nextLine();
+          updateNode(userInput3);
+          return true;
+        } else if (prevCmd == "show"){
+          System.out.println("give node id");
+          displayPrompt();
+          userInput3 = sc3.nextLine();
+          showNode(userInput3);
+          return true;
+        }
         break;
       case "edge":
-    //*code block*
+        if (prevCmd =="remove"){
+
+          System.out.println("give edge id");
+          displayPrompt();
+          userInput3 = sc3.nextLine();
+          removeEdge(userInput3);
+        } else if (prevCmd == "insert"){
+          System.out.println("give edge");
+
+        } else if (prevCmd == "update"){
+
+        } else if (prevCmd == "show"){
+          System.out.println("give edge id");
+          displayPrompt();
+
+        }
         break;
       default:
         System.out.println("Could not recognize command, please try again\n"); //Could be expanded with handling an exception.
@@ -160,14 +204,14 @@ public class DbIOCommands {
         break;
       case "export":
         break;
+      case "filepath":
+        break;
       default:
         System.out.println("Could not recognize command, please try again\n"); //Could be expanded with handling an exception.
         return false;
     }
 
     return false;
-
-
   }
 
   //TODO: filepath parser
@@ -182,6 +226,16 @@ public class DbIOCommands {
     Scanner sc = new Scanner(System.in);
     String userInput = sc.nextLine();
 
+    //TODO: if it is not a valid filepath, reject it.
+    /*
+    if(userInput){
+
+      return true;
+    }else{
+      System.out.println("This filepath cannot be reached");
+      return false;
+    }
+    */
     return false;
   }
 
@@ -206,32 +260,53 @@ public class DbIOCommands {
    */
   public void helpCmd() {
     System.out.println("Help Menu");
-    System.out.println("    Commands:\n");
+    System.out.println("    Commands: First you choose an initial command, just type in the name of the command and it will bring you to a further prompt\n");
+    System.out.println("  show\n");
+    System.out.println("  csv\n");
+    System.out.println("     export     -Typed in after entering csv, will be used to export a CSV,\n");
+    System.out.println("     import     -Typed in after entering csv, will be used to import a CSV,\n");
+    System.out.println("  insert        -Insert a single node or edge\n");
+    System.out.println("  update\n");
+    System.out.println("  remove\n");
+    System.out.println("  help\n");
+    System.out.println("  exit\n");
+    System.out.println("    Commands: Then you choose an second command, just type in the name of the command and it will bring you to a further\n");
+    System.out.println("  node          -specifies a node option for the previous command\n");
+    System.out.println("  edge          -specifies an edge option for the previous command\n");
+    System.out.println("    Commands: Third commands will most likely ask you to input a specific amount of data in a certain format. Just insert the data in the way it prompts and you should be set. Data should be separated by commas ',' and be noted without the brackets \n");
+    System.out.println("  {filepath}    -Just type in the filepath to where you would want to import or export, this should include the name to the .csv file");
+    System.out.println("  {startnode,endnode} -This is prompt for when you want to update or insert a new edge");
+    System.out.println("  {xcoord,ycoord,floor,building,nodetype,longname,shortname} -This is prompt for when you want to update or insert a new node");
     // TODO: insert entries for commands. Consult photo for reference
-    
+
 
     System.out.println("\n");
   }
 
-  //TODO: insertEdge method
+  //TODO: insertNode method
   /**
    * insertNode
    *
-   * @param
+   * @param line, parses the long, comma separated string and breaks it down.
    * @desc can be used before node or edge methods, return false if fails
    */
-  public boolean insertNode(){
+  public boolean insertNode(String line){
+    //TODO: parses the long input from the CMD line
+
+
     return false;
   }
 
   //TODO: insertEdge method
   /**
-   * insertNode
+   * insertEdge
    *
-   * @param
+   * @param line, parses the long comma separated string and breaks it down.
    * @desc can be used before node or edge methods, return false if fails
    */
-  public boolean insertEdge(){
+  public boolean insertEdge(String line){
+    //parses the long input from the CMD line
+
     return false;
   }
 
@@ -239,13 +314,25 @@ public class DbIOCommands {
   /**
    * removeNode
    *
-   * @param
+   * @param, element tells you what command wa srun before it
    * @desc can be used before node or edge methods, will automatically decide in an if statement if a node or
    */
-  public boolean remove(){
+  public boolean removeNode(String nodeid){
+    NodeTable.removeNode(NodeTable.getNode(nodeid));
     return false;
   }
 
+  //TODO: removeEdge method
+  /**
+   * removeEdge
+   *
+   * @param, element tells you what command wa srun before it
+   * @desc can be used before node or edge methods, will automatically decide in an if statement if a node or
+   */
+  public boolean removeEdge(String edgeid){
+    EdgeTable.removeEdge(EdgeTable.getEdge(edgeid));
+    return false;
+  }
 
   //TODO: showNode method
   /**
@@ -253,50 +340,67 @@ public class DbIOCommands {
    *
    * @desc: displays the information in the database (specific node or edge), takes you to a prompt where you specify the node or edge id, returns false if you cannot show.
    * @param: id
+   * @return: false if fails
    */
+  public boolean showNode(String nodeid){
+    Node n = NodeTable.getNode(nodeid);
 
-  //TODO: showNode method
+    //printout node statistics
+    System.out.println("Node Statistics\n");
+    System.out.println("nodeid: " + n.id);
+    System.out.println("xcoord: " + n.point.getX());
+    System.out.println("ycoord: " + n.point.getY());
+    System.out.println("floor: " + n.floor);
+    System.out.println("building: " + n.building);
+    System.out.println("nodetype: " + n.type);
+    System.out.println("longname: " + n.longName);
+    System.out.println("shortname: " + n.shortName);
+
+    return false;
+  }
+
+  //TODO: showEdge method
   /**
-   * showNode
+   * showEdge
    *
    * @desc: displays the information in the database (specific node or edge), takes you to a prompt where you specify the node or edge id, returns false if you cannot show.
    * @param: id
+   * @return: false if fails
    */
+  public boolean showEdge(String edgeid){
+    Edge e = EdgeTable.getEdge(edgeid);
 
+    //prinout edge statistics
+    System.out.println();
 
-  //================================================Vestigial below?
+    return false;
+  }
 
-  //TODO: node method (id only)
+  //TODO: updateNode method
   /**
-   * nodeid
+   * updateNode
    *
-   * @param
-   * @desc
+   * @desc: will update an node in the database
+   * @param:
+   * @return: false if fails
    */
+  public boolean updateNode(String nodeid){
+    NodeTable.updateNode(NodeTable.getNode(nodeid));
+    return false;
+  }
 
-  //TODO: node method (full attr)
+  //TODO: updateEdge method
   /**
-   * nodeattr
+   * updateEdge
    *
-   * @param
-   * @desc
+   * @desc: will update an edge in the database
+   * @param:
+   * @return: false if fails
    */
-
-  //TODO: edge method (id only)
-  /**
-   * edgeid
-   *
-   * @param
-   * @desc
-   */
-
-  //TODO: edge method (full attr)
-  /**
-   * edgeattr
-   *
-   * @param
-   * @desc
-   */
+  public boolean updateEdge(String edgeid){
+    EdgeTable.updateEdge(EdgeTable.getEdge(edgeid));
+    return false;
+  }
 
   //======================================CSV craziness
 
@@ -308,8 +412,8 @@ public class DbIOCommands {
    * @desc
    * @return: false if the operation failed, true if it passed
    */
-  public boolean exportNodeCSV(){
-
+  public boolean exportNodeCSV(String filepath){
+    NodeTable.exportCSV(filepath);
     return false;
   }
 
@@ -317,52 +421,36 @@ public class DbIOCommands {
   /**
    * exportEdgeCSV
    *
-   * @param
+   * @param filepath,
    * @desc
    * @return: false if it fails
    */
-  public boolean exportEdgeCSV(){
-
-    return false;
+  public void exportEdgeCSV(String filepath){
+    EdgeTable.exportCSV(filepath);
   }
 
   //TODO: csv importNode method
   /**
    * importNodeCSV
    *
-   * @param
+   * @param filepath, needs to insert the st
    * @desc
    * @return: false if it fails
    */
-  public boolean importNodeCSV(){
-
-    return false;
+  public void importNodeCSV(String filepath){
+    NodeTable.importCSV(filepath);
   }
 
   //TODO: csv importEdge method
   /**
    * importEdgeCSV
    *
-   * @param
+   * @param filepath
    * @desc
    * @return: false if it fails
    */
-  public boolean importEdgeCSV(){
-
-    return false;
-  }
-
-  //TODO: input filepath for CSV
-  /**
-   * filepathCSV
-   *
-   * @desc: directs to the file where they would want to import a CSV from an already existing, needs like 4 conditionals, use if statements for
-   * @param: (none)
-   * @return: false if fails.
-   */
-  public boolean filepathCSV(){
-
-    return false;
+  public void importEdgeCSV(String filepath){
+    EdgeTable.importCSV(filepath);
   }
 
 
