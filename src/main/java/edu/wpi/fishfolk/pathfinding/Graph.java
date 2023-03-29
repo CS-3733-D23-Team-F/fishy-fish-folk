@@ -1,5 +1,7 @@
 package edu.wpi.fishfolk.pathfinding;
 
+import edu.wpi.fishfolk.database.EdgeTable;
+import edu.wpi.fishfolk.database.NodeTable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import javafx.geometry.Point2D;
@@ -14,10 +16,17 @@ public class Graph {
   double[][] adjMat;
   Node[] nodes;
   HashMap<String, Integer> id2idx; // string id to index in nodes array and adjacency matrix
-
   private int lastIdx;
 
-  public Graph(int size) {
+  NodeTable nodeTable;
+  EdgeTable edgeTable;
+
+  public Graph() {
+
+    nodeTable = new NodeTable("nodeTable");
+    edgeTable = new EdgeTable("edgeTable");
+
+    int size = nodeTable.getSize();
 
     this.size = size;
     adjMat = new double[size][size];
@@ -25,6 +34,21 @@ public class Graph {
     id2idx = new HashMap<>(size * 4 / 3 + 1); // default load factor is 75% = 3/4
 
     lastIdx = 0;
+  }
+
+  public void populateFromCSV() {
+
+    LinkedList<Node> nodesLst = nodeTable.getAllNodes();
+
+    for (Node n : nodesLst) {
+      addNode(n);
+    }
+
+    LinkedList<Edge> edgesLst = edgeTable.getAllEdges();
+
+    for (Edge e : edgesLst) {
+      addEdge(e);
+    }
   }
 
   public boolean addNode(Node n) {
@@ -52,10 +76,10 @@ public class Graph {
     return false;
   }
 
-  public boolean addEdge(String n1, String n2) {
+  public boolean addEdge(Edge edge) {
 
-    Integer idx1 = id2idx.get(n1);
-    Integer idx2 = id2idx.get(n2);
+    Integer idx1 = id2idx.get(edge.nodeID1);
+    Integer idx2 = id2idx.get(edge.nodeID2);
 
     Point2D point1 = nodes[idx1].point;
     Point2D point2 = nodes[idx2].point;

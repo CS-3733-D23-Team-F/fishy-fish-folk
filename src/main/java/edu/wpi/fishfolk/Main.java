@@ -31,7 +31,8 @@ public class Main {
 
       System.out.println("\n--- TESTING NODE TABLE ---\n");
 
-      NodeTable nodeTable = new NodeTable(db, "nodetable");
+      NodeTable nodeTable = new NodeTable(db, "nodetable2");
+
       if (fdb.createTable(db, nodeTable.getTableName())) {
         nodeTable.addHeaders();
       }
@@ -69,18 +70,22 @@ public class Main {
 
       System.out.println("\n--- TESTING EDGE TABLE ---\n");
 
-      EdgeTable edgeTable = new EdgeTable(db, "edgetable");
+      EdgeTable edgeTable = new EdgeTable(db, "edgetable2");
+
       if (fdb.createTable(db, edgeTable.getTableName())) {
         edgeTable.addHeaders();
       }
+
+      nodeTable.setEdgeTable(edgeTable);
+      edgeTable.setNodeTable(nodeTable);
 
       edgeTable.importCSV();
       // edgeTable.testQuery();
 
       Edge existingEdge = edgeTable.getEdge("CCONF002L1_WELEV00HL1");
 
-      Edge newEdge = new Edge("CDEPT999L1_CDEPT999L1", "CDEPT002L1", "CDEPT003L1");
-      Edge newEdgeUpdated = new Edge("CDEPT999L1_CDEPT999L1", "CDEPT002L1AAA", "CDEPT003L1AAA");
+      Edge newEdge = new Edge("CDEPT002L1", "CDEPT003L1");
+      Edge newEdgeUpdated = new Edge("CDEPT002L1AAA", "CDEPT003L1AAA");
 
       edgeTable.insertEdge(existingEdge);
       edgeTable.insertEdge(newEdge);
@@ -160,7 +165,7 @@ public class Main {
       throw new RuntimeException(e);
     }
 
-    Graph graph = new Graph(count);
+    Graph graph = new Graph();
 
     for (Node n : nodeLst) {
       graph.addNode(n);
@@ -179,7 +184,7 @@ public class Main {
 
         // System.out.println(n1 + "-" + n2); // edge list for https://graphonline.ru/en/
 
-        graph.addEdge(n1, n2);
+        graph.addEdge(new Edge(n1, n2));
       }
     } catch (IOException e) {
       throw new RuntimeException(e);

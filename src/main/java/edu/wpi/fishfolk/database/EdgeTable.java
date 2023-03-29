@@ -7,17 +7,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.LinkedList;
 import lombok.Getter;
+import lombok.Setter;
 
 public class EdgeTable {
 
   private Connection db;
+
+  @Setter private NodeTable nodeTable;
   @Getter private String tableName;
-  private ArrayList<String> headers = new ArrayList<>(List.of("edgeid", "startnode", "endnode"));
+  private ArrayList<String> headers =
+      new ArrayList<>(Arrays.asList("edgeid", "nodeid1", "nodeid2"));
 
   public EdgeTable(Connection db, String tableName) {
     this.db = db;
+    this.tableName = tableName.toLowerCase();
+  }
+
+  public EdgeTable(String tableName) {
+    this.db = new Fdb().connect("teamfdb", "teamf", "teamf60");
     this.tableName = tableName.toLowerCase();
   }
 
@@ -45,6 +55,31 @@ public class EdgeTable {
     }
   }
 
+  public LinkedList<Edge> getAllEdges() {
+
+    LinkedList<Edge> edges = new LinkedList<>();
+
+    try {
+      String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
+      Statement statement = db.createStatement();
+      statement.execute(grabAll);
+      ResultSet results = statement.getResultSet();
+
+      while (results.next()) {
+
+        String node1 = results.getString(headers.get(1));
+        String node2 = results.getString(headers.get(2));
+
+        edges.add(new Edge(node1, node2));
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return edges;
+  }
+
   public Edge getEdge(String id) {
     Statement statement;
     try {
@@ -55,11 +90,10 @@ public class EdgeTable {
       ResultSet results = statement.getResultSet();
       results.next();
 
-      String edgeid = results.getString(headers.get(0));
-      String startnode = results.getString(headers.get(1));
-      String endnode = results.getString(headers.get(2));
+      String node1 = results.getString(headers.get(1));
+      String node2 = results.getString(headers.get(2));
 
-      Edge newEdge = new Edge(edgeid, startnode, endnode);
+      Edge newEdge = new Edge(node1, node2);
       System.out.println(
           "[EdgeTable.getEdge]: Edge " + id + " retrieved from table " + tableName + ".");
 
@@ -73,7 +107,11 @@ public class EdgeTable {
 
   // True if inserted, false if duplicate or not added
   public boolean insertEdge(Edge edge) {
-    Statement statement;
+
+    if (edge == null) {
+      return false;
+    }
+
     try {
       String exists =
           "SELECT EXISTS (SELECT FROM "
@@ -81,10 +119,10 @@ public class EdgeTable {
               + "."
               + tableName
               + " WHERE edgeid = '"
-              + edge.edgeid
+              + edge.edgeID
               + "');";
 
-      statement = db.createStatement();
+      Statement statement = db.createStatement();
       statement.execute(exists);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -92,7 +130,7 @@ public class EdgeTable {
       if (results.getBoolean("exists")) {
         System.out.println(
             "[EdgeTable.insertEdge]: Edge "
-                + edge.edgeid
+                + edge.edgeID
                 + " already exists in table "
                 + tableName
                 + ".");
@@ -104,20 +142,20 @@ public class EdgeTable {
               + db.getSchema()
               + "."
               + tableName
-              + " (edgeid, startnode, endnode) "
+              + " (edgeid, nodeid1, nodeid2) "
               + "VALUES ('"
-              + edge.edgeid
+              + edge.edgeID
               + "','"
-              + edge.startnode
+              + edge.nodeID1
               + "','"
-              + edge.endnode
+              + edge.nodeID2
               + "');";
 
       statement.executeUpdate(query);
 
       System.out.println(
           "[EdgeTable.insertEdge]: Edge "
-              + edge.edgeid
+              + edge.edgeID
               + " successfully inserted into table "
               + tableName
               + ".");
@@ -130,7 +168,11 @@ public class EdgeTable {
 
   // True if updated, false if had to insert
   public boolean updateEdge(Edge edge) {
-    Statement statement;
+
+    if (edge == null) {
+      return false;
+    }
+
     try {
       String exists =
           "SELECT EXISTS (SELECT FROM "
@@ -138,10 +180,10 @@ public class EdgeTable {
               + "."
               + tableName
               + " WHERE edgeid = '"
-              + edge.edgeid
+              + edge.edgeID
               + "');";
 
-      statement = db.createStatement();
+      Statement statement = db.createStatement();
       statement.execute(exists);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -149,7 +191,7 @@ public class EdgeTable {
       if (!results.getBoolean("exists")) {
         System.out.println(
             "[EdgeTable.updateEdge]: Edge "
-                + edge.edgeid
+                + edge.edgeID
                 + " doesn't exist in table "
                 + tableName
                 + ".");
@@ -164,19 +206,19 @@ public class EdgeTable {
               + tableName
               + " SET"
               + " edgeid = '"
-              + edge.edgeid
-              + "',startnode = '"
-              + edge.startnode
-              + "',endnode = '"
-              + edge.endnode
+              + edge.edgeID
+              + "',nodeid1 = '"
+              + edge.nodeID1
+              + "',nodeid2 = '"
+              + edge.nodeID2
               + "' WHERE edgeid = '"
-              + edge.edgeid
+              + edge.edgeID
               + "'";
 
       statement.executeUpdate(query);
       System.out.println(
           "[EdgeTable.updateEdge]: Successfully updated edge "
-              + edge.edgeid
+              + edge.edgeID
               + " in table "
               + tableName
               + ".");
@@ -189,7 +231,11 @@ public class EdgeTable {
   }
 
   public void removeEdge(Edge edge) {
-    Statement statement;
+
+    if (edge == null) {
+      return;
+    }
+
     try {
       String query =
           "DELETE FROM "
@@ -197,13 +243,13 @@ public class EdgeTable {
               + "."
               + tableName
               + " WHERE edgeid = '"
-              + edge.edgeid
+              + edge.edgeID
               + "'";
-      statement = db.createStatement();
+      Statement statement = db.createStatement();
       statement.executeUpdate(query);
       System.out.println(
           "[EdgeTable.removeEdge]: Edge "
-              + edge.edgeid
+              + edge.edgeID
               + " has been successfully removed from table "
               + tableName
               + ".");
@@ -226,7 +272,7 @@ public class EdgeTable {
               + db.getSchema()
               + "."
               + tableName
-              + " (edgeid, startnode, endnode) "
+              + " (edgeid, nodeid1, nodeid2) "
               + "VALUES ('CCONF002L1_WELEV00HL1', 'CCONF002L1', 'WELEV00HL1'),"
               + "('CCONF003L1_CHALL002L1', 'CCONF003L1', 'CHALL002L1');";
       statement = db.createStatement();
@@ -250,15 +296,22 @@ public class EdgeTable {
 
         String[] values = line.split(",");
 
-        String edgeID = values[0];
+        String node1 = values[1];
+        String node2 = values[2];
 
-        String startNode = values[1];
+        // if the node ids dont start with lowercase f they are old
+        if (!node1.substring(0, 1).equals("f")) {
+          node1 = nodeTable.idTranslation.get(node1);
+        }
+        if (!node2.substring(0, 1).equals("f")) {
+          node2 = nodeTable.idTranslation.get(node2);
+        }
 
-        String endNode = values[2];
+        if (node1 != null && node2 != null) { // dont add an edge between nodes that dont exist
 
-        Edge edge = new Edge(edgeID, startNode, endNode);
-
-        insertEdge(edge);
+          Edge edge = new Edge(node1, node2);
+          insertEdge(edge);
+        }
       }
       br.close();
     } catch (IOException e) {

@@ -5,6 +5,7 @@ import javafx.geometry.Point2D;
 public class Node {
 
   public String id;
+  public String oldID;
   public Point2D point;
   public String floor;
   public String building;
@@ -24,6 +25,7 @@ public class Node {
       String shortName) {
 
     this.id = id;
+    this.oldID = "-";
     this.point = point;
     this.floor = floor;
     this.building = building;

@@ -8,9 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import javafx.geometry.Point2D;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents a table of nodes in a PostgreSQL database.
@@ -21,11 +24,14 @@ import lombok.Getter;
 public class NodeTable {
 
   private Connection db;
+
+  @Setter private EdgeTable edgeTable;
   @Getter private String tableName;
   private ArrayList<String> headers =
       new ArrayList<>(
-          List.of(
+          Arrays.asList(
               "nodeid",
+              "oldid",
               "xcoord",
               "ycoord",
               "floor",
@@ -33,6 +39,11 @@ public class NodeTable {
               "nodetype",
               "longname",
               "shortname"));
+
+  HashMap<String, String> idTranslation = new HashMap<>();
+
+  HashMap<String, Integer> nodeTypeCounts =
+      new HashMap<>(); // key: nodeType + floor, value is count
 
   /**
    * Creates a new representation of a node table.
@@ -43,6 +54,12 @@ public class NodeTable {
   public NodeTable(Connection db, String tableName) {
     this.db = db;
     this.tableName = tableName.toLowerCase();
+  }
+
+  public NodeTable(String tableName) {
+
+    this.db = new Fdb().connect("teamfdb", "teamf", "teamf60");
+    this.tableName = tableName;
   }
 
   /**
@@ -56,28 +73,31 @@ public class NodeTable {
           "ALTER TABLE "
               + tableName
               + " ADD COLUMN "
-              + headers.get(0)
+              + "nodeid"
               + " TEXT,"
               + " ADD COLUMN "
-              + headers.get(1)
+              + "oldid"
+              + " TEXT,"
+              + " ADD COLUMN "
+              + "xcoord"
               + " INT,"
               + " ADD COLUMN "
-              + headers.get(2)
+              + "ycoord"
               + " INT,"
               + " ADD COLUMN "
-              + headers.get(3)
+              + "floor"
               + " TEXT,"
               + " ADD COLUMN "
-              + headers.get(4)
+              + "building"
               + " TEXT,"
               + " ADD COLUMN "
-              + headers.get(5)
+              + "nodetype"
               + " TEXT,"
               + " ADD COLUMN "
-              + headers.get(6)
+              + "longname"
               + " TEXT,"
               + " ADD COLUMN "
-              + headers.get(7)
+              + "shortname"
               + " TEXT;";
       statement = db.createStatement();
       statement.executeUpdate(query);
@@ -86,6 +106,66 @@ public class NodeTable {
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
+  }
+
+  public int getSize() {
+    int size = -1;
+    try {
+      String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
+      Statement statement = db.createStatement();
+      statement.execute(grabAll);
+      ResultSet results = statement.getResultSet();
+
+      if (results != null) {
+        results.last(); // moves cursor to the last row
+        size = results.getRow(); // get row id
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return size;
+  }
+
+  public LinkedList<Node> getAllNodes() {
+
+    LinkedList<Node> nodes = new LinkedList<>();
+
+    try {
+      String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
+      Statement statement = db.createStatement();
+      statement.execute(grabAll);
+      ResultSet results = statement.getResultSet();
+
+      while (results.next()) {
+        // System.out.println(results.getRow());  // Removed for cleanliness, feel free to restore
+
+        String nodeId = results.getString("nodeid");
+        double xcoord = results.getDouble("xcoord");
+        double ycoord = results.getDouble("ycoord");
+        String floor = results.getString("floor");
+        String building = results.getString("building");
+        NodeType nodeType = NodeType.valueOf(results.getString("nodetype"));
+        String longName = results.getString("longname");
+        String shortName = results.getString("shortname");
+
+        nodes.add(
+            new Node(
+                nodeId,
+                new Point2D(xcoord, ycoord),
+                floor,
+                building,
+                nodeType,
+                longName,
+                shortName));
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return nodes;
   }
 
   /**
@@ -104,22 +184,21 @@ public class NodeTable {
       ResultSet results = statement.getResultSet();
       results.next();
 
-      String nodeid = results.getString(headers.get(0));
-      double xcoord = results.getDouble(headers.get(1));
-      double ycoord = results.getDouble(headers.get(2));
-      String floor = results.getString(headers.get(3));
-      String building = results.getString(headers.get(4));
-      String nodetype = results.getString(headers.get(5));
-      String longname = results.getString(headers.get(6));
-      String shortname = results.getString(headers.get(7));
-
-      Point2D point = new Point2D(xcoord, ycoord);
-      NodeType type = NodeType.valueOf(nodetype);
+      String nodeId = results.getString("nodeid");
+      double xcoord = results.getDouble("xcoord");
+      double ycoord = results.getDouble("ycoord");
+      String floor = results.getString("floor");
+      String building = results.getString("building");
+      NodeType nodeType = NodeType.valueOf(results.getString("nodetype"));
+      String longName = results.getString("longname");
+      String shortName = results.getString("shortname");
 
       // i dont love how this returns a new object but i dont see a way around it
       // and besides the Node .equals would return true for all nodes returned by getNode() with the
       // same parameter
-      Node newNode = new Node(nodeid, point, floor, building, type, longname, shortname);
+      Node newNode =
+          new Node(
+              nodeId, new Point2D(xcoord, ycoord), floor, building, nodeType, longName, shortName);
       System.out.println(
           "[NodeTable.getNode]: Node " + id + " retrieved from table " + tableName + ".");
 
@@ -138,7 +217,11 @@ public class NodeTable {
    * @return True if inserted, false if the node already exists and/or is not added
    */
   public boolean insertNode(Node node) {
-    Statement statement;
+
+    if (node == null) {
+      return false;
+    }
+
     try {
       String exists =
           "SELECT EXISTS (SELECT FROM "
@@ -149,7 +232,7 @@ public class NodeTable {
               + node.id
               + "');";
 
-      statement = db.createStatement();
+      Statement statement = db.createStatement();
       statement.execute(exists);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -169,9 +252,11 @@ public class NodeTable {
               + db.getSchema()
               + "."
               + tableName
-              + " (nodeid, xcoord, ycoord, floor, building, nodetype, longname, shortname) "
+              + " (nodeid, oldid, xcoord, ycoord, floor, building, nodetype, longname, shortname) "
               + "VALUES ('"
               + node.id
+              + "','"
+              + node.oldID
               + "','"
               + (int) node.point.getX()
               + "','"
@@ -189,6 +274,8 @@ public class NodeTable {
               + "');";
 
       statement.executeUpdate(query);
+      // update count for this type of node on this floor
+      getNodeTypeCount(node.type.toString() + node.floor);
 
       System.out.println(
           "[NodeTable.insertNode]: Node "
@@ -205,7 +292,11 @@ public class NodeTable {
 
   // true if updated, false if had to insert
   public boolean updateNode(Node node) {
-    Statement statement;
+
+    if (node == null) {
+      return false;
+    }
+
     try {
       String exists =
           "SELECT EXISTS (SELECT FROM "
@@ -216,7 +307,7 @@ public class NodeTable {
               + node.id
               + "');";
 
-      statement = db.createStatement();
+      Statement statement = db.createStatement();
       statement.execute(exists);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -272,11 +363,15 @@ public class NodeTable {
   }
 
   public void removeNode(Node node) {
-    Statement statement;
+
+    if (node == null) {
+      return;
+    }
+
     try {
       String query =
           "DELETE FROM " + db.getSchema() + "." + tableName + " WHERE nodeid = '" + node.id + "'";
-      statement = db.createStatement();
+      Statement statement = db.createStatement();
       statement.executeUpdate(query);
       System.out.println(
           "[NodeTable.removeNode]: Node "
@@ -293,6 +388,15 @@ public class NodeTable {
 
     System.out.println("[NodeTable.importCSV]: Importing CSV to table " + tableName + ".");
 
+    try {
+      String delete = "DELETE FROM " + db.getSchema() + "." + tableName + ";";
+      Statement statement = db.createStatement();
+      statement.execute(delete);
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
     try (BufferedReader br =
         new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv"))) {
 
@@ -301,8 +405,7 @@ public class NodeTable {
 
         String[] values = line.split(",");
 
-        String nodeID = values[0];
-
+        String oldID = values[0];
         Point2D point = new Point2D(Integer.parseInt(values[1]), Integer.parseInt(values[2]));
 
         String floor = values[3];
@@ -315,7 +418,21 @@ public class NodeTable {
 
         String shortName = values[7];
 
+        String nodeNum;
+
+        if (type == NodeType.ELEV) {
+          nodeNum = "00" + shortName.substring(9, 10);
+
+        } else {
+
+          nodeNum = "00" + getNodeTypeCount(type.toString() + floor);
+          nodeNum = nodeNum.substring(nodeNum.length() - 3);
+        }
+        String nodeID = "f" + type.toString() + nodeNum + floor;
+        idTranslation.put(oldID, nodeID); // map given id to correct id
+
         Node node = new Node(nodeID, point, floor, building, type, longName, shortName);
+        node.oldID = oldID;
 
         insertNode(node);
       }
@@ -334,46 +451,34 @@ public class NodeTable {
           new PrintWriter(
               new BufferedWriter(
                   new FileWriter("src/main/resources/edu/wpi/fishfolk/csv/L1NodesOutput.csv")));
+
       String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
       Statement statement = db.createStatement();
       statement.execute(grabAll);
       ResultSet results = statement.getResultSet();
 
-      out.println(
-          headers.get(0)
-              + ","
-              + headers.get(1)
-              + ","
-              + headers.get(2)
-              + ","
-              + headers.get(3)
-              + ","
-              + headers.get(4)
-              + ","
-              + headers.get(5)
-              + ","
-              + headers.get(6)
-              + ","
-              + headers.get(7));
+      out.println(String.join(", ", headers));
 
       while (results.next()) {
         // System.out.println(results.getRow());  // Removed for cleanliness, feel free to restore
         out.println(
-            results.getString(headers.get(0))
+            results.getString("nodeid")
                 + ","
-                + results.getDouble(headers.get(1))
+                + results.getString("oldid")
+                + ", "
+                + results.getDouble("xcoord")
                 + ","
-                + results.getDouble(headers.get(2))
+                + results.getDouble("ycoord")
                 + ","
-                + results.getString(headers.get(3))
+                + results.getString("floor")
                 + ","
-                + results.getString(headers.get(4))
+                + results.getString("building")
                 + ","
-                + results.getString(headers.get(5))
+                + results.getString("nodetype")
                 + ","
-                + results.getString(headers.get(6))
+                + results.getString("longname")
                 + ","
-                + results.getString(headers.get(7)));
+                + results.getString("shortname"));
       }
 
       out.close();
@@ -383,5 +488,17 @@ public class NodeTable {
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
+  }
+
+  int getNodeTypeCount(String key) {
+    Integer prevCount = nodeTypeCounts.get(key);
+    int count;
+    if (prevCount != null) {
+      count = prevCount + 1;
+    } else {
+      count = 1;
+    }
+    nodeTypeCounts.put(key, count);
+    return count;
   }
 }
