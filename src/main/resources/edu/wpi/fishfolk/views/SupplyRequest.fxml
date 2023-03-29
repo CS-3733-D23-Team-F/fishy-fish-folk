@@ -11,22 +11,22 @@
 
 <AnchorPane prefHeight="1080.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.SupplyRequestController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a2e1cb" height="124.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1440.0" />
-      <Text fill="WHITE" layoutX="1054.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OFFICE SUPPLIES">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="124.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1440.0" />
+      <Text fill="WHITE" layoutX="1099.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OFFICE SUPPLIES">
          <font>
-            <Font name="Gill Sans MT Bold" size="40.0" />
+            <Font name="Open Sans Regular" size="40.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="15.0" layoutX="31.0" layoutY="41.0" stroke="WHITE" strokeType="INSIDE" width="73.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dcdcdc" height="733.0" layoutX="203.0" layoutY="163.0" stroke="#a2e1cb" strokeType="INSIDE" strokeWidth="5.0" width="1037.0" />
-      <MFXButton fx:id="cancelButton" depthLevel="LEVEL0" layoutX="33.0" layoutY="832.0" rippleColor="#a2e1cb" text="CANCEL" textFill="#a2e1cb">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f0bf4c" height="15.0" layoutX="31.0" layoutY="41.0" stroke="#f0bf4c" strokeType="INSIDE" width="73.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f1f1f1" height="733.0" layoutX="203.0" layoutY="163.0" stroke="#f1bf4c" strokeType="INSIDE" strokeWidth="5.0" width="1037.0" />
+      <MFXButton fx:id="cancelButton" depthLevel="LEVEL0" layoutX="33.0" layoutY="832.0" rippleColor="#012d5a" text="CANCEL" textFill="#012d5a">
          <font>
-            <Font name="Gill Sans MT Bold" size="30.0" />
+            <Font name="Open Sans Bold" size="30.0" />
          </font>
       </MFXButton>
       <MFXTextField layoutX="240.0" layoutY="754.0" prefHeight="113.0" prefWidth="252.0" promptText="ROOM #">
          <font>
-            <Font name="Gill Sans MT" size="36.0" />
+            <Font name="Open Sans Regular" size="26.0" />
          </font>
       </MFXTextField>
       <ScrollPane hbarPolicy="NEVER" layoutX="242.0" layoutY="198.0" prefHeight="403.0" prefWidth="963.0">
@@ -35,12 +35,12 @@
                <children>
                   <MFXCheckbox layoutX="20.0" layoutY="15.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
                      <font>
-                        <Font name="Gill Sans MT Bold" size="40.0" />
+                        <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
                   <MFXCheckbox layoutX="20.0" layoutY="100.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
                      <font>
-                        <Font name="Gill Sans MT Bold" size="40.0" />
+                        <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
                   <MFXCheckbox layoutX="20.0" layoutY="185.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
@@ -60,7 +60,7 @@
                   </MFXCheckbox>
                   <MFXCheckbox layoutX="20.0" layoutY="440.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
                      <font>
-                        <Font name="Gill Sans MT Bold" size="40.0" />
+                        <Font name="Open Sans Regular" size="40.0" />
                      </font>
                   </MFXCheckbox>
                   <MFXCheckbox layoutX="20.0" layoutY="525.0" prefHeight="106.0" prefWidth="288.0" text="PENCIL">
@@ -72,27 +72,27 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <MFXButton fx:id="supplySubmitButton" depthLevel="LEVEL0" layoutX="1255.0" layoutY="832.0" rippleColor="#a2e1cb" text="SUBMIT" textFill="#a2e1cb">
+      <MFXButton fx:id="supplySubmitButton" depthLevel="LEVEL0" layoutX="1255.0" layoutY="832.0" rippleColor="#012d5a" text="SUBMIT" textFill="#012d5a">
          <font>
-            <Font name="Gill Sans MT Bold" size="30.0" />
+            <Font name="Open Sans Bold" size="30.0" />
          </font>
       </MFXButton>
-      <MFXButton depthLevel="LEVEL0" layoutX="32.0" layoutY="755.0" rippleColor="#a2e1cb" text="  CLEAR " textFill="#a2e1cb">
+      <MFXButton depthLevel="LEVEL0" layoutX="32.0" layoutY="755.0" rippleColor="#012d5a" text="  CLEAR " textFill="#012d5a">
          <font>
-            <Font name="Gill Sans MT Bold" size="30.0" />
+            <Font name="Open Sans Bold" size="30.0" />
          </font>
       </MFXButton>
       <MFXTextField layoutX="514.0" layoutY="752.0" prefHeight="113.0" prefWidth="689.0" promptText="ADDITIONAL NOTES">
          <font>
-            <Font name="Gill Sans MT" size="36.0" />
+            <Font name="Open Sans Regular" size="26.0" />
          </font>
       </MFXTextField>
       <MFXTextField layoutX="240.0" layoutY="622.0" prefHeight="113.0" prefWidth="965.0" promptText="ADDITIONAL NOTES">
          <font>
-            <Font name="Gill Sans MT" size="36.0" />
+            <Font name="Open Sans Regular" size="26.0" />
          </font>
       </MFXTextField>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="15.0" layoutX="31.0" layoutY="63.0" stroke="WHITE" strokeType="INSIDE" width="73.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="15.0" layoutX="31.0" layoutY="85.0" stroke="WHITE" strokeType="INSIDE" width="73.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f0bf4c" height="15.0" layoutX="31.0" layoutY="63.0" stroke="#f1bf4c" strokeType="INSIDE" width="73.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f1bf4c" height="15.0" layoutX="31.0" layoutY="85.0" stroke="#f1bf4c" strokeType="INSIDE" width="73.0" />
    </children>
 </AnchorPane>
