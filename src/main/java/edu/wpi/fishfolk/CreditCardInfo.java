@@ -16,6 +16,6 @@ public class CreditCardInfo {
     CCV = ccv;
   }
 
-  public static CreditCardInfo dummy = new CreditCardInfo(7, 24, "Generic Payer", "1234123412341234", 666);
-
+  public static CreditCardInfo dummy =
+      new CreditCardInfo(7, 24, "Generic Payer", "1234123412341234", 666);
 }

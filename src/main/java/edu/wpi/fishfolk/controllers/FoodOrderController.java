@@ -27,7 +27,7 @@ public class FoodOrderController {
   @FXML MFXButton prevPageButton, nextPageButton;
   @FXML MFXButton addOneButton, addTwoButton, addThreeButton;
   @FXML MFXButton removeOneButton, removeTwoButton, removeThreeButton;
-  @FXML MFXButton plusHour, plusDay, minusHour, minusDay;
+  @FXML MFXButton plusHour, plusDay, minusHour, minusDay, asapButton;
   @FXML MFXButton clearButton, cancelButton, submitButton;
   @FXML Text itemText1, itemText2, itemText3;
   @FXML Text itemPrice1, itemPrice2, itemPrice3;
@@ -51,6 +51,7 @@ public class FoodOrderController {
     plusHour.setOnAction(event -> delayHour());
     minusDay.setOnAction(event -> undelayDay());
     minusHour.setOnAction(event -> undelayHour());
+    asapButton.setOnAction(event -> setTimeAsap());
     submitButton.setOnAction(
         event -> {
           if (currentOrder.submit()) {

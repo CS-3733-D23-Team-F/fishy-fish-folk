@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.effect.DropShadow?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
-<?import org.controlsfx.control.PopOver?>
+<?import org.controlsfx.control.*?>
+
 <VBox prefHeight="1024.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FoodOrderController">
    <children>
        <HBox style="-fx-background-color: #6CD4BC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -116,26 +117,26 @@
                </font>
             </Text>
             <Rectangle fill="#cccccc" height="100" layoutX="320.0" layoutY="620.0" width="500.0" />
-            <MFXButton fx:id="minusHour" layoutX="425.0" layoutY="655.0" mnemonicParsing="false" text="- hour">
+            <MFXButton fx:id="minusHour" layoutX="457.0" layoutY="655.0" mnemonicParsing="false" text="- hour">
                <font>
                   <Font size="14.0" />
                </font></MFXButton>
-            <MFXButton fx:id="minusDay" layoutX="350.0" layoutY="655.0" mnemonicParsing="false" text="- day">
+            <MFXButton fx:id="minusDay" layoutX="397.0" layoutY="655.0" mnemonicParsing="false" text="- day">
                <font>
                   <Font size="14.0" />
                </font>
             </MFXButton>
-            <MFXButton fx:id="plusDay" layoutX="735.0" layoutY="655.0" mnemonicParsing="false" text="+ day">
+            <MFXButton fx:id="plusDay" layoutX="749.0" layoutY="654.0" mnemonicParsing="false" text="+ day">
                <font>
                   <Font size="14.0" />
                </font>
             </MFXButton>
-            <MFXButton fx:id="plusHour" layoutX="660.0" layoutY="655.0" mnemonicParsing="false" text="+ hour">
+            <MFXButton fx:id="plusHour" layoutX="679.0" layoutY="655.0" mnemonicParsing="false" text="+ hour">
                <font>
                   <Font size="14.0" />
                </font>
             </MFXButton>
-            <Text fx:id="timeText" layoutX="498.0" layoutY="665.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon, 12/23 11:15AM" textAlignment="CENTER" wrappingWidth="144.0">
+            <Text fx:id="timeText" layoutX="522.0" layoutY="664.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon, 12/23 11:15AM" textAlignment="CENTER" wrappingWidth="144.0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -144,10 +145,13 @@
             <ChoiceBox fx:id="roomSelector" layoutX="925.0" layoutY="657.0" prefWidth="150.0" />
             <MFXButton fx:id="cancelButton" alignment="center" layoutX="320.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Cancel Order" />
             <MFXButton fx:id="clearButton" alignment="center" layoutX="604.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Clear Order" />
-            <MFXButton fx:id="submitButton" alignment="center" layoutX="888.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Submit Order" >
-               <PopOver fx:id="notiPop">
-
-               </PopOver>
+            <MFXButton fx:id="submitButton" alignment="center" layoutX="888.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Submit Order">
+               <PopOver fx:id="notiPop"/>
+            </MFXButton>
+            <MFXButton fx:id="asapButton" layoutX="338.0" layoutY="655.0" mnemonicParsing="false" text="asap">
+               <font>
+                  <Font size="14.0" />
+               </font>
             </MFXButton>
          </children>
       </AnchorPane>
