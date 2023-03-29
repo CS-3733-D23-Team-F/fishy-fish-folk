@@ -8,6 +8,7 @@ package edu.wpi.fishfolk.database;
 // TODO: In GIT PUT THIS INTO YOUR OWN FEATURE BRANCH along with the other features you are working
 // TODO: This program assumes the user has all of the knowledge of the nodes.
 // TODO: this assumes that node and edge IDs are unique
+// TODO: this assumes that node and edge are stored in two separate CSVs and two separate tables
 /*TODO: Implement these commands
     "help" - This should display all the commands and their options, do this second
     "exit" - This should exit to the CLI, do this first,
@@ -52,13 +53,14 @@ public class DbIOCommands {
    * @param: (none)
    */
   public void cycleCLI() {
-    displayPrompt();
-    lineChk();
+    while(true) {
+      displayPrompt();
+      lineChk();
+      //TODO: there might need to be a third function to flush out the cli
+    }
 
-    //TODO: there might need to be a third function to flush out the cli
   }
 
-  // TODO: display prompt method which appears upon enterance and when a command is complete.
   /**
    * displayPrompt
    *
@@ -74,15 +76,15 @@ public class DbIOCommands {
   /**
    * lineChk
    *
-   * @desc: waits and parses
+   * @desc: waits and parses the first layer of commands
    * @param: none
    */
-  public void lineChk() {
+  public boolean lineChk() {
     // TODO: Parser
     Scanner sc = new Scanner(System.in);
     String userInput = sc.nextLine();
 
-    // TODO: Decision
+    // TODO: Decisions
     switch (userInput) {
       case "exit":
         exitCmd();
@@ -106,13 +108,67 @@ public class DbIOCommands {
         //code block
         break;
       default:
-        System.out.println("Could not recognize command, please try again\n");
+        System.out.println("Could not recognize command, please try again\n"); //Could be expanded with handling an exception.
+        return false;
     }
-
+    return false;
   }
 
-  //TODO: element specifier, this will take in and read for subcommands
+  //TODO: element specifier (node or edge) layer, this will take in and read for subcommands
+  /**
+   * eChk
+   *
+   * @desc: parses a node or an edge input
+   * @param: previous command specified
+   * @return: false if invalid input
+   */
+  public boolean eChk(){
+    // TODO: Parser
+    Scanner sc = new Scanner(System.in);
+    String userInput = sc.nextLine();
 
+    switch(userInput){
+      case "node":
+    //*code block*
+        break;
+      case "edge":
+    //*code block*
+        break;
+      default:
+        System.out.println("Could not recognize command, please try again\n"); //Could be expanded with handling an exception.
+        return false;
+    }
+
+    return false;
+  }
+
+  //TODO: CSV import export decision layer
+  /**
+   * importExportChk
+   *
+   * @desc: parses a node or an edge input, this layer after this one is the node/edge decision layer
+   * @param: previous command specified
+   * @return false if fails
+   */
+  public boolean importExportChk(){
+    // TODO: Parser
+    Scanner sc = new Scanner(System.in);
+    String userInput = sc.nextLine();
+
+    switch(userInput){
+      case "import":
+        break;
+      case "export":
+        break;
+      default:
+        System.out.println("Could not recognize command, please try again\n"); //Could be expanded with handling an exception.
+        return false;
+    }
+
+    return false;
+
+
+  }
 
   //TODO: filepath parser
   /**
@@ -121,14 +177,16 @@ public class DbIOCommands {
    * @desc: parses a filepath and is called after certian other method for pipeline that require FPs like import and export CSV.
    * @param: none
    */
-  public void fpChk(){
+  public boolean fpChk(){
+    // TODO: Parser
+    Scanner sc = new Scanner(System.in);
+    String userInput = sc.nextLine();
 
+    return false;
   }
 
   //=============================================HARDCODING CMD METHODS
 
-
-  // TODO: exit method
   /**
    * exit
    *
@@ -149,34 +207,64 @@ public class DbIOCommands {
   public void helpCmd() {
     System.out.println("Help Menu");
     System.out.println("    Commands:\n");
-    // TODO: insert entries for commands.
+    // TODO: insert entries for commands. Consult photo for reference
+    
+
     System.out.println("\n");
   }
 
-  //TODO: insert method
+  //TODO: insertEdge method
   /**
-   * insert
+   * insertNode
    *
    * @param
-   * @desc can be used before node or edge methods
+   * @desc can be used before node or edge methods, return false if fails
    */
+  public boolean insertNode(){
+    return false;
+  }
 
-
-  //TODO: remove method
+  //TODO: insertEdge method
   /**
-   * remove
+   * insertNode
    *
    * @param
-   * @desc can be used before node or edge methods
+   * @desc can be used before node or edge methods, return false if fails
+   */
+  public boolean insertEdge(){
+    return false;
+  }
+
+  //TODO: removeNode method
+  /**
+   * removeNode
+   *
+   * @param
+   * @desc can be used before node or edge methods, will automatically decide in an if statement if a node or
+   */
+  public boolean remove(){
+    return false;
+  }
+
+
+  //TODO: showNode method
+  /**
+   * showNode
+   *
+   * @desc: displays the information in the database (specific node or edge), takes you to a prompt where you specify the node or edge id, returns false if you cannot show.
+   * @param: id
    */
 
-  //TODO: show method
+  //TODO: showNode method
   /**
-   * show
+   * showNode
    *
-   * @desc: displays the information in the database
-   * @param: (none)
+   * @desc: displays the information in the database (specific node or edge), takes you to a prompt where you specify the node or edge id, returns false if you cannot show.
+   * @param: id
    */
+
+
+  //================================================Vestigial below?
 
   //TODO: node method (id only)
   /**
@@ -210,31 +298,72 @@ public class DbIOCommands {
    * @desc
    */
 
-  //TODO: csv export method
+  //======================================CSV craziness
+
+  //TODO: csv exportNode method
   /**
-   * exportcsv
+   * exportNodeCSV
    *
    * @param
    * @desc
+   * @return: false if the operation failed, true if it passed
    */
+  public boolean exportNodeCSV(){
 
+    return false;
+  }
 
-  //TODO: csv import method
+  //TODO: csv exportEdge method
   /**
-   * importcsv
+   * exportEdgeCSV
    *
    * @param
    * @desc
+   * @return: false if it fails
    */
+  public boolean exportEdgeCSV(){
 
-  //TODO: input filepath for input CSV
+    return false;
+  }
+
+  //TODO: csv importNode method
   /**
-   * filepath
+   * importNodeCSV
    *
-   * @desc: directs to the file where they would want to import a CSV from an already existing
+   * @param
+   * @desc
+   * @return: false if it fails
+   */
+  public boolean importNodeCSV(){
+
+    return false;
+  }
+
+  //TODO: csv importEdge method
+  /**
+   * importEdgeCSV
+   *
+   * @param
+   * @desc
+   * @return: false if it fails
+   */
+  public boolean importEdgeCSV(){
+
+    return false;
+  }
+
+  //TODO: input filepath for CSV
+  /**
+   * filepathCSV
+   *
+   * @desc: directs to the file where they would want to import a CSV from an already existing, needs like 4 conditionals, use if statements for
    * @param: (none)
+   * @return: false if fails.
    */
+  public boolean filepathCSV(){
 
+    return false;
+  }
 
 
 }
