@@ -140,27 +140,27 @@ public class DbIOCommands {
 
     switch (userInput2) {
       case "node":
-        if (prevCmd == "remove") {
+        if (prevCmd.equals("remove")) {
           System.out.println("give node id");
           displayPrompt();
           userInput3 = sc3.nextLine();
           removeNode(userInput3);
           return true;
-        } else if (prevCmd == "insert") {
+        } else if (prevCmd.equals("insert")) {
           System.out.println(
               "give node details in this format without the brackets: {xcoord,ycoord,floor,building,nodetype,longname,shortname}");
           displayPrompt();
           userInput3 = sc3.nextLine();
           insertNode(userInput3);
           return true;
-        } else if (prevCmd == "update") {
+        } else if (prevCmd.equals("update")) {
           System.out.println(
               "give node details in this format without the brackets: {xcoord,ycoord,floor,building,nodetype,longname,shortname}");
           displayPrompt();
           userInput3 = sc3.nextLine();
           updateNode(userInput3);
           return true;
-        } else if (prevCmd == "show") {
+        } else if (prevCmd.equals("show")) {
           System.out.println("give node id");
           displayPrompt();
           userInput3 = sc3.nextLine();
@@ -169,27 +169,27 @@ public class DbIOCommands {
         }
         break;
       case "edge":
-        if (prevCmd == "remove") {
+        if (prevCmd.equals("remove")) {
           System.out.println("give edge id");
           displayPrompt();
           userInput3 = sc3.nextLine();
           removeEdge(userInput3);
           return true;
-        } else if (prevCmd == "insert") {
+        } else if (prevCmd.equals("insert")) {
           System.out.println(
               "give edge {edgeid,startnode,endnode} in that format without the brackets");
           displayPrompt();
           userInput3 = sc3.nextLine();
           insertEdge(userInput3);
           return true;
-        } else if (prevCmd == "update") {
+        } else if (prevCmd.equals("update")) {
           System.out.println(
               "give edge {edgeid,startnode,endnode} in that format without the brackets");
           displayPrompt();
           userInput3 = sc3.nextLine();
           updateEdge(userInput3);
           return true;
-        } else if (prevCmd == "show") {
+        } else if (prevCmd.equals("show")) {
           System.out.println("give edge id");
           displayPrompt();
           userInput3 = sc3.nextLine();
@@ -231,14 +231,14 @@ public class DbIOCommands {
       case "import":
         displayPrompt();
         userInput2 = sc2.nextLine();
-        if (userInput2 == "node") {
+        if (userInput2.equals("node")) {
           // ask for file path, check if it is valid, and put it into the specific function
           System.out.println("Desired filepath?");
           displayPrompt();
           userInput3 = sc3.nextLine();
           // Specified function execution
           importNodeCSV(userInput3);
-        } else if (userInput2 == "edge") {
+        } else if (userInput2.equals("edge")) {
           // ask for file path, check if it is valid, and put it into the specific function
           System.out.println("Desired filepath?");
           displayPrompt();
@@ -250,14 +250,14 @@ public class DbIOCommands {
       case "export":
         displayPrompt();
         userInput2 = sc2.nextLine();
-        if (userInput2 == "node") {
+        if (userInput2.equals("node")) {
           // ask for file path, check if it is valid, and put it into the specific function
           System.out.println("Desired filepath?");
           displayPrompt();
           userInput3 = sc3.nextLine();
           // Specified function execution
           exportNodeCSV(userInput3);
-        } else if (userInput2 == "edge") {
+        } else if (userInput2.equals("edge")) {
           // ask for file path, check if it is valid, and put it into the specific function
           System.out.println("Desired filepath?");
           displayPrompt();
