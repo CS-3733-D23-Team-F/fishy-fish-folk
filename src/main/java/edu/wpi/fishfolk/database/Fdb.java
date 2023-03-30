@@ -30,12 +30,12 @@ public class Fdb {
       // STEP 1: Connect to PostgreSQL database
 
       db = connect("teamfdb", "teamf", "teamf60");
-      db.setSchema("test");
+      db.setSchema("teamfdb");
       System.out.println("[Fdb.initialize]: Current schema: " + db.getSchema() + ".");
 
       // STEP 2: Establish table objects
 
-      nodeTable = new NodeTable(db, "teamfdbd");
+      nodeTable = new NodeTable(db, "nodetable");
       if (createTable(db, nodeTable.getTableName())) {
         nodeTable.addHeaders();
       }
@@ -138,9 +138,7 @@ public class Fdb {
     }
   }
 
-  /**
-   * Starts the command line interface where users can interact with the database.
-   */
+  /** Starts the command line interface where users can interact with the database. */
   public void startCLI() {
     DbIOCommands cli = new DbIOCommands();
     cli.setNt(nodeTable);

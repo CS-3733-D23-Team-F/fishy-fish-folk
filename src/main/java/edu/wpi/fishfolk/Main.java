@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk;
 
-import edu.wpi.fishfolk.database.DbIOCommands;
 import edu.wpi.fishfolk.database.Fdb;
 
 public class Main {
@@ -9,8 +8,8 @@ public class Main {
 
     // Fapp.launch(Fapp.class, args);
 
-    Fdb fdb = new Fdb();  // Create fdb object and connect to db
+    Fdb fdb = new Fdb(); // Create fdb object and connect to db
     // fdb.runTests();  // Test add, remove, update of nodes and edges
-    fdb.startCLI();  // Start the command line interface for database interaction
+    fdb.startCLI(); // Start the command line interface for database interaction
   }
 }
