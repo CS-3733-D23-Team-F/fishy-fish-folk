@@ -150,14 +150,14 @@ public class DbIOCommands {
           return true;
         } else if (prevCmd.equals("insert")) {
           System.out.println(
-              "give node details in this format without the brackets: {xcoord,ycoord,floor,building,nodetype,longname,shortname}");
+              "give node details in this format without the brackets: {nodeid,xcoord,ycoord,floor,building,nodetype,longname,shortname}");
           displayPrompt();
           userInput3 = sc3.nextLine();
           insertNode(userInput3);
           return true;
         } else if (prevCmd.equals("update")) {
           System.out.println(
-              "give node details in this format without the brackets: {xcoord,ycoord,floor,building,nodetype,longname,shortname}");
+              "give node details in this format without the brackets: {nodeid,xcoord,ycoord,floor,building,nodetype,longname,shortname}");
           displayPrompt();
           userInput3 = sc3.nextLine();
           updateNode(userInput3);
