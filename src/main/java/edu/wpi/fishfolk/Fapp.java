@@ -6,6 +6,7 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -30,6 +31,9 @@ public class Fapp extends Application {
 
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Root.fxml"));
     final BorderPane root = loader.load();
+
+    // primaryStage.getIcons().add(new Image("file:magikarp.png"));
+    primaryStage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
 
     Fapp.rootPane = root;
 
