@@ -160,3 +160,5 @@ gradle-app.setting
 
 # End of https://www.gitignore.io/api/java,macos,gradle,intellij+all
 
+/src/main/resources/edu/wpi/fishfolk/csv/L1EdgesOutput.csv
+/src/main/resources/edu/wpi/fishfolk/csv/L1NodesOutput.csv
