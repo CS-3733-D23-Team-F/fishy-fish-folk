@@ -150,14 +150,14 @@ public class DbIOCommands {
           return true;
         } else if (prevCmd.equals("insert")) {
           System.out.println(
-              "give node details in this format without the brackets: {nodeid,xcoord,ycoord,floor,building,nodetype,longname,shortname}. You can only insert one node at a time.\n");
+              "give node details in this format without the brackets: {nodeid,xcoord,ycoord,floor,building,nodetype,longname,shortname}. \nYou can only insert one node at a time.\n");
           displayPrompt();
           userInput3 = sc3.nextLine();
           insertNode(userInput3);
           return true;
         } else if (prevCmd.equals("update")) {
           System.out.println(
-              "give node details in this format without the brackets: {nodeid,xcoord,ycoord,floor,building,nodetype,longname,shortname}. You can only update one node at a time.\n");
+              "give node details in this format without the brackets: \n{nodeid,xcoord,ycoord,floor,building,nodetype,longname,shortname}. \nYou can only update one node at a time.\n");
           displayPrompt();
           userInput3 = sc3.nextLine();
           updateNode(userInput3);
@@ -179,14 +179,14 @@ public class DbIOCommands {
           return true;
         } else if (prevCmd.equals("insert")) {
           System.out.println(
-              "give edge {edgeid,startnode,endnode} in that format without the brackets. You can only insert one edge at a time.\n");
+              "give edge {edgeid,startnode,endnode} in that format without the brackets. \nYou can only insert one edge at a time.\n");
           displayPrompt();
           userInput3 = sc3.nextLine();
           insertEdge(userInput3);
           return true;
         } else if (prevCmd.equals("update")) {
           System.out.println(
-              "give edge {edgeid,startnode,endnode} in that format without the brackets. You can only update one edge at a time.\n");
+              "give edge {edgeid,startnode,endnode} in that format without the brackets. \nYou can only update one edge at a time.\n");
           displayPrompt();
           userInput3 = sc3.nextLine();
           updateEdge(userInput3);
@@ -333,8 +333,10 @@ public class DbIOCommands {
         "  {edgeid,startnode,endnode} -This is prompt for when you want to update or insert a new edge, without the brackets. You can only insert/update one value at a time\n");
     System.out.println(
         "  {nodeid,xcoord,ycoord,floor,building,nodetype,longname,shortname} -This is prompt for when you want to update or insert a new node, without the brackets. You can only insert/update one value at a time.\n");
-    System.out.println("  {edgeid}      -prompt to just enter in the edgeid. You can only insert one value at a time\n");
-    System.out.println("  {nodeid}      -prompt to enter in just the nodeid. You can only insert one value at a time\n");
+    System.out.println(
+        "  {edgeid}      -prompt to just enter in the edgeid. You can only insert one value at a time\n");
+    System.out.println(
+        "  {nodeid}      -prompt to enter in just the nodeid. You can only insert one value at a time\n");
 
     System.out.println("\n");
   }
