@@ -49,8 +49,9 @@ import lombok.Setter;
 public class DbIOCommands {
 
   @Setter public NodeTable nt;
-
   @Setter public EdgeTable et;
+  @Setter public Connection db;
+
   /** @usage: generic constructor */
   public DbIOCommands() {}
 
@@ -289,6 +290,11 @@ public class DbIOCommands {
    * @param: (none)
    */
   public void exitCmd() {
+    try {
+      db.close();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
     System.exit(0);
   }
 

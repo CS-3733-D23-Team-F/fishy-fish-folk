@@ -143,6 +143,7 @@ public class Fdb {
     DbIOCommands cli = new DbIOCommands();
     cli.setNt(nodeTable);
     cli.setEt(edgeTable);
+    cli.setDb(db);
     cli.cycleCLI();
   }
 
