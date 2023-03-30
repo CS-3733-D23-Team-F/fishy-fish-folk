@@ -62,7 +62,7 @@ public class DbIOCommands {
    * @param: (none)
    */
   public void cycleCLI() {
-    System.out.println("Type 'help' to get the list of commands you can use.");
+    System.out.println("Type 'help' to get the list of commands you can use. ");
     while (true) {
       lineChk();
     }
