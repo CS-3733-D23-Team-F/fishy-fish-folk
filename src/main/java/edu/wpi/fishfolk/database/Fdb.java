@@ -35,7 +35,7 @@ public class Fdb {
 
       // STEP 2: Establish table objects
 
-      nodeTable = new NodeTable(db, "nodetable");
+      nodeTable = new NodeTable(db, "teamfdbd");
       if (createTable(db, nodeTable.getTableName())) {
         nodeTable.addHeaders();
       }
