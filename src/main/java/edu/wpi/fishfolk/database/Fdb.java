@@ -30,7 +30,7 @@ public class Fdb {
       // STEP 1: Connect to PostgreSQL database
 
       db = connect("teamfdb", "teamf", "teamf60");
-      db.setSchema("teamfdb");
+      db.setSchema("teamfdbd");
       System.out.println("[Fdb.initialize]: Current schema: " + db.getSchema() + ".");
 
       // STEP 2: Establish table objects
