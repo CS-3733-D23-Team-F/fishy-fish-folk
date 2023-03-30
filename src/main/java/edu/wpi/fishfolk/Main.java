@@ -46,6 +46,8 @@ public class Main {
 
       Graph graph = new Graph(nodeTable, edgeTable);
 
+      graph.populate();
+
       Path path = graph.AStar("fDEPT001L1", "fSERV001L1");
 
       System.out.println(path.toString());

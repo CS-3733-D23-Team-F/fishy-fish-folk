@@ -70,6 +70,8 @@ public class EdgeTable {
         String node1 = results.getString(headers.get(1));
         String node2 = results.getString(headers.get(2));
 
+        // System.out.println("  " + node1 + "_" + node2);
+
         edges.add(new Edge(node1, node2));
       }
 
@@ -289,7 +291,9 @@ public class EdgeTable {
     System.out.println("[EdgeTable.importCSV]: Importing CSV to table " + tableName + ".");
 
     try (BufferedReader br =
-        new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Edges.csv"))) {
+        new BufferedReader(
+            new InputStreamReader(
+                getClass().getResourceAsStream("/edu/wpi/fishfolk/csv/L1Edges.csv")))) {
 
       String line = br.readLine(); // ignore column headers which are on the first line
       while ((line = br.readLine()) != null) {

@@ -399,7 +399,9 @@ public class NodeTable {
     }
 
     try (BufferedReader br =
-        new BufferedReader(new FileReader("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv"))) {
+        new BufferedReader(
+            new InputStreamReader(
+                getClass().getResourceAsStream("/edu/wpi/fishfolk/csv/L1Nodes.csv"))); ) {
 
       String line = br.readLine(); // ignore column headers which are on the first line
       while ((line = br.readLine()) != null) {

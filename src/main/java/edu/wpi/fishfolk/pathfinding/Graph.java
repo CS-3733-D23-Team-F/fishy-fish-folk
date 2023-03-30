@@ -45,11 +45,9 @@ public class Graph {
 
     this.nodeTable = nodeTable;
     this.edgeTable = edgeTable;
-
-    populateFromCSV();
   }
 
-  public void populateFromCSV() {
+  public void populate() {
 
     LinkedList<Node> nodesLst = nodeTable.getAllNodes();
 
@@ -118,15 +116,16 @@ public class Graph {
 
   public boolean addEdge(Edge edge) {
 
-    System.out.println(edge.edgeID);
-
     Integer idx1 = id2idx.get(edge.nodeID1);
     Integer idx2 = id2idx.get(edge.nodeID2);
 
-    Point2D point1 = nodes[idx1].point;
-    Point2D point2 = nodes[idx2].point;
-
     if (idx1 != null && idx2 != null) {
+
+      System.out.println(edge.edgeID);
+
+      Point2D point1 = nodes[idx1].point;
+      Point2D point2 = nodes[idx2].point;
+
       adjMat[idx1][idx2] = point1.distance(point2);
       adjMat[idx2][idx1] = point1.distance(point2);
       nodes[idx1].degree++;
