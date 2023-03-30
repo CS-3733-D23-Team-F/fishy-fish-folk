@@ -62,6 +62,7 @@ public class DbIOCommands {
    * @param: (none)
    */
   public void cycleCLI() {
+    System.out.println("Type 'help' to get the list of commands you can use. ");
     while (true) {
       lineChk();
     }
@@ -495,11 +496,9 @@ public class DbIOCommands {
    *
    * @param
    * @desc
-   * @return: false if the operation failed, true if it passed
    */
-  public boolean exportNodeCSV(String filepath) {
+  public void exportNodeCSV(String filepath) {
     nt.exportCSV(filepath);
-    return false;
   }
 
   /**
