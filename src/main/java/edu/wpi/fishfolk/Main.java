@@ -1,12 +1,15 @@
 package edu.wpi.fishfolk;
 
-import edu.wpi.fishfolk.database.EdgeTable;
-import edu.wpi.fishfolk.database.Fdb;
-import edu.wpi.fishfolk.database.NodeTable;
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.pathfinding.*;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import javafx.geometry.Point2D;
+
 
 public class Main {
 
@@ -15,7 +18,6 @@ public class Main {
     // Fapp.launch(Fapp.class, args);
 
     try {
-
       System.out.println("\n--- ESTABLISHING DATABASE CONNECTION ---\n");
 
       Fdb fdb = new Fdb();
@@ -58,5 +60,10 @@ public class Main {
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
+    
+    
+    
+    
   }
+  
 }
