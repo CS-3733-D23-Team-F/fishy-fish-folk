@@ -36,8 +36,8 @@ public class Fapp extends Application {
     primaryStage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
 
     Fapp.rootPane = root;
-
     final Scene scene = new Scene(root);
+    primaryStage.setFullScreen(false);
     primaryStage.setScene(scene);
     primaryStage.show();
 
