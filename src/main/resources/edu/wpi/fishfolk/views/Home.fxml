@@ -36,7 +36,7 @@
             </AnchorPane>
          </children>
       </HBox>
-      <HBox minHeight="794.0" minWidth="1600.0" VBox.vgrow="ALWAYS">
+      <HBox minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
          <children>
             <HBox alignment="CENTER" minWidth="120.0" HBox.hgrow="ALWAYS" />
             <VBox maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" HBox.hgrow="ALWAYS">
