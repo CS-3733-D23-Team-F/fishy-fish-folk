@@ -170,10 +170,10 @@ public class NodeTable {
   }
 
   /**
-   * Returns a new Node from a specified entry in the table.
+   * Returns a new node from a specified entry in the table.
    *
    * @param id Node id
-   * @return New node object, returns null if specified Node does not exist in table
+   * @return New node object, returns null if specified node does not exist in table
    */
   public Node getNode(String id) {
     Statement statement;
@@ -292,6 +292,13 @@ public class NodeTable {
   }
 
   // true if updated, false if had to insert
+
+  /**
+   * Update the data for a specified node, if it doesn't exist, add it.
+   *
+   * @param node The node to update
+   * @return True if the node is updated, false if an insertion was needed
+   */
   public boolean updateNode(Node node) {
 
     if (node == null) {
@@ -363,6 +370,11 @@ public class NodeTable {
     return false;
   }
 
+  /**
+   * Remove a node from the table.
+   *
+   * @param node Node to remove
+   */
   public void removeNode(Node node) {
 
     if (node == null) {
@@ -385,7 +397,12 @@ public class NodeTable {
     }
   }
 
-  public void importCSV() {
+  /**
+   * Import a CSV as nodes in the table.
+   *
+   * @param filePath Path of the file to import from CSV
+   */
+  public void importCSV(String filePath) {
 
     System.out.println("[NodeTable.importCSV]: Importing CSV to table " + tableName + ".");
 
@@ -398,10 +415,9 @@ public class NodeTable {
       System.out.println(e.getMessage());
     }
 
-    try (BufferedReader br =
-        new BufferedReader(
-            new InputStreamReader(
-                getClass().getResourceAsStream("/edu/wpi/fishfolk/csv/L1Nodes.csv"))); ) {
+    try {
+
+      BufferedReader br = new BufferedReader(new FileReader(filePath));
 
       String line = br.readLine(); // ignore column headers which are on the first line
       while ((line = br.readLine()) != null) {
@@ -445,15 +461,17 @@ public class NodeTable {
     }
   }
 
-  public void exportCSV() {
+  /**
+   * Export nodes in the table as a CSV
+   *
+   * @param filePath Path of the file of the CSV to export to
+   */
+  public void exportCSV(String filePath) {
 
     System.out.println("[NodeTable.exportCSV]: exporting CSV from table " + tableName + ".");
 
     try {
-      PrintWriter out =
-          new PrintWriter(
-              new BufferedWriter(
-                  new FileWriter("src/main/resources/edu/wpi/fishfolk/csv/L1NodesOutput.csv")));
+      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filePath)));
 
       String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
       Statement statement = db.createStatement();

@@ -12,6 +12,12 @@ import java.util.LinkedList;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a table of edges in a PostgreSQL database.
+ *
+ * @author Christian
+ * @author Jon
+ */
 public class EdgeTable {
 
   private Connection db;
@@ -21,6 +27,12 @@ public class EdgeTable {
   private ArrayList<String> headers =
       new ArrayList<>(Arrays.asList("edgeid", "nodeid1", "nodeid2"));
 
+  /**
+   * Creates a new representation of an edge table.
+   *
+   * @param db Database connection object for this table
+   * @param tableName Name of the table
+   */
   public EdgeTable(Connection db, String tableName) {
     this.db = db;
     this.tableName = tableName.toLowerCase();
@@ -31,6 +43,10 @@ public class EdgeTable {
     this.tableName = tableName.toLowerCase();
   }
 
+  /**
+   * For empty tables only, generates new column headers for the edge table. TODO: Check if table is
+   * empty before applying new headers
+   */
   public void addHeaders() {
     Statement statement;
     try {
@@ -82,6 +98,12 @@ public class EdgeTable {
     return edges;
   }
 
+  /**
+   * Returns a new edge from a specified entry in the table.
+   *
+   * @param id Edge id
+   * @return New edge object, returns null if specified edge does not exist in table
+   */
   public Edge getEdge(String id) {
     Statement statement;
     try {
@@ -107,7 +129,12 @@ public class EdgeTable {
     return null;
   }
 
-  // True if inserted, false if duplicate or not added
+  /**
+   * Inserts an edge into the table if it does not exist.
+   *
+   * @param edge Edge to insert
+   * @return True if inserted, false if the edge already exists and/or is not added
+   */
   public boolean insertEdge(Edge edge) {
 
     if (edge == null) {
@@ -168,7 +195,12 @@ public class EdgeTable {
     return false;
   }
 
-  // True if updated, false if had to insert
+  /**
+   * Update the data for a specified edge, if it doesn't exist, add it.
+   *
+   * @param edge The edge to update
+   * @return True if the edge is updated, false if an insertion was needed
+   */
   public boolean updateEdge(Edge edge) {
 
     if (edge == null) {
@@ -232,6 +264,11 @@ public class EdgeTable {
     return false;
   }
 
+  /**
+   * Remove an edge from the table.
+   *
+   * @param edge Edge to remove
+   */
   public void removeEdge(Edge edge) {
 
     if (edge == null) {
@@ -260,7 +297,6 @@ public class EdgeTable {
     }
   }
 
-  // DEBUG ONLY
   public void testQuery() {
     Statement statement;
     try {
@@ -285,17 +321,18 @@ public class EdgeTable {
       System.out.println(e.getMessage());
     }
   }
-
-  public void importCSV() {
+  /**
+   * Import a CSV as edges in the table.
+   *
+   * @param filePath Path of the file to import from CSV
+   */
+  public void importCSV(String filePath) {
 
     System.out.println("[EdgeTable.importCSV]: Importing CSV to table " + tableName + ".");
 
-    try (BufferedReader br =
-        new BufferedReader(
-            new InputStreamReader(
-                getClass().getResourceAsStream("/edu/wpi/fishfolk/csv/L1Edges.csv")))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
-      String line = br.readLine(); // ignore column headers which are on the first line
+      String line = br.readLine();
       while ((line = br.readLine()) != null) {
 
         String[] values = line.split(",");
@@ -323,15 +360,17 @@ public class EdgeTable {
     }
   }
 
-  public void exportCSV() {
+  /**
+   * Export edges in the table as a CSV
+   *
+   * @param filePath Path of the file to export the CSV to
+   */
+  public void exportCSV(String filePath) {
 
     System.out.println("[EdgeTable.exportCSV]: Exporting CSV from table " + tableName + ".");
 
     try {
-      PrintWriter out =
-          new PrintWriter(
-              new BufferedWriter(
-                  new FileWriter("src/main/resources/edu/wpi/fishfolk/csv/L1EdgesOutput.csv")));
+      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filePath)));
       String grabAll = "SELECT * FROM " + db.getSchema() + "." + tableName + ";";
       Statement statement = db.createStatement();
       statement.execute(grabAll);
