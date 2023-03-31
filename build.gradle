@@ -111,6 +111,7 @@ jar {
 def codeCoverageExcludes = [
         'edu.wpi.fishfolk.Fapp',
         'edu.wpi.fishfolk.Main',
+
         'edu.wpi.fishfolk.controllers.*',
         'edu.wpi.fishfolk.navigation.*',
 ]

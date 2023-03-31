@@ -1,4 +1,4 @@
-package edu.wpi.fishfolk;
+package edu.wpi.fishfolk.ui;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -1,4 +1,4 @@
-package edu.wpi.fishfolk;
+package edu.wpi.fishfolk.ui;
 
 public class CreditCardInfo {
   public int expMonth;
