@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.wpi.fishfolk.controllers.SignageController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<VBox minHeight="900.0" minWidth="1600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.SignageController">
+   <children>
+      <HBox maxHeight="106.0" minHeight="106.0" style="-fx-background-color: #6CD4BC;" VBox.vgrow="ALWAYS">
+         <children>
+            <AnchorPane prefHeight="106.0" prefWidth="1440.0" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="44.203125">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="4.64" offsetY="2.0" radius="0.6599999999999999" spread="0.13" width="0.0">
+                           <color>
+                              <Color red="0.6184210777282715" green="0.6126949191093445" blue="0.6126949191093445" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <AnchorPane maxHeight="794.0" maxWidth="1300.0" minHeight="794.0" minWidth="1300.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <MFXButton fx:id="backButton" layoutX="467.0" layoutY="359.0" prefHeight="174.0" prefWidth="369.0" style="-fx-background-color: #012D5A;" text="Return Home" textFill="WHITE" AnchorPane.leftAnchor="467.0" AnchorPane.rightAnchor="464.0">
+                     <font>
+                        <Font name="Open Sans Bold" size="45.0" />
+                     </font>
+                  </MFXButton>
+                  <Text layoutX="172.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;- Surgery" wrappingWidth="294.53675842285156" AnchorPane.leftAnchor="172.0">
+                     <font>
+                        <Font size="60.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="836.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Front Desk -&gt;" textAlignment="RIGHT" wrappingWidth="377.53675842285156" AnchorPane.rightAnchor="86.46324157714844">
+                     <font>
+                        <Font size="60.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="279.0" fitWidth="369.0" layoutX="467.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="474.0" AnchorPane.leftAnchor="467.0" AnchorPane.rightAnchor="464.0" AnchorPane.topAnchor="41.0">
+                     <image>
+                        <Image url="@../images/hospitalImg1.PNG" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
