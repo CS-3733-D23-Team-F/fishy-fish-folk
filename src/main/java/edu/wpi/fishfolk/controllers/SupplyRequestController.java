@@ -1,9 +1,9 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.SupplyItem;
-import edu.wpi.fishfolk.SupplyOrder;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.ui.SupplyItem;
+import edu.wpi.fishfolk.ui.SupplyOrder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXTextField;

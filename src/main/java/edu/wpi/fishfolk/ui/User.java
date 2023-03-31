@@ -1,6 +1,6 @@
 // This class will not be used as we've been told not to
 
-package edu.wpi.fishfolk;
+package edu.wpi.fishfolk.ui;
 
 public class User {
   String name;

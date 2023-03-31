@@ -1,13 +1,12 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.CreditCardInfo;
-import edu.wpi.fishfolk.FoodItem;
-import edu.wpi.fishfolk.FoodOrder;
-import edu.wpi.fishfolk.Room;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.ui.CreditCardInfo;
+import edu.wpi.fishfolk.ui.FoodItem;
+import edu.wpi.fishfolk.ui.FoodOrder;
+import edu.wpi.fishfolk.ui.Room;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
