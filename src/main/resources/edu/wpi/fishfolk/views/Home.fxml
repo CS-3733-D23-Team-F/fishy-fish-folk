@@ -20,7 +20,16 @@
          <children>
             <AnchorPane maxHeight="84.8" minHeight="84.8" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
                <children>
-                  <MFXButton fx:id="sideBar" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                  <MFXButton fx:id="sideBar" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <graphic>
+                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/532-5328945_menu-bar-icon-white-clipart-png-download-menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="sideBarClose" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" style="-fx-background-color: #001d3a;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <graphic>
                         <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
                            <image>

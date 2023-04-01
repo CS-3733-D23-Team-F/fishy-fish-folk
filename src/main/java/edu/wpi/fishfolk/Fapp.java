@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Fapp extends Application {
-
+  double x, y = 0;
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static BorderPane rootPane;
 
@@ -38,6 +38,17 @@ public class Fapp extends Application {
     Fapp.rootPane = root;
     final Scene scene = new Scene(root);
     primaryStage.setFullScreen(false);
+    root.setOnMousePressed(
+        event -> {
+          x = event.getSceneX();
+          y = event.getSceneY();
+        });
+
+    root.setOnMouseDragged(
+        event -> {
+          primaryStage.setX(event.getScreenX() - x);
+          primaryStage.setY(event.getScreenY() - y);
+        });
     primaryStage.setScene(scene);
     primaryStage.show();
 
