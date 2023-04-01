@@ -8,7 +8,7 @@ public class Main {
 
   public static void main(String[] args) {
 
-    Fapp.launch(Fapp.class, args); //run ui
+    Fapp.launch(Fapp.class, args); // run ui
 
     Fdb fdb = new Fdb(); // Create fdb object and connect to db
     fdb.runTests(); // Test add, remove, update of nodes and edges

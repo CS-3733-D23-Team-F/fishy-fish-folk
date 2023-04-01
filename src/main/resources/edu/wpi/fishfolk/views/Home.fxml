@@ -14,13 +14,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox stylesheets="@../Styles/style.css" minHeight="900.0" minWidth="1600.0" style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.HomeController">
+<VBox minHeight="720.0" minWidth="1280.0" style="-fx-background-color: #F4F4F4;" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.HomeController">
    <children>
-      <HBox maxHeight="106.0" minHeight="106.0" minWidth="1600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+      <HBox maxHeight="84.8" minHeight="84.8" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
          <children>
-            <AnchorPane maxHeight="106.0" minHeight="106.0" prefHeight="106.0" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
+            <AnchorPane maxHeight="84.8" minHeight="84.8" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
                <children>
-                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="44.203125">
+                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="100.0">
                      <font>
                         <Font name="Open Sans Bold" size="32.0" />
                      </font>
@@ -36,14 +36,14 @@
             </AnchorPane>
          </children>
       </HBox>
-      <HBox minHeight="794.0" minWidth="1600.0" VBox.vgrow="ALWAYS">
+      <HBox minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER" minWidth="150.0" HBox.hgrow="ALWAYS" />
-            <VBox minHeight="794.0" minWidth="1300.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER" minWidth="120.0" HBox.hgrow="ALWAYS" />
+            <VBox maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" HBox.hgrow="ALWAYS">
                <children>
-                  <AnchorPane maxHeight="794.0" maxWidth="1300.0" minHeight="794.0" minWidth="1300.0" style="-fx-background-color: F4F4F4;" VBox.vgrow="ALWAYS">
+                  <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" style="-fx-background-color: F4F4F4;" VBox.vgrow="ALWAYS">
                      <children>
-                        <MFXButton fx:id="signageNav" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutX="475.0" layoutY="225.0" maxHeight="350.0" maxWidth="350.0" minHeight="350.0" minWidth="350.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Signage" textFill="WHITE" AnchorPane.bottomAnchor="219.0" AnchorPane.leftAnchor="475.0" AnchorPane.rightAnchor="475.0" AnchorPane.topAnchor="225.0">
+                        <MFXButton fx:id="signageNav" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutX="475.0" layoutY="225.0" maxHeight="280.0" maxWidth="280.0" minHeight="280.0" minWidth="280.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Signage" textFill="WHITE" AnchorPane.bottomAnchor="178.0" AnchorPane.leftAnchor="380.0" AnchorPane.rightAnchor="380.0" AnchorPane.topAnchor="178.0">
                            <font>
                               <Font name="Open Sans Bold" size="30.0" />
                            </font>
@@ -51,15 +51,15 @@
                               <Insets />
                            </opaqueInsets>
                            <padding>
-                              <Insets left="90.0" />
+                              <Insets left="80.0" top="45.0" />
                            </padding>
                            <graphic>
-                              <ImageView cache="true" fitHeight="180.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView cache="true" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/pathfinding.png" />
                                  </image>
                                  <viewport>
-                                    <Rectangle2D height="200.0" minX="500.0" />
+                                    <Rectangle2D height="1130.0" width="1200.0" />
                                  </viewport>
                                  <effect>
                                     <ColorAdjust brightness="-0.35" contrast="1.0" hue="-0.51" saturation="1.0" />
@@ -67,7 +67,7 @@
                               </ImageView>
                            </graphic>
                         </MFXButton>
-                        <MFXButton fx:id="mealNav" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutY="225.0" maxHeight="350.0" maxWidth="350.0" minHeight="350.0" minWidth="350.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31; -fx-background-image: url(&quot;images/food.png&quot;);" styleClass="navButtons" text="Meal Delivery" textFill="WHITE" AnchorPane.bottomAnchor="219.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="225.0">
+                        <MFXButton fx:id="mealNav" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutY="225.0" maxHeight="280.0" maxWidth="280.0" minHeight="280.0" minWidth="280.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31; -fx-background-image: url(&quot;images/food.png&quot;);" styleClass="navButtons" text="Meal Delivery" textFill="WHITE" AnchorPane.bottomAnchor="178.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="178.0">
                            <font>
                               <Font name="Open Sans Bold" size="30.0" />
                            </font>
@@ -75,12 +75,12 @@
                               <Insets />
                            </opaqueInsets>
                            <graphic>
-                              <ImageView fitHeight="180.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/food.png" />
                                  </image>
                                  <viewport>
-                                    <Rectangle2D height="300.0" width="300.0" />
+                                    <Rectangle2D height="330.0" width="330.0" />
                                  </viewport>
                                  <effect>
                                     <ColorAdjust brightness="0.12" contrast="0.45" hue="-0.52" saturation="-0.45" />
@@ -88,10 +88,10 @@
                               </ImageView>
                            </graphic>
                            <padding>
-                              <Insets left="90.0" />
+                              <Insets left="60.0" />
                            </padding>
                         </MFXButton>
-                        <MFXButton fx:id="officeNav" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutX="950.0" layoutY="225.0" maxHeight="350.0" maxWidth="350.0" minHeight="350.0" minWidth="350.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Office Supplies" textFill="WHITE" AnchorPane.bottomAnchor="219.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="225.0">
+                        <MFXButton fx:id="officeNav" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutX="950.0" layoutY="225.0" maxHeight="280.0" maxWidth="280.0" minHeight="280.0" minWidth="280.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Office Supplies" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="178.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="178.0">
                            <font>
                               <Font name="Open Sans Bold" size="30.0" />
                            </font>
@@ -99,16 +99,19 @@
                               <Insets />
                            </opaqueInsets>
                            <padding>
-                              <Insets bottom="15.0" left="80.0" />
+                              <Insets left="40.0" />
                            </padding>
                            <graphic>
-                              <ImageView fitHeight="180.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/delivery.png" />
                                  </image>
                                  <effect>
                                     <ColorAdjust brightness="0.29" contrast="0.35" hue="-0.59" saturation="1.0" />
                                  </effect>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
                               </ImageView>
                            </graphic>
                         </MFXButton>
@@ -116,7 +119,7 @@
                   </AnchorPane>
                </children>
             </VBox>
-            <HBox alignment="CENTER" minWidth="150.0" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" minWidth="120.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </children>
