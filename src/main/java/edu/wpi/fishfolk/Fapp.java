@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Fapp extends Application {
-  double x, y = 0;
+
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static BorderPane rootPane;
 
@@ -32,25 +32,16 @@ public class Fapp extends Application {
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Root.fxml"));
     final BorderPane root = loader.load();
 
-    primaryStage.getIcons().add(new Image("file:magikarp.png"));
-    // primaryStage.getIcons().add(new
-    // Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
+    // primaryStage.getIcons().add(new Image("file:magikarp.png"));
+    primaryStage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
 
     Fapp.rootPane = root;
+
     final Scene scene = new Scene(root);
-    primaryStage.setFullScreen(false);
-    /*scene
-    .getStylesheets()
-    .add(
-        this.getClass()
-            .getResource(
-                "ui/edu/wpi/fishfolk/java/resources/edu/wpi/fishfolk/Styles/styles.css")
-            .toExternalForm());*/
     primaryStage.setScene(scene);
     primaryStage.show();
 
-    Navigation.navigate(Screen.HOME);
-    // Navigation.navigate(Screen.FOOD_ORDERS_VIEW);
+    Navigation.navigate(Screen.PATHFINDING);
   }
 
   @Override
