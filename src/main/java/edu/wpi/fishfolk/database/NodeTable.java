@@ -169,6 +169,41 @@ public class NodeTable {
     return nodes;
   }
 
+  public ArrayList<String>[] getAllDestinationNodes() {
+
+    ArrayList<String> ids = new ArrayList<>();
+    ArrayList<String> names = new ArrayList<>();
+
+    try {
+      String grabAll =
+          "SELECT nodeid, longname FROM "
+              + db.getSchema()
+              + "."
+              + tableName
+              + " WHERE nodetype != '"
+              + NodeType.HALL
+              + "';";
+      Statement statement = db.createStatement();
+      statement.execute(grabAll);
+      ResultSet results = statement.getResultSet();
+
+      while (results.next()) {
+        // System.out.println(results.getRow());  // Removed for cleanliness, feel free to restore
+
+        String id = results.getString("nodeid");
+        String name = results.getString("longname");
+
+        ids.add(id);
+        names.add(name);
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return new ArrayList[] {ids, names};
+  }
+
   /**
    * Returns a new node from a specified entry in the table.
    *

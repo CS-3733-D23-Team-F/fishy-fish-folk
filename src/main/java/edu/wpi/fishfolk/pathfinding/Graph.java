@@ -45,6 +45,8 @@ public class Graph {
 
     this.nodeTable = nodeTable;
     this.edgeTable = edgeTable;
+
+    populate();
   }
 
   public void populate() {
