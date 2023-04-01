@@ -71,6 +71,8 @@ public class PathfindingController extends AbsController {
       segments.add(line(points.get(i - 1), points.get(i)));
     }
 
+    // segments.add(new Line(0, 7, 1120, 787)); //diagonal from top left to bottom right
+
     mapAnchor.getChildren().addAll(segments);
   }
 
@@ -82,15 +84,16 @@ public class PathfindingController extends AbsController {
 
   public Point2D convert(Point2D p) {
 
-    double x = 900 + 4050 - p.getX(); // lower right corner is fixed
-    double y = 150 + 3000 - p.getY();
+    // center gets mapped to center. center1 -> center2
+    Point2D center1 = new Point2D(900 + 4050 / 2, 150 + 3000 / 2);
+    Point2D center2 = new Point2D(1120 / 2, 780 / 2);
 
-    x = x * 1176 / (4050); // scale down
-    y = y * 800 / (3000);
+    Point2D rel = p.subtract(center1); // p relative to the center
 
-    x = 1176 - x - 25; // magic number seems to fix the alignment problem in the x axis
-    y = 800 - y;
+    // strech x and y separately
+    double x = rel.getX() * 1120 / 4050;
+    double y = rel.getY() * 780 / 3000 + 7;
 
-    return new Point2D(x, y);
+    return new Point2D(x, y).add(center2);
   }
 }

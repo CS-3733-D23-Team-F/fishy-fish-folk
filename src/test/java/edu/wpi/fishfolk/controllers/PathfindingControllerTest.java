@@ -12,10 +12,10 @@ class PathfindingControllerTest {
 
     PathfindingController controller = new PathfindingController();
 
-    System.out.println(controller.convert(new Point2D(850, 150)));
+    System.out.println(controller.convert(new Point2D(900, 150)));
 
-    System.out.println(controller.convert(new Point2D(5000, 3400)));
+    System.out.println(controller.convert(new Point2D(900 + 4050, 150)));
 
-    System.out.println(controller.convert(new Point2D(850, 0)));
+    System.out.println(controller.convert(new Point2D(2925, 1650)));
   }
 }
