@@ -10,9 +10,13 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 
 public class FoodOrderController {
@@ -22,7 +26,18 @@ public class FoodOrderController {
   int hoursAhead;
   int currentPage; // for menus with more than 3 items
   int[] itemQuantities;
+  @FXML MFXButton signageNav;
 
+  @FXML MFXButton mealNav;
+
+  @FXML MFXButton officeNav;
+
+  @FXML MFXButton sideBar;
+
+  @FXML MFXButton exitButton;
+
+  @FXML MFXButton sideBarClose;
+  @FXML AnchorPane slider;
   @FXML MFXButton prevPageButton, nextPageButton;
   @FXML MFXButton addOneButton, addTwoButton, addThreeButton;
   @FXML MFXButton removeOneButton, removeTwoButton, removeThreeButton;
@@ -50,7 +65,47 @@ public class FoodOrderController {
     plusHour.setOnAction(event -> delayHour());
     minusDay.setOnAction(event -> undelayDay());
     minusHour.setOnAction(event -> undelayHour());
-    asapButton.setOnAction(event -> setTimeAsap());
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
+    officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    exitButton.setOnMouseClicked(event -> System.exit(0));
+
+    slider.setTranslateX(-400);
+    sideBarClose.setVisible(false);
+
+    sideBar.setOnMouseClicked(
+        event -> {
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+          slide.setToX(0);
+          slide.play();
+
+          slider.setTranslateX(-400);
+
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                sideBar.setVisible(false);
+                sideBarClose.setVisible(true);
+              });
+        });
+
+    sideBarClose.setOnMouseClicked(
+        event -> {
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+          slide.setToX(-400);
+          slide.play();
+
+          slider.setTranslateX(0);
+
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                sideBar.setVisible(true);
+                sideBarClose.setVisible(false);
+              });
+        });
     submitButton.setOnAction(
         event -> {
           if (currentOrder.submit()) {
