@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-<?import org.controlsfx.control.PopOver?>
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import org.controlsfx.control.*?>
 
-<VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FoodOrderController">
+<VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FoodOrderController">
    <children>
-      <HBox maxHeight="106.0" minHeight="106.0" minWidth="1600.0">
+      <HBox maxHeight="84.8" minHeight="84.8" prefHeight="84.8" VBox.vgrow="ALWAYS">
          <children>
-            <AnchorPane maxHeight="106.0" minHeight="106.0" prefHeight="106.0" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
+            <AnchorPane maxHeight="84.8" minHeight="84.8" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
                <children>
-                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="44.203125">
+                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96" AnchorPane.rightAnchor="100.0">
                      <font>
                         <Font name="Open Sans Bold" size="32.0" />
                      </font>
@@ -34,132 +31,132 @@
             </AnchorPane>
          </children>
       </HBox>
-      <HBox minHeight="794.0" minWidth="1600.0" VBox.vgrow="ALWAYS">
+      <HBox minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
          <children>
-            <HBox HBox.hgrow="ALWAYS" />
-            <AnchorPane maxHeight="794.0" maxWidth="1300.0" minHeight="794.0" minWidth="1300.0" HBox.hgrow="ALWAYS">
+            <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
+            <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" HBox.hgrow="ALWAYS">
                <children>
-                  <MFXButton fx:id="nextPageButton" alignment="center" layoutX="888.0" layoutY="20.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Next Page" />
-                  <MFXButton fx:id="prevPageButton" alignment="center" layoutX="320.0" layoutY="20.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Previous Page" />
-                  <Rectangle fill="#cccccc" height="100" layoutX="320.0" layoutY="110.0" width="800.0" />
-                  <Rectangle fill="#cccccc" height="100" layoutX="320.0" layoutY="390.0" width="800.0" />
-                  <Rectangle fill="#cccccc" height="100" layoutX="320.0" layoutY="250.0" width="800.0" />
-                  <Text fx:id="itemText1" layoutX="349.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText1" wrappingWidth="300.0">
+                  <MFXButton fx:id="nextPageButton" alignment="center" maxHeight="50.0" maxWidth="232.0" minHeight="50.0" minWidth="232.0" mnemonicParsing="false" style="-fx-background-color: #CCCCCC;" text="Next Page" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" />
+                  <MFXButton fx:id="prevPageButton" alignment="center" layoutX="320.0" layoutY="20.0" maxHeight="50.0" maxWidth="232.0" minHeight="50.0" minWidth="232.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Previous Page" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0" />
+                  <Rectangle fill="#cccccc" height="100" width="990.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="100.0" />
+                  <Rectangle fill="#cccccc" height="100" width="990.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="350.0" />
+                  <Rectangle fill="#cccccc" height="100" width="990.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="225.0" />
+                  <Text fx:id="itemText1" layoutX="349.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText1" wrappingWidth="300.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="125.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
                   </Text>
-                  <Text fx:id="itemText3" layoutX="349.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText3" wrappingWidth="300.0">
+                  <Text fx:id="itemPrice1" layoutX="649.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyPrice1" wrappingWidth="221.796875" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="125.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
                   </Text>
-                  <Text fx:id="itemText2" layoutX="349.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText2" wrappingWidth="300.0">
+                  <Text fx:id="itemText2" layoutX="349.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText2" wrappingWidth="300.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="250.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
                   </Text>
-                  <Text fx:id="itemPrice1" layoutX="649.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyPrice1" wrappingWidth="221.796875">
+                  <Text fx:id="itemPrice2" layoutX="649.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyPrice2" wrappingWidth="221.796875" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="250.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
                   </Text>
-                  <Text fx:id="itemPrice3" layoutX="649.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyPrice3" wrappingWidth="221.796875">
+                  <Text fx:id="itemText3" layoutX="349.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText3" wrappingWidth="300.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="375.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
                   </Text>
-                  <Text fx:id="itemPrice2" layoutX="649.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyPrice2" wrappingWidth="221.796875">
+                  <Text fx:id="itemPrice3" layoutX="649.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyPrice3" wrappingWidth="221.796875" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="375.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
                   </Text>
-                  <MFXButton fx:id="addOneButton" layoutX="1050.0" layoutY="135.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="+">
+                  <MFXButton fx:id="addOneButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="+" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="125.0">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="removeOneButton" layoutX="900.0" layoutY="135.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="-">
+                  <MFXButton fx:id="removeOneButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="-" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="125.0">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </MFXButton>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="975.0" layoutY="135.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
-                  <Text fx:id="itemQuantity1" layoutX="975.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="50.0">
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="975.0" layoutY="135.0" stroke="BLACK" strokeType="INSIDE" width="50.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="125.0" />
+                  <Text fx:id="itemQuantity1" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="50.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="125.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
                   </Text>
-                  <MFXButton fx:id="addTwoButton" layoutX="1050.0" layoutY="275.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="+">
+                  <MFXButton fx:id="addTwoButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="+" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="250.0">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="removeTwoButton" layoutX="900.0" layoutY="275.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="-">
+                  <MFXButton fx:id="removeTwoButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="-" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="250.0">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </MFXButton>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="975.0" layoutY="275.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
-                  <Text fx:id="itemQuantity2" layoutX="975.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="50.0">
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="975.0" layoutY="275.0" stroke="BLACK" strokeType="INSIDE" width="50.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="250.0" />
+                  <Text fx:id="itemQuantity2" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="50.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="250.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
                   </Text>
-                  <MFXButton fx:id="addThreeButton" layoutX="1050.0" layoutY="414.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="+">
+                  <MFXButton fx:id="addThreeButton" layoutX="1050.0" layoutY="414.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="+" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="375.0">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="removeThreeButton" layoutX="900.0" layoutY="414.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="-">
+                  <MFXButton fx:id="removeThreeButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="-" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="375.0">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </MFXButton>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="975.0" layoutY="414.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
-                  <Text fx:id="itemQuantity3" layoutX="975.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="50.0">
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="975.0" layoutY="414.0" stroke="BLACK" strokeType="INSIDE" width="50.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="375.0" />
+                  <Text fx:id="itemQuantity3" layoutX="975.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="50.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="375.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
                   </Text>
-                  <Rectangle fill="#cccccc" height="100" layoutX="320.0" layoutY="620.0" width="500.0" />
-                  <MFXButton fx:id="minusHour" layoutX="425.0" layoutY="655.0" mnemonicParsing="false" text="- hour">
+                  <Rectangle fill="#cccccc" height="90.0" layoutX="320.0" layoutY="620.0" width="500.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="270.0" />
+                  <MFXButton fx:id="minusHour" layoutX="425.0" layoutY="655.0" mnemonicParsing="false" text="- hour" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="370.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="minusDay" layoutX="350.0" layoutY="655.0" mnemonicParsing="false" text="- day">
+                  <MFXButton fx:id="minusDay" layoutX="350.0" layoutY="655.0" mnemonicParsing="false" text="- day" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="300.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="plusDay" layoutX="735.0" layoutY="655.0" mnemonicParsing="false" text="+ day">
+                  <MFXButton fx:id="plusDay" layoutX="735.0" layoutY="655.0" mnemonicParsing="false" text="+ day" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="300.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="plusHour" layoutX="660.0" layoutY="655.0" mnemonicParsing="false" text="+ hour">
+                  <MFXButton fx:id="plusHour" layoutX="660.0" layoutY="655.0" mnemonicParsing="false" text="+ hour" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="370.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </MFXButton>
-                  <Text fx:id="timeText" layoutX="498.0" layoutY="665.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon, 12/23 11:15AM" textAlignment="CENTER" wrappingWidth="144.0">
+                  <Text fx:id="timeText" layoutX="498.0" layoutY="665.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon, 12/23 11:15AM" textAlignment="CENTER" wrappingWidth="144.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="448.0" AnchorPane.rightAnchor="448.0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Text>
-                  <Rectangle fill="#cccccc" height="100" layoutX="870.0" layoutY="620.0" width="250.0" />
-                  <ChoiceBox fx:id="roomSelector" layoutX="925.0" layoutY="657.0" prefWidth="150.0" />
-                  <MFXButton fx:id="cancelButton" alignment="center" layoutX="320.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Cancel Order" />
-                  <MFXButton fx:id="clearButton" alignment="center" layoutX="604.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Clear Order" />
-                  <MFXButton fx:id="submitButton" alignment="center" layoutX="888.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Submit Order">
+                  <Rectangle fill="#cccccc" height="90.0" width="232.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0" />
+                  <ChoiceBox fx:id="roomSelector" layoutX="925.0" layoutY="657.0" prefWidth="150.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="70.0" />
+                  <MFXButton fx:id="cancelButton" alignment="center" layoutX="320.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Cancel Order" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="475.0" />
+                  <MFXButton fx:id="clearButton" alignment="center" layoutX="604.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Clear Order" AnchorPane.leftAnchor="275.0" AnchorPane.topAnchor="475.0" />
+                  <MFXButton fx:id="submitButton" alignment="center" layoutX="888.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Submit Order" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="475.0">
                      <PopOver fx:id="notiPop">
 
                </PopOver>
                   </MFXButton>
                </children>
             </AnchorPane>
-            <HBox HBox.hgrow="ALWAYS" />
+            <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </children>

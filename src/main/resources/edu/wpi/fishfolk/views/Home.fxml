@@ -16,11 +16,11 @@
 
 <VBox minHeight="720.0" minWidth="1280.0" style="-fx-background-color: #F4F4F4;" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.HomeController">
    <children>
-      <HBox maxHeight="106.0" minHeight="84.8" minWidth="1600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+      <HBox maxHeight="84.8" minHeight="84.8" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
          <children>
-            <AnchorPane maxHeight="84.8" minHeight="84.8" minWidth="1280.0" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
+            <AnchorPane maxHeight="84.8" minHeight="84.8" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
                <children>
-                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="333.0">
+                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="100.0">
                      <font>
                         <Font name="Open Sans Bold" size="32.0" />
                      </font>

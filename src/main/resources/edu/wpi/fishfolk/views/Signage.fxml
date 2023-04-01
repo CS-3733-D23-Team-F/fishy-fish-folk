@@ -13,11 +13,11 @@
 
 <VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.SignageController">
    <children>
-      <HBox maxHeight="106.0" minHeight="106.0" style="-fx-background-color: #6CD4BC;" VBox.vgrow="ALWAYS">
+      <HBox maxHeight="84.8" minHeight="84.8" style="-fx-background-color: #6CD4BC;" VBox.vgrow="ALWAYS">
          <children>
-            <AnchorPane prefHeight="106.0" prefWidth="1440.0" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
+            <AnchorPane maxHeight="84.8" minHeight="84.8" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
                <children>
-                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="44.203125">
+                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96" AnchorPane.rightAnchor="100.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
@@ -33,34 +33,34 @@
             </AnchorPane>
          </children>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox minHeight="635.2" minWidth="1280.0">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <AnchorPane maxHeight="794.0" maxWidth="1300.0" minHeight="794.0" minWidth="1300.0" HBox.hgrow="ALWAYS">
+            <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
+            <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" HBox.hgrow="ALWAYS">
                <children>
-                  <MFXButton fx:id="backButton" layoutX="467.0" layoutY="359.0" prefHeight="174.0" prefWidth="369.0" style="-fx-background-color: #012D5A;" text="Return Home" textFill="WHITE" AnchorPane.leftAnchor="467.0" AnchorPane.rightAnchor="464.0">
+                  <MFXButton fx:id="backButton" layoutX="467.0" layoutY="359.0" prefHeight="174.0" prefWidth="369.0" style="-fx-background-color: #012D5A;" text="Return Home" textFill="WHITE" AnchorPane.leftAnchor="335.5467" AnchorPane.rightAnchor="335.4533">
                      <font>
                         <Font name="Open Sans Bold" size="45.0" />
                      </font>
                   </MFXButton>
-                  <Text layoutX="172.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;- Surgery" wrappingWidth="294.53675842285156" AnchorPane.leftAnchor="172.0">
+                  <Text layoutX="172.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;- Surgery" wrappingWidth="294.53675842285156" AnchorPane.leftAnchor="0.0">
                      <font>
-                        <Font size="60.0" />
+                        <Font name="Open Sans Bold" size="48.0" />
                      </font>
                   </Text>
-                  <Text layoutX="836.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Front Desk -&gt;" textAlignment="RIGHT" wrappingWidth="377.53675842285156" AnchorPane.rightAnchor="86.46324157714844">
+                  <Text layoutX="836.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Front Desk -&gt;" textAlignment="RIGHT" wrappingWidth="377.53675842285156" AnchorPane.rightAnchor="0.0">
                      <font>
-                        <Font size="60.0" />
+                        <Font name="Open Sans Bold" size="48.0" />
                      </font>
                   </Text>
-                  <ImageView fitHeight="279.0" fitWidth="369.0" layoutX="467.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="474.0" AnchorPane.leftAnchor="467.0" AnchorPane.rightAnchor="464.0" AnchorPane.topAnchor="41.0">
+                  <ImageView fitHeight="279.0" fitWidth="369.0" layoutX="467.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="474.0" AnchorPane.leftAnchor="335.5" AnchorPane.rightAnchor="335.5" AnchorPane.topAnchor="41.0">
                      <image>
                         <Image url="@../images/hospitalImg1.PNG" />
                      </image>
                   </ImageView>
                </children>
             </AnchorPane>
-            <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </children>
