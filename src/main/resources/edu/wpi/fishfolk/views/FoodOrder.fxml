@@ -146,7 +146,7 @@
                      </font>
                   </Text>
                   <Rectangle fill="#cccccc" height="90.0" width="232.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0" />
-                  <ChoiceBox fx:id="roomSelector" layoutX="925.0" layoutY="657.0" prefWidth="150.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="70.0" />
+                  <ComboBox fx:id="roomSelector" layoutX="925.0" layoutY="657.0" prefWidth="150.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="70.0" />
                   <MFXButton fx:id="cancelButton" alignment="center" layoutX="320.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Cancel Order" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="475.0" />
                   <MFXButton fx:id="clearButton" alignment="center" layoutX="604.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Clear Order" AnchorPane.leftAnchor="275.0" AnchorPane.topAnchor="475.0" />
                   <MFXButton fx:id="submitButton" alignment="center" layoutX="888.0" layoutY="528.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="232.0" style="-fx-background-color: #CCCCCC;" text="Submit Order" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="475.0">
