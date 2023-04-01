@@ -5,3 +5,7 @@
 .navButtons:hover{
     -fx-background-color: #0464b4;
 }
+
+.sideNav:hover{
+    -fx-background-color: #0e4675;
+}

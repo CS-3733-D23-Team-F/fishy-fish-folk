@@ -38,17 +38,13 @@ public class Fapp extends Application {
     Fapp.rootPane = root;
     final Scene scene = new Scene(root);
     primaryStage.setFullScreen(false);
-    root.setOnMousePressed(
-        event -> {
-          x = event.getSceneX();
-          y = event.getSceneY();
-        });
-
-    root.setOnMouseDragged(
-        event -> {
-          primaryStage.setX(event.getScreenX() - x);
-          primaryStage.setY(event.getScreenY() - y);
-        });
+    /*scene
+    .getStylesheets()
+    .add(
+        this.getClass()
+            .getResource(
+                "ui/edu/wpi/fishfolk/java/resources/edu/wpi/fishfolk/Styles/styles.css")
+            .toExternalForm());*/
     primaryStage.setScene(scene);
     primaryStage.show();
 

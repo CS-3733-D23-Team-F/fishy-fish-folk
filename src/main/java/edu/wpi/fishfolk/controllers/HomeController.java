@@ -21,6 +21,8 @@ public class HomeController {
 
   @FXML MFXButton sideBar;
 
+  @FXML MFXButton exitButton;
+
   @FXML MFXButton sideBarClose;
   @FXML AnchorPane slider;
 
@@ -30,8 +32,9 @@ public class HomeController {
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    exitButton.setOnMouseClicked(event -> System.exit(0));
 
-    slider.setTranslateX(-300);
+    slider.setTranslateX(-400);
     sideBarClose.setVisible(false);
 
     sideBar.setOnMouseClicked(
@@ -42,7 +45,7 @@ public class HomeController {
           slide.setToX(0);
           slide.play();
 
-          slider.setTranslateX(-300);
+          slider.setTranslateX(-400);
 
           slide.setOnFinished(
               (ActionEvent e) -> {
@@ -56,7 +59,7 @@ public class HomeController {
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
-          slide.setToX(-300);
+          slide.setToX(-400);
           slide.play();
 
           slider.setTranslateX(0);
@@ -64,7 +67,7 @@ public class HomeController {
           slide.setOnFinished(
               (ActionEvent e) -> {
                 sideBar.setVisible(true);
-                sideBarClose.setVisible(true);
+                sideBarClose.setVisible(false);
               });
         });
   }

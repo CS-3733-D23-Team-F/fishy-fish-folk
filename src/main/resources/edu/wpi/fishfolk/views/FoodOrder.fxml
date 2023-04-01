@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
-<?import org.controlsfx.control.*?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.PopOver?>
 
-<VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FoodOrderController">
+<VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FoodOrderController">
    <children>
       <HBox maxHeight="84.8" minHeight="84.8" prefHeight="84.8" VBox.vgrow="ALWAYS">
          <children>
@@ -27,13 +34,31 @@
                         </DropShadow>
                      </effect>
                   </Text>
+                  <MFXButton fx:id="sideBar" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/532-5328945_menu-bar-icon-white-clipart-png-download-menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="sideBarClose" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" style="-fx-background-color: #001d3a;">
+                     <graphic>
+                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/532-5328945_menu-bar-icon-white-clipart-png-download-menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
                </children>
             </AnchorPane>
          </children>
       </HBox>
       <HBox minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
          <children>
-            <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
+            <HBox minWidth="70.0" HBox.hgrow="ALWAYS" />
             <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" HBox.hgrow="ALWAYS">
                <children>
                   <MFXButton fx:id="nextPageButton" alignment="center" maxHeight="50.0" maxWidth="232.0" minHeight="50.0" minWidth="232.0" mnemonicParsing="false" style="-fx-background-color: #CCCCCC;" text="Next Page" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" />
@@ -154,6 +179,68 @@
 
                </PopOver>
                   </MFXButton>
+                  <AnchorPane fx:id="slider" maxWidth="400.0" minWidth="400.0" style="-fx-background-color: #054982;">
+                     <children>
+                        <VBox maxWidth="400.0" minWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" style="-fx-background-color: transparent;" styleClass="sideNav" text="Meal Delivery" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="signageNav" alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" style="-fx-background-color: transparent;" styleClass="sideNav" text="Signage" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="officeNav" alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" style="-fx-background-color: transparent;" styleClass="sideNav" text="Office Supplies" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" style="-fx-background-color: transparent;" styleClass="sideNav" text="Pathfinding" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="300.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="exitButton" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" style="-fx-background-color: transparent;" styleClass="sideNav" text="Exit Application" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/powerOff.png" />
+                                             </image>
+                                             <effect>
+                                                <ColorAdjust brightness="1.0" />
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
             <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
