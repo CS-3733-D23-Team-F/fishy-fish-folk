@@ -1,8 +1,10 @@
 package edu.wpi.fishfolk.pathfinding;
 
+import edu.wpi.fishfolk.database.TableEntry;
+import java.util.ArrayList;
 import javafx.geometry.Point2D;
 
-public class Node {
+public class Node extends TableEntry {
 
   public String id;
   public Point2D point;
@@ -40,8 +42,35 @@ public class Node {
   }
 
   @Override
-  public boolean equals(Object o) {
-    Node other = (Node) o;
-    return id.equals(other.id);
+  public TableEntry construct(ArrayList<String> data) {
+
+    if (data.size() < 8) {
+      return null;
+    }
+
+    return new Node(
+        data.get(0),
+        new Point2D(Double.parseDouble(data.get(1)), Double.parseDouble(data.get(2))),
+        data.get(3),
+        data.get(4),
+        NodeType.valueOf(data.get(5).trim()),
+        data.get(6),
+        data.get(7));
+  }
+
+  @Override
+  public ArrayList<String> deconstruct() {
+
+    ArrayList<String> data = new ArrayList<>();
+    data.add(id);
+    data.add(Double.toString(point.getX()));
+    data.add(Double.toString(point.getY()));
+    data.add(floor);
+    data.add(building);
+    data.add(String.valueOf(type));
+    data.add(longName);
+    data.add(shortName);
+
+    return data;
   }
 }
