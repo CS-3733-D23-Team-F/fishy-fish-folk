@@ -179,7 +179,7 @@
 
                </PopOver>
                   </MFXButton>
-                  <AnchorPane fx:id="slider" maxWidth="400.0" minWidth="400.0" style="-fx-background-color: #054982;">
+                  <AnchorPane fx:id="slider" maxWidth="400.0" minWidth="400.0" style="-fx-background-color: #054982;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-100.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <VBox maxWidth="400.0" minWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
