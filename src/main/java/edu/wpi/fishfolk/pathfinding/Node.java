@@ -1,19 +1,21 @@
 package edu.wpi.fishfolk.pathfinding;
 
 import javafx.geometry.Point2D;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Node {
 
-  public String id;
-  public String oldID;
-  public Point2D point;
-  public String floor;
-  public String building;
-  public NodeType type;
-  public String longName;
-  public String shortName;
+  @Getter @Setter public String id;
+  @Getter @Setter public String oldID;
+  @Getter @Setter public Point2D point;
+  @Getter @Setter public String floor;
+  @Getter @Setter public String building;
+  @Getter @Setter public NodeType type;
+  @Getter @Setter public String longName;
+  @Getter @Setter public String shortName;
 
-  public int degree;
+  @Getter @Setter public int degree;
 
   public Node(
       String id,
