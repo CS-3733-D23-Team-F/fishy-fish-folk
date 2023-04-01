@@ -53,9 +53,9 @@
                   </AnchorPane>
                </children>
             </VBox>
-            <AnchorPane fx:id="mapAnchor" maxHeight="800.0" minHeight="680.0" minWidth="1000.0">
+            <AnchorPane fx:id="mapAnchor" minHeight="680.0" minWidth="1000.0">
                <children>
-                  <ImageView fx:id="mapImg" fitHeight="800.0" fitWidth="1176.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="mapImg" fitHeight="780.0" fitWidth="1120.0" pickOnBounds="true" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="0.0">
                      <image>
                         <Image url="@../map/00_thelowerlevel1.png" />
                      </image>
