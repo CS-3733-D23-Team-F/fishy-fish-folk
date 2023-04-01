@@ -61,7 +61,7 @@
                <children>
                   <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" style="-fx-background-color: F4F4F4;" VBox.vgrow="ALWAYS">
                      <children>
-                        <MFXButton fx:id="signageNav" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutX="475.0" layoutY="225.0" maxHeight="280.0" maxWidth="1.7976931348623157E308" minHeight="280.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Signage" textFill="WHITE" AnchorPane.bottomAnchor="178.0" AnchorPane.leftAnchor="380.0" AnchorPane.rightAnchor="380.0" AnchorPane.topAnchor="178.0">
+                        <MFXButton fx:id="signageButton" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutX="475.0" layoutY="225.0" maxHeight="280.0" maxWidth="1.7976931348623157E308" minHeight="280.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Signage" textFill="WHITE" AnchorPane.bottomAnchor="178.0" AnchorPane.leftAnchor="380.0" AnchorPane.rightAnchor="380.0" AnchorPane.topAnchor="178.0">
                            <font>
                               <Font name="Open Sans Bold" size="30.0" />
                            </font>
@@ -85,7 +85,7 @@
                               </ImageView>
                            </graphic>
                         </MFXButton>
-                        <MFXButton fx:id="mealNav" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutY="225.0" maxHeight="280.0" maxWidth="280.0" minHeight="280.0" minWidth="280.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31; -fx-background-image: url(&quot;images/food.png&quot;);" styleClass="navButtons" text="Meal Delivery" textFill="WHITE" AnchorPane.bottomAnchor="178.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="178.0">
+                        <MFXButton fx:id="mealButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutY="225.0" maxHeight="280.0" maxWidth="280.0" minHeight="280.0" minWidth="280.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31; -fx-background-image: url(&quot;images/food.png&quot;);" styleClass="navButtons" text="Meal Delivery" textFill="WHITE" AnchorPane.bottomAnchor="178.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="178.0">
                            <font>
                               <Font name="Open Sans Bold" size="30.0" />
                            </font>
@@ -109,7 +109,7 @@
                               <Insets left="60.0" />
                            </padding>
                         </MFXButton>
-                        <MFXButton fx:id="officeNav" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutX="950.0" layoutY="225.0" maxHeight="280.0" maxWidth="280.0" minHeight="280.0" minWidth="280.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Office Supplies" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="178.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="178.0">
+                        <MFXButton fx:id="officeButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" layoutX="950.0" layoutY="225.0" maxHeight="280.0" maxWidth="280.0" minHeight="280.0" minWidth="280.0" style="-fx-background-color: #012D5A; -fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Office Supplies" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="178.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="178.0">
                            <font>
                               <Font name="Open Sans Bold" size="30.0" />
                            </font>
