@@ -1,5 +1,7 @@
 package edu.wpi.fishfolk.database;
 
+
+//TODO: needs starting 5 Subclasses NodeEntry, EdgeEntry, LocEntry, MoveEntry, MicroNodeEntry
 import edu.wpi.fishfolk.pathfinding.Node;
 import java.util.ArrayList;
 

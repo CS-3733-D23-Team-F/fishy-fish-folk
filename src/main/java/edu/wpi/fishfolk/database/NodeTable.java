@@ -1,5 +1,7 @@
 package edu.wpi.fishfolk.database;
 
+//TODO: modify this class with Trajan's plans
+
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.io.*;
