@@ -23,6 +23,9 @@ public class EdgeTable extends Table{
   private final ArrayList<String> headers =
       new ArrayList<>(List.of("edgeid", "startnode", "endnode"));
 
+  private final ArrayList<String> headerTypes =
+          new ArrayList<>(List.of("int", "int", "int"));
+
   /**
    * Creates a new representation of an edge table.
    *
@@ -36,31 +39,10 @@ public class EdgeTable extends Table{
   }
 
   /**
-   * For empty tables only, generates new column headers for the edge table. TODO: Check if table is
-   * empty before applying new headers
+   * For empty tables only, generates new column headers for the edge table. Makes use of Table's implementation
    */
   public void addHeaders() {
-    Statement statement;
-    try {
-      String query =
-          "ALTER TABLE "
-              + tableName
-              + " ADD COLUMN "
-              + headers.get(0)
-              + " TEXT,"
-              + " ADD COLUMN "
-              + headers.get(1)
-              + " TEXT,"
-              + " ADD COLUMN "
-              + headers.get(2)
-              + " TEXT;";
-      statement = db.createStatement();
-      statement.executeUpdate(query);
-      System.out.println(
-          "[EdgeTable.addHeaders]: Column headers generated for table " + tableName + ".");
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
+    super.addHeaders(this.headers, this.headerTypes);
   }
 
   /**
