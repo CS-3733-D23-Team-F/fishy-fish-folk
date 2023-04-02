@@ -89,6 +89,7 @@ public class Graph {
     size = newSize;
   }
 
+
   public boolean addNode(Node n) {
 
     if (id2idx.containsKey(n.id)) { // duplicates
@@ -208,14 +209,13 @@ public class Graph {
     // distance from start node: 0 for start, -MIN_INT for all others
     // heuristic: approximate distances from all points to the target endpoint
     String endFloor = nodes[id2idx.get(end)].floor;
+    Point2D endPoint = nodes[id2idx.get(end)].point;
+
 
     for (int node = 0; node < size; node++) {
 
       fromStart[node] = Integer.MIN_VALUE;
-
-      if (nodes[node].floor.equals(endFloor)) {
-        heuristic[node] = distance(nodes[node].id, end);
-      }
+      heuristic[node] = Integer.MIN_VALUE;
 
       // TODO heuristic for two nodes on different floors
 
@@ -250,11 +250,19 @@ public class Graph {
 
       for (int other = 0; other < size; other++) {
 
-        double cost = fromStart[other] + heuristic[other];
+        if(!visited[other] && fromStart[other] > -1) {
 
-        if (cost >= 0 && cost < min && !visited[other]) {
-          min = cost;
-          current_node = other;
+          if(heuristic[other] < -1 && nodes[other].floor.equals(endFloor)){
+            heuristic[other] = nodes[other].point.distance(endPoint);
+          }
+
+          double cost = fromStart[other] + heuristic[other];
+
+
+          if (cost >= 0 && cost < min) {
+            min = cost;
+            current_node = other;
+          }
         }
       }
     }
