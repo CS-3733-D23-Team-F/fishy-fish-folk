@@ -1,4 +1,3 @@
 package edu.wpi.fishfolk.database;
 
-public class MoveEntry {
-}
+public class MicroNode {}
