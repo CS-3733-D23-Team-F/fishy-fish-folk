@@ -2,6 +2,7 @@ package edu.wpi.fishfolk.database;
 
 //TODO: modify this class with Trajan's plans
 
+import edu.wpi.fishfolk.pathfinding.Location;
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.io.*;
@@ -48,30 +49,62 @@ public class NodeTable extends Table {
     return null;
   }
 
-  @Override
-  public boolean insert(TableEntry tableEntry){
+  public boolean insert(Node node, String date){
+
+    MicroNode microNode = new MicroNode(node.id, node.point.getX(), node.point.getY(), node.floor, node.building);
+    Move move = new Move(node.id, node.longName, date);
+    Location location = new Location(node.longName, node.shortName, node.type);
+
+    if(
+      microNodeTable.insert(microNode) &&
+      moveTable.insert(move) &&
+      locationTable.insert(location)
+    ){
+      return true;
+    }
 
     return false;
   }
 
-  @Override
-  public boolean update(TableEntry tableEntry){
+  public boolean update(Node node, String date){
+    MicroNode microNode = new MicroNode(node.id, node.point.getX(), node.point.getY(), node.floor, node.building);
+    Move move = new Move(node.id, node.longName, date);
+    Location location = new Location(node.longName, node.shortName, node.type);
+
+    if(
+      microNodeTable.update(microNode) &&
+      moveTable.update(move) &&
+      locationTable.insert(location)
+    ){
+      return true;
+    }
 
     return false;
   }
+  public void remove(Node node, String date){
+    MicroNode microNode = new MicroNode(node.id, node.point.getX(), node.point.getY(), node.floor, node.building);
+    Move move = new Move(node.id, node.longName, date);
+    Location location = new Location(node.longName, node.shortName, node.type);
 
-  @Override
-  public void remove(TableEntry tableEntry){
+    microNodeTable.remove(microNode);
+    moveTable.remove(move);
+    locationTable.remove(location);
+
+  }
+
+  public void importCSV(String microNodePath, String locationPath, String movePath){
+
+    microNodeTable.importCSV(microNodePath);
+    locationTable.importCSV(locationPath);
+    moveTable.importCSV(movePath);
 
   }
 
   @Override
-  public void importCSV(String filepath){
-
-  }
-
-  @Override
-  public void exportCSV(String filepath){
+  public void exportCSV(String microNodePath, String locationPath, String movePath){
+    microNodeTable.exportCSV(microNodePath);
+    locationTable.exportCSV(locationPath);
+    moveTable.exportCSV(movePath);
 
   }
 
