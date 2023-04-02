@@ -20,7 +20,7 @@ import lombok.Getter;
  * @author Christian
  * @author Jon
  */
-public class NodeTable {
+public class NodeTable extends Table{
 
   private final Connection db;
   @Getter private final String tableName;
@@ -43,6 +43,7 @@ public class NodeTable {
    * @param tableName Name of the table
    */
   public NodeTable(Connection db, String tableName) {
+    super(db, tableName.toLowerCase());
     this.db = db;
     this.tableName = tableName.toLowerCase();
   }

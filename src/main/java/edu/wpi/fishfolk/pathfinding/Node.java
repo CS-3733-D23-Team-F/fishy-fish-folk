@@ -44,7 +44,7 @@ public class Node extends TableEntry {
   @Override
   public TableEntry construct(ArrayList<String> data) {
 
-    if (data.size() < 8) {
+    if (data.size() < 8 || data.size() > 8) {
       return null;
     }
 

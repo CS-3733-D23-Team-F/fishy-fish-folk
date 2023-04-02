@@ -16,7 +16,7 @@ import lombok.Getter;
  * @author Christian
  * @author Jon
  */
-public class EdgeTable {
+public class EdgeTable extends Table{
 
   private final Connection db;
   @Getter private final String tableName;
@@ -30,6 +30,7 @@ public class EdgeTable {
    * @param tableName Name of the table
    */
   public EdgeTable(Connection db, String tableName) {
+    super(db, tableName.toLowerCase());
     this.db = db;
     this.tableName = tableName.toLowerCase();
   }
@@ -318,4 +319,5 @@ public class EdgeTable {
       System.out.println(e.getMessage());
     }
   }
+
 }

@@ -1,6 +1,10 @@
 package edu.wpi.fishfolk.pathfinding;
 
-public class Locations {
+import edu.wpi.fishfolk.database.TableEntry;
+
+import java.util.ArrayList;
+
+public class Locations{
         public String locationid;
         public String longname;
         public String shortname;
@@ -12,4 +16,5 @@ public class Locations {
             this.shortname = shortname;
             this.nodetype = nodetype;
         }
+
 }
