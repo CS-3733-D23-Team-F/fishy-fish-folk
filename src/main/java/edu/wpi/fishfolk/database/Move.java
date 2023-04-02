@@ -9,11 +9,35 @@ public class Move extends TableEntry {
     public String date;
     @Override
     public TableEntry construct(ArrayList<String> data) {
-        return null;
+        if(data.size() != 8){
+            return null;
+        }
+
+        return new Move(
+                Integer.parseInt(data.get(0)),
+                data.get(1),
+                data.get(2));
     }
 
     @Override
     public ArrayList<String> deconstruct() {
-        return null;
+        ArrayList<String> data = new ArrayList<>();
+        data.add(Integer.toString(this.nodeid));
+        data.add(this.longName);
+        data.add(this.date);
+
+
+        return data;
+
     }
+
+    public Move(int nodeid, String longName, String date){
+        this.nodeid = nodeid;
+        this.longName = longName;
+        this.date = date;
+    }
+
+
+
+
 }

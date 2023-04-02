@@ -10,7 +10,7 @@ import javafx.geometry.Point2D;
 public class Fdb {
 
   public NodeTable nodeTable;
-  public EdgeTable edgeTable;
+  public Table edgeTable;
 
   public Connection db;
 

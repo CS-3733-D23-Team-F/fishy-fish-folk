@@ -4,14 +4,12 @@ import edu.wpi.fishfolk.database.TableEntry;
 
 import java.util.ArrayList;
 
-public class Locations extends TableEntry{
-        public String locationid;
+public class Location extends TableEntry{
         public String longname;
         public String shortname;
         public NodeType nodetype;
 
-        public Locations(String locationid, String longname, String shortname, NodeType nodetype){
-            this.locationid = locationid;
+        public Location(String longname, String shortname, NodeType nodetype){
             this.longname = longname;
             this.shortname = shortname;
             this.nodetype = nodetype;
@@ -19,15 +17,14 @@ public class Locations extends TableEntry{
 
     @Override
     public TableEntry construct(ArrayList<String> data) {
-        if(data.size() < 4 || data.size() > 4){
+        if(data.size() != 3){
             return null;
         }
         if (nodetype.isItNodeType(data.get(3))){
-            return new Locations(
+            return new Location(
                     data.get(0),
                     data.get(1),
-                    data.get(2),
-                    nodetype.makeStringIntoNodeType(data.get(3)));
+                    nodetype.makeStringIntoNodeType(data.get(2)));
         }
         System.out.println("Incorrect Input, NodeType not given");
         return null;
@@ -37,7 +34,6 @@ public class Locations extends TableEntry{
     @Override
     public ArrayList<String> deconstruct() {
             ArrayList<String> data = new ArrayList<>();
-            data.add(locationid);
             data.add(longname);
             data.add(shortname);
             data.add(nodetype.toString());
