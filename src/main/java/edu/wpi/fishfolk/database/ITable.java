@@ -57,6 +57,14 @@ public interface ITable {
   void remove(String id);
 
   /**
+   * Check if the provided id exists in the table.
+   *
+   * @param id
+   * @return true if a row in the table matches the provided id, otherwise false
+   */
+  boolean exists(String id);
+
+  /**
    * Overwrite the Table with the data found at the provided filepath. Make sure the filepath leads
    * to a CSV file, not just a folder.
    *

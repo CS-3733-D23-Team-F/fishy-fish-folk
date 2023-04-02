@@ -13,7 +13,7 @@ public class Graph {
   int size;
   double[][] adjMat;
   Node[] nodes;
-  HashMap<String, Integer> id2idx; // string id to index in nodes array and adjacency matrix
+  HashMap<Integer, Integer> id2idx; // string id to index in nodes array and adjacency matrix
 
   private int lastIdx;
 
@@ -33,7 +33,7 @@ public class Graph {
       return false;
     }
 
-    id2idx.put(n.id, lastIdx);
+    id2idx.put(n.nid, lastIdx);
     nodes[lastIdx] = n;
 
     lastIdx++;
@@ -73,7 +73,7 @@ public class Graph {
     }
   }
 
-  public Path bfs(String start, String end) {
+  public Path bfs(int start, int end) {
 
     // check for correctness by inputting edge list into https://graphonline.ru/en/
 
@@ -83,24 +83,24 @@ public class Graph {
 
     boolean[] visited = new boolean[size];
 
-    LinkedList<String> queue = new LinkedList<>(); // queue of next nodes to look at in bfs
+    LinkedList<Integer> queue = new LinkedList<>(); // queue of next nodes to look at in bfs
 
-    String[] previous =
-        new String[size]; // used to store the ids of the previous node in order to retrace the path
+    // used to store the ids of the previous node in order to retrace the path
+    int[] previous = new int[size];
 
     queue.add(start);
 
     while (!queue.isEmpty()) {
 
-      String cur = queue.removeFirst();
+      int cur = queue.removeFirst();
 
-      if (cur.equals(end)) { // reached end
+      if (cur == end) { // reached end
         Path path = new Path();
 
         path.addFirst(end, nodes[id2idx.get(end)].point);
 
-        while (!cur.equals(start)) { // retrace path from the end to the start
-          String prev = previous[id2idx.get(cur)];
+        while (cur != start) { // retrace path from the end to the start
+          int prev = previous[id2idx.get(cur)];
           path.addFirst(prev, nodes[id2idx.get(prev)].point);
           cur = prev;
         }
@@ -114,7 +114,7 @@ public class Graph {
 
           if (adjMat[id2idx.get(cur)][other] != 0.0 // Fixed to 0.0 now that matrix is edge weights
               && !visited[other]) { // 1 means cur is connected to other
-            String next = nodes[other].id;
+            int next = nodes[other].nid;
             previous[id2idx.get(next)] = cur;
             queue.addLast(next);
           }
@@ -127,7 +127,7 @@ public class Graph {
     return null;
   }
 
-  public Path AStar(String start, String end) {
+  public Path AStar(int start, int end) {
 
     if (!id2idx.containsKey(start) || !id2idx.containsKey(end)) {
       return null;
@@ -149,7 +149,7 @@ public class Graph {
       fromStart[node] = Integer.MIN_VALUE;
 
       if (nodes[node].floor.equals(endFloor)) {
-        heuristic[node] = distance(nodes[node].id, end);
+        heuristic[node] = distance(nodes[node].nid, end);
       }
 
       // TODO heuristic for two nodes on different floors
@@ -197,7 +197,7 @@ public class Graph {
     Path path = new Path();
 
     while (!(current_node == id2idx.get(start))) { // retrace path from the end to the start
-      path.addFirst(nodes[current_node].id, nodes[current_node].point);
+      path.addFirst(nodes[current_node].nid, nodes[current_node].point);
       current_node = lastVisited[current_node];
     }
     path.addFirst(start, nodes[id2idx.get(start)].point);
@@ -209,7 +209,7 @@ public class Graph {
     return path;
   }
 
-  public double distance(String n1, String n2) {
+  public double distance(int n1, int n2) {
     return nodes[id2idx.get(n1)].point.distance(nodes[id2idx.get(n2)].point);
   }
 
@@ -225,7 +225,7 @@ public class Graph {
 
      */
 
-    for (String id : id2idx.keySet()) {
+    for (int id : id2idx.keySet()) {
 
       System.out.println(id);
     }

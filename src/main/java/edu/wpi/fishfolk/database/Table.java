@@ -52,8 +52,6 @@ public class Table implements ITable {
     this.headers = _headers;
     this.numHeaders = headers.size();
 
-    System.out.println("[" + this.getClass().getSimpleName() + ".addHeaders]: Adding headers.");
-
     try {
 
       String query = "ALTER TABLE " + tableName;
@@ -70,9 +68,9 @@ public class Table implements ITable {
       System.out.println(
           "["
               + this.getClass().getSimpleName()
-              + ".addHeaders]: Column headers generated for table "
+              + ".addHeaders]: Added column headers to table \""
               + tableName
-              + ".");
+              + "\".");
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -145,11 +143,11 @@ public class Table implements ITable {
       System.out.println(
           "["
               + this.getClass().getSimpleName()
-              + ".insert]: TableEntry "
+              + ".insert]: TableEntry \""
               + tableEntry.id
-              + " successfully inserted into table "
+              + "\" successfully inserted into table \""
               + tableName
-              + ".");
+              + "\".");
       return true;
 
     } catch (SQLException e) {
@@ -167,12 +165,12 @@ public class Table implements ITable {
         return insert(tableEntry);
       }
 
-      // update if does exist
+      // id does exist so update
       String query = "UPDATE " + dbConnection.getSchema() + "." + tableName + " SET ";
 
       ArrayList<String> data = tableEntry.deconstruct();
       for (int i = 0; i < numHeaders; i++) {
-        query += headers.get(0) + " = '" + data.get(i) + "',";
+        query += headers.get(i) + " = '" + data.get(i) + "',";
       }
 
       query = query.substring(0, query.length() - 1) + " WHERE id = '" + tableEntry.id + "';";
@@ -183,11 +181,11 @@ public class Table implements ITable {
       System.out.println(
           "["
               + this.getClass().getSimpleName()
-              + ".update]: Successfully updated entry  "
+              + ".update]: Successfully updated entry \""
               + tableEntry.id
-              + " in table"
+              + "\" in table \""
               + tableName
-              + ".");
+              + "\".");
       return true;
 
     } catch (SQLException e) {
@@ -204,7 +202,7 @@ public class Table implements ITable {
         return false;
       }
 
-      // update if does exist
+      // id does exist so update
       String query =
           "UPDATE "
               + dbConnection.getSchema()
@@ -226,52 +224,17 @@ public class Table implements ITable {
               + this.getClass().getSimpleName()
               + ".update]: Successfully updated entry "
               + id
-              + " attr "
+              + "'s attribute \""
               + attr
-              + " to value "
+              + "\" to value \""
               + value
-              + " in table"
+              + "\" in table \""
               + tableName
-              + ".");
+              + "\".");
       return true;
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
-      return false;
-    }
-  }
-
-  private boolean exists(String id) {
-    try {
-      String exists =
-          "SELECT EXISTS (SELECT FROM "
-              + dbConnection.getSchema()
-              + "."
-              + tableName
-              + " WHERE id = '"
-              + id
-              + "');";
-
-      Statement statement = dbConnection.createStatement();
-      statement.execute(exists);
-      ResultSet results = statement.getResultSet();
-      results.next();
-
-      if (!results.getBoolean("exists")) {
-        System.out.println(
-            "["
-                + this.getClass().getSimpleName()
-                + ".insert]: TableEntry "
-                + id
-                + " doesn't exist in table "
-                + tableName
-                + ".");
-        return false;
-      } else {
-        return true;
-      }
-    } catch (SQLException e) {
-      System.out.println(e.getErrorCode());
       return false;
     }
   }
@@ -287,13 +250,49 @@ public class Table implements ITable {
       System.out.println(
           "["
               + this.getClass().getSimpleName()
-              + ".update]: Successfully removed  "
+              + ".update]: Successfully removed \""
               + id
-              + " from table "
+              + "\" from table \""
               + tableName
-              + ".");
+              + "\".");
     } catch (SQLException e) {
       System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public boolean exists(String id) {
+    try {
+      String exists =
+          "SELECT EXISTS (SELECT FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE id = '"
+              + id
+              + "');";
+
+      Statement statement = dbConnection.createStatement();
+      statement.execute(exists);
+      ResultSet results = statement.getResultSet();
+      results.next();
+
+      boolean ans = results.getBoolean("exists");
+
+      System.out.println(
+          "["
+              + this.getClass().getSimpleName()
+              + ".exists]: TableEntry "
+              + id
+              + (ans ? " does" : " does not")
+              + " exist in table \""
+              + tableName
+              + "\".");
+      return ans;
+
+    } catch (SQLException e) {
+      System.out.println(e.getErrorCode());
+      return false;
     }
   }
 
@@ -306,11 +305,11 @@ public class Table implements ITable {
     System.out.println(
         "["
             + this.getClass().getSimpleName()
-            + ".import]: importing "
+            + ".import]: importing \""
             + filename
-            + " into table "
+            + "\" into table \""
             + tableName
-            + ".");
+            + "\".");
 
     try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
 
@@ -335,11 +334,11 @@ public class Table implements ITable {
       System.out.println(
           "["
               + this.getClass().getSimpleName()
-              + ".import]: Successfully imported "
+              + ".import]: Successfully imported \""
               + filename
-              + " into table "
+              + "\" into table \""
               + tableName
-              + ".");
+              + "\".");
       br.close();
     } catch (Exception e) {
       System.out.println(e.getMessage());
@@ -353,16 +352,16 @@ public class Table implements ITable {
     // see
     // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ofPattern-java.lang.String-
     String filename =
-        tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss"));
+        tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
 
     System.out.println(
         "["
             + this.getClass().getSimpleName()
-            + ".export]: exporting table "
+            + ".export]: exporting table \""
             + tableName
-            + " into "
+            + "\" into \""
             + filename
-            + ".");
+            + "\".");
 
     try {
       PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filepath + filename)));
@@ -376,13 +375,22 @@ public class Table implements ITable {
       while (results.next()) {
 
         String line = "";
-        for (int i = 0; i < numHeaders; i++) {
+        for (int i = 1; i <= numHeaders; i++) {
           line += results.getString(i) + ",";
         }
         out.println(line.substring(0, line.length() - 1));
       }
 
       out.close();
+
+      System.out.println(
+          "["
+              + this.getClass().getSimpleName()
+              + ".export]: successfully exported table \""
+              + tableName
+              + "\" into \""
+              + filename
+              + "\".");
 
     } catch (Exception e) {
       System.out.println(e.getMessage());
