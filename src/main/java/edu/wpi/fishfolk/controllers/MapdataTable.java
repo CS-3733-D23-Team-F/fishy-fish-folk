@@ -19,7 +19,6 @@ public class MapdataTable {
   @FXML private TableColumn<Node, String> longName;
   @FXML private TableColumn<Node, String> shortName;
 
-  @Override
   public void initialize(URL url, Node node) {
     // sets up the columns in the table
     id.setCellValueFactory(new PropertyValueFactory<Node, String>("id"));
