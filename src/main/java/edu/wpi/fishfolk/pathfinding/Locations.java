@@ -36,6 +36,11 @@ public class Locations extends TableEntry{
 
     @Override
     public ArrayList<String> deconstruct() {
-        return null;
+            ArrayList<String> data = new ArrayList<>();
+            data.add(locationid);
+            data.add(longname);
+            data.add(shortname);
+            data.add(nodetype.toString());
+            return data;
     }
 }
