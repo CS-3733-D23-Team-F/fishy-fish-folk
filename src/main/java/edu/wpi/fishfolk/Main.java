@@ -8,7 +8,8 @@ public class Main {
 
     // Fapp.launch(Fapp.class, args);
 
-    Fdb fdb = new Fdb(); // Create fdb object and connect to db
+    Fdb fdb = new Fdb(); // Create fdb object
+    fdb.initialize(); // init internal attributes and connect to databases
     fdb.runTests(); // Test add, remove, update of nodes and edges
     fdb.startCLI(); // Start the command line interface for database interaction
   }

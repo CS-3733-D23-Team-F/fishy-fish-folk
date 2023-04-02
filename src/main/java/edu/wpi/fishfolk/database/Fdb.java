@@ -15,7 +15,7 @@ public class Fdb {
   public Connection db;
 
   public Fdb() {
-    initialize();
+    this.db = connect("teamfdb", "teamf", "teamf60");
   }
 
   /**
@@ -127,7 +127,7 @@ public class Fdb {
         System.out.println("[Fdb.createTable]: Table " + tbName + " already exists.");
         return false;
       } else {
-        String query = "CREATE TABLE " + tbName + " (id SERIAL PRIMARY KEY);";
+        String query = "CREATE TABLE " + tbName + " (id VARCHAR(10) PRIMARY KEY);";
         statement.executeUpdate(query);
         System.out.println("[Fdb.createTable]: Table " + tbName + " created.");
         return true;
