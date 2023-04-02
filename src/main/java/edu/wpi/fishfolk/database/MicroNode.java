@@ -1,7 +1,7 @@
 package edu.wpi.fishfolk.database;
 
 
-import java.util.ArrayList;
+import javafx.geometry.Point2D;import java.util.ArrayList;
 
 /**
  *
@@ -11,47 +11,40 @@ import java.util.ArrayList;
 
 //TODO: charles work, check Node.csv
 public class MicroNode extends TableEntry{
-
-    public int nodeid;
-
-    public double xcoord;
-    public double ycoord;
+    public Point2D point;
     public String floor;
-
     public String building;
 
     @Override
-    public TableEntry construct(ArrayList<String> data) {
+    public boolean construct(ArrayList<String> data) {
         if(data.size() != 5){
-            return null;
+            return false;
         }
 
-        return new MicroNode(
-                Integer.parseInt(data.get(0)),
+        this.id = data.get(0);
+        this.point = new Point2D(
                 Double.parseDouble(data.get(1)),
-                Double.parseDouble(data.get(2)),
-                data.get(3),
-                data.get(4)
-        );
-
+                Double.parseDouble(data.get(2)));
+        this.floor = data.get(3);
+        this.building = data.get(4);
+        return true;
     }
 
     @Override
     public ArrayList<String> deconstruct() {
         ArrayList<String> data = new ArrayList<>();
-        data.add(Integer.toString(this.nodeid));
-        data.add(Double.toString(this.xcoord));
-        data.add(Double.toString(this.ycoord));
+        data.add(this.id);
+        data.add(Double.toString(this.point.getX()));
+        data.add(Double.toString(this.point.getY()));
         data.add(floor);
         data.add(building);
 
         return data;
     }
 
-    public MicroNode(int nodeid, double xcoord, double ycoord, String floor, String building){
-        this.nodeid = nodeid;
-        this.xcoord = xcoord;
-        this.ycoord = ycoord;
+    public MicroNode(int nodeId, double xcoord, double ycoord, String floor, String building){
+        this.id = Integer.toString(nodeId);
+        this.point = new Point2D(xcoord, ycoord);
         this.floor = floor;
         this.building = building;
     }

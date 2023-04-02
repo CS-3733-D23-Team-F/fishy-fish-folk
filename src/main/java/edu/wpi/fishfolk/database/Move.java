@@ -3,41 +3,34 @@ package edu.wpi.fishfolk.database;
 import java.util.ArrayList;
 
 public class Move extends TableEntry {
-
-    public int nodeid;
     public String longName;
     public String date;
     @Override
-    public TableEntry construct(ArrayList<String> data) {
+    public boolean construct(ArrayList<String> data) {
         if(data.size() != 8){
-            return null;
+            return false;
         }
 
-        return new Move(
-                Integer.parseInt(data.get(0)),
-                data.get(1),
-                data.get(2));
+        this.id = data.get(0);
+        this.longName = data.get(1);
+        this.date = data.get(2);
+        return true;
     }
 
     @Override
     public ArrayList<String> deconstruct() {
         ArrayList<String> data = new ArrayList<>();
-        data.add(Integer.toString(this.nodeid));
+        data.add(this.id);
         data.add(this.longName);
         data.add(this.date);
 
-
         return data;
-
     }
 
-    public Move(int nodeid, String longName, String date){
-        this.nodeid = nodeid;
+    public Move(int nodeId, String longName, String date){
+        this.id = Integer.toString(nodeId);
         this.longName = longName;
         this.date = date;
     }
-
-
-
 
 }

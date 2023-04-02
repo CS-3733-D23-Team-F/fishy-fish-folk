@@ -1,33 +1,30 @@
 package edu.wpi.fishfolk.database;
 
-import edu.wpi.fishfolk.database.TableEntry;import edu.wpi.fishfolk.pathfinding.NodeType;
+import edu.wpi.fishfolk.pathfinding.Node;import edu.wpi.fishfolk.pathfinding.NodeType;
 
 import java.util.ArrayList;
 
 public class Location extends TableEntry{
         public String longname;
         public String shortname;
-        public NodeType nodetype;
+        public NodeType type;
 
-        public Location(String longname, String shortname, NodeType nodetype){
+        public Location(String longname, String shortname, NodeType nodeType){
             this.longname = longname;
             this.shortname = shortname;
-            this.nodetype = nodetype;
+            this.type = nodeType;
         }
 
     @Override
-    public TableEntry construct(ArrayList<String> data) {
+    public boolean construct(ArrayList<String> data) {
         if(data.size() != 3){
-            return null;
+            return false;
         }
-        if (nodetype.isItNodeType(data.get(3))){
-            return new Location(
-                    data.get(0),
-                    data.get(1),
-                    nodetype.makeStringIntoNodeType(data.get(2)));
-        }
-        System.out.println("Incorrect Input, NodeType not given");
-        return null;
+
+        this.longname = data.get(0);
+        this.shortname = data.get(1);
+        this.type = NodeType.valueOf(data.get(2)); //throws error if string is not valie type
+        return true;
     }
 
 
@@ -36,7 +33,7 @@ public class Location extends TableEntry{
             ArrayList<String> data = new ArrayList<>();
             data.add(longname);
             data.add(shortname);
-            data.add(nodetype.toString());
+            data.add(type.toString());
             return data;
     }
 }

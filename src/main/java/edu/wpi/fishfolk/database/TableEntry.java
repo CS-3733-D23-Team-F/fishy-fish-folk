@@ -7,7 +7,7 @@ public abstract class TableEntry {
 
   public String id;
 
-  public abstract TableEntry construct(ArrayList<String> data);
+  public abstract boolean construct(ArrayList<String> data);
 
   public abstract ArrayList<String> deconstruct();
 

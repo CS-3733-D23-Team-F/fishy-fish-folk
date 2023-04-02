@@ -6,34 +6,34 @@ import javafx.geometry.Point2D;
 import java.util.ArrayList;
 
 public class Edge extends TableEntry {
+  public String node1;
+  public String node2;
 
-  public String edgeid;
-  public String startnode;
-  public String endnode;
-
-  public Edge(String edgeid, String startnode, String endnode) {
-    this.edgeid = edgeid;
-    this.startnode = startnode;
-    this.endnode = endnode;
+  public Edge(String node1, String node2) {
+    this.id = node1 + "_" + node2;
+    this.node1 = node1;
+    this.node2 = node2;
   }
 
   @Override
-  public TableEntry construct(ArrayList<String> data) {
-    if(data.size() < 3 || data.size() > 3){
-      return null;
+  public boolean construct(ArrayList<String> data) {
+
+    if(data.size() != 3){
+      return false;
     }
-    return new Edge(
-            data.get(0),
-            data.get(1),
-            data.get(2));
+
+    this.id = data.get(0);
+    this.node1 = data.get(1);
+    this.node2 = data.get(2);
+    return true;
   }
 
   @Override
   public ArrayList<String> deconstruct() {
     ArrayList<String> data = new ArrayList<>();
-    data.add(edgeid);
-    data.add(startnode);
-    data.add(endnode);
+    data.add(id);
+    data.add(node1);
+    data.add(node2);
     return data;
   }
 }
