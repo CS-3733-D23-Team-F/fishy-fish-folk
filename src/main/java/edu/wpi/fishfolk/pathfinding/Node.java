@@ -6,7 +6,7 @@ import javafx.geometry.Point2D;
 
 public class Node extends TableEntry {
 
-  public String id;
+  public int nid; // int representation of string id. for use instead of parsing
   public Point2D point;
   public String floor;
   public String building;
@@ -17,7 +17,7 @@ public class Node extends TableEntry {
   public int degree;
 
   public Node(
-      String id,
+      int id,
       Point2D point,
       String floor,
       String building,
@@ -25,7 +25,8 @@ public class Node extends TableEntry {
       String longName,
       String shortName) {
 
-    this.id = id;
+    this.id = Integer.toString(id);
+    this.nid = nid;
     this.point = point;
     this.floor = floor;
     this.building = building;
@@ -38,24 +39,24 @@ public class Node extends TableEntry {
 
   @Override
   public int hashCode() {
-    return id.hashCode();
+    return id.hashCode(); // potentially salt this before hashing
   }
 
   @Override
-  public TableEntry construct(ArrayList<String> data) {
+  public boolean construct(ArrayList<String> data) {
 
-    if (data.size() < 8 || data.size() > 8) {
-      return null;
+    if (data.size() != 8) {
+      return false;
     }
 
-    return new Node(
-        data.get(0),
-        new Point2D(Double.parseDouble(data.get(1)), Double.parseDouble(data.get(2))),
-        data.get(3),
-        data.get(4),
-        NodeType.valueOf(data.get(5).trim()),
-        data.get(6),
-        data.get(7));
+    this.id = data.get(0);
+    this.point = new Point2D(Double.parseDouble(data.get(1)), Double.parseDouble(data.get(2)));
+    this.floor = data.get(3);
+    this.building = data.get(4);
+    this.type = NodeType.valueOf(data.get(5).trim());
+    this.longName = data.get(6);
+    this.shortName = data.get(7);
+    return true;
   }
 
   @Override

@@ -1,18 +1,8 @@
 package edu.wpi.fishfolk.database;
 
-//TODO: modify this class with Trajan's plans
-
-import edu.wpi.fishfolk.pathfinding.Location;
 import edu.wpi.fishfolk.pathfinding.Node;
-import edu.wpi.fishfolk.pathfinding.NodeType;
-import java.io.*;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-import javafx.geometry.Point2D;
 import lombok.Getter;
 
 /**
@@ -20,15 +10,17 @@ import lombok.Getter;
  *
  * @author Christian
  * @author Jon
+ * @author Charlie
+ * @author Trajan
  */
 public class NodeTable extends Table {
 
   private final Connection db;
   @Getter private final String tableName;
 
-  Table microNodeTable;
-  Table moveTable;
-  Table locationTable;
+  Table microNodeTable; // id -> x, y, floor, building
+  Table moveTable;      //id -> longname, date
+  Table locationTable;  // longname -> shortname, type
 
   /**
    * Creates a new representation of a node table.
@@ -51,45 +43,38 @@ public class NodeTable extends Table {
 
   public boolean insert(Node node, String date){
 
-    MicroNode microNode = new MicroNode(node.id, node.point.getX(), node.point.getY(), node.floor, node.building);
-    Move move = new Move(node.id, node.longName, date);
+    MicroNode microNode = new MicroNode(node.nid, node.point.getX(), node.point.getY(), node.floor, node.building);
+    Move move = new Move(node.nid, node.longName, date);
     Location location = new Location(node.longName, node.shortName, node.type);
 
-    if(
-      microNodeTable.insert(microNode) &&
-      moveTable.insert(move) &&
-      locationTable.insert(location)
-    ){
-      return true;
-    }
-
-    return false;
+    return microNodeTable.insert(microNode) &&
+            moveTable.insert(move) &&
+            locationTable.insert(location);
   }
 
   public boolean update(Node node, String date){
-    MicroNode microNode = new MicroNode(node.id, node.point.getX(), node.point.getY(), node.floor, node.building);
-    Move move = new Move(node.id, node.longName, date);
+    MicroNode microNode = new MicroNode(node.nid, node.point.getX(), node.point.getY(), node.floor, node.building);
+    Move move = new Move(node.nid, node.longName, date);
     Location location = new Location(node.longName, node.shortName, node.type);
 
-    if(
-      microNodeTable.update(microNode) &&
-      moveTable.update(move) &&
-      locationTable.insert(location)
-    ){
-      return true;
-    }
-
-    return false;
+    return microNodeTable.update(microNode) &&
+            moveTable.update(move) &&
+            locationTable.insert(location);
   }
   public void remove(Node node, String date){
-    MicroNode microNode = new MicroNode(node.id, node.point.getX(), node.point.getY(), node.floor, node.building);
-    Move move = new Move(node.id, node.longName, date);
-    Location location = new Location(node.longName, node.shortName, node.type);
 
-    microNodeTable.remove(microNode);
-    moveTable.remove(move);
-    locationTable.remove(location);
+    microNodeTable.remove(node.id);
+    moveTable.remove(node.id);
+    locationTable.remove(node.longName);
+  }
 
+  public void remove(String nodeId){
+
+    //get longname from movetable, second column
+    locationTable.remove( moveTable.get(nodeId).get(1));
+
+    microNodeTable.remove(nodeId);
+    moveTable.remove(nodeId);
   }
 
   public void importCSV(String microNodePath, String locationPath, String movePath){
@@ -97,15 +82,12 @@ public class NodeTable extends Table {
     microNodeTable.importCSV(microNodePath);
     locationTable.importCSV(locationPath);
     moveTable.importCSV(movePath);
-
   }
 
-  @Override
   public void exportCSV(String microNodePath, String locationPath, String movePath){
     microNodeTable.exportCSV(microNodePath);
     locationTable.exportCSV(locationPath);
     moveTable.exportCSV(movePath);
-
   }
 
 }

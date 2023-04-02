@@ -1,10 +1,6 @@
 package edu.wpi.fishfolk.database;
 
-import edu.wpi.fishfolk.pathfinding.Edge;
-import edu.wpi.fishfolk.pathfinding.Node;
-import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.sql.*;
-import javafx.geometry.Point2D;
 
 /** @author Christian */
 public class Fdb {
@@ -15,7 +11,7 @@ public class Fdb {
   public Connection db;
 
   public Fdb() {
-    initialize();
+    this.db = connect("teamfdb", "teamf", "teamf60");
   }
 
   /**
@@ -23,6 +19,8 @@ public class Fdb {
    * and edge tables. TODO: Database name, user, password and table names are hardcoded -> Make them
    * configurable
    */
+
+  /*
   public void initialize() {
 
     try {
@@ -49,6 +47,8 @@ public class Fdb {
       System.out.println(e.getMessage());
     }
   }
+
+   */
 
   /**
    * Connect to a PostgreSQL database.
@@ -127,7 +127,7 @@ public class Fdb {
         System.out.println("[Fdb.createTable]: Table " + tbName + " already exists.");
         return false;
       } else {
-        String query = "CREATE TABLE " + tbName + " (id SERIAL PRIMARY KEY);";
+        String query = "CREATE TABLE " + tbName + " (id VARCHAR(10) PRIMARY KEY);";
         statement.executeUpdate(query);
         System.out.println("[Fdb.createTable]: Table " + tbName + " created.");
         return true;
@@ -138,16 +138,8 @@ public class Fdb {
     }
   }
 
-  /** Starts the command line interface where users can interact with the database. */
-  public void startCLI() {
-    DbIOCommands cli = new DbIOCommands();
-    cli.setNt(nodeTable);
-    cli.setEt(edgeTable);
-    cli.setDb(db);
-    cli.cycleCLI();
-  }
-
   /** Runs through all the methods to test their functionality. DEBUG ONLY */
+  /*
   public void runTests() {
 
     System.out.println("\n--- TESTING NODE TABLE ---\n");
@@ -201,4 +193,5 @@ public class Fdb {
 
     edgeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/L1EdgesOutput.csv");
   }
+   */
 }
