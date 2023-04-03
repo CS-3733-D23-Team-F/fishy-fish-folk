@@ -12,7 +12,7 @@ public class FoodOrder {
   public Room deliveryLocation;
   public float totalPrice;
 
-  public formStatus formStatus;
+  public FormStatus formStatus;
   public String formID;
 
   public FoodOrder() {
@@ -20,7 +20,7 @@ public class FoodOrder {
     deliveryTime = LocalDateTime.now();
     payer = null;
     deliveryLocation = null;
-    formStatus = edu.wpi.fishfolk.ui.formStatus.notSubmitted;
+    formStatus = edu.wpi.fishfolk.ui.FormStatus.notSubmitted;
     this.formID = formID;
   }
 
@@ -105,14 +105,14 @@ public class FoodOrder {
   }
 
   public void setSubmitted() {
-    formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.submitted;
+    FormStatus formStatus = edu.wpi.fishfolk.ui.FormStatus.submitted;
   }
 
   public void setCancelled() {
-    formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.cancelled;
+    FormStatus formStatus = edu.wpi.fishfolk.ui.FormStatus.cancelled;
   }
 
   public void setFilled() {
-    formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.filled;
+    FormStatus formStatus = edu.wpi.fishfolk.ui.FormStatus.filled;
   }
 }

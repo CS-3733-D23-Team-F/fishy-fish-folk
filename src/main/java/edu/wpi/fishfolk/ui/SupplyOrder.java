@@ -8,7 +8,7 @@ public class SupplyOrder {
   public String roomNum;
   public String notes;
 
-  formStatus formStatus;
+  FormStatus formStatus;
   public String formID;
 
   public SupplyOrder() {
@@ -17,7 +17,7 @@ public class SupplyOrder {
     this.link = link;
     this.roomNum = roomNum;
     this.notes = notes;
-    formStatus = edu.wpi.fishfolk.ui.formStatus.notSubmitted;
+    formStatus = edu.wpi.fishfolk.ui.FormStatus.notSubmitted;
     this.formID = formID;
   }
 
@@ -26,15 +26,15 @@ public class SupplyOrder {
   }
 
   public void setSubmitted() {
-    formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.submitted;
+    FormStatus formStatus = edu.wpi.fishfolk.ui.FormStatus.submitted;
   }
 
   public void setCancelled() {
-    formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.cancelled;
+    FormStatus formStatus = edu.wpi.fishfolk.ui.FormStatus.cancelled;
   }
 
   public void setFilled() {
-    formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.filled;
+    FormStatus formStatus = edu.wpi.fishfolk.ui.FormStatus.filled;
   }
 
   public String toString() {
