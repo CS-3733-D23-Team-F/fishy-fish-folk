@@ -34,9 +34,7 @@ public class PathfindingController extends AbsController {
 
     System.out.println(dbConnection.nodeTable.getTableName());
 
-    ArrayList[] res = dbConnection.nodeTable.getAllDestinationNodes();
-    ArrayList<String> nodeIDs = res[0];
-    ArrayList<String> nodeNames = res[1];
+    ArrayList nodeNames = dbConnection.nodeTable.getAllDestinationNodes();
 
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end

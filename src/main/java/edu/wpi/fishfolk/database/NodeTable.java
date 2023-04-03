@@ -136,7 +136,7 @@ public class NodeTable extends Table {
     return microNodeTable.size();
 }
 
-  public ArrayList<String>[] getAllDestinationNodes() {
+  public ArrayList<String> getAllDestinationNodes() {
 
     return null;
   }
