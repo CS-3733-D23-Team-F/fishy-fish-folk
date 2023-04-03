@@ -32,8 +32,9 @@ public class Fapp extends Application {
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Root.fxml"));
     final BorderPane root = loader.load();
 
-    // primaryStage.getIcons().add(new Image("file:magikarp.png"));
-    primaryStage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
+    primaryStage.getIcons().add(new Image("file:magikarp.png"));
+    // primaryStage.getIcons().add(new
+    // Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
 
     Fapp.rootPane = root;
     final Scene scene = new Scene(root);
@@ -49,6 +50,7 @@ public class Fapp extends Application {
     primaryStage.show();
 
     Navigation.navigate(Screen.HOME);
+    // Navigation.navigate(Screen.FOOD_ORDERS_VIEW);
   }
 
   @Override
