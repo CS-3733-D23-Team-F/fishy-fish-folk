@@ -106,6 +106,8 @@ public class SupplyRequestController {
     if (submittable()) {
       System.out.println(currentSupplyOrder.toString());
       Navigation.navigate(Screen.HOME);
+      currentSupplyOrder.setSubmitted();
+      currentSupplyOrder.formID = "" + System.currentTimeMillis();
     }
   }
 }

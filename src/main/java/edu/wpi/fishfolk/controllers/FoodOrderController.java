@@ -74,6 +74,8 @@ public class FoodOrderController {
             popText.setText(errors);
             notiPop.setContentNode(popText);
             notiPop.show(submitButton);
+            currentOrder.setSubmitted();
+            currentOrder.formID = "" + System.currentTimeMillis();
           }
         });
     clearButton.setOnAction(event -> init());
