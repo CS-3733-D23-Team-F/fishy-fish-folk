@@ -18,6 +18,7 @@ public class HomeController {
   @FXML MFXButton mealNav;
 
   @FXML MFXButton officeNav;
+  @FXML MFXButton mapEditorNav;
 
   @FXML MFXButton sideBar;
 
@@ -39,6 +40,7 @@ public class HomeController {
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
