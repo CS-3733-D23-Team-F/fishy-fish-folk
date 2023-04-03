@@ -16,7 +16,7 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton submitBtn;
   @FXML ChoiceBox<String> startSelector;
   @FXML ChoiceBox<String> endSelector;
-  @FXML String start, end;
+  int start, end;
 
   @FXML AnchorPane mapAnchor;
   @FXML ImageView mapImg;
@@ -26,27 +26,26 @@ public class PathfindingController extends AbsController {
 
   public PathfindingController() {
     super();
-    System.out.println("constructed pathfinding controller");
+    // System.out.println("constructed pathfinding controller");
   }
 
   @FXML
   private void initialize() {
 
-    System.out.println(dbConnection.nodeTable.getTableName());
-
-    ArrayList nodeNames = dbConnection.nodeTable.getAllDestinationNodes();
+    ArrayList nodeNames = dbConnection.nodeTable.getDestLongNames();
 
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end
 
     startSelector.setOnAction(
         event -> {
-          start = nodeIDs.get(nodeNames.indexOf(startSelector.getValue()));
+          start = dbConnection.nodeTable.getNode("longname", startSelector.getValue()).nid;
+
           System.out.println("start node: " + start);
         });
     endSelector.setOnAction(
         event -> {
-          end = nodeIDs.get(nodeNames.indexOf(endSelector.getValue()));
+          end = dbConnection.nodeTable.getNode("longname", endSelector.getValue()).nid;
           System.out.println("end node: " + end);
         });
 

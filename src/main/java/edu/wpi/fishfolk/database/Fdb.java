@@ -8,10 +8,11 @@ public class Fdb {
   public NodeTable nodeTable;
   public Table edgeTable;
 
-  public Connection db;
+  public Connection conn;
 
   public Fdb() {
-    this.db = connect("teamfdb", "teamf", "teamf60");
+
+    this.conn = connect("teamfdb", "teamf", "teamf60");
   }
 
   /**
@@ -81,7 +82,7 @@ public class Fdb {
   /** Disconnect from PostgreSQL database. */
   public void disconnect() {
     try {
-      db.close();
+      conn.close();
       System.out.println("[Fdb.disconnect]: Connection closed.");
     } catch (SQLException e) {
       System.out.println(e.getMessage());
