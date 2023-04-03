@@ -1,17 +1,14 @@
 package edu.wpi.fishfolk.ui;
 
-import edu.wpi.fishfolk.database.TableEntry;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class SupplyOrder extends TableEntry {
+public class SupplyOrder {
   public LinkedList<SupplyItem> supplies;
   public String link;
   public String roomNum;
   public String notes;
 
-  FormStatus formStatus;
+  formStatus formStatus;
   public String formID;
 
   public SupplyOrder() {
@@ -20,7 +17,7 @@ public class SupplyOrder extends TableEntry {
     this.link = link;
     this.roomNum = roomNum;
     this.notes = notes;
-    formStatus = edu.wpi.fishfolk.ui.FormStatus.notSubmitted;
+    formStatus = edu.wpi.fishfolk.ui.formStatus.notSubmitted;
     this.formID = formID;
   }
 
@@ -29,15 +26,13 @@ public class SupplyOrder extends TableEntry {
   }
 
   public void setSubmitted() {
-    FormStatus formStatus = edu.wpi.fishfolk.ui.FormStatus.submitted;
+    formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.submitted;
   }
-
   public void setCancelled() {
-    FormStatus formStatus = edu.wpi.fishfolk.ui.FormStatus.cancelled;
+    formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.cancelled;
   }
-
   public void setFilled() {
-    FormStatus formStatus = edu.wpi.fishfolk.ui.FormStatus.filled;
+    formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.filled;
   }
 
   public String toString() {
@@ -67,28 +62,5 @@ public class SupplyOrder extends TableEntry {
             + "Additional Notes: "
             + notes;
     return string;
-  }
-
-  public String listItemsToString() {
-    String string = "";
-    if (supplies.isEmpty()) return "";
-    else {
-      for (int i = 0; i < 6; i++) {
-        if (supplies.get(i).supplyName == "") string = string + "";
-        else string = string + supplies.get(i).supplyName + "-_-";
-      }
-      // string = string.substring(0, (string.length() - 3));
-      return string;
-    }
-  }
-
-  @Override
-  public boolean construct(ArrayList<String> data) {
-    return false;
-  }
-
-  @Override
-  public ArrayList<String> deconstruct() {
-    return null;
   }
 }
