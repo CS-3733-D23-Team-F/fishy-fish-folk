@@ -1,12 +1,7 @@
 package edu.wpi.fishfolk;
 
 import edu.wpi.fishfolk.database.*;
-import edu.wpi.fishfolk.database.Fdb;
-import edu.wpi.fishfolk.database.Table;
 import edu.wpi.fishfolk.pathfinding.*;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 
@@ -33,8 +28,6 @@ public class Main {
 
      */
 
-
-
     /*
 
     import CSVs into 3 subtables and edge
@@ -42,15 +35,12 @@ public class Main {
     nodeTable.importCSV(
         "src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv",
         "src/main/resources/edu/wpi/fishfolk/csv/Location.csv",
-        "src/main/resources/edu/wpi/fishfolk/csv/Move.csv");
+        "src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
 
 
-    edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv");
+    edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
 
      */
-
-
-
 
     /*
 

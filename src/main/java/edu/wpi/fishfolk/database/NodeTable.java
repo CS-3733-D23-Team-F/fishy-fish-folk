@@ -165,11 +165,12 @@ public class NodeTable extends Table {
     moveTable.remove("id", nodeId);
   }
 
-  public void importCSV(String microNodePath, String locationPath, String movePath) {
+  public void importCSV(
+      String microNodePath, String locationPath, String movePath, boolean backup) {
 
-    microNodeTable.importCSV(microNodePath);
-    locationTable.importCSV(locationPath);
-    moveTable.importCSV(movePath);
+    microNodeTable.importCSV(microNodePath, backup);
+    locationTable.importCSV(locationPath, backup);
+    moveTable.importCSV(movePath, backup);
   }
 
   public void exportCSV(String microNodePath, String locationPath, String movePath) {

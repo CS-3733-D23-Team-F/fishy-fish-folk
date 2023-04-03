@@ -458,10 +458,20 @@ public class Table implements ITable {
   }
 
   @Override
-  public void importCSV(String filepath) {
+  public void importCSV(String filepath, boolean backup) {
 
-    String[] pathArr = filepath.split("/", 1);
+    String[] pathArr = filepath.split("/");
     String filename = pathArr[pathArr.length - 1]; // last element
+
+    if (backup) {
+
+      // filepath except for last part (actual file name)
+      String folder = "";
+      for (int i = 0; i < pathArr.length - 1; i++) {
+        folder += pathArr[i] + "/";
+      }
+      exportCSV(folder);
+    }
 
     System.out.println(
         "["

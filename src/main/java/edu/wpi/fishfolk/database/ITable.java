@@ -86,9 +86,11 @@ public interface ITable {
    * Overwrite the Table with the data found at the provided filepath. Make sure the filepath leads
    * to a CSV file, not just a folder.
    *
-   * @param filepath
+   * @param filepath the CSV file to read from
+   * @param backup set to true if the current data should get backed up before importing, false if
+   *     not
    */
-  void importCSV(String filepath);
+  void importCSV(String filepath, boolean backup);
 
   /**
    * Save the Table to a CSV into the folder pointed to by the provided filepath. The name of the

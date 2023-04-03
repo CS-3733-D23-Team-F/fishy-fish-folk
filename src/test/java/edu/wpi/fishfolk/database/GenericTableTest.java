@@ -33,7 +33,7 @@ class GenericTableTest {
                 "String", "double", "double", "String", "String", "String", "String", "String")));
 
     // imports data correctly. commented to avoid "id already in table" errors
-    testNodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv");
+    testNodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv", true);
 
     // gets data correctly
     System.out.println(testNodeTable.get("id", "CHALL001L1"));
@@ -67,6 +67,6 @@ class GenericTableTest {
     testNodeTable.remove("id", newNode.id);
     testNodeTable.exists(newNode.id);
 
-    testNodeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/");
+    // testNodeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/");
   }
 }
