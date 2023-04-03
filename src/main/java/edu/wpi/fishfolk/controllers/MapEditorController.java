@@ -47,6 +47,7 @@ public class MapEditorController {
     populateTable();
 
     table.setEditable(true);
+
     id.setCellFactory(TextFieldTableCell.forTableColumn());
     x.setCellFactory(TextFieldTableCell.forTableColumn());
     y.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -96,8 +97,6 @@ public class MapEditorController {
             (t.getTableView().getItems().get(t.getTablePosition().getRow()))
                 .setShortName(t.getNewValue()));
 
-    // set editable
-    table.setEditable(true);
     backButton.setOnAction(
         event -> {
           Navigation.navigate(Screen.HOME);
