@@ -2,10 +2,7 @@ package edu.wpi.fishfolk.pathfinding;
 
 import edu.wpi.fishfolk.database.NodeTable;
 import edu.wpi.fishfolk.database.Table;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 import javafx.geometry.Point2D;
 import lombok.Setter;
 
@@ -330,7 +327,7 @@ public class Graph {
     }
     path.addFirst(start, nodes[id2idx.get(start)].point);
 
-    System.out.println(path.pathLength());
+    // System.out.println(path.pathLength());
 
     // System.out.println(path.getDirections());
 
@@ -341,17 +338,52 @@ public class Graph {
     return nodes[id2idx.get(n1)].point.distance(nodes[id2idx.get(n2)].point);
   }
 
-  public void print() {
-    /*
+  public void speedTest(int n) {
 
-    for (int row = 0; row < adjMat.length; row++) {
-      System.out.println();
-      for (int col = 0; col < adjMat.length; col++) {
-        System.out.print(adjMat[row][col]);
+    // record length of path and time taken to find the path between pairs of random points
+
+    Random rng = new Random();
+    double[][] dist_time = new double[n][2];
+
+    for (int i = 0; i < n; i++) {
+
+      try {
+        int n1 = nodes[rng.nextInt(size)].nid;
+        int n2 = nodes[rng.nextInt(size)].nid;
+
+        long start = System.nanoTime();
+        dist_time[i][0] = AStar(n1, n2).pathLength();
+        dist_time[i][1] = (System.nanoTime() - start) / 1000.0;
+      } catch (Exception e) {
+        System.out.println(i + "  " + e.getMessage());
       }
     }
 
-     */
+    Arrays.sort(
+        dist_time,
+        new Comparator<double[]>() {
+          @Override
+          public int compare(double[] dt1, double[] dt2) {
+            return Double.compare(dt1[0], dt2[0]);
+          }
+        });
+
+    for (int i = 0; i < n; i++) {
+      System.out.println(
+          String.format("d: %.2f" + "    t (us): %.1f", dist_time[i][0], dist_time[i][1]));
+    }
+
+    double totalDist = 0, totalTime = 0;
+    for (int i = 0; i < n; i++) {
+      totalDist += dist_time[i][0];
+      totalTime += dist_time[i][1];
+    }
+
+    System.out.println(
+        String.format("avg d: %.2f" + "    avg t (us): %.1f", totalDist / n, totalTime / n));
+  }
+
+  public void print() {
 
     for (int id : id2idx.keySet()) {
 

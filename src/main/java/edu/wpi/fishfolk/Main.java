@@ -30,7 +30,6 @@ public class Main {
     Graph g = new Graph(nodeTable, edgeTable);
     g.populate();
 
-    System.out.println(g.AStar(1875, 2210)); // connected via 2315
-    System.out.println(g.AStar(800, 2975));
+    g.speedTest(500);
   }
 }
