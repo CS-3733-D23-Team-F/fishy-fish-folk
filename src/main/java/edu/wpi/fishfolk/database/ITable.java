@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public interface ITable {
 
-
   void setHeaders(ArrayList<String> headers, ArrayList<String> headerTypes);
 
   /**
@@ -18,13 +17,13 @@ public interface ITable {
   boolean addHeaders(ArrayList<String> headers, ArrayList<String> headerTypes);
 
   /**
-   * Get the row matching the provided id. Returns an ArrayList<String> for the user to construct
-   * into a TableEntry.
+   * Get the row where the given attribute matches the given value.
    *
-   * @param id
-   * @return
+   * @param attr the attribute to search for
+   * @param value the value to search for
+   * @return the entire row where the attribute matches the value
    */
-  ArrayList<String> get(String id);
+  ArrayList<String> get(String attr, String value);
 
   /**
    * Get all the rows in this table.
@@ -68,11 +67,12 @@ public interface ITable {
   boolean update(String id, String attr, String value);
 
   /**
-   * Remove the TableEntry matching the provided id from the Table.
+   * Remove the TableEntry where the attribute matches the given value.
    *
-   * @param id
+   * @param attr the attribute to search for
+   * @param value the value to search for
    */
-  void remove(String id);
+  void remove(String attr, String value);
 
   /**
    * Check if the provided id exists in the table.

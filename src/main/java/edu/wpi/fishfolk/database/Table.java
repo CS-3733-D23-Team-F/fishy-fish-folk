@@ -25,10 +25,8 @@ public class Table implements ITable {
   /**
    * @param dbConnection
    * @param tableName
-   * @param drop set to true if you want to replace a table with the same name with this one, false
-   *     if you want to leave the old one
    */
-  public Table(Connection dbConnection, String tableName, boolean drop) {
+  public Table(Connection dbConnection, String tableName) {
     this.dbConnection = dbConnection;
     this.tableName = tableName;
 
@@ -37,6 +35,15 @@ public class Table implements ITable {
     typeDict.put("String", "VARCHAR(255)"); // 255 characters max
     typeDict.put("int", "SMALLINT"); // -2^15 to 2^15-1
     typeDict.put("double", "REAL"); // 6 decimal digits precision
+  }
+
+  /**
+   * Create the Table in the database
+   *
+   * @param drop true if this Table should replace any table with the same name, false if this Table
+   *     should not take replace another with the same name
+   */
+  public void init(boolean drop) {
 
     try {
       Statement statement = dbConnection.createStatement();
@@ -81,12 +88,12 @@ public class Table implements ITable {
   // drop table before adding new headers
 
   @Override
-  public void setHeaders(ArrayList<String> _headers, ArrayList<String> _headerTypes){
+  public void setHeaders(ArrayList<String> _headers, ArrayList<String> _headerTypes) {
 
     // map Java types to SQL types
     this.headerTypes =
-            (ArrayList<String>)
-                    _headerTypes.stream().map(t -> typeDict.get(t)).collect(Collectors.toList());
+        (ArrayList<String>)
+            _headerTypes.stream().map(t -> typeDict.get(t)).collect(Collectors.toList());
 
     this.headers = _headers;
     this.numHeaders = headers.size();
@@ -102,7 +109,7 @@ public class Table implements ITable {
 
     try {
 
-      String query = "SELECT count(id) FROM " + dbConnection.getSchema() + "." + tableName + ";";
+      String query = "SELECT COUNT(*) FROM " + dbConnection.getSchema() + "." + tableName + ";";
       Statement statement = dbConnection.createStatement();
       statement.execute(query);
       ResultSet results = statement.getResultSet();
@@ -114,7 +121,8 @@ public class Table implements ITable {
 
       if (numRows != 0) {
         // get only 1 row which is enough to get the metadata
-        statement.execute("SELECT TOP 1 FROM " + dbConnection.getSchema() + "." + tableName + ";");
+        statement.execute(
+            "SELECT * FROM " + dbConnection.getSchema() + "." + tableName + " LIMIT 1;");
         ResultSetMetaData meta = statement.getResultSet().getMetaData();
         numCols = meta.getColumnCount();
 
@@ -123,11 +131,13 @@ public class Table implements ITable {
         // leave first id column as is. rename 2 to header idx 1.
         // add headers idx 2, 3, 4
 
-        for (int col = 2;
-            col <= numCols && col <= numHeaders;
-            col++) { // SQL columns start at index 1 and first is ids
-          query +=
-              " RENAME COLUMN ''" + meta.getColumnName(col) + "' to '" + headers.get(col - 1) + "'";
+        // SQL columns start at 1
+        for (int col = 1; col <= numCols && col <= numHeaders; col++) {
+
+          String oldCol = meta.getColumnName(col), newCol = headers.get(col - 1);
+          if (!oldCol.equals(newCol)) {
+            query += " RENAME COLUMN '" + oldCol + "' to '" + newCol + "' ";
+          }
         }
 
         // if numCols > numHeaders delete remaining columns
@@ -141,18 +151,22 @@ public class Table implements ITable {
         query += " ADD COLUMN " + headers.get(col - 1) + " " + headerTypes.get(col - 1) + ",";
       }
 
-      // remove last comma
-      query = query.substring(0, query.length() - 1) + ";";
+      // added more to base query "alter table tablename"
+      if (query.split(" ").length > 3) {
 
-      System.out.println(query);
+        // remove last comma
+        query = query.substring(0, query.length() - 1) + ";";
 
-      statement = dbConnection.createStatement();
-      statement.executeUpdate(query);
+        System.out.println(query);
+
+        statement = dbConnection.createStatement();
+        statement.executeUpdate(query);
+      }
 
       System.out.println(
           "["
               + this.getClass().getSimpleName()
-              + ".addHeaders]: Added column headers to table \""
+              + ".addHeaders]: Set column headers of table \""
               + tableName
               + "\".");
 
@@ -164,7 +178,8 @@ public class Table implements ITable {
     return true;
   }
 
-  public ArrayList<String> get(String id) {
+  @Override
+  public ArrayList<String> get(String attr, String value) {
 
     try {
       String query =
@@ -172,8 +187,10 @@ public class Table implements ITable {
               + dbConnection.getSchema()
               + "."
               + tableName
-              + " WHERE id = '"
-              + id
+              + " WHERE "
+              + attr
+              + " = '"
+              + value
               + "';";
 
       // ensure result set is scrollable (can be read forwards and backwards) and can be updated
@@ -204,7 +221,7 @@ public class Table implements ITable {
   @Override
   public ArrayList<String>[] getAll() {
 
-    ArrayList<String>[] data = new ArrayList[size()];
+    ArrayList<String>[] data = new ArrayList[size() + 1];
     data[0] = headers;
 
     try {
@@ -222,6 +239,7 @@ public class Table implements ITable {
           row.add(results.getString(i));
         }
         data[idx] = row;
+        idx++;
       }
 
     } catch (SQLException e) {
@@ -234,12 +252,14 @@ public class Table implements ITable {
   @Override
   public int size() {
     try {
-      String query = "SELECT COUNT(1) FROM " + dbConnection.getSchema() + "." + tableName + ";";
+      String query = "SELECT COUNT(*) FROM " + dbConnection.getSchema() + "." + tableName + ";";
 
       // ensure result set is scrollable (can be read forwards and backwards) and can be updated
       Statement statement = dbConnection.createStatement();
       statement.execute(query);
-      return statement.getResultSet().getInt(1);
+      ResultSet results = statement.getResultSet();
+      results.next();
+      return results.getInt(1);
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -371,18 +391,29 @@ public class Table implements ITable {
   }
 
   @Override
-  public void remove(String id) {
+  public void remove(String attr, String value) {
 
     try {
+
+      String entry = "[" + String.join(", ", get(attr, value)) + "]";
+
       String query =
-          "DELETE FROM " + dbConnection.getSchema() + "." + tableName + " WHERE id = '" + id + "'";
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE "
+              + attr
+              + " = '"
+              + value
+              + "'";
       Statement statement = dbConnection.createStatement();
       statement.executeUpdate(query);
       System.out.println(
           "["
               + this.getClass().getSimpleName()
               + ".update]: Successfully removed \""
-              + id
+              + entry
               + "\" from table \""
               + tableName
               + "\".");

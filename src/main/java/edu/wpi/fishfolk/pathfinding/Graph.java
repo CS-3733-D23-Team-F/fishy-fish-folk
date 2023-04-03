@@ -57,6 +57,8 @@ public class Graph {
       edge.construct(edgeData);
       addEdge(edge);
     }
+
+    System.out.println("[Graph.populate]: Populated graph with " + nodes.length + " nodes and " + edges.length + " edges.");
   }
 
   public void resize(int newSize) {
@@ -92,15 +94,16 @@ public class Graph {
       return false;
     }
 
-    String elevatorLet =
-        n.longName.substring(
-            8, 10); // Takes the elevator letter from name (Ex: "Elevator A" -> "A")
+    if (n.type == NodeType.ELEV) {
+      // Takes the elevator letter from name (Ex: "Elevator A" -> "A")
+      String elevatorLet = n.longName.substring(8, 10);
 
-    // Store floors seperated by commas with associated Elevator letter
-    if (elevatorFloors.containsKey(elevatorLet)) {
-      elevatorFloors.put(elevatorLet, elevatorFloors.get(elevatorLet) + "," + n.floor);
-    } else {
-      elevatorFloors.put(elevatorLet, "," + n.floor);
+      // Store floors seperated by commas with associated Elevator letter
+      if (elevatorFloors.containsKey(elevatorLet)) {
+        elevatorFloors.put(elevatorLet, elevatorFloors.get(elevatorLet) + "," + n.floor);
+      } else {
+        elevatorFloors.put(elevatorLet, "," + n.floor);
+      }
     }
 
     id2idx.put(n.nid, lastIdx);

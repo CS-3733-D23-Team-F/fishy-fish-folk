@@ -22,7 +22,8 @@ class GenericTableTest {
       System.out.println(e.getMessage());
     }
 
-    Table testNodeTable = new Table(dbConnection.db, "test_node_table", true);
+    Table testNodeTable = new Table(dbConnection.db, "test_node_table");
+    testNodeTable.init(true);
     // dbConnection.createTable(dbConnection.db, testNodeTable.getTableName());
 
     testNodeTable.addHeaders(
@@ -35,19 +36,19 @@ class GenericTableTest {
     testNodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv");
 
     // gets data correctly
-    System.out.println(testNodeTable.get("CHALL001L1"));
+    System.out.println(testNodeTable.get("id", "CHALL001L1"));
 
     // correctly returns null
-    System.out.println(testNodeTable.get("yummmy"));
+    System.out.println(testNodeTable.get("id", "yummmy"));
 
     Node newNode = new Node(1, new Point2D(-1, -1), "f", "b", NodeType.HALL, "ln", "sn");
     testNodeTable.insert(newNode);
 
     // correctly prints out the values
-    System.out.println(testNodeTable.get(Integer.toString(1)));
+    System.out.println(testNodeTable.get("id", Integer.toString(1)));
 
     // correctly null
-    System.out.println(testNodeTable.get(Integer.toString(2)));
+    System.out.println(testNodeTable.get("id", Integer.toString(2)));
 
     // correctly print out true and false respectively
     testNodeTable.exists(Integer.toString(1));
@@ -56,14 +57,14 @@ class GenericTableTest {
     // correctly updates floor attribute
     newNode.floor = "newf";
     testNodeTable.update(newNode);
-    System.out.println(testNodeTable.get(newNode.id));
+    System.out.println(testNodeTable.get("id", newNode.id));
 
     // correctly updates bldg attribute
     testNodeTable.update(newNode.id, "bldg", "newb");
-    System.out.println(testNodeTable.get(newNode.id));
+    System.out.println(testNodeTable.get("id", newNode.id));
 
     // correctly removes entry from table
-    testNodeTable.remove(newNode.id);
+    testNodeTable.remove("id", newNode.id);
     testNodeTable.exists(newNode.id);
 
     testNodeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/");
