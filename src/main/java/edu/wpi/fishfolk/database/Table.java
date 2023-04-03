@@ -254,7 +254,6 @@ public class Table implements ITable {
     try {
       String query = "SELECT COUNT(*) FROM " + dbConnection.getSchema() + "." + tableName + ";";
 
-      // ensure result set is scrollable (can be read forwards and backwards) and can be updated
       Statement statement = dbConnection.createStatement();
       statement.execute(query);
       ResultSet results = statement.getResultSet();

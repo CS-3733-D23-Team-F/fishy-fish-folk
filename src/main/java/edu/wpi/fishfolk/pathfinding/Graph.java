@@ -338,7 +338,7 @@ public class Graph {
     return nodes[id2idx.get(n1)].point.distance(nodes[id2idx.get(n2)].point);
   }
 
-  public void speedTest(int n) {
+  public void speedTest(int n, boolean verbose) {
 
     // record length of path and time taken to find the path between pairs of random points
 
@@ -368,9 +368,11 @@ public class Graph {
           }
         });
 
-    for (int i = 0; i < n; i++) {
-      System.out.println(
-          String.format("d: %.2f" + "    t (us): %.1f", dist_time[i][0], dist_time[i][1]));
+    if (verbose) {
+      for (int i = 0; i < n; i++) {
+        System.out.println(
+            String.format("d: %.2f" + "    t (us): %.1f", dist_time[i][0], dist_time[i][1]));
+      }
     }
 
     double totalDist = 0, totalTime = 0;
@@ -388,6 +390,17 @@ public class Graph {
     for (int id : id2idx.keySet()) {
 
       System.out.println(id);
+    }
+  }
+
+  public void countNull() {
+
+    for (int i = 0; i < size; i++) {
+      try {
+        String x = nodes[i].id;
+      } catch (Exception e) {
+        System.out.println(i + "-" + e.getMessage());
+      }
     }
   }
 

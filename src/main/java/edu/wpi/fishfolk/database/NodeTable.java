@@ -51,26 +51,56 @@ public class NodeTable extends Table {
         new ArrayList<>(List.of("String", "String", "String")));
   }
 
-  public Node getNode(String id) {
+  public Node getNode(String attr, String value) {
 
-    ArrayList<String> microNode = microNodeTable.get("id", id);
-    ArrayList<String> move = moveTable.get("id", id);
-    ArrayList<String> location = locationTable.get("longname", move.get(1));
+    // depending on which attribute it is, query the subtables in a different order
 
-    Point2D p = new Point2D(Integer.parseInt(microNode.get(1)), Integer.parseInt(microNode.get(2)));
-    return new Node(
-        Integer.parseInt(microNode.get(0)),
-        p,
-        microNode.get(3),
-        microNode.get(4),
-        NodeType.valueOf(location.get(2)),
-        location.get(0),
-        location.get(1));
+    String id = "";
+    double x = -1, y = -1;
+    String floor = "", building = "";
+    NodeType type = NodeType.DEFAULT;
+    String longname = "", shortname = "";
+
+    ArrayList<String> microNode, move, location;
+
+    switch (attr) {
+      case "id":
+        id = value;
+        microNode = microNodeTable.get("id", id);
+        move = moveTable.get("id", id);
+        longname = move.get(1);
+        location = locationTable.get("longname", longname);
+
+        x = Double.parseDouble(microNode.get(1));
+        y = Double.parseDouble(microNode.get(2));
+        floor = microNode.get(3);
+        building = microNode.get(4);
+        type = NodeType.valueOf(location.get(2));
+        shortname = location.get(1);
+        break;
+
+      case "longname":
+        longname = value;
+        move = moveTable.get("longname", longname);
+        id = move.get(0);
+        microNode = microNodeTable.get("id", id);
+        location = locationTable.get("longname", longname);
+
+        x = Double.parseDouble(microNode.get(1));
+        y = Double.parseDouble(microNode.get(2));
+        floor = microNode.get(3);
+        building = microNode.get(4);
+        type = NodeType.valueOf(location.get(2));
+        shortname = location.get(1);
+    }
+
+    Point2D p = new Point2D(x, y);
+    return new Node(Integer.parseInt(id), p, floor, building, type, longname, shortname);
   }
 
   public Node[] getAllNodes() {
 
-    Node[] nodes = new Node[microNodeTable.size() - 1];
+    Node[] nodes = new Node[microNodeTable.size()];
 
     ArrayList<String>[] microNodes = microNodeTable.getAll();
 

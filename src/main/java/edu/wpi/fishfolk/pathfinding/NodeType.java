@@ -12,5 +12,6 @@ public enum NodeType {
   EXIT,
   STAI,
   INFO,
-  BATH;
+  BATH,
+  DEFAULT;
 }

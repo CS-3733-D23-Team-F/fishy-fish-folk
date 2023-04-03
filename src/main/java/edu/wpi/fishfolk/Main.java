@@ -30,6 +30,6 @@ public class Main {
     Graph g = new Graph(nodeTable, edgeTable);
     g.populate();
 
-    g.speedTest(500);
+    g.speedTest(500, false);
   }
 }
