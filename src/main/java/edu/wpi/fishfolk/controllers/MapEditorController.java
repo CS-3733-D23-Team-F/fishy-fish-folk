@@ -22,7 +22,7 @@ public class MapEditorController {
   @FXML private TableColumn<Node, String> floor;
   @FXML private TableColumn<Node, String> building;
   @FXML private TableColumn<Node, String> date;
-  @FXML private TableColumn<Node, NodeType> type;
+  @FXML private TableColumn<Node, String> type;
   @FXML private TableColumn<Node, String> longName;
   @FXML private TableColumn<Node, String> shortName;
 
@@ -38,10 +38,11 @@ public class MapEditorController {
     building.setCellValueFactory(new PropertyValueFactory<Node, String>("building"));
     date.setCellValueFactory(new PropertyValueFactory<Node, String>("date"));
     date.setCellValueFactory(new PropertyValueFactory<Node, String>("date")); // doesn't exist
-    type.setCellValueFactory(new PropertyValueFactory<Node, NodeType>("type"));
+    type.setCellValueFactory(new PropertyValueFactory<Node, String>("type"));
     longName.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
     shortName.setCellValueFactory(new PropertyValueFactory<Node, String>("shortName"));
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+
     // load data
     populateTable();
 
@@ -95,6 +96,8 @@ public class MapEditorController {
             (t.getTableView().getItems().get(t.getTablePosition().getRow()))
                 .setShortName(t.getNewValue()));
 
+    // set editable
+    table.setEditable(true);
     backButton.setOnAction(
         event -> {
           Navigation.navigate(Screen.HOME);
@@ -109,7 +112,6 @@ public class MapEditorController {
     // pointY = String.valueOf(node.point.getY());
     nodes.add(
         new Node("38", new Point2D(0.0, 1.0), "floor", "building", NodeType.CONF, "name", "abb"));
-    nodes.add(new Node("38", "1", "3", "floor", "building", NodeType.CONF, "name", "abb"));
     return nodes;
   }
 

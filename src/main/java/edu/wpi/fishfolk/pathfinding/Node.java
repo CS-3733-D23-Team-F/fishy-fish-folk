@@ -14,6 +14,7 @@ public class Node {
   @Getter @Setter public String floor;
   @Getter @Setter public String building;
   @Getter @Setter public NodeType type;
+  @Getter @Setter public String typeName;
   @Getter @Setter public String longName;
   @Getter @Setter public String shortName;
 
@@ -31,32 +32,12 @@ public class Node {
     this.id = id;
     this.oldID = "-";
     this.point = point;
+    this.x = String.valueOf(point.getX());
+    this.y = String.valueOf(point.getY());
     this.floor = floor;
     this.building = building;
     this.type = type;
-    this.longName = longName;
-    this.shortName = shortName;
-
-    this.degree = 0;
-  }
-
-  public Node(
-      String id,
-      String x,
-      String y,
-      String floor,
-      String building,
-      NodeType type,
-      String longName,
-      String shortName) {
-
-    this.id = id;
-    this.oldID = "-";
-    this.x = x;
-    this.y = y;
-    this.floor = floor;
-    this.building = building;
-    this.type = type;
+    this.typeName = "cry";
     this.longName = longName;
     this.shortName = shortName;
 
