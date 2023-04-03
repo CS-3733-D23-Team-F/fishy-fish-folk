@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -47,7 +47,7 @@ public class FoodOrderController {
   @FXML Text itemPrice1, itemPrice2, itemPrice3;
   @FXML Text itemQuantity1, itemQuantity2, itemQuantity3;
   @FXML Text timeText;
-  @FXML ChoiceBox<Room> roomSelector;
+  @FXML ComboBox<Room> roomSelector;
   @FXML PopOver notiPop;
   Text[] nameBoxes, priceBoxes, quantityBoxes;
 
