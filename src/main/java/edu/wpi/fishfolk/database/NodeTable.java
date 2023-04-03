@@ -4,7 +4,9 @@ import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Point2D;
+
 
 /**
  * Represents a table of nodes in a PostgreSQL database.
@@ -33,6 +35,23 @@ public class NodeTable extends Table {
     microNodeTable = new Table(conn, "micronode", false);
     moveTable = new Table(conn, "move", false);
     locationTable = new Table(conn, "location", false);
+
+    microNodeTable.init();
+    microNodeTable.addHeaders(
+        new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
+        new ArrayList<>(List.of("String", "double", "double", "String", "String")));
+
+    moveTable.init();
+    moveTable.addHeaders(
+        new ArrayList<>(List.of("id", "longname", "date")),
+        new ArrayList<>(List.of("String", "String", "String")));
+
+
+    locationTable.init();
+    locationTable.addHeaders(
+        new ArrayList<>(List.of("longname", "shortname", "type")),
+        new ArrayList<>(List.of("String", "String", "String")));
+
   }
 
   public Node getNode(String id) {
