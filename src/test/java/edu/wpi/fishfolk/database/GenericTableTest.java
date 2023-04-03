@@ -1,12 +1,12 @@
 package edu.wpi.fishfolk.database;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.geometry.Point2D;
 import org.junit.jupiter.api.Test;
 
@@ -17,12 +17,12 @@ class GenericTableTest {
 
     Fdb dbConnection = new Fdb();
     try {
-      dbConnection.db.setSchema("test");
+      dbConnection.conn.setSchema("test");
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
 
-    Table testNodeTable = new Table(dbConnection.db, "test_node_table");
+    Table testNodeTable = new Table(dbConnection.conn, "test_node_table");
     testNodeTable.init(true);
     // dbConnection.createTable(dbConnection.db, testNodeTable.getTableName());
 
@@ -50,6 +50,12 @@ class GenericTableTest {
     // correctly null
     System.out.println(testNodeTable.get("id", Integer.toString(2)));
 
+    // get entire floor column
+    System.out.println(testNodeTable.getColumn("floor"));
+
+    // get all
+    System.out.println(Arrays.toString(testNodeTable.getAll()));
+
     // correctly print out true and false respectively
     testNodeTable.exists(Integer.toString(1));
     testNodeTable.exists(Integer.toString(2));
@@ -68,5 +74,10 @@ class GenericTableTest {
     testNodeTable.exists(newNode.id);
 
     // testNodeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/");
+
+    System.out.println(
+        testNodeTable.executeQuery("SELECT lname, type", "WHERE type != 'HALL'").stream()
+            .map(elt -> "[" + elt[0] + ", " + elt[1] + "]\n")
+            .collect(Collectors.toList()));
   }
 }

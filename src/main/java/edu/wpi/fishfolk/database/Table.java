@@ -178,6 +178,42 @@ public class Table implements ITable {
     return true;
   }
 
+  public ArrayList<String[]> executeQuery(String selection, String condition) {
+
+    ArrayList<String[]> data = new ArrayList<>();
+
+    try {
+      String query =
+          selection.trim()
+              + " FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " "
+              + condition.trim()
+              + ";";
+      Statement statement = dbConnection.createStatement();
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      ResultSetMetaData meta = results.getMetaData();
+
+      int numCols = meta.getColumnCount();
+
+      while (results.next()) {
+        String[] row = new String[numCols];
+
+        for (int i = 0; i < numCols; i++) {
+          row[i] = results.getString(i + 1);
+        }
+        data.add(row);
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+    return data;
+  }
+
   @Override
   public ArrayList<String> get(String attr, String value) {
 
@@ -208,6 +244,29 @@ public class Table implements ITable {
 
       for (int i = 1; i <= numHeaders; i++) {
         data.add(results.getString(i));
+      }
+
+      return data;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
+  }
+
+  public ArrayList<String> getColumn(String header) {
+    try {
+      String query =
+          "SELECT " + header + " FROM " + dbConnection.getSchema() + "." + tableName + ";";
+
+      Statement statement = dbConnection.createStatement();
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      ArrayList<String> data = new ArrayList<>();
+
+      while (results.next()) {
+        data.add(results.getString(1));
       }
 
       return data;

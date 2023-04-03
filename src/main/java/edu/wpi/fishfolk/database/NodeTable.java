@@ -3,10 +3,9 @@ package edu.wpi.fishfolk.database;
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.geometry.Point2D;
 
 /**
@@ -134,11 +133,14 @@ public class NodeTable extends Table {
   @Override
   public int size() {
     return microNodeTable.size();
-}
+  }
 
-  public ArrayList<String> getAllDestinationNodes() {
+  public ArrayList<String> getDestLongNames() {
 
-    return null;
+    return (ArrayList<String>)
+        locationTable.executeQuery("SELECT longname", "WHERE type != 'HALL'").stream()
+            .map(elt -> elt[0])
+            .collect(Collectors.toList());
   }
 
   public boolean insert(Node node, String date) {
