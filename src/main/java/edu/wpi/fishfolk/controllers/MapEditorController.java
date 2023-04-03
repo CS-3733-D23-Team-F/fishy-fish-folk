@@ -8,6 +8,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -30,17 +31,18 @@ public class MapEditorController {
   public void initialize() {
     // sets up the columns in the table
     id.setCellValueFactory(new PropertyValueFactory<Node, String>("id"));
-    x.setCellValueFactory(new PropertyValueFactory<Node, String>("x")); // doesn't exist -- point
-    y.setCellValueFactory(new PropertyValueFactory<Node, String>("y")); // ^^
+    x.setCellValueFactory(new PropertyValueFactory<Node, String>("x"));
+    y.setCellValueFactory(new PropertyValueFactory<Node, String>("y"));
     floor.setCellValueFactory(new PropertyValueFactory<Node, String>("floor"));
     building.setCellValueFactory(new PropertyValueFactory<Node, String>("building"));
+    date.setCellValueFactory(new PropertyValueFactory<Node, String>("date"));
     date.setCellValueFactory(new PropertyValueFactory<Node, String>("date")); // doesn't exist
     type.setCellValueFactory(new PropertyValueFactory<Node, NodeType>("type"));
     longName.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
     shortName.setCellValueFactory(new PropertyValueFactory<Node, String>("shortName"));
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     // load data
-    table.setItems(getNodes());
+    populateTable();
 
     backButton.setOnAction(
         event -> {
@@ -49,8 +51,18 @@ public class MapEditorController {
   }
 
   public ObservableList<Node> getNodes() {
+    String pointX = "1";
+    String pointY = "3";
     ObservableList<Node> nodes = FXCollections.observableArrayList();
-    nodes.add(new Node("id", null, "floor", "building", null, "name", "abb"));
+    // pointX = String.valueOf(node.point.getX());
+    // pointY = String.valueOf(node.point.getY());
+    nodes.add(
+        new Node("38", new Point2D(0.0, 1.0), "floor", "building", NodeType.CONF, "name", "abb"));
+    nodes.add(new Node("38", "1", "3", "floor", "building", NodeType.CONF, "name", "abb"));
     return nodes;
+  }
+
+  public void populateTable() {
+    table.setItems(getNodes());
   }
 }
