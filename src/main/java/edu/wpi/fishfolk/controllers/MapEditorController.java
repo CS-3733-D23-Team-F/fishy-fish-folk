@@ -56,6 +56,45 @@ public class MapEditorController {
     longName.setCellFactory(TextFieldTableCell.forTableColumn());
     shortName.setCellFactory(TextFieldTableCell.forTableColumn());
 
+    id.setOnEditCommit(
+        (TableColumn.CellEditEvent<Node, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                .setId(t.getNewValue()));
+    x.setOnEditCommit(
+        (TableColumn.CellEditEvent<Node, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setX(t.getNewValue()));
+    y.setOnEditCommit(
+        (TableColumn.CellEditEvent<Node, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setY(t.getNewValue()));
+    floor.setOnEditCommit(
+        (TableColumn.CellEditEvent<Node, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                .setFloor(t.getNewValue()));
+    building.setOnEditCommit(
+        (TableColumn.CellEditEvent<Node, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                .setBuilding(t.getNewValue()));
+    //    date.setOnEditCommit(
+    //            (TableColumn.CellEditEvent<Node, String> t) ->
+    //                    ( t.getTableView().getItems().get(
+    //                            t.getTablePosition().getRow())
+    //                    ).setDate(t.getNewValue()) //TODO: can't set date???
+    //    );
+    //    type.setOnEditCommit(
+    //            (TableColumn.CellEditEvent<Node, String> t) ->
+    //                    ( t.getTableView().getItems().get(
+    //                            t.getTablePosition().getRow())
+    //                    ).setType(t.getNewValue())
+    //    );
+    longName.setOnEditCommit(
+        (TableColumn.CellEditEvent<Node, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                .setLongName(t.getNewValue()));
+    shortName.setOnEditCommit(
+        (TableColumn.CellEditEvent<Node, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                .setShortName(t.getNewValue()));
+
     backButton.setOnAction(
         event -> {
           Navigation.navigate(Screen.HOME);
