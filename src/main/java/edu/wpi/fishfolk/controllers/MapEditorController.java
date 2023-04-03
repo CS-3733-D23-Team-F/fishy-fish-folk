@@ -12,6 +12,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 public class MapEditorController {
   @FXML private TableView<Node> table;
@@ -43,6 +44,17 @@ public class MapEditorController {
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     // load data
     populateTable();
+
+    table.setEditable(true);
+    id.setCellFactory(TextFieldTableCell.forTableColumn());
+    x.setCellFactory(TextFieldTableCell.forTableColumn());
+    y.setCellFactory(TextFieldTableCell.forTableColumn());
+    floor.setCellFactory(TextFieldTableCell.forTableColumn());
+    building.setCellFactory(TextFieldTableCell.forTableColumn());
+    date.setCellFactory(TextFieldTableCell.forTableColumn());
+    //    type.setCellFactory(TextFieldTableCell.forTableColumn());
+    longName.setCellFactory(TextFieldTableCell.forTableColumn());
+    shortName.setCellFactory(TextFieldTableCell.forTableColumn());
 
     backButton.setOnAction(
         event -> {
