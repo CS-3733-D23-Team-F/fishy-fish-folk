@@ -7,6 +7,8 @@ public class Edge extends TableEntry {
   public String node1;
   public String node2;
 
+  public Edge() {}
+
   public Edge(String node1, String node2) {
     this.id = node1 + "_" + node2;
     this.node1 = node1;

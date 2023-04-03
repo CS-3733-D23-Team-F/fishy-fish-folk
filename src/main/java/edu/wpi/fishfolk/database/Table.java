@@ -12,15 +12,23 @@ import lombok.Getter;
 
 public class Table implements ITable {
 
-  private final Connection dbConnection;
-  @Getter private final String tableName;
+  protected Connection dbConnection;
+  @Getter protected String tableName;
   private ArrayList<String> headers;
   private ArrayList<String> headerTypes;
   private int numHeaders;
 
   private static HashMap<String, String> typeDict;
 
-  public Table(Connection dbConnection, String tableName) {
+  public Table() {}
+
+  /**
+   * @param dbConnection
+   * @param tableName
+   * @param drop set to true if you want to replace a table with the same name with this one, false
+   *     if you want to leave the old one
+   */
+  public Table(Connection dbConnection, String tableName, boolean drop) {
     this.dbConnection = dbConnection;
     this.tableName = tableName;
 
@@ -42,16 +50,25 @@ public class Table implements ITable {
       ResultSet results = statement.getResultSet();
       results.next();
 
-      // if table already exists with this name, drop it
+      // drop if a table already exists with this name and drop is true
       if (results.getBoolean("exists")) {
-        query = "DROP TABLE " + tableName + ";";
-        statement.execute(query);
-      }
 
-      // create new table
-      query = "CREATE TABLE " + tableName + " (id VARCHAR(10) PRIMARY KEY);";
-      statement.executeUpdate(query);
-      System.out.println("[Table.constructor]: Created table \"" + tableName + "\".");
+        if (drop) { // drop and replace with new table
+          query = "DROP TABLE " + tableName + ";";
+          statement.execute(query);
+
+          query = "CREATE TABLE " + tableName + " (id VARCHAR(10) PRIMARY KEY);";
+          statement.executeUpdate(query);
+          System.out.println("[Table.constructor]: Created table \"" + tableName + "\".");
+        }
+        // exists but dont drop - do nothing
+
+      } else {
+        // doesnt exist, create as usual
+        query = "CREATE TABLE " + tableName + " (id VARCHAR(10) PRIMARY KEY);";
+        statement.executeUpdate(query);
+        System.out.println("[Table.constructor]: Created table \"" + tableName + "\".");
+      }
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -63,19 +80,25 @@ public class Table implements ITable {
   // import & export use FileReaders which may break when packaged into a .jar
   // drop table before adding new headers
 
+  @Override
+  public void setHeaders(ArrayList<String> _headers, ArrayList<String> _headerTypes){
+
+    // map Java types to SQL types
+    this.headerTypes =
+            (ArrayList<String>)
+                    _headerTypes.stream().map(t -> typeDict.get(t)).collect(Collectors.toList());
+
+    this.headers = _headers;
+    this.numHeaders = headers.size();
+  }
+
   public boolean addHeaders(ArrayList<String> _headers, ArrayList<String> _headerTypes) {
 
     if (_headers.size() != _headerTypes.size()) {
       return false;
     }
 
-    // map Java types to SQL types
-    this.headerTypes =
-        (ArrayList<String>)
-            _headerTypes.stream().map(t -> typeDict.get(t)).collect(Collectors.toList());
-
-    this.headers = _headers;
-    this.numHeaders = headers.size();
+    setHeaders(_headers, _headerTypes);
 
     try {
 
@@ -176,6 +199,53 @@ public class Table implements ITable {
       System.out.println(e.getMessage());
       return null;
     }
+  }
+
+  @Override
+  public ArrayList<String>[] getAll() {
+
+    ArrayList<String>[] data = new ArrayList[size()];
+    data[0] = headers;
+
+    try {
+
+      String query = "SELECT * FROM " + dbConnection.getSchema() + "." + tableName + ";";
+
+      Statement statement = dbConnection.createStatement();
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      int idx = 1;
+      while (results.next()) {
+        ArrayList<String> row = new ArrayList<>(numHeaders);
+        for (int i = 1; i <= numHeaders; i++) {
+          row.add(results.getString(i));
+        }
+        data[idx] = row;
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return data;
+  }
+
+  @Override
+  public int size() {
+    try {
+      String query = "SELECT COUNT(1) FROM " + dbConnection.getSchema() + "." + tableName + ";";
+
+      // ensure result set is scrollable (can be read forwards and backwards) and can be updated
+      Statement statement = dbConnection.createStatement();
+      statement.execute(query);
+      return statement.getResultSet().getInt(1);
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return -1;
   }
 
   @Override

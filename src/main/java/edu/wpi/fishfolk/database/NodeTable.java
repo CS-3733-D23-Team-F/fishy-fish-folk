@@ -1,7 +1,10 @@
 package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.pathfinding.Node;
+import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.sql.Connection;
+import java.util.ArrayList;
+import javafx.geometry.Point2D;
 
 /**
  * Represents a table of nodes in a PostgreSQL database.
@@ -19,21 +22,70 @@ public class NodeTable extends Table {
   /**
    * Creates a new representation of a node table.
    *
-   * @param db Database connection object for this table
+   * @param conn Database connection object for this table
    * @param tableName Name of the table
    */
   public NodeTable(Connection conn, String tableName) {
-    // TODO init Tables
-    super(conn, tableName);
 
-    microNodeTable = new Table(conn, "microNodeTable");
-    moveTable = new Table(conn, "moveTable");
-    locationTable = new Table(conn, "locationTable");
+    this.dbConnection = conn;
+    this.tableName = tableName;
+
+    microNodeTable = new Table(conn, "micronode", false);
+    moveTable = new Table(conn, "move", false);
+    locationTable = new Table(conn, "location", false);
   }
 
   public Node getNode(String id) {
 
-    return null;
+    ArrayList<String> microNode = microNodeTable.get(id);
+    ArrayList<String> move = moveTable.get(id);
+    ArrayList<String> location = locationTable.get(move.get(1));
+
+    Point2D p = new Point2D(Integer.parseInt(microNode.get(1)), Integer.parseInt(microNode.get(2)));
+    return new Node(
+        Integer.parseInt(microNode.get(0)),
+        p,
+        microNode.get(3),
+        microNode.get(4),
+        NodeType.valueOf(location.get(2)),
+        location.get(0),
+        location.get(1));
+  }
+
+  public Node[] getAllNodes() {
+
+    Node[] nodes = new Node[microNodeTable.size()];
+
+    ArrayList<String>[] microNodes = microNodeTable.getAll();
+
+    for (int i = 0; i < nodes.length; i++) {
+
+      ArrayList<String> microNode = microNodes[i];
+      ArrayList<String> move = moveTable.get(microNode.get(0));
+
+      // use longname (move.get(0)) to index into locationtable
+      ArrayList<String> location = locationTable.get(move.get(0));
+
+      Point2D p =
+          new Point2D(Integer.parseInt(microNode.get(1)), Integer.parseInt(microNode.get(2)));
+
+      nodes[i] =
+          new Node(
+              Integer.parseInt(microNode.get(0)),
+              p,
+              microNode.get(3),
+              microNode.get(4),
+              NodeType.valueOf(location.get(2)),
+              location.get(0),
+              location.get(1));
+    }
+
+    return nodes;
+  }
+
+  @Override
+  public int size() {
+    return microNodeTable.size();
   }
 
   public boolean insert(Node node, String date) {

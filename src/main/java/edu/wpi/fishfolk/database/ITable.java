@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 public interface ITable {
 
+
+  void setHeaders(ArrayList<String> headers, ArrayList<String> headerTypes);
+
   /**
    * Add the provided ArrayLists as headers and header types to this Table. Specify the Java type of
    * each corresponding header. Currently supported types: String, int, double.
@@ -22,6 +25,21 @@ public interface ITable {
    * @return
    */
   ArrayList<String> get(String id);
+
+  /**
+   * Get all the rows in this table.
+   *
+   * @return an array of ArrayList<String> where each element corresponds to a row. The first
+   *     element (index 0) contains the headers.
+   */
+  ArrayList<String>[] getAll();
+
+  /**
+   * Get the number of rows in the Table.
+   *
+   * @return
+   */
+  int size();
 
   /**
    * Insert the provided TableEntry into the Table.

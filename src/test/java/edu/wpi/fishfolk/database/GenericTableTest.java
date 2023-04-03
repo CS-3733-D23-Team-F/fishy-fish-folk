@@ -22,7 +22,7 @@ class GenericTableTest {
       System.out.println(e.getMessage());
     }
 
-    Table testNodeTable = new Table(dbConnection.db, "test_node_table");
+    Table testNodeTable = new Table(dbConnection.db, "test_node_table", true);
     // dbConnection.createTable(dbConnection.db, testNodeTable.getTableName());
 
     testNodeTable.addHeaders(

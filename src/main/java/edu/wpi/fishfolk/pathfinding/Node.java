@@ -16,6 +16,8 @@ public class Node extends TableEntry {
 
   public int degree;
 
+  public Node() {}
+
   public Node(
       int id,
       Point2D point,
@@ -26,7 +28,7 @@ public class Node extends TableEntry {
       String shortName) {
 
     this.id = Integer.toString(id);
-    this.nid = nid;
+    this.nid = id;
     this.point = point;
     this.floor = floor;
     this.building = building;
