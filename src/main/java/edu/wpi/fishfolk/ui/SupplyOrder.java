@@ -75,6 +75,7 @@ public class SupplyOrder {
     return string;
   }
 
+
   // listItemsToString() takes supplies from a SupplyOrder (LinkedList<FoodItems>) and turns them
   // into a string
   public String listItemsToString() {
