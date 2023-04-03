@@ -168,6 +168,7 @@ public class SupplyRequestController {
       Navigation.navigate(Screen.HOME);
       currentSupplyOrder.setSubmitted();
       currentSupplyOrder.formID = "" + System.currentTimeMillis();
+      System.out.println(currentSupplyOrder.formID);
     }
   }
 }
