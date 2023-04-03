@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk.ui;
-
-public enum formStatus {
+public enum FormStatus {
   notSubmitted,
   submitted,
   cancelled,
