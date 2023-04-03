@@ -164,6 +164,7 @@ public class SupplyRequestController {
     currentSupplyOrder.notes = notesTextField.getText();
     if (submittable()) {
       System.out.println(currentSupplyOrder.toString());
+      System.out.println(currentSupplyOrder.listItemsToString());
       Navigation.navigate(Screen.HOME);
       currentSupplyOrder.setSubmitted();
       currentSupplyOrder.formID = "" + System.currentTimeMillis();
