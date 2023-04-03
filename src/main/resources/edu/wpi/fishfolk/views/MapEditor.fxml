@@ -9,7 +9,7 @@
 
 <AnchorPane minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorController">
    <children>
-      <MFXScrollPane prefHeight="514.0" prefWidth="1183.0">
+      <MFXScrollPane layoutX="120.0" layoutY="7.0" prefHeight="657.0" prefWidth="1166.0">
          <content>
             <TableView fx:id="table" minHeight="675.0" minWidth="1200.0" prefHeight="675.0" prefWidth="952.0" translateX="120.0">
               <columns>
