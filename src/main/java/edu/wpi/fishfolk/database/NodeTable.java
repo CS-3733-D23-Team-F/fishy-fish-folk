@@ -3,6 +3,8 @@ package edu.wpi.fishfolk.database;
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
@@ -132,6 +134,11 @@ public class NodeTable extends Table {
   @Override
   public int size() {
     return microNodeTable.size();
+}
+
+  public ArrayList<String>[] getAllDestinationNodes() {
+
+    return null;
   }
 
   public boolean insert(Node node, String date) {
