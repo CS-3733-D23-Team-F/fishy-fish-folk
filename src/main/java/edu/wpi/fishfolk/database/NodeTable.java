@@ -138,7 +138,8 @@ public class NodeTable extends Table {
   public ArrayList<String> getDestLongNames() {
 
     return (ArrayList<String>)
-        locationTable.executeQuery("SELECT longname", "WHERE type != 'HALL'").stream()
+        locationTable.executeQuery("SELECT longname", "WHERE type != 'HALL' ORDER BY longname ASC")
+            .stream()
             .map(elt -> elt[0])
             .collect(Collectors.toList());
   }
