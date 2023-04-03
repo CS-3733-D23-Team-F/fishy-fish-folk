@@ -52,7 +52,7 @@ public class MapEditorController {
     floor.setCellFactory(TextFieldTableCell.forTableColumn());
     building.setCellFactory(TextFieldTableCell.forTableColumn());
     date.setCellFactory(TextFieldTableCell.forTableColumn());
-    //    type.setCellFactory(TextFieldTableCell.forTableColumn());
+    //    type.setCellFactory(TextFieldTableCell.forTableColumn()); // type isn't a string, doesn't work with this
     longName.setCellFactory(TextFieldTableCell.forTableColumn());
     shortName.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -74,13 +74,13 @@ public class MapEditorController {
         (TableColumn.CellEditEvent<Node, String> t) ->
             (t.getTableView().getItems().get(t.getTablePosition().getRow()))
                 .setBuilding(t.getNewValue()));
-    //    date.setOnEditCommit(
-    //            (TableColumn.CellEditEvent<Node, String> t) ->
-    //                    ( t.getTableView().getItems().get(
-    //                            t.getTablePosition().getRow())
-    //                    ).setDate(t.getNewValue()) //TODO: can't set date???
-    //    );
-    //    type.setOnEditCommit(
+//    date.setOnEditCommit(
+//            (TableColumn.CellEditEvent<Node, String> t) ->
+//                    ( t.getTableView().getItems().get(
+//                            t.getTablePosition().getRow())
+//                    ).setDate(t.getNewValue()) //IMPORTANT: there is no setter for date because it's not a field of Node
+//    );                                         // therefore it won't work with this :/
+    //    type.setOnEditCommit( // type isn't a string, doesn't work with this yet
     //            (TableColumn.CellEditEvent<Node, String> t) ->
     //                    ( t.getTableView().getItems().get(
     //                            t.getTablePosition().getRow())
