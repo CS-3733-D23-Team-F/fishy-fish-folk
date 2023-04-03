@@ -53,9 +53,8 @@ public class Path {
 
     LinkedList<PathSegment> segments = new LinkedList<>();
 
-    for (int midx = 1;
-        midx <= numNodes - 2;
-        midx++) { // keep track of middle index in each set of 3
+    // keep track of middle index in each set of 3
+    for (int midx = 1; midx <= numNodes - 2; midx++) {
 
       Point2D start = points.get(midx - 1);
       Point2D mid = points.get(midx);

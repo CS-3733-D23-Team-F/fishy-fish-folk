@@ -45,20 +45,29 @@ public class Graph {
   public void populate() {
 
     Node[] nodes = nodeTable.getAllNodes();
+    int nodeCount = 0, edgeCount = 0;
 
     for (Node node : nodes) {
-      addNode(node);
+      if (addNode(node)) nodeCount++;
     }
 
     ArrayList<String>[] edges = edgeTable.getAll();
 
-    for (ArrayList<String> edgeData : edges) {
-      Edge edge = new Edge();
-      edge.construct(edgeData);
-      addEdge(edge);
+    // index 0 has the headers
+    for (int i = 1; i < edges.length; i++) {
+      int n1 = Integer.parseInt(edges[i].get(0));
+      int n2 = Integer.parseInt(edges[i].get(1));
+      if (addEdge(n1, n2)) edgeCount++;
     }
 
-    System.out.println("[Graph.populate]: Populated graph with " + nodes.length + " nodes and " + edges.length + " edges.");
+    System.out.println(nodeCount + " " + edgeCount);
+
+    System.out.println(
+        "[Graph.populate]: Populated graph with "
+            + nodes.length
+            + " nodes and "
+            + edges.length
+            + " edges.");
   }
 
   public void resize(int newSize) {
@@ -125,10 +134,10 @@ public class Graph {
     return false;
   }
 
-  public boolean addEdge(Edge edge) {
+  public boolean addEdge(int n1, int n2) {
 
-    Integer idx1 = id2idx.get(edge.node1);
-    Integer idx2 = id2idx.get(edge.node2);
+    Integer idx1 = id2idx.get(n1);
+    Integer idx2 = id2idx.get(n2);
 
     if (idx1 != null && idx2 != null) {
 
@@ -323,7 +332,7 @@ public class Graph {
 
     System.out.println(path.pathLength());
 
-    System.out.println(path.getDirections());
+    // System.out.println(path.getDirections());
 
     return path;
   }
@@ -348,5 +357,17 @@ public class Graph {
 
       System.out.println(id);
     }
+  }
+
+  public ArrayList<String> adjacentNodes(int nodeId) {
+
+    ArrayList<String> neighbors = new ArrayList<>();
+    int idx = id2idx.get(nodeId);
+    for (int i = 0; i < size; i++) {
+      if (adjMat[idx][i] != 0) {
+        neighbors.add(nodes[i].id);
+      }
+    }
+    return neighbors;
   }
 }
