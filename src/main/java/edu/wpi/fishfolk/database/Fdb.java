@@ -1,21 +1,17 @@
 package edu.wpi.fishfolk.database;
 
-import edu.wpi.fishfolk.pathfinding.Edge;
-import edu.wpi.fishfolk.pathfinding.Node;
-import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.sql.*;
-import javafx.geometry.Point2D;
 
 /** @author Christian */
 public class Fdb {
 
   public NodeTable nodeTable;
-  public EdgeTable edgeTable;
+  public Table edgeTable;
 
   public Connection db;
 
   public Fdb() {
-    initialize();
+    this.db = connect("teamfdb", "teamf", "teamf60");
   }
 
   /**
@@ -23,6 +19,8 @@ public class Fdb {
    * and edge tables. TODO: Database name, user, password and table names are hardcoded -> Make them
    * configurable
    */
+
+  /*
   public void initialize() {
 
     try {
@@ -52,6 +50,8 @@ public class Fdb {
       System.out.println(e.getMessage());
     }
   }
+
+   */
 
   /**
    * Connect to a PostgreSQL database.
@@ -118,21 +118,21 @@ public class Fdb {
   /**
    * Creates a new empty table within database if it doesn't exist.
    *
-   * @param db Database connection
-   * @param tbName Table name
+   * @param conn Database connection
+   * @param tableName Table name
    * @return True if a new table is created
    */
-  public boolean createTable(Connection db, String tbName) {
+  public boolean createTable(Connection conn, String tableName) {
     Statement statement;
     try {
-      statement = db.createStatement();
-      if (tableExists(db, tbName)) {
-        System.out.println("[Fdb.createTable]: Table " + tbName + " already exists.");
+      statement = conn.createStatement();
+      if (tableExists(conn, tableName)) {
+        System.out.println("[Fdb.createTable]: Table " + tableName + " already exists.");
         return false;
       } else {
-        String query = "CREATE TABLE " + tbName + " (id SERIAL PRIMARY KEY);";
+        String query = "CREATE TABLE " + tableName + " (id VARCHAR(10) PRIMARY KEY);";
         statement.executeUpdate(query);
-        System.out.println("[Fdb.createTable]: Table " + tbName + " created.");
+        System.out.println("[Fdb.createTable]: Table " + tableName + " created.");
         return true;
       }
     } catch (SQLException e) {
@@ -141,16 +141,8 @@ public class Fdb {
     }
   }
 
-  /** Starts the command line interface where users can interact with the database. */
-  public void startCLI() {
-    DbIOCommands cli = new DbIOCommands();
-    cli.setNt(nodeTable);
-    cli.setEt(edgeTable);
-    cli.setDb(db);
-    cli.cycleCLI();
-  }
-
   /** Runs through all the methods to test their functionality. DEBUG ONLY */
+  /*
   public void runTests() {
 
     System.out.println("\n--- TESTING NODE TABLE ---\n");
@@ -204,4 +196,5 @@ public class Fdb {
 
     edgeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/L1EdgesOutput.csv");
   }
+   */
 }
