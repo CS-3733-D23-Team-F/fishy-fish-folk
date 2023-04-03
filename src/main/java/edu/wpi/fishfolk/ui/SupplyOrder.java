@@ -28,9 +28,11 @@ public class SupplyOrder {
   public void setSubmitted() {
     formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.submitted;
   }
+
   public void setCancelled() {
     formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.cancelled;
   }
+
   public void setFilled() {
     formStatus formStatus = edu.wpi.fishfolk.ui.formStatus.filled;
   }
@@ -62,5 +64,18 @@ public class SupplyOrder {
             + "Additional Notes: "
             + notes;
     return string;
+  }
+
+  public String listItemsToString() {
+    String string = "";
+    if (supplies.isEmpty()) return "";
+    else {
+      for (int i = 0; i < 6; i++) {
+        if (supplies.get(i).supplyName == "") string = string + "";
+        else string = string + supplies.get(i).supplyName + "-_-";
+      }
+      // string = string.substring(0, (string.length() - 3));
+      return string;
+    }
   }
 }

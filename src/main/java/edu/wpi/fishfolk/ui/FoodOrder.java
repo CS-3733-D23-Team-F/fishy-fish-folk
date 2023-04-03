@@ -182,4 +182,16 @@ public class FoodOrder extends TableEntry {
       quantity++;
     }
   }
+
+  public void setSubmitted() {
+    FormStatus formStatus = FormStatus.submitted;
+  }
+
+  public void setCancelled() {
+    FormStatus formStatus = FormStatus.cancelled;
+  }
+
+  public void setFilled() {
+    FormStatus formStatus = FormStatus.filled;
+  }
 }
