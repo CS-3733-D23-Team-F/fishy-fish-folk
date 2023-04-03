@@ -41,8 +41,8 @@ public class SupplyOrder {
   public void setFilled() {
     FormStatus formStatus = FormStatus.filled;
   }
+  
 
-  // toString() takes the attributes of a SupplyOrder (supplies, link, roomNum, notes)
   public String toString() {
     String string =
         "Supply List:"
