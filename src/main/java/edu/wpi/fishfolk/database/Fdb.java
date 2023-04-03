@@ -115,21 +115,21 @@ public class Fdb {
   /**
    * Creates a new empty table within database if it doesn't exist.
    *
-   * @param db Database connection
-   * @param tbName Table name
+   * @param conn Database connection
+   * @param tableName Table name
    * @return True if a new table is created
    */
-  public boolean createTable(Connection db, String tbName) {
+  public boolean createTable(Connection conn, String tableName) {
     Statement statement;
     try {
-      statement = db.createStatement();
-      if (tableExists(db, tbName)) {
-        System.out.println("[Fdb.createTable]: Table " + tbName + " already exists.");
+      statement = conn.createStatement();
+      if (tableExists(conn, tableName)) {
+        System.out.println("[Fdb.createTable]: Table " + tableName + " already exists.");
         return false;
       } else {
-        String query = "CREATE TABLE " + tbName + " (id VARCHAR(10) PRIMARY KEY);";
+        String query = "CREATE TABLE " + tableName + " (id VARCHAR(10) PRIMARY KEY);";
         statement.executeUpdate(query);
-        System.out.println("[Fdb.createTable]: Table " + tbName + " created.");
+        System.out.println("[Fdb.createTable]: Table " + tableName + " created.");
         return true;
       }
     } catch (SQLException e) {

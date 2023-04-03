@@ -23,7 +23,7 @@ class GenericTableTest {
     }
 
     Table testNodeTable = new Table(dbConnection.db, "test_node_table");
-    dbConnection.createTable(dbConnection.db, testNodeTable.getTableName());
+    // dbConnection.createTable(dbConnection.db, testNodeTable.getTableName());
 
     testNodeTable.addHeaders(
         new ArrayList<>(List.of("id", "x", "y", "floor", "bldg", "type", "lname", "sname")),
@@ -32,7 +32,7 @@ class GenericTableTest {
                 "String", "double", "double", "String", "String", "String", "String", "String")));
 
     // imports data correctly. commented to avoid "id already in table" errors
-    // testNodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv");
+    testNodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv");
 
     // gets data correctly
     System.out.println(testNodeTable.get("CHALL001L1"));
@@ -41,7 +41,7 @@ class GenericTableTest {
     System.out.println(testNodeTable.get("yummmy"));
 
     Node newNode = new Node(1, new Point2D(-1, -1), "f", "b", NodeType.HALL, "ln", "sn");
-    // testNodeTable.insert(newNode);
+    testNodeTable.insert(newNode);
 
     // correctly prints out the values
     System.out.println(testNodeTable.get(Integer.toString(1)));

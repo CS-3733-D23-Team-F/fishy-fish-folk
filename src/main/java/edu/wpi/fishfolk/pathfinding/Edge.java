@@ -1,8 +1,6 @@
 package edu.wpi.fishfolk.pathfinding;
 
 import edu.wpi.fishfolk.database.TableEntry;
-import javafx.geometry.Point2D;
-
 import java.util.ArrayList;
 
 public class Edge extends TableEntry {
@@ -18,7 +16,7 @@ public class Edge extends TableEntry {
   @Override
   public boolean construct(ArrayList<String> data) {
 
-    if(data.size() != 3){
+    if (data.size() != 3) {
       return false;
     }
 

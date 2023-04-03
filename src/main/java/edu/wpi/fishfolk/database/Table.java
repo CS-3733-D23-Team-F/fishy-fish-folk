@@ -1,10 +1,7 @@
 package edu.wpi.fishfolk.database;
 
 import java.io.*;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,14 +20,42 @@ public class Table implements ITable {
 
   private static HashMap<String, String> typeDict;
 
-  public Table(Connection conn, String name) {
-    dbConnection = conn;
-    tableName = name;
+  public Table(Connection dbConnection, String tableName) {
+    this.dbConnection = dbConnection;
+    this.tableName = tableName;
 
+    // set up map from Java types to SQL types
     typeDict = new HashMap<>();
     typeDict.put("String", "VARCHAR(255)"); // 255 characters max
     typeDict.put("int", "SMALLINT"); // -2^15 to 2^15-1
     typeDict.put("double", "REAL"); // 6 decimal digits precision
+
+    try {
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "');";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+
+      // if table already exists with this name, drop it
+      if (results.getBoolean("exists")) {
+        query = "DROP TABLE " + tableName + ";";
+        statement.execute(query);
+      }
+
+      // create new table
+      query = "CREATE TABLE " + tableName + " (id VARCHAR(10) PRIMARY KEY);";
+      statement.executeUpdate(query);
+      System.out.println("[Table.constructor]: Created table \"" + tableName + "\".");
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   // TODO & potential problems:
@@ -54,15 +79,51 @@ public class Table implements ITable {
 
     try {
 
-      String query = "ALTER TABLE " + tableName;
+      String query = "SELECT count(id) FROM " + dbConnection.getSchema() + "." + tableName + ";";
+      Statement statement = dbConnection.createStatement();
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+      int numRows = results.getInt(1);
+      int numCols = 1;
 
-      for (int i = 1; i < numHeaders; i++) { // start at index 1 since id is already in table
-        query += " ADD COLUMN " + headers.get(i) + " " + headerTypes.get(i) + ", ";
+      query = "ALTER TABLE " + tableName;
+
+      if (numRows != 0) {
+        // get only 1 row which is enough to get the metadata
+        statement.execute("SELECT TOP 1 FROM " + dbConnection.getSchema() + "." + tableName + ";");
+        ResultSetMetaData meta = statement.getResultSet().getMetaData();
+        numCols = meta.getColumnCount();
+
+        // rename current column names
+        // ex: currently 2 columns and requested 5 headers
+        // leave first id column as is. rename 2 to header idx 1.
+        // add headers idx 2, 3, 4
+
+        for (int col = 2;
+            col <= numCols && col <= numHeaders;
+            col++) { // SQL columns start at index 1 and first is ids
+          query +=
+              " RENAME COLUMN ''" + meta.getColumnName(col) + "' to '" + headers.get(col - 1) + "'";
+        }
+
+        // if numCols > numHeaders delete remaining columns
+        for (int col = numHeaders + 1; col <= numCols; col++) {
+          query += " DROP COLUMN " + meta.getColumnName(col) + ",";
+        }
       }
 
-      query = query.substring(0, query.length() - 2) + ";"; // remove last comma and space
+      // if numHeaders > numCols add the remaining headers
+      for (int col = numCols + 1; col <= numHeaders; col++) {
+        query += " ADD COLUMN " + headers.get(col - 1) + " " + headerTypes.get(col - 1) + ",";
+      }
 
-      Statement statement = dbConnection.createStatement();
+      // remove last comma
+      query = query.substring(0, query.length() - 1) + ";";
+
+      System.out.println(query);
+
+      statement = dbConnection.createStatement();
       statement.executeUpdate(query);
 
       System.out.println(
