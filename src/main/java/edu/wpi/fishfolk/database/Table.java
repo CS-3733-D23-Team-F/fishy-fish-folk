@@ -12,6 +12,9 @@ import lombok.Getter;
 
 public class Table implements ITable {
 
+  // TODO & potential problems:
+  // test the shit out of this
+  // import & export use FileReaders which may break when packaged into a .jar
   private final Connection dbConnection;
   @Getter private final String tableName;
   private ArrayList<String> headers;
@@ -29,6 +32,9 @@ public class Table implements ITable {
     typeDict.put("String", "VARCHAR(255)"); // 255 characters max
     typeDict.put("int", "SMALLINT"); // -2^15 to 2^15-1
     typeDict.put("double", "REAL"); // 6 decimal digits precision
+  }
+
+  public void init() {
 
     try {
       Statement statement = dbConnection.createStatement();
@@ -49,7 +55,7 @@ public class Table implements ITable {
       }
 
       // create new table
-      query = "CREATE TABLE " + tableName + " (id VARCHAR(10) PRIMARY KEY);";
+      query = "CREATE TABLE " + tableName + " (tempid VARCHAR(10) PRIMARY KEY);";
       statement.executeUpdate(query);
       System.out.println("[Table.constructor]: Created table \"" + tableName + "\".");
 
@@ -57,11 +63,6 @@ public class Table implements ITable {
       System.out.println(e.getMessage());
     }
   }
-
-  // TODO & potential problems:
-  // test the shit out of this
-  // import & export use FileReaders which may break when packaged into a .jar
-  // drop table before adding new headers
 
   public boolean addHeaders(ArrayList<String> _headers, ArrayList<String> _headerTypes) {
 
@@ -77,15 +78,18 @@ public class Table implements ITable {
     this.headers = _headers;
     this.numHeaders = headers.size();
 
+    System.out.println(_headers.toString());
+
     try {
 
-      String query = "SELECT count(id) FROM " + dbConnection.getSchema() + "." + tableName + ";";
+      String query =
+          "SELECT count(tempid) FROM " + dbConnection.getSchema() + "." + tableName + ";";
       Statement statement = dbConnection.createStatement();
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();
       int numRows = results.getInt(1);
-      int numCols = 1;
+      int numCols = 0;
 
       query = "ALTER TABLE " + tableName;
 
@@ -100,7 +104,7 @@ public class Table implements ITable {
         // leave first id column as is. rename 2 to header idx 1.
         // add headers idx 2, 3, 4
 
-        for (int col = 2;
+        for (int col = 1;
             col <= numCols && col <= numHeaders;
             col++) { // SQL columns start at index 1 and first is ids
           query +=
@@ -125,6 +129,11 @@ public class Table implements ITable {
 
       statement = dbConnection.createStatement();
       statement.executeUpdate(query);
+
+      // drop column created in constructor
+      query = "ALTER TABLE " + tableName + " DROP COLUMN tempid;";
+      statement = dbConnection.createStatement();
+      statement.execute(query);
 
       System.out.println(
           "["

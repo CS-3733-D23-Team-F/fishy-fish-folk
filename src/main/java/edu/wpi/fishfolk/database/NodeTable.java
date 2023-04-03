@@ -2,6 +2,8 @@ package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.pathfinding.Node;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a table of nodes in a PostgreSQL database.
@@ -19,16 +21,30 @@ public class NodeTable extends Table {
   /**
    * Creates a new representation of a node table.
    *
-   * @param db Database connection object for this table
+   * @param conn Database connection object for this table
    * @param tableName Name of the table
    */
   public NodeTable(Connection conn, String tableName) {
     // TODO init Tables
     super(conn, tableName);
 
-    microNodeTable = new Table(conn, "microNodeTable");
-    moveTable = new Table(conn, "moveTable");
-    locationTable = new Table(conn, "locationTable");
+    microNodeTable = new Table(conn, "micronode");
+    microNodeTable.init();
+    microNodeTable.addHeaders(
+        new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
+        new ArrayList<>(List.of("String", "double", "double", "String", "String")));
+
+    moveTable = new Table(conn, "move");
+    moveTable.init();
+    moveTable.addHeaders(
+        new ArrayList<>(List.of("id", "longname", "date")),
+        new ArrayList<>(List.of("String", "String", "String")));
+
+    locationTable = new Table(conn, "location");
+    locationTable.init();
+    locationTable.addHeaders(
+        new ArrayList<>(List.of("longname", "shortname", "type")),
+        new ArrayList<>(List.of("String", "String", "String")));
   }
 
   public Node getNode(String id) {
