@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.database.DataEdit;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.Node;
@@ -14,6 +15,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
+import java.util.ArrayList;
+
 public class MapEditorController {
   @FXML private TableView<Node> table;
   @FXML private TableColumn<Node, String> id;
@@ -27,6 +30,8 @@ public class MapEditorController {
   @FXML private TableColumn<Node, String> shortName;
 
   @FXML MFXButton backButton;
+
+  private ArrayList<DataEdit> dataEdits;
 
   @FXML
   public void initialize() {
@@ -69,6 +74,8 @@ public class MapEditorController {
         event -> {
           Navigation.navigate(Screen.HOME);
         });
+
+    dataEdits = new ArrayList<>();
   }
 
   private void handleEditCommit_ShortName(TableColumn.CellEditEvent<Node, String> t) {
