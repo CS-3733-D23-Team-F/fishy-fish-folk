@@ -45,7 +45,7 @@ public class MapEditorController extends AbsController {
     longName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("longName"));
     shortName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("shortName"));
     date.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("date"));
-    edges.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("edge"));
+    edges.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("adjacentNodes"));
 
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
@@ -72,7 +72,7 @@ public class MapEditorController extends AbsController {
     longName.setOnEditCommit(this::handleEditCommit_LongName);
     shortName.setOnEditCommit(this::handleEditCommit_ShortName);
     date.setOnEditCommit(this::handleEditCommit_Date);
-    edges.setOnEditCommit(this::handleEditCommit_Edges);
+    edges.setOnEditCommit(this::handleEdit_Edges);
 
     backButton.setOnAction(
         event -> {
@@ -157,9 +157,31 @@ public class MapEditorController extends AbsController {
     // t.getNewValue(); // new string value of cell
   }
 
-  private void handleEditCommit_Edges(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
+  private void handleEdit_Edges(TableColumn.CellEditEvent<ObservableNode, String> t) {
+
+    t.getTableView().getItems().get(t.getTablePosition().getRow()).adjacentNodes = t.getNewValue();
+
+    // Verify
+    boolean verified = true;
+    double value = -1;
+
+    // check value is a valid double
+    try {
+      value = Double.parseDouble(t.getNewValue());
+    } catch (NumberFormatException e) {
+      verified = false;
+    }
+
+    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+
+    // removeAnyOldCommits(nodeid, header); // not strictly necessary
+    if (verified) {
+      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
+      System.out.println("Verified edit to col X");
+      dataEdits.add(edit);
+      submitEdits();
+      System.out.println("Submitted.");
+    }
   }
 
   public ObservableList<ObservableNode> getNodes() {
@@ -178,21 +200,27 @@ public class MapEditorController extends AbsController {
       observableNodes.add(new ObservableNode(nodes[i], dates.get(i), new ArrayList<>()));
     }
 
-    // two arraylists in an array
-    // edgesRaw[0] is the list of start nodes
-    // edgesRaw[1] is the list of end nodes
-    // thus edge i is between edgesRaw[0].get(i) and edgesRaw[1].get(i)
+    // each element is an arraylist <str1, str2>
+    // first element has the headers <"node1", "node2">
+    // each element after that is <"startID", "endID">
     ArrayList<String>[] edgesRaw = dbConnection.edgeTable.getAll();
 
-    for (int i = 0; i < edgesRaw[0].size(); i++) {
+    for (int i = 1; i < edgesRaw.length; i++) {
+
+      String start = edgesRaw[i].get(0);
+      String end = edgesRaw[i].get(1);
 
       // add end to start's adjacent nodes
-      int startIdx = id2idx.get(edgesRaw[0].get(i));
-      observableNodes.get(startIdx).addAdjNode(edgesRaw[1].get(i));
+      int startIdx = id2idx.get(start);
+      observableNodes.get(startIdx).addAdjNode(end);
 
       // add start to end's adjacent nodes
-      int endIdx = id2idx.get(edgesRaw[1].get(i));
-      observableNodes.get(endIdx).addAdjNode(edgesRaw[0].get(i));
+      int endIdx = id2idx.get(end);
+      observableNodes.get(endIdx).addAdjNode(start);
+    }
+
+    for (ObservableNode obsNode : observableNodes) {
+      obsNode.setAdjacentNodes();
     }
 
     return observableNodes;

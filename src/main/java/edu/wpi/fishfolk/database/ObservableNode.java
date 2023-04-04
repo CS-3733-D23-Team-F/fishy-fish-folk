@@ -2,8 +2,8 @@ package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.pathfinding.Node;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +18,8 @@ public class ObservableNode {
   @Getter @Setter public String longName;
   @Getter @Setter public String shortName;
   @Getter @Setter public String date;
-  @Getter public HashSet<String> adjacentNodes;
+  @Getter public String adjacentNodes;
+  private HashSet<String> adjNodesSet;
 
   public ObservableNode() {}
 
@@ -34,17 +35,18 @@ public class ObservableNode {
     this.shortName = node.shortName;
     this.date = date;
 
-    this.adjacentNodes = new HashSet<>(adjacentNodes);
+    this.adjacentNodes = String.join(", ", adjacentNodes);
+    adjNodesSet = new HashSet<>(adjacentNodes);
   }
 
   public boolean addAdjNode(String adjNode) {
-    return adjacentNodes.add(adjNode);
+
+    return adjNodesSet.add(adjNode);
   }
 
-  public String getAdjNodes() {
-    String[] nodes = (String[]) adjacentNodes.toArray();
+  public void setAdjacentNodes() {
+
     // sort nodes. TODO sorting strings is not ideal since they are really ints
-    Arrays.sort(nodes);
-    return String.join(", ", nodes);
+    adjacentNodes = String.join(", ", adjNodesSet.stream().sorted().collect(Collectors.toList()));
   }
 }
