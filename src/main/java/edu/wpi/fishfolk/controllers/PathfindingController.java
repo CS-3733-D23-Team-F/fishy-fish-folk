@@ -60,7 +60,7 @@ public class PathfindingController extends AbsController {
 
   private void drawPath(ArrayList<Path> paths) {
 
-    for (int i = 0; i<paths.size(); i++){
+    for (int i = 0; i < paths.size(); i++) {
       LinkedList<Line> segments = new LinkedList<>();
       ArrayList<Point2D> points = paths.get(i).getPoints();
 

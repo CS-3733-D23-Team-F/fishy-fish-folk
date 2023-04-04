@@ -321,19 +321,28 @@ public class Graph {
       }
     }
 
-    Path path = new Path();
+    String currentFloor = "";
+    ArrayList<Path> paths = new ArrayList<Path>();
+    int numpaths = -1;
 
     while (!(current_node == id2idx.get(start))) { // retrace path from the end to the start
-      path.addFirst(nodes[current_node].nid, nodes[current_node].point);
+      if (!nodes[current_node].floor.equals(currentFloor)) {
+        paths.add(new Path());
+        numpaths++;
+      }
+
+      paths.get(numpaths).addFirst(nodes[current_node].nid, nodes[current_node].point);
+
       current_node = lastVisited[current_node];
     }
-    path.addFirst(start, nodes[id2idx.get(start)].point);
+
+    // path.addFirst(start, nodes[id2idx.get(start)].point);
 
     // System.out.println(path.pathLength());
 
     // System.out.println(path.getDirections());
 
-    return path;
+    return paths;
   }
 
   public double distance(String n1, String n2) {
@@ -341,69 +350,42 @@ public class Graph {
   }
 
   public void speedTest(int n, boolean verbose) {
-
-    // record length of path and time taken to find the path between pairs of random points
-
-    Random rng = new Random();
-    double[][] dist_time = new double[n][2];
-
-    for (int i = 0; i < n; i++) {
-
-      try {
-        int n1 = nodes[rng.nextInt(size)].nid;
-        int n2 = nodes[rng.nextInt(size)].nid;
-
-        long start = System.nanoTime();
-        dist_time[i][0] = AStar(n1, n2).pathLength();
-        dist_time[i][1] = (System.nanoTime() - start) / 1000.0;
-      } catch (Exception e) {
-        System.out.println(i + "  " + e.getMessage());
-      }
-    }
-
-    Arrays.sort(
-        dist_time,
-        new Comparator<double[]>() {
-          @Override
-          public int compare(double[] dt1, double[] dt2) {
-            return Double.compare(dt1[0], dt2[0]);
-          }
-        });
-
-    if (verbose) {
-      for (int i = 0; i < n; i++) {
-        System.out.println(
-            String.format("d: %.2f" + "    t (us): %.1f", dist_time[i][0], dist_time[i][1]));
-      }
-    }
-
-    double totalDist = 0, totalTime = 0;
-    for (int i = 0; i < n; i++) {
-      totalDist += dist_time[i][0];
-      totalTime += dist_time[i][1];
-    }
-
-    System.out.println(
-        String.format("avg d: %.2f" + "    avg t (us): %.1f", totalDist / n, totalTime / n));
-  }
-
-  public void print() {
-
-    for (int id : id2idx.keySet()) {
-
-      System.out.println(id);
-    }
-  }
-
-  public void countNull() {
-
-    for (int i = 0; i < size; i++) {
-      try {
-        String x = nodes[i].id;
-      } catch (Exception e) {
-        System.out.println(i + "-" + e.getMessage());
-      }
-    }
+    /**
+     * // record length of path and time taken to find the path between pairs of random points
+     *
+     * <p>Random rng = new Random(); double[][] dist_time = new double[n][2];
+     *
+     * <p>for (int i = 0; i < n; i++) {
+     *
+     * <p>try { int n1 = nodes[rng.nextInt(size)].nid; int n2 = nodes[rng.nextInt(size)].nid;
+     *
+     * <p>//TODO Make pathlength take is list of paths long start = System.nanoTime();
+     * dist_time[i][0] = AStar(n1, n2).pathLength(); dist_time[i][1] = (System.nanoTime() - start) /
+     * 1000.0; } catch (Exception e) { System.out.println(i + " " + e.getMessage()); } }
+     *
+     * <p>Arrays.sort( dist_time, new Comparator<double[]>() { @Override public int compare(double[]
+     * dt1, double[] dt2) { return Double.compare(dt1[0], dt2[0]); } });
+     *
+     * <p>if (verbose) { for (int i = 0; i < n; i++) { System.out.println( String.format("d: %.2f" +
+     * " t (us): %.1f", dist_time[i][0], dist_time[i][1])); } }
+     *
+     * <p>double totalDist = 0, totalTime = 0; for (int i = 0; i < n; i++) { totalDist +=
+     * dist_time[i][0]; totalTime += dist_time[i][1]; }
+     *
+     * <p>System.out.println( String.format("avg d: %.2f" + " avg t (us): %.1f", totalDist / n,
+     * totalTime / n)); }
+     *
+     * <p>public void print() {
+     *
+     * <p>for (int id : id2idx.keySet()) {
+     *
+     * <p>System.out.println(id); } }
+     *
+     * <p>public void countNull() {
+     *
+     * <p>for (int i = 0; i < size; i++) { try { String x = nodes[i].id; } catch (Exception e) {
+     * System.out.println(i + "-" + e.getMessage()); } }
+     */
   }
 
   public ArrayList<String> adjacentNodes(int nodeId) {
