@@ -49,6 +49,11 @@
                               <Font name="Open Sans Bold" size="16.0" />
                            </font>
                         </MFXButton>
+                        <MFXButton fx:id="clearBtn" layoutX="95.0" layoutY="230.0" maxHeight="40.0" maxWidth="80.0" minHeight="40.0" minWidth="80.0" style="-fx-background-color: #012D5A;" text="Clear" textFill="WHITE" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="300.0">
+                           <font>
+                              <Font name="Open Sans Bold" size="16.0" />
+                           </font>
+                        </MFXButton>
                      </children>
                   </AnchorPane>
                </children>

@@ -14,6 +14,7 @@ import javafx.scene.shape.Line;
 
 public class PathfindingController extends AbsController {
   @FXML MFXButton submitBtn;
+  @FXML MFXButton clearBtn;
   @FXML ChoiceBox<String> startSelector;
   @FXML ChoiceBox<String> endSelector;
   int start, end;
@@ -23,6 +24,7 @@ public class PathfindingController extends AbsController {
 
   Graph graph;
   ArrayList<Path> paths;
+  LinkedList<Line> segments;
 
   public PathfindingController() {
     super();
@@ -33,6 +35,7 @@ public class PathfindingController extends AbsController {
   private void initialize() {
 
     ArrayList nodeNames = dbConnection.nodeTable.getDestLongNames();
+    segments = new LinkedList<>();
 
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end
@@ -53,22 +56,31 @@ public class PathfindingController extends AbsController {
 
     submitBtn.setOnAction(
         event -> {
+          for (int i = 0; i < segments.size(); i++) {
+            mapAnchor.getChildren().remove(segments.get(i));
+          }
+          segments.clear();
           paths = graph.AStar(start, end);
           drawPath(paths);
+        });
+
+    clearBtn.setOnAction(
+        event -> {
+          for (int i = 0; i < segments.size(); i++) {
+            mapAnchor.getChildren().remove(segments.get(i));
+          }
+          segments.clear();
         });
   }
 
   private void drawPath(ArrayList<Path> paths) {
 
     for (int i = 0; i < paths.size(); i++) {
-      LinkedList<Line> segments = new LinkedList<>();
       ArrayList<Point2D> points = paths.get(i).getPoints();
 
       for (int j = 1; j < points.size(); j++) {
         segments.add(line(points.get(j - 1), points.get(j)));
       }
-      // segments.add(new Line(0, 7, 1120, 787)); //diagonal from top left to bottom right
-
       mapAnchor.getChildren().addAll(segments);
     }
   }
