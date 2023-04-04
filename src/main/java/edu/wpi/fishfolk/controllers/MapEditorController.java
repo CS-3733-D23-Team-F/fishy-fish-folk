@@ -56,16 +56,14 @@ public class MapEditorController extends AbsController {
     longName.setCellFactory(TextFieldTableCell.forTableColumn());
     shortName.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    /*
-        x.setOnEditCommit(this::handleEditCommit_X);
-        y.setOnEditCommit(this::handleEditCommit_Y);
-        floor.setOnEditCommit(this::handleEditCommit_Floor);
-        building.setOnEditCommit(this::handleEditCommit_Building);
-        date.setOnEditCommit(this::handleEditCommit_Date);
-        type.setOnEditCommit(this::handleEditCommit_Type);
-        longName.setOnEditCommit(this::handleEditCommit_LongName);
-        shortName.setOnEditCommit(this::handleEditCommit_ShortName);
-    */
+    x.setOnEditCommit(this::handleEditCommit_X);
+    y.setOnEditCommit(this::handleEditCommit_Y);
+    floor.setOnEditCommit(this::handleEditCommit_Floor);
+    building.setOnEditCommit(this::handleEditCommit_Building);
+    type.setOnEditCommit(this::handleEditCommit_Type);
+    longName.setOnEditCommit(this::handleEditCommit_LongName);
+    shortName.setOnEditCommit(this::handleEditCommit_ShortName);
+
     backButton.setOnAction(
         event -> {
           Navigation.navigate(Screen.HOME);
@@ -74,42 +72,64 @@ public class MapEditorController extends AbsController {
     dataEdits = new ArrayList<>();
   }
 
-  private void handleEditCommit_ShortName(TableColumn.CellEditEvent<Node, String> t) {
+  private void handleEditCommit_ShortName(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
   }
 
-  private void handleEditCommit_LongName(TableColumn.CellEditEvent<Node, String> t) {
+  private void handleEditCommit_LongName(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
   }
 
-  private void handleEditCommit_Type(TableColumn.CellEditEvent<Node, String> t) {
+  private void handleEditCommit_Type(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
   }
 
-  private void handleEditCommit_Date(TableColumn.CellEditEvent<Node, String> t) {
+  private void handleEditCommit_Date(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
   }
 
-  private void handleEditCommit_Building(TableColumn.CellEditEvent<Node, String> t) {
+  private void handleEditCommit_Building(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
   }
 
-  private void handleEditCommit_Floor(TableColumn.CellEditEvent<Node, String> t) {
+  private void handleEditCommit_Floor(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
   }
 
-  public void handleEditCommit_X(TableColumn.CellEditEvent<Node, String> t) {
+  public void handleEditCommit_X(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
+
+    // Verify
+    boolean verified = true;
+    double value = -1;
+
+    // check value is a valid double
+    try {
+      value = Double.parseDouble(t.getNewValue());
+    } catch (NumberFormatException e) {
+      verified = false;
+    }
+
+    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+
+    // removeAnyOldCommits(nodeid, POINT_X);
+    if (verified) {
+      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
+      System.out.println("Verified edit to col X");
+      dataEdits.add(edit);
+      submitEdits();
+      System.out.println("Submitted.");
+    }
   }
 
-  private void handleEditCommit_Y(TableColumn.CellEditEvent<Node, String> t) {
+  private void handleEditCommit_Y(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
   }
