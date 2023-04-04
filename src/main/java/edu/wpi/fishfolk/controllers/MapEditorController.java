@@ -19,6 +19,9 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 public class MapEditorController extends AbsController {
   @FXML private TableView<ObservableNode> table;
+
+  @FXML private TableView<ObservableNode> updatedTable;
+
   @FXML private TableColumn<ObservableNode, String> id;
   @FXML private TableColumn<ObservableNode, String> x;
   @FXML private TableColumn<ObservableNode, String> y;
@@ -32,6 +35,8 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton backButton;
 
   @FXML MFXButton submitButton;
+
+  private ArrayList<DataEdit> allAttemptedEdits;
 
   private ArrayList<DataEdit> dataEdits;
   private ArrayList<EdgeEdit> edgeEdits;
@@ -57,7 +62,7 @@ public class MapEditorController extends AbsController {
 
     validNodes = new HashSet<>();
     // load data
-    populateTable();
+    populateTable(getNodes());
 
     table.setEditable(true);
 
@@ -91,6 +96,7 @@ public class MapEditorController extends AbsController {
           trackChanges();
         });
 
+    allAttemptedEdits = new ArrayList<>();
     dataEdits = new ArrayList<>();
     edgeEdits = new ArrayList<>();
   }
@@ -112,6 +118,7 @@ public class MapEditorController extends AbsController {
     } catch (NumberFormatException e) {
       verified = false;
       DataEdit edit = new DataEdit(node.id, "x", t.getNewValue(), false);
+      allAttemptedEdits.add(edit);
     }
 
     // removeAnyOldCommits(nodeid, header); // not strictly necessary
@@ -119,6 +126,7 @@ public class MapEditorController extends AbsController {
       DataEdit edit = new DataEdit(node.id, "x", t.getNewValue(), true);
       System.out.println("Verified edit to col X");
       dataEdits.add(edit);
+      allAttemptedEdits.add(edit);
       submitEdits();
       System.out.println("Submitted.");
     }
@@ -126,9 +134,40 @@ public class MapEditorController extends AbsController {
 
   private void trackChanges() {
     System.out.println("submitted");
-    //    for (DataEdit edit : dataEdits) {
-    //      dbConnection.nodeTable.update(edit.id, edit.attr, edit.value);
-    //    }
+    ObservableList<ObservableNode> updatedNodes = getNodes();
+    for (DataEdit edit : allAttemptedEdits) {
+      System.out.println("edit val:" + edit.value.toString());
+      for (ObservableNode node : updatedNodes) {
+        if (node.id.equals(edit.id)) {
+          System.out.println("I found my match!");
+          String marking;
+          if (edit.valid) {
+            marking = "*";
+          } else {
+            marking = "X";
+          }
+          if (edit.attr == "x") {
+            node.x += marking;
+          } else if (edit.attr == "y") {
+            node.y += marking;
+          } else if (edit.attr == "building") {
+            node.building += marking;
+          } else if (edit.attr == "type") {
+            node.type += marking;
+          } else if (edit.attr == "longName") {
+            node.longName += marking;
+          } else if (edit.attr == "shortName") {
+            node.shortName += marking;
+          } else if (edit.attr == "date") {
+            node.date += marking;
+          } else if (edit.attr == "adjacentNodes") {
+            node.adjacentNodes += marking;
+          }
+        }
+      }
+      //      dbConnection.nodeTable.update(edit.id, edit.attr, edit.value);
+    }
+    populateTable(updatedNodes);
     submitEdits();
   }
 
@@ -270,8 +309,8 @@ public class MapEditorController extends AbsController {
     return observableNodes;
   }
 
-  public void populateTable() {
-    table.setItems(getNodes());
+  public void populateTable(ObservableList<ObservableNode> nodes) {
+    table.setItems(nodes);
   }
 
   /**
