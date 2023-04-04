@@ -335,7 +335,13 @@ public class Graph {
 
       paths.get(numpaths).setFloor(currentFloor);
 
-      System.out.println("Floor1: " + paths.get(numpaths).getFloor() + " with " + numpaths);
+      System.out.println(
+          "Floor1: "
+              + paths.get(numpaths).getFloor()
+              + " with "
+              + numpaths
+              + " Size: "
+              + paths.size());
 
       current_node = lastVisited[current_node];
 
@@ -344,13 +350,26 @@ public class Graph {
 
     if (nodes[id2idx.get(start)].floor.equals(currentFloor)) {
       paths.get(numpaths).addFirst(nodes[id2idx.get(start)].nid, nodes[id2idx.get(start)].point);
+      System.out.println(
+          "Floor2: "
+              + paths.get(numpaths).getFloor()
+              + " with "
+              + numpaths
+              + " Size: "
+              + paths.size());
     } else {
       paths.add(new Path());
       paths
           .get(numpaths + 1)
           .addFirst(nodes[id2idx.get(start)].nid, nodes[id2idx.get(start)].point);
       paths.get(numpaths + 1).setFloor(currentFloor);
-      System.out.println("Floor2: " + paths.get(numpaths + 1).getFloor() + " with " + numpaths);
+      System.out.println(
+          "Floor3: "
+              + paths.get(numpaths + 1).getFloor()
+              + " with "
+              + numpaths
+              + " Size: "
+              + paths.size());
     }
 
     // path.addFirst(start, nodes[id2idx.get(start)].point);

@@ -98,7 +98,7 @@ public class PathfindingController extends AbsController {
           }
           segments.clear();
           paths = graph.AStar(start, end);
-          System.out.println("paths length: " + paths.size());
+          System.out.println("paths length: " + paths.size() + " floor" + paths.get(0).getFloor());
           drawPath(paths);
           /*
           switch (paths.get()) {
