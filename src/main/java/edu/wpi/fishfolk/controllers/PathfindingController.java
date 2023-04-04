@@ -47,9 +47,34 @@ public class PathfindingController extends AbsController {
             "Second Floor",
             "Third Floor");
     selectFloor.setItems(floors);
-    selectFloor.setOnMouseClicked(event -> {
-      mapImg.setImage(Fapp.class.);
-    });
+    selectFloor.setOnAction(
+        event -> {
+          String temp = selectFloor.getValue();
+          String map;
+          switch(temp){
+            case "Lower Level 1":
+              map = "00_thelowerlevel1.png";
+              break;
+            case "Lower Level 2":
+              map = "00_thelowerlevel2.png";
+              break;
+            case "Ground Floor":
+              map = "00_thegroundfloor.png";
+              break;
+            case "First Floor":
+              map = "01_thefirstfloor.png";
+              break;
+            case "Second Floor":
+              map = "02_thefirstfloor.png";
+              break;
+            case "Third Floor":
+              map = "03_thefirstfloor.png";
+              break;
+            default:
+              map = "00_thelowerlevel1.png";
+          }
+           mapImg.setImage(Fapp.class.getResourceAsStream("images/"+map));
+        });
 
     System.out.println("floor: " + selectFloor.getItems());
 
