@@ -130,6 +130,28 @@ public class NodeTable extends Table {
     return nodes;
   }
 
+  public ArrayList<String> getColumn(String header) {
+
+    switch (header) {
+      case "id":
+      case "x":
+      case "y":
+      case "floor":
+      case "building":
+        return microNodeTable.getColumn(header);
+
+      case "type":
+      case "longname":
+      case "shortname":
+        return locationTable.getColumn(header);
+
+      case "date":
+        return moveTable.getColumn(header);
+    }
+
+    return null;
+  }
+
   @Override
   public int size() {
     return microNodeTable.size();

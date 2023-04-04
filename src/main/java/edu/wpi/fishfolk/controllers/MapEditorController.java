@@ -7,6 +7,7 @@ import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -150,11 +151,34 @@ public class MapEditorController extends AbsController {
 
   public ObservableList<ObservableNode> getNodes() {
 
-    ObservableList<ObservableNode> nodes = FXCollections.observableArrayList();
-    for (Node node : dbConnection.nodeTable.getAllNodes()) {
-      nodes.add(new ObservableNode(node, "date", "edge"));
+    ObservableList<ObservableNode> observableNodes = FXCollections.observableArrayList();
+
+    Node[] nodes = dbConnection.nodeTable.getAllNodes();
+    ArrayList<String> dates = dbConnection.nodeTable.getColumn("date");
+
+    //map from node ids to index in array of nodes (equal index in list of observable nodes)
+    HashMap<String, Integer> id2idx = new HashMap<>(nodes.length * 4 / 3 + 1);
+
+    // put together node data and dates and leave edges blank for now
+    for (int i = 0; i < nodes.length; i++) {
+      id2idx.put(nodes[i].id, i);
+      observableNodes.add(new ObservableNode(nodes[i], dates.get(i), ""));
     }
-    return nodes;
+
+    // two arraylists in an array
+    // edgesRaw[0] is the list of start nodes
+    // edgesRaw[1] is the list of end nodes
+    // thus edge i is between edgesRaw[0].get(i) and edgesRaw[1].get(i)
+    ArrayList<String>[] edgesRaw = dbConnection.edgeTable.getAll();
+
+    ArrayList<String> starts = edgesRaw[0];
+
+    for (int i = 0; i < starts.size(); i++) {
+      int idx = id2idx.get(starts.get(i));
+      observableNodes.get(idx).addEdge(edgesRaw[1].get(i));
+    }
+
+    return observableNodes;
   }
 
   public void populateTable() {
