@@ -19,8 +19,8 @@ public class ObservableNode {
   public ObservableNode(Node node) {
 
     this.id = node.id;
-    this.x = String.valueOf(node.point.getX());
-    this.y = String.valueOf(node.point.getY());
+    this.x = String.format("%.0f", node.point.getX());
+    this.y = String.format("%.0f", node.point.getY());
     this.floor = node.floor;
     this.building = node.building;
     this.type = node.type.toString();
