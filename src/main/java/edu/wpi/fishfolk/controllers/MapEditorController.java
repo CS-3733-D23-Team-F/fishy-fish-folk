@@ -52,8 +52,8 @@ public class MapEditorController {
     y.setCellFactory(TextFieldTableCell.forTableColumn());
     floor.setCellFactory(TextFieldTableCell.forTableColumn());
     building.setCellFactory(TextFieldTableCell.forTableColumn());
-    date.setCellFactory(TextFieldTableCell.forTableColumn()); // date is a date, not string
-    type.setCellFactory(TextFieldTableCell.forTableColumn()); // type is enum, not string
+    date.setCellFactory(TextFieldTableCell.forTableColumn());
+    type.setCellFactory(TextFieldTableCell.forTableColumn());
     longName.setCellFactory(TextFieldTableCell.forTableColumn());
     shortName.setCellFactory(TextFieldTableCell.forTableColumn());
 
