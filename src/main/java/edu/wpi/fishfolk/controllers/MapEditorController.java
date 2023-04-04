@@ -147,28 +147,27 @@ public class MapEditorController extends AbsController {
             marking = "X";
           }
           if (edit.attr == "x") {
-            node.x += marking;
+            node.x = edit.value + marking;
           } else if (edit.attr == "y") {
-            node.y += marking;
+            node.y = edit.value + marking;
           } else if (edit.attr == "building") {
-            node.building += marking;
+            node.building = edit.value + marking;
           } else if (edit.attr == "type") {
-            node.type += marking;
+            node.type = edit.value + marking;
           } else if (edit.attr == "longName") {
-            node.longName += marking;
+            node.longName = edit.value + marking;
           } else if (edit.attr == "shortName") {
-            node.shortName += marking;
+            node.shortName = edit.value + marking;
           } else if (edit.attr == "date") {
-            node.date += marking;
+            node.date = edit.value + marking;
           } else if (edit.attr == "adjacentNodes") {
-            node.adjacentNodes += marking;
+            node.adjacentNodes = edit.value + marking;
           }
         }
       }
       //      dbConnection.nodeTable.update(edit.id, edit.attr, edit.value);
     }
     populateTable(updatedNodes);
-    submitEdits();
   }
 
   private void handleEditCommit_Y(TableColumn.CellEditEvent<ObservableNode, String> t) {
