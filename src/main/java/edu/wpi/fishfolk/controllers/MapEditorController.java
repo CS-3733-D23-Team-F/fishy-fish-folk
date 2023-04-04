@@ -169,13 +169,13 @@ public class MapEditorController extends AbsController {
     Node[] nodes = dbConnection.nodeTable.getAllNodes();
     ArrayList<String> dates = dbConnection.nodeTable.getColumn("date");
 
-    //map from node ids to index in array of nodes (equal index in list of observable nodes)
+    // map from node ids to index in array of nodes (equal index in list of observable nodes)
     HashMap<String, Integer> id2idx = new HashMap<>(nodes.length * 4 / 3 + 1);
 
     // put together node data and dates and leave edges blank for now
     for (int i = 0; i < nodes.length; i++) {
       id2idx.put(nodes[i].id, i);
-      observableNodes.add(new ObservableNode(nodes[i], dates.get(i), ""));
+      observableNodes.add(new ObservableNode(nodes[i], dates.get(i), new ArrayList<>()));
     }
 
     // two arraylists in an array
@@ -184,11 +184,15 @@ public class MapEditorController extends AbsController {
     // thus edge i is between edgesRaw[0].get(i) and edgesRaw[1].get(i)
     ArrayList<String>[] edgesRaw = dbConnection.edgeTable.getAll();
 
-    ArrayList<String> starts = edgesRaw[0];
+    for (int i = 0; i < edgesRaw[0].size(); i++) {
 
-    for (int i = 0; i < starts.size(); i++) {
-      int idx = id2idx.get(starts.get(i));
-      observableNodes.get(idx).addEdge(edgesRaw[1].get(i));
+      //add end to start's adjacent nodes
+      int startIdx = id2idx.get(edgesRaw[0].get(i));
+      observableNodes.get(startIdx).addAdjNode(edgesRaw[1].get(i));
+
+      //add start to end's adjacent nodes
+      int endIdx = id2idx.get(edgesRaw[1].get(i));
+      observableNodes.get(endIdx).addAdjNode(edgesRaw[0].get(i));
     }
 
     return observableNodes;
