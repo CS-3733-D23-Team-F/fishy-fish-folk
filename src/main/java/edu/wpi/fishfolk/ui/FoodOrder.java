@@ -44,9 +44,9 @@ public class FoodOrder extends TableEntry {
 
   public boolean submit() {
     if (deliveryLocation == null
-            || payer == null
-            || LocalDateTime.now().isAfter(deliveryTime)
-            || items.isEmpty()) return false;
+        || payer == null
+        || LocalDateTime.now().isAfter(deliveryTime)
+        || items.isEmpty()) return false;
     formStatus = FormStatus.submitted;
     return true;
   }
@@ -69,19 +69,19 @@ public class FoodOrder extends TableEntry {
     String items = String.join("\n", itemStrings);
 
     String full =
-            items
-                    + "\nTotal cost: "
-                    + String.format("%.2f", totalPrice)
-                    + "\nTo "
-                    + deliveryLocation.toString()
-                    + "\non "
-                    + deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd"))
-                    + " at "
-                    + deliveryTime.format(DateTimeFormatter.ofPattern("hh:mma"))
-                    + "\nCharging card of "
-                    + payer.nameOnCard
-                    + " ending in "
-                    + ("" + payer.cardNum).substring(12);
+        items
+            + "\nTotal cost: "
+            + String.format("%.2f", totalPrice)
+            + "\nTo "
+            + deliveryLocation.toString()
+            + "\non "
+            + deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd"))
+            + " at "
+            + deliveryTime.format(DateTimeFormatter.ofPattern("hh:mma"))
+            + "\nCharging card of "
+            + payer.nameOnCard
+            + " ending in "
+            + ("" + payer.cardNum).substring(12);
     return full;
   }
 
@@ -119,7 +119,7 @@ public class FoodOrder extends TableEntry {
     deliveryLocation = data.get(4);
     String dateTime = data.get(5);
     deliveryTime =
-            LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("E, MM/dd - h:mayyyy"));
+        LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("E, MM/dd - h:mayyyy"));
     payer = CreditCardInfo.dummy;
     return true;
   }
@@ -137,22 +137,26 @@ public class FoodOrder extends TableEntry {
       item.add(itemString);
     }
     switch (formStatus) {
-      case filled: {
-        item.add("Filled");
-        break;
-      }
-      case notSubmitted: {
-        item.add("NotSubmitted");
-        break;
-      }
-      case submitted: {
-        item.add("Submitted");
-        break;
-      }
-      case cancelled: {
-        item.add("Cancelled");
-        break;
-      }
+      case filled:
+        {
+          item.add("Filled");
+          break;
+        }
+      case notSubmitted:
+        {
+          item.add("NotSubmitted");
+          break;
+        }
+      case submitted:
+        {
+          item.add("Submitted");
+          break;
+        }
+      case cancelled:
+        {
+          item.add("Cancelled");
+          break;
+        }
     }
     item.add(assignee);
     item.add(deliveryLocation);

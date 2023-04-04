@@ -1,9 +1,10 @@
 package edu.wpi.fishfolk.ui;
+
 import edu.wpi.fishfolk.database.TableEntry;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class SupplyOrder {
+public class SupplyOrder extends TableEntry {
   public LinkedList<SupplyItem> supplies;
   public String link;
   public String roomNum;
@@ -12,6 +13,8 @@ public class SupplyOrder {
   FormStatus formStatus;
   public String formID;
 
+  public String assignee;
+
   public SupplyOrder() {
 
     supplies = new LinkedList<SupplyItem>();
@@ -19,7 +22,8 @@ public class SupplyOrder {
     this.roomNum = roomNum;
     this.notes = notes;
     formStatus = FormStatus.notSubmitted;
-    this.formID = formID;
+    formID = "" + System.currentTimeMillis();
+    formID = formID.substring(formID.length() - 10);
   }
 
   // addSupply() adds a given SupplyItem to supplies
@@ -29,19 +33,18 @@ public class SupplyOrder {
 
   // setSubmitted() sets the formStatus to submitted
   public void setSubmitted() {
-    FormStatus formStatus = FormStatus.submitted;
+    formStatus = FormStatus.submitted;
   }
 
   // setCancelled() sets the formStatus to cancelled
   public void setCancelled() {
-    FormStatus formStatus = FormStatus.cancelled;
+    formStatus = FormStatus.cancelled;
   }
 
   // setFilled() sets the formStatus to filled
   public void setFilled() {
-    FormStatus formStatus = FormStatus.filled;
+    formStatus = FormStatus.filled;
   }
-  
 
   // toString() takes the attributes of a SupplyOrder (supplies, link, roomNum, notes)
   public String toString() {
@@ -112,7 +115,7 @@ public class SupplyOrder {
   }
 
   // construct() takes an ArrayList<String> from table and turns it into a SupplyOrder object
-  //@Override
+  // @Override
   public boolean construct(ArrayList<String> data) {
     SupplyOrder currentSupplyOrder = new SupplyOrder();
     currentSupplyOrder.formID = data.get(0);
@@ -120,12 +123,13 @@ public class SupplyOrder {
     currentSupplyOrder.link = data.get(2);
     currentSupplyOrder.roomNum = data.get(3);
     currentSupplyOrder.notes = data.get(4);
+    currentSupplyOrder.assignee = data.get(5);
     return true;
   }
 
   // deconstruct() turns SupplyOrder object into array list to be put into table
-  // ID, ListofItems, link, roomNum, notes
-  //@Override
+  // ID, ListofItems, link, roomNum, notes, assignee
+  // @Override
   public ArrayList<String> deconstruct() {
     ArrayList<String> deconstruction = new ArrayList<String>();
     deconstruction.add(formID);
@@ -133,6 +137,29 @@ public class SupplyOrder {
     deconstruction.add(link);
     deconstruction.add(roomNum);
     deconstruction.add(notes);
+    switch (formStatus) {
+      case filled:
+        {
+          deconstruction.add("Filled");
+          break;
+        }
+      case notSubmitted:
+        {
+          deconstruction.add("NotSubmitted");
+          break;
+        }
+      case submitted:
+        {
+          deconstruction.add("Submitted");
+          break;
+        }
+      case cancelled:
+        {
+          deconstruction.add("Cancelled");
+          break;
+        }
+    }
+    deconstruction.add(assignee);
     return deconstruction;
   }
 }
