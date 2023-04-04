@@ -52,8 +52,8 @@ public class MapEditorController {
     y.setCellFactory(TextFieldTableCell.forTableColumn());
     floor.setCellFactory(TextFieldTableCell.forTableColumn());
     building.setCellFactory(TextFieldTableCell.forTableColumn());
-    //    date.setCellFactory(TextFieldTableCell.forTableColumn()); // date is a date, not string
-    //    type.setCellFactory(TextFieldTableCell.forTableColumn()); // type is enum, not string
+    date.setCellFactory(TextFieldTableCell.forTableColumn()); // date is a date, not string
+    type.setCellFactory(TextFieldTableCell.forTableColumn()); // type is enum, not string
     longName.setCellFactory(TextFieldTableCell.forTableColumn());
     shortName.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -65,40 +65,6 @@ public class MapEditorController {
     type.setOnEditCommit(this::handleEditCommit_Type);
     longName.setOnEditCommit(this::handleEditCommit_LongName);
     shortName.setOnEditCommit(this::handleEditCommit_ShortName);
-
-    //        y.setOnEditCommit(
-    //                (TableColumn.CellEditEvent<Node, String> t) ->
-    //
-    // (t.getTableView().getItems().get(t.getTablePosition().getRow())).setY(t.getNewValue()));
-    //        floor.setOnEditCommit(
-    //                (TableColumn.CellEditEvent<Node, String> t) ->
-    //                        (t.getTableView().getItems().get(t.getTablePosition().getRow()))
-    //                                .setFloor(t.getNewValue()));
-    //        building.setOnEditCommit(
-    //                (TableColumn.CellEditEvent<Node, String> t) ->
-    //                        (t.getTableView().getItems().get(t.getTablePosition().getRow()))
-    //                                .setBuilding(t.getNewValue()));
-    //    date.setOnEditCommit(
-    //            (TableColumn.CellEditEvent<Node, String> t) ->
-    //                    ( t.getTableView().getItems().get(
-    //                            t.getTablePosition().getRow())
-    //                    ).setDate(t.getNewValue()) //IMPORTANT: there is no setter for date
-    // because it's not a field of Node
-    //    );                                         // therefore it won't work with this :/
-    //    type.setOnEditCommit( // type isn't a string, doesn't work with this yet
-    //            (TableColumn.CellEditEvent<Node, String> t) ->
-    //                    ( t.getTableView().getItems().get(
-    //                            t.getTablePosition().getRow())
-    //                    ).setType(t.getNewValue())
-    //    );
-    //        longName.setOnEditCommit(
-    //                (TableColumn.CellEditEvent<Node, String> t) ->
-    //                        (t.getTableView().getItems().get(t.getTablePosition().getRow()))
-    //                                .setLongName(t.getNewValue()));
-    //        shortName.setOnEditCommit(
-    //                (TableColumn.CellEditEvent<Node, String> t) ->
-    //                        (t.getTableView().getItems().get(t.getTablePosition().getRow()))
-    //                                .setShortName(t.getNewValue()));
 
     backButton.setOnAction(
         event -> {
