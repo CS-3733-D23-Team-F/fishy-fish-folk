@@ -154,6 +154,14 @@ public class MapEditorController extends AbsController {
    * cell white, 2. Remove DataEdit from collection.
    */
   public void submitEdits() {
+
+    for (DataEdit edit : dataEdits) {
+      // TODO: Pass ObservableNode object through DataEdit
+      // TODO: Convert to Node object (store in ObservableNode?)
+      Node newNode = new Node();
+      dbConnection.nodeTable.update(newNode, "9/9/99");
+    }
+
     dataEdits.removeIf(
         dataEdit ->
             dbConnection.nodeTable.update(
