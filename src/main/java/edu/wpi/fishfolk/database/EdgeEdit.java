@@ -12,4 +12,3 @@ public class EdgeEdit {
     this.node2 = node2;
   }
 }
-

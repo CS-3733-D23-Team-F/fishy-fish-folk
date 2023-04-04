@@ -1,7 +1,9 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.database.DataEdit;
-import edu.wpi.fishfolk.database.EdgeEdit;import edu.wpi.fishfolk.database.EdgeEditType;import edu.wpi.fishfolk.database.ObservableNode;
+import edu.wpi.fishfolk.database.EdgeEdit;
+import edu.wpi.fishfolk.database.EdgeEditType;
+import edu.wpi.fishfolk.database.ObservableNode;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.Node;
@@ -29,9 +31,11 @@ public class MapEditorController extends AbsController {
   @FXML private TableColumn<ObservableNode, String> edges;
   @FXML MFXButton backButton;
 
-  private HashSet<String> validNodes;
+  @FXML MFXButton submitButton;
+
   private ArrayList<DataEdit> dataEdits;
   private ArrayList<EdgeEdit> edgeEdits;
+  private HashSet<String> validNodes;
 
   @FXML
   public void initialize() {
@@ -49,9 +53,9 @@ public class MapEditorController extends AbsController {
 
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
-    // important to initialize this before populating the table
-    validNodes = new HashSet<>();
+    submitButton.setOnMouseClicked(event -> trackChanges());
 
+    validNodes = new HashSet<>();
     // load data
     populateTable();
 
@@ -82,6 +86,11 @@ public class MapEditorController extends AbsController {
           Navigation.navigate(Screen.HOME);
         });
 
+    submitButton.setOnAction(
+        event -> {
+          trackChanges();
+        });
+
     dataEdits = new ArrayList<>();
     edgeEdits = new ArrayList<>();
   }
@@ -96,23 +105,31 @@ public class MapEditorController extends AbsController {
     boolean verified = true;
     double value = -1;
 
+    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
     // check value is a valid double
     try {
       value = Double.parseDouble(t.getNewValue());
     } catch (NumberFormatException e) {
       verified = false;
+      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue(), false);
     }
-
-    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
 
     // removeAnyOldCommits(nodeid, header); // not strictly necessary
     if (verified) {
-      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
+      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue(), true);
       System.out.println("Verified edit to col X");
       dataEdits.add(edit);
       submitEdits();
       System.out.println("Submitted.");
     }
+  }
+
+  private void trackChanges() {
+    System.out.println("submitted");
+    //    for (DataEdit edit : dataEdits) {
+    //      dbConnection.nodeTable.update(edit.id, edit.attr, edit.value);
+    //    }
+    submitEdits();
   }
 
   private void handleEditCommit_Y(TableColumn.CellEditEvent<ObservableNode, String> t) {
@@ -144,7 +161,7 @@ public class MapEditorController extends AbsController {
     ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
 
     // removeAnyOldCommits(nodeid, header); // not strictly necessary
-    DataEdit edit = new DataEdit(node.id, "longname", t.getNewValue());
+    DataEdit edit = new DataEdit(node.id, "longname", t.getNewValue(), true);
     System.out.println("Verified edit to col longname");
     dataEdits.add(edit);
     submitEdits();
@@ -182,27 +199,26 @@ public class MapEditorController extends AbsController {
       // find differences between prev and changed
       // https://stackoverflow.com/questions/3476672/algorithm-to-get-changes-between-two-arrays
       int pIdx = 0, cIdx = 0;
-      while(pIdx < prev.length && cIdx < changed.length){
+      while (pIdx < prev.length && cIdx < changed.length) {
 
         int comp = prev[pIdx].compareTo(changed[cIdx]);
 
-        if(comp < 0){
-          //pidx got removed
+        if (comp < 0) {
+          // pidx got removed
           edgeEdits.add(new EdgeEdit(EdgeEditType.REMOVE, start, prev[pIdx]));
           pIdx++;
 
-        } else if (comp > 0){
-          //cidx got added
+        } else if (comp > 0) {
+          // cidx got added
           edgeEdits.add(new EdgeEdit(EdgeEditType.ADD, start, changed[cIdx]));
           cIdx++;
 
         } else {
-          //equal so this edge is unchanged
+          // equal so this edge is unchanged
           pIdx++;
           cIdx++;
         }
       }
-
 
       submitEdits();
       System.out.println("Submitted.");
@@ -268,9 +284,9 @@ public class MapEditorController extends AbsController {
       dbConnection.nodeTable.update(edit.id, edit.attr, edit.value);
     }
 
-    for(EdgeEdit edit : edgeEdits){
-      //TODO Christian apply edits to edit table - perhaps execute query?
-      //dbConnection.edgeTable.executeQuery
+    for (EdgeEdit edit : edgeEdits) {
+      // TODO Christian apply edits to edit table - perhaps execute query?
+      // dbConnection.edgeTable.executeQuery
     }
 
     //    dataEdits.removeIf(
