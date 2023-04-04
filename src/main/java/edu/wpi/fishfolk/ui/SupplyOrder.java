@@ -43,6 +43,7 @@ public class SupplyOrder {
   }
   
 
+  // toString() takes the attributes of a SupplyOrder (supplies, link, roomNum, notes)
   public String toString() {
     String string =
         "Supply List:"
@@ -74,7 +75,6 @@ public class SupplyOrder {
             + formID;
     return string;
   }
-
 
   // listItemsToString() takes supplies from a SupplyOrder (LinkedList<FoodItems>) and turns them
   // into a string
