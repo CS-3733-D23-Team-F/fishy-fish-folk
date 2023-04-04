@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.pathfinding.Graph;
 import edu.wpi.fishfolk.pathfinding.Path;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -8,6 +9,7 @@ import java.util.LinkedList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -25,10 +27,13 @@ public class PathfindingController extends AbsController {
   @FXML AnchorPane mapAnchor;
   @FXML ImageView mapImg;
   @FXML Text directionInstructions;
-
+  @FXML MFXButton backButton;
+  @FXML MFXButton nextButton;
   Graph graph;
   ArrayList<Path> paths;
   LinkedList<Line> segments;
+
+  ArrayList<Image> displayMaps;
 
   public PathfindingController() {
     super();
@@ -39,41 +44,9 @@ public class PathfindingController extends AbsController {
   private void initialize() {
     ArrayList nodeNames = dbConnection.nodeTable.getDestLongNames();
     segments = new LinkedList<>();
+    displayMaps = new ArrayList<>();
     System.out.println(dbConnection.nodeTable.getTableName());
 
-    /*
-    selectFloor.setOnAction(
-        event -> {
-          String temp = selectFloor.getValue();
-          String map;
-          switch (temp) {
-            case "Lower Level 1":
-              map = "00_thelowerlevel1.png";
-              break;
-            case "Lower Level 2":
-              map = "00_thelowerlevel2.png";
-              break;
-            case "Ground Floor":
-              map = "00_thegroundfloor.png";
-              break;
-            case "First Floor":
-              map = "01_thefirstfloor.png";
-              break;
-            case "Second Floor":
-              map = "02_thesecondfloor.png";
-              break;
-            case "Third Floor":
-              map = "03_thethirdfloor.png";
-              break;
-            default:
-              map = "00_thelowerlevel1.png";
-          }
-          Image image = new Image(Fapp.class.getResourceAsStream("map/" + map));
-          mapImg.setImage(image);
-        });
-
-    System.out.println("floor: " + selectFloor.getItems());
-    */
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end
 
@@ -99,34 +72,54 @@ public class PathfindingController extends AbsController {
           segments.clear();
           paths = graph.AStar(start, end);
           System.out.println("paths length: " + paths.size() + " floor" + paths.get(0).getFloor());
-          drawPath(paths);
-          /*
-          switch (paths.get()) {
-            case "Lower Level 1":
-              map = "00_thelowerlevel1.png";
-              break;
-            case "Lower Level 2":
-              map = "00_thelowerlevel2.png";
-              break;
-            case "Ground Floor":
-              map = "00_thegroundfloor.png";
-              break;
-            case "First Floor":
-              map = "01_thefirstfloor.png";
-              break;
-            case "Second Floor":
-              map = "02_thesecondfloor.png";
-              break;
-            case "Third Floor":
-              map = "03_thethirdfloor.png";
-              break;
-            default:
-              map = "00_thelowerlevel1.png";
-          }
-          */
 
+          Image image;
+          for (int i = 0; i < paths.size(); i++) {
+            switch (paths.get(i).getFloor()) {
+              case "L1":
+                image = new Image(Fapp.class.getResourceAsStream("map/00_thelowerlevel1.png"));
+                displayMaps.add(image);
+                break;
+              case "L2":
+                image = new Image(Fapp.class.getResourceAsStream("map/00_thelowerlevel2.png"));
+                displayMaps.add(image);
+                break;
+              case "G":
+                image = new Image(Fapp.class.getResourceAsStream("map/00_thegroundfloor.png"));
+                displayMaps.add(image);
+                break;
+              case "1":
+                image = new Image(Fapp.class.getResourceAsStream("map/01_thefirstfloor.png"));
+                displayMaps.add(image);
+                break;
+              case "2":
+                image = new Image(Fapp.class.getResourceAsStream("map/02_thesecondfloor.png"));
+                displayMaps.add(image);
+                break;
+              case "3":
+                image = new Image(Fapp.class.getResourceAsStream("map/03_thethirdfloor.png"));
+                displayMaps.add(image);
+                break;
+              default:
+                image = new Image(Fapp.class.getResourceAsStream("map/00_thelowerlevel1.png"));
+                displayMaps.add(image);
+                break;
+            }
+          }
+          mapImg.setImage(displayMaps.get(0));
+          drawPath(paths);
           // directionInstructions.setText("Instructions: \n\n" + path.getDirections());
         });
+    nextButton.setOnMouseClicked(
+        event -> {
+          System.out.println("Image: " + mapImg.getImage());
+        });
+
+    backButton.setOnMouseClicked(
+        event -> {
+          if (displayMaps.get(1) != null) {}
+        });
+
     clearBtn.setOnAction(
         event -> {
           for (int i = 0; i < segments.size(); i++) {
