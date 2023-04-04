@@ -4,12 +4,9 @@ import edu.wpi.fishfolk.database.TableEntry;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class FoodOrder extends TableEntry {
-  private static String[] headersArray = {"ID", "Items", "Status", "Assignee", "Room", "Time"};
-  public static ArrayList<String> headers = new ArrayList<String>(Arrays.asList(headersArray));
   public LinkedList<FoodItem> items;
   public LocalDateTime deliveryTime;
   public CreditCardInfo payer;
@@ -23,10 +20,11 @@ public class FoodOrder extends TableEntry {
   public FoodOrder() {
     items = new LinkedList<FoodItem>();
     deliveryTime = LocalDateTime.now();
-    payer = null;
+    payer = CreditCardInfo.dummy;
     deliveryLocation = null;
     formStatus = FormStatus.notSubmitted;
     formID = "" + System.currentTimeMillis();
+    formID = formID.substring(formID.length() - 10);
   }
 
   public void addItem(FoodItem toAdd) {
@@ -98,8 +96,8 @@ public class FoodOrder extends TableEntry {
       String[] itemsArray = data.get(1).split("-_-");
       DB_ITEMS:
       for (String s : itemsArray) {
-        String itemName = s.substring(0, s.lastIndexOf(' '));
-        float price = Float.parseFloat(s.substring(s.lastIndexOf(' ') + 1));
+        String itemName = s.substring(0, s.lastIndexOf(" "));
+        float price = Float.parseFloat(s.substring(s.lastIndexOf(" ") + 1));
         for (FoodItem f : items) {
           if (f.price == price && itemName.equals(f.itemName)) {
             items.add(f);
@@ -122,7 +120,9 @@ public class FoodOrder extends TableEntry {
     assignee = data.get(3);
     deliveryLocation = data.get(4);
     String dateTime = data.get(5);
-    deliveryTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("EE, MM/dd\nh:ma"));
+    deliveryTime =
+        LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("E, MM/dd - h:mayyyy"));
+    payer = CreditCardInfo.dummy;
     return true;
   }
 
@@ -142,23 +142,27 @@ public class FoodOrder extends TableEntry {
       case filled:
         {
           item.add("Filled");
+          break;
         }
       case notSubmitted:
         {
           item.add("NotSubmitted");
+          break;
         }
       case submitted:
         {
           item.add("Submitted");
+          break;
         }
       case cancelled:
         {
           item.add("Cancelled");
+          break;
         }
     }
     item.add(assignee);
     item.add(deliveryLocation);
-    item.add(deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd\nh:ma")));
+    item.add(deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd - h:mayyyy")));
     return item;
   }
 

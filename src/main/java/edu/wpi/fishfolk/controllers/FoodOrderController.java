@@ -11,6 +11,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -22,6 +23,9 @@ import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 
 public class FoodOrderController extends AbsController {
+  private static String[] headersArray = {"ID", "Items", "Status", "Assignee", "Room", "Time"};
+  public static ArrayList<String> headers = new ArrayList<String>(Arrays.asList(headersArray));
+
   Table foodOrderTable;
   FoodOrder currentOrder;
   ArrayList<FoodItem> menu;
@@ -56,11 +60,12 @@ public class FoodOrderController extends AbsController {
 
   public FoodOrderController() {
     super();
+    System.out.println("Hello");
     foodOrderTable = new Table(dbConnection.conn, "foodorder");
-    foodOrderTable.setHeaders(
-        FoodOrder.headers,
+    foodOrderTable.init(true);
+    foodOrderTable.addHeaders(
+        FoodOrderController.headers,
         new ArrayList<>(List.of("String", "String", "String", "String", "String", "String")));
-    foodOrderTable.init(false);
   }
 
   @FXML
@@ -121,7 +126,7 @@ public class FoodOrderController extends AbsController {
     submitButton.setOnAction(
         event -> {
           if (currentOrder.submit()) {
-            System.out.println(foodOrderTable.insert(currentOrder));
+            foodOrderTable.insert(currentOrder);
             // notify confirmation
             Navigation.navigate(Screen.HOME);
           } else {
@@ -199,7 +204,7 @@ public class FoodOrderController extends AbsController {
       quantityBoxes[i].setText("" + itemQuantities[index + i]);
     }
     timeText.setText(
-        currentOrder.deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd\nh:ma")));
+        currentOrder.deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd\nh:mma")));
     // System.out.println("\n\nCurrent order: \n" + currentOrder.toString());
   }
 

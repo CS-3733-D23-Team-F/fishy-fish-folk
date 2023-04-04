@@ -1,9 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.database.Table;
-import edu.wpi.fishfolk.ui.FoodItem;
 import edu.wpi.fishfolk.ui.FoodOrder;
-import edu.wpi.fishfolk.ui.FormStatus;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.time.format.DateTimeFormatter;
@@ -29,8 +27,8 @@ public class ViewFoodOrdersController extends AbsController {
   public ViewFoodOrdersController() {
     super();
     foodOrderTable = new Table(dbConnection.conn, "foodorder");
-    foodOrderTable.setHeaders(
-        FoodOrder.headers,
+    foodOrderTable.addHeaders(
+        FoodOrderController.headers,
         new ArrayList<>(List.of("String", "String", "String", "String", "String", "String")));
     foodOrderTable.init(false);
   }
@@ -43,14 +41,15 @@ public class ViewFoodOrdersController extends AbsController {
     prevOrderButton.setDisable(true);
     loadOrders();
     if (foodOrders.size() < 2) nextOrderButton.setDisable(true);
-    assigneeText.setOnKeyTyped(event -> updateAssignee());
+    assigneeText.setOnKeyReleased(event -> updateAssignee());
     updateDisplay();
   }
 
   private void updateAssignee() {
-    foodOrders.get(currentOrderNumber).assignee = assigneeText.getText();
-    updateDisplay();
-    foodOrderTable.insert(foodOrders.get(currentOrderNumber));
+    FoodOrder currentOrder = foodOrders.get(currentOrderNumber);
+    currentOrder.assignee = assigneeText.getText();
+    // updateDisplay();
+    foodOrderTable.update(currentOrder.formID, "Assignee", currentOrder.assignee);
   }
 
   private void prevOrder() {
@@ -72,14 +71,19 @@ public class ViewFoodOrdersController extends AbsController {
     // TODO load food orders from database
 
     ArrayList<String>[] tableOrders = foodOrderTable.getAll();
+    boolean headersHandled = false;
     for (ArrayList<String> tableEntry : tableOrders) {
-      FoodOrder order = new FoodOrder();
-      order.construct(tableEntry);
-      foodOrders.add(order);
+      if (headersHandled) {
+        FoodOrder order = new FoodOrder();
+        order.construct(tableEntry);
+        foodOrders.add(order);
+      } else {
+        headersHandled = true;
+      }
     }
 
     // temp generic foodOrders
-    FoodOrder generic1 = new FoodOrder();
+    /*FoodOrder generic1 = new FoodOrder();
     generic1.assignee = "Blink 182";
     generic1.addItem(FoodItem.generic3);
     generic1.addItem(FoodItem.generic3);
@@ -93,7 +97,7 @@ public class ViewFoodOrdersController extends AbsController {
     generic1.deliveryLocation = "Home";
     generic2.formStatus = FormStatus.submitted;
     foodOrders.add(generic1);
-    foodOrders.add(generic2);
+    foodOrders.add(generic2);*/
   }
 
   private void updateDisplay() {
@@ -106,7 +110,7 @@ public class ViewFoodOrdersController extends AbsController {
               .format(DateTimeFormatter.ofPattern("h:ma, EE, MM/dd")));
       String itemsTextContent = foodOrders.get(currentOrderNumber).toString();
       itemsTextContent =
-          itemsTextContent.substring(0, itemsTextContent.indexOf("Total Cost: ") - 1);
+          itemsTextContent.substring(0, itemsTextContent.indexOf("Total cost: ") - 1);
       itemsText.setText(itemsTextContent);
       int numLines = itemsTextContent.split("\n").length + 1;
       itemsTextContainer.setPrefHeight(64 * numLines);
