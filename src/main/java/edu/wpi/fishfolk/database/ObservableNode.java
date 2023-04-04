@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database;
 
+import edu.wpi.fishfolk.pathfinding.Node;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,23 +16,15 @@ public class ObservableNode {
 
   public ObservableNode() {}
 
-  public ObservableNode(
-      String id,
-      String x,
-      String y,
-      String floor,
-      String building,
-      String type,
-      String longName,
-      String shortName) {
+  public ObservableNode(Node node) {
 
-    this.id = id;
-    this.x = x;
-    this.y = y;
-    this.floor = floor;
-    this.building = building;
-    this.type = type;
-    this.longName = longName;
-    this.shortName = shortName;
+    this.id = node.id;
+    this.x = String.valueOf(node.point.getX());
+    this.y = String.valueOf(node.point.getY());
+    this.floor = node.floor;
+    this.building = node.building;
+    this.type = node.type.toString();
+    this.longName = node.longName;
+    this.shortName = node.shortName;
   }
 }

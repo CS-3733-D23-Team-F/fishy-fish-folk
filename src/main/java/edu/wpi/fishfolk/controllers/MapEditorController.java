@@ -117,19 +117,8 @@ public class MapEditorController extends AbsController {
   public ObservableList<ObservableNode> getNodes() {
 
     ObservableList<ObservableNode> nodes = FXCollections.observableArrayList();
-    for (Node n : dbConnection.nodeTable.getAllNodes()) {
-      ArrayList<String> next = n.deconstruct();
-      ObservableNode update =
-          new ObservableNode(
-              next.get(0),
-              next.get(1),
-              next.get(2),
-              next.get(3),
-              next.get(4),
-              next.get(5),
-              next.get(6),
-              next.get(7));
-      nodes.add(update);
+    for (Node node : dbConnection.nodeTable.getAllNodes()) {
+      nodes.add(new ObservableNode(node));
     }
     return nodes;
   }
