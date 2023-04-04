@@ -1,7 +1,6 @@
 package edu.wpi.fishfolk.ui;
 
 import edu.wpi.fishfolk.database.TableEntry;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class FoodOrder extends TableEntry {
   public LinkedList<FoodItem> items;
   public LocalDateTime deliveryTime;
   public CreditCardInfo payer;
-  public Room deliveryLocation;
+  public String deliveryLocation;
   public float totalPrice;
 
   public FormStatus formStatus;
@@ -48,6 +47,8 @@ public class FoodOrder extends TableEntry {
         || LocalDateTime.now().isAfter(deliveryTime)
         || items.isEmpty()) return false;
     // send order to whatever aggregate of orders we have, I suspect this is a DB task later
+    // todo implement table access
+
     // this will be a print for now
     System.out.println("Submitted order:\n");
     System.out.println(this);
@@ -93,17 +94,20 @@ public class FoodOrder extends TableEntry {
       return false;
     }
     formID = data.get(0);
-    String[] itemsArray = data.get(1).split("-_-");
-    DB_ITEMS: for (String s : itemsArray) {
-      String itemName = s.substring(0, s.lastIndexOf(' '));
-      float price = Float.parseFloat(s.substring(s.lastIndexOf(' ') + 1));
-      for (FoodItem f : items) {
-        if (f.price == price && itemName.equals(f.itemName)) {
-          items.add(f);
-          continue DB_ITEMS;
+    if (!data.get(1).equals("")) {
+      String[] itemsArray = data.get(1).split("-_-");
+      DB_ITEMS:
+      for (String s : itemsArray) {
+        String itemName = s.substring(0, s.lastIndexOf(' '));
+        float price = Float.parseFloat(s.substring(s.lastIndexOf(' ') + 1));
+        for (FoodItem f : items) {
+          if (f.price == price && itemName.equals(f.itemName)) {
+            items.add(f);
+            continue DB_ITEMS;
+          }
         }
+        items.add(new FoodItem(itemName, price, new ArrayList<String>()));
       }
-      items.add(new FoodItem(itemName, price, new ArrayList<String>()));
     }
     String status = data.get(2);
     if (status.equals("Filled")) {
@@ -116,8 +120,9 @@ public class FoodOrder extends TableEntry {
       formStatus = FormStatus.notSubmitted;
     } else return false;
     assignee = data.get(3);
-    //TODO process room
-    //TODO process time
+    deliveryLocation = data.get(4);
+    String dateTime = data.get(5);
+    deliveryTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("EE, MM/dd\nh:ma"));
     return true;
   }
 
@@ -134,21 +139,25 @@ public class FoodOrder extends TableEntry {
       item.add(itemString);
     }
     switch (formStatus) {
-      case filled -> {
-        item.add("Filled");
-      }
-      case notSubmitted -> {
-        item.add("NotSubmitted");
-      }
-      case submitted -> {
-        item.add("Submitted");
-      }
-      case cancelled -> {
-        item.add("Cancelled");
-      }
+      case filled:
+        {
+          item.add("Filled");
+        }
+      case notSubmitted:
+        {
+          item.add("NotSubmitted");
+        }
+      case submitted:
+        {
+          item.add("Submitted");
+        }
+      case cancelled:
+        {
+          item.add("Cancelled");
+        }
     }
     item.add(assignee);
-    item.add(deliveryLocation.toString());
+    item.add(deliveryLocation);
     item.add(deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd\nh:ma")));
     return item;
   }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.DropShadow?>
@@ -37,6 +38,11 @@
                 <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
                 <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" HBox.hgrow="ALWAYS">
                <children>
+                  <MFXTextField fx:id="assigneeText" layoutX="602.0" layoutY="381.0" prefHeight="127.0" prefWidth="364.0">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                  </MFXTextField>
                   <ScrollPane hbarPolicy="NEVER" layoutY="136.0" prefHeight="448.0" prefWidth="520.0">
                     <content>
                       <AnchorPane fx:id="itemsTextContainer" minHeight="0.0" minWidth="0.0" prefHeight="64.0" prefWidth="520.0">
@@ -85,11 +91,21 @@
                         <Font size="40.0" />
                      </font>
                   </Text>
-                  <MFXTextField fx:id="assigneeText" layoutX="602.0" layoutY="384.0" prefHeight="70.0" prefWidth="364.0">
+                  <Text fx:id="viewingNumberText" layoutX="229.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Viewing order #311 of 117" textAlignment="CENTER" wrappingWidth="580.75">
                      <font>
                         <Font size="40.0" />
                      </font>
-                  </MFXTextField>
+                  </Text>
+                  <MFXButton fx:id="nextOrderButton" layoutX="802.0" layoutY="42.0" text="Next">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXButton fx:id="prevOrderButton" layoutX="99.0" layoutY="42.0" text="Previous">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </MFXButton>
                </children>
                 </AnchorPane>
                 <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />

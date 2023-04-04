@@ -178,42 +178,4 @@ public class NodeTable extends Table {
     locationTable.exportCSV(locationPath);
     moveTable.exportCSV(movePath);
   }
-
-  /**
-   * @param dataEdit
-   * @return
-   */
-  public boolean queueEdit(DataEdit dataEdit) {
-
-    try {
-      String query =
-          "SELECT proto2db.micronode.*,"
-              + "proto2db.move.longname, proto2db.move.date, "
-              + "proto2db.location.shortname, proto2db.location.type "
-              + "FROM proto2db.micronode "
-              + "JOIN proto2db.move ON proto2db.micronode.id = proto2db.move.id "
-              + "JOIN proto2db.location ON proto2db.move.longname = proto2db.location.longname "
-              + "WHERE proto2db.micronode.id = '"
-              + dataEdit.getNodeid()
-              + "'";
-
-      Statement statement = db.createStatement();
-      statement.execute(query);
-      ResultSet results = statement.getResultSet();
-      results.next();
-
-      results.updateString(dataEdit.getHeader(), dataEdit.getValue());
-      results.next(); // Cursor cannot be in edited row on update
-      results.updateRow();
-
-      System.out.println(
-          "[NodeTable.queueEdit]: Node "
-              + dataEdit.getNodeid()
-              + " has been successfully updated.");
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
-
-    return false;
-  }
 }
