@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.database.DataEdit;
+import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.Node;
@@ -17,7 +18,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.util.ArrayList;
 
-public class MapEditorController {
+public class MapEditorController extends AbsController {
   @FXML private TableView<Node> table;
   @FXML private TableColumn<Node, String> id;
   @FXML private TableColumn<Node, String> x;
@@ -140,6 +141,11 @@ public class MapEditorController {
    * @return True on successful submission, false otherwise
    */
   public boolean submitEdits() {
+
+    for (int i = 0; i < dataEdits.size(); i++) {
+      //dbConnection.nodeTable.executeQuery(SELECT)
+    }
+
     return false;
   }
 }
