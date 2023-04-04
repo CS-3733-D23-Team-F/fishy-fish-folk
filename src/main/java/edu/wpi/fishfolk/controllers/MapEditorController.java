@@ -37,7 +37,6 @@ public class MapEditorController {
     floor.setCellValueFactory(new PropertyValueFactory<Node, String>("floor"));
     building.setCellValueFactory(new PropertyValueFactory<Node, String>("building"));
     date.setCellValueFactory(new PropertyValueFactory<Node, String>("date"));
-    date.setCellValueFactory(new PropertyValueFactory<Node, String>("date")); // doesn't exist
     type.setCellValueFactory(new PropertyValueFactory<Node, String>("type"));
     longName.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
     shortName.setCellValueFactory(new PropertyValueFactory<Node, String>("shortName"));
@@ -72,32 +71,45 @@ public class MapEditorController {
         });
   }
 
-  private void handleEditCommit_ShortName(TableColumn.CellEditEvent<Node, String> t) {}
+  private void handleEditCommit_ShortName(TableColumn.CellEditEvent<Node, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
+  }
 
-  private void handleEditCommit_LongName(TableColumn.CellEditEvent<Node, String> t) {}
+  private void handleEditCommit_LongName(TableColumn.CellEditEvent<Node, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
+  }
 
   private void handleEditCommit_Type(TableColumn.CellEditEvent<Node, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()).type = t.getNewValue();
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
   }
 
   private void handleEditCommit_Date(TableColumn.CellEditEvent<Node, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()).date = t.getNewValue();
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
   }
 
   private void handleEditCommit_Building(TableColumn.CellEditEvent<Node, String> t) {
-    //      t.getTableView().getItems().get(t.getTablePosition().getRow()).building =
-    // t.getNewValue();
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
   }
 
   private void handleEditCommit_Floor(TableColumn.CellEditEvent<Node, String> t) {
-    //      t.getTableView().getItems().get(t.getTablePosition().getRow()).floor = t.getNewValue();
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
   }
 
   public void handleEditCommit_X(TableColumn.CellEditEvent<Node, String> t) {
-    //      t.getTableView().getItems().get(t.getTablePosition().getRow()). = t.getNewValue();
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
   }
 
-  private void handleEditCommit_Y(TableColumn.CellEditEvent<Node, String> t) {}
+  private void handleEditCommit_Y(TableColumn.CellEditEvent<Node, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
+  }
 
   public ObservableList<Node> getNodes() {
     String pointX = "1";
