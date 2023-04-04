@@ -121,7 +121,7 @@ public class MapEditorController extends AbsController {
 
     ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
 
-    // removeAnyOldCommits(nodeid, POINT_X);
+    // removeAnyOldCommits(nodeid, header); // not strictly necessary
     if (verified) {
       DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
       System.out.println("Verified edit to col X");
@@ -162,9 +162,9 @@ public class MapEditorController extends AbsController {
       dbConnection.nodeTable.update(newNode, "9/9/99");
     }
 
-    dataEdits.removeIf(
-        dataEdit ->
-            dbConnection.nodeTable.update(
-                dataEdit.getId(), dataEdit.getHeader(), dataEdit.getValue()));
+//    dataEdits.removeIf(
+//        dataEdit ->
+//            dbConnection.nodeTable.update(
+//                dataEdit.getId(), dataEdit.getHeader(), dataEdit.getValue()));
   }
 }
