@@ -106,6 +106,8 @@ public class MapEditorController extends AbsController {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
 
+    t.getTableView().getItems().get(t.getTablePosition().getRow()).x = t.getNewValue();
+
     // Verify
     boolean verified = true;
     double value = -1;
