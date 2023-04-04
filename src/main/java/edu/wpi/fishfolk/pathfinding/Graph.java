@@ -242,7 +242,7 @@ public class Graph {
     return null;
   }
 
-  public Path AStar(int start, int end) {
+  public ArrayList<Path> AStar(int start, int end) {
 
     if (!id2idx.containsKey(start) || !id2idx.containsKey(end)) {
       return null;

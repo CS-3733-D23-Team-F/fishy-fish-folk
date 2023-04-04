@@ -22,7 +22,7 @@ public class PathfindingController extends AbsController {
   @FXML ImageView mapImg;
 
   Graph graph;
-  Path path;
+  ArrayList<Path> paths;
 
   public PathfindingController() {
     super();
@@ -53,8 +53,8 @@ public class PathfindingController extends AbsController {
 
     submitBtn.setOnAction(
         event -> {
-          path = graph.AStar(start, end);
-          drawPath(path);
+          paths = graph.AStar(start, end);
+          drawPath(paths);
         });
   }
 
