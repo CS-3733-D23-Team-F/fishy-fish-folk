@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.geometry.Point2D;
 
 /**
@@ -132,6 +133,15 @@ public class NodeTable extends Table {
   @Override
   public int size() {
     return microNodeTable.size();
+  }
+
+  public ArrayList<String> getDestLongNames() {
+
+    return (ArrayList<String>)
+        locationTable.executeQuery("SELECT longname", "WHERE type != 'HALL' ORDER BY longname ASC")
+            .stream()
+            .map(elt -> elt[0])
+            .collect(Collectors.toList());
   }
 
   public boolean insert(Node node, String date) {

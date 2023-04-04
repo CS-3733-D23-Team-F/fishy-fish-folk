@@ -9,6 +9,7 @@ public enum Screen {
   SUPPLIES_REQUEST("views/SupplyRequest.fxml"),
   MAP_EDITOR("views/MapEditor.fxml"),
   VIEW_FOOD_ORDERS("views/ViewFoodOrders.fxml");
+  PATHFINDING("views/Pathfinding.fxml");
 
   private final String filename;
 
