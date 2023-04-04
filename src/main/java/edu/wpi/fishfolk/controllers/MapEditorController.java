@@ -24,8 +24,10 @@ public class MapEditorController extends AbsController {
   @FXML private TableColumn<ObservableNode, String> floor;
   @FXML private TableColumn<ObservableNode, String> building;
   @FXML private TableColumn<ObservableNode, String> type;
+  @FXML private TableColumn<ObservableNode, String> date;
   @FXML private TableColumn<ObservableNode, String> longName;
   @FXML private TableColumn<ObservableNode, String> shortName;
+  @FXML private TableColumn<ObservableNode, String> edges;
 
   @FXML MFXButton backButton;
 
@@ -40,8 +42,10 @@ public class MapEditorController extends AbsController {
     floor.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("floor"));
     building.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("building"));
     type.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("type"));
+    date.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("date"));
     longName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("longName"));
     shortName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("shortName"));
+    edges.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("edge"));
 
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
@@ -55,16 +59,20 @@ public class MapEditorController extends AbsController {
     floor.setCellFactory(TextFieldTableCell.forTableColumn());
     building.setCellFactory(TextFieldTableCell.forTableColumn());
     type.setCellFactory(TextFieldTableCell.forTableColumn());
+    date.setCellFactory(TextFieldTableCell.forTableColumn());
     longName.setCellFactory(TextFieldTableCell.forTableColumn());
     shortName.setCellFactory(TextFieldTableCell.forTableColumn());
+    edges.setCellFactory(TextFieldTableCell.forTableColumn());
 
     x.setOnEditCommit(this::handleEditCommit_X);
     y.setOnEditCommit(this::handleEditCommit_Y);
     floor.setOnEditCommit(this::handleEditCommit_Floor);
     building.setOnEditCommit(this::handleEditCommit_Building);
     type.setOnEditCommit(this::handleEditCommit_Type);
+    date.setOnEditCommit(this::handleEditCommit_Date);
     longName.setOnEditCommit(this::handleEditCommit_LongName);
     shortName.setOnEditCommit(this::handleEditCommit_ShortName);
+    edges.setOnEditCommit(this::handleEditCommit_Edges);
 
     backButton.setOnAction(
         event -> {
@@ -145,6 +153,11 @@ public class MapEditorController extends AbsController {
   }
 
   private void handleEditCommit_Date(TableColumn.CellEditEvent<ObservableNode, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
+  }
+
+  private void handleEditCommit_Edges(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
   }
