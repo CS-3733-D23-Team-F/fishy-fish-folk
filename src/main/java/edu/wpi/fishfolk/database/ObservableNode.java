@@ -1,14 +1,17 @@
 package edu.wpi.fishfolk.database;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class ObservableNode {
-  public String id;
-  public String x;
-  public String y;
-  public String floor;
-  public String building;
-  public String type;
-  public String longName;
-  public String shortName;
+  @Getter @Setter public String id;
+  @Getter @Setter public String x;
+  @Getter @Setter public String y;
+  @Getter @Setter public String floor;
+  @Getter @Setter public String building;
+  @Getter @Setter public String type;
+  @Getter @Setter public String longName;
+  @Getter @Setter public String shortName;
 
   public ObservableNode() {}
 
