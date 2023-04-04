@@ -137,9 +137,7 @@ public class MapEditorController extends AbsController {
 
   /**
    * Request NodeTable to queue edits to database. On each edit's success: 1. Make the BG of the
-   * cell white, 2. Remove DataEdit from collection
-   *
-   * @return True on successful submission, false otherwise
+   * cell white, 2. Remove DataEdit from collection.
    */
   public void submitEdits() {
     dataEdits.removeIf(dataEdit -> dbConnection.nodeTable.update(
