@@ -52,16 +52,20 @@ public class MapEditorController {
     y.setCellFactory(TextFieldTableCell.forTableColumn());
     floor.setCellFactory(TextFieldTableCell.forTableColumn());
     building.setCellFactory(TextFieldTableCell.forTableColumn());
-    date.setCellFactory(TextFieldTableCell.forTableColumn());
-    //    type.setCellFactory(TextFieldTableCell.forTableColumn()); // type isn't a string, doesn't
-    // work with this
+    //    date.setCellFactory(TextFieldTableCell.forTableColumn()); // date is a date, not string
+    //    type.setCellFactory(TextFieldTableCell.forTableColumn()); // type is enum, not string
     longName.setCellFactory(TextFieldTableCell.forTableColumn());
     shortName.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    //        x.setOnEditCommit(
-    //                (TableColumn.CellEditEvent<Node, String> t) ->
-    //
-    // (t.getTableView().getItems().get(t.getTablePosition().getRow())).setX(t.getNewValue()));
+    x.setOnEditCommit(this::handleEditCommit_X);
+    y.setOnEditCommit(this::handleEditCommit_Y);
+    floor.setOnEditCommit(this::handleEditCommit_Floor);
+    building.setOnEditCommit(this::handleEditCommit_Building);
+    date.setOnEditCommit(this::handleEditCommit_Date);
+    type.setOnEditCommit(this::handleEditCommit_Type);
+    longName.setOnEditCommit(this::handleEditCommit_LongName);
+    shortName.setOnEditCommit(this::handleEditCommit_ShortName);
+
     //        y.setOnEditCommit(
     //                (TableColumn.CellEditEvent<Node, String> t) ->
     //
@@ -101,6 +105,33 @@ public class MapEditorController {
           Navigation.navigate(Screen.HOME);
         });
   }
+
+  private void handleEditCommit_ShortName(TableColumn.CellEditEvent<Node, String> t) {}
+
+  private void handleEditCommit_LongName(TableColumn.CellEditEvent<Node, String> t) {}
+
+  private void handleEditCommit_Type(TableColumn.CellEditEvent<Node, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()).type = t.getNewValue();
+  }
+
+  private void handleEditCommit_Date(TableColumn.CellEditEvent<Node, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()).date = t.getNewValue();
+  }
+
+  private void handleEditCommit_Building(TableColumn.CellEditEvent<Node, String> t) {
+    //      t.getTableView().getItems().get(t.getTablePosition().getRow()).building =
+    // t.getNewValue();
+  }
+
+  private void handleEditCommit_Floor(TableColumn.CellEditEvent<Node, String> t) {
+    //      t.getTableView().getItems().get(t.getTablePosition().getRow()).floor = t.getNewValue();
+  }
+
+  public void handleEditCommit_X(TableColumn.CellEditEvent<Node, String> t) {
+    //      t.getTableView().getItems().get(t.getTablePosition().getRow()). = t.getNewValue();
+  }
+
+  private void handleEditCommit_Y(TableColumn.CellEditEvent<Node, String> t) {}
 
   public ObservableList<Node> getNodes() {
     String pointX = "1";
