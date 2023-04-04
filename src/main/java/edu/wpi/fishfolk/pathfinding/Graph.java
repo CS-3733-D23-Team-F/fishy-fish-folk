@@ -333,6 +333,10 @@ public class Graph {
 
       paths.get(numpaths).addFirst(nodes[current_node].nid, nodes[current_node].point);
 
+      paths.get(numpaths).setFloor(currentFloor);
+
+      System.out.println("Floor1: " + paths.get(numpaths).getFloor() + " with " + numpaths);
+
       current_node = lastVisited[current_node];
 
       currentFloor = nodes[current_node].floor;
@@ -345,6 +349,8 @@ public class Graph {
       paths
           .get(numpaths + 1)
           .addFirst(nodes[id2idx.get(start)].nid, nodes[id2idx.get(start)].point);
+      paths.get(numpaths + 1).setFloor(currentFloor);
+      System.out.println("Floor2: " + paths.get(numpaths + 1).getFloor() + " with " + numpaths);
     }
 
     // path.addFirst(start, nodes[id2idx.get(start)].point);

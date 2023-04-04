@@ -38,7 +38,7 @@ public class Fapp extends Application {
     Fapp.rootPane = root;
 
     final Scene scene = new Scene(root);
-    scene.getStylesheets().add("../resources/edu/wpi/fishfolk/Styles/style.css");
+    // scene.getStylesheets().add("../resources/edu/wpi/fishfolk/Styles/style.css");
     primaryStage.setScene(scene);
     primaryStage.show();
 

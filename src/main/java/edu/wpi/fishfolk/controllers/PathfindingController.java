@@ -1,18 +1,13 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.pathfinding.Graph;
 import edu.wpi.fishfolk.pathfinding.Path;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -29,8 +24,6 @@ public class PathfindingController extends AbsController {
 
   @FXML AnchorPane mapAnchor;
   @FXML ImageView mapImg;
-  @FXML MFXComboBox<String> selectFloor;
-
   @FXML Text directionInstructions;
 
   Graph graph;
@@ -39,97 +32,111 @@ public class PathfindingController extends AbsController {
 
   public PathfindingController() {
     super();
-    //System.out.println("constructed pathfinding controller");
+    // System.out.println("constructed pathfinding controller");
   }
 
   @FXML
   private void initialize() {
-    ObservableList<String> floors =
-            FXCollections.observableArrayList(
-                    "Lower Level 1",
-                    "Lower Level 2",
-                    "Ground Floor",
-                    "First Floor",
-                    "Second Floor",
-                    "Third Floor");
-    selectFloor.setItems(floors);
-    selectFloor.setOnAction(
-            event -> {
-              String temp = selectFloor.getValue();
-              String map;
-              switch (temp) {
-                case "Lower Level 1":
-                  map = "00_thelowerlevel1.png";
-                  break;
-                case "Lower Level 2":
-                  map = "00_thelowerlevel2.png";
-                  break;
-                case "Ground Floor":
-                  map = "00_thegroundfloor.png";
-                  break;
-                case "First Floor":
-                  map = "01_thefirstfloor.png";
-                  break;
-                case "Second Floor":
-                  map = "02_thesecondfloor.png";
-                  break;
-                case "Third Floor":
-                  map = "03_thethirdfloor.png";
-                  break;
-                default:
-                  map = "00_thelowerlevel1.png";
-              }
-              Image image = new Image(Fapp.class.getResourceAsStream("map/" + map));
-              mapImg.setImage(image);
-            });
-
-    System.out.println("floor: " + selectFloor.getItems());
     ArrayList nodeNames = dbConnection.nodeTable.getDestLongNames();
     segments = new LinkedList<>();
     System.out.println(dbConnection.nodeTable.getTableName());
 
-    ArrayList[] res = dbConnection.nodeTable.getAllDestinationNodes();
-    ArrayList<String> nodeIDs = res[0];
-    ArrayList<String> nodeNames = res[1];
+    /*
+    selectFloor.setOnAction(
+        event -> {
+          String temp = selectFloor.getValue();
+          String map;
+          switch (temp) {
+            case "Lower Level 1":
+              map = "00_thelowerlevel1.png";
+              break;
+            case "Lower Level 2":
+              map = "00_thelowerlevel2.png";
+              break;
+            case "Ground Floor":
+              map = "00_thegroundfloor.png";
+              break;
+            case "First Floor":
+              map = "01_thefirstfloor.png";
+              break;
+            case "Second Floor":
+              map = "02_thesecondfloor.png";
+              break;
+            case "Third Floor":
+              map = "03_thethirdfloor.png";
+              break;
+            default:
+              map = "00_thelowerlevel1.png";
+          }
+          Image image = new Image(Fapp.class.getResourceAsStream("map/" + map));
+          mapImg.setImage(image);
+        });
 
+    System.out.println("floor: " + selectFloor.getItems());
+    */
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end
 
     startSelector.setOnAction(
-            event -> {
-              start = dbConnection.nodeTable.getNode("longname", startSelector.getValue()).nid;
+        event -> {
+          start = dbConnection.nodeTable.getNode("longname", startSelector.getValue()).nid;
 
-              System.out.println("start node: " + start);
-            });
+          System.out.println("start node: " + start);
+        });
     endSelector.setOnAction(
-            event -> {
-              end = dbConnection.nodeTable.getNode("longname", endSelector.getValue()).nid;
-              System.out.println("end node: " + end);
-            });
+        event -> {
+          end = dbConnection.nodeTable.getNode("longname", endSelector.getValue()).nid;
+          System.out.println("end node: " + end);
+        });
 
     graph = new Graph(dbConnection.nodeTable, dbConnection.edgeTable);
 
     submitBtn.setOnAction(
-            event -> {
-              for (int i = 0; i < segments.size(); i++) {
-                mapAnchor.getChildren().remove(segments.get(i));
-              }
-              segments.clear();
-              paths = graph.AStar(start, end);
-              drawPath(paths);
-              //directionInstructions.setText("Instructions: \n\n" + path.getDirections());
-            });
+        event -> {
+          for (int i = 0; i < segments.size(); i++) {
+            mapAnchor.getChildren().remove(segments.get(i));
+          }
+          segments.clear();
+          paths = graph.AStar(start, end);
+          System.out.println("paths length: " + paths.size());
+          drawPath(paths);
+          /*
+          switch (paths.get()) {
+            case "Lower Level 1":
+              map = "00_thelowerlevel1.png";
+              break;
+            case "Lower Level 2":
+              map = "00_thelowerlevel2.png";
+              break;
+            case "Ground Floor":
+              map = "00_thegroundfloor.png";
+              break;
+            case "First Floor":
+              map = "01_thefirstfloor.png";
+              break;
+            case "Second Floor":
+              map = "02_thesecondfloor.png";
+              break;
+            case "Third Floor":
+              map = "03_thethirdfloor.png";
+              break;
+            default:
+              map = "00_thelowerlevel1.png";
+          }
+          */
+
+          // directionInstructions.setText("Instructions: \n\n" + path.getDirections());
+        });
     clearBtn.setOnAction(
-            event -> {
-              for (int i = 0; i < segments.size(); i++) {
-                mapAnchor.getChildren().remove(segments.get(i));
-              }
-              segments.clear();
-            });
+        event -> {
+          for (int i = 0; i < segments.size(); i++) {
+            mapAnchor.getChildren().remove(segments.get(i));
+          }
+          segments.clear();
+        });
   }
 
   private void drawPath(ArrayList<Path> paths) {
-
 
     Circle circle = new Circle();
     for (int i = 0; i < paths.size(); i++) {
@@ -147,12 +154,11 @@ public class PathfindingController extends AbsController {
         }
       }
       mapAnchor.getChildren().addAll(segments);
+      mapAnchor.getChildren().add(circle);
     }
 
     // segments.add(new Line(0, 7, 1120, 787)); //diagonal from top left to bottom right
 
-    mapAnchor.getChildren().addAll(segments);
-    mapAnchor.getChildren().add(circle);
   }
 
   private Line line(Point2D p1, Point2D p2) {

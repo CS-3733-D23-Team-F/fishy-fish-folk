@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
@@ -19,9 +18,9 @@
 
 <VBox minHeight="720.0" minWidth="1280.0" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PathfindingController">
    <children>
-      <HBox maxHeight="106.0" minHeight="106.0" minWidth="1600.0">
+      <HBox maxHeight="84.8" minHeight="84.8">
          <children>
-            <AnchorPane maxHeight="106.0" minHeight="106.0" prefHeight="106.0" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
+            <AnchorPane maxHeight="84.8" minHeight="84.8" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
                <children>
                   <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="45.0">
                      <font>
@@ -44,18 +43,27 @@
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS" />
             <VBox maxWidth="250.0" minHeight="794.0" minWidth="210.0" HBox.hgrow="ALWAYS">
                <children>
-                  <AnchorPane maxHeight="794.0" maxWidth="250.0" minHeight="794.0" minWidth="250.0" style="-fx-background-color: F4F4F4;" VBox.vgrow="ALWAYS">
+                  <AnchorPane maxWidth="250.0" minWidth="250.0" style="-fx-background-color: F4F4F4;" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                        <VBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
                            <children>
-                              <MFXComboBox fx:id="selectFloor" maxHeight="45.0" maxWidth="190.0" minHeight="45.0" minWidth="190.0" promptText="Floors" VBox.vgrow="ALWAYS">
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="Open Sans Regular" size="19.0" />
-                                 </font>
-                              </MFXComboBox>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <MFXButton fx:id="backButton" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" style="-fx-background-color: #012D5A;" text="&lt;" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                    </MFXButton>
+                                    <MFXButton fx:id="nextButton" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" style="-fx-background-color: #012D5A;" text="&gt;" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="125.0" />
+                                       </HBox.margin>
+                                    </MFXButton>
+                                 </children>
+                              </HBox>
                               <ChoiceBox fx:id="startSelector" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
                                     <Insets top="30.0" />
@@ -66,19 +74,26 @@
                                     <Insets top="30.0" />
                                  </VBox.margin>
                               </ChoiceBox>
-                              <MFXButton fx:id="submitBtn" maxHeight="40.0" maxWidth="80.0" minHeight="40.0" minWidth="80.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE" VBox.vgrow="ALWAYS">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="30.0" />
-                                 </VBox.margin>
-                              </MFXButton>
-                              <MFXButton fx:id="clearBtn" layoutX="95.0" layoutY="230.0" maxHeight="40.0" maxWidth="80.0" minHeight="40.0" minWidth="80.0" style="-fx-background-color: #012D5A;" text="Clear" textFill="WHITE" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="300.0">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="16.0" />
-                                 </font>
-                              </MFXButton>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <MFXButton fx:id="submitBtn" maxHeight="40.0" maxWidth="80.0" minHeight="40.0" minWidth="80.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="16.0" />
+                                       </font>
+                                    </MFXButton>
+                                    <MFXButton fx:id="clearBtn" maxHeight="40.0" maxWidth="80.0" minHeight="40.0" minWidth="80.0" style="-fx-background-color: #012D5A;" text="Clear" textFill="WHITE">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="70.0" />
+                                       </HBox.margin>
+                                    </MFXButton>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </HBox>
                               <VBox alignment="TOP_CENTER" blendMode="SRC_ATOP" maxHeight="400.0" maxWidth="250.0" minHeight="400.0" minWidth="250.0" style="-fx-background-color: #012D5A;" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
                                     <Insets top="25.0" />

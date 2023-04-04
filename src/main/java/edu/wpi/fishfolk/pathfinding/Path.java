@@ -5,11 +5,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import javafx.geometry.Point2D;
 import lombok.Getter;
+import lombok.Setter;
 
 public class Path {
 
   @Getter private ArrayList<Integer> nodes;
   @Getter private ArrayList<Point2D> points;
+
+  @Getter @Setter private String floor;
 
   int numNodes;
 
