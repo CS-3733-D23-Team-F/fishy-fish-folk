@@ -58,19 +58,19 @@ public class PathfindingController extends AbsController {
         });
   }
 
-  private void drawPath(Path path) {
+  private void drawPath(ArrayList<Path> paths) {
 
-    LinkedList<Line> segments = new LinkedList<>();
+    for (int i = 0; i<paths.size(); i++){
+      LinkedList<Line> segments = new LinkedList<>();
+      ArrayList<Point2D> points = paths.get(i).getPoints();
 
-    ArrayList<Point2D> points = path.getPoints();
+      for (int j = 1; j < points.size(); j++) {
+        segments.add(line(points.get(j - 1), points.get(j)));
+      }
+      // segments.add(new Line(0, 7, 1120, 787)); //diagonal from top left to bottom right
 
-    for (int i = 1; i < points.size(); i++) {
-      segments.add(line(points.get(i - 1), points.get(i)));
+      mapAnchor.getChildren().addAll(segments);
     }
-
-    // segments.add(new Line(0, 7, 1120, 787)); //diagonal from top left to bottom right
-
-    mapAnchor.getChildren().addAll(segments);
   }
 
   private Line line(Point2D p1, Point2D p2) {
