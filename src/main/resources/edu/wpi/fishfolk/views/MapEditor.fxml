@@ -21,6 +21,8 @@
                         <TableColumn fx:id="type" prefWidth="128.0" text="Type" />
                         <TableColumn fx:id="longName" prefWidth="213.0" text="name" />
                         <TableColumn fx:id="shortName" prefWidth="120.0" text="abbreviation" />
+                  <TableColumn fx:id="date" prefWidth="120.0" text="date" />
+                  <TableColumn fx:id="edges" prefWidth="120.0" text="adjacent" />
                     </columns>
                 </TableView>
             </content>

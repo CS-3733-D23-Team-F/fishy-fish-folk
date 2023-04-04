@@ -24,9 +24,9 @@ public class MapEditorController extends AbsController {
   @FXML private TableColumn<ObservableNode, String> floor;
   @FXML private TableColumn<ObservableNode, String> building;
   @FXML private TableColumn<ObservableNode, String> type;
-  @FXML private TableColumn<ObservableNode, String> date;
   @FXML private TableColumn<ObservableNode, String> longName;
   @FXML private TableColumn<ObservableNode, String> shortName;
+  @FXML private TableColumn<ObservableNode, String> date;
   @FXML private TableColumn<ObservableNode, String> edges;
 
   @FXML MFXButton backButton;
@@ -42,9 +42,9 @@ public class MapEditorController extends AbsController {
     floor.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("floor"));
     building.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("building"));
     type.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("type"));
-    date.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("date"));
     longName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("longName"));
     shortName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("shortName"));
+    date.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("date"));
     edges.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("edge"));
 
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
@@ -59,9 +59,9 @@ public class MapEditorController extends AbsController {
     floor.setCellFactory(TextFieldTableCell.forTableColumn());
     building.setCellFactory(TextFieldTableCell.forTableColumn());
     type.setCellFactory(TextFieldTableCell.forTableColumn());
-    date.setCellFactory(TextFieldTableCell.forTableColumn());
     longName.setCellFactory(TextFieldTableCell.forTableColumn());
     shortName.setCellFactory(TextFieldTableCell.forTableColumn());
+    date.setCellFactory(TextFieldTableCell.forTableColumn());
     edges.setCellFactory(TextFieldTableCell.forTableColumn());
 
     x.setOnEditCommit(this::handleEditCommit_X);
@@ -69,9 +69,9 @@ public class MapEditorController extends AbsController {
     floor.setOnEditCommit(this::handleEditCommit_Floor);
     building.setOnEditCommit(this::handleEditCommit_Building);
     type.setOnEditCommit(this::handleEditCommit_Type);
-    date.setOnEditCommit(this::handleEditCommit_Date);
     longName.setOnEditCommit(this::handleEditCommit_LongName);
     shortName.setOnEditCommit(this::handleEditCommit_ShortName);
+    date.setOnEditCommit(this::handleEditCommit_Date);
     edges.setOnEditCommit(this::handleEditCommit_Edges);
 
     backButton.setOnAction(
@@ -186,11 +186,11 @@ public class MapEditorController extends AbsController {
 
     for (int i = 0; i < edgesRaw[0].size(); i++) {
 
-      //add end to start's adjacent nodes
+      // add end to start's adjacent nodes
       int startIdx = id2idx.get(edgesRaw[0].get(i));
       observableNodes.get(startIdx).addAdjNode(edgesRaw[1].get(i));
 
-      //add start to end's adjacent nodes
+      // add start to end's adjacent nodes
       int endIdx = id2idx.get(edgesRaw[1].get(i));
       observableNodes.get(endIdx).addAdjNode(edgesRaw[0].get(i));
     }
