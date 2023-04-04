@@ -1,8 +1,11 @@
 package edu.wpi.fishfolk.ui;
 
+import edu.wpi.fishfolk.database.TableEntry;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class SupplyOrder {
+public class SupplyOrder extends TableEntry {
   public LinkedList<SupplyItem> supplies;
   public String link;
   public String roomNum;
@@ -77,5 +80,15 @@ public class SupplyOrder {
       // string = string.substring(0, (string.length() - 3));
       return string;
     }
+  }
+
+  @Override
+  public boolean construct(ArrayList<String> data) {
+    return false;
+  }
+
+  @Override
+  public ArrayList<String> deconstruct() {
+    return null;
   }
 }
