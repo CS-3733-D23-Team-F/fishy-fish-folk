@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -140,23 +141,11 @@ public class MapEditorController extends AbsController {
    *
    * @return True on successful submission, false otherwise
    */
-  public boolean submitEdits() {
-
-    boolean allGood = true;
-
-    for (DataEdit dataEdit : dataEdits) {
-      if (dbConnection.nodeTable.update(
-              dataEdit.getId(),
-              dataEdit.getHeader(),
-              dataEdit.getValue()
-      )) {
-        // White BG
-        dataEdits.remove(dataEdit);
-      } else {
-        allGood = false;
-      }
-    }
-
-    return allGood;
+  public void submitEdits() {
+    dataEdits.removeIf(dataEdit -> dbConnection.nodeTable.update(
+            dataEdit.getId(),
+            dataEdit.getHeader(),
+            dataEdit.getValue()
+    ));
   }
 }
