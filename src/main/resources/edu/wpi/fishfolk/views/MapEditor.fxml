@@ -13,16 +13,16 @@
             <content>
                 <TableView fx:id="table" minHeight="675.0" minWidth="1200.0" prefHeight="675.0" prefWidth="952.0" translateX="120.0">
                     <columns>
-                        <TableColumn fx:id="id" prefWidth="113.00004577636719" text="ID" />
-                        <TableColumn prefWidth="107.66668701171875" text="X" fx:id="x" />
-                        <TableColumn fx:id="y" prefWidth="103.66659545898438" text="Y" />
-                        <TableColumn fx:id="floor" prefWidth="132.99993896484375" text="floor" />
-                        <TableColumn fx:id="building" prefWidth="112.0" text="building" />
-                        <TableColumn fx:id="type" prefWidth="128.0" text="Type" />
-                        <TableColumn fx:id="longName" prefWidth="213.0" text="name" />
-                        <TableColumn fx:id="shortName" prefWidth="120.0" text="abbreviation" />
-                  <TableColumn fx:id="date" prefWidth="120.0" text="date" />
-                  <TableColumn fx:id="edges" prefWidth="120.0" text="adjacent" />
+                        <TableColumn fx:id="id" prefWidth="90.33332824707031" text="ID" />
+                        <TableColumn prefWidth="82.33331298828125" text="X" fx:id="x" />
+                        <TableColumn fx:id="y" prefWidth="93.0" text="Y" />
+                        <TableColumn fx:id="floor" prefWidth="104.6666259765625" text="floor" />
+                        <TableColumn fx:id="building" prefWidth="111.0" text="building" />
+                        <TableColumn fx:id="type" prefWidth="106.6666259765625" text="Type" />
+                  <TableColumn fx:id="date" prefWidth="116.6666259765625" text="date" />
+                        <TableColumn fx:id="longName" prefWidth="146.33331298828125" text="name" />
+                        <TableColumn fx:id="shortName" prefWidth="82.6666259765625" text="abbreviation" />
+                  <TableColumn fx:id="edge" prefWidth="115.666748046875" text="Edges" />
                     </columns>
                 </TableView>
             </content>
