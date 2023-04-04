@@ -1,13 +1,12 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.database.DataEdit;
-import edu.wpi.fishfolk.database.ObservableNode;
+import edu.wpi.fishfolk.database.EdgeEdit;import edu.wpi.fishfolk.database.EdgeEditType;import edu.wpi.fishfolk.database.ObservableNode;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,10 +27,11 @@ public class MapEditorController extends AbsController {
   @FXML private TableColumn<ObservableNode, String> shortName;
   @FXML private TableColumn<ObservableNode, String> date;
   @FXML private TableColumn<ObservableNode, String> edges;
-
   @FXML MFXButton backButton;
 
+  private HashSet<String> validNodes;
   private ArrayList<DataEdit> dataEdits;
+  private ArrayList<EdgeEdit> edgeEdits;
 
   @FXML
   public void initialize() {
@@ -48,6 +48,9 @@ public class MapEditorController extends AbsController {
     edges.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("adjacentNodes"));
 
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+
+    // important to initialize this before populating the table
+    validNodes = new HashSet<>();
 
     // load data
     populateTable();
@@ -80,6 +83,7 @@ public class MapEditorController extends AbsController {
         });
 
     dataEdits = new ArrayList<>();
+    edgeEdits = new ArrayList<>();
   }
 
   public void handleEditCommit_X(TableColumn.CellEditEvent<ObservableNode, String> t) {
@@ -159,26 +163,47 @@ public class MapEditorController extends AbsController {
 
   private void handleEdit_Edges(TableColumn.CellEditEvent<ObservableNode, String> t) {
 
+    String[] prev = t.getOldValue().split(", ");
+    String[] changed = t.getNewValue().split(", ");
+    Arrays.sort(prev);
+    Arrays.sort(changed);
+
     t.getTableView().getItems().get(t.getTablePosition().getRow()).adjacentNodes = t.getNewValue();
 
-    // Verify
-    boolean verified = true;
-    double value = -1;
+    // ensure that all nodes in the changed string are valid
+    boolean verified = validNodes.containsAll(List.of(changed));
 
-    // check value is a valid double
-    try {
-      value = Double.parseDouble(t.getNewValue());
-    } catch (NumberFormatException e) {
-      verified = false;
-    }
-
-    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
-
-    // removeAnyOldCommits(nodeid, header); // not strictly necessary
     if (verified) {
-      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
-      System.out.println("Verified edit to col X");
-      dataEdits.add(edit);
+
+      System.out.println("Verified edit to adjacent nodes");
+
+      String start = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+
+      // find differences between prev and changed
+      // https://stackoverflow.com/questions/3476672/algorithm-to-get-changes-between-two-arrays
+      int pIdx = 0, cIdx = 0;
+      while(pIdx < prev.length && cIdx < changed.length){
+
+        int comp = prev[pIdx].compareTo(changed[cIdx]);
+
+        if(comp < 0){
+          //pidx got removed
+          edgeEdits.add(new EdgeEdit(EdgeEditType.REMOVE, start, prev[pIdx]));
+          pIdx++;
+
+        } else if (comp > 0){
+          //cidx got added
+          edgeEdits.add(new EdgeEdit(EdgeEditType.ADD, start, changed[cIdx]));
+          cIdx++;
+
+        } else {
+          //equal so this edge is unchanged
+          pIdx++;
+          cIdx++;
+        }
+      }
+
+
       submitEdits();
       System.out.println("Submitted.");
     }
@@ -198,6 +223,9 @@ public class MapEditorController extends AbsController {
     for (int i = 0; i < nodes.length; i++) {
       id2idx.put(nodes[i].id, i);
       observableNodes.add(new ObservableNode(nodes[i], dates.get(i), new ArrayList<>()));
+
+      // save valid node ids to make verifying edge edits faster
+      validNodes.add(nodes[i].id);
     }
 
     // each element is an arraylist <str1, str2>
@@ -238,6 +266,11 @@ public class MapEditorController extends AbsController {
 
     for (DataEdit edit : dataEdits) {
       dbConnection.nodeTable.update(edit.id, edit.attr, edit.value);
+    }
+
+    for(EdgeEdit edit : edgeEdits){
+      //TODO Christian apply edits to edit table - perhaps execute query?
+      //dbConnection.edgeTable.executeQuery
     }
 
     //    dataEdits.removeIf(
