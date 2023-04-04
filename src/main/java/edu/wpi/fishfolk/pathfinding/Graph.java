@@ -322,56 +322,31 @@ public class Graph {
     }
 
     String currentFloor = "";
-    ArrayList<Path> paths = new ArrayList<Path>();
+    ArrayList<Path> paths = new ArrayList<>();
     int numpaths = -1;
 
-    while (!(current_node == id2idx.get(start))) { // retrace path from the end to the start
+    // retrace path from the end to the start
+    while (!(current_node == id2idx.get(start))) {
+
+      // start new path when hitting a new floor
       if (!nodes[current_node].floor.equals(currentFloor)) {
-        paths.add(new Path());
+        Path path = new Path();
+        currentFloor = nodes[current_node].floor;
+        path.setFloor(currentFloor);
+        paths.add(0, path);
         numpaths++;
       }
 
-      paths.get(numpaths).addFirst(nodes[current_node].nid, nodes[current_node].point);
-
-      paths.get(numpaths).setFloor(currentFloor);
-
-      System.out.println(
-          "Floor1: "
-              + paths.get(numpaths).getFloor()
-              + " with "
-              + numpaths
-              + " Size: "
-              + paths.size());
+      // add current node at beginning of first path
+      paths.get(0).addFirst(nodes[current_node].nid, nodes[current_node].point);
 
       current_node = lastVisited[current_node];
-
-      currentFloor = nodes[current_node].floor;
     }
+    // add start node to beginning of first path
+    paths.get(0).addFirst(start, nodes[0].point);
 
-    if (nodes[id2idx.get(start)].floor.equals(currentFloor)) {
-      paths.get(numpaths).addFirst(nodes[id2idx.get(start)].nid, nodes[id2idx.get(start)].point);
-      System.out.println(
-          "Floor2: "
-              + paths.get(numpaths).getFloor()
-              + " with "
-              + numpaths
-              + " Size: "
-              + paths.size());
-    } else {
-      paths.add(new Path());
-      paths
-          .get(numpaths + 1)
-          .addFirst(nodes[id2idx.get(start)].nid, nodes[id2idx.get(start)].point);
-      paths.get(numpaths + 1).setFloor(currentFloor);
-      System.out.println(
-          "Floor3: "
-              + paths.get(numpaths + 1).getFloor()
-              + " with "
-              + numpaths
-              + " Size: "
-              + paths.size());
-    }
-
+    System.out.println(paths.toString());
+    
     // path.addFirst(start, nodes[id2idx.get(start)].point);
 
     // System.out.println(path.pathLength());
