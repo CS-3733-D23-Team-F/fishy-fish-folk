@@ -23,7 +23,7 @@ import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 
 public class FoodOrderController extends AbsController {
-  private static String[] headersArray = {"ID", "Items", "Status", "Assignee", "Room", "Time"};
+  private static String[] headersArray = {"id", "items", "status", "assignee", "room", "time"};
   public static ArrayList<String> headers = new ArrayList<String>(Arrays.asList(headersArray));
 
   Table foodOrderTable;
@@ -60,9 +60,8 @@ public class FoodOrderController extends AbsController {
 
   public FoodOrderController() {
     super();
-    System.out.println("Hello");
     foodOrderTable = new Table(dbConnection.conn, "foodorder");
-    foodOrderTable.init(true);
+    foodOrderTable.init(false);
     foodOrderTable.addHeaders(
         FoodOrderController.headers,
         new ArrayList<>(List.of("String", "String", "String", "String", "String", "String")));

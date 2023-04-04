@@ -44,12 +44,7 @@ public class FoodOrder extends TableEntry {
         || payer == null
         || LocalDateTime.now().isAfter(deliveryTime)
         || items.isEmpty()) return false;
-    // send order to whatever aggregate of orders we have, I suspect this is a DB task later
-    // todo implement table access
-
-    // this will be a print for now
-    System.out.println("Submitted order:\n");
-    System.out.println(this);
+    formStatus = FormStatus.submitted;
     return true;
   }
 

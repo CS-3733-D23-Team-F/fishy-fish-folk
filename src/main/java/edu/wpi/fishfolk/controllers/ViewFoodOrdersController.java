@@ -1,13 +1,15 @@
 package edu.wpi.fishfolk.controllers;
 
+import static edu.wpi.fishfolk.ui.FormStatus.*;
+
 import edu.wpi.fishfolk.database.Table;
 import edu.wpi.fishfolk.ui.FoodOrder;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
@@ -15,8 +17,9 @@ public class ViewFoodOrdersController extends AbsController {
   @FXML Text itemsText;
   @FXML AnchorPane itemsTextContainer;
   @FXML Text deliveryRoomText, deliveryTimeText, statusText;
-  @FXML MFXTextField assigneeText;
+  @FXML TextField assigneeText;
   @FXML MFXButton prevOrderButton, nextOrderButton;
+  @FXML MFXButton cancelButton, filledButton, removeButton;
   @FXML Text viewingNumberText;
 
   int currentOrderNumber;
@@ -42,6 +45,9 @@ public class ViewFoodOrdersController extends AbsController {
     loadOrders();
     if (foodOrders.size() < 2) nextOrderButton.setDisable(true);
     assigneeText.setOnKeyReleased(event -> updateAssignee());
+    cancelButton.setOnAction(event -> cancelOrder());
+    filledButton.setOnAction(event -> fillOrder());
+    removeButton.setOnAction(event -> removeOrder());
     updateDisplay();
   }
 
@@ -49,7 +55,7 @@ public class ViewFoodOrdersController extends AbsController {
     FoodOrder currentOrder = foodOrders.get(currentOrderNumber);
     currentOrder.assignee = assigneeText.getText();
     // updateDisplay();
-    foodOrderTable.update(currentOrder.formID, "Assignee", currentOrder.assignee);
+    foodOrderTable.update(currentOrder.formID, "assignee", currentOrder.assignee);
   }
 
   private void prevOrder() {
@@ -81,23 +87,41 @@ public class ViewFoodOrdersController extends AbsController {
         headersHandled = true;
       }
     }
+  }
 
-    // temp generic foodOrders
-    /*FoodOrder generic1 = new FoodOrder();
-    generic1.assignee = "Blink 182";
-    generic1.addItem(FoodItem.generic3);
-    generic1.addItem(FoodItem.generic3);
-    generic1.deliveryLocation = "Air Force One";
-    generic1.formStatus = FormStatus.filled;
-    Thread.sleep(100);
-    FoodOrder generic2 = new FoodOrder();
-    generic2.assignee = "Tristin Youtz";
-    generic2.addItem(FoodItem.generic4);
-    generic2.addItem(FoodItem.generic6);
-    generic1.deliveryLocation = "Home";
-    generic2.formStatus = FormStatus.submitted;
-    foodOrders.add(generic1);
-    foodOrders.add(generic2);*/
+  private void cancelOrder() {
+    FoodOrder currentOrder = foodOrders.get(currentOrderNumber);
+    currentOrder.formStatus = cancelled;
+    foodOrderTable.update(currentOrder.formID, "status", "Cancelled");
+    cancelButton.setDisable(true);
+    filledButton.setDisable(true);
+    updateDisplay();
+  }
+
+  private void fillOrder() {
+    FoodOrder currentOrder = foodOrders.get(currentOrderNumber);
+    currentOrder.formStatus = filled;
+    foodOrderTable.update(currentOrder.formID, "status", "Filled");
+    cancelButton.setDisable(true);
+    filledButton.setDisable(true);
+    updateDisplay();
+  }
+
+  private void removeOrder() {
+    FoodOrder currentOrder = foodOrders.get(currentOrderNumber);
+    foodOrderTable.remove("id", currentOrder.formID);
+    foodOrders.remove(currentOrderNumber);
+    if (currentOrderNumber != 0) {
+      currentOrderNumber--;
+      if (currentOrderNumber == 0) {
+        prevOrderButton.setDisable(true);
+      }
+    } else {
+      if (foodOrders.size() == 0) {
+        nextOrderButton.setDisable(true);
+      }
+    }
+    updateDisplay();
   }
 
   private void updateDisplay() {
@@ -119,18 +143,31 @@ public class ViewFoodOrdersController extends AbsController {
         case filled:
           {
             statusText.setText("Filled");
+            break;
           }
         case cancelled:
           {
             statusText.setText("Cancelled");
+            break;
           }
         case submitted:
           {
             statusText.setText("Submitted");
+            break;
           }
       }
       viewingNumberText.setText(
           "Viewing order #" + (currentOrderNumber + 1) + " out of " + foodOrders.size());
+      if (statusText.getText().equals("Submitted")) {
+        cancelButton.setDisable(false);
+        filledButton.setDisable(false);
+        System.out.println("This is fine");
+      } else {
+        cancelButton.setDisable(true);
+        filledButton.setDisable(true);
+        System.out.println("Why am i here, just to suffer?");
+      }
+      removeButton.setDisable(false);
     } else {
       itemsText.setText("");
       itemsTextContainer.setPrefHeight(0);
@@ -138,6 +175,9 @@ public class ViewFoodOrdersController extends AbsController {
       deliveryTimeText.setText("");
       assigneeText.setText("");
       viewingNumberText.setText("No orders to view");
+      cancelButton.setDisable(true);
+      filledButton.setDisable(true);
+      removeButton.setDisable(true);
     }
   }
 }

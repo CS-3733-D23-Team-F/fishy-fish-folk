@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -38,11 +38,6 @@
                 <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
                 <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" HBox.hgrow="ALWAYS">
                <children>
-                  <MFXTextField fx:id="assigneeText" layoutX="602.0" layoutY="381.0" prefHeight="127.0" prefWidth="364.0">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </MFXTextField>
                   <ScrollPane hbarPolicy="NEVER" layoutY="136.0" prefHeight="448.0" prefWidth="520.0">
                     <content>
                       <AnchorPane fx:id="itemsTextContainer" minHeight="0.0" minWidth="0.0" prefHeight="64.0" prefWidth="520.0">
@@ -58,37 +53,37 @@
                   </ScrollPane>
                   <Text layoutX="564.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deliver to:" wrappingWidth="327.3890380859375">
                      <font>
-                        <Font size="40.0" />
+                        <Font size="30.0" />
                      </font>
                   </Text>
-                  <Text fx:id="deliveryRoomText" layoutX="620.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room 8675309" wrappingWidth="327.3890380859375">
+                  <Text fx:id="deliveryRoomText" layoutX="620.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room 8675309" wrappingWidth="327.3890380859375">
                      <font>
-                        <Font size="40.0" />
+                        <Font size="30.0" />
                      </font>
                   </Text>
-                  <Text layoutX="564.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="At Delivery Time:" wrappingWidth="327.3890380859375">
+                  <Text layoutX="564.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="At Delivery Time:" wrappingWidth="327.3890380859375">
                      <font>
-                        <Font size="40.0" />
+                        <Font size="30.0" />
                      </font>
                   </Text>
-                  <Text fx:id="deliveryTimeText" layoutX="620.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="88:88AM, Mon, 31/77" wrappingWidth="382.589111328125">
+                  <Text fx:id="deliveryTimeText" layoutX="620.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="88:88AM, Mon, 31/77" wrappingWidth="382.589111328125">
                      <font>
-                        <Font size="40.0" />
+                        <Font size="30.0" />
                      </font>
                   </Text>
-                  <Text layoutX="564.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to:" wrappingWidth="327.3890380859375">
+                  <Text layoutX="564.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to:" wrappingWidth="327.3890380859375">
                      <font>
-                        <Font size="40.0" />
+                        <Font size="30.0" />
                      </font>
                   </Text>
-                  <Text layoutX="564.0" layoutY="517.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Status:" wrappingWidth="327.3890380859375">
+                  <Text layoutX="564.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Status:" wrappingWidth="327.3890380859375">
                      <font>
-                        <Font size="40.0" />
+                        <Font size="30.0" />
                      </font>
                   </Text>
-                  <Text fx:id="statusText" layoutX="620.0" layoutY="575.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submitted" wrappingWidth="327.3890380859375">
+                  <Text fx:id="statusText" layoutX="620.0" layoutY="531.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submitted" wrappingWidth="327.3890380859375">
                      <font>
-                        <Font size="40.0" />
+                        <Font size="30.0" />
                      </font>
                   </Text>
                   <Text fx:id="viewingNumberText" layoutX="229.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Viewing order #311 of 117" textAlignment="CENTER" wrappingWidth="580.75">
@@ -104,6 +99,26 @@
                   <MFXButton fx:id="prevOrderButton" layoutX="99.0" layoutY="42.0" text="Previous">
                      <font>
                         <Font size="30.0" />
+                     </font>
+                  </MFXButton>
+                  <TextField fx:id="assigneeText" layoutX="602.0" layoutY="381.0">
+                   <font>
+                       <Font size="30.0" />
+                   </font>
+                  </TextField>
+                  <MFXButton fx:id="cancelButton" layoutX="789.0" layoutY="467.0" text="Cancel">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXButton fx:id="removeButton" layoutX="873.0" layoutY="467.0" text="Remove">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXButton fx:id="filledButton" layoutX="789.0" layoutY="507.0" prefHeight="31.0" prefWidth="161.0" text="Mark as Filled">
+                     <font>
+                        <Font size="15.0" />
                      </font>
                   </MFXButton>
                </children>
