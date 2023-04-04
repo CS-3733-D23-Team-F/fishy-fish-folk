@@ -66,9 +66,9 @@ public class MapEditorController extends AbsController {
     shortName.setOnEditCommit(this::handleEditCommit_ShortName);
 
     backButton.setOnAction(
-            event -> {
-              Navigation.navigate(Screen.HOME);
-            });
+        event -> {
+          Navigation.navigate(Screen.HOME);
+        });
 
     dataEdits = new ArrayList<>();
   }
@@ -148,15 +148,11 @@ public class MapEditorController extends AbsController {
     // t.getNewValue(); // new string value of cell
   }
 
-
-
-
-
   public ObservableList<ObservableNode> getNodes() {
 
     ObservableList<ObservableNode> nodes = FXCollections.observableArrayList();
     for (Node node : dbConnection.nodeTable.getAllNodes()) {
-      nodes.add(new ObservableNode(node));
+      nodes.add(new ObservableNode(node, "date", "edge"));
     }
     return nodes;
   }
