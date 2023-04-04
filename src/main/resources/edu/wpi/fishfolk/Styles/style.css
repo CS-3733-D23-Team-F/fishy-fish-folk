@@ -3,3 +3,11 @@
     -fx-border-width: 4px;
     -fx-border-radius: 31px;
 }
+
+Line{
+    -fx-stroke-width: 5;
+    -fx-stroke-line-cap: round;
+    -fx-stroke: red;
+
+}
+
