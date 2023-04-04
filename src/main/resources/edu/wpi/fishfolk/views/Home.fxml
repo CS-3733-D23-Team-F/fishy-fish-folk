@@ -189,6 +189,14 @@
                                                 <Insets left="40.0" />
                                              </padding>
                                           </MFXButton>
+                                          <MFXButton fx:id="mapEditorNav" alignment="BOTTOM_LEFT" layoutX="5.0" layoutY="400.0" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" style="-fx-background-color: transparent;" styleClass="sideNav" text="Map Editor" textFill="WHITE">
+                                             <font>
+                                                <Font name="Open Sans Regular" size="25.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="40.0" />
+                                             </padding>
+                                          </MFXButton>
                                        </children>
                                     </AnchorPane>
                                  </children>

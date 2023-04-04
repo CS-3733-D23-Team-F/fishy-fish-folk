@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.database.Table;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.CreditCardInfo;
@@ -10,6 +11,8 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,10 +22,14 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 
-public class FoodOrderController {
+public class FoodOrderController extends AbsController {
+  private static String[] headersArray = {"id", "items", "status", "assignee", "room", "time"};
+  public static ArrayList<String> headers = new ArrayList<String>(Arrays.asList(headersArray));
+
+  Table foodOrderTable;
   FoodOrder currentOrder;
   ArrayList<FoodItem> menu;
-  ArrayList<Room> roomsServiced;
+  ArrayList<String> roomsServiced;
   int hoursAhead;
   int currentPage; // for menus with more than 3 items
   int[] itemQuantities;
@@ -47,9 +54,18 @@ public class FoodOrderController {
   @FXML Text itemPrice1, itemPrice2, itemPrice3;
   @FXML Text itemQuantity1, itemQuantity2, itemQuantity3;
   @FXML Text timeText;
-  @FXML ComboBox<Room> roomSelector;
+  @FXML ComboBox<String> roomSelector;
   @FXML PopOver notiPop;
   Text[] nameBoxes, priceBoxes, quantityBoxes;
+
+  public FoodOrderController() {
+    super();
+    foodOrderTable = new Table(dbConnection.conn, "foodorder");
+    foodOrderTable.init(false);
+    foodOrderTable.addHeaders(
+        FoodOrderController.headers,
+        new ArrayList<>(List.of("String", "String", "String", "String", "String", "String")));
+  }
 
   @FXML
   private void initialize() {
@@ -109,6 +125,7 @@ public class FoodOrderController {
     submitButton.setOnAction(
         event -> {
           if (currentOrder.submit()) {
+            foodOrderTable.insert(currentOrder);
             // notify confirmation
             Navigation.navigate(Screen.HOME);
           } else {
@@ -157,11 +174,11 @@ public class FoodOrderController {
   }
 
   void loadRooms() {
-    roomsServiced = new ArrayList<Room>();
-    roomsServiced.add(Room.generic1);
-    roomsServiced.add(Room.generic2);
-    roomsServiced.add(Room.generic3);
-    roomsServiced.add(Room.generic4);
+    roomsServiced = new ArrayList<String>();
+    roomsServiced.add(Room.generic1.toString());
+    roomsServiced.add(Room.generic2.toString());
+    roomsServiced.add(Room.generic3.toString());
+    roomsServiced.add(Room.generic4.toString());
     roomSelector.getItems().addAll(roomsServiced);
   }
 
@@ -186,7 +203,7 @@ public class FoodOrderController {
       quantityBoxes[i].setText("" + itemQuantities[index + i]);
     }
     timeText.setText(
-        currentOrder.deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd\nh:ma")));
+        currentOrder.deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd\nh:mma")));
     // System.out.println("\n\nCurrent order: \n" + currentOrder.toString());
   }
 
