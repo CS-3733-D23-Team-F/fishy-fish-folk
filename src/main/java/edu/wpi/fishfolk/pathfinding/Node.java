@@ -3,18 +3,25 @@ package edu.wpi.fishfolk.pathfinding;
 import edu.wpi.fishfolk.database.TableEntry;
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Node extends TableEntry {
 
-  public int nid; // int representation of string id. for use instead of parsing
-  public Point2D point;
-  public String floor;
-  public String building;
-  public NodeType type;
-  public String longName;
-  public String shortName;
+  public int nid; // int representation of string id. for use instead of parsing // TODO: nid vs id?
+  @Getter @Setter public String id;
+  @Getter @Setter public String oldID;
+  @Getter @Setter public Point2D point;
+  @Getter @Setter public String x;
+  @Getter @Setter public String y;
+  @Getter @Setter public String floor;
+  @Getter @Setter public String building;
+  @Getter @Setter public NodeType type;
+  @Getter @Setter public String typeName;
+  @Getter @Setter public String longName;
+  @Getter @Setter public String shortName;
 
-  public int degree;
+  @Getter @Setter public int degree;
 
   public Node() {}
 
@@ -30,9 +37,12 @@ public class Node extends TableEntry {
     this.id = Integer.toString(id);
     this.nid = id;
     this.point = point;
+    this.x = String.valueOf(point.getX());
+    this.y = String.valueOf(point.getY());
     this.floor = floor;
     this.building = building;
     this.type = type;
+    this.typeName = "cry";
     this.longName = longName;
     this.shortName = shortName;
 
