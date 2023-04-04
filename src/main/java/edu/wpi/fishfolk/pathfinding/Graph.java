@@ -338,6 +338,15 @@ public class Graph {
       currentFloor = nodes[current_node].floor;
     }
 
+    if (nodes[id2idx.get(start)].floor.equals(currentFloor)) {
+      paths.get(numpaths).addFirst(nodes[id2idx.get(start)].nid, nodes[id2idx.get(start)].point);
+    } else {
+      paths.add(new Path());
+      paths
+          .get(numpaths + 1)
+          .addFirst(nodes[id2idx.get(start)].nid, nodes[id2idx.get(start)].point);
+    }
+
     // path.addFirst(start, nodes[id2idx.get(start)].point);
 
     // System.out.println(path.pathLength());
