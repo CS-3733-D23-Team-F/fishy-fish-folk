@@ -159,7 +159,9 @@ public class NodeTable extends Table {
   public boolean update(Node node, String date) {
     MicroNode microNode =
         new MicroNode(node.nid, node.point.getX(), node.point.getY(), node.floor, node.building);
+
     Move move = new Move(node.nid, node.longName, date);
+
     Location location = new Location(node.longName, node.shortName, node.type);
 
     return microNodeTable.update(microNode)
@@ -167,9 +169,38 @@ public class NodeTable extends Table {
         && locationTable.insert(location);
   }
 
+  public boolean update(String id, String attr, String value) {
+
+    switch (attr) {
+      case "x":
+      case "y":
+      case "floor":
+      case "building":
+        microNodeTable.update("id", id, attr, value);
+        break;
+
+      case "type":
+      case "shortname":
+        String longname = moveTable.get("id", id, "longname");
+        locationTable.update("longname", longname, attr, value);
+        break;
+
+      case "date":
+        moveTable.update("id", id, attr, value);
+
+      case "longname":
+        // hardest case. update in two places
+        String prevlongname = moveTable.get("id", id, "longname");
+        moveTable.update("id", id, attr, value);
+        locationTable.update("longname", prevlongname, attr, value);
+    }
+
+    return false;
+  }
+
   public void remove(String nodeId) {
 
-    locationTable.remove("longname", moveTable.get("id", "id").get(1));
+    locationTable.remove("longname", moveTable.get("id", nodeId, "longname"));
 
     microNodeTable.remove("id", nodeId);
     moveTable.remove("id", nodeId);

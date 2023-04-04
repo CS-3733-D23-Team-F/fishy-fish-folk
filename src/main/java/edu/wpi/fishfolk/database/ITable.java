@@ -19,11 +19,21 @@ public interface ITable {
   /**
    * Get the row where the given attribute matches the given value.
    *
-   * @param attr the attribute to search for
-   * @param value the value to search for
-   * @return the entire row where the attribute matches the value
+   * @param pkey the primary key to use
+   * @param id the unique id to search for
+   * @return the entire row where the primary key matches the id
    */
-  ArrayList<String> get(String attr, String value);
+  ArrayList<String> get(String pkey, String id);
+
+  /**
+   * Get the row where the given attribute matches the given value.
+   *
+   * @param pkey the primary key to use
+   * @param id the unique id to search for
+   * @param attr the attribute to return
+   * @return the value of the attribute in the row where the primary key matches the id
+   */
+  String get(String pkey, String id, String attr);
 
   /**
    * Get all the rows in this table.
@@ -57,14 +67,15 @@ public interface ITable {
   boolean update(TableEntry tableEntry);
 
   /**
-   * Update the attribute of the TableEntry matching the provided id.
+   * Update the attribute of the TableEntry where id matches the primary key header provided.
    *
-   * @param id id of the TableEntry to update
+   * @param pkey the header of the primary key to use
+   * @param id unique identifier of the row to update
    * @param attr attribute to update
    * @param value new value
    * @return true if successfully updated, otherwise false.
    */
-  boolean update(String id, String attr, String value);
+  boolean update(String pkey, String id, String attr, String value);
 
   /**
    * Remove the TableEntry where the attribute matches the given value.
@@ -80,7 +91,7 @@ public interface ITable {
    * @param id
    * @return true if a row in the table matches the provided id, otherwise false
    */
-  boolean exists(String id);
+  boolean exists(String pkey, String id);
 
   /**
    * Overwrite the Table with the data found at the provided filepath. Make sure the filepath leads

@@ -57,8 +57,8 @@ class GenericTableTest {
     System.out.println(Arrays.toString(testNodeTable.getAll()));
 
     // correctly print out true and false respectively
-    testNodeTable.exists(Integer.toString(1));
-    testNodeTable.exists(Integer.toString(2));
+    testNodeTable.exists("id", Integer.toString(1));
+    testNodeTable.exists("id", Integer.toString(2));
 
     // correctly updates floor attribute
     newNode.floor = "newf";
@@ -66,12 +66,17 @@ class GenericTableTest {
     System.out.println(testNodeTable.get("id", newNode.id));
 
     // correctly updates bldg attribute
-    testNodeTable.update(newNode.id, "bldg", "newb");
+    testNodeTable.update("id", newNode.id, "bldg", "newb");
     System.out.println(testNodeTable.get("id", newNode.id));
+
+    // correctly updates longname attribute
+    System.out.println(testNodeTable.get("lname", newNode.longName));
+    testNodeTable.update("lname", newNode.longName, "lname", "newlname");
+    System.out.println(testNodeTable.get("lname", newNode.longName));
 
     // correctly removes entry from table
     testNodeTable.remove("id", newNode.id);
-    testNodeTable.exists(newNode.id);
+    testNodeTable.exists("id", newNode.id);
 
     // testNodeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/");
 

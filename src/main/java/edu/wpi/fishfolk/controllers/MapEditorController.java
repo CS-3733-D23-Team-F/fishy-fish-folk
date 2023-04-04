@@ -41,6 +41,7 @@ public class MapEditorController extends AbsController {
     type.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("type"));
     longName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("longName"));
     shortName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("shortName"));
+
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
     // load data
@@ -65,41 +66,11 @@ public class MapEditorController extends AbsController {
     shortName.setOnEditCommit(this::handleEditCommit_ShortName);
 
     backButton.setOnAction(
-        event -> {
-          Navigation.navigate(Screen.HOME);
-        });
+            event -> {
+              Navigation.navigate(Screen.HOME);
+            });
 
     dataEdits = new ArrayList<>();
-  }
-
-  private void handleEditCommit_ShortName(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
-  }
-
-  private void handleEditCommit_LongName(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
-  }
-
-  private void handleEditCommit_Type(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
-  }
-
-  private void handleEditCommit_Date(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
-  }
-
-  private void handleEditCommit_Building(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
-  }
-
-  private void handleEditCommit_Floor(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
   }
 
   public void handleEditCommit_X(TableColumn.CellEditEvent<ObservableNode, String> t) {
@@ -136,6 +107,51 @@ public class MapEditorController extends AbsController {
     // t.getNewValue(); // new string value of cell
   }
 
+  private void handleEditCommit_Floor(TableColumn.CellEditEvent<ObservableNode, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
+  }
+
+  private void handleEditCommit_Building(TableColumn.CellEditEvent<ObservableNode, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
+  }
+
+  private void handleEditCommit_Type(TableColumn.CellEditEvent<ObservableNode, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
+  }
+
+  private void handleEditCommit_LongName(TableColumn.CellEditEvent<ObservableNode, String> t) {
+
+    t.getTableView().getItems().get(t.getTablePosition().getRow()).longName = t.getNewValue();
+
+    // nothing to verify for strings
+
+    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+
+    // removeAnyOldCommits(nodeid, header); // not strictly necessary
+    DataEdit edit = new DataEdit(node.id, "longname", t.getNewValue());
+    System.out.println("Verified edit to col longname");
+    dataEdits.add(edit);
+    submitEdits();
+    System.out.println("Submitted.");
+  }
+
+  private void handleEditCommit_ShortName(TableColumn.CellEditEvent<ObservableNode, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
+  }
+
+  private void handleEditCommit_Date(TableColumn.CellEditEvent<ObservableNode, String> t) {
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
+    // t.getNewValue(); // new string value of cell
+  }
+
+
+
+
+
   public ObservableList<ObservableNode> getNodes() {
 
     ObservableList<ObservableNode> nodes = FXCollections.observableArrayList();
@@ -156,15 +172,12 @@ public class MapEditorController extends AbsController {
   public void submitEdits() {
 
     for (DataEdit edit : dataEdits) {
-      // TODO: Pass ObservableNode object through DataEdit
-      // TODO: Convert to Node object (store in ObservableNode?)
-      Node newNode = new Node();
-      dbConnection.nodeTable.update(newNode, "9/9/99");
+      dbConnection.nodeTable.update(edit.id, edit.attr, edit.value);
     }
 
-//    dataEdits.removeIf(
-//        dataEdit ->
-//            dbConnection.nodeTable.update(
-//                dataEdit.getId(), dataEdit.getHeader(), dataEdit.getValue()));
+    //    dataEdits.removeIf(
+    //        dataEdit ->
+    //            dbConnection.nodeTable.update(
+    //                dataEdit.getId(), dataEdit.getHeader(), dataEdit.getValue()));
   }
 }
