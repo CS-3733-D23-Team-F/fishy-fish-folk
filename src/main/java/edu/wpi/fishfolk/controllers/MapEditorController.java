@@ -1,10 +1,13 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.database.DataEdit;
+import edu.wpi.fishfolk.database.NodeTable;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,6 +30,8 @@ public class MapEditorController {
   @FXML private TableColumn<Node, String> shortName;
 
   @FXML MFXButton backButton;
+
+  private ArrayList<DataEdit> dataEdits;
 
   @FXML
   public void initialize() {
@@ -54,7 +59,8 @@ public class MapEditorController {
     floor.setCellFactory(TextFieldTableCell.forTableColumn());
     building.setCellFactory(TextFieldTableCell.forTableColumn());
     date.setCellFactory(TextFieldTableCell.forTableColumn());
-    //    type.setCellFactory(TextFieldTableCell.forTableColumn()); // type isn't a string, doesn't work with this
+    //    type.setCellFactory(TextFieldTableCell.forTableColumn()); // type isn't a string, doesn't
+    // work with this
     longName.setCellFactory(TextFieldTableCell.forTableColumn());
     shortName.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -76,12 +82,13 @@ public class MapEditorController {
         (TableColumn.CellEditEvent<Node, String> t) ->
             (t.getTableView().getItems().get(t.getTablePosition().getRow()))
                 .setBuilding(t.getNewValue()));
-//    date.setOnEditCommit(
-//            (TableColumn.CellEditEvent<Node, String> t) ->
-//                    ( t.getTableView().getItems().get(
-//                            t.getTablePosition().getRow())
-//                    ).setDate(t.getNewValue()) //IMPORTANT: there is no setter for date because it's not a field of Node
-//    );                                         // therefore it won't work with this :/
+    //    date.setOnEditCommit(
+    //            (TableColumn.CellEditEvent<Node, String> t) ->
+    //                    ( t.getTableView().getItems().get(
+    //                            t.getTablePosition().getRow())
+    //                    ).setDate(t.getNewValue()) //IMPORTANT: there is no setter for date
+    // because it's not a field of Node
+    //    );                                         // therefore it won't work with this :/
     //    type.setOnEditCommit( // type isn't a string, doesn't work with this yet
     //            (TableColumn.CellEditEvent<Node, String> t) ->
     //                    ( t.getTableView().getItems().get(
@@ -101,6 +108,8 @@ public class MapEditorController {
         event -> {
           Navigation.navigate(Screen.HOME);
         });
+
+    dataEdits = new ArrayList<>();
   }
 
   public ObservableList<Node> getNodes() {
@@ -116,5 +125,29 @@ public class MapEditorController {
 
   public void populateTable() {
     table.setItems(getNodes());
+  }
+
+  /**
+   * Request NodeTable to queue edits to database. On each edit's success: 1. Make the BG of the
+   * cell white, 2. Remove DataEdit from collection
+   *
+   * @return True on successful submission, false otherwise
+   */
+  public boolean submitRequest(NodeTable nodeTable) {
+
+    boolean result = true;
+
+    for (DataEdit edit : dataEdits) {
+      boolean made = nodeTable.queueEdit(edit);
+
+      if (made) {
+        // Cell color = white
+        dataEdits.remove(edit);
+      } else {
+        result = false;
+      }
+    }
+
+    return result;
   }
 }
