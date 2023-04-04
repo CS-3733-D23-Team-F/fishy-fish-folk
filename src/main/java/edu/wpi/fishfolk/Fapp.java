@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Fapp extends Application {
-  double x, y = 0;
+
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static BorderPane rootPane;
 
@@ -36,15 +36,9 @@ public class Fapp extends Application {
     primaryStage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
 
     Fapp.rootPane = root;
+
     final Scene scene = new Scene(root);
-    primaryStage.setFullScreen(false);
-    /*scene
-    .getStylesheets()
-    .add(
-        this.getClass()
-            .getResource(
-                "ui/edu/wpi/fishfolk/java/resources/edu/wpi/fishfolk/Styles/styles.css")
-            .toExternalForm());*/
+    scene.getStylesheets().add("../resources/edu/wpi/fishfolk/Styles/style.css");
     primaryStage.setScene(scene);
     primaryStage.show();
 

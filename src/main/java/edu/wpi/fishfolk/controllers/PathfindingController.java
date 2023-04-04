@@ -15,18 +15,23 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 
 public class PathfindingController extends AbsController {
   @FXML MFXButton submitBtn;
-  @FXML MFXButton clearBtn;
   @FXML ChoiceBox<String> startSelector;
   @FXML ChoiceBox<String> endSelector;
+  @FXML MFXButton clearBtn;
   int start, end;
 
   @FXML AnchorPane mapAnchor;
   @FXML ImageView mapImg;
   @FXML MFXComboBox<String> selectFloor;
+
+  @FXML Text directionInstructions;
 
   Graph graph;
   ArrayList<Path> paths;
@@ -34,107 +39,134 @@ public class PathfindingController extends AbsController {
 
   public PathfindingController() {
     super();
-    // System.out.println("constructed pathfinding controller");
+    //System.out.println("constructed pathfinding controller");
   }
 
   @FXML
   private void initialize() {
     ObservableList<String> floors =
-        FXCollections.observableArrayList(
-            "Lower Level 1",
-            "Lower Level 2",
-            "Ground Floor",
-            "First Floor",
-            "Second Floor",
-            "Third Floor");
+            FXCollections.observableArrayList(
+                    "Lower Level 1",
+                    "Lower Level 2",
+                    "Ground Floor",
+                    "First Floor",
+                    "Second Floor",
+                    "Third Floor");
     selectFloor.setItems(floors);
     selectFloor.setOnAction(
-        event -> {
-          String temp = selectFloor.getValue();
-          String map;
-          switch (temp) {
-            case "Lower Level 1":
-              map = "00_thelowerlevel1.png";
-              break;
-            case "Lower Level 2":
-              map = "00_thelowerlevel2.png";
-              break;
-            case "Ground Floor":
-              map = "00_thegroundfloor.png";
-              break;
-            case "First Floor":
-              map = "01_thefirstfloor.png";
-              break;
-            case "Second Floor":
-              map = "02_thesecondfloor.png";
-              break;
-            case "Third Floor":
-              map = "03_thethirdfloor.png";
-              break;
-            default:
-              map = "00_thelowerlevel1.png";
-          }
-          Image image = new Image(Fapp.class.getResourceAsStream("map/" + map));
-          mapImg.setImage(image);
-        });
+            event -> {
+              String temp = selectFloor.getValue();
+              String map;
+              switch (temp) {
+                case "Lower Level 1":
+                  map = "00_thelowerlevel1.png";
+                  break;
+                case "Lower Level 2":
+                  map = "00_thelowerlevel2.png";
+                  break;
+                case "Ground Floor":
+                  map = "00_thegroundfloor.png";
+                  break;
+                case "First Floor":
+                  map = "01_thefirstfloor.png";
+                  break;
+                case "Second Floor":
+                  map = "02_thesecondfloor.png";
+                  break;
+                case "Third Floor":
+                  map = "03_thethirdfloor.png";
+                  break;
+                default:
+                  map = "00_thelowerlevel1.png";
+              }
+              Image image = new Image(Fapp.class.getResourceAsStream("map/" + map));
+              mapImg.setImage(image);
+            });
 
     System.out.println("floor: " + selectFloor.getItems());
-
     ArrayList nodeNames = dbConnection.nodeTable.getDestLongNames();
     segments = new LinkedList<>();
+    System.out.println(dbConnection.nodeTable.getTableName());
+
+    ArrayList[] res = dbConnection.nodeTable.getAllDestinationNodes();
+    ArrayList<String> nodeIDs = res[0];
+    ArrayList<String> nodeNames = res[1];
 
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end
 
     startSelector.setOnAction(
-        event -> {
-          start = dbConnection.nodeTable.getNode("longname", startSelector.getValue()).nid;
+            event -> {
+              start = dbConnection.nodeTable.getNode("longname", startSelector.getValue()).nid;
 
-          System.out.println("start node: " + start);
-        });
+              System.out.println("start node: " + start);
+            });
     endSelector.setOnAction(
-        event -> {
-          end = dbConnection.nodeTable.getNode("longname", endSelector.getValue()).nid;
-          System.out.println("end node: " + end);
-        });
+            event -> {
+              end = dbConnection.nodeTable.getNode("longname", endSelector.getValue()).nid;
+              System.out.println("end node: " + end);
+            });
 
     graph = new Graph(dbConnection.nodeTable, dbConnection.edgeTable);
 
     submitBtn.setOnAction(
-        event -> {
-          for (int i = 0; i < segments.size(); i++) {
-            mapAnchor.getChildren().remove(segments.get(i));
-          }
-          segments.clear();
-          paths = graph.AStar(start, end);
-          drawPath(paths);
-        });
-
+            event -> {
+              for (int i = 0; i < segments.size(); i++) {
+                mapAnchor.getChildren().remove(segments.get(i));
+              }
+              segments.clear();
+              paths = graph.AStar(start, end);
+              drawPath(paths);
+              //directionInstructions.setText("Instructions: \n\n" + path.getDirections());
+            });
     clearBtn.setOnAction(
-        event -> {
-          for (int i = 0; i < segments.size(); i++) {
-            mapAnchor.getChildren().remove(segments.get(i));
-          }
-          segments.clear();
-        });
+            event -> {
+              for (int i = 0; i < segments.size(); i++) {
+                mapAnchor.getChildren().remove(segments.get(i));
+              }
+              segments.clear();
+            });
   }
 
   private void drawPath(ArrayList<Path> paths) {
 
+
+    Circle circle = new Circle();
     for (int i = 0; i < paths.size(); i++) {
       ArrayList<Point2D> points = paths.get(i).getPoints();
 
       for (int j = 1; j < points.size(); j++) {
         segments.add(line(points.get(j - 1), points.get(j)));
+        if (i + 1 == points.size()) {
+          circle.setRadius(9);
+          circle.setFill(Color.TRANSPARENT);
+          circle.setStroke(Color.RED);
+          Line temp = line(points.get(i - 1), points.get(i));
+          circle.setLayoutX(temp.getEndX());
+          circle.setLayoutY(temp.getEndY());
+        }
       }
       mapAnchor.getChildren().addAll(segments);
     }
+
+    // segments.add(new Line(0, 7, 1120, 787)); //diagonal from top left to bottom right
+
+    mapAnchor.getChildren().addAll(segments);
+    mapAnchor.getChildren().add(circle);
   }
 
   private Line line(Point2D p1, Point2D p2) {
     p1 = convert(p1);
     p2 = convert(p2);
     return new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+  }
+
+  public static void wait(int ms) {
+    try {
+      Thread.sleep(ms);
+    } catch (InterruptedException ex) {
+      Thread.currentThread().interrupt();
+    }
   }
 
   public Point2D convert(Point2D p) {
