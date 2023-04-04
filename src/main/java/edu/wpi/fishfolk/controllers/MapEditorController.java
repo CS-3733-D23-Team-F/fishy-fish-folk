@@ -1,11 +1,15 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.database.DataEdit;
-import edu.wpi.fishfolk.database.EdgeEdit;import edu.wpi.fishfolk.database.EdgeEditType;import edu.wpi.fishfolk.database.ObservableNode;
+import edu.wpi.fishfolk.database.EdgeEdit;
+import edu.wpi.fishfolk.database.EdgeEditType;
+import edu.wpi.fishfolk.database.ObservableNode;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.pathfinding.Edge;
 import edu.wpi.fishfolk.pathfinding.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.sql.SQLException;
 import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -182,27 +186,26 @@ public class MapEditorController extends AbsController {
       // find differences between prev and changed
       // https://stackoverflow.com/questions/3476672/algorithm-to-get-changes-between-two-arrays
       int pIdx = 0, cIdx = 0;
-      while(pIdx < prev.length && cIdx < changed.length){
+      while (pIdx < prev.length && cIdx < changed.length) {
 
         int comp = prev[pIdx].compareTo(changed[cIdx]);
 
-        if(comp < 0){
-          //pidx got removed
+        if (comp < 0) {
+          // pidx got removed
           edgeEdits.add(new EdgeEdit(EdgeEditType.REMOVE, start, prev[pIdx]));
           pIdx++;
 
-        } else if (comp > 0){
-          //cidx got added
+        } else if (comp > 0) {
+          // cidx got added
           edgeEdits.add(new EdgeEdit(EdgeEditType.ADD, start, changed[cIdx]));
           cIdx++;
 
         } else {
-          //equal so this edge is unchanged
+          // equal so this edge is unchanged
           pIdx++;
           cIdx++;
         }
       }
-
 
       submitEdits();
       System.out.println("Submitted.");
@@ -264,18 +267,65 @@ public class MapEditorController extends AbsController {
    */
   public void submitEdits() {
 
-    for (DataEdit edit : dataEdits) {
-      dbConnection.nodeTable.update(edit.id, edit.attr, edit.value);
-    }
+    dataEdits.removeIf(edit -> dbConnection.nodeTable.update(edit.id, edit.attr, edit.value));
 
-    for(EdgeEdit edit : edgeEdits){
-      //TODO Christian apply edits to edit table - perhaps execute query?
-      //dbConnection.edgeTable.executeQuery
-    }
+    for (EdgeEdit edit : edgeEdits) {
 
-    //    dataEdits.removeIf(
-    //        dataEdit ->
-    //            dbConnection.nodeTable.update(
-    //                dataEdit.getId(), dataEdit.getHeader(), dataEdit.getValue()));
+      switch (edit.type) {
+        case ADD:
+          dbConnection.edgeTable.insert(new Edge(edit.node1, edit.node2));
+
+          // TODO: Add to table on connected node
+
+          break;
+
+        case REMOVE:
+
+          /*
+          EXAMPLE QUERY:
+
+          DELETE FROM proto2db.edge
+          WHERE (proto2db.edge.node1 = '<node1>' AND proto2db.edge.node2 = '<node2>')
+          OR (proto2db.edge.node1 = '<node2>' AND proto2db.edge.node2 = '<node1>');
+           */
+
+          try {
+            String query =
+                "WHERE ("
+                    + dbConnection.conn.getSchema()
+                    + "."
+                    + dbConnection.edgeTable.getTableName()
+                    + ".node1 = '"
+                    + edit.node1
+                    + "' AND "
+                    + dbConnection.conn.getSchema()
+                    + "."
+                    + dbConnection.edgeTable.getTableName()
+                    + ".node2 = '"
+                    + edit.node2
+                    + "') OR ("
+                    + dbConnection.conn.getSchema()
+                    + "."
+                    + dbConnection.edgeTable.getTableName()
+                    + ".node1 = '"
+                    + edit.node2
+                    + "' AND "
+                    + dbConnection.conn.getSchema()
+                    + "."
+                    + dbConnection.edgeTable.getTableName()
+                    + ".node2 = '"
+                    + edit.node1
+                    + "');";
+
+            dbConnection.edgeTable.executeQuery("DELETE", query);
+
+            // TODO: Remove from table on connected node
+
+          } catch (SQLException e) {
+            System.out.println(e.getMessage());
+          }
+          break;
+      }
+    }
   }
 }
