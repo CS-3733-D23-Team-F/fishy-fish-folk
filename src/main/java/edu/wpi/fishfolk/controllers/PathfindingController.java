@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
@@ -49,7 +50,7 @@ public class PathfindingController extends AbsController {
         event -> {
           String temp = selectFloor.getValue();
           String map;
-          switch(temp){
+          switch (temp) {
             case "Lower Level 1":
               map = "00_thelowerlevel1.png";
               break;
@@ -63,15 +64,16 @@ public class PathfindingController extends AbsController {
               map = "01_thefirstfloor.png";
               break;
             case "Second Floor":
-              map = "02_thefirstfloor.png";
+              map = "02_thesecondfloor.png";
               break;
             case "Third Floor":
-              map = "03_thefirstfloor.png";
+              map = "03_thethirdfloor.png";
               break;
             default:
               map = "00_thelowerlevel1.png";
           }
-           mapImg.setImage(Fapp.class.getResourceAsStream("images/"+map));
+          Image image = new Image(Fapp.class.getResourceAsStream("map/" + map));
+          mapImg.setImage(image);
         });
 
     System.out.println("floor: " + selectFloor.getItems());
