@@ -10,8 +10,5 @@ public enum NodeType {
   SERV,
   ELEV,
   EXIT,
-  STAI,
-  INFO,
-  BATH,
-  DEFAULT;
+  STAI
 }
