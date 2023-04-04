@@ -142,10 +142,21 @@ public class MapEditorController extends AbsController {
    */
   public boolean submitEdits() {
 
-    for (int i = 0; i < dataEdits.size(); i++) {
-      //dbConnection.nodeTable.executeQuery(SELECT)
+    boolean allGood = true;
+
+    for (DataEdit dataEdit : dataEdits) {
+      if (dbConnection.nodeTable.update(
+              dataEdit.getId(),
+              dataEdit.getHeader(),
+              dataEdit.getValue()
+      )) {
+        // White BG
+        dataEdits.remove(dataEdit);
+      } else {
+        allGood = false;
+      }
     }
 
-    return false;
+    return allGood;
   }
 }
