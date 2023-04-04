@@ -2,7 +2,6 @@ package edu.wpi.fishfolk;
 
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import java.awt.*;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +32,9 @@ public class Fapp extends Application {
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Root.fxml"));
     final BorderPane root = loader.load();
 
+    // primaryStage.getIcons().add(new Image("file:magikarp.png"));
     primaryStage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
+
     Fapp.rootPane = root;
     final Scene scene = new Scene(root);
     primaryStage.setFullScreen(false);
@@ -44,7 +45,6 @@ public class Fapp extends Application {
             .getResource(
                 "ui/edu/wpi/fishfolk/java/resources/edu/wpi/fishfolk/Styles/styles.css")
             .toExternalForm());*/
-
     primaryStage.setScene(scene);
     primaryStage.show();
 

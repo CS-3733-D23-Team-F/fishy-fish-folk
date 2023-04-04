@@ -168,8 +168,3 @@ src/main/resources/edu/wpi/fishfolk/csv/*
 !src/main/resources/edu/wpi/fishfolk/csv/Move.csv
 !src/main/resources/edu/wpi/fishfolk/csv/Location.csv
 !src/main/resources/edu/wpi/fishfolk/csv/Edge.csv
-
-/src/main/resources/edu/wpi/fishfolk/csv/L1EdgesOutput.csv
-/src/main/resources/edu/wpi/fishfolk/csv/L1NodesOutput.csv
-
-/src/main/resources/edu/wpi/fishfolk/csv/
