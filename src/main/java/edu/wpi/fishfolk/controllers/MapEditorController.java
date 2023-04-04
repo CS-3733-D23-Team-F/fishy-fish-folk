@@ -132,15 +132,7 @@ public class MapEditorController {
    *
    * @return True on successful submission, false otherwise
    */
-  /**
-   * public boolean submitRequest(NodeTable nodeTable) {
-   *
-   * <p>boolean result = true;
-   *
-   * <p>for (DataEdit edit : dataEdits) { boolean made = nodeTable.queueEdit(edit);
-   *
-   * <p>if (made) { // Cell color = white dataEdits.remove(edit); } else { result = false; } }
-   *
-   * <p>return result; }
-   */
+  public boolean submitEdits() {
+    return false;
+  }
 }
