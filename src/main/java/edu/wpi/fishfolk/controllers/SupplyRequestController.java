@@ -163,12 +163,11 @@ public class SupplyRequestController {
     currentSupplyOrder.link = linkTextField.getText();
     currentSupplyOrder.notes = notesTextField.getText();
     if (submittable()) {
+      currentSupplyOrder.formID = "" + System.currentTimeMillis();
       System.out.println(currentSupplyOrder.toString());
       System.out.println(currentSupplyOrder.listItemsToString());
-      Navigation.navigate(Screen.HOME);
       currentSupplyOrder.setSubmitted();
-      currentSupplyOrder.formID = "" + System.currentTimeMillis();
-      System.out.println(currentSupplyOrder.formID);
+      Navigation.navigate(Screen.HOME);
     }
   }
 }
