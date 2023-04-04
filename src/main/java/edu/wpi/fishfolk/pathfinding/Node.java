@@ -27,7 +27,7 @@ public class Node extends TableEntry {
       String longName,
       String shortName) {
 
-    this.id = Integer.toString(id);
+    this.id = String.valueOf(id);
     this.nid = id;
     this.point = point;
     this.floor = floor;
@@ -66,8 +66,8 @@ public class Node extends TableEntry {
 
     ArrayList<String> data = new ArrayList<>();
     data.add(id);
-    data.add(Double.toString(point.getX()));
-    data.add(Double.toString(point.getY()));
+    data.add(String.valueOf(point.getX()));
+    data.add(String.valueOf(point.getY()));
     data.add(floor);
     data.add(building);
     data.add(String.valueOf(type));

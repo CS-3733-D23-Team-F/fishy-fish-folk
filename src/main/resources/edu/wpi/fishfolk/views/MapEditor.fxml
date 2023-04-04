@@ -17,11 +17,10 @@
                         <TableColumn prefWidth="107.66668701171875" text="X" fx:id="x" />
                         <TableColumn fx:id="y" prefWidth="103.66659545898438" text="Y" />
                         <TableColumn fx:id="floor" prefWidth="132.99993896484375" text="floor" />
-                        <TableColumn fx:id="building" prefWidth="220.66668701171875" text="building" />
-                        <TableColumn fx:id="date" prefWidth="131.666748046875" text="Date" />
-                        <TableColumn fx:id="type" prefWidth="131.666748046875" text="Type" />
-                        <TableColumn fx:id="longName" prefWidth="320.0" text="name" />
-                        <TableColumn fx:id="shortName" prefWidth="213.9998779296875" text="abbreviation" />
+                        <TableColumn fx:id="building" prefWidth="112.0" text="building" />
+                        <TableColumn fx:id="type" prefWidth="128.0" text="Type" />
+                        <TableColumn fx:id="longName" prefWidth="213.0" text="name" />
+                        <TableColumn fx:id="shortName" prefWidth="120.0" text="abbreviation" />
                     </columns>
                 </TableView>
             </content>

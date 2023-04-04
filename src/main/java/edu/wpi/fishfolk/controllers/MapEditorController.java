@@ -1,35 +1,30 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.database.DataEdit;
-import edu.wpi.fishfolk.database.Fdb;
+import edu.wpi.fishfolk.database.ObservableNode;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.Node;
-import edu.wpi.fishfolk.pathfinding.NodeType;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
-import java.util.ArrayList;
-
 public class MapEditorController extends AbsController {
-  @FXML private TableView<Node> table;
-  @FXML private TableColumn<Node, String> id;
-  @FXML private TableColumn<Node, String> x;
-  @FXML private TableColumn<Node, String> y;
-  @FXML private TableColumn<Node, String> floor;
-  @FXML private TableColumn<Node, String> building;
-  @FXML private TableColumn<Node, String> date;
-  @FXML private TableColumn<Node, String> type;
-  @FXML private TableColumn<Node, String> longName;
-  @FXML private TableColumn<Node, String> shortName;
+  @FXML private TableView<ObservableNode> table;
+  @FXML private TableColumn<ObservableNode, String> id;
+  @FXML private TableColumn<ObservableNode, String> x;
+  @FXML private TableColumn<ObservableNode, String> y;
+  @FXML private TableColumn<ObservableNode, String> floor;
+  @FXML private TableColumn<ObservableNode, String> building;
+  @FXML private TableColumn<ObservableNode, String> type;
+  @FXML private TableColumn<ObservableNode, String> longName;
+  @FXML private TableColumn<ObservableNode, String> shortName;
 
   @FXML MFXButton backButton;
 
@@ -38,15 +33,14 @@ public class MapEditorController extends AbsController {
   @FXML
   public void initialize() {
     // sets up the columns in the table
-    id.setCellValueFactory(new PropertyValueFactory<Node, String>("id"));
-    x.setCellValueFactory(new PropertyValueFactory<Node, String>("x"));
-    y.setCellValueFactory(new PropertyValueFactory<Node, String>("y"));
-    floor.setCellValueFactory(new PropertyValueFactory<Node, String>("floor"));
-    building.setCellValueFactory(new PropertyValueFactory<Node, String>("building"));
-    date.setCellValueFactory(new PropertyValueFactory<Node, String>("date"));
-    type.setCellValueFactory(new PropertyValueFactory<Node, String>("type"));
-    longName.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
-    shortName.setCellValueFactory(new PropertyValueFactory<Node, String>("shortName"));
+    id.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("id"));
+    x.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("x"));
+    y.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("y"));
+    floor.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("floor"));
+    building.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("building"));
+    type.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("type"));
+    longName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("longName"));
+    shortName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("shortName"));
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
     // load data
@@ -58,20 +52,20 @@ public class MapEditorController extends AbsController {
     y.setCellFactory(TextFieldTableCell.forTableColumn());
     floor.setCellFactory(TextFieldTableCell.forTableColumn());
     building.setCellFactory(TextFieldTableCell.forTableColumn());
-    date.setCellFactory(TextFieldTableCell.forTableColumn());
     type.setCellFactory(TextFieldTableCell.forTableColumn());
     longName.setCellFactory(TextFieldTableCell.forTableColumn());
     shortName.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    x.setOnEditCommit(this::handleEditCommit_X);
-    y.setOnEditCommit(this::handleEditCommit_Y);
-    floor.setOnEditCommit(this::handleEditCommit_Floor);
-    building.setOnEditCommit(this::handleEditCommit_Building);
-    date.setOnEditCommit(this::handleEditCommit_Date);
-    type.setOnEditCommit(this::handleEditCommit_Type);
-    longName.setOnEditCommit(this::handleEditCommit_LongName);
-    shortName.setOnEditCommit(this::handleEditCommit_ShortName);
-
+    /*
+        x.setOnEditCommit(this::handleEditCommit_X);
+        y.setOnEditCommit(this::handleEditCommit_Y);
+        floor.setOnEditCommit(this::handleEditCommit_Floor);
+        building.setOnEditCommit(this::handleEditCommit_Building);
+        date.setOnEditCommit(this::handleEditCommit_Date);
+        type.setOnEditCommit(this::handleEditCommit_Type);
+        longName.setOnEditCommit(this::handleEditCommit_LongName);
+        shortName.setOnEditCommit(this::handleEditCommit_ShortName);
+    */
     backButton.setOnAction(
         event -> {
           Navigation.navigate(Screen.HOME);
@@ -120,14 +114,23 @@ public class MapEditorController extends AbsController {
     // t.getNewValue(); // new string value of cell
   }
 
-  public ObservableList<Node> getNodes() {
-    String pointX = "1";
-    String pointY = "3";
-    ObservableList<Node> nodes = FXCollections.observableArrayList();
-    // pointX = String.valueOf(node.point.getX());
-    // pointY = String.valueOf(node.point.getY());
-    nodes.add(
-        new Node(38, new Point2D(0.0, 1.0), "floor", "building", NodeType.CONF, "name", "abb"));
+  public ObservableList<ObservableNode> getNodes() {
+
+    ObservableList<ObservableNode> nodes = FXCollections.observableArrayList();
+    for (Node n : dbConnection.nodeTable.getAllNodes()) {
+      ArrayList<String> next = n.deconstruct();
+      ObservableNode update =
+          new ObservableNode(
+              next.get(0),
+              next.get(1),
+              next.get(2),
+              next.get(3),
+              next.get(4),
+              next.get(5),
+              next.get(6),
+              next.get(7));
+      nodes.add(update);
+    }
     return nodes;
   }
 
@@ -140,10 +143,9 @@ public class MapEditorController extends AbsController {
    * cell white, 2. Remove DataEdit from collection.
    */
   public void submitEdits() {
-    dataEdits.removeIf(dataEdit -> dbConnection.nodeTable.update(
-            dataEdit.getId(),
-            dataEdit.getHeader(),
-            dataEdit.getValue()
-    ));
+    dataEdits.removeIf(
+        dataEdit ->
+            dbConnection.nodeTable.update(
+                dataEdit.getId(), dataEdit.getHeader(), dataEdit.getValue()));
   }
 }
