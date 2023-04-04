@@ -10,7 +10,6 @@ public class SupplyOrder extends TableEntry {
   public String link;
   public String roomNum;
   public String notes;
-
   FormStatus formStatus;
   public String formID;
 

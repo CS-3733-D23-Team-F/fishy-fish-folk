@@ -11,7 +11,6 @@ public class FoodOrder {
   public CreditCardInfo payer;
   public Room deliveryLocation;
   public float totalPrice;
-
   public FormStatus formStatus;
   public String formID;
 
