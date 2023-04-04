@@ -22,9 +22,9 @@ public class Path {
     numNodes = 0;
   }
 
-  public void addFirst(int n, Point2D p) {
+  public void addFirst(int nid, Point2D p) {
     // this runs in O(n) time so maybe try batching in groups of 10 or 20 node/point pairs
-    nodes.add(0, n);
+    nodes.add(0, nid);
     points.add(0, p);
     numNodes++;
   }
@@ -134,7 +134,7 @@ public class Path {
   }
 
   public String toString() {
-    return nodes.toString();
+    return floor + ": " + nodes.toString();
   }
 
   @Override
