@@ -334,6 +334,8 @@ public class Graph {
       paths.get(numpaths).addFirst(nodes[current_node].nid, nodes[current_node].point);
 
       current_node = lastVisited[current_node];
+
+      currentFloor = nodes[current_node].floor;
     }
 
     // path.addFirst(start, nodes[id2idx.get(start)].point);

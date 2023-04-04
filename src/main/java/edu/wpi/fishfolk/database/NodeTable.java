@@ -188,5 +188,4 @@ public class NodeTable extends Table {
     locationTable.exportCSV(locationPath);
     moveTable.exportCSV(movePath);
   }
-
 }
