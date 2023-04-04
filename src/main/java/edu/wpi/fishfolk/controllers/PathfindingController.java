@@ -1,10 +1,14 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.pathfinding.Graph;
 import edu.wpi.fishfolk.pathfinding.Path;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ChoiceBox;
@@ -20,6 +24,7 @@ public class PathfindingController extends AbsController {
 
   @FXML AnchorPane mapAnchor;
   @FXML ImageView mapImg;
+  @FXML MFXComboBox<String> selectFloor;
 
   Graph graph;
   Path path;
@@ -31,6 +36,20 @@ public class PathfindingController extends AbsController {
 
   @FXML
   private void initialize() {
+    ObservableList<String> floors =
+        FXCollections.observableArrayList(
+            "Lower Level 1",
+            "Lower Level 2",
+            "Ground Floor",
+            "First Floor",
+            "Second Floor",
+            "Third Floor");
+    selectFloor.setItems(floors);
+    selectFloor.setOnMouseClicked(event -> {
+      mapImg.setImage(Fapp.class.);
+    });
+
+    System.out.println("floor: " + selectFloor.getItems());
 
     System.out.println(dbConnection.nodeTable.getTableName());
 
