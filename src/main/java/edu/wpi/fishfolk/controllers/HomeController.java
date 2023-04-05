@@ -52,7 +52,7 @@ public class HomeController {
 
     slider.setTranslateX(-400);
     sideBarClose.setVisible(false);
-
+    menuWrap.setVisible(false);
     sideBar.setOnMouseClicked(
         event -> {
           menuWrap.setDisable(false);
@@ -64,7 +64,7 @@ public class HomeController {
           slide.play();
 
           slider.setTranslateX(-400);
-
+          menuWrap.setVisible(true);
           slide.setOnFinished(
               (ActionEvent e) -> {
                 sideBar.setVisible(false);
@@ -74,6 +74,7 @@ public class HomeController {
 
     sideBarClose.setOnMouseClicked(
         event -> {
+          menuWrap.setVisible(false);
           menuWrap.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));

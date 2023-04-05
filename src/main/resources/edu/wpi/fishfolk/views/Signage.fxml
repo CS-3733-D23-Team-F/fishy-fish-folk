@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
@@ -53,10 +54,10 @@
             </AnchorPane>
          </children>
       </HBox>
-      <HBox minHeight="635.2" minWidth="1280.0">
+      <StackPane minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
          <children>
-            <HBox minWidth="70.0" HBox.hgrow="ALWAYS" />
-            <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" HBox.hgrow="ALWAYS">
+            <HBox minWidth="120.0" />
+            <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0">
                <children>
                   <MFXButton fx:id="backButton" layoutX="467.0" layoutY="359.0" prefHeight="174.0" prefWidth="369.0" style="-fx-background-color: #012D5A;" text="Return Home" textFill="WHITE" AnchorPane.leftAnchor="335.5467" AnchorPane.rightAnchor="335.4533">
                      <font>
@@ -78,7 +79,11 @@
                         <Image url="@../images/hospitalImg1.PNG" />
                      </image>
                   </ImageView>
-                  <AnchorPane fx:id="slider" maxWidth="400.0" minWidth="400.0" style="-fx-background-color: #054982;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-100.0" AnchorPane.topAnchor="0.0">
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="menuWrap" disable="true" minWidth="70.0">
+               <children>
+                  <AnchorPane fx:id="slider" maxWidth="400.0" minWidth="400.0" style="-fx-background-color: #054982;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-400.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <VBox maxWidth="400.0" minWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
@@ -108,9 +113,17 @@
                                           <Insets left="40.0" />
                                        </padding>
                                     </MFXButton>
-                                    <MFXButton alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" style="-fx-background-color: transparent;" styleClass="sideNav" text="Pathfinding" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="300.0">
+                                    <MFXButton fx:id="pathfindingNav" alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" style="-fx-background-color: transparent;" styleClass="sideNav" text="Pathfinding" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="300.0">
                                        <font>
                                           <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="mapEditorNav" alignment="BOTTOM_LEFT" layoutX="5.0" layoutY="400.0" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" style="-fx-background-color: transparent;" styleClass="sideNav" text="Map Editor" textFill="WHITE">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="25.0" />
                                        </font>
                                        <padding>
                                           <Insets left="40.0" />
@@ -142,8 +155,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
          </children>
-      </HBox>
+      </StackPane>
    </children>
 </VBox>

@@ -16,6 +16,9 @@ public class SignageController {
   @FXML MFXButton mealNav;
 
   @FXML MFXButton officeNav;
+  @FXML MFXButton mapEditorNav;
+  @FXML MFXButton pathfindingNav;
+  @FXML AnchorPane menuWrap;
 
   @FXML MFXButton sideBar;
 
@@ -27,10 +30,11 @@ public class SignageController {
   @FXML
   public void initialize() {
 
-    backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
@@ -38,10 +42,12 @@ public class SignageController {
 
     sideBar.setOnMouseClicked(
         event -> {
+          menuWrap.setDisable(false);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
-          slide.setToX(0);
+
+          slide.setToX(400);
           slide.play();
 
           slider.setTranslateX(-400);
@@ -55,6 +61,7 @@ public class SignageController {
 
     sideBarClose.setOnMouseClicked(
         event -> {
+          menuWrap.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
