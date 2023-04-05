@@ -32,10 +32,8 @@ public class MapEditorController extends AbsController {
   @FXML private TableColumn<ObservableNode, String> date;
   @FXML private TableColumn<ObservableNode, String> edges;
   @FXML MFXButton backButton;
-
-  @FXML MFXButton submitButton;
-
-  private ArrayList<DataEdit> allAttemptedEdits;
+  @FXML MFXButton importCSVButton;
+  @FXML MFXButton exportCSVButton;
 
   private HashMap<String, Integer> id2row;
 
@@ -61,9 +59,6 @@ public class MapEditorController extends AbsController {
 
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
-    submitButton.setOnMouseClicked(event -> trackChanges());
-
-    // init these two before populating the table
     validNodes = new HashSet<>();
     id2row = new HashMap<>();
     // load data
@@ -96,97 +91,57 @@ public class MapEditorController extends AbsController {
           Navigation.navigate(Screen.HOME);
         });
 
-    submitButton.setOnAction(
+    importCSVButton.setOnAction(
         event -> {
-          trackChanges();
+          dbConnection.nodeTable.importCSV(
+              "src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv",
+              "src/main/resources/edu/wpi/fishfolk/csv/Location.csv",
+              "src/main/resources/edu/wpi/fishfolk/csv/Move.csv",
+              false);
+          dbConnection.edgeTable.importCSV(
+              "src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
+          table.getItems().clear();
+          initialize();
         });
 
-    allAttemptedEdits = new ArrayList<>();
+    exportCSVButton.setOnAction(
+        event -> {
+          dbConnection.nodeTable.exportCSV(
+              "src/main/resources/edu/wpi/fishfolk/csv",
+              "src/main/resources/edu/wpi/fishfolk/csv",
+              "src/main/resources/edu/wpi/fishfolk/csv");
+          dbConnection.edgeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv");
+        });
 
     dataEdits = new ArrayList<>();
     edgeEdits = new ArrayList<>();
   }
 
   public void handleEditCommit_X(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
 
-    t.getTableView().getItems().get(t.getTablePosition().getRow()).x = t.getNewValue();
-
-    // Verify
     boolean verified = true;
-    double value = -1;
 
     ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
     // check value is a valid double
     try {
-      value = Double.parseDouble(t.getNewValue());
+      Double.parseDouble(t.getNewValue());
     } catch (NumberFormatException e) {
       verified = false;
-      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue(), false);
-      allAttemptedEdits.add(edit);
     }
 
-    // removeAnyOldCommits(nodeid, header); // not strictly necessary
     if (verified) {
-      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue(), true);
-      System.out.println("Verified edit to col X");
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).x = t.getNewValue();
+      t.getTableView().refresh();
+      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
       dataEdits.add(edit);
-      allAttemptedEdits.add(edit);
       submitEdits();
-      System.out.println("Submitted.");
+      System.out.println(
+          "[MapEditorController.handleEditCommit_X]: Successful update made to column X.");
+    } else {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).x =
+          "**" + t.getOldValue() + "**";
+      t.getTableView().refresh();
     }
-  }
-
-  public static void sort(ObservableList<ObservableNode> list) {
-    list.sort((o1, o2) -> (o1.getSortable()).compareTo(o2.getSortable()));
-  }
-
-  private void trackChanges() {
-    System.out.println("submitted");
-    ObservableList<ObservableNode> updatedNodes = getNodes();
-    for (DataEdit edit : allAttemptedEdits) {
-      System.out.println("edit val:" + edit.value.toString());
-      for (ObservableNode node : updatedNodes) {
-        if (node.id.equals(edit.id)) {
-          System.out.println("I found my match!");
-          String marking;
-          if (edit.valid) {
-            marking = "*";
-          } else {
-            marking = "X";
-          }
-          switch (edit.attr) {
-            case "x":
-              node.x = edit.value + marking;
-              break;
-            case "y":
-              node.y = edit.value + marking;
-              break;
-            case "building":
-              node.building = edit.value + marking;
-              break;
-            case "type":
-              node.type = edit.value + marking;
-              break;
-            case "longName":
-              node.longName = edit.value + marking;
-              break;
-            case "shortName":
-              node.shortName = edit.value + marking;
-              break;
-            case "date":
-              node.date = edit.value + marking;
-              break;
-            case "adjacentNodes":
-              node.adjacentNodes = edit.value + marking;
-              break;
-          }
-        }
-      }
-    }
-    sort(updatedNodes);
-    populateTable(updatedNodes);
   }
 
   private void handleEditCommit_Y(TableColumn.CellEditEvent<ObservableNode, String> t) {
@@ -218,7 +173,7 @@ public class MapEditorController extends AbsController {
     ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
 
     // removeAnyOldCommits(nodeid, header); // not strictly necessary
-    DataEdit edit = new DataEdit(node.id, "longname", t.getNewValue(), true);
+    DataEdit edit = new DataEdit(node.id, "longname", t.getNewValue());
     System.out.println("Verified edit to col longname");
     dataEdits.add(edit);
     submitEdits();
@@ -282,6 +237,10 @@ public class MapEditorController extends AbsController {
     }
   }
 
+  public static void sort(ObservableList<ObservableNode> list) {
+    list.sort((o1, o2) -> (o1.getSortable()).compareTo(o2.getSortable()));
+  }
+
   public ObservableList<ObservableNode> getNodes() {
 
     ObservableList<ObservableNode> observableNodes = FXCollections.observableArrayList();
@@ -341,6 +300,8 @@ public class MapEditorController extends AbsController {
    * cell white, 2. Remove DataEdit from collection.
    */
   public void submitEdits() {
+
+    // trackChanges();
 
     dataEdits.removeIf(edit -> dbConnection.nodeTable.update(edit.id, edit.attr, edit.value));
 
@@ -417,3 +378,5 @@ public class MapEditorController extends AbsController {
     }
   }
 }
+
+// TODO: Import and export CSV buttons
