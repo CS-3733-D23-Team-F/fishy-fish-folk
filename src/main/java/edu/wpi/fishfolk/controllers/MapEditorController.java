@@ -93,33 +93,24 @@ public class MapEditorController extends AbsController {
   }
 
   public void handleEditCommit_X(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
 
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()).x = t.getNewValue();
-
-    // Verify
     boolean verified = true;
-    double value = -1;
 
     ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
     // check value is a valid double
     try {
-      value = Double.parseDouble(t.getNewValue());
+      Double.parseDouble(t.getNewValue());
     } catch (NumberFormatException e) {
       verified = false;
-      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
     }
 
-    // removeAnyOldCommits(nodeid, header); // not strictly necessary
     if (verified) {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).x = t.getNewValue();
       t.getTableView().refresh();
       DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
-      System.out.println("Verified edit to col X");
       dataEdits.add(edit);
       submitEdits();
-      System.out.println("Submitted.");
+      System.out.println("[MapEditorController.handleEditCommit_X]: Successful update made to column X.");
     } else {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).x =
           "**" + t.getOldValue() + "**";
