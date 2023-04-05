@@ -11,7 +11,11 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 public class SupplyRequestController extends AbsController {
 
@@ -19,6 +23,19 @@ public class SupplyRequestController extends AbsController {
     "id", "items", "link", "roomNum", "notes", "status", "assignee"
   };
   public static ArrayList<String> headers = new ArrayList<String>(Arrays.asList(headersArray));
+
+  @FXML MFXButton signageNav;
+
+  @FXML MFXButton mealNav;
+
+  @FXML MFXButton officeNav;
+
+  @FXML MFXButton sideBar;
+
+  @FXML MFXButton exitButton;
+
+  @FXML MFXButton sideBarClose;
+  @FXML AnchorPane slider;
 
   Table supplyRequestTable;
   SupplyOrder currentSupplyOrder = new SupplyOrder();
@@ -32,7 +49,7 @@ public class SupplyRequestController extends AbsController {
   public SupplyRequestController() {
     super();
     supplyRequestTable = new Table(dbConnection.conn, "supplyrequest");
-    supplyRequestTable.init(true);
+    supplyRequestTable.init(false);
     supplyRequestTable.addHeaders(
         SupplyRequestController.headers,
         new ArrayList<>(
@@ -45,6 +62,47 @@ public class SupplyRequestController extends AbsController {
     cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     supplySubmitButton.setOnMouseClicked(event -> submit());
     clearButton.setOnMouseClicked(event -> clearAllFields());
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
+    officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    exitButton.setOnMouseClicked(event -> System.exit(0));
+
+    slider.setTranslateX(-400);
+    sideBarClose.setVisible(false);
+
+    sideBar.setOnMouseClicked(
+        event -> {
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+          slide.setToX(0);
+          slide.play();
+
+          slider.setTranslateX(-400);
+
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                sideBar.setVisible(false);
+                sideBarClose.setVisible(true);
+              });
+        });
+
+    sideBarClose.setOnMouseClicked(
+        event -> {
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+          slide.setToX(-400);
+          slide.play();
+
+          slider.setTranslateX(0);
+
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                sideBar.setVisible(true);
+                sideBarClose.setVisible(false);
+              });
+        });
   }
 
   void loadOptions() {
