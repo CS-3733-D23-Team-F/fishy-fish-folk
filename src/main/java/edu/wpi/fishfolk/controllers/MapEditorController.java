@@ -49,6 +49,9 @@ public class MapEditorController extends AbsController {
   private ArrayList<DataEdit> dataEdits;
   private ArrayList<EdgeEdit> edgeEdits;
 
+  // set of possible floors
+  private HashSet<String> validFloors;
+
   // set of nodes that are allowed as edge edits
   private HashSet<String> validNodes;
   private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{1,2}/\\d{1,2}/\\d{4}$");
@@ -86,14 +89,14 @@ public class MapEditorController extends AbsController {
     date.setCellFactory(TextFieldTableCell.forTableColumn());
     edges.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    x.setOnEditCommit(this::handleEditCommit_X);
-    y.setOnEditCommit(this::handleEditCommit_Y);
-    floor.setOnEditCommit(this::handleEditCommit_Floor);
-    building.setOnEditCommit(this::handleEditCommit_Building);
-    type.setOnEditCommit(this::handleEditCommit_Type);
-    longName.setOnEditCommit(this::handleEditCommit_LongName);
-    shortName.setOnEditCommit(this::handleEditCommit_ShortName);
-    date.setOnEditCommit(this::handleEditCommit_Date);
+    x.setOnEditCommit(this::handleEdit_X);
+    y.setOnEditCommit(this::handleEdit_Y);
+    floor.setOnEditCommit(this::handleEdit_Floor);
+    building.setOnEditCommit(this::handleEdit_Building);
+    type.setOnEditCommit(this::handleEdit_Type);
+    longName.setOnEditCommit(this::handleEdit_LongName);
+    shortName.setOnEditCommit(this::handleEdit_ShortName);
+    date.setOnEditCommit(this::handleEdit_Date);
     edges.setOnEditCommit(this::handleEdit_Edges);
 
     backButton.setOnAction(
@@ -132,6 +135,9 @@ public class MapEditorController extends AbsController {
           fileChooser.setInitialDirectory(new File(exportPath));
         });
 
+    validFloors = new HashSet<>();
+    validFloors.addAll(List.of("L2", "L1", "GG", "1", "2", "3"));
+
     dataEdits = new ArrayList<>();
     edgeEdits = new ArrayList<>();
 
@@ -139,11 +145,11 @@ public class MapEditorController extends AbsController {
     dirChooser = new DirectoryChooser();
   }
 
-  public void handleEditCommit_X(TableColumn.CellEditEvent<ObservableNode, String> t) {
+  public void handleEdit_X(TableColumn.CellEditEvent<ObservableNode, String> t) {
+
+    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
 
     boolean verified = true;
-
-    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
     // check value is a valid double
     try {
       Double.parseDouble(t.getNewValue());
@@ -154,11 +160,10 @@ public class MapEditorController extends AbsController {
     if (verified) {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).x = t.getNewValue();
       t.getTableView().refresh();
-      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
+      DataEdit edit = new DataEdit(id, "x", t.getNewValue());
       dataEdits.add(edit);
       submitEdits();
-      System.out.println(
-          "[MapEditorController.handleEditCommit_X]: Successful update made to column X.");
+      System.out.println("[MapEditorController.handleEdit_X]: Successfully updated X column.");
     } else {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).x =
           "**" + t.getOldValue() + "**";
@@ -166,12 +171,11 @@ public class MapEditorController extends AbsController {
     }
   }
 
-  private void handleEditCommit_Y(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
-    boolean verified = true;
+  private void handleEdit_Y(TableColumn.CellEditEvent<ObservableNode, String> t) {
 
-    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+
+    boolean verified = true;
     // check value is a valid double
     try {
       Double.parseDouble(t.getNewValue());
@@ -182,11 +186,10 @@ public class MapEditorController extends AbsController {
     if (verified) {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).y = t.getNewValue();
       t.getTableView().refresh();
-      DataEdit edit = new DataEdit(node.id, "y", t.getNewValue());
+      DataEdit edit = new DataEdit(id, "y", t.getNewValue());
       dataEdits.add(edit);
       submitEdits();
-      System.out.println(
-          "[MapEditorController.handleEditCommit_y]: Successful update made to column y.");
+      System.out.println("[MapEditorController.handleEdit_y]: Successfully updated Y column.");
     } else {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).y =
           "**" + t.getOldValue() + "**";
@@ -194,21 +197,21 @@ public class MapEditorController extends AbsController {
     }
   }
 
-  private void handleEditCommit_Floor(TableColumn.CellEditEvent<ObservableNode, String> t) {
+  private void handleEdit_Floor(TableColumn.CellEditEvent<ObservableNode, String> t) {
 
-    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
 
-    // nothing to verify for strings
-    boolean verified = t.getNewValue().length() < 3;
+    // fixed set of valid floors
+    boolean verified = validFloors.contains(t.getNewValue());
 
     if (verified) {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).floor = t.getNewValue();
       t.getTableView().refresh();
-      DataEdit edit = new DataEdit(node.floor, "floor", t.getNewValue());
+      DataEdit edit = new DataEdit(id, "floor", t.getNewValue());
       dataEdits.add(edit);
       submitEdits();
       System.out.println(
-          "[MapEditorController.handleEditCommit_floor]: Successful update made to column floor.");
+          "[MapEditorController.handleEdit_floor]: Successfully updated floor column.");
     } else {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).floor =
           "**" + t.getOldValue() + "**";
@@ -216,30 +219,28 @@ public class MapEditorController extends AbsController {
     }
   }
 
-  private void handleEditCommit_Building(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
+  private void handleEdit_Building(TableColumn.CellEditEvent<ObservableNode, String> t) {
 
-    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+
+    // nothing to verify for building
 
     t.getTableView().getItems().get(t.getTablePosition().getRow()).building = t.getNewValue();
     t.getTableView().refresh();
-    DataEdit edit = new DataEdit(node.building, "building", t.getNewValue());
+    DataEdit edit = new DataEdit(id, "building", t.getNewValue());
     dataEdits.add(edit);
     submitEdits();
     System.out.println(
-        "[MapEditorController.handleEditCommit_building]: Successful update made to column building.");
+        "[MapEditorController.handleEdit_building]: Successfully updated building column.");
   }
 
-  private void handleEditCommit_Type(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
+  private void handleEdit_Type(TableColumn.CellEditEvent<ObservableNode, String> t) {
+
+    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+
     boolean verified = true;
-
-    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
-
+    // test valueOf of new value to determine validity
     try {
-      // Double.parseDouble(t.getNewValue());
       NodeType.valueOf(t.getNewValue());
     } catch (IllegalArgumentException e) {
       verified = false;
@@ -248,11 +249,11 @@ public class MapEditorController extends AbsController {
     if (verified) {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).type = t.getNewValue();
       t.getTableView().refresh();
-      DataEdit edit = new DataEdit(node.id, "type", t.getNewValue());
+      DataEdit edit = new DataEdit(id, "type", t.getNewValue());
       dataEdits.add(edit);
       submitEdits();
       System.out.println(
-          "[MapEditorController.handleEditCommit_type]: Successful update made to column type.");
+          "[MapEditorController.handleEdit_type]: Successfully updated type column.");
     } else {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).type =
           "**" + t.getOldValue() + "**";
@@ -260,21 +261,21 @@ public class MapEditorController extends AbsController {
     }
   }
 
-  private void handleEditCommit_LongName(TableColumn.CellEditEvent<ObservableNode, String> t) {
+  private void handleEdit_LongName(TableColumn.CellEditEvent<ObservableNode, String> t) {
 
-    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
 
-    // nothing to verify for strings
-    boolean verified = t.getNewValue().length() > 5;
+    // longname should be at least 5 characters
+    boolean verified = t.getNewValue().length() >= 5;
 
     if (verified) {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).longName = t.getNewValue();
       t.getTableView().refresh();
-      DataEdit edit = new DataEdit(node.longName, "longName", t.getNewValue());
+      DataEdit edit = new DataEdit(id, "longName", t.getNewValue());
       dataEdits.add(edit);
       submitEdits();
       System.out.println(
-          "[MapEditorController.handleEditCommit_longName]: Successful update made to column longName.");
+          "[MapEditorController.handleEdit_longName]: Successfully updated longname column.");
     } else {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).longName =
           "**" + t.getOldValue() + "**";
@@ -284,22 +285,21 @@ public class MapEditorController extends AbsController {
     // removeAnyOldCommits(nodeid, header); // not strictly necessary
   }
 
-  private void handleEditCommit_ShortName(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
-    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
-    // check value is a valid date structure
+  private void handleEdit_ShortName(TableColumn.CellEditEvent<ObservableNode, String> t) {
 
-    boolean verified = t.getNewValue().length() < 25;
+    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+
+    // shortname is max 25 characters
+    boolean verified = t.getNewValue().length() <= 25;
 
     if (verified) {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).shortName = t.getNewValue();
       t.getTableView().refresh();
-      DataEdit edit = new DataEdit(node.shortName, "shortName", t.getNewValue());
+      DataEdit edit = new DataEdit(id, "shortName", t.getNewValue());
       dataEdits.add(edit);
       submitEdits();
       System.out.println(
-          "[MapEditorController.handleEditCommit_shortName]: Successful update made to column shortName.");
+          "[MapEditorController.handleEdit_shortName]: Successfully updated shortname column.");
     } else {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).shortName =
           "**" + t.getOldValue() + "**";
@@ -307,10 +307,10 @@ public class MapEditorController extends AbsController {
     }
   }
 
-  private void handleEditCommit_Date(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
-    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+  private void handleEdit_Date(TableColumn.CellEditEvent<ObservableNode, String> t) {
+
+    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+
     // check value is a valid date structure
 
     boolean verified = DATE_PATTERN.matcher(t.getNewValue()).matches();
@@ -318,11 +318,10 @@ public class MapEditorController extends AbsController {
     if (verified) {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).date = t.getNewValue();
       t.getTableView().refresh();
-      DataEdit edit = new DataEdit(node.id, "date", t.getNewValue());
+      DataEdit edit = new DataEdit(id, "date", t.getNewValue());
       dataEdits.add(edit);
       submitEdits();
-      System.out.println(
-          "[MapEditorController.handleEditCommit_date]: Successful update made to column date.");
+      System.out.println("[MapEditorController.handleEdit_date]: Successfully updated date column");
     } else {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).date =
           "**" + t.getOldValue() + "**";
@@ -344,7 +343,7 @@ public class MapEditorController extends AbsController {
 
     if (verified) {
 
-      System.out.println("Verified edit to adjacent nodes");
+      System.out.println("Verified edit to edges");
 
       String start = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
 
@@ -372,12 +371,14 @@ public class MapEditorController extends AbsController {
         }
       }
 
+      System.out.println(
+          "[MapEditorController.handleEdit_edge]: Successfully updated edges column.");
       submitEdits();
       System.out.println("Submitted.");
     }
   }
 
-  public static void sort(ObservableList<ObservableNode> list) {
+  public static void sortObsNodes(ObservableList<ObservableNode> list) {
     list.sort((o1, o2) -> (o1.getSortable()).compareTo(o2.getSortable()));
   }
 
@@ -426,7 +427,7 @@ public class MapEditorController extends AbsController {
       obsNode.setAdjacentNodes();
     }
 
-    sort(observableNodes);
+    sortObsNodes(observableNodes);
 
     return observableNodes;
   }
@@ -440,8 +441,6 @@ public class MapEditorController extends AbsController {
    * cell white, 2. Remove DataEdit from collection.
    */
   public void submitEdits() {
-
-    // trackChanges();
 
     dataEdits.removeIf(edit -> dbConnection.nodeTable.update(edit.id, edit.attr, edit.value));
 
