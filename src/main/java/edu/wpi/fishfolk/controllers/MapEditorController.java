@@ -8,11 +8,13 @@ import edu.wpi.fishfolk.database.ObservableNode;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.Node;
+import edu.wpi.fishfolk.pathfinding.NodeType;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.File;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -49,6 +51,7 @@ public class MapEditorController extends AbsController {
 
   // set of nodes that are allowed as edge edits
   private HashSet<String> validNodes;
+  private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{1,2}/\\d{1,2}/\\d{4}$");
 
   @FXML
   public void initialize() {
@@ -166,47 +169,165 @@ public class MapEditorController extends AbsController {
   private void handleEditCommit_Y(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
+    boolean verified = true;
+
+    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+    // check value is a valid double
+    try {
+      Double.parseDouble(t.getNewValue());
+    } catch (NumberFormatException e) {
+      verified = false;
+    }
+
+    if (verified) {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).y = t.getNewValue();
+      t.getTableView().refresh();
+      DataEdit edit = new DataEdit(node.id, "y", t.getNewValue());
+      dataEdits.add(edit);
+      submitEdits();
+      System.out.println(
+          "[MapEditorController.handleEditCommit_y]: Successful update made to column y.");
+    } else {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).y =
+          "**" + t.getOldValue() + "**";
+      t.getTableView().refresh();
+    }
   }
 
   private void handleEditCommit_Floor(TableColumn.CellEditEvent<ObservableNode, String> t) {
-    // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
-    // t.getNewValue(); // new string value of cell
+
+    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+
+    // nothing to verify for strings
+    boolean verified = t.getNewValue().length() < 3;
+
+    if (verified) {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).floor = t.getNewValue();
+      t.getTableView().refresh();
+      DataEdit edit = new DataEdit(node.floor, "floor", t.getNewValue());
+      dataEdits.add(edit);
+      submitEdits();
+      System.out.println(
+          "[MapEditorController.handleEditCommit_floor]: Successful update made to column floor.");
+    } else {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).floor =
+          "**" + t.getOldValue() + "**";
+      t.getTableView().refresh();
+    }
   }
 
   private void handleEditCommit_Building(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
+
+    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+
+    t.getTableView().getItems().get(t.getTablePosition().getRow()).building = t.getNewValue();
+    t.getTableView().refresh();
+    DataEdit edit = new DataEdit(node.building, "building", t.getNewValue());
+    dataEdits.add(edit);
+    submitEdits();
+    System.out.println(
+        "[MapEditorController.handleEditCommit_building]: Successful update made to column building.");
   }
 
   private void handleEditCommit_Type(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
+    boolean verified = true;
+
+    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+
+    try {
+      // Double.parseDouble(t.getNewValue());
+      NodeType.valueOf(t.getNewValue());
+    } catch (IllegalArgumentException e) {
+      verified = false;
+    }
+
+    if (verified) {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).type = t.getNewValue();
+      t.getTableView().refresh();
+      DataEdit edit = new DataEdit(node.id, "type", t.getNewValue());
+      dataEdits.add(edit);
+      submitEdits();
+      System.out.println(
+          "[MapEditorController.handleEditCommit_type]: Successful update made to column type.");
+    } else {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).type =
+          "**" + t.getOldValue() + "**";
+      t.getTableView().refresh();
+    }
   }
 
   private void handleEditCommit_LongName(TableColumn.CellEditEvent<ObservableNode, String> t) {
 
-    t.getTableView().getItems().get(t.getTablePosition().getRow()).longName = t.getNewValue();
-
-    // nothing to verify for strings
-
     ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
 
+    // nothing to verify for strings
+    boolean verified = t.getNewValue().length() > 5;
+
+    if (verified) {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).longName = t.getNewValue();
+      t.getTableView().refresh();
+      DataEdit edit = new DataEdit(node.longName, "longName", t.getNewValue());
+      dataEdits.add(edit);
+      submitEdits();
+      System.out.println(
+          "[MapEditorController.handleEditCommit_longName]: Successful update made to column longName.");
+    } else {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).longName =
+          "**" + t.getOldValue() + "**";
+      t.getTableView().refresh();
+    }
+
     // removeAnyOldCommits(nodeid, header); // not strictly necessary
-    DataEdit edit = new DataEdit(node.id, "longname", t.getNewValue());
-    System.out.println("Verified edit to col longname");
-    dataEdits.add(edit);
-    submitEdits();
-    System.out.println("Submitted.");
   }
 
   private void handleEditCommit_ShortName(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
+    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+    // check value is a valid date structure
+
+    boolean verified = t.getNewValue().length() < 25;
+
+    if (verified) {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).shortName = t.getNewValue();
+      t.getTableView().refresh();
+      DataEdit edit = new DataEdit(node.shortName, "shortName", t.getNewValue());
+      dataEdits.add(edit);
+      submitEdits();
+      System.out.println(
+          "[MapEditorController.handleEditCommit_shortName]: Successful update made to column shortName.");
+    } else {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).shortName =
+          "**" + t.getOldValue() + "**";
+      t.getTableView().refresh();
+    }
   }
 
   private void handleEditCommit_Date(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
+    ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
+    // check value is a valid date structure
+
+    boolean verified = DATE_PATTERN.matcher(t.getNewValue()).matches();
+
+    if (verified) {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).date = t.getNewValue();
+      t.getTableView().refresh();
+      DataEdit edit = new DataEdit(node.id, "date", t.getNewValue());
+      dataEdits.add(edit);
+      submitEdits();
+      System.out.println(
+          "[MapEditorController.handleEditCommit_date]: Successful update made to column date.");
+    } else {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).date =
+          "**" + t.getOldValue() + "**";
+      t.getTableView().refresh();
+    }
   }
 
   private void handleEdit_Edges(TableColumn.CellEditEvent<ObservableNode, String> t) {
