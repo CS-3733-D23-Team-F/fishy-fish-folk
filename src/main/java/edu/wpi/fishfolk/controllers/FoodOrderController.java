@@ -38,9 +38,10 @@ public class FoodOrderController extends AbsController {
   @FXML MFXButton mealNav;
 
   @FXML MFXButton officeNav;
-
+  @FXML MFXButton pathfindingNav;
+  @FXML MFXButton mapEditorNav;
   @FXML MFXButton sideBar;
-
+  @FXML AnchorPane menuWrap;
   @FXML MFXButton exitButton;
 
   @FXML MFXButton sideBarClose;
@@ -81,9 +82,12 @@ public class FoodOrderController extends AbsController {
     plusHour.setOnAction(event -> delayHour());
     minusDay.setOnAction(event -> undelayDay());
     minusHour.setOnAction(event -> undelayHour());
+
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
@@ -91,10 +95,12 @@ public class FoodOrderController extends AbsController {
 
     sideBar.setOnMouseClicked(
         event -> {
+          menuWrap.setDisable(false);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
-          slide.setToX(0);
+
+          slide.setToX(400);
           slide.play();
 
           slider.setTranslateX(-400);
@@ -108,6 +114,7 @@ public class FoodOrderController extends AbsController {
 
     sideBarClose.setOnMouseClicked(
         event -> {
+          menuWrap.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
@@ -122,6 +129,7 @@ public class FoodOrderController extends AbsController {
                 sideBarClose.setVisible(false);
               });
         });
+
     submitButton.setOnAction(
         event -> {
           if (currentOrder.submit()) {

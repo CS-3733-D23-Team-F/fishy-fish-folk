@@ -18,6 +18,7 @@ public class HomeController {
   @FXML MFXButton mealNav;
 
   @FXML MFXButton officeNav;
+  @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
 
   @FXML MFXButton sideBar;
@@ -29,6 +30,9 @@ public class HomeController {
   @FXML MFXButton signageButton;
   @FXML MFXButton mealButton;
   @FXML MFXButton officeButton;
+  @FXML MFXButton pathfindingButton;
+  @FXML MFXButton mapEditorButton;
+  @FXML AnchorPane menuWrap;
 
   @FXML
   public void initialize() {
@@ -36,11 +40,14 @@ public class HomeController {
     signageButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealButton.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    pathfindingButton.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    mapEditorButton.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
 
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
@@ -48,10 +55,12 @@ public class HomeController {
 
     sideBar.setOnMouseClicked(
         event -> {
+          menuWrap.setDisable(false);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
-          slide.setToX(0);
+
+          slide.setToX(400);
           slide.play();
 
           slider.setTranslateX(-400);
@@ -65,6 +74,7 @@ public class HomeController {
 
     sideBarClose.setOnMouseClicked(
         event -> {
+          menuWrap.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);

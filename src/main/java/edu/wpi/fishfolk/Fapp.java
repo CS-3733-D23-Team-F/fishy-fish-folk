@@ -37,14 +37,8 @@ public class Fapp extends Application {
     Fapp.rootPane = root;
     final Scene scene = new Scene(root);
     primaryStage.setFullScreen(false);
-    /*scene
-    .getStylesheets()
-    .add(
-        this.getClass()
-            .getResource(
-                "ui/edu/wpi/fishfolk/java/resources/edu/wpi/fishfolk/Styles/styles.css")
-            .toExternalForm());*/
-
+    // scene.getStylesheets().add("" + Fapp.class.getResource("Styles/style.css"));
+    scene.getStylesheets().add(Fapp.class.getResource("Styles/style.css").toExternalForm());
     primaryStage.setScene(scene);
     primaryStage.show();
 
