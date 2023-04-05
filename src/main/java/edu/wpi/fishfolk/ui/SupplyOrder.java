@@ -10,7 +10,7 @@ public class SupplyOrder extends TableEntry {
   public String roomNum;
   public String notes;
 
-  FormStatus formStatus;
+  public FormStatus formStatus;
   public String formID;
 
   public String assignee;
@@ -101,7 +101,7 @@ public class SupplyOrder extends TableEntry {
   public LinkedList<SupplyItem> stringToListItem(String listToString) {
     LinkedList<SupplyItem> supplyList = new LinkedList<SupplyItem>();
     String[] StringToList = listToString.split("-_-");
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < StringToList.length; i++) {
       if (StringToList[i] == null) break;
       else {
         if (StringToList[i] == "Pencil") supplyList.add(new SupplyItem("Pencil", 1.99F));

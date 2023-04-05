@@ -61,12 +61,12 @@
                         <Font size="30.0" />
                      </font>
                   </Text>
-                  <Text layoutX="564.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="At Delivery Time:" wrappingWidth="327.3890380859375">
+                  <Text layoutX="564.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Link if not in stock:" wrappingWidth="327.3890380859375">
                      <font>
                         <Font size="30.0" />
                      </font>
                   </Text>
-                  <Text fx:id="deliveryTimeText" layoutX="620.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="88:88AM, Mon, 31/77" wrappingWidth="382.589111328125">
+                  <Text fx:id="linkText" layoutX="620.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="google" wrappingWidth="382.589111328125">
                      <font>
                         <Font size="30.0" />
                      </font>
