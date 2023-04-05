@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.database.DataEdit;
 import edu.wpi.fishfolk.database.EdgeEdit;
 import edu.wpi.fishfolk.database.EdgeEditType;
@@ -8,6 +9,7 @@ import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.io.File;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
@@ -18,6 +20,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 public class MapEditorController extends AbsController {
   @FXML private TableView<ObservableNode> table;
@@ -34,6 +38,9 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton backButton;
   @FXML MFXButton importCSVButton;
   @FXML MFXButton exportCSVButton;
+
+  FileChooser fileChooser;
+  DirectoryChooser dirChooser;
 
   private HashMap<String, Integer> id2row;
 
@@ -93,28 +100,40 @@ public class MapEditorController extends AbsController {
 
     importCSVButton.setOnAction(
         event -> {
-          dbConnection.nodeTable.importCSV(
-              "src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv",
-              "src/main/resources/edu/wpi/fishfolk/csv/Location.csv",
-              "src/main/resources/edu/wpi/fishfolk/csv/Move.csv",
-              false);
-          dbConnection.edgeTable.importCSV(
-              "src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
+          fileChooser.setTitle("Select the Node CSV file");
+          String microNodePath =
+              fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Location CSV file");
+          String locationPath =
+              fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Move CSV file");
+          String movePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Edge CSV file");
+          String edgePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          dbConnection.nodeTable.importCSV(microNodePath, locationPath, movePath, false);
+          dbConnection.edgeTable.importCSV(edgePath, false);
           table.getItems().clear();
           initialize();
         });
 
     exportCSVButton.setOnAction(
         event -> {
-          dbConnection.nodeTable.exportCSV(
-              "src/main/resources/edu/wpi/fishfolk/csv",
-              "src/main/resources/edu/wpi/fishfolk/csv",
-              "src/main/resources/edu/wpi/fishfolk/csv");
-          dbConnection.edgeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv");
+          dirChooser.setTitle("Select Export Directory");
+          String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+          dbConnection.nodeTable.exportCSV(exportPath, exportPath, exportPath);
+          dbConnection.edgeTable.exportCSV(exportPath);
+          fileChooser.setInitialDirectory(new File(exportPath));
         });
 
     dataEdits = new ArrayList<>();
     edgeEdits = new ArrayList<>();
+
+    fileChooser = new FileChooser();
+    dirChooser = new DirectoryChooser();
   }
 
   public void handleEditCommit_X(TableColumn.CellEditEvent<ObservableNode, String> t) {
@@ -318,7 +337,6 @@ public class MapEditorController extends AbsController {
           break;
 
         case REMOVE:
-            
           table.getItems().get(id2row.get(edit.node1)).removeAdjNode(edit.node2);
 
           table.getItems().get(id2row.get(edit.node2)).removeAdjNode(edit.node1);

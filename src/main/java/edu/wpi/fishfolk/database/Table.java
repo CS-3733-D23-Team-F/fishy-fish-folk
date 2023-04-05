@@ -614,7 +614,9 @@ public class Table implements ITable {
             + tableName
             + "\".");
 
-    try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
+    try (BufferedReader br =
+        new BufferedReader(
+            new InputStreamReader(getClass().getResourceAsStream(filepath + filename)))) {
 
       Statement statement = dbConnection.createStatement();
       statement.executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
@@ -670,7 +672,7 @@ public class Table implements ITable {
             + "\".");
 
     try {
-      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filepath + filename)));
+      PrintStream out = new PrintStream(new FileOutputStream(filepath + filename));
       String grabAll = "SELECT * FROM " + dbConnection.getSchema() + "." + tableName + ";";
       Statement statement = dbConnection.createStatement();
       statement.execute(grabAll);
