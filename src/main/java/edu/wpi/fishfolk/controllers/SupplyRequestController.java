@@ -24,6 +24,9 @@ public class SupplyRequestController {
   @FXML MFXCheckbox check1, check2, check3, check4, check5, check6, check7;
   @FXML MFXTextField linkTextField, roomNumTextField, notesTextField;
 
+  @FXML MFXButton pathfindingNav;
+  @FXML MFXButton mapEditorNav;
+  @FXML AnchorPane menuWrap;
   @FXML MFXButton signageNav;
 
   @FXML MFXButton mealNav;
@@ -47,21 +50,25 @@ public class SupplyRequestController {
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
     sideBarClose.setVisible(false);
-
+    menuWrap.setVisible(false);
     sideBar.setOnMouseClicked(
         event -> {
+          menuWrap.setDisable(false);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
-          slide.setToX(0);
+
+          slide.setToX(400);
           slide.play();
 
           slider.setTranslateX(-400);
-
+          menuWrap.setVisible(true);
           slide.setOnFinished(
               (ActionEvent e) -> {
                 sideBar.setVisible(false);
@@ -71,6 +78,8 @@ public class SupplyRequestController {
 
     sideBarClose.setOnMouseClicked(
         event -> {
+          menuWrap.setVisible(false);
+          menuWrap.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);

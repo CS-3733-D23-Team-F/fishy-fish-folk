@@ -1,6 +1,7 @@
 .navButtons{
     -fx-background-color: #012D5A;
-    -fx-stroke: yellow;
+
+
 }
 
 .navButtons:hover{
@@ -9,5 +10,11 @@
 
 .sideNav:hover{
     -fx-background-color: #0e4675;
+    -fx-border-color: #F0BF4C;
+}
+
+.sideNav{
+    -fx-background-color: transparent;
+
 }
 
