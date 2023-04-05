@@ -42,7 +42,7 @@ public class Fapp extends Application {
     primaryStage.setScene(scene);
     primaryStage.show();
 
-    Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS);
+    Navigation.navigate(Screen.HOME);
   }
 
   @Override

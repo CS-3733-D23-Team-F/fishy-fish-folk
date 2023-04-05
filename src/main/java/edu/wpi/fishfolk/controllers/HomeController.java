@@ -48,7 +48,7 @@ public class HomeController {
     pathfindingButton.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     mapEditorButton.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     foodOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
-    // foodOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.));
+    supplyOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
 
     viewOrderButton.setOnMouseClicked(
         event -> {
