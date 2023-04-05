@@ -41,6 +41,7 @@ public class HomeController {
 
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
+  @FXML MFXButton homeButton;
 
   @FXML
   public void initialize() {
@@ -54,6 +55,7 @@ public class HomeController {
     supplyOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
     viewOrderButton.setOnMouseClicked(
         event -> {

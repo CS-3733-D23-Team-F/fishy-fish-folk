@@ -59,6 +59,7 @@ public class FoodOrderController extends AbsController {
   @FXML PopOver notiPop;
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
+  @FXML MFXButton homeButton;
   Text[] nameBoxes, priceBoxes, quantityBoxes;
 
   public FoodOrderController() {
@@ -92,6 +93,7 @@ public class FoodOrderController extends AbsController {
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);

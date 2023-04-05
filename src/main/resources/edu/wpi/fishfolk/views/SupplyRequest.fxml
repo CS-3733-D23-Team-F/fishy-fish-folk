@@ -23,7 +23,37 @@
          <children>
             <AnchorPane maxHeight="84.8" minHeight="84.8" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
                <children>
-                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96" AnchorPane.rightAnchor="100.0">
+                  <MFXButton fx:id="sideBar" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <graphic>
+                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/532-5328945_menu-bar-icon-white-clipart-png-download-menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="sideBarClose" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" style="-fx-background-color: #001d3a;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <graphic>
+                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/532-5328945_menu-bar-icon-white-clipart-png-download-menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="homeButton" depthLevel="LEVEL3" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" styleClass="navButtons" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
+                     <graphic>
+                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/home.png" />
+                           </image>
+                           <effect>
+                              <ColorAdjust brightness="1.0" />
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="100.0">
                      <font>
                         <Font name="Open Sans Bold" size="32.0" />
                      </font>
@@ -35,24 +65,6 @@
                         </DropShadow>
                      </effect>
                   </Text>
-                  <MFXButton fx:id="sideBar" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" style="-fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/532-5328945_menu-bar-icon-white-clipart-png-download-menu.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </MFXButton>
-                  <MFXButton fx:id="sideBarClose" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" style="-fx-background-color: #001d3a;">
-                     <graphic>
-                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/532-5328945_menu-bar-icon-white-clipart-png-download-menu.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </MFXButton>
                </children>
             </AnchorPane>
          </children>

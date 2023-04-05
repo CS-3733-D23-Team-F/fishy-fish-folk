@@ -43,6 +43,7 @@ public class ViewSupplyOrdersController extends AbsController {
   @FXML AnchorPane slider;
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
+  @FXML MFXButton homeButton;
 
   int currentOrderNumber;
   List<SupplyOrder> supplyOrders;
@@ -68,6 +69,7 @@ public class ViewSupplyOrdersController extends AbsController {
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
