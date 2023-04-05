@@ -118,10 +118,6 @@ public class MapEditorController extends AbsController {
     }
   }
 
-  public static void sort(ObservableList<ObservableNode> list) {
-    list.sort((o1, o2) -> (o1.getSortable()).compareTo(o2.getSortable()));
-  }
-
   private void handleEditCommit_Y(TableColumn.CellEditEvent<ObservableNode, String> t) {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
@@ -213,6 +209,10 @@ public class MapEditorController extends AbsController {
       submitEdits();
       System.out.println("Submitted.");
     }
+  }
+
+  public static void sort(ObservableList<ObservableNode> list) {
+    list.sort((o1, o2) -> (o1.getSortable()).compareTo(o2.getSortable()));
   }
 
   public ObservableList<ObservableNode> getNodes() {
