@@ -19,6 +19,8 @@ public class ObservableNode {
   @Getter @Setter public String shortName;
   @Getter @Setter public String date;
   @Getter public String adjacentNodes;
+
+  @Getter @Setter public Integer sortable;
   private HashSet<String> adjNodesSet;
 
   public ObservableNode() {}
@@ -34,6 +36,8 @@ public class ObservableNode {
     this.longName = node.longName;
     this.shortName = node.shortName;
     this.date = date;
+
+    this.sortable = Integer.valueOf(node.id);
 
     this.adjacentNodes = String.join(", ", adjacentNodes);
     adjNodesSet = new HashSet<>(adjacentNodes);

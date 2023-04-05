@@ -132,6 +132,10 @@ public class MapEditorController extends AbsController {
     }
   }
 
+  public static void sort(ObservableList<ObservableNode> list) {
+    list.sort((o1, o2) -> (o1.getSortable()).compareTo(o2.getSortable()));
+  }
+
   private void trackChanges() {
     System.out.println("submitted");
     ObservableList<ObservableNode> updatedNodes = getNodes();
@@ -165,8 +169,8 @@ public class MapEditorController extends AbsController {
           }
         }
       }
-      //      dbConnection.nodeTable.update(edit.id, edit.attr, edit.value);
     }
+    sort(updatedNodes);
     populateTable(updatedNodes);
   }
 
@@ -304,6 +308,8 @@ public class MapEditorController extends AbsController {
     for (ObservableNode obsNode : observableNodes) {
       obsNode.setAdjacentNodes();
     }
+
+    sort(observableNodes);
 
     return observableNodes;
   }
