@@ -85,9 +85,11 @@ public class SupplyOrder extends TableEntry {
     String string = "";
     if (supplies.isEmpty()) return "";
     else {
-      for (int i = 0; i < 6; i++) {
-        if (supplies.get(i).supplyName == "") string = string + "";
-        else string = string + supplies.get(i).supplyName + "-_-";
+      for (int i = 0; i < 7; i++) {
+        if (!(supplies.get(i).supplyName == "")) {
+          if (string.equals("")) string += supplies.get(i).supplyName;
+          else string += "-_-" + supplies.get(i).supplyName;
+        }
       }
       // string = string.substring(0, (string.length() - 3));
       return string;
