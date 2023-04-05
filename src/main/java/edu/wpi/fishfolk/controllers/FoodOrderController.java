@@ -57,6 +57,8 @@ public class FoodOrderController extends AbsController {
   @FXML Text timeText;
   @FXML ComboBox<String> roomSelector;
   @FXML PopOver notiPop;
+  @FXML MFXButton viewFood;
+  @FXML MFXButton viewSupply;
   Text[] nameBoxes, priceBoxes, quantityBoxes;
 
   public FoodOrderController() {
@@ -83,6 +85,8 @@ public class FoodOrderController extends AbsController {
     minusDay.setOnAction(event -> undelayDay());
     minusHour.setOnAction(event -> undelayHour());
 
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));

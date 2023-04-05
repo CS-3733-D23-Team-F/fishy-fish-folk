@@ -154,7 +154,7 @@
                            <children>
                               <AnchorPane VBox.vgrow="ALWAYS">
                                  <children>
-                                    <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" styleClass="sideNav" text="Meal Delivery" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Meal Delivery" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <font>
                                           <Font name="Open Sans Bold" size="25.0" />
                                        </font>
@@ -162,7 +162,7 @@
                                           <Insets left="40.0" />
                                        </padding>
                                     </MFXButton>
-                                    <MFXButton fx:id="signageNav" alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" styleClass="sideNav" text="Signage" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                                    <MFXButton fx:id="signageNav" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Signage" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
                                        <font>
                                           <Font name="Open Sans Bold" size="25.0" />
                                        </font>
@@ -170,7 +170,7 @@
                                           <Insets left="40.0" />
                                        </padding>
                                     </MFXButton>
-                                    <MFXButton fx:id="officeNav" alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" styleClass="sideNav" text="Office Supplies" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0">
+                                    <MFXButton fx:id="officeNav" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Office Supplies" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="140.0">
                                        <font>
                                           <Font name="Open Sans Bold" size="25.0" />
                                        </font>
@@ -178,7 +178,7 @@
                                           <Insets left="40.0" />
                                        </padding>
                                     </MFXButton>
-                                    <MFXButton fx:id="pathfindingNav" alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" styleClass="sideNav" text="Pathfinding" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="300.0">
+                                    <MFXButton fx:id="pathfindingNav" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Pathfinding" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="210.0">
                                        <font>
                                           <Font name="Open Sans Bold" size="25.0" />
                                        </font>
@@ -186,15 +186,31 @@
                                           <Insets left="40.0" />
                                        </padding>
                                     </MFXButton>
-                                    <MFXButton fx:id="mapEditorNav" alignment="BOTTOM_LEFT" layoutX="5.0" layoutY="400.0" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" styleClass="sideNav" text="Map Editor" textFill="WHITE">
+                                    <MFXButton fx:id="mapEditorNav" alignment="BOTTOM_LEFT" layoutX="5.0" layoutY="400.0" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Map Editor" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="280.0">
                                        <font>
-                                          <Font name="Open Sans Regular" size="25.0" />
+                                          <Font name="Open Sans Bold" size="25.0" />
                                        </font>
                                        <padding>
                                           <Insets left="40.0" />
                                        </padding>
                                     </MFXButton>
-                                    <MFXButton fx:id="exitButton" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" styleClass="sideNav" text="Exit Application" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <MFXButton fx:id="viewFood" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="View Food Order" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="350.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="viewSupply" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="View Supply Order" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="420.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="exitButton" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Exit Application" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Open Sans Bold" size="25.0" />
                                        </font>

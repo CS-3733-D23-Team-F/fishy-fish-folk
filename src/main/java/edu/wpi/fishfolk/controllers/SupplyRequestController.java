@@ -48,6 +48,8 @@ public class SupplyRequestController extends AbsController {
   @FXML MFXButton clearButton;
   @FXML MFXCheckbox check1, check2, check3, check4, check5, check6, check7;
   @FXML MFXTextField linkTextField, roomNumTextField, notesTextField;
+  @FXML MFXButton viewFood;
+  @FXML MFXButton viewSupply;
 
   public SupplyRequestController() {
     super();
@@ -70,6 +72,8 @@ public class SupplyRequestController extends AbsController {
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);

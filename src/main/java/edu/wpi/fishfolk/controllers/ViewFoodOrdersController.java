@@ -41,6 +41,8 @@ public class ViewFoodOrdersController extends AbsController {
 
   @FXML MFXButton sideBarClose;
   @FXML AnchorPane slider;
+  @FXML MFXButton viewFood;
+  @FXML MFXButton viewSupply;
 
   int currentOrderNumber;
   List<FoodOrder> foodOrders;
@@ -63,6 +65,8 @@ public class ViewFoodOrdersController extends AbsController {
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
