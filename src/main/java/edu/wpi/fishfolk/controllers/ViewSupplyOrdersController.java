@@ -117,11 +117,25 @@ public class ViewSupplyOrdersController extends AbsController {
         prevOrderButton.setDisable(true);
       }
     } else {
-      if (supplyOrders.size() == 0) {
+      if (supplyOrders.size() == 0 || supplyOrders.size() == 1) {
         nextOrderButton.setDisable(true);
       }
     }
     updateDisplay();
+  }
+
+  String addLineBreaks(String input) {
+    if (input.equals("")) return "";
+    String[] words = input.split(" ");
+    String output = words[0];
+    for (int i = 1; i < words.length; i++) {
+      if (words[i].length() + (output.length() - output.lastIndexOf('\n')) > 22) {
+        output += "\n" + words[i];
+      } else {
+        output += " " + words[i];
+      }
+    }
+    return output;
   }
 
   private void updateDisplay() {
@@ -130,7 +144,8 @@ public class ViewSupplyOrdersController extends AbsController {
       linkText.setText(supplyOrders.get(currentOrderNumber).link);
       String itemsTextContent =
           supplyOrders.get(currentOrderNumber).listItemsToString().replace("-_-", "\n");
-      itemsTextContent += "\n" + supplyOrders.get(currentOrderNumber).notes;
+      itemsTextContent +=
+          "\n\nNotes:\n" + addLineBreaks(supplyOrders.get(currentOrderNumber).notes);
       itemsText.setText(itemsTextContent);
       int numLines = itemsTextContent.split("\n").length + 1;
       itemsTextContainer.setPrefHeight(64 * numLines);

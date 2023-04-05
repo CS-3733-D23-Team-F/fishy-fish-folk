@@ -117,7 +117,7 @@ public class ViewFoodOrdersController extends AbsController {
         prevOrderButton.setDisable(true);
       }
     } else {
-      if (foodOrders.size() == 0) {
+      if (foodOrders.size() == 0 || foodOrders.size() == 1) {
         nextOrderButton.setDisable(true);
       }
     }

@@ -85,7 +85,7 @@ public class SupplyOrder extends TableEntry {
     String string = "";
     if (supplies.isEmpty()) return "";
     else {
-      for (int i = 0; i < 7; i++) {
+      for (int i = 0; i < supplies.size(); i++) {
         if (!(supplies.get(i).supplyName == "")) {
           if (string.equals("")) string += supplies.get(i).supplyName;
           else string += "-_-" + supplies.get(i).supplyName;
@@ -102,16 +102,14 @@ public class SupplyOrder extends TableEntry {
     LinkedList<SupplyItem> supplyList = new LinkedList<SupplyItem>();
     String[] StringToList = listToString.split("-_-");
     for (int i = 0; i < StringToList.length; i++) {
-      if (StringToList[i] == null) break;
-      else {
-        if (StringToList[i] == "Pencil") supplyList.add(new SupplyItem("Pencil", 1.99F));
-        if (StringToList[i] == "Pen") supplyList.add(new SupplyItem("Pen", 1.99F));
-        if (StringToList[i] == "Eraser") supplyList.add(new SupplyItem("Eraser", 1.99F));
-        if (StringToList[i] == "Marker") supplyList.add(new SupplyItem("Marker", 1.99F));
-        if (StringToList[i] == "Notepad") supplyList.add(new SupplyItem("Notepad", 1.99F));
-        if (StringToList[i] == "Clipboard") supplyList.add(new SupplyItem("Clipboard", 1.99F));
-        if (StringToList[i] == "Apple") supplyList.add(new SupplyItem("Apple", 1.99F));
-      }
+      if (StringToList[i].equals("Pencil")) supplyList.add(new SupplyItem("Pencil", 1.99F));
+      else if (StringToList[i].equals("Pen")) supplyList.add(new SupplyItem("Pen", 1.99F));
+      else if (StringToList[i].equals("Eraser")) supplyList.add(new SupplyItem("Eraser", 1.99F));
+      else if (StringToList[i].equals("Marker")) supplyList.add(new SupplyItem("Marker", 1.99F));
+      else if (StringToList[i].equals("Notepad")) supplyList.add(new SupplyItem("Notepad", 1.99F));
+      else if (StringToList[i].equals("Clipboard"))
+        supplyList.add(new SupplyItem("Clipboard", 1.99F));
+      else if (StringToList[i].equals("Apple")) supplyList.add(new SupplyItem("Apple", 1.99F));
     }
     return supplyList;
   }
@@ -120,12 +118,22 @@ public class SupplyOrder extends TableEntry {
   // @Override
   public boolean construct(ArrayList<String> data) {
     SupplyOrder currentSupplyOrder = new SupplyOrder();
-    currentSupplyOrder.formID = data.get(0);
-    currentSupplyOrder.supplies = stringToListItem(data.get(1));
-    currentSupplyOrder.link = data.get(2);
-    currentSupplyOrder.roomNum = data.get(3);
-    currentSupplyOrder.notes = data.get(4);
-    currentSupplyOrder.assignee = data.get(5);
+    formID = data.get(0);
+    supplies = stringToListItem(data.get(1));
+    link = data.get(2);
+    roomNum = data.get(3);
+    notes = data.get(4);
+    String status = data.get(5);
+    if (status.equals("Filled")) {
+      formStatus = FormStatus.filled;
+    } else if (status.equals("Cancelled")) {
+      formStatus = FormStatus.cancelled;
+    } else if (status.equals("Submitted")) {
+      formStatus = FormStatus.submitted;
+    } else if (status.equals("NotSubmitted")) {
+      formStatus = FormStatus.notSubmitted;
+    } else return false;
+    assignee = data.get(6);
     return true;
   }
 
