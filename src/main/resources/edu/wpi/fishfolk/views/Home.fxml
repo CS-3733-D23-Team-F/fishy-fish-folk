@@ -57,133 +57,150 @@
       </HBox>
       <StackPane minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER" minWidth="120.0" StackPane.alignment="CENTER_RIGHT" />
+            <ImageView fitHeight="635.0" fitWidth="1280.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+               <image>
+                  <Image url="@../images/hospitalImg.png" />
+               </image>
+               <viewport>
+                  <Rectangle2D height="1250.0" minX="250.0" minY="700.0" width="2500.0" />
+               </viewport>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+            </ImageView>
+            <HBox alignment="CENTER" minWidth="120.0" StackPane.alignment="CENTER" />
             <VBox maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0">
                <children>
-                  <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" style="-fx-background-color: F4F4F4;" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER" VBox.vgrow="ALWAYS" />
+                  <StackPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0">
                      <children>
-                        <MFXButton fx:id="signageButton" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Signage" textFill="WHITE" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
-                           <font>
-                              <Font name="Open Sans Bold" size="31.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <padding>
-                              <Insets left="60.0" top="45.0" />
-                           </padding>
-                           <graphic>
-                              <ImageView cache="true" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/pathfinding.png" />
-                                 </image>
-                                 <viewport>
-                                    <Rectangle2D height="1130.0" width="1200.0" />
-                                 </viewport>
-                                 <effect>
-                                    <ColorAdjust brightness="-0.35" contrast="1.0" hue="-0.51" saturation="1.0" />
-                                 </effect>
-                              </ImageView>
-                           </graphic>
-                        </MFXButton>
-                        <MFXButton fx:id="mapEditorButton" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Map Editior" textFill="WHITE" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="390.0" AnchorPane.topAnchor="50.0">
-                           <font>
-                              <Font name="Open Sans Bold" size="31.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <padding>
-                              <Insets left="60.0" top="45.0" />
-                           </padding>
-                           <graphic>
-                              <ImageView cache="true" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/mapEditor.png" />
-                                 </image>
-                                 <viewport>
-                                    <Rectangle2D height="550.0" width="600.0" />
-                                 </viewport>
-                                 <effect>
-                                    <ColorAdjust brightness="0.22" contrast="1.0" hue="-0.77" saturation="1.0" />
-                                 </effect>
-                              </ImageView>
-                           </graphic>
-                        </MFXButton>
-                        <MFXButton fx:id="mealButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31; -fx-background-image: url(&quot;images/food.png&quot;);" styleClass="navButtons" text="Meal Delivery" textFill="WHITE" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
-                           <font>
-                              <Font name="Open Sans Bold" size="31.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <graphic>
-                              <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/food.png" />
-                                 </image>
-                                 <viewport>
-                                    <Rectangle2D height="330.0" width="330.0" />
-                                 </viewport>
-                                 <effect>
-                                    <ColorAdjust brightness="0.12" contrast="0.45" hue="-0.52" saturation="-0.45" />
-                                 </effect>
-                              </ImageView>
-                           </graphic>
-                           <padding>
-                              <Insets left="35.0" />
-                           </padding>
-                        </MFXButton>
-                        <MFXButton fx:id="officeButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="Office Supplies" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="150.0">
-                           <font>
-                              <Font name="Open Sans Bold" size="31.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <padding>
-                              <Insets left="25.0" />
-                           </padding>
-                           <graphic>
-                              <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/delivery.png" />
-                                 </image>
-                                 <effect>
-                                    <ColorAdjust brightness="0.29" contrast="0.35" hue="-0.59" saturation="1.0" />
-                                 </effect>
-                                 <viewport>
-                                    <Rectangle2D />
-                                 </viewport>
-                              </ImageView>
-                           </graphic>
-                        </MFXButton>
-                        <MFXButton fx:id="pathfindingButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="Pathfinding" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="150.0">
-                           <font>
-                              <Font name="Open Sans Bold" size="31.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <padding>
-                              <Insets left="40.0" />
-                           </padding>
-                           <graphic>
-                              <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/wayfinding.png" />
-                                 </image>
-                                 <effect>
-                                    <ColorAdjust brightness="0.62" contrast="1.0" hue="-0.84" saturation="-0.15" />
-                                 </effect>
-                                 <viewport>
-                                    <Rectangle2D />
-                                 </viewport>
-                              </ImageView>
-                           </graphic>
-                        </MFXButton>
+                        <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" style="-fx-background-color: transparent; -fx-opacity: 1;">
+                           <children>
+                              <MFXButton fx:id="signageButton" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31; -fx-opacity: 1;" styleClass="navButtons" text="Signage" textFill="WHITE" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="31.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets left="60.0" top="45.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView cache="true" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/pathfinding.png" />
+                                       </image>
+                                       <viewport>
+                                          <Rectangle2D height="1130.0" width="1200.0" />
+                                       </viewport>
+                                       <effect>
+                                          <ColorAdjust brightness="-0.35" contrast="1.0" hue="-0.51" saturation="1.0" />
+                                       </effect>
+                                    </ImageView>
+                                 </graphic>
+                              </MFXButton>
+                              <MFXButton fx:id="mapEditorButton" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Map Editior" textFill="WHITE" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="390.0" AnchorPane.topAnchor="50.0">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="31.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets left="60.0" top="45.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView cache="true" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/mapEditor.png" />
+                                       </image>
+                                       <viewport>
+                                          <Rectangle2D height="550.0" width="600.0" />
+                                       </viewport>
+                                       <effect>
+                                          <ColorAdjust brightness="0.22" contrast="1.0" hue="-0.77" saturation="1.0" />
+                                       </effect>
+                                    </ImageView>
+                                 </graphic>
+                              </MFXButton>
+                              <MFXButton fx:id="mealButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31; -fx-background-image: url(&quot;images/food.png&quot;);" styleClass="navButtons" text="Meal Delivery" textFill="WHITE" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="31.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <graphic>
+                                    <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/food.png" />
+                                       </image>
+                                       <viewport>
+                                          <Rectangle2D height="330.0" width="330.0" />
+                                       </viewport>
+                                       <effect>
+                                          <ColorAdjust brightness="0.12" contrast="0.45" hue="-0.52" saturation="-0.45" />
+                                       </effect>
+                                    </ImageView>
+                                 </graphic>
+                                 <padding>
+                                    <Insets left="35.0" />
+                                 </padding>
+                              </MFXButton>
+                              <MFXButton fx:id="officeButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="Office Supplies" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="150.0">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="31.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets left="25.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/delivery.png" />
+                                       </image>
+                                       <effect>
+                                          <ColorAdjust brightness="0.29" contrast="0.35" hue="-0.59" saturation="1.0" />
+                                       </effect>
+                                       <viewport>
+                                          <Rectangle2D />
+                                       </viewport>
+                                    </ImageView>
+                                 </graphic>
+                              </MFXButton>
+                              <MFXButton fx:id="pathfindingButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="Pathfinding" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="150.0">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="31.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets left="40.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/wayfinding.png" />
+                                       </image>
+                                       <effect>
+                                          <ColorAdjust brightness="0.62" contrast="1.0" hue="-0.84" saturation="-0.15" />
+                                       </effect>
+                                       <viewport>
+                                          <Rectangle2D />
+                                       </viewport>
+                                    </ImageView>
+                                 </graphic>
+                              </MFXButton>
+                           </children>
+                        </AnchorPane>
                      </children>
-                  </AnchorPane>
+                  </StackPane>
+                  <HBox alignment="CENTER" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             <AnchorPane fx:id="menuWrap" disable="true" minWidth="70.0">
