@@ -44,8 +44,15 @@ public class ObservableNode {
   }
 
   public boolean addAdjNode(String adjNode) {
+    boolean res = adjNodesSet.add(adjNode);
+    if (res) setAdjacentNodes();
+    return res;
+  }
 
-    return adjNodesSet.add(adjNode);
+  public boolean removeAdjNode(String adjNode) {
+    boolean res = adjNodesSet.remove(adjNode);
+    if (res) setAdjacentNodes();
+    return res;
   }
 
   public void setAdjacentNodes() {

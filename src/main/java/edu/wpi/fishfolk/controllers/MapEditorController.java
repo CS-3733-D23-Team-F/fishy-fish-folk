@@ -6,7 +6,6 @@ import edu.wpi.fishfolk.database.EdgeEditType;
 import edu.wpi.fishfolk.database.ObservableNode;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import edu.wpi.fishfolk.pathfinding.Edge;
 import edu.wpi.fishfolk.pathfinding.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.sql.SQLException;
@@ -22,9 +21,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 public class MapEditorController extends AbsController {
   @FXML private TableView<ObservableNode> table;
-
-  @FXML private TableView<ObservableNode> updatedTable;
-
   @FXML private TableColumn<ObservableNode, String> id;
   @FXML private TableColumn<ObservableNode, String> x;
   @FXML private TableColumn<ObservableNode, String> y;
@@ -41,8 +37,12 @@ public class MapEditorController extends AbsController {
 
   private ArrayList<DataEdit> allAttemptedEdits;
 
+  private HashMap<String, Integer> id2row;
+
   private ArrayList<DataEdit> dataEdits;
   private ArrayList<EdgeEdit> edgeEdits;
+
+  // set of nodes that are allowed as edge edits
   private HashSet<String> validNodes;
 
   @FXML
@@ -63,7 +63,9 @@ public class MapEditorController extends AbsController {
 
     submitButton.setOnMouseClicked(event -> trackChanges());
 
+    // init these two before populating the table
     validNodes = new HashSet<>();
+    id2row = new HashMap<>();
     // load data
     populateTable(getNodes());
 
@@ -100,6 +102,7 @@ public class MapEditorController extends AbsController {
         });
 
     allAttemptedEdits = new ArrayList<>();
+
     dataEdits = new ArrayList<>();
     edgeEdits = new ArrayList<>();
   }
@@ -296,6 +299,9 @@ public class MapEditorController extends AbsController {
 
       // save valid node ids to make verifying edge edits faster
       validNodes.add(nodes[i].id);
+
+      // record in id2row
+      id2row.put(nodes[i].id, i);
     }
 
     // each element is an arraylist <str1, str2>
@@ -342,12 +348,21 @@ public class MapEditorController extends AbsController {
 
       switch (edit.type) {
         case ADD:
-          dbConnection.edgeTable.insert(new Edge(edit.node1, edit.node2));
+          dbConnection.edgeTable.insert(new ArrayList<>(List.of(edit.node1, edit.node2)));
           // TODO: Update connected node in table
+
+          table.getItems().get(id2row.get(edit.node1)).addAdjNode(edit.node2);
+          System.out.println(table.getItems().get(id2row.get(edit.node1)).adjacentNodes);
+          table.getItems().get(id2row.get(edit.node2)).addAdjNode(edit.node1);
+          System.out.println(table.getItems().get(id2row.get(edit.node2)).adjacentNodes);
 
           break;
 
         case REMOVE:
+          table.getItems().get(id2row.get(edit.node1)).removeAdjNode(edit.node2);
+          System.out.println(table.getItems().get(id2row.get(edit.node1)).adjacentNodes);
+          table.getItems().get(id2row.get(edit.node2)).removeAdjNode(edit.node1);
+          System.out.println(table.getItems().get(id2row.get(edit.node2)).adjacentNodes);
 
           /*
           EXAMPLE QUERY:
