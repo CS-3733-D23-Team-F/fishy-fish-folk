@@ -128,7 +128,7 @@ public class ViewSupplyOrdersController extends AbsController {
     SupplyOrder currentOrder = supplyOrders.get(currentOrderNumber);
     currentOrder.assignee = assigneeText.getText();
     // updateDisplay();
-    supplyOrderTable.update(currentOrder.formID, "assignee", currentOrder.assignee);
+    supplyOrderTable.update("id", currentOrder.formID, "assignee", currentOrder.assignee);
   }
 
   private void prevOrder() {
@@ -164,7 +164,7 @@ public class ViewSupplyOrdersController extends AbsController {
   private void cancelOrder() {
     SupplyOrder currentOrder = supplyOrders.get(currentOrderNumber);
     currentOrder.formStatus = cancelled;
-    supplyOrderTable.update(currentOrder.formID, "status", "Cancelled");
+    supplyOrderTable.update("id", currentOrder.formID, "status", "Cancelled");
     cancelButton.setDisable(true);
     filledButton.setDisable(true);
     updateDisplay();
@@ -173,7 +173,7 @@ public class ViewSupplyOrdersController extends AbsController {
   private void fillOrder() {
     SupplyOrder currentOrder = supplyOrders.get(currentOrderNumber);
     currentOrder.formStatus = filled;
-    supplyOrderTable.update(currentOrder.formID, "status", "Filled");
+    supplyOrderTable.update("id", currentOrder.formID, "status", "Filled");
     cancelButton.setDisable(true);
     filledButton.setDisable(true);
     updateDisplay();

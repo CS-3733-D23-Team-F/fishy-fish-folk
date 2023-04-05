@@ -127,7 +127,7 @@ public class ViewFoodOrdersController extends AbsController {
     FoodOrder currentOrder = foodOrders.get(currentOrderNumber);
     currentOrder.assignee = assigneeText.getText();
     // updateDisplay();
-    foodOrderTable.update(currentOrder.formID, "assignee", currentOrder.assignee);
+    foodOrderTable.update("id", currentOrder.formID, "assignee", currentOrder.assignee);
   }
 
   private void prevOrder() {
@@ -164,7 +164,7 @@ public class ViewFoodOrdersController extends AbsController {
   private void cancelOrder() {
     FoodOrder currentOrder = foodOrders.get(currentOrderNumber);
     currentOrder.formStatus = cancelled;
-    foodOrderTable.update(currentOrder.formID, "status", "Cancelled");
+    foodOrderTable.update("id", currentOrder.formID, "status", "Cancelled");
     cancelButton.setDisable(true);
     filledButton.setDisable(true);
     updateDisplay();
@@ -173,7 +173,7 @@ public class ViewFoodOrdersController extends AbsController {
   private void fillOrder() {
     FoodOrder currentOrder = foodOrders.get(currentOrderNumber);
     currentOrder.formStatus = filled;
-    foodOrderTable.update(currentOrder.formID, "status", "Filled");
+    foodOrderTable.update("id", currentOrder.formID, "status", "Filled");
     cancelButton.setDisable(true);
     filledButton.setDisable(true);
     updateDisplay();
