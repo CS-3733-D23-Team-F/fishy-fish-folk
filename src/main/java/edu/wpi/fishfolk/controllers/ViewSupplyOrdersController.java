@@ -201,7 +201,7 @@ public class ViewSupplyOrdersController extends AbsController {
     String[] words = input.split(" ");
     String output = words[0];
     for (int i = 1; i < words.length; i++) {
-      if (words[i].length() + (output.length() - output.lastIndexOf('\n')) > 22) {
+      if (words[i].length() + (output.length() - output.lastIndexOf('\n')) > 18) {
         output += "\n" + words[i];
       } else {
         output += " " + words[i];
