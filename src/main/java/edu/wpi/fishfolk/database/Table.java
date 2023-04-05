@@ -399,6 +399,41 @@ public class Table implements ITable {
     }
   }
 
+  public boolean insert(ArrayList<String> row) {
+
+    try {
+
+      // insert entry if not present
+      String query = "INSERT INTO " + dbConnection.getSchema() + "." + tableName + " (";
+      for (String header : headers) {
+        query += header + ", ";
+      }
+      query = query.substring(0, query.length() - 2) + ") VALUES ('";
+
+      for (String s : row) {
+        query += s + "','";
+      }
+      query = query.substring(0, query.length() - 2) + ");";
+
+      Statement statement = dbConnection.createStatement();
+      statement.executeUpdate(query);
+
+      System.out.println(
+          "["
+              + this.getClass().getSimpleName()
+              + ".insert]: TableEntry \""
+              + row
+              + "\" successfully inserted into table \""
+              + tableName
+              + "\".");
+      return true;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+  }
+
   @Override
   public boolean update(TableEntry tableEntry) {
 
@@ -581,6 +616,9 @@ public class Table implements ITable {
 
     try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
 
+      Statement statement = dbConnection.createStatement();
+      statement.executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+
       String line = br.readLine(); // column headers on first line
 
       // insert row into db. each query starts the same way
@@ -595,7 +633,7 @@ public class Table implements ITable {
 
         String query = queryCommon + String.join("', '", Arrays.asList(line.split(","))) + "');";
 
-        Statement statement = dbConnection.createStatement();
+        statement = dbConnection.createStatement();
         statement.executeUpdate(query);
       }
 

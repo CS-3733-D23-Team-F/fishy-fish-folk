@@ -6,7 +6,6 @@ import edu.wpi.fishfolk.database.EdgeEditType;
 import edu.wpi.fishfolk.database.ObservableNode;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import edu.wpi.fishfolk.pathfinding.Edge;
 import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -24,9 +23,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 public class MapEditorController extends AbsController {
   @FXML private TableView<ObservableNode> table;
-
-  @FXML private TableView<ObservableNode> updatedTable;
-
   @FXML private TableColumn<ObservableNode, String> id;
   @FXML private TableColumn<ObservableNode, String> x;
   @FXML private TableColumn<ObservableNode, String> y;
@@ -38,9 +34,15 @@ public class MapEditorController extends AbsController {
   @FXML private TableColumn<ObservableNode, String> date;
   @FXML private TableColumn<ObservableNode, String> edges;
   @FXML MFXButton backButton;
+  @FXML MFXButton importCSVButton;
+  @FXML MFXButton exportCSVButton;
+
+  private HashMap<String, Integer> id2row;
 
   private ArrayList<DataEdit> dataEdits;
   private ArrayList<EdgeEdit> edgeEdits;
+
+  // set of nodes that are allowed as edge edits
   private HashSet<String> validNodes;
   private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{1,2}/\\d{1,2}/\\d{4}$");
 
@@ -61,6 +63,7 @@ public class MapEditorController extends AbsController {
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
     validNodes = new HashSet<>();
+    id2row = new HashMap<>();
     // load data
     populateTable(getNodes());
 
@@ -89,6 +92,28 @@ public class MapEditorController extends AbsController {
     backButton.setOnAction(
         event -> {
           Navigation.navigate(Screen.HOME);
+        });
+
+    importCSVButton.setOnAction(
+        event -> {
+          dbConnection.nodeTable.importCSV(
+              "src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv",
+              "src/main/resources/edu/wpi/fishfolk/csv/Location.csv",
+              "src/main/resources/edu/wpi/fishfolk/csv/Move.csv",
+              false);
+          dbConnection.edgeTable.importCSV(
+              "src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
+          table.getItems().clear();
+          initialize();
+        });
+
+    exportCSVButton.setOnAction(
+        event -> {
+          dbConnection.nodeTable.exportCSV(
+              "src/main/resources/edu/wpi/fishfolk/csv",
+              "src/main/resources/edu/wpi/fishfolk/csv",
+              "src/main/resources/edu/wpi/fishfolk/csv");
+          dbConnection.edgeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv");
         });
 
     dataEdits = new ArrayList<>();
@@ -354,6 +379,9 @@ public class MapEditorController extends AbsController {
 
       // save valid node ids to make verifying edge edits faster
       validNodes.add(nodes[i].id);
+
+      // record in id2row
+      id2row.put(nodes[i].id, i);
     }
 
     // each element is an arraylist <str1, str2>
@@ -402,11 +430,19 @@ public class MapEditorController extends AbsController {
 
       switch (edit.type) {
         case ADD:
-          dbConnection.edgeTable.insert(new Edge(edit.node1, edit.node2));
-          // TODO: Update connected node in table
+          dbConnection.edgeTable.insert(new ArrayList<>(List.of(edit.node1, edit.node2)));
+
+          table.getItems().get(id2row.get(edit.node1)).addAdjNode(edit.node2);
+
+          table.getItems().get(id2row.get(edit.node2)).addAdjNode(edit.node1);
+
           break;
 
         case REMOVE:
+            
+          table.getItems().get(id2row.get(edit.node1)).removeAdjNode(edit.node2);
+
+          table.getItems().get(id2row.get(edit.node2)).removeAdjNode(edit.node1);
 
           /*
           EXAMPLE QUERY:
@@ -451,13 +487,12 @@ public class MapEditorController extends AbsController {
             Statement statement = dbConnection.conn.createStatement();
             statement.executeUpdate(query);
 
-            // TODO: Update connected node in table
-
           } catch (SQLException e) {
             System.out.println(e.getMessage());
           }
           break;
       }
     }
+    table.refresh();
   }
 }
