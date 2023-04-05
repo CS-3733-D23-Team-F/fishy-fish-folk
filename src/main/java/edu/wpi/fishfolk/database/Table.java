@@ -615,8 +615,7 @@ public class Table implements ITable {
             + "\".");
 
     try (BufferedReader br =
-        new BufferedReader(
-            new InputStreamReader(getClass().getResourceAsStream(filepath + filename)))) {
+        new BufferedReader(new InputStreamReader(new FileInputStream(filename)))) {
 
       Statement statement = dbConnection.createStatement();
       statement.executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
