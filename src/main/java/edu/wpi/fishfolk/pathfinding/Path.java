@@ -5,13 +5,16 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import javafx.geometry.Point2D;
 import lombok.Getter;
+import lombok.Setter;
 
 public class Path {
 
-  @Getter private ArrayList<Integer> nodes;
-  @Getter private ArrayList<Point2D> points;
+  public ArrayList<Integer> nodes;
+  public ArrayList<Point2D> points;
 
-  int numNodes;
+  @Getter @Setter public String floor;
+
+  public int numNodes;
 
   public Path() {
     nodes = new ArrayList<>();
@@ -19,9 +22,9 @@ public class Path {
     numNodes = 0;
   }
 
-  public void addFirst(int n, Point2D p) {
+  public void addFirst(int nid, Point2D p) {
     // this runs in O(n) time so maybe try batching in groups of 10 or 20 node/point pairs
-    nodes.add(0, n);
+    nodes.add(0, nid);
     points.add(0, p);
     numNodes++;
   }
@@ -131,7 +134,7 @@ public class Path {
   }
 
   public String toString() {
-    return nodes.toString();
+    return floor + ": " + nodes.toString();
   }
 
   @Override
