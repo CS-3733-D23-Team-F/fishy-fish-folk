@@ -36,6 +36,8 @@ public class MapEditorController extends AbsController {
   @FXML private TableColumn<ObservableNode, String> date;
   @FXML private TableColumn<ObservableNode, String> edges;
   @FXML MFXButton backButton;
+  @FXML MFXButton importCSVButton;
+  @FXML MFXButton exportCSVButton;
 
   private ArrayList<DataEdit> dataEdits;
   private ArrayList<EdgeEdit> edgeEdits;
@@ -88,6 +90,28 @@ public class MapEditorController extends AbsController {
           Navigation.navigate(Screen.HOME);
         });
 
+    importCSVButton.setOnAction(
+        event -> {
+          dbConnection.nodeTable.importCSV(
+              "src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv",
+              "src/main/resources/edu/wpi/fishfolk/csv/Location.csv",
+              "src/main/resources/edu/wpi/fishfolk/csv/Move.csv",
+              false);
+          dbConnection.edgeTable.importCSV(
+              "src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
+          table.getItems().clear();
+          initialize();
+        });
+
+    exportCSVButton.setOnAction(
+        event -> {
+          dbConnection.nodeTable.exportCSV(
+              "src/main/resources/edu/wpi/fishfolk/csv",
+              "src/main/resources/edu/wpi/fishfolk/csv",
+              "src/main/resources/edu/wpi/fishfolk/csv");
+          dbConnection.edgeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv");
+        });
+
     dataEdits = new ArrayList<>();
     edgeEdits = new ArrayList<>();
   }
@@ -110,7 +134,8 @@ public class MapEditorController extends AbsController {
       DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
       dataEdits.add(edit);
       submitEdits();
-      System.out.println("[MapEditorController.handleEditCommit_X]: Successful update made to column X.");
+      System.out.println(
+          "[MapEditorController.handleEditCommit_X]: Successful update made to column X.");
     } else {
       t.getTableView().getItems().get(t.getTablePosition().getRow()).x =
           "**" + t.getOldValue() + "**";
@@ -339,3 +364,5 @@ public class MapEditorController extends AbsController {
     }
   }
 }
+
+// TODO: Import and export CSV buttons
