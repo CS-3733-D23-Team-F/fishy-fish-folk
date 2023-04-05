@@ -323,14 +323,6 @@
                                           <Insets left="40.0" />
                                        </padding>
                                     </MFXButton>
-                                    <MFXButton fx:id="mapEditorNav" alignment="BOTTOM_LEFT" maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" style="-fx-background-color: transparent;" styleClass="sideNav" text="Map Editor" textFill="WHITE">
-                                       <font>
-                                          <Font name="Open Sans Regular" size="25.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets left="40.0" />
-                                       </padding>
-                                    </MFXButton>
                                     <MFXButton fx:id="exitButton" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Exit Application" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <font>
                                           <Font name="Open Sans Bold" size="25.0" />
