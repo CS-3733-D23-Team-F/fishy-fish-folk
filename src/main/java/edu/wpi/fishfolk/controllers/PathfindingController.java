@@ -2,12 +2,16 @@ package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.pathfinding.Graph;
+import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.Path;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,19 +24,21 @@ public class PathfindingController extends AbsController {
   @FXML ChoiceBox<String> startSelector;
   @FXML ChoiceBox<String> endSelector;
   @FXML MFXButton clearBtn;
-  int start, end;
 
   @FXML AnchorPane mapAnchor;
   @FXML ImageView mapImg;
   @FXML Text directionInstructions;
   @FXML MFXButton backButton;
   @FXML MFXButton nextButton;
+
+  int start, end;
   Graph graph;
   ArrayList<Path> paths;
-  LinkedList<Line> segments;
 
-  ArrayList<String> mapList;
-  int currentDisplayed;
+  HashMap<String, Image> images;
+  ArrayList<String> floors;
+  int currentFloor;
+  HashMap<String, String> mapImgURLs;
 
   public PathfindingController() {
     super();
@@ -42,7 +48,7 @@ public class PathfindingController extends AbsController {
   @FXML
   private void initialize() {
     ArrayList nodeNames = dbConnection.nodeTable.getDestLongNames();
-    segments = new LinkedList<>();
+    // segments = new LinkedList<>();
     System.out.println(dbConnection.nodeTable.getTableName());
 
     startSelector.getItems().addAll(nodeNames);
@@ -50,7 +56,9 @@ public class PathfindingController extends AbsController {
 
     startSelector.setOnAction(
         event -> {
-          start = dbConnection.nodeTable.getNode("longname", startSelector.getValue()).nid;
+          Node startNode = dbConnection.nodeTable.getNode("longname", startSelector.getValue());
+          start = startNode.nid;
+          currentFloor = 0;
 
           System.out.println("start node: " + start);
         });
@@ -60,115 +68,99 @@ public class PathfindingController extends AbsController {
           System.out.println("end node: " + end);
         });
 
+    floors = new ArrayList<>(3);
+    currentFloor = 0;
+
     graph = new Graph(dbConnection.nodeTable, dbConnection.edgeTable);
+
+    images = new HashMap<>();
+
+    mapImgURLs = new HashMap<>();
+
+    mapImgURLs.put("L1", "map/00_thelowerlevel1.png");
+    mapImgURLs.put("L2", "map/00_thelowerlevel2.png");
+    mapImgURLs.put("GG", "map/00_thegroundfloor.png");
+    mapImgURLs.put("1", "map/01_thefirstfloor.png");
+    mapImgURLs.put("2", "map/02_thesecondfloor.png");
+    mapImgURLs.put("3", "map/03_thethirdfloor.png");
 
     submitBtn.setOnMouseClicked(
         event -> {
-          for (int i = 0; i < segments.size(); i++) {
-            mapAnchor.getChildren().remove(segments.get(i));
-          }
-          segments.clear();
           paths = graph.AStar(start, end);
-          mapList = new ArrayList<>();
-          for (int i = 0; i < paths.size(); i++) {
 
-            switch (paths.get(i).getFloor()) {
-              case "L1":
-                mapList.add("map/00_thelowerlevel1.png");
-                break;
-              case "L2":
-                mapList.add("map/00_thelowerlevel2.png");
-                break;
-              case "G":
-                mapList.add("map/00_thegroundfloor.png");
-                break;
-              case "1":
-                mapList.add("map/01_thefirstfloor.png");
-                break;
-              case "2":
-                mapList.add("map/02_thesecondfloor.png");
-                break;
-              case "3":
-                mapList.add("map/03_thethirdfloor.png");
-                break;
-              default:
-                break;
-            }
+          for (Path path : paths) {
+
+            images.put(
+                path.floor, new Image(Fapp.class.getResourceAsStream(mapImgURLs.get(path.floor))));
           }
-          System.out.println("mapList: " + mapList.size());
-          mapImg.setImage(new Image(Fapp.class.getResourceAsStream(mapList.get(0))));
-          currentDisplayed = 0;
-          drawPath(paths, currentDisplayed);
+          // create segments for each path and put into groups
+          drawPaths(paths);
+          currentFloor = 0;
+          displayFloor(currentFloor);
           // directionInstructions.setText("Instructions: \n\n" + path.getDirections());
         });
+
     nextButton.setOnMouseClicked(
         event -> {
-          if (currentDisplayed != (mapList.size() - 1)) {
-            for (int k = 0; k < mapList.size(); k++) {
-              if (currentDisplayed == k) {
-                for (int i = 0; i < segments.size(); i++) {
-                  mapAnchor.getChildren().remove(segments.get(i));
-                }
-                segments.clear();
-                currentDisplayed = currentDisplayed + 1;
-                mapImg.setImage(
-                    new Image(Fapp.class.getResourceAsStream(mapList.get(currentDisplayed))));
-                drawPath(paths, currentDisplayed);
-                break;
-              }
-            }
+          if (currentFloor < floors.size() - 1) {
+            currentFloor++;
           }
+          displayFloor(currentFloor);
         });
 
     backButton.setOnMouseClicked(
         event -> {
-          if (currentDisplayed != 0) {
-            for (int k = mapList.size() - 1; k >= 0; k--) {
-              if (currentDisplayed == k) {
-                for (int i = 0; i < segments.size(); i++) {
-                  mapAnchor.getChildren().remove(segments.get(i));
-                }
-                segments.clear();
-                currentDisplayed = currentDisplayed - 1;
-                mapImg.setImage(
-                    new Image(Fapp.class.getResourceAsStream(mapList.get(currentDisplayed))));
-                drawPath(paths, currentDisplayed);
-                break;
-              }
-            }
+          if (currentFloor >= 1) {
+            currentFloor--;
           }
+          displayFloor(currentFloor);
         });
 
     clearBtn.setOnMouseClicked(
         event -> {
-          for (int i = 0; i < segments.size(); i++) {
-            mapAnchor.getChildren().remove(segments.get(i));
+          // remove all groups from mapanchor
+          Iterator<javafx.scene.Node> itr = mapAnchor.getChildren().iterator();
+          itr.next(); // skip first child which is the imageview
+
+          while (itr.hasNext()) {
+            itr.next();
+            itr.remove();
           }
-          segments.clear();
+
+          // clear list of floors
+          floors.clear();
         });
   }
 
-  private void drawPath(ArrayList<Path> paths, int floor) {
-    ArrayList<Point2D> points = paths.get(floor).getPoints();
-    System.out.println("Points: " + points.size());
-    for (int j = 1; j < points.size(); j++) {
-      segments.add(line(points.get(j - 1), points.get(j)));
-      System.out.println(
-          "Points: "
-              + points.get(j)
-              + " segments: "
-              + segments.get(j - 1).getStartX()
-              + " "
-              + segments.get(j - 1).getStartY()
-              + " "
-              + segments.get(j - 1).getEndX()
-              + " "
-              + segments.get(j - 1).getEndY());
-    }
-    segments.remove(0);
-    mapAnchor.getChildren().addAll(segments);
-    // segments.add(new Line(0, 7, 1120, 787)); //diagonal from top left to bottom right
+  private void drawPaths(ArrayList<Path> paths) {
 
+    paths.forEach(
+        path -> {
+          LinkedList<Line> segments = new LinkedList<>();
+          for (int i = 1; i < path.numNodes; i++) {
+            segments.add(line(path.points.get(i - 1), path.points.get(i)));
+          }
+          Group g = new Group();
+          g.getChildren().addAll(segments);
+          g.setVisible(false);
+
+          floors.add(path.floor);
+
+          mapAnchor.getChildren().add(g);
+        });
+  }
+
+  private void displayFloor(int floor) {
+
+    mapImg.setImage(images.get(floors.get(floor)));
+
+    Iterator<javafx.scene.Node> itr = mapAnchor.getChildren().iterator();
+    itr.next(); // skip first child which is the imageview
+
+    while (itr.hasNext()) {
+      itr.next().setVisible(false);
+    }
+    mapAnchor.getChildren().get(floor + 1).setVisible(true);
   }
 
   private Line line(Point2D p1, Point2D p2) {

@@ -9,12 +9,12 @@ import lombok.Setter;
 
 public class Path {
 
-  @Getter private ArrayList<Integer> nodes;
-  @Getter private ArrayList<Point2D> points;
+  public ArrayList<Integer> nodes;
+  public ArrayList<Point2D> points;
 
-  @Getter @Setter private String floor;
+  @Getter @Setter public String floor;
 
-  int numNodes;
+  public int numNodes;
 
   public Path() {
     nodes = new ArrayList<>();

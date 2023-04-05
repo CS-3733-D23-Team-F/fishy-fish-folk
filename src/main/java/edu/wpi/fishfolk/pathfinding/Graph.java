@@ -346,7 +346,7 @@ public class Graph {
     paths.get(0).addFirst(start, nodes[0].point);
 
     System.out.println(paths.toString());
-    
+
     // path.addFirst(start, nodes[id2idx.get(start)].point);
 
     // System.out.println(path.pathLength());
