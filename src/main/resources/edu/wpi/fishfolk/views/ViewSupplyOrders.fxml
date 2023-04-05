@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.ViewSupplyOrdersController">
+    <children>
+        <HBox maxHeight="84.8" minHeight="84.8" prefHeight="84.8" VBox.vgrow="ALWAYS">
+            <children>
+                <AnchorPane maxHeight="84.8" minHeight="84.8" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96" AnchorPane.rightAnchor="100.0">
+                            <font>
+                                <Font name="Open Sans Bold" size="32.0" />
+                            </font>
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" height="4.64" offsetY="2.0" radius="0.6599999999999999" spread="0.13" width="0.0">
+                                    <color>
+                                        <Color red="0.6184210777282715" green="0.6126949191093445" blue="0.6126949191093445" />
+                                    </color>
+                                </DropShadow>
+                            </effect>
+                        </Text>
+                    </children>
+                </AnchorPane>
+            </children>
+        </HBox>
+        <HBox minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
+            <children>
+                <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
+                <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <ScrollPane hbarPolicy="NEVER" layoutY="136.0" prefHeight="448.0" prefWidth="520.0">
+                    <content>
+                      <AnchorPane fx:id="itemsTextContainer" minHeight="0.0" minWidth="0.0" prefHeight="64.0" prefWidth="520.0">
+                           <children>
+                              <Text fx:id="itemsText" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                                 <font>
+                                    <Font size="48.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+                  <Text layoutX="564.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deliver to:" wrappingWidth="327.3890380859375">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="deliveryRoomText" layoutX="620.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room 8675309" wrappingWidth="327.3890380859375">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="564.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="At Delivery Time:" wrappingWidth="327.3890380859375">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="deliveryTimeText" layoutX="620.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="88:88AM, Mon, 31/77" wrappingWidth="382.589111328125">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="564.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to:" wrappingWidth="327.3890380859375">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="564.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Status:" wrappingWidth="327.3890380859375">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="statusText" layoutX="620.0" layoutY="531.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submitted" wrappingWidth="327.3890380859375">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="viewingNumberText" layoutX="229.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Viewing order #311 of 117" textAlignment="CENTER" wrappingWidth="580.75">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="nextOrderButton" layoutX="802.0" layoutY="42.0" text="Next">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXButton fx:id="prevOrderButton" layoutX="99.0" layoutY="42.0" text="Previous">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </MFXButton>
+                  <TextField fx:id="assigneeText" layoutX="602.0" layoutY="381.0">
+                   <font>
+                       <Font size="30.0" />
+                   </font>
+                  </TextField>
+                  <MFXButton fx:id="cancelButton" layoutX="789.0" layoutY="467.0" text="Cancel">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXButton fx:id="removeButton" layoutX="873.0" layoutY="467.0" text="Remove">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXButton fx:id="filledButton" layoutX="789.0" layoutY="507.0" prefHeight="31.0" prefWidth="161.0" text="Mark as Filled">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+                </AnchorPane>
+                <HBox minWidth="120.0" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+    </children>
+</VBox>
