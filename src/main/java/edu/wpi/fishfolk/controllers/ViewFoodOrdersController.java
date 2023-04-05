@@ -203,7 +203,7 @@ public class ViewFoodOrdersController extends AbsController {
           foodOrders
               .get(currentOrderNumber)
               .deliveryTime
-              .format(DateTimeFormatter.ofPattern("h:ma, EE, MM/dd")));
+              .format(DateTimeFormatter.ofPattern("h:mma, EE, MM/dd")));
       String itemsTextContent = foodOrders.get(currentOrderNumber).toString();
       itemsTextContent =
           itemsTextContent.substring(0, itemsTextContent.indexOf("Total cost: ") - 1);
@@ -233,11 +233,9 @@ public class ViewFoodOrdersController extends AbsController {
       if (statusText.getText().equals("Submitted")) {
         cancelButton.setDisable(false);
         filledButton.setDisable(false);
-        System.out.println("This is fine");
       } else {
         cancelButton.setDisable(true);
         filledButton.setDisable(true);
-        System.out.println("Why am i here, just to suffer?");
       }
       removeButton.setDisable(false);
     } else {
