@@ -124,6 +124,30 @@
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
+                              <MFXButton fx:id="officeButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="Office Supplies" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="31.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets left="25.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/delivery.png" />
+                                       </image>
+                                       <effect>
+                                          <ColorAdjust brightness="0.29" contrast="0.35" hue="-0.59" saturation="1.0" />
+                                       </effect>
+                                       <viewport>
+                                          <Rectangle2D />
+                                       </viewport>
+                                    </ImageView>
+                                 </graphic>
+                              </MFXButton>
                               <MFXButton fx:id="mealButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31; -fx-background-image: url(&quot;images/food.png&quot;);" styleClass="navButtons" text="Meal Delivery" textFill="WHITE" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
                                  <font>
                                     <Font name="Open Sans Bold" size="31.0" />
@@ -148,31 +172,7 @@
                                     <Insets left="35.0" />
                                  </padding>
                               </MFXButton>
-                              <MFXButton fx:id="officeButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="Office Supplies" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="150.0">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="31.0" />
-                                 </font>
-                                 <opaqueInsets>
-                                    <Insets />
-                                 </opaqueInsets>
-                                 <padding>
-                                    <Insets left="25.0" />
-                                 </padding>
-                                 <graphic>
-                                    <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/delivery.png" />
-                                       </image>
-                                       <effect>
-                                          <ColorAdjust brightness="0.29" contrast="0.35" hue="-0.59" saturation="1.0" />
-                                       </effect>
-                                       <viewport>
-                                          <Rectangle2D />
-                                       </viewport>
-                                    </ImageView>
-                                 </graphic>
-                              </MFXButton>
-                              <MFXButton fx:id="pathfindingButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="Pathfinding" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="150.0">
+                              <MFXButton fx:id="pathfindingButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-background-radius: 31; -fx-border-radius: 40;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="Pathfinding" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="50.0">
                                  <font>
                                     <Font name="Open Sans Bold" size="31.0" />
                                  </font>
@@ -196,6 +196,62 @@
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
+                              <MFXButton fx:id="viewOrderButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="View Orders" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="390.0">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="31.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets left="45.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/order.png" />
+                                       </image>
+                                       <effect>
+                                          <ColorAdjust brightness="0.81" contrast="1.0" hue="-0.36" saturation="0.27" />
+                                       </effect>
+                                       <viewport>
+                                          <Rectangle2D />
+                                       </viewport>
+                                    </ImageView>
+                                 </graphic>
+                              </MFXButton>
+                              <AnchorPane fx:id="orderList" disable="true" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-background-color: #F1F1F1; -fx-border-radius: 40; -fx-background-radius: 31;" visible="false" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="390.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <MFXButton fx:id="foodOrder" buttonType="RAISED" minHeight="45.0" minWidth="240.0" style="-fx-background-color: #012d5a;" styleClass="orderBtn" text="Food Order" textFill="WHITE">
+                                             <font>
+                                                <Font name="Open Sans Bold" size="20.0" />
+                                             </font>
+                                          </MFXButton>
+                                          <MFXButton fx:id="supplyOrder" buttonType="RAISED" minHeight="45.0" minWidth="240.0" style="-fx-background-color: #012d5a;" styleClass="orderBtn" text="Supplies Order" textFill="WHITE">
+                                             <font>
+                                                <Font name="Open Sans Bold" size="20.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets top="30.0" />
+                                             </VBox.margin>
+                                          </MFXButton>
+                                          <MFXButton fx:id="orderBack" buttonType="RAISED" minHeight="45.0" minWidth="240.0" style="-fx-background-color: #F0BF4C;" styleClass="backOrderBtn" text="Back" textAlignment="CENTER" textFill="#012d5a">
+                                             <font>
+                                                <Font name="Open Sans Bold" size="20.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets top="30.0" />
+                                             </VBox.margin>
+                                          </MFXButton>
+                                       </children>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </AnchorPane>
                      </children>

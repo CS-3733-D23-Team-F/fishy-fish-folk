@@ -33,6 +33,11 @@ public class HomeController {
   @FXML MFXButton pathfindingButton;
   @FXML MFXButton mapEditorButton;
   @FXML AnchorPane menuWrap;
+  @FXML MFXButton viewOrderButton;
+  @FXML AnchorPane orderList;
+  @FXML MFXButton orderBack;
+  @FXML MFXButton supplyOrder;
+  @FXML MFXButton foodOrder;
 
   @FXML
   public void initialize() {
@@ -42,6 +47,23 @@ public class HomeController {
     officeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     pathfindingButton.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     mapEditorButton.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    foodOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    // foodOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.));
+
+    viewOrderButton.setOnMouseClicked(
+        event -> {
+          viewOrderButton.setVisible(false);
+          viewOrderButton.setDisable(true);
+          orderList.setVisible(true);
+          orderList.setDisable(false);
+        });
+    orderBack.setOnMouseClicked(
+        event -> {
+          viewOrderButton.setVisible(true);
+          viewOrderButton.setDisable(false);
+          orderList.setVisible(false);
+          orderList.setDisable(true);
+        });
 
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));

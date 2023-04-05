@@ -6,11 +6,13 @@
 
 .navButtons:hover{
     -fx-background-color: #0464b4;
+    -fx-stroke: yellow;
+    -fx-stroke-width: 5px;
 }
 
 .sideNav:hover{
     -fx-background-color: #0e4675;
-    -fx-border-color: #F0BF4C;
+
 }
 
 .sideNav{
@@ -18,3 +20,10 @@
 
 }
 
+.orderBtn:hover{
+    -fx-border-color: yellow;
+}
+
+.backOrderBtn:hover{
+    -fx-border-color: blue;
+}
