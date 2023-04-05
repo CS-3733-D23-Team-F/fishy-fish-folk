@@ -671,7 +671,7 @@ public class Table implements ITable {
             + "\".");
 
     try {
-      PrintStream out = new PrintStream(new FileOutputStream(filepath + filename));
+      PrintStream out = new PrintStream(new FileOutputStream(filepath + "\\" + filename));
       String grabAll = "SELECT * FROM " + dbConnection.getSchema() + "." + tableName + ";";
       Statement statement = dbConnection.createStatement();
       statement.execute(grabAll);
