@@ -616,6 +616,9 @@ public class Table implements ITable {
 
     try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
 
+      Statement statement = dbConnection.createStatement();
+      statement.executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+
       String line = br.readLine(); // column headers on first line
 
       // insert row into db. each query starts the same way
@@ -630,7 +633,7 @@ public class Table implements ITable {
 
         String query = queryCommon + String.join("', '", Arrays.asList(line.split(","))) + "');";
 
-        Statement statement = dbConnection.createStatement();
+        statement = dbConnection.createStatement();
         statement.executeUpdate(query);
       }
 

@@ -310,20 +310,18 @@ public class MapEditorController extends AbsController {
       switch (edit.type) {
         case ADD:
           dbConnection.edgeTable.insert(new ArrayList<>(List.of(edit.node1, edit.node2)));
-          // TODO: Update connected node in table
 
           table.getItems().get(id2row.get(edit.node1)).addAdjNode(edit.node2);
-          System.out.println(table.getItems().get(id2row.get(edit.node1)).adjacentNodes);
+
           table.getItems().get(id2row.get(edit.node2)).addAdjNode(edit.node1);
-          System.out.println(table.getItems().get(id2row.get(edit.node2)).adjacentNodes);
 
           break;
 
         case REMOVE:
+            
           table.getItems().get(id2row.get(edit.node1)).removeAdjNode(edit.node2);
-          System.out.println(table.getItems().get(id2row.get(edit.node1)).adjacentNodes);
+
           table.getItems().get(id2row.get(edit.node2)).removeAdjNode(edit.node1);
-          System.out.println(table.getItems().get(id2row.get(edit.node2)).adjacentNodes);
 
           /*
           EXAMPLE QUERY:
@@ -368,15 +366,12 @@ public class MapEditorController extends AbsController {
             Statement statement = dbConnection.conn.createStatement();
             statement.executeUpdate(query);
 
-            // TODO: Update connected node in table
-
           } catch (SQLException e) {
             System.out.println(e.getMessage());
           }
           break;
       }
     }
+    table.refresh();
   }
 }
-
-// TODO: Import and export CSV buttons
