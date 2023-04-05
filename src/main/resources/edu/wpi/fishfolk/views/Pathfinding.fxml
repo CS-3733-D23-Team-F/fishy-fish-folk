@@ -76,12 +76,15 @@
                               </ChoiceBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <MFXButton fx:id="submitBtn" maxHeight="40.0" maxWidth="80.0" minHeight="40.0" minWidth="80.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
+                                    <MFXButton fx:id="clearBtn" maxHeight="40.0" maxWidth="80.0" minHeight="40.0" minWidth="80.0" style="-fx-background-color: #012D5A;" text="Clear" textFill="WHITE">
                                        <font>
                                           <Font name="Open Sans Bold" size="16.0" />
                                        </font>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
                                     </MFXButton>
-                                    <MFXButton fx:id="clearBtn" maxHeight="40.0" maxWidth="80.0" minHeight="40.0" minWidth="80.0" style="-fx-background-color: #012D5A;" text="Clear" textFill="WHITE">
+                                    <MFXButton fx:id="submitBtn" maxHeight="40.0" maxWidth="80.0" minHeight="40.0" minWidth="80.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
                                        <font>
                                           <Font name="Open Sans Bold" size="16.0" />
                                        </font>
@@ -128,7 +131,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </VBox>
-            <AnchorPane fx:id="mapAnchor" minHeight="680.0" minWidth="1000.0" HBox.hgrow="ALWAYS">
+            <AnchorPane fx:id="mapAnchor" maxHeight="794.0" maxWidth="1193.0" minHeight="794.0" minWidth="1193.0">
                <children>
                   <ImageView fx:id="mapImg" fitHeight="780.0" fitWidth="1120.0" pickOnBounds="true" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="7.0">
                      <image>

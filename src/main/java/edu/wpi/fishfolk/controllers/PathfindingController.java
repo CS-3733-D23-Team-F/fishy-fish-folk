@@ -12,8 +12,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
@@ -33,7 +31,8 @@ public class PathfindingController extends AbsController {
   ArrayList<Path> paths;
   LinkedList<Line> segments;
 
-  ArrayList<Image> displayMaps;
+  ArrayList<String> mapList;
+  int currentDisplayed;
 
   public PathfindingController() {
     super();
@@ -44,7 +43,6 @@ public class PathfindingController extends AbsController {
   private void initialize() {
     ArrayList nodeNames = dbConnection.nodeTable.getDestLongNames();
     segments = new LinkedList<>();
-    displayMaps = new ArrayList<>();
     System.out.println(dbConnection.nodeTable.getTableName());
 
     startSelector.getItems().addAll(nodeNames);
@@ -64,63 +62,84 @@ public class PathfindingController extends AbsController {
 
     graph = new Graph(dbConnection.nodeTable, dbConnection.edgeTable);
 
-    submitBtn.setOnAction(
+    submitBtn.setOnMouseClicked(
         event -> {
           for (int i = 0; i < segments.size(); i++) {
             mapAnchor.getChildren().remove(segments.get(i));
           }
           segments.clear();
           paths = graph.AStar(start, end);
-          System.out.println("paths length: " + paths.size() + " floor" + paths.get(0).getFloor());
-
-          Image image;
+          mapList = new ArrayList<>();
           for (int i = 0; i < paths.size(); i++) {
+
             switch (paths.get(i).getFloor()) {
               case "L1":
-                image = new Image(Fapp.class.getResourceAsStream("map/00_thelowerlevel1.png"));
-                displayMaps.add(image);
+                mapList.add("map/00_thelowerlevel1.png");
                 break;
               case "L2":
-                image = new Image(Fapp.class.getResourceAsStream("map/00_thelowerlevel2.png"));
-                displayMaps.add(image);
+                mapList.add("map/00_thelowerlevel2.png");
                 break;
               case "G":
-                image = new Image(Fapp.class.getResourceAsStream("map/00_thegroundfloor.png"));
-                displayMaps.add(image);
+                mapList.add("map/00_thegroundfloor.png");
                 break;
               case "1":
-                image = new Image(Fapp.class.getResourceAsStream("map/01_thefirstfloor.png"));
-                displayMaps.add(image);
+                mapList.add("map/01_thefirstfloor.png");
                 break;
               case "2":
-                image = new Image(Fapp.class.getResourceAsStream("map/02_thesecondfloor.png"));
-                displayMaps.add(image);
+                mapList.add("map/02_thesecondfloor.png");
                 break;
               case "3":
-                image = new Image(Fapp.class.getResourceAsStream("map/03_thethirdfloor.png"));
-                displayMaps.add(image);
+                mapList.add("map/03_thethirdfloor.png");
                 break;
               default:
-                image = new Image(Fapp.class.getResourceAsStream("map/00_thelowerlevel1.png"));
-                displayMaps.add(image);
                 break;
             }
           }
-          mapImg.setImage(displayMaps.get(0));
-          drawPath(paths);
+          System.out.println("mapList: " + mapList.size());
+          mapImg.setImage(new Image(Fapp.class.getResourceAsStream(mapList.get(0))));
+          currentDisplayed = 0;
+          drawPath(paths, currentDisplayed);
           // directionInstructions.setText("Instructions: \n\n" + path.getDirections());
         });
     nextButton.setOnMouseClicked(
         event -> {
-          System.out.println("Image: " + mapImg.getImage());
+          if (currentDisplayed != (mapList.size() - 1)) {
+            for (int k = 0; k < mapList.size(); k++) {
+              if (currentDisplayed == k) {
+                for (int i = 0; i < segments.size(); i++) {
+                  mapAnchor.getChildren().remove(segments.get(i));
+                }
+                segments.clear();
+                currentDisplayed = currentDisplayed + 1;
+                mapImg.setImage(
+                    new Image(Fapp.class.getResourceAsStream(mapList.get(currentDisplayed))));
+                drawPath(paths, currentDisplayed);
+                break;
+              }
+            }
+          }
         });
 
     backButton.setOnMouseClicked(
         event -> {
-          if (displayMaps.get(1) != null) {}
+          if (currentDisplayed != 0) {
+            for (int k = mapList.size() - 1; k >= 0; k--) {
+              if (currentDisplayed == k) {
+                for (int i = 0; i < segments.size(); i++) {
+                  mapAnchor.getChildren().remove(segments.get(i));
+                }
+                segments.clear();
+                currentDisplayed = currentDisplayed - 1;
+                mapImg.setImage(
+                    new Image(Fapp.class.getResourceAsStream(mapList.get(currentDisplayed))));
+                drawPath(paths, currentDisplayed);
+                break;
+              }
+            }
+          }
         });
 
-    clearBtn.setOnAction(
+    clearBtn.setOnMouseClicked(
         event -> {
           for (int i = 0; i < segments.size(); i++) {
             mapAnchor.getChildren().remove(segments.get(i));
@@ -129,27 +148,25 @@ public class PathfindingController extends AbsController {
         });
   }
 
-  private void drawPath(ArrayList<Path> paths) {
-
-    Circle circle = new Circle();
-    for (int i = 0; i < paths.size(); i++) {
-      ArrayList<Point2D> points = paths.get(i).getPoints();
-
-      for (int j = 1; j < points.size(); j++) {
-        segments.add(line(points.get(j - 1), points.get(j)));
-        if (i + 1 == points.size()) {
-          circle.setRadius(9);
-          circle.setFill(Color.TRANSPARENT);
-          circle.setStroke(Color.RED);
-          Line temp = line(points.get(i - 1), points.get(i));
-          circle.setLayoutX(temp.getEndX());
-          circle.setLayoutY(temp.getEndY());
-        }
-      }
-      mapAnchor.getChildren().addAll(segments);
-      mapAnchor.getChildren().add(circle);
+  private void drawPath(ArrayList<Path> paths, int floor) {
+    ArrayList<Point2D> points = paths.get(floor).getPoints();
+    System.out.println("Points: " + points.size());
+    for (int j = 1; j < points.size(); j++) {
+      segments.add(line(points.get(j - 1), points.get(j)));
+      System.out.println(
+          "Points: "
+              + points.get(j)
+              + " segments: "
+              + segments.get(j - 1).getStartX()
+              + " "
+              + segments.get(j - 1).getStartY()
+              + " "
+              + segments.get(j - 1).getEndX()
+              + " "
+              + segments.get(j - 1).getEndY());
     }
-
+    segments.remove(0);
+    mapAnchor.getChildren().addAll(segments);
     // segments.add(new Line(0, 7, 1120, 787)); //diagonal from top left to bottom right
 
   }
@@ -158,14 +175,6 @@ public class PathfindingController extends AbsController {
     p1 = convert(p1);
     p2 = convert(p2);
     return new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-  }
-
-  public static void wait(int ms) {
-    try {
-      Thread.sleep(ms);
-    } catch (InterruptedException ex) {
-      Thread.currentThread().interrupt();
-    }
   }
 
   public Point2D convert(Point2D p) {
