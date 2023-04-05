@@ -29,7 +29,7 @@ public class SignageController {
 
   @FXML
   public void initialize() {
-
+    backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
