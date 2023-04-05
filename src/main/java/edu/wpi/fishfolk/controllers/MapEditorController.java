@@ -10,6 +10,7 @@ import edu.wpi.fishfolk.pathfinding.Edge;
 import edu.wpi.fishfolk.pathfinding.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -327,8 +328,7 @@ public class MapEditorController extends AbsController {
       switch (edit.type) {
         case ADD:
           dbConnection.edgeTable.insert(new Edge(edit.node1, edit.node2));
-
-          // TODO: Add to table on connected node
+          // TODO: Update connected node in table
 
           break;
 
@@ -344,7 +344,11 @@ public class MapEditorController extends AbsController {
 
           try {
             String query =
-                "WHERE ("
+                "DELETE FROM "
+                    + dbConnection.conn.getSchema()
+                    + "."
+                    + dbConnection.edgeTable.getTableName()
+                    + " WHERE ("
                     + dbConnection.conn.getSchema()
                     + "."
                     + dbConnection.edgeTable.getTableName()
@@ -370,9 +374,10 @@ public class MapEditorController extends AbsController {
                     + edit.node1
                     + "');";
 
-            dbConnection.edgeTable.executeQuery("DELETE", query);
+            Statement statement = dbConnection.conn.createStatement();
+            statement.executeUpdate(query);
 
-            // TODO: Remove from table on connected node
+            // TODO: Update connected node in table
 
           } catch (SQLException e) {
             System.out.println(e.getMessage());
