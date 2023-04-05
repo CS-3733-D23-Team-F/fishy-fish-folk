@@ -215,7 +215,7 @@ public class Table implements ITable {
   }
 
   @Override
-  public ArrayList<String> get(String attr, String value) {
+  public ArrayList<String> get(String pkey, String id) {
 
     try {
       String query =
@@ -224,9 +224,9 @@ public class Table implements ITable {
               + "."
               + tableName
               + " WHERE "
-              + attr
+              + pkey
               + " = '"
-              + value
+              + id
               + "';";
 
       // ensure result set is scrollable (can be read forwards and backwards) and can be updated
@@ -247,6 +247,40 @@ public class Table implements ITable {
       }
 
       return data;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
+  }
+
+  @Override
+  public String get(String pkey, String id, String attr) {
+
+    try {
+      String query =
+          "SELECT "
+              + attr
+              + " FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE "
+              + pkey
+              + " = '"
+              + id
+              + "';";
+
+      // ensure result set is scrollable (can be read forwards and backwards) and can be updated
+      Statement statement = dbConnection.createStatement();
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      if (!results.next()) {
+        return ""; // nothing found for this pkey/id
+      }
+
+      return results.getString(1);
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -330,7 +364,7 @@ public class Table implements ITable {
   public boolean insert(TableEntry tableEntry) {
 
     try {
-      if (exists(tableEntry.id)) {
+      if (exists("id", tableEntry.id)) {
         update(tableEntry);
       }
 
@@ -365,12 +399,47 @@ public class Table implements ITable {
     }
   }
 
+  public boolean insert(ArrayList<String> row) {
+
+    try {
+
+      // insert entry if not present
+      String query = "INSERT INTO " + dbConnection.getSchema() + "." + tableName + " (";
+      for (String header : headers) {
+        query += header + ", ";
+      }
+      query = query.substring(0, query.length() - 2) + ") VALUES ('";
+
+      for (String s : row) {
+        query += s + "','";
+      }
+      query = query.substring(0, query.length() - 2) + ");";
+
+      Statement statement = dbConnection.createStatement();
+      statement.executeUpdate(query);
+
+      System.out.println(
+          "["
+              + this.getClass().getSimpleName()
+              + ".insert]: TableEntry \""
+              + row
+              + "\" successfully inserted into table \""
+              + tableName
+              + "\".");
+      return true;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+  }
+
   @Override
   public boolean update(TableEntry tableEntry) {
 
     try {
 
-      if (!exists(tableEntry.id)) {
+      if (!exists("id", tableEntry.id)) {
         return insert(tableEntry);
       }
 
@@ -404,10 +473,10 @@ public class Table implements ITable {
   }
 
   @Override
-  public boolean update(String id, String attr, String value) {
+  public boolean update(String pkey, String id, String attr, String value) {
 
     try {
-      if (!exists(id)) {
+      if (!exists(pkey, id)) {
         return false;
       }
 
@@ -421,7 +490,9 @@ public class Table implements ITable {
               + attr
               + " = '"
               + value
-              + "' WHERE id = '"
+              + "' WHERE "
+              + pkey
+              + " = '"
               + id
               + "';";
 
@@ -470,7 +541,7 @@ public class Table implements ITable {
       System.out.println(
           "["
               + this.getClass().getSimpleName()
-              + ".update]: Successfully removed \""
+              + ".remove]: Successfully removed \""
               + entry
               + "\" from table \""
               + tableName
@@ -481,14 +552,16 @@ public class Table implements ITable {
   }
 
   @Override
-  public boolean exists(String id) {
+  public boolean exists(String pkey, String id) {
     try {
       String exists =
           "SELECT EXISTS (SELECT FROM "
               + dbConnection.getSchema()
               + "."
               + tableName
-              + " WHERE id = '"
+              + " WHERE "
+              + pkey
+              + " = '"
               + id
               + "');";
 
@@ -497,7 +570,7 @@ public class Table implements ITable {
       ResultSet results = statement.getResultSet();
       results.next();
 
-      boolean ans = results.getBoolean("exists");
+      boolean ans = results.getBoolean(1);
 
       System.out.println(
           "["
@@ -541,7 +614,11 @@ public class Table implements ITable {
             + tableName
             + "\".");
 
-    try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
+    try (BufferedReader br =
+        new BufferedReader(new InputStreamReader(new FileInputStream(filename)))) {
+
+      Statement statement = dbConnection.createStatement();
+      statement.executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
 
       String line = br.readLine(); // column headers on first line
 
@@ -557,7 +634,7 @@ public class Table implements ITable {
 
         String query = queryCommon + String.join("', '", Arrays.asList(line.split(","))) + "');";
 
-        Statement statement = dbConnection.createStatement();
+        statement = dbConnection.createStatement();
         statement.executeUpdate(query);
       }
 
@@ -594,7 +671,7 @@ public class Table implements ITable {
             + "\".");
 
     try {
-      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filepath + filename)));
+      PrintStream out = new PrintStream(new FileOutputStream(filepath + "\\" + filename));
       String grabAll = "SELECT * FROM " + dbConnection.getSchema() + "." + tableName + ";";
       Statement statement = dbConnection.createStatement();
       statement.execute(grabAll);
