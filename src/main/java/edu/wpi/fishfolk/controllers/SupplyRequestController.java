@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.database.Table;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.SupplyItem;
@@ -8,21 +9,20 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
-public class SupplyRequestController {
-  // SupplyOrder currentSupplyOrder;
-  SupplyOrder currentSupplyOrder = new SupplyOrder();
-  ArrayList<SupplyItem> supplyOptions;
-  @FXML MFXButton cancelButton;
-  @FXML MFXButton supplySubmitButton;
-  @FXML MFXButton clearButton;
-  @FXML MFXCheckbox check1, check2, check3, check4, check5, check6, check7;
-  @FXML MFXTextField linkTextField, roomNumTextField, notesTextField;
+public class SupplyRequestController extends AbsController {
+
+  private static String[] headersArray = {
+    "id", "items", "link", "roomNum", "notes", "status", "assignee"
+  };
+  public static ArrayList<String> headers = new ArrayList<String>(Arrays.asList(headersArray));
 
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
@@ -40,13 +40,31 @@ public class SupplyRequestController {
   @FXML MFXButton sideBarClose;
   @FXML AnchorPane slider;
 
+  Table supplyRequestTable;
+  SupplyOrder currentSupplyOrder = new SupplyOrder();
+  ArrayList<SupplyItem> supplyOptions;
+  @FXML MFXButton cancelButton;
+  @FXML MFXButton supplySubmitButton;
+  @FXML MFXButton clearButton;
+  @FXML MFXCheckbox check1, check2, check3, check4, check5, check6, check7;
+  @FXML MFXTextField linkTextField, roomNumTextField, notesTextField;
+
+  public SupplyRequestController() {
+    super();
+    supplyRequestTable = new Table(dbConnection.conn, "supplyrequest");
+    supplyRequestTable.init(false);
+    supplyRequestTable.addHeaders(
+        SupplyRequestController.headers,
+        new ArrayList<>(
+            List.of("String", "String", "String", "String", "String", "String", "String")));
+  }
+
   @FXML
   public void initialize() {
     loadOptions();
     cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     supplySubmitButton.setOnMouseClicked(event -> submit());
     clearButton.setOnMouseClicked(event -> clearAllFields());
-
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
@@ -173,6 +191,9 @@ public class SupplyRequestController {
     currentSupplyOrder.notes = notesTextField.getText();
     if (submittable()) {
       System.out.println(currentSupplyOrder.toString());
+      System.out.println(currentSupplyOrder.listItemsToString());
+      currentSupplyOrder.setSubmitted();
+      supplyRequestTable.insert(currentSupplyOrder);
       Navigation.navigate(Screen.HOME);
     }
   }
