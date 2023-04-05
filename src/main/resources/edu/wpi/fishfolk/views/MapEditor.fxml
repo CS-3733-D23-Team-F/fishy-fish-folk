@@ -29,6 +29,5 @@
         </MFXScrollPane>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="732.0" layoutX="-9.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" width="129.0" />
         <MFXButton fx:id="backButton" layoutX="20.0" layoutY="14.0" prefHeight="56.0" prefWidth="82.0" text="BACK" />
-      <MFXButton fx:id="submitButton" layoutX="20.0" layoutY="85.0" prefHeight="56.0" prefWidth="82.0" text="SUBMIT" />
     </children>
 </AnchorPane>

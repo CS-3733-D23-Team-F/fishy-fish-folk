@@ -37,10 +37,6 @@ public class MapEditorController extends AbsController {
   @FXML private TableColumn<ObservableNode, String> edges;
   @FXML MFXButton backButton;
 
-  @FXML MFXButton submitButton;
-
-  private ArrayList<DataEdit> allAttemptedEdits;
-
   private ArrayList<DataEdit> dataEdits;
   private ArrayList<EdgeEdit> edgeEdits;
   private HashSet<String> validNodes;
@@ -60,8 +56,6 @@ public class MapEditorController extends AbsController {
     edges.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("adjacentNodes"));
 
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
-
-    submitButton.setOnMouseClicked(event -> trackChanges());
 
     validNodes = new HashSet<>();
     // load data
@@ -94,12 +88,6 @@ public class MapEditorController extends AbsController {
           Navigation.navigate(Screen.HOME);
         });
 
-    submitButton.setOnAction(
-        event -> {
-          trackChanges();
-        });
-
-    allAttemptedEdits = new ArrayList<>();
     dataEdits = new ArrayList<>();
     edgeEdits = new ArrayList<>();
   }
@@ -108,7 +96,7 @@ public class MapEditorController extends AbsController {
     // t.getTableView().getItems().get(t.getTablePosition().getRow()) //node that was changed
     // t.getNewValue(); // new string value of cell
 
-    t.getTableView().getItems().get(t.getTablePosition().getRow()).x = t.getNewValue();
+    // t.getTableView().getItems().get(t.getTablePosition().getRow()).x = t.getNewValue();
 
     // Verify
     boolean verified = true;
@@ -120,70 +108,27 @@ public class MapEditorController extends AbsController {
       value = Double.parseDouble(t.getNewValue());
     } catch (NumberFormatException e) {
       verified = false;
-      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue(), false);
-      allAttemptedEdits.add(edit);
+      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
     }
 
     // removeAnyOldCommits(nodeid, header); // not strictly necessary
     if (verified) {
-      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue(), true);
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).x = t.getNewValue();
+      t.getTableView().refresh();
+      DataEdit edit = new DataEdit(node.id, "x", t.getNewValue());
       System.out.println("Verified edit to col X");
       dataEdits.add(edit);
-      allAttemptedEdits.add(edit);
       submitEdits();
       System.out.println("Submitted.");
+    } else {
+      t.getTableView().getItems().get(t.getTablePosition().getRow()).x =
+          "**" + t.getOldValue() + "**";
+      t.getTableView().refresh();
     }
   }
 
   public static void sort(ObservableList<ObservableNode> list) {
     list.sort((o1, o2) -> (o1.getSortable()).compareTo(o2.getSortable()));
-  }
-
-  private void trackChanges() {
-    System.out.println("submitted");
-    ObservableList<ObservableNode> updatedNodes = getNodes();
-    for (DataEdit edit : allAttemptedEdits) {
-      System.out.println("edit val:" + edit.value.toString());
-      for (ObservableNode node : updatedNodes) {
-        if (node.id.equals(edit.id)) {
-          System.out.println("I found my match!");
-          String marking;
-          if (edit.valid) {
-            marking = "*";
-          } else {
-            marking = "X";
-          }
-          switch (edit.attr) {
-            case "x":
-              node.x = edit.value + marking;
-              break;
-            case "y":
-              node.y = edit.value + marking;
-              break;
-            case "building":
-              node.building = edit.value + marking;
-              break;
-            case "type":
-              node.type = edit.value + marking;
-              break;
-            case "longName":
-              node.longName = edit.value + marking;
-              break;
-            case "shortName":
-              node.shortName = edit.value + marking;
-              break;
-            case "date":
-              node.date = edit.value + marking;
-              break;
-            case "adjacentNodes":
-              node.adjacentNodes = edit.value + marking;
-              break;
-          }
-        }
-      }
-    }
-    sort(updatedNodes);
-    populateTable(updatedNodes);
   }
 
   private void handleEditCommit_Y(TableColumn.CellEditEvent<ObservableNode, String> t) {
@@ -215,7 +160,7 @@ public class MapEditorController extends AbsController {
     ObservableNode node = t.getTableView().getItems().get(t.getTablePosition().getRow());
 
     // removeAnyOldCommits(nodeid, header); // not strictly necessary
-    DataEdit edit = new DataEdit(node.id, "longname", t.getNewValue(), true);
+    DataEdit edit = new DataEdit(node.id, "longname", t.getNewValue());
     System.out.println("Verified edit to col longname");
     dataEdits.add(edit);
     submitEdits();
@@ -336,6 +281,8 @@ public class MapEditorController extends AbsController {
    */
   public void submitEdits() {
 
+    // trackChanges();
+
     dataEdits.removeIf(edit -> dbConnection.nodeTable.update(edit.id, edit.attr, edit.value));
 
     for (EdgeEdit edit : edgeEdits) {
@@ -344,7 +291,6 @@ public class MapEditorController extends AbsController {
         case ADD:
           dbConnection.edgeTable.insert(new Edge(edit.node1, edit.node2));
           // TODO: Update connected node in table
-
           break;
 
         case REMOVE:
