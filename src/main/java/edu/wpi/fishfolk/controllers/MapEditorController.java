@@ -6,8 +6,11 @@ import edu.wpi.fishfolk.database.EdgeEditType;
 import edu.wpi.fishfolk.database.ObservableNode;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.pathfinding.Edge;
 import edu.wpi.fishfolk.pathfinding.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -150,22 +153,31 @@ public class MapEditorController extends AbsController {
           } else {
             marking = "X";
           }
-          if (edit.attr == "x") {
-            node.x = edit.value + marking;
-          } else if (edit.attr == "y") {
-            node.y = edit.value + marking;
-          } else if (edit.attr == "building") {
-            node.building = edit.value + marking;
-          } else if (edit.attr == "type") {
-            node.type = edit.value + marking;
-          } else if (edit.attr == "longName") {
-            node.longName = edit.value + marking;
-          } else if (edit.attr == "shortName") {
-            node.shortName = edit.value + marking;
-          } else if (edit.attr == "date") {
-            node.date = edit.value + marking;
-          } else if (edit.attr == "adjacentNodes") {
-            node.adjacentNodes = edit.value + marking;
+          switch (edit.attr) {
+            case "x":
+              node.x = edit.value + marking;
+              break;
+            case "y":
+              node.y = edit.value + marking;
+              break;
+            case "building":
+              node.building = edit.value + marking;
+              break;
+            case "type":
+              node.type = edit.value + marking;
+              break;
+            case "longName":
+              node.longName = edit.value + marking;
+              break;
+            case "shortName":
+              node.shortName = edit.value + marking;
+              break;
+            case "date":
+              node.date = edit.value + marking;
+              break;
+            case "adjacentNodes":
+              node.adjacentNodes = edit.value + marking;
+              break;
           }
         }
       }
@@ -324,18 +336,69 @@ public class MapEditorController extends AbsController {
    */
   public void submitEdits() {
 
-    for (DataEdit edit : dataEdits) {
-      dbConnection.nodeTable.update(edit.id, edit.attr, edit.value);
-    }
+    dataEdits.removeIf(edit -> dbConnection.nodeTable.update(edit.id, edit.attr, edit.value));
 
     for (EdgeEdit edit : edgeEdits) {
-      // TODO Christian apply edits to edit table - perhaps execute query?
-      // dbConnection.edgeTable.executeQuery
-    }
 
-    //    dataEdits.removeIf(
-    //        dataEdit ->
-    //            dbConnection.nodeTable.update(
-    //                dataEdit.getId(), dataEdit.getHeader(), dataEdit.getValue()));
+      switch (edit.type) {
+        case ADD:
+          dbConnection.edgeTable.insert(new Edge(edit.node1, edit.node2));
+          // TODO: Update connected node in table
+
+          break;
+
+        case REMOVE:
+
+          /*
+          EXAMPLE QUERY:
+
+          DELETE FROM proto2db.edge
+          WHERE (proto2db.edge.node1 = '<node1>' AND proto2db.edge.node2 = '<node2>')
+          OR (proto2db.edge.node1 = '<node2>' AND proto2db.edge.node2 = '<node1>');
+           */
+
+          try {
+            String query =
+                "DELETE FROM "
+                    + dbConnection.conn.getSchema()
+                    + "."
+                    + dbConnection.edgeTable.getTableName()
+                    + " WHERE ("
+                    + dbConnection.conn.getSchema()
+                    + "."
+                    + dbConnection.edgeTable.getTableName()
+                    + ".node1 = '"
+                    + edit.node1
+                    + "' AND "
+                    + dbConnection.conn.getSchema()
+                    + "."
+                    + dbConnection.edgeTable.getTableName()
+                    + ".node2 = '"
+                    + edit.node2
+                    + "') OR ("
+                    + dbConnection.conn.getSchema()
+                    + "."
+                    + dbConnection.edgeTable.getTableName()
+                    + ".node1 = '"
+                    + edit.node2
+                    + "' AND "
+                    + dbConnection.conn.getSchema()
+                    + "."
+                    + dbConnection.edgeTable.getTableName()
+                    + ".node2 = '"
+                    + edit.node1
+                    + "');";
+
+            Statement statement = dbConnection.conn.createStatement();
+            statement.executeUpdate(query);
+
+            // TODO: Update connected node in table
+
+          } catch (SQLException e) {
+            System.out.println(e.getMessage());
+          }
+          break;
+      }
+    }
   }
 }
