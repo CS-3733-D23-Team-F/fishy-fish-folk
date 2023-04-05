@@ -149,22 +149,31 @@ public class MapEditorController extends AbsController {
           } else {
             marking = "X";
           }
-          if (edit.attr == "x") {
-            node.x = edit.value + marking;
-          } else if (edit.attr == "y") {
-            node.y = edit.value + marking;
-          } else if (edit.attr == "building") {
-            node.building = edit.value + marking;
-          } else if (edit.attr == "type") {
-            node.type = edit.value + marking;
-          } else if (edit.attr == "longName") {
-            node.longName = edit.value + marking;
-          } else if (edit.attr == "shortName") {
-            node.shortName = edit.value + marking;
-          } else if (edit.attr == "date") {
-            node.date = edit.value + marking;
-          } else if (edit.attr == "adjacentNodes") {
-            node.adjacentNodes = edit.value + marking;
+          switch (edit.attr) {
+            case "x":
+              node.x = edit.value + marking;
+              break;
+            case "y":
+              node.y = edit.value + marking;
+              break;
+            case "building":
+              node.building = edit.value + marking;
+              break;
+            case "type":
+              node.type = edit.value + marking;
+              break;
+            case "longName":
+              node.longName = edit.value + marking;
+              break;
+            case "shortName":
+              node.shortName = edit.value + marking;
+              break;
+            case "date":
+              node.date = edit.value + marking;
+              break;
+            case "adjacentNodes":
+              node.adjacentNodes = edit.value + marking;
+              break;
           }
         }
       }
