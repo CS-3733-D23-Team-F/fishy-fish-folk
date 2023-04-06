@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -22,11 +20,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 public class PathfindingController extends AbsController {
 
-  @FXML MFXButton signageNav;
+  /*
+    @FXML MFXButton signageNav;
 
   @FXML MFXButton mealNav;
 
@@ -35,6 +33,8 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton mapEditorNav;
 
   @FXML MFXButton sideBar;
+
+   */
 
   @FXML MFXButton exitButton;
 
@@ -75,6 +75,7 @@ public class PathfindingController extends AbsController {
     // segments = new LinkedList<>();
     System.out.println(dbConnection.nodeTable.getTableName());
 
+    /*
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
@@ -124,6 +125,8 @@ public class PathfindingController extends AbsController {
                 sideBarClose.setVisible(false);
               });
         });
+
+     */
 
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     startSelector.getItems().addAll(nodeNames);
@@ -253,7 +256,7 @@ public class PathfindingController extends AbsController {
     Point2D rel = p.subtract(center1); // p relative to the center
 
     // strech x and y separately
-    double x = rel.getX() * 1120 / 4050;
+    double x = rel.getX() * 1120 / 4050 + 100; //TODO 100 is a magic offset number for proto2
     double y = rel.getY() * 780 / 3000 + 7;
 
     return new Point2D(x, y).add(center2);

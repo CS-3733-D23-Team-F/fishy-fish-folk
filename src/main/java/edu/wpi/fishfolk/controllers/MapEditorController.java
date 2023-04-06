@@ -374,7 +374,6 @@ public class MapEditorController extends AbsController {
       System.out.println(
           "[MapEditorController.handleEdit_edge]: Successfully updated edges column.");
       submitEdits();
-      System.out.println("Submitted.");
     }
   }
 
