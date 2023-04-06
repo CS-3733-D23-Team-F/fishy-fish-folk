@@ -112,7 +112,7 @@
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
-                              <MFXButton fx:id="mapEditorButton" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Map Editior" textFill="WHITE" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="390.0" AnchorPane.topAnchor="50.0">
+                              <MFXButton fx:id="mapEditorButton" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Map Editor" textFill="WHITE" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="390.0" AnchorPane.topAnchor="50.0">
                                  <font>
                                     <Font name="Open Sans Bold" size="31.0" />
                                  </font>
