@@ -18,8 +18,6 @@ public class Graph {
   HashMap<Integer, Integer> id2idx; // string id to index in nodes array and adjacency matrix
   private int lastIdx;
 
-  HashMap<String, String> elevatorFloors;
-
   @Setter NodeTable nodeTable;
   @Setter Table edgeTable;
 
@@ -30,8 +28,6 @@ public class Graph {
     adjMat = new double[size][size];
     nodes = new Node[size];
     id2idx = new HashMap<>(size * 4 / 3 + 1); // default load factor is 75% = 3/4
-
-    elevatorFloors = new HashMap<>(64); // high estimate
 
     lastIdx = 0;
 
@@ -102,17 +98,7 @@ public class Graph {
       return false;
     }
 
-    if (n.type == NodeType.ELEV) {
-      // Takes the elevator letter from name (Ex: "Elevator A" -> "A")
-      String elevatorLet = n.longName.substring(8, 10);
-
-      // Store floors seperated by commas with associated Elevator letter
-      if (elevatorFloors.containsKey(elevatorLet)) {
-        elevatorFloors.put(elevatorLet, elevatorFloors.get(elevatorLet) + "," + n.floor);
-      } else {
-        elevatorFloors.put(elevatorLet, "," + n.floor);
-      }
-    }
+    if (n.type == NodeType.ELEV) {}
 
     id2idx.put(n.nid, lastIdx);
     nodes[lastIdx] = n;
@@ -155,37 +141,6 @@ public class Graph {
     } else {
       return false;
     }
-  }
-
-  public Point2D nearestElevator(int node1, int node2) {
-
-    String node1Floor = nodes[id2idx.get(node1)].floor;
-    String node2Floor = nodes[id2idx.get(node2)].floor;
-    Point2D nodePoint = nodes[id2idx.get(node1)].point;
-    double minDist = -1;
-    int ID = 0;
-    String elvatorLet = "";
-
-    for (int other = 0; other > size; other++) {
-      if (nodes[other].type.equals(NodeType.ELEV)) {
-
-        elvatorLet = nodes[other].longName.substring(8, 10);
-
-        if (elevatorFloors
-                .get(elvatorLet)
-                .contains("," + node2Floor) // Elevator reaches floor of both nodes
-            && (nodes[other].floor.equals(node1Floor))) {
-
-          if ((minDist < 0)
-              || minDist
-                  > nodePoint.distance(nodes[other].point)) { // New minimum distance Elevator
-            minDist = nodePoint.distance(nodes[other].point);
-            ID = other;
-          }
-        }
-      }
-    }
-    return nodes[ID].point;
   }
 
   public Path bfs(int start, int end) {
@@ -260,9 +215,6 @@ public class Graph {
     String endFloor = nodes[id2idx.get(end)].floor;
     Point2D endPoint = nodes[id2idx.get(end)].point;
 
-    Point2D closeEleStart = nearestElevator(start, end);
-    Point2D closeEleEnd = nearestElevator(start, end);
-
     for (int node = 0; node < size; node++) {
 
       fromStart[node] = Integer.MIN_VALUE;
@@ -303,17 +255,15 @@ public class Graph {
 
         if (!visited[other] && fromStart[other] > -1) {
 
-          if (heuristic[other] < -1 && nodes[other].floor.equals(endFloor)) {
+          if (heuristic[other] < -501 && nodes[other].floor.equals(endFloor)) {
+            heuristic[other] = nodes[other].point.distance(endPoint) - 500;
+          } else if (heuristic[other] < -501) {
             heuristic[other] = nodes[other].point.distance(endPoint);
-          } else if (heuristic[other] < -1) {
-            heuristic[other] =
-                nodes[other].point.distance(closeEleStart)
-                    + nodes[other].point.distance(closeEleEnd);
           }
 
           double cost = fromStart[other] + heuristic[other];
 
-          if (cost >= 0 && cost < min) {
+          if (cost >= -501 && cost < min) {
             min = cost;
             current_node = other;
           }
