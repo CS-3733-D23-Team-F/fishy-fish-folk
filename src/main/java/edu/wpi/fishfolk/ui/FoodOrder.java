@@ -26,8 +26,6 @@ public class FoodOrder extends TableEntry {
     formID = "" + System.currentTimeMillis();
     formID = formID.substring(formID.length() - 10);
     formStatus = FormStatus.notSubmitted;
-    formStatus = FormStatus.notSubmitted;
-    this.formID = formID;
   }
 
   public void addItem(FoodItem toAdd) {
