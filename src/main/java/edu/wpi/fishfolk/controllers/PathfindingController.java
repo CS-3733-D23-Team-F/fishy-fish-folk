@@ -11,15 +11,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import javafx.animation.Interpolator;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import net.kurobako.gesturefx.GesturePane;
 
 public class PathfindingController extends AbsController {
 
@@ -46,7 +50,7 @@ public class PathfindingController extends AbsController {
   @FXML ChoiceBox<String> endSelector;
   @FXML MFXButton clearBtn;
 
-  @FXML AnchorPane mapAnchor;
+  // @FXML AnchorPane mapAnchor;
   @FXML ImageView mapImg;
   @FXML Text directionInstructions;
   @FXML MFXButton backButton;
@@ -55,6 +59,7 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
 
+  @FXML GesturePane pane;
   int start, end;
   Graph graph;
   ArrayList<Path> paths;
@@ -74,6 +79,19 @@ public class PathfindingController extends AbsController {
     ArrayList nodeNames = dbConnection.nodeTable.getDestLongNames();
     // segments = new LinkedList<>();
     System.out.println(dbConnection.nodeTable.getTableName());
+
+    pane.setOnMouseClicked(
+        e -> {
+          if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+            Point2D pivotOnTarget =
+                pane.targetPointAt(new Point2D(e.getX(), e.getY()))
+                    .orElse(pane.targetPointAtViewportCentre());
+            // increment of scale makes more sense exponentially instead of linearly
+            pane.animate(Duration.millis(200))
+                .interpolateWith(Interpolator.EASE_BOTH)
+                .zoomBy(pane.getCurrentScale(), pivotOnTarget);
+          }
+        });
 
     /*
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
@@ -172,6 +190,7 @@ public class PathfindingController extends AbsController {
                 path.floor, new Image(Fapp.class.getResourceAsStream(mapImgURLs.get(path.floor))));
           }
           // create segments for each path and put into groups
+          paths.remove(0);
           drawPaths(paths);
           currentFloor = 0;
           displayFloor(currentFloor);
@@ -194,20 +213,22 @@ public class PathfindingController extends AbsController {
           displayFloor(currentFloor);
         });
 
-    clearBtn.setOnMouseClicked(
-        event -> {
-          // remove all groups from mapanchor
-          Iterator<javafx.scene.Node> itr = mapAnchor.getChildren().iterator();
-          itr.next(); // skip first child which is the imageview
+    /*
+        clearBtn.setOnMouseClicked(
+           event -> {
+              // remove all groups from mapanchor
+              Iterator<javafx.scene.Node> itr = mapAnchor.getChildren().iterator();
+              itr.next(); // skip first child which is the imageview
 
-          while (itr.hasNext()) {
-            itr.next();
-            itr.remove();
-          }
+              while (itr.hasNext()) {
+                itr.next();
+                itr.remove();
+              }
 
-          // clear list of floors
-          floors.clear();
-        });
+              // clear list of floors
+              floors.clear();
+            });
+    */
   }
 
   private void drawPaths(ArrayList<Path> paths) {
@@ -220,25 +241,24 @@ public class PathfindingController extends AbsController {
           }
           Group g = new Group();
           g.getChildren().addAll(segments);
+          g.getChildren().add(pane);
           g.setVisible(false);
 
           floors.add(path.floor);
-
-          mapAnchor.getChildren().add(g);
         });
   }
 
   private void displayFloor(int floor) {
+     mapImg.setImage(images.get(floors.get(floor)));
 
-    mapImg.setImage(images.get(floors.get(floor)));
-
-    Iterator<javafx.scene.Node> itr = mapAnchor.getChildren().iterator();
+    Iterator<javafx.scene.Node> itr = pane.getChildrenUnmodifiable().iterator();
     itr.next(); // skip first child which is the imageview
 
     while (itr.hasNext()) {
       itr.next().setVisible(false);
     }
-    mapAnchor.getChildren().get(floor + 1).setVisible(true);
+
+     pane.getChildrenUnmodifiable().get(floor).setVisible(true);
   }
 
   private Line line(Point2D p1, Point2D p2) {
@@ -256,7 +276,7 @@ public class PathfindingController extends AbsController {
     Point2D rel = p.subtract(center1); // p relative to the center
 
     // strech x and y separately
-    double x = rel.getX() * 1120 / 4050 + 100; //TODO 100 is a magic offset number for proto2
+    double x = rel.getX() * 1120 / 4050 + 100; // TODO 100 is a magic offset number for proto2
     double y = rel.getY() * 780 / 3000 + 7;
 
     return new Point2D(x, y).add(center2);
