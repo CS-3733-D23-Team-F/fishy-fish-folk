@@ -15,6 +15,8 @@ public class Graph {
   int size;
   double[][] adjMat;
   Node[] nodes;
+
+  ArrayList<Integer> elevatorIDs;
   HashMap<Integer, Integer> id2idx; // string id to index in nodes array and adjacency matrix
   private int lastIdx;
 
@@ -28,6 +30,7 @@ public class Graph {
     adjMat = new double[size][size];
     nodes = new Node[size];
     id2idx = new HashMap<>(size * 4 / 3 + 1); // default load factor is 75% = 3/4
+    elevatorIDs = new ArrayList<Integer>();
 
     lastIdx = 0;
 
@@ -98,7 +101,9 @@ public class Graph {
       return false;
     }
 
-    if (n.type == NodeType.ELEV) {}
+    if (n.type.equals(NodeType.ELEV)) {
+      elevatorIDs.add(lastIdx);
+    }
 
     id2idx.put(n.nid, lastIdx);
     nodes[lastIdx] = n;
@@ -123,16 +128,43 @@ public class Graph {
 
     Integer idx1 = id2idx.get(n1);
     Integer idx2 = id2idx.get(n2);
+    int adjust = 0;
 
     if (idx1 != null && idx2 != null) {
+
+      // Adds edges between all nodes in a elevator on different floors
+      if (nodes[idx1].type.equals(NodeType.ELEV) && nodes[idx2].type.equals(NodeType.ELEV)) {
+        String eleLetter = nodes[idx1].longName.substring(8, 10); // Elevator letter identifier
+        for (int other = 0; other < elevatorIDs.size(); other++) {
+
+          if (nodes[elevatorIDs.get(other)]
+                  .longName
+                  .substring(8, 10)
+                  .equals(eleLetter) // letters match
+              && (adjMat[idx1][elevatorIDs.get(other)] == 0) // No edge currently
+              && !nodes[elevatorIDs.get(other)].floor.equals(nodes[idx1].floor)) { // Not itself
+
+            adjMat[idx1][elevatorIDs.get(other)] = 250;
+            adjMat[elevatorIDs.get(other)][idx1] = 250;
+            nodes[idx1].degree++;
+            nodes[elevatorIDs.get(other)].degree++;
+          }
+        }
+        return true;
+      }
+
+      //Add weights to stairs
+      if (nodes[idx1].type.equals(NodeType.STAI) && nodes[idx2].type.equals(NodeType.STAI)) {
+        adjust = 250;
+      }
 
       // System.out.println(edge.id);
 
       Point2D point1 = nodes[idx1].point;
       Point2D point2 = nodes[idx2].point;
 
-      adjMat[idx1][idx2] = point1.distance(point2);
-      adjMat[idx2][idx1] = point1.distance(point2);
+      adjMat[idx1][idx2] = point1.distance(point2) + adjust;
+      adjMat[idx2][idx1] = point1.distance(point2) + adjust;
       nodes[idx1].degree++;
       nodes[idx2].degree++;
 
