@@ -50,7 +50,7 @@ public class PathfindingController extends AbsController {
   @FXML ChoiceBox<String> endSelector;
   @FXML MFXButton clearBtn;
 
-  // @FXML AnchorPane mapAnchor;
+  @FXML Group pathGroup;
   @FXML ImageView mapImg;
   @FXML Text directionInstructions;
   @FXML MFXButton backButton;
@@ -213,22 +213,16 @@ public class PathfindingController extends AbsController {
           displayFloor(currentFloor);
         });
 
-    /*
+
         clearBtn.setOnMouseClicked(
            event -> {
-              // remove all groups from mapanchor
-              Iterator<javafx.scene.Node> itr = mapAnchor.getChildren().iterator();
-              itr.next(); // skip first child which is the imageview
-
-              while (itr.hasNext()) {
-                itr.next();
-                itr.remove();
-              }
+               //clear paths
+              pathGroup.getChildren().clear();
 
               // clear list of floors
               floors.clear();
             });
-    */
+
   }
 
   private void drawPaths(ArrayList<Path> paths) {
@@ -241,8 +235,9 @@ public class PathfindingController extends AbsController {
           }
           Group g = new Group();
           g.getChildren().addAll(segments);
-          g.getChildren().add(pane);
           g.setVisible(false);
+
+          pathGroup.getChildren().add(g);
 
           floors.add(path.floor);
         });
@@ -251,14 +246,13 @@ public class PathfindingController extends AbsController {
   private void displayFloor(int floor) {
      mapImg.setImage(images.get(floors.get(floor)));
 
-    Iterator<javafx.scene.Node> itr = pane.getChildrenUnmodifiable().iterator();
-    itr.next(); // skip first child which is the imageview
+    Iterator<javafx.scene.Node> itr = pathGroup.getChildren().iterator();
 
     while (itr.hasNext()) {
       itr.next().setVisible(false);
     }
 
-     pane.getChildrenUnmodifiable().get(floor).setVisible(true);
+     pathGroup.getChildren().get(floor).setVisible(true);
   }
 
   private Line line(Point2D p1, Point2D p2) {
