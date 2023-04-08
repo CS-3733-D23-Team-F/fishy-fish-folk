@@ -4,12 +4,21 @@ import java.util.ArrayList;
 import javafx.geometry.Point2D;
 
 /** */
-
-// TODO: charles work, check Node.csv
 public class MicroNode extends TableEntry {
   public Point2D point;
   public String floor;
   public String building;
+
+  public MicroNode() {
+    super();
+  }
+
+  public MicroNode(int nodeId, double xcoord, double ycoord, String floor, String building) {
+    this.id = Integer.toString(nodeId);
+    this.point = new Point2D(xcoord, ycoord);
+    this.floor = floor;
+    this.building = building;
+  }
 
   @Override
   public boolean construct(ArrayList<String> data) {
@@ -34,12 +43,5 @@ public class MicroNode extends TableEntry {
     data.add(building);
 
     return data;
-  }
-
-  public MicroNode(int nodeId, double xcoord, double ycoord, String floor, String building) {
-    this.id = Integer.toString(nodeId);
-    this.point = new Point2D(xcoord, ycoord);
-    this.floor = floor;
-    this.building = building;
   }
 }

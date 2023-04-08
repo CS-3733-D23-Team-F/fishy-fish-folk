@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk.controllers;
 
-import com.sun.prism.paint.Color;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -12,10 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
@@ -57,7 +53,7 @@ public class SignageController {
             box.setMinSize(300, 200);
             box.setLayoutX(pivotOnTarget.getX());
             box.setLayoutY(pivotOnTarget.getY());
-            //box.setBackground(new Background(new BackgroundFill(Paint.valueOf("#2596be",)));
+            // box.setBackground(new Background(new BackgroundFill(Paint.valueOf("#2596be",)));
             group.getChildren().add(box);
             img.setVisible(false);
           }

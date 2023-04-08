@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk.pathfinding;
 
-import edu.wpi.fishfolk.database.NodeTable;
 import edu.wpi.fishfolk.database.Table;
 import java.util.*;
 import javafx.geometry.Point2D;
@@ -20,10 +19,10 @@ public class Graph {
 
   HashMap<String, String> elevatorFloors;
 
-  @Setter NodeTable nodeTable;
+  @Setter Table nodeTable;
   @Setter Table edgeTable;
 
-  public Graph(NodeTable nodeTable, Table edgeTable) {
+  public Graph(Table nodeTable, Table edgeTable) {
 
     this.size = nodeTable.size();
 
@@ -43,7 +42,19 @@ public class Graph {
 
   public void populate() {
 
-    Node[] nodes = nodeTable.getAllNodes();
+    ArrayList<Node> nodes =
+        (ArrayList<Node>)
+            Arrays.stream(nodeTable.getAll())
+                .toList()
+                .stream()
+                .map(
+                    elt -> {
+                      Node n = new Node();
+                      n.construct(elt);
+                      return n;
+                    })
+                .toList();
+
     int nodeCount = 0, edgeCount = 0;
 
     for (Node node : nodes) {
@@ -59,13 +70,11 @@ public class Graph {
       if (addEdge(n1, n2)) edgeCount++;
     }
 
-    System.out.println(nodeCount + " " + edgeCount);
-
     System.out.println(
         "[Graph.populate]: Populated graph with "
-            + nodes.length
+            + nodeCount
             + " nodes and "
-            + edges.length
+            + edgeCount
             + " edges.");
   }
 

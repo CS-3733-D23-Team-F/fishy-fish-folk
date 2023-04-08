@@ -7,26 +7,12 @@ public class Main {
 
   public static void main(String[] args) {
 
-    Fapp.launch(Fapp.class, args); // run ui
+    // Fapp.launch(Fapp.class, args); // run ui
 
-    /*
-
-    set up database connection and nodeTable,  edgeTable variables
+    // set up database connection and nodeTable,  edgeTable variables
 
     Fdb fdb = new Fdb();
-    try {
-      fdb.db.setSchema("proto2db");
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
-
-    NodeTable nodeTable = new NodeTable(fdb.db, "nodeTable");
-    Table edgeTable = new Table(fdb.db, "edge");
-    edgeTable.setHeaders(
-        new ArrayList<>(List.of("node1", "node2")), new ArrayList<>(List.of("String", "String")));
-    edgeTable.init(false);
-
-     */
+    fdb.loadTablesFromCSV();
 
     /*
 
