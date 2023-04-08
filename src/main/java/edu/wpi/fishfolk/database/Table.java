@@ -32,7 +32,7 @@ public class Table implements ITable {
 
     // set up map from Java types to SQL types
     typeDict = new HashMap<>();
-    typeDict.put("String", "VARCHAR(255)"); // 255 characters max
+    typeDict.put("String", "VARCHAR(255)"); // default to max 255 characters for strings
     typeDict.put("int", "SMALLINT"); // -2^15 to 2^15-1
     typeDict.put("double", "REAL"); // 6 decimal digits precision
   }
@@ -88,12 +88,18 @@ public class Table implements ITable {
     // map Java types to SQL types
     this.headerTypes =
         (ArrayList<String>)
-            _headerTypes.stream().map(t -> typeDict.get(t)).collect(Collectors.toList());
+            _headerTypes.stream().map(t -> {
+              if(t.startsWith("String") && t.length() > 6){
+                return "VARCHAR(" + t.substring(6) + ")";
+              }
+              return typeDict.get(t);
+            }).collect(Collectors.toList());
 
     this.headers = _headers;
     this.numHeaders = headers.size();
   }
 
+  @Override
   public boolean addHeaders(ArrayList<String> _headers, ArrayList<String> _headerTypes) {
 
     if (_headers.size() != _headerTypes.size()) {
@@ -135,45 +141,6 @@ public class Table implements ITable {
     }
 
     return true;
-  }
-
-  public ArrayList<String[]> executeQuery(String selection, String condition) {
-
-    ArrayList<String[]> data = new ArrayList<>();
-
-    try {
-      String query =
-          selection.trim()
-              + " FROM "
-              + dbConnection.getSchema()
-              + "."
-              + tableName
-              + " "
-              + condition.trim()
-              + ";";
-      Statement statement = dbConnection.createStatement();
-      statement.execute(query);
-
-      System.out.println(query);
-
-      ResultSet results = statement.getResultSet();
-      ResultSetMetaData meta = results.getMetaData();
-
-      int numCols = meta.getColumnCount();
-
-      while (results.next()) {
-        String[] row = new String[numCols];
-
-        for (int i = 0; i < numCols; i++) {
-          row[i] = results.getString(i + 1);
-        }
-        data.add(row);
-      }
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
-    return data;
   }
 
   @Override
@@ -250,6 +217,7 @@ public class Table implements ITable {
     }
   }
 
+  @Override
   public ArrayList<String> getColumn(String header) {
     try {
       String query =
@@ -305,24 +273,6 @@ public class Table implements ITable {
   }
 
   @Override
-  public int size() {
-    try {
-      String query = "SELECT COUNT(*) FROM " + dbConnection.getSchema() + "." + tableName + ";";
-
-      Statement statement = dbConnection.createStatement();
-      statement.execute(query);
-      ResultSet results = statement.getResultSet();
-      results.next();
-      return results.getInt(1);
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
-
-    return -1;
-  }
-
-  @Override
   public boolean insert(TableEntry tableEntry) {
 
     try {
@@ -350,41 +300,6 @@ public class Table implements ITable {
               + this.getClass().getSimpleName()
               + ".insert]: TableEntry \""
               + tableEntry.id
-              + "\" successfully inserted into table \""
-              + tableName
-              + "\".");
-      return true;
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-      return false;
-    }
-  }
-
-  public boolean insert(ArrayList<String> row) {
-
-    try {
-
-      // insert entry if not present
-      String query = "INSERT INTO " + dbConnection.getSchema() + "." + tableName + " (";
-      for (String header : headers) {
-        query += header + ", ";
-      }
-      query = query.substring(0, query.length() - 2) + ") VALUES ('";
-
-      for (String s : row) {
-        query += s + "','";
-      }
-      query = query.substring(0, query.length() - 2) + ");";
-
-      Statement statement = dbConnection.createStatement();
-      statement.executeUpdate(query);
-
-      System.out.println(
-          "["
-              + this.getClass().getSimpleName()
-              + ".insert]: TableEntry \""
-              + row
               + "\" successfully inserted into table \""
               + tableName
               + "\".");
@@ -482,6 +397,15 @@ public class Table implements ITable {
   }
 
   @Override
+  public boolean update(DataEdit edit) {
+
+    
+
+
+    return false;
+  }
+
+  @Override
   public void remove(String attr, String value) {
 
     try {
@@ -549,6 +473,63 @@ public class Table implements ITable {
       System.out.println(e.getErrorCode());
       return false;
     }
+  }
+
+  @Override
+  public int size() {
+    try {
+      String query = "SELECT COUNT(*) FROM " + dbConnection.getSchema() + "." + tableName + ";";
+
+      Statement statement = dbConnection.createStatement();
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+      return results.getInt(1);
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return -1;
+  }
+  @Override
+  public ArrayList<String[]> executeQuery(String selection, String condition) {
+
+    ArrayList<String[]> data = new ArrayList<>();
+
+    try {
+      String query =
+              selection.trim()
+                      + " FROM "
+                      + dbConnection.getSchema()
+                      + "."
+                      + tableName
+                      + " "
+                      + condition.trim()
+                      + ";";
+      Statement statement = dbConnection.createStatement();
+      statement.execute(query);
+
+      System.out.println(query);
+
+      ResultSet results = statement.getResultSet();
+      ResultSetMetaData meta = results.getMetaData();
+
+      int numCols = meta.getColumnCount();
+
+      while (results.next()) {
+        String[] row = new String[numCols];
+
+        for (int i = 0; i < numCols; i++) {
+          row[i] = results.getString(i + 1);
+        }
+        data.add(row);
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+    return data;
   }
 
   @Override

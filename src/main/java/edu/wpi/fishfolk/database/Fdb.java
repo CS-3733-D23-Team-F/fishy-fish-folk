@@ -44,25 +44,26 @@ public class Fdb {
       micronodeTable = new Table(conn, "micronode");
       micronodeTable.init(false);
       micronodeTable.setHeaders(
-          new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
-          new ArrayList<>(List.of("int", "double", "double", "String", "String")));
+              new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
+              new ArrayList<>(List.of("int", "double", "double", "String2", "String16")));
 
       locationTable = new Table(conn, "location");
       locationTable.init(false);
       locationTable.setHeaders(
-          new ArrayList<>(List.of("longname", "shortname", "type")),
-          new ArrayList<>(List.of("String", "String", "String")));
+              new ArrayList<>(List.of("longname", "shortname", "type")),
+              new ArrayList<>(List.of("String64", "String64", "String4")));
 
       moveTable = new Table(conn, "move");
       moveTable.init(false);
       moveTable.setHeaders(
-          new ArrayList<>(List.of("id", "longname", "date")),
-          new ArrayList<>(List.of("int", "String", "String")));
+              new ArrayList<>(List.of("id", "longname", "date")),
+              new ArrayList<>(List.of("int", "String64", "String16")));
 
       edgeTable = new Table(conn, "edge");
       edgeTable.init(false);
       edgeTable.setHeaders(
-          new ArrayList<>(List.of("node1", "node2")), new ArrayList<>(List.of("String", "String")));
+              new ArrayList<>(List.of("node1", "node2")),
+              new ArrayList<>(List.of("String8", "String8")));
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
