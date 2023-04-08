@@ -63,6 +63,7 @@
                         </DropShadow>
                      </effect>
                   </Text>
+                  <MFXButton fx:id="loginBtn" layoutX="229.0" layoutY="28.0" text="Log In" />
                </children>
             </AnchorPane>
          </children>
@@ -295,7 +296,7 @@
                                           <Insets left="40.0" />
                                        </padding>
                                     </MFXButton>
-                                    <MFXButton fx:id="officeNav" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Office Supplies" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="140.0">
+                                    <MFXButton fx:id="officeNav" alignment="BOTTOM_LEFT" layoutX="-186.0" layoutY="131.0" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Office Supplies" textFill="WHITE" AnchorPane.leftAnchor="-186.0" AnchorPane.rightAnchor="186.0" AnchorPane.topAnchor="131.0">
                                        <font>
                                           <Font name="Open Sans Bold" size="25.0" />
                                        </font>
