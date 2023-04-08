@@ -256,7 +256,7 @@ public class PathfindingController extends AbsController {
     Point2D rel = p.subtract(center1); // p relative to the center
 
     // strech x and y separately
-    double x = rel.getX() * 1120 / 4050 + 100; //TODO 100 is a magic offset number for proto2
+    double x = rel.getX() * 1120 / 4050 + 100; // TODO 100 is a magic offset number for proto2
     double y = rel.getY() * 780 / 3000 + 7;
 
     return new Point2D(x, y).add(center2);
