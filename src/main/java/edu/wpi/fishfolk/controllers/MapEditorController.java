@@ -60,26 +60,25 @@ public class MapEditorController extends AbsController {
     floorSelector.setOnAction(
         event -> {
           currentFloor = floorSelector.getValue();
-
         });
   }
 
-  private void switchFloor(String floor){
+  private void switchFloor(String floor) {
 
     mapImg.setImage(images.get(floor));
 
     nodesGroup = new Group();
 
     unodes =
-            (ArrayList<MicroNode>)
-                    dbConnection.micronodeTable.executeQuery("SELECT *", "WHERE type != 'HALL").stream()
-                            .map(
-                                    elt -> {
-                                      MicroNode un = new MicroNode();
-                                      un.construct(new ArrayList(List.<String>of(elt)));
-                                      return un;
-                                    })
-                            .toList();
+        (ArrayList<MicroNode>)
+            dbConnection.micronodeTable.executeQuery("SELECT *", "WHERE type != 'HALL").stream()
+                .map(
+                    elt -> {
+                      MicroNode un = new MicroNode();
+                      un.construct(new ArrayList(List.<String>of(elt)));
+                      return un;
+                    })
+                .toList();
 
     unodes.forEach(this::drawNode);
   }

@@ -7,12 +7,12 @@ public class Main {
 
   public static void main(String[] args) {
 
-    // Fapp.launch(Fapp.class, args); // run ui
+    Fapp.launch(Fapp.class, args); // run ui
 
     // set up database connection and nodeTable,  edgeTable variables
 
-    Fdb fdb = new Fdb();
-    fdb.loadTablesFromCSV();
+    // Fdb fdb = new Fdb();
+    // fdb.loadTablesFromCSV();
 
     /*
 
