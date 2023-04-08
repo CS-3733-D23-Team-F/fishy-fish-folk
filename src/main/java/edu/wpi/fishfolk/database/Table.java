@@ -153,6 +153,9 @@ public class Table implements ITable {
               + ";";
       Statement statement = dbConnection.createStatement();
       statement.execute(query);
+
+      System.out.println(query);
+
       ResultSet results = statement.getResultSet();
       ResultSetMetaData meta = results.getMetaData();
 

@@ -42,26 +42,26 @@ public class Fdb {
       // STEP 2: Establish table objects
 
       micronodeTable = new Table(conn, "micronode");
-      micronodeTable.init(true);
-      micronodeTable.addHeaders(
+      micronodeTable.init(false);
+      micronodeTable.setHeaders(
           new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
           new ArrayList<>(List.of("int", "double", "double", "String", "String")));
 
       locationTable = new Table(conn, "location");
-      locationTable.init(true);
-      locationTable.addHeaders(
+      locationTable.init(false);
+      locationTable.setHeaders(
           new ArrayList<>(List.of("longname", "shortname", "type")),
           new ArrayList<>(List.of("String", "String", "String")));
 
       moveTable = new Table(conn, "move");
-      moveTable.init(true);
-      moveTable.addHeaders(
+      moveTable.init(false);
+      moveTable.setHeaders(
           new ArrayList<>(List.of("id", "longname", "date")),
           new ArrayList<>(List.of("int", "String", "String")));
 
       edgeTable = new Table(conn, "edge");
-      edgeTable.init(true);
-      edgeTable.addHeaders(
+      edgeTable.init(false);
+      edgeTable.setHeaders(
           new ArrayList<>(List.of("node1", "node2")), new ArrayList<>(List.of("String", "String")));
 
     } catch (SQLException e) {
