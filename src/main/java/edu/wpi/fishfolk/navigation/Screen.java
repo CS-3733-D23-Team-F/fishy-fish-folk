@@ -7,11 +7,11 @@ public enum Screen {
   SIGNAGE("views/Signage.fxml"),
   FOOD_ORDER_REQUEST("views/FoodOrder.fxml"),
   SUPPLIES_REQUEST("views/SupplyRequest.fxml"),
-  MAP_EDITOR("views/OldMapEditor.fxml"),
+  OLD_MAP_EDITOR("views/OldMapEditor.fxml"),
   VIEW_FOOD_ORDERS("views/ViewFoodOrders.fxml"),
   VIEW_SUPPLY_ORDERS("views/ViewSupplyOrders.fxml"),
-  PATHFINDING("views/Pathfinding.fxml");
-
+  PATHFINDING("views/Pathfinding.fxml"),
+  MAP_EDITOR("views/MapEditor.fxml");
   private final String filename;
 
   Screen(String filename) {
