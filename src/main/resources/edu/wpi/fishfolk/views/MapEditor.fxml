@@ -2,7 +2,6 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Group?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -16,7 +15,7 @@
 <?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
 
-<VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.SignageController">
+<VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorController">
    <children>
       <HBox maxHeight="84.8" minHeight="84.8" VBox.vgrow="ALWAYS">
          <children>
@@ -71,36 +70,16 @@
       <StackPane minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
          <children>
             <HBox minWidth="120.0" />
-            <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0">
+            <VBox maxHeight="635.2" maxWidth="1280.0" minHeight="635.2" minWidth="1280.0" StackPane.alignment="CENTER">
                <children>
-                  <Text layoutX="172.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;- Surgery" wrappingWidth="294.53675842285156" AnchorPane.leftAnchor="0.0">
-                     <font>
-                        <Font name="Open Sans Bold" size="48.0" />
-                     </font>
-                  </Text>
-                  <Text layoutX="836.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Front Desk -&gt;" textAlignment="RIGHT" wrappingWidth="377.53675842285156" AnchorPane.rightAnchor="0.0">
-                     <font>
-                        <Font name="Open Sans Bold" size="48.0" />
-                     </font>
-                  </Text>
+                  <HBox maxHeight="100.0" minHeight="100.0" minWidth="1280.0">
+                     <children>
+                        <MFXButton maxHeight="100.0" maxWidth="200.0" minHeight="100.0" minWidth="200.0" />
+                     </children></HBox>
+                  <GesturePane fx:id="pane" />
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                </children>
-            </AnchorPane>
-            <MFXButton fx:id="backButton" prefHeight="174.0" prefWidth="369.0" style="-fx-background-color: #012D5A;" text="Return Home" textFill="WHITE">
-               <font>
-                  <Font name="Open Sans Bold" size="45.0" />
-               </font>
-            </MFXButton>
-            <GesturePane fx:id="pane">
-               <Group fx:id="group">
-               <ImageView fitHeight="279.0" fitWidth="369.0" pickOnBounds="true" preserveRatio="true" fx:id="img">
-                  <image>
-                     <Image url="@../images/hospitalImg1.PNG" />
-                  </image>
-               </ImageView>
-               </Group>
-            </GesturePane>
-
-
+            </VBox>
             <AnchorPane fx:id="menuWrap" disable="true" minWidth="70.0">
                <children>
                   <AnchorPane fx:id="slider" maxWidth="400.0" minWidth="400.0" style="-fx-background-color: #054982;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-400.0" AnchorPane.topAnchor="0.0">

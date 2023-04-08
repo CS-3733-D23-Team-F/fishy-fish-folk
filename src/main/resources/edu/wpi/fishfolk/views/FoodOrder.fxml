@@ -79,7 +79,7 @@
                   <Rectangle fill="#cccccc" height="100" width="990.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="100.0" />
                   <Rectangle fill="#cccccc" height="100" width="990.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="350.0" />
                   <Rectangle fill="#cccccc" height="100" width="990.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="225.0" />
-                  <Text fx:id="itemText1" layoutX="349.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText1" wrappingWidth="300.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="125.0">
+                  <Text fx:id="itemText1" layoutX="349.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DummyText" wrappingWidth="300.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="125.0">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>

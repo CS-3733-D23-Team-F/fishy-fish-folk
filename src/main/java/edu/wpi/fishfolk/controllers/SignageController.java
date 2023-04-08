@@ -1,13 +1,23 @@
 package edu.wpi.fishfolk.controllers;
 
+import com.sun.prism.paint.Color;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.util.Duration;
+import net.kurobako.gesturefx.GesturePane;
 
 public class SignageController {
   @FXML MFXButton backButton;
@@ -29,9 +39,30 @@ public class SignageController {
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
   @FXML MFXButton homeButton;
+  @FXML GesturePane pane;
+
+  @FXML Group group;
+  @FXML ImageView img;
 
   @FXML
   public void initialize() {
+    pane.setOnMouseClicked(
+        e -> {
+          if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+            Point2D pivotOnTarget =
+                pane.targetPointAt(new Point2D(e.getX(), e.getY()))
+                    .orElse(pane.targetPointAtViewportCentre());
+            // increment of scale makes more sense exponentially instead of linearly
+            VBox box = new VBox();
+            box.setMinSize(300, 200);
+            box.setLayoutX(pivotOnTarget.getX());
+            box.setLayoutY(pivotOnTarget.getY());
+            //box.setBackground(new Background(new BackgroundFill(Paint.valueOf("#2596be",)));
+            group.getChildren().add(box);
+            img.setVisible(false);
+          }
+        });
+
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
