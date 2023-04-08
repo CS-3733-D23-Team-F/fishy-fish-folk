@@ -82,11 +82,6 @@ public class Table implements ITable {
     }
   }
 
-  // TODO & potential problems:
-  // test the shit out of this
-  // import & export use FileReaders which may break when packaged into a .jar
-  // drop table before adding new headers
-
   @Override
   public void setHeaders(ArrayList<String> _headers, ArrayList<String> _headerTypes) {
 
@@ -108,50 +103,14 @@ public class Table implements ITable {
     setHeaders(_headers, _headerTypes);
 
     try {
-
-      String query = "SELECT COUNT(*) FROM " + dbConnection.getSchema() + "." + tableName + ";";
-      Statement statement = dbConnection.createStatement();
-      statement.execute(query);
-      ResultSet results = statement.getResultSet();
-      results.next();
-      int numRows = results.getInt(1);
-      int numCols = 1;
-
-      query = "ALTER TABLE " + tableName;
-
-      if (numRows != 0) {
-        // get only 1 row which is enough to get the metadata
-        statement.execute(
-            "SELECT * FROM " + dbConnection.getSchema() + "." + tableName + " LIMIT 1;");
-        ResultSetMetaData meta = statement.getResultSet().getMetaData();
-        numCols = meta.getColumnCount();
-
-        // rename current column names
-        // ex: currently 2 columns and requested 5 headers
-        // leave first id column as is. rename 2 to header idx 1.
-        // add headers idx 2, 3, 4
-
-        // SQL columns start at 1
-        for (int col = 1; col <= numCols && col <= numHeaders; col++) {
-
-          String oldCol = meta.getColumnName(col), newCol = headers.get(col - 1);
-          if (!oldCol.equals(newCol)) {
-            query += " RENAME COLUMN '" + oldCol + "' to '" + newCol + "' ";
-          }
-        }
-
-        // if numCols > numHeaders delete remaining columns
-        for (int col = numHeaders + 1; col <= numCols; col++) {
-          query += " DROP COLUMN " + meta.getColumnName(col) + ",";
-        }
-      }
+      String query = "ALTER TABLE " + tableName + " DROP COLUMN id,";
 
       // if numHeaders > numCols add the remaining headers
-      for (int col = numCols + 1; col <= numHeaders; col++) {
+      for (int col = 1; col <= numHeaders; col++) {
         query += " ADD COLUMN " + headers.get(col - 1) + " " + headerTypes.get(col - 1) + ",";
       }
 
-      // added more to base query "alter table tablename"
+      // if added more to base query "alter table tablename"
       if (query.split(" ").length > 3) {
 
         // remove last comma
@@ -159,7 +118,7 @@ public class Table implements ITable {
 
         System.out.println(query);
 
-        statement = dbConnection.createStatement();
+        Statement statement = dbConnection.createStatement();
         statement.executeUpdate(query);
       }
 
@@ -194,6 +153,9 @@ public class Table implements ITable {
               + ";";
       Statement statement = dbConnection.createStatement();
       statement.execute(query);
+
+      System.out.println(query);
+
       ResultSet results = statement.getResultSet();
       ResultSetMetaData meta = results.getMetaData();
 
@@ -615,7 +577,7 @@ public class Table implements ITable {
             + "\".");
 
     try (BufferedReader br =
-        new BufferedReader(new InputStreamReader(new FileInputStream(filename)))) {
+        new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
 
       Statement statement = dbConnection.createStatement();
       statement.executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");

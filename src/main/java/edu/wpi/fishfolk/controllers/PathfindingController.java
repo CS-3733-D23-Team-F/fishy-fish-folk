@@ -76,9 +76,14 @@ public class PathfindingController extends AbsController {
 
   @FXML
   private void initialize() {
-    ArrayList nodeNames = dbConnection.nodeTable.getDestLongNames();
+    ArrayList<String> nodeNames =
+        (ArrayList<String>)
+            dbConnection.locationTable
+                .executeQuery("SELECT longname", "WHERE type != 'HALL' ORDER BY longname ASC")
+                .stream()
+                .map(elt -> elt[0])
+                .toList();
     // segments = new LinkedList<>();
-    System.out.println(dbConnection.nodeTable.getTableName());
 
     pane.setOnMouseClicked(
         e -> {
@@ -152,7 +157,9 @@ public class PathfindingController extends AbsController {
 
     startSelector.setOnAction(
         event -> {
-          Node startNode = dbConnection.nodeTable.getNode("longname", startSelector.getValue());
+          Node startNode = new Node();
+          startNode.construct(
+              dbConnection.micronodeTable.get("longname", startSelector.getValue()));
           start = startNode.nid;
           currentFloor = 0;
 
@@ -160,14 +167,15 @@ public class PathfindingController extends AbsController {
         });
     endSelector.setOnAction(
         event -> {
-          end = dbConnection.nodeTable.getNode("longname", endSelector.getValue()).nid;
+          Node startNode = new Node();
+          startNode.construct(dbConnection.micronodeTable.get("longname", endSelector.getValue()));
           System.out.println("end node: " + end);
         });
 
     floors = new ArrayList<>(3);
     currentFloor = 0;
 
-    graph = new Graph(dbConnection.nodeTable, dbConnection.edgeTable);
+    graph = new Graph(dbConnection.micronodeTable, dbConnection.edgeTable);
 
     images = new HashMap<>();
 
