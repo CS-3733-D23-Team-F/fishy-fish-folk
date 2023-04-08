@@ -25,7 +25,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
-public class MapEditorController extends AbsController {
+public class OldMapEditorController extends AbsController {
   @FXML private TableView<ObservableNode> table;
   @FXML private TableColumn<ObservableNode, String> id;
   @FXML private TableColumn<ObservableNode, String> x;
