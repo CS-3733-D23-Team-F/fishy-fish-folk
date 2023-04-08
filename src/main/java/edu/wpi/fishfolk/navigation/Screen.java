@@ -10,7 +10,8 @@ public enum Screen {
   MAP_EDITOR("views/MapEditor.fxml"),
   VIEW_FOOD_ORDERS("views/ViewFoodOrders.fxml"),
   VIEW_SUPPLY_ORDERS("views/ViewSupplyOrders.fxml"),
-  PATHFINDING("views/Pathfinding.fxml");
+  PATHFINDING("views/Pathfinding.fxml"),
+  TEMPLATE("views/Template.fxml");
 
   private final String filename;
 
