@@ -56,7 +56,7 @@ public class FoodOrderController extends AbsController {
   @FXML Text itemQuantity1, itemQuantity2, itemQuantity3;
   @FXML Text timeText;
   @FXML ComboBox<String> roomSelector;
-  @FXML PopOver notiPop;
+  PopOver notiPop;
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
   @FXML MFXButton homeButton;
@@ -158,6 +158,7 @@ public class FoodOrderController extends AbsController {
             }
             Text popText = new Text();
             popText.setText(errors);
+            notiPop = new PopOver();
             notiPop.setContentNode(popText);
             notiPop.show(submitButton);
             currentOrder.setSubmitted();
