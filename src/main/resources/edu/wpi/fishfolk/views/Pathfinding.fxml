@@ -164,7 +164,7 @@
             </VBox>
 
             <GesturePane fx:id="pane" maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0">
-                        <Group fx:id="path" />
+                        <Group fx:id="pathGroup">
                         <ImageView fx:id="mapImg" fitHeight="600.0" fitWidth="900.0" pickOnBounds="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="7.0">
                            <image>
                               <Image url="@../map/00_thelowerlevel1.png" />
@@ -173,6 +173,7 @@
                               <Rectangle2D height="3000.0" minX="900.0" minY="150.0" width="4050.0" />
                            </viewport>
                         </ImageView>
+                        </Group>
                <HBox.margin>
                   <Insets left="60.0" top="17.6" />
                </HBox.margin>

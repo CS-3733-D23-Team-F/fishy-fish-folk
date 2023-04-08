@@ -185,12 +185,10 @@ public class PathfindingController extends AbsController {
           paths = graph.AStar(start, end);
 
           for (Path path : paths) {
-
             images.put(
                 path.floor, new Image(Fapp.class.getResourceAsStream(mapImgURLs.get(path.floor))));
           }
           // create segments for each path and put into groups
-          paths.remove(0);
           drawPaths(paths);
           currentFloor = 0;
           displayFloor(currentFloor);
@@ -217,6 +215,7 @@ public class PathfindingController extends AbsController {
         event -> {
           // clear paths
           pathGroup.getChildren().clear();
+          pathGroup.getChildren().add(mapImg);
 
           // clear list of floors
           floors.clear();
@@ -224,8 +223,6 @@ public class PathfindingController extends AbsController {
   }
 
   private void drawPaths(ArrayList<Path> paths) {
-
-    System.out.println("drawing " + paths.size());
 
     paths.forEach(
         path -> {
@@ -235,11 +232,8 @@ public class PathfindingController extends AbsController {
           }
           Group g = new Group();
           g.getChildren().addAll(segments);
-
-          System.out.println("segments in this path " + g.getChildren().size());
-          g.setVisible(false);
-
           pathGroup.getChildren().add(g);
+          g.setVisible(false);
 
           floors.add(path.floor);
         });
@@ -247,17 +241,16 @@ public class PathfindingController extends AbsController {
 
   private void displayFloor(int floor) {
 
-    System.out.println("displaying floor" + floors.get(floor));
-
     mapImg.setImage(images.get(floors.get(floor)));
 
     Iterator<javafx.scene.Node> itr = pathGroup.getChildren().iterator();
+    itr.next(); // skip first child which is the imageview
 
     while (itr.hasNext()) {
       itr.next().setVisible(false);
     }
 
-    pathGroup.getChildren().get(floor).setVisible(true);
+    pathGroup.getChildren().get(floor + 1).setVisible(true);
   }
 
   private Line line(Point2D p1, Point2D p2) {
@@ -269,14 +262,19 @@ public class PathfindingController extends AbsController {
   public Point2D convert(Point2D p) {
 
     // center gets mapped to center. center1 -> center2
+
+    // values from viewport
     Point2D center1 = new Point2D(900 + 4050 / 2, 150 + 3000 / 2);
-    Point2D center2 = new Point2D(1120 / 2, 780 / 2);
+
+    // fit width/height
+    Point2D center2 = new Point2D(900 / 2, 600 / 2);
 
     Point2D rel = p.subtract(center1); // p relative to the center
 
     // strech x and y separately
-    double x = rel.getX() * 1120 / 4050 + 100; // TODO 100 is a magic offset number for proto2
-    double y = rel.getY() * 780 / 3000 + 7;
+    // fit width/height / img width/height
+    double x = rel.getX() * 900 / 4050;
+    double y = rel.getY() * 600 / 3000;
 
     return new Point2D(x, y).add(center2);
   }

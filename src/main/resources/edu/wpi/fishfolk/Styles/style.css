@@ -26,8 +26,8 @@
 
 
 Line{
-    -fx-stroke-width: 5;
+    -fx-stroke-width: 2;
     -fx-stroke-line-cap: round;
-    -fx-stroke: red;
+    -fx-stroke: #028A0F;
 
 }
