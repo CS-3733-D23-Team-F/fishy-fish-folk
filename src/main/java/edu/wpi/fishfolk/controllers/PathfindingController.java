@@ -213,19 +213,19 @@ public class PathfindingController extends AbsController {
           displayFloor(currentFloor);
         });
 
+    clearBtn.setOnMouseClicked(
+        event -> {
+          // clear paths
+          pathGroup.getChildren().clear();
 
-        clearBtn.setOnMouseClicked(
-           event -> {
-               //clear paths
-              pathGroup.getChildren().clear();
-
-              // clear list of floors
-              floors.clear();
-            });
-
+          // clear list of floors
+          floors.clear();
+        });
   }
 
   private void drawPaths(ArrayList<Path> paths) {
+
+    System.out.println("drawing " + paths.size());
 
     paths.forEach(
         path -> {
@@ -235,6 +235,8 @@ public class PathfindingController extends AbsController {
           }
           Group g = new Group();
           g.getChildren().addAll(segments);
+
+          System.out.println("segments in this path " + g.getChildren().size());
           g.setVisible(false);
 
           pathGroup.getChildren().add(g);
@@ -244,7 +246,10 @@ public class PathfindingController extends AbsController {
   }
 
   private void displayFloor(int floor) {
-     mapImg.setImage(images.get(floors.get(floor)));
+
+    System.out.println("displaying floor" + floors.get(floor));
+
+    mapImg.setImage(images.get(floors.get(floor)));
 
     Iterator<javafx.scene.Node> itr = pathGroup.getChildren().iterator();
 
@@ -252,7 +257,7 @@ public class PathfindingController extends AbsController {
       itr.next().setVisible(false);
     }
 
-     pathGroup.getChildren().get(floor).setVisible(true);
+    pathGroup.getChildren().get(floor).setVisible(true);
   }
 
   private Line line(Point2D p1, Point2D p2) {
