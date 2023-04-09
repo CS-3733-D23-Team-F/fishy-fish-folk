@@ -54,7 +54,12 @@ class GenericTableTest {
     System.out.println(testNodeTable.getColumn("floor"));
 
     // get all
-    System.out.println(Arrays.toString(testNodeTable.getAll()));
+    testNodeTable
+        .getAll()
+        .forEach(
+            elt -> {
+              System.out.println(Arrays.toString(elt));
+            });
 
     // correctly print out true and false respectively
     testNodeTable.exists("id", Integer.toString(1));

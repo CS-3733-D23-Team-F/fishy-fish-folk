@@ -1,22 +1,19 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.Graph;
-import edu.wpi.fishfolk.pathfinding.Node;
 import edu.wpi.fishfolk.pathfinding.Path;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javafx.animation.Interpolator;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -64,10 +61,8 @@ public class PathfindingController extends AbsController {
   Graph graph;
   ArrayList<Path> paths;
 
-  HashMap<String, Image> images;
   ArrayList<String> floors;
   int currentFloor;
-  HashMap<String, String> mapImgURLs;
 
   public PathfindingController() {
     super();
@@ -76,13 +71,7 @@ public class PathfindingController extends AbsController {
 
   @FXML
   private void initialize() {
-    ArrayList<String> nodeNames =
-        (ArrayList<String>)
-            dbConnection.locationTable
-                .executeQuery("SELECT longname", "WHERE type != 'HALL' ORDER BY longname ASC")
-                .stream()
-                .map(elt -> elt[0])
-                .toList();
+
     // segments = new LinkedList<>();
 
     pane.setOnMouseClicked(
@@ -152,50 +141,38 @@ public class PathfindingController extends AbsController {
      */
 
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+
+    List<String> nodeNames =
+        dbConnection.locationTable
+            .executeQuery("SELECT longname", "WHERE type != 'HALL' ORDER BY longname ASC").stream()
+            .map(elt -> elt[0])
+            .toList();
+
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end
 
     startSelector.setOnAction(
         event -> {
-          Node startNode = new Node();
-          startNode.construct(
-              dbConnection.micronodeTable.get("longname", startSelector.getValue()));
-          start = startNode.nid;
+          start = dbConnection.getMostRecentUNode(startSelector.getValue());
+          // floor of the selected unode id
           currentFloor = 0;
-
           System.out.println("start node: " + start);
         });
     endSelector.setOnAction(
         event -> {
-          Node startNode = new Node();
-          startNode.construct(dbConnection.micronodeTable.get("longname", endSelector.getValue()));
+          end = dbConnection.getMostRecentUNode(endSelector.getValue());
           System.out.println("end node: " + end);
         });
 
-    floors = new ArrayList<>(3);
     currentFloor = 0;
+    floors = new ArrayList<>();
 
-    graph = new Graph(dbConnection.micronodeTable, dbConnection.edgeTable);
-
-    images = new HashMap<>();
-
-    mapImgURLs = new HashMap<>();
-
-    mapImgURLs.put("L1", "map/00_thelowerlevel1.png");
-    mapImgURLs.put("L2", "map/00_thelowerlevel2.png");
-    mapImgURLs.put("GG", "map/00_thegroundfloor.png");
-    mapImgURLs.put("1", "map/01_thefirstfloor.png");
-    mapImgURLs.put("2", "map/02_thesecondfloor.png");
-    mapImgURLs.put("3", "map/03_thethirdfloor.png");
+    graph = new Graph(dbConnection);
 
     submitBtn.setOnMouseClicked(
         event -> {
           paths = graph.AStar(start, end);
 
-          for (Path path : paths) {
-            images.put(
-                path.floor, new Image(Fapp.class.getResourceAsStream(mapImgURLs.get(path.floor))));
-          }
           // create segments for each path and put into groups
           drawPaths(paths);
           currentFloor = 0;

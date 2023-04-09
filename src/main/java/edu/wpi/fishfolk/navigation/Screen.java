@@ -8,10 +8,12 @@ public enum Screen {
   FOOD_ORDER_REQUEST("views/FoodOrder.fxml"),
   SUPPLIES_REQUEST("views/SupplyRequest.fxml"),
   MAP_EDITOR("views/MapEditor.fxml"),
-  OLD_MAP_EDITOR("views/OldMapEditor.fxml"),
   VIEW_FOOD_ORDERS("views/ViewFoodOrders.fxml"),
   VIEW_SUPPLY_ORDERS("views/ViewSupplyOrders.fxml"),
-  PATHFINDING("views/Pathfinding.fxml");
+  PATHFINDING("views/Pathfinding.fxml"),
+
+  OLD_MAP_EDITOR("views/OldMapEditor.fxml"),
+  TEMPLATE("views/Template.fxml");
   private final String filename;
 
   Screen(String filename) {

@@ -24,9 +24,6 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton backButton;
   private Group nodesGroup;
 
-  private HashMap<String, String> mapImgURLs;
-  private HashMap<String, Image> images;
-
   private int currentFloor = 2;
   private List<MicroNode> unodes;
 
@@ -40,7 +37,7 @@ public class MapEditorController extends AbsController {
     // pane.centreOn();
 
     // copy contents, not reference
-    ArrayList<String> floorsReverse = new ArrayList<>(floors);
+    ArrayList<String> floorsReverse = new ArrayList<>(allFloors);
     Collections.reverse(floorsReverse);
 
     floorSelector.getItems().addAll(floorsReverse);
@@ -63,20 +60,20 @@ public class MapEditorController extends AbsController {
     nodesGroup = new Group();
     drawGroup.getChildren().add(nodesGroup);
 
-    switchFloor(floors.get(currentFloor));
+    switchFloor(allFloors.get(currentFloor));
 
     floorSelector.setOnAction(
         event -> {
-          currentFloor = floors.indexOf(floorSelector.getValue());
-          switchFloor(floors.get(currentFloor));
-          floorSelector.setText("Floor " + floors.get(currentFloor));
+          currentFloor = allFloors.indexOf(floorSelector.getValue());
+          switchFloor(allFloors.get(currentFloor));
+          floorSelector.setText("Floor " + allFloors.get(currentFloor));
         });
     nextButton.setOnMouseClicked(
         event -> {
-          if (currentFloor < floors.size() - 1) {
+          if (currentFloor < allFloors.size() - 1) {
             currentFloor++;
-            switchFloor(floors.get(currentFloor));
-            floorSelector.setText("Floor " + floors.get(currentFloor));
+            switchFloor(allFloors.get(currentFloor));
+            floorSelector.setText("Floor " + allFloors.get(currentFloor));
           }
         });
 
@@ -84,8 +81,8 @@ public class MapEditorController extends AbsController {
         event -> {
           if (currentFloor > 0) {
             currentFloor--;
-            switchFloor(floors.get(currentFloor));
-            floorSelector.setText("Floor " + floors.get(currentFloor));
+            switchFloor(allFloors.get(currentFloor));
+            floorSelector.setText("Floor " + allFloors.get(currentFloor));
           }
         });
     pane.centreOn(new Point2D(1700, 1100));

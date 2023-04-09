@@ -4,11 +4,17 @@ import java.util.ArrayList;
 
 public interface ITable {
 
+  /**
+   * Setter for both headers. Note that this does not modify the database, use addHeaders instead.
+   *
+   * @param headers
+   * @param headerTypes
+   */
   void setHeaders(ArrayList<String> headers, ArrayList<String> headerTypes);
 
   /**
-   * Add the provided ArrayLists as headers and header types to this Table. Specify the Java type of
-   * each corresponding header. Currently supported types: String, int, double.
+   * Add the provided ArrayLists as headers to this Table with the corresponding data type. Specify
+   * the Java type of each corresponding header. Currently supported types: String, int, double.
    *
    * @param headers
    * @param headerTypes
@@ -36,19 +42,19 @@ public interface ITable {
   String get(String pkey, String id, String attr);
 
   /**
-   * Get all the rows in this table.
+   * Get an entire column matching a given header.
    *
-   * @return an array of ArrayList<String> where each element corresponds to a row. The first
-   *     element (index 0) contains the headers.
+   * @param header the column to get
+   * @return the column as an ArrayList<String>
    */
-  ArrayList<String>[] getAll();
+  ArrayList<String> getColumn(String header);
 
   /**
-   * Get the number of rows in the Table.
+   * Get all the rows in this table.
    *
-   * @return
+   * @return an ArrayList<String[]> where each element corresponds to a row in the Table.
    */
-  int size();
+  ArrayList<String[]> getAll();
 
   /**
    * Insert the provided TableEntry into the Table.
@@ -78,20 +84,42 @@ public interface ITable {
   boolean update(String pkey, String id, String attr, String value);
 
   /**
+   * Update the table from a DataEdit object.
+   *
+   * @param edit the DataEdit object describing the edit.
+   * @return true if the successfully updated, otherwise false.
+   */
+  boolean update(DataEdit edit);
+
+  /**
    * Remove the TableEntry where the attribute matches the given value.
    *
-   * @param attr the attribute to search for
-   * @param value the value to search for
+   * @param pkey the primary key to use
+   * @param id the unique id of the row to delete
    */
-  void remove(String attr, String value);
+  boolean remove(String pkey, String id);
 
   /**
    * Check if the provided id exists in the table.
    *
-   * @param id
+   * @param pkey the primary key to us
+   * @param id the unique id of the row to search for
    * @return true if a row in the table matches the provided id, otherwise false
    */
   boolean exists(String pkey, String id);
+
+  /** @return the number of rows in the Table */
+  int size();
+
+  /**
+   * Execute a SQL query.
+   *
+   * @param selection a valid SQL fragment of the form "SELECT ..."
+   * @param condition a valid SQL fragment describing which rows to select. Can be empty if no
+   *     condition is needed.
+   * @return an ArrayList where each entry is a String[] corresponding to one row of the result set.
+   */
+  ArrayList<String[]> executeQuery(String selection, String condition);
 
   /**
    * Overwrite the Table with the data found at the provided filepath. Make sure the filepath leads

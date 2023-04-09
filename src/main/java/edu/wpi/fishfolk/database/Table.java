@@ -32,7 +32,7 @@ public class Table implements ITable {
 
     // set up map from Java types to SQL types
     typeDict = new HashMap<>();
-    typeDict.put("String", "VARCHAR(255)"); // 255 characters max
+    typeDict.put("String", "VARCHAR(255)"); // default to max 255 characters for strings
     typeDict.put("int", "SMALLINT"); // -2^15 to 2^15-1
     typeDict.put("double", "REAL"); // 6 decimal digits precision
   }
@@ -88,12 +88,21 @@ public class Table implements ITable {
     // map Java types to SQL types
     this.headerTypes =
         (ArrayList<String>)
-            _headerTypes.stream().map(t -> typeDict.get(t)).collect(Collectors.toList());
+            _headerTypes.stream()
+                .map(
+                    t -> {
+                      if (t.startsWith("String") && t.length() > 6) {
+                        return "VARCHAR(" + t.substring(6) + ")";
+                      }
+                      return typeDict.get(t);
+                    })
+                .collect(Collectors.toList());
 
     this.headers = _headers;
     this.numHeaders = headers.size();
   }
 
+  @Override
   public boolean addHeaders(ArrayList<String> _headers, ArrayList<String> _headerTypes) {
 
     if (_headers.size() != _headerTypes.size()) {
@@ -135,45 +144,6 @@ public class Table implements ITable {
     }
 
     return true;
-  }
-
-  public ArrayList<String[]> executeQuery(String selection, String condition) {
-
-    ArrayList<String[]> data = new ArrayList<>();
-
-    try {
-      String query =
-          selection.trim()
-              + " FROM "
-              + dbConnection.getSchema()
-              + "."
-              + tableName
-              + " "
-              + condition.trim()
-              + ";";
-      Statement statement = dbConnection.createStatement();
-      statement.execute(query);
-
-      System.out.println(query);
-
-      ResultSet results = statement.getResultSet();
-      ResultSetMetaData meta = results.getMetaData();
-
-      int numCols = meta.getColumnCount();
-
-      while (results.next()) {
-        String[] row = new String[numCols];
-
-        for (int i = 0; i < numCols; i++) {
-          row[i] = results.getString(i + 1);
-        }
-        data.add(row);
-      }
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
-    return data;
   }
 
   @Override
@@ -250,6 +220,7 @@ public class Table implements ITable {
     }
   }
 
+  @Override
   public ArrayList<String> getColumn(String header) {
     try {
       String query =
@@ -274,10 +245,9 @@ public class Table implements ITable {
   }
 
   @Override
-  public ArrayList<String>[] getAll() {
+  public ArrayList<String[]> getAll() {
 
-    ArrayList<String>[] data = new ArrayList[size() + 1];
-    data[0] = headers;
+    ArrayList<String[]> data = new ArrayList<>();
 
     try {
 
@@ -287,14 +257,12 @@ public class Table implements ITable {
       statement.execute(query);
       ResultSet results = statement.getResultSet();
 
-      int idx = 1;
       while (results.next()) {
-        ArrayList<String> row = new ArrayList<>(numHeaders);
+        String[] row = new String[numHeaders];
         for (int i = 1; i <= numHeaders; i++) {
-          row.add(results.getString(i));
+          row[i - 1] = results.getString(i);
         }
-        data[idx] = row;
-        idx++;
+        data.add(row);
       }
 
     } catch (SQLException e) {
@@ -302,24 +270,6 @@ public class Table implements ITable {
     }
 
     return data;
-  }
-
-  @Override
-  public int size() {
-    try {
-      String query = "SELECT COUNT(*) FROM " + dbConnection.getSchema() + "." + tableName + ";";
-
-      Statement statement = dbConnection.createStatement();
-      statement.execute(query);
-      ResultSet results = statement.getResultSet();
-      results.next();
-      return results.getInt(1);
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
-
-    return -1;
   }
 
   @Override
@@ -361,7 +311,13 @@ public class Table implements ITable {
     }
   }
 
-  public boolean insert(ArrayList<String> row) {
+  /**
+   * For internal use where one cannot create a TableEntry object to call insert(TableEntry e)
+   *
+   * @param row the row to insert
+   * @return true if successfully inserted, otherwise false.
+   */
+  private boolean insert(ArrayList<String> row) {
 
     try {
 
@@ -482,11 +438,31 @@ public class Table implements ITable {
   }
 
   @Override
-  public void remove(String attr, String value) {
+  public boolean update(DataEdit edit) {
+
+    switch (edit.type) {
+      case INSERT:
+        InsertEdit insertEdit = (InsertEdit) edit;
+        return insert(insertEdit.data);
+
+      case UPDATE:
+        UpdateEdit updateEdit = (UpdateEdit) edit;
+        return update(updateEdit.pkey, updateEdit.id, updateEdit.attribute, updateEdit.value);
+
+      case REMOVE:
+        RemoveEdit removeEdit = (RemoveEdit) edit;
+        return remove(removeEdit.pkey, removeEdit.id);
+    }
+
+    return false;
+  }
+
+  @Override
+  public boolean remove(String pkey, String id) {
 
     try {
 
-      String entry = "[" + String.join(", ", get(attr, value)) + "]";
+      String entry = "[" + String.join(", ", get(pkey, id)) + "]";
 
       String query =
           "DELETE FROM "
@@ -494,9 +470,9 @@ public class Table implements ITable {
               + "."
               + tableName
               + " WHERE "
-              + attr
+              + pkey
               + " = '"
-              + value
+              + id
               + "'";
       Statement statement = dbConnection.createStatement();
       statement.executeUpdate(query);
@@ -508,8 +484,11 @@ public class Table implements ITable {
               + "\" from table \""
               + tableName
               + "\".");
+      return true;
+
     } catch (SQLException e) {
       System.out.println(e.getMessage());
+      return false;
     }
   }
 
@@ -549,6 +528,64 @@ public class Table implements ITable {
       System.out.println(e.getErrorCode());
       return false;
     }
+  }
+
+  @Override
+  public int size() {
+    try {
+      String query = "SELECT COUNT(*) FROM " + dbConnection.getSchema() + "." + tableName + ";";
+
+      Statement statement = dbConnection.createStatement();
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+      return results.getInt(1);
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return -1;
+  }
+
+  @Override
+  public ArrayList<String[]> executeQuery(String selection, String condition) {
+
+    ArrayList<String[]> data = new ArrayList<>();
+
+    try {
+      String query =
+          selection.trim()
+              + " FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " "
+              + condition.trim()
+              + ";";
+      Statement statement = dbConnection.createStatement();
+      statement.execute(query);
+
+      System.out.println(query);
+
+      ResultSet results = statement.getResultSet();
+      ResultSetMetaData meta = results.getMetaData();
+
+      int numCols = meta.getColumnCount();
+
+      while (results.next()) {
+        String[] row = new String[numCols];
+
+        for (int i = 0; i < numCols; i++) {
+          row[i] = results.getString(i + 1);
+        }
+        data.add(row);
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+    return data;
   }
 
   @Override
