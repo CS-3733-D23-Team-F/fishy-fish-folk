@@ -2,26 +2,82 @@ package edu.wpi.fishfolk.database;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;import java.util.List;import java.util.Stack;
 
 /** @author Christian */
 public class Fdb {
 
-  // public NodeTable nodeTable;
-
   public Table micronodeTable;
-
   public Table locationTable;
-
   public Table moveTable;
   public Table edgeTable;
 
   public Connection conn;
 
+  private HashSet<String> freeIDs;
+
   public Fdb() {
 
     this.conn = connect("teamfdb", "teamf", "teamf60");
+
     initialize();
+
+    int maxID = 3000;
+
+    freeIDs = new HashSet<>((maxID-100)/5 * 4/3 + 1); //about 780 to start
+
+    //add all ids from 100 -> 3000 counting by 5
+    for(int i = 100; i <= maxID; i += 5){
+      freeIDs.add(Integer.toString(i));
+    }
+
+    //remove the ids already in the database
+    micronodeTable.getColumn("id").forEach(id -> {
+      freeIDs.remove(id);
+    });
+  }
+
+  public boolean processEdit(DataEdit edit){
+
+    //handle ids
+    switch(edit.type){
+
+      case INSERT:
+        edit.id = getNextID();
+        break;
+
+      case REMOVE:
+        freeID(edit.id);
+        break;
+    }
+
+    switch(edit.table){
+
+      case MICRONODE:
+        return micronodeTable.update(edit);
+
+      case LOCATION:
+        return locationTable.update(edit);
+
+      case MOVE:
+        return moveTable.update(edit);
+
+      case EDGE:
+        return edgeTable.update(edit);
+    }
+
+    return false;
+
+  }
+
+  public String getNextID(){
+    String id = freeIDs.iterator().next();
+    freeIDs.iterator().remove();
+    return id;
+  }
+
+  public void freeID(String id){
+    freeIDs.add(id);
   }
 
   /**
@@ -78,7 +134,7 @@ public class Fdb {
    * @param dbPass Password
    * @return Database connection object (null if no connection is made)
    */
-  public Connection connect(String dbName, String dbUser, String dbPass) {
+  private Connection connect(String dbName, String dbUser, String dbPass) {
     Connection db = null;
     String dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
     try {
@@ -110,5 +166,32 @@ public class Fdb {
     locationTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Location.csv", false);
     moveTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
     edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
+  }
+
+  /**
+   * Check if table exists within database.
+   *
+   * @param db Database connection
+   * @param tbName Table name
+   * @return True if table exists in database
+   */
+  private boolean tableExists(Connection db, String tbName) {
+    Statement statement;
+    try {
+      statement = db.createStatement();
+      String query =
+              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+                      + db.getSchema()
+                      + "' AND tablename = '"
+                      + tbName
+                      + "');";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+      return results.getBoolean("exists");
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
   }
 }

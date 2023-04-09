@@ -6,8 +6,9 @@ public class InsertEdit extends DataEdit {
 
   ArrayList<String> data;
 
-  public InsertEdit(String pkey, ArrayList<String> data) {
-    super(pkey, DataEditType.INSERT);
+  public InsertEdit(DataEditTable table, String pkey, String id, ArrayList<String> data) {
+
+    super(table, pkey, id, DataEditType.INSERT);
     this.data = data;
   }
 }

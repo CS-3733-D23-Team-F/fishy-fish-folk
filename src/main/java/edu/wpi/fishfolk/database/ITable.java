@@ -95,15 +95,16 @@ public interface ITable {
   /**
    * Remove the TableEntry where the attribute matches the given value.
    *
-   * @param attr the attribute to search for
-   * @param value the value to search for
+   * @param pkey the primary key to use
+   * @param id the unique id of the row to delete
    */
-  void remove(String attr, String value);
+  boolean remove(String pkey, String id);
 
   /**
    * Check if the provided id exists in the table.
    *
-   * @param id
+   * @param pkey the primary key to us
+   * @param id the unique id of the row to search for
    * @return true if a row in the table matches the provided id, otherwise false
    */
   boolean exists(String pkey, String id);
