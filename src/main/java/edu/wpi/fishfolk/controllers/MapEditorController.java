@@ -5,7 +5,10 @@ import edu.wpi.fishfolk.database.CircleNode;
 import edu.wpi.fishfolk.database.MicroNode;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -24,6 +27,12 @@ public class MapEditorController extends AbsController {
   @FXML public Group drawGroup;
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
+
+  @FXML MFXTextField xMicroNodeText;
+  @FXML MFXTextField yMicroNodeText;
+  @FXML MFXTextField buildingMicroNodeText;
+  @FXML MFXTextField floorMicroNodeText;
+
   private Group nodesGroup;
 
   private HashMap<String, String> mapImgURLs;
@@ -117,6 +126,7 @@ public class MapEditorController extends AbsController {
     unodes.forEach(this::drawNode);
   }
 
+  // this also does some initialization now
   private void drawNode(MicroNode unode) {
 
     Point2D p = unode.point;
@@ -134,9 +144,23 @@ public class MapEditorController extends AbsController {
     nodesGroup.getChildren().add(c);
   }
 
+  /**
+   * event handler for mouse click on nodes which checks for double click and fills fields for X and
+   * Y location on map, (and gets info from db about building and floor ?)
+   *
+   * @param e
+   * @param c
+   */
   public void fillMicroNodeFields(MouseEvent e, CircleNode c) {
     if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-      System.out.println("I'm circle: " + c.getCircleNodeID() + " and am being double clicked");
+      System.out.println(
+          "I'm circle: "
+              + c.getCircleNodeID()
+              + " my cord is: "
+              + c.getCenterX()
+              + " and am being double clicked");
+      xMicroNodeText.setText(String.valueOf(c.getCenterX()));
+      yMicroNodeText.setText(String.valueOf(c.getCenterY()));
     }
   }
 
