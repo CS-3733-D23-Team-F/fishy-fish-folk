@@ -154,9 +154,6 @@
                                  </effect>
                               </VBox>
                            </children>
-                           <effect>
-                              <DropShadow />
-                           </effect>
                         </VBox>
                      </children>
                   </AnchorPane>
@@ -170,16 +167,22 @@
                               <Image url="@../map/00_thelowerlevel1.png" />
                            </image>
                            <viewport>
-                              <Rectangle2D height="3000.0" minX="900.0" minY="150.0" width="4050.0" />
+                              <Rectangle2D />
                            </viewport>
                         </ImageView>
                         </Group>
                <HBox.margin>
                   <Insets left="60.0" top="17.6" />
                </HBox.margin>
+               <effect>
+                  <DropShadow spread="0.08" />
+               </effect>
             </GesturePane>
 
          </children>
+         <effect>
+            <DropShadow />
+         </effect>
       </HBox>
    </children>
 </VBox>

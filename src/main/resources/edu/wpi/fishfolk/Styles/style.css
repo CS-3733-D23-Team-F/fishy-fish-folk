@@ -44,11 +44,11 @@
     -fx-image: url("../images/orderH.png");
 }
 .navButtons > #pathfindingIcon{
-    -fx-image: url("../images/pathfinding.png");
+    -fx-image: url("../images/wayfinding.png");
 }
 
 .navButtons:hover > #pathfindingIcon{
-    -fx-image: url("../images/pathfindingH.png");
+    -fx-image: url("../images/wayfindingH.png");
 }
 
 
