@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.CircleNode;
 import edu.wpi.fishfolk.database.MicroNode;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -11,7 +12,6 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import net.kurobako.gesturefx.GesturePane;
 
 public class MapEditorController extends AbsController {
@@ -119,7 +119,7 @@ public class MapEditorController extends AbsController {
   private void drawNode(MicroNode unode) {
 
     Point2D p = unode.point;
-    Circle c = new Circle(p.getX(), p.getY(), 4);
+    CircleNode c = new CircleNode(unode.id, p.getX(), p.getY(), 4);
     c.setStrokeWidth(5);
     // c.setFill(Color.TRANSPARENT);
     c.setFill(Color.rgb(12, 212, 252));
