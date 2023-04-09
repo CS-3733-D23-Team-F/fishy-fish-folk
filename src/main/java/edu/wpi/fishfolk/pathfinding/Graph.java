@@ -325,7 +325,7 @@ public class Graph {
       current_node = lastVisited[current_node];
     }
     // add start node to beginning of first path
-    paths.get(0).addFirst(start, nodes[0].point);
+    paths.get(0).addFirst(start, nodes[current_node].point);
 
     System.out.println(paths.toString());
 
