@@ -153,7 +153,7 @@ public class Graph {
         return true;
       }
 
-      //Add weights to stairs
+      // Add weights to stairs
       if (nodes[idx1].type.equals(NodeType.STAI) && nodes[idx2].type.equals(NodeType.STAI)) {
         adjust = 250;
       }

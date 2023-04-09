@@ -2,7 +2,8 @@ package edu.wpi.fishfolk.database;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;import java.util.List;import java.util.Stack;
+import java.util.HashSet;
+import java.util.List;
 
 /** @author Christian */
 public class Fdb {
@@ -24,24 +25,26 @@ public class Fdb {
 
     int maxID = 3000;
 
-    freeIDs = new HashSet<>((maxID-100)/5 * 4/3 + 1); //about 780 to start
+    freeIDs = new HashSet<>((maxID - 100) / 5 * 4 / 3 + 1); // about 780 to start
 
-    //add all ids from 100 -> 3000 counting by 5
-    for(int i = 100; i <= maxID; i += 5){
+    // add all ids from 100 -> 3000 counting by 5
+    for (int i = 100; i <= maxID; i += 5) {
       freeIDs.add(Integer.toString(i));
     }
 
-    //remove the ids already in the database
-    micronodeTable.getColumn("id").forEach(id -> {
-      freeIDs.remove(id);
-    });
+    // remove the ids already in the database
+    micronodeTable
+        .getColumn("id")
+        .forEach(
+            id -> {
+              freeIDs.remove(id);
+            });
   }
 
-  public boolean processEdit(DataEdit edit){
+  public boolean processEdit(DataEdit edit) {
 
-    //handle ids
-    switch(edit.type){
-
+    // handle ids
+    switch (edit.type) {
       case INSERT:
         edit.id = getNextID();
         break;
@@ -51,8 +54,7 @@ public class Fdb {
         break;
     }
 
-    switch(edit.table){
-
+    switch (edit.table) {
       case MICRONODE:
         return micronodeTable.update(edit);
 
@@ -67,16 +69,15 @@ public class Fdb {
     }
 
     return false;
-
   }
 
-  public String getNextID(){
+  public String getNextID() {
     String id = freeIDs.iterator().next();
     freeIDs.iterator().remove();
     return id;
   }
 
-  public void freeID(String id){
+  public void freeID(String id) {
     freeIDs.add(id);
   }
 
@@ -100,26 +101,26 @@ public class Fdb {
       micronodeTable = new Table(conn, "micronode");
       micronodeTable.init(false);
       micronodeTable.setHeaders(
-              new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
-              new ArrayList<>(List.of("int", "double", "double", "String2", "String16")));
+          new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
+          new ArrayList<>(List.of("int", "double", "double", "String2", "String16")));
 
       locationTable = new Table(conn, "location");
       locationTable.init(false);
       locationTable.setHeaders(
-              new ArrayList<>(List.of("longname", "shortname", "type")),
-              new ArrayList<>(List.of("String64", "String64", "String4")));
+          new ArrayList<>(List.of("longname", "shortname", "type")),
+          new ArrayList<>(List.of("String64", "String64", "String4")));
 
       moveTable = new Table(conn, "move");
       moveTable.init(false);
       moveTable.setHeaders(
-              new ArrayList<>(List.of("id", "longname", "date")),
-              new ArrayList<>(List.of("int", "String64", "String16")));
+          new ArrayList<>(List.of("id", "longname", "date")),
+          new ArrayList<>(List.of("int", "String64", "String16")));
 
       edgeTable = new Table(conn, "edge");
       edgeTable.init(false);
       edgeTable.setHeaders(
-              new ArrayList<>(List.of("node1", "node2")),
-              new ArrayList<>(List.of("String8", "String8")));
+          new ArrayList<>(List.of("node1", "node2")),
+          new ArrayList<>(List.of("String8", "String8")));
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -180,11 +181,11 @@ public class Fdb {
     try {
       statement = db.createStatement();
       String query =
-              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-                      + db.getSchema()
-                      + "' AND tablename = '"
-                      + tbName
-                      + "');";
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + db.getSchema()
+              + "' AND tablename = '"
+              + tbName
+              + "');";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();

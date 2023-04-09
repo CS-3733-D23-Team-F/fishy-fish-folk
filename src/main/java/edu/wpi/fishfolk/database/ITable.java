@@ -6,15 +6,15 @@ public interface ITable {
 
   /**
    * Setter for both headers. Note that this does not modify the database, use addHeaders instead.
+   *
    * @param headers
    * @param headerTypes
    */
-
   void setHeaders(ArrayList<String> headers, ArrayList<String> headerTypes);
 
   /**
-   * Add the provided ArrayLists as headers to this Table with the corresponding data type.
-   * Specify the Java type of each corresponding header. Currently supported types: String, int, double.
+   * Add the provided ArrayLists as headers to this Table with the corresponding data type. Specify
+   * the Java type of each corresponding header. Currently supported types: String, int, double.
    *
    * @param headers
    * @param headerTypes
@@ -52,8 +52,8 @@ public interface ITable {
   /**
    * Get all the rows in this table.
    *
-   * @return an array of ArrayList<String> where each element corresponds to a row.
-   * The first element contains the headers in an array.
+   * @return an array of ArrayList<String> where each element corresponds to a row. The first
+   *     element contains the headers in an array.
    */
   ArrayList<String>[] getAll();
 
@@ -109,22 +109,18 @@ public interface ITable {
    */
   boolean exists(String pkey, String id);
 
-  /**
-   *
-   * @return the number of rows in the Table
-   */
+  /** @return the number of rows in the Table */
   int size();
 
   /**
    * Execute a SQL query.
    *
    * @param selection a valid SQL fragment of the form "SELECT ..."
-   * @param condition a valid SQL fragment describing which rows to select.
-   *                  Can be empty if no condition is needed.
+   * @param condition a valid SQL fragment describing which rows to select. Can be empty if no
+   *     condition is needed.
    * @return an ArrayList where each entry is a String[] corresponding to one row of the result set.
    */
   ArrayList<String[]> executeQuery(String selection, String condition);
-
 
   /**
    * Overwrite the Table with the data found at the provided filepath. Make sure the filepath leads

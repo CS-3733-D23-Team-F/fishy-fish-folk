@@ -64,10 +64,7 @@ public class PathfindingController extends AbsController {
   Graph graph;
   ArrayList<Path> paths;
 
-  HashMap<String, Image> images;
-  ArrayList<String> floors;
   int currentFloor;
-  HashMap<String, String> mapImgURLs;
 
   public PathfindingController() {
     super();
@@ -172,30 +169,15 @@ public class PathfindingController extends AbsController {
           System.out.println("end node: " + end);
         });
 
-    floors = new ArrayList<>(3);
     currentFloor = 0;
 
     graph = new Graph(dbConnection.micronodeTable, dbConnection.edgeTable);
 
-    images = new HashMap<>();
-
-    mapImgURLs = new HashMap<>();
-
-    mapImgURLs.put("L1", "map/00_thelowerlevel1.png");
-    mapImgURLs.put("L2", "map/00_thelowerlevel2.png");
-    mapImgURLs.put("GG", "map/00_thegroundfloor.png");
-    mapImgURLs.put("1", "map/01_thefirstfloor.png");
-    mapImgURLs.put("2", "map/02_thesecondfloor.png");
-    mapImgURLs.put("3", "map/03_thethirdfloor.png");
 
     submitBtn.setOnMouseClicked(
         event -> {
           paths = graph.AStar(start, end);
 
-          for (Path path : paths) {
-            images.put(
-                path.floor, new Image(Fapp.class.getResourceAsStream(mapImgURLs.get(path.floor))));
-          }
           // create segments for each path and put into groups
           drawPaths(paths);
           currentFloor = 0;

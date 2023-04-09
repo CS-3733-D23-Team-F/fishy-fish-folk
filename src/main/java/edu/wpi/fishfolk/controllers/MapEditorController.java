@@ -24,9 +24,6 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton backButton;
   private Group nodesGroup;
 
-  private HashMap<String, String> mapImgURLs;
-  private HashMap<String, Image> images;
-
   private int currentFloor = 2;
   private List<MicroNode> unodes;
 
