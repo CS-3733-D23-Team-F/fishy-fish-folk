@@ -11,6 +11,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import net.kurobako.gesturefx.GesturePane;
 
@@ -26,7 +28,6 @@ public class MapEditorController extends AbsController {
 
   private HashMap<String, String> mapImgURLs;
   private HashMap<String, Image> images;
-
   private int currentFloor = 2;
   private List<MicroNode> unodes;
 
@@ -125,8 +126,20 @@ public class MapEditorController extends AbsController {
     c.setFill(Color.rgb(12, 212, 252));
     c.setStroke(Color.rgb(12, 212, 252)); // #208036
 
+    c.setOnMouseClicked(
+        event -> {
+          fillMicroNodeFields(event, c);
+        });
+
     nodesGroup.getChildren().add(c);
   }
+
+  public void fillMicroNodeFields(MouseEvent e, CircleNode c) {
+    if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+      System.out.println("I'm circle: " + c.getCircleNodeID() + " and am being double clicked");
+    }
+  }
+
   /*
     public Point2D convert(Point2D p) {
 
