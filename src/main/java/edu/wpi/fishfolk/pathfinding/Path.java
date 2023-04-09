@@ -5,13 +5,16 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import javafx.geometry.Point2D;
 import lombok.Getter;
+import lombok.Setter;
 
 public class Path {
 
-  @Getter private ArrayList<String> nodes;
-  @Getter private ArrayList<Point2D> points;
+  public ArrayList<Integer> nodes;
+  public ArrayList<Point2D> points;
 
-  int numNodes;
+  @Getter @Setter public String floor;
+
+  public int numNodes;
 
   public Path() {
     nodes = new ArrayList<>();
@@ -19,14 +22,14 @@ public class Path {
     numNodes = 0;
   }
 
-  public void addFirst(String n, Point2D p) {
+  public void addFirst(int nid, Point2D p) {
     // this runs in O(n) time so maybe try batching in groups of 10 or 20 node/point pairs
-    nodes.add(0, n);
+    nodes.add(0, nid);
     points.add(0, p);
     numNodes++;
   }
 
-  public String removeLast() {
+  public int removeLast() {
     numNodes--;
     points.remove(numNodes);
     return nodes.remove(numNodes); // numNodes is now size - 1 which corresponds to the last element
@@ -53,9 +56,8 @@ public class Path {
 
     LinkedList<PathSegment> segments = new LinkedList<>();
 
-    for (int midx = 1;
-        midx <= numNodes - 2;
-        midx++) { // keep track of middle index in each set of 3
+    // keep track of middle index in each set of 3
+    for (int midx = 1; midx <= numNodes - 2; midx++) {
 
       Point2D start = points.get(midx - 1);
       Point2D mid = points.get(midx);
@@ -132,7 +134,7 @@ public class Path {
   }
 
   public String toString() {
-    return nodes.toString();
+    return floor + ": " + nodes.toString();
   }
 
   @Override

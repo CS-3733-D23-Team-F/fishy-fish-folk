@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.database.Table;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.CreditCardInfo;
@@ -10,19 +11,41 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 
-public class FoodOrderController {
+public class FoodOrderController extends AbsController {
+  private static String[] headersArray = {"id", "items", "status", "assignee", "room", "time"};
+  public static ArrayList<String> headers = new ArrayList<String>(Arrays.asList(headersArray));
+
+  Table foodOrderTable;
   FoodOrder currentOrder;
   ArrayList<FoodItem> menu;
-  ArrayList<Room> roomsServiced;
+  ArrayList<String> roomsServiced;
   int hoursAhead;
   int currentPage; // for menus with more than 3 items
   int[] itemQuantities;
+  @FXML MFXButton signageNav;
 
+  @FXML MFXButton mealNav;
+
+  @FXML MFXButton officeNav;
+  @FXML MFXButton pathfindingNav;
+  @FXML MFXButton mapEditorNav;
+  @FXML MFXButton sideBar;
+  @FXML AnchorPane menuWrap;
+  @FXML MFXButton exitButton;
+
+  @FXML MFXButton sideBarClose;
+  @FXML AnchorPane slider;
   @FXML MFXButton prevPageButton, nextPageButton;
   @FXML MFXButton addOneButton, addTwoButton, addThreeButton;
   @FXML MFXButton removeOneButton, removeTwoButton, removeThreeButton;
@@ -32,9 +55,21 @@ public class FoodOrderController {
   @FXML Text itemPrice1, itemPrice2, itemPrice3;
   @FXML Text itemQuantity1, itemQuantity2, itemQuantity3;
   @FXML Text timeText;
-  @FXML ChoiceBox<Room> roomSelector;
+  @FXML ComboBox<String> roomSelector;
   @FXML PopOver notiPop;
+  @FXML MFXButton viewFood;
+  @FXML MFXButton viewSupply;
+  @FXML MFXButton homeButton;
   Text[] nameBoxes, priceBoxes, quantityBoxes;
+
+  public FoodOrderController() {
+    super();
+    foodOrderTable = new Table(dbConnection.conn, "foodorder");
+    foodOrderTable.init(false);
+    foodOrderTable.addHeaders(
+        FoodOrderController.headers,
+        new ArrayList<>(List.of("String", "String", "String", "String", "String", "String")));
+  }
 
   @FXML
   private void initialize() {
@@ -50,10 +85,61 @@ public class FoodOrderController {
     plusHour.setOnAction(event -> delayHour());
     minusDay.setOnAction(event -> undelayDay());
     minusHour.setOnAction(event -> undelayHour());
-    asapButton.setOnAction(event -> setTimeAsap());
+
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
+    officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    exitButton.setOnMouseClicked(event -> System.exit(0));
+
+    slider.setTranslateX(-400);
+    sideBarClose.setVisible(false);
+
+    sideBar.setOnMouseClicked(
+        event -> {
+          menuWrap.setDisable(false);
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+
+          slide.setToX(400);
+          slide.play();
+
+          slider.setTranslateX(-400);
+
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                sideBar.setVisible(false);
+                sideBarClose.setVisible(true);
+              });
+        });
+
+    sideBarClose.setOnMouseClicked(
+        event -> {
+          menuWrap.setDisable(true);
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+          slide.setToX(-400);
+          slide.play();
+
+          slider.setTranslateX(0);
+
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                sideBar.setVisible(true);
+                sideBarClose.setVisible(false);
+              });
+        });
+
     submitButton.setOnAction(
         event -> {
           if (currentOrder.submit()) {
+            foodOrderTable.insert(currentOrder);
             // notify confirmation
             Navigation.navigate(Screen.HOME);
           } else {
@@ -74,6 +160,8 @@ public class FoodOrderController {
             popText.setText(errors);
             notiPop.setContentNode(popText);
             notiPop.show(submitButton);
+            currentOrder.setSubmitted();
+            currentOrder.formID = "" + System.currentTimeMillis();
           }
         });
     clearButton.setOnAction(event -> init());
@@ -102,11 +190,11 @@ public class FoodOrderController {
   }
 
   void loadRooms() {
-    roomsServiced = new ArrayList<Room>();
-    roomsServiced.add(Room.generic1);
-    roomsServiced.add(Room.generic2);
-    roomsServiced.add(Room.generic3);
-    roomsServiced.add(Room.generic4);
+    roomsServiced = new ArrayList<String>();
+    roomsServiced.add(Room.generic1.toString());
+    roomsServiced.add(Room.generic2.toString());
+    roomsServiced.add(Room.generic3.toString());
+    roomsServiced.add(Room.generic4.toString());
     roomSelector.getItems().addAll(roomsServiced);
   }
 
@@ -131,7 +219,7 @@ public class FoodOrderController {
       quantityBoxes[i].setText("" + itemQuantities[index + i]);
     }
     timeText.setText(
-        currentOrder.deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd\nh:ma")));
+        currentOrder.deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd\nh:mma")));
     // System.out.println("\n\nCurrent order: \n" + currentOrder.toString());
   }
 
