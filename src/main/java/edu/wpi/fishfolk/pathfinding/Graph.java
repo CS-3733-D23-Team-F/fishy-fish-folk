@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.pathfinding;
 
+import edu.wpi.fishfolk.database.NodeTable;
 import edu.wpi.fishfolk.database.Table;
 import java.util.*;
 import javafx.geometry.Point2D;
@@ -14,23 +15,22 @@ public class Graph {
   int size;
   double[][] adjMat;
   Node[] nodes;
+
+  ArrayList<Integer> elevatorIDs;
   HashMap<Integer, Integer> id2idx; // string id to index in nodes array and adjacency matrix
   private int lastIdx;
 
-  HashMap<String, String> elevatorFloors;
-
-  @Setter Table nodeTable;
+  @Setter NodeTable nodeTable;
   @Setter Table edgeTable;
 
-  public Graph(Table nodeTable, Table edgeTable) {
+  public Graph(NodeTable nodeTable, Table edgeTable) {
 
     this.size = nodeTable.size();
 
     adjMat = new double[size][size];
     nodes = new Node[size];
     id2idx = new HashMap<>(size * 4 / 3 + 1); // default load factor is 75% = 3/4
-
-    elevatorFloors = new HashMap<>(64); // high estimate
+    elevatorIDs = new ArrayList<Integer>();
 
     lastIdx = 0;
 
@@ -42,19 +42,7 @@ public class Graph {
 
   public void populate() {
 
-    ArrayList<Node> nodes =
-        (ArrayList<Node>)
-            Arrays.stream(nodeTable.getAll())
-                .toList()
-                .stream()
-                .map(
-                    elt -> {
-                      Node n = new Node();
-                      n.construct(elt);
-                      return n;
-                    })
-                .toList();
-
+    Node[] nodes = nodeTable.getAllNodes();
     int nodeCount = 0, edgeCount = 0;
 
     for (Node node : nodes) {
@@ -70,11 +58,13 @@ public class Graph {
       if (addEdge(n1, n2)) edgeCount++;
     }
 
+    System.out.println(nodeCount + " " + edgeCount);
+
     System.out.println(
         "[Graph.populate]: Populated graph with "
-            + nodeCount
+            + nodes.length
             + " nodes and "
-            + edgeCount
+            + edges.length
             + " edges.");
   }
 
@@ -111,16 +101,8 @@ public class Graph {
       return false;
     }
 
-    if (n.type == NodeType.ELEV) {
-      // Takes the elevator letter from name (Ex: "Elevator A" -> "A")
-      String elevatorLet = n.longName.substring(8, 10);
-
-      // Store floors seperated by commas with associated Elevator letter
-      if (elevatorFloors.containsKey(elevatorLet)) {
-        elevatorFloors.put(elevatorLet, elevatorFloors.get(elevatorLet) + "," + n.floor);
-      } else {
-        elevatorFloors.put(elevatorLet, "," + n.floor);
-      }
+    if (n.type.equals(NodeType.ELEV)) {
+      elevatorIDs.add(lastIdx);
     }
 
     id2idx.put(n.nid, lastIdx);
@@ -146,16 +128,43 @@ public class Graph {
 
     Integer idx1 = id2idx.get(n1);
     Integer idx2 = id2idx.get(n2);
+    int adjust = 0;
 
     if (idx1 != null && idx2 != null) {
+
+      // Adds edges between all nodes in a elevator on different floors
+      if (nodes[idx1].type.equals(NodeType.ELEV) && nodes[idx2].type.equals(NodeType.ELEV)) {
+        String eleLetter = nodes[idx1].longName.substring(8, 10); // Elevator letter identifier
+        for (int other = 0; other < elevatorIDs.size(); other++) {
+
+          if (nodes[elevatorIDs.get(other)]
+                  .longName
+                  .substring(8, 10)
+                  .equals(eleLetter) // letters match
+              && (adjMat[idx1][elevatorIDs.get(other)] == 0) // No edge currently
+              && !nodes[elevatorIDs.get(other)].floor.equals(nodes[idx1].floor)) { // Not itself
+
+            adjMat[idx1][elevatorIDs.get(other)] = 250;
+            adjMat[elevatorIDs.get(other)][idx1] = 250;
+            nodes[idx1].degree++;
+            nodes[elevatorIDs.get(other)].degree++;
+          }
+        }
+        return true;
+      }
+
+      //Add weights to stairs
+      if (nodes[idx1].type.equals(NodeType.STAI) && nodes[idx2].type.equals(NodeType.STAI)) {
+        adjust = 250;
+      }
 
       // System.out.println(edge.id);
 
       Point2D point1 = nodes[idx1].point;
       Point2D point2 = nodes[idx2].point;
 
-      adjMat[idx1][idx2] = point1.distance(point2);
-      adjMat[idx2][idx1] = point1.distance(point2);
+      adjMat[idx1][idx2] = point1.distance(point2) + adjust;
+      adjMat[idx2][idx1] = point1.distance(point2) + adjust;
       nodes[idx1].degree++;
       nodes[idx2].degree++;
 
@@ -164,37 +173,6 @@ public class Graph {
     } else {
       return false;
     }
-  }
-
-  public Point2D nearestElevator(int node1, int node2) {
-
-    String node1Floor = nodes[id2idx.get(node1)].floor;
-    String node2Floor = nodes[id2idx.get(node2)].floor;
-    Point2D nodePoint = nodes[id2idx.get(node1)].point;
-    double minDist = -1;
-    int ID = 0;
-    String elvatorLet = "";
-
-    for (int other = 0; other > size; other++) {
-      if (nodes[other].type.equals(NodeType.ELEV)) {
-
-        elvatorLet = nodes[other].longName.substring(8, 10);
-
-        if (elevatorFloors
-                .get(elvatorLet)
-                .contains("," + node2Floor) // Elevator reaches floor of both nodes
-            && (nodes[other].floor.equals(node1Floor))) {
-
-          if ((minDist < 0)
-              || minDist
-                  > nodePoint.distance(nodes[other].point)) { // New minimum distance Elevator
-            minDist = nodePoint.distance(nodes[other].point);
-            ID = other;
-          }
-        }
-      }
-    }
-    return nodes[ID].point;
   }
 
   public Path bfs(int start, int end) {
@@ -269,9 +247,6 @@ public class Graph {
     String endFloor = nodes[id2idx.get(end)].floor;
     Point2D endPoint = nodes[id2idx.get(end)].point;
 
-    Point2D closeEleStart = nearestElevator(start, end);
-    Point2D closeEleEnd = nearestElevator(start, end);
-
     for (int node = 0; node < size; node++) {
 
       fromStart[node] = Integer.MIN_VALUE;
@@ -312,17 +287,15 @@ public class Graph {
 
         if (!visited[other] && fromStart[other] > -1) {
 
-          if (heuristic[other] < -1 && nodes[other].floor.equals(endFloor)) {
+          if (heuristic[other] < -501 && nodes[other].floor.equals(endFloor)) {
+            heuristic[other] = nodes[other].point.distance(endPoint) - 500;
+          } else if (heuristic[other] < -501) {
             heuristic[other] = nodes[other].point.distance(endPoint);
-          } else if (heuristic[other] < -1) {
-            heuristic[other] =
-                nodes[other].point.distance(closeEleStart)
-                    + nodes[other].point.distance(closeEleEnd);
           }
 
           double cost = fromStart[other] + heuristic[other];
 
-          if (cost >= 0 && cost < min) {
+          if (cost >= -501 && cost < min) {
             min = cost;
             current_node = other;
           }
@@ -352,7 +325,7 @@ public class Graph {
       current_node = lastVisited[current_node];
     }
     // add start node to beginning of first path
-    paths.get(0).addFirst(start, nodes[current_node].point);
+    paths.get(0).addFirst(start, nodes[0].point);
 
     System.out.println(paths.toString());
 
