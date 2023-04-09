@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk.pathfinding;
 
-import edu.wpi.fishfolk.database.NodeTable;
 import edu.wpi.fishfolk.database.Table;
 import java.util.*;
 import javafx.geometry.Point2D;
@@ -20,10 +19,10 @@ public class Graph {
   HashMap<Integer, Integer> id2idx; // string id to index in nodes array and adjacency matrix
   private int lastIdx;
 
-  @Setter NodeTable nodeTable;
+  @Setter Table nodeTable;
   @Setter Table edgeTable;
 
-  public Graph(NodeTable nodeTable, Table edgeTable) {
+  public Graph(Table nodeTable, Table edgeTable) {
 
     this.size = nodeTable.size();
 
@@ -42,7 +41,18 @@ public class Graph {
 
   public void populate() {
 
-    Node[] nodes = nodeTable.getAllNodes();
+    ArrayList<Node> nodes =
+            (ArrayList<Node>)
+                    Arrays.stream(nodeTable.getAll())
+                            .toList()
+                            .stream()
+                            .map(
+                                    elt -> {
+                                      Node n = new Node();
+                                      n.construct(elt);
+                                      return n;
+                                    })
+                            .toList();
     int nodeCount = 0, edgeCount = 0;
 
     for (Node node : nodes) {
@@ -58,14 +68,12 @@ public class Graph {
       if (addEdge(n1, n2)) edgeCount++;
     }
 
-    System.out.println(nodeCount + " " + edgeCount);
-
     System.out.println(
-        "[Graph.populate]: Populated graph with "
-            + nodes.length
-            + " nodes and "
-            + edges.length
-            + " edges.");
+            "[Graph.populate]: Populated graph with "
+                    + nodeCount
+                    + " nodes and "
+                    + edgeCount
+                    + " edges.");
   }
 
   public void resize(int newSize) {
@@ -141,8 +149,8 @@ public class Graph {
                   .longName
                   .substring(8, 10)
                   .equals(eleLetter) // letters match
-              && (adjMat[idx1][elevatorIDs.get(other)] == 0) // No edge currently
-              && !nodes[elevatorIDs.get(other)].floor.equals(nodes[idx1].floor)) { // Not itself
+                  && (adjMat[idx1][elevatorIDs.get(other)] == 0) // No edge currently
+                  && !nodes[elevatorIDs.get(other)].floor.equals(nodes[idx1].floor)) { // Not itself
 
             adjMat[idx1][elevatorIDs.get(other)] = 250;
             adjMat[elevatorIDs.get(other)][idx1] = 250;
@@ -188,7 +196,7 @@ public class Graph {
     LinkedList<Integer> queue = new LinkedList<>(); // queue of next nodes to look at in bfs
 
     int[] previous =
-        new int[size]; // used to store the ids of the previous node in order to retrace the path
+            new int[size]; // used to store the ids of the previous node in order to retrace the path
 
     queue.add(start);
 
@@ -215,7 +223,7 @@ public class Graph {
         for (int other = 0; other < size; other++) {
 
           if (adjMat[id2idx.get(cur)][other] != 0.0 // Fixed to 0.0 now that matrix is edge weights
-              && !visited[other]) { // 1 means cur is connected to other
+                  && !visited[other]) { // 1 means cur is connected to other
             int next = nodes[other].nid;
             previous[id2idx.get(next)] = cur;
             queue.addLast(next);
@@ -267,12 +275,12 @@ public class Graph {
       // update adjacent nodes
       for (int node = 0; node < size; node++) {
         if (!(adjMat[current_node][node] == 0.0) // Check if nodes are adjacent
-            && !visited[node]) { // Make sure unvisited node
+                && !visited[node]) { // Make sure unvisited node
 
           // if going to adjacent node via current is better than the previous path to node, update
           // fromStart[node]
           if (fromStart[node] < 0
-              || fromStart[current_node] + adjMat[current_node][node] < fromStart[node]) {
+                  || fromStart[current_node] + adjMat[current_node][node] < fromStart[node]) {
 
             fromStart[node] = fromStart[current_node] + adjMat[current_node][node];
             lastVisited[node] = current_node;
