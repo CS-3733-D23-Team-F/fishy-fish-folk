@@ -1,17 +1,24 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.BuildingRegion;
+import edu.wpi.fishfolk.database.CircleNode;
 import edu.wpi.fishfolk.database.MicroNode;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import net.kurobako.gesturefx.GesturePane;
 
 public class MapEditorController extends AbsController {
@@ -22,10 +29,18 @@ public class MapEditorController extends AbsController {
   @FXML public Group drawGroup;
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
+
+  @FXML MFXTextField xMicroNodeText;
+  @FXML MFXTextField yMicroNodeText;
+  @FXML MFXTextField buildingMicroNodeText;
+  @FXML MFXTextField floorMicroNodeText;
+
   private Group nodesGroup;
 
   private int currentFloor = 2;
   private List<MicroNode> unodes;
+
+  private BuildingRegion shapiroBuilding;
 
   public MapEditorController() {
     super();
@@ -87,6 +102,39 @@ public class MapEditorController extends AbsController {
         });
     pane.centreOn(new Point2D(1700, 1100));
     pane.zoomTo(0.4, new Point2D(2500, 1600));
+
+
+
+    Polygon shapiroPoly = new Polygon();
+    shapiroPoly.getPoints().addAll(
+            1774.133, 2266.667,
+            1095.733, 2263.467,
+            1081.333, 1839.467,
+            1126.133, 1839.467,
+            1129.333, 1799.467,
+            1162.933, 1799.467,
+            1162.933, 1748.267,
+            1270.133, 1753.067,
+            1271.733, 1769.067,
+            1751.733, 1773.867,
+            1751.733, 1799.467,
+            1772.533, 1802.667
+    );
+    ArrayList<Polygon> shapiroPolyList = new ArrayList<Polygon>();
+    shapiroPolyList.add(shapiroPoly);
+    shapiroBuilding = new BuildingRegion(shapiroPolyList, "Shapiro", "1");
+
+    // prints mouse location to screen when clicked on map. Used to calculate building boundaries
+    mapImg.setOnMouseClicked(
+            event -> {
+              System.out.println("X: " + event.getX() + " Y: " + event.getY());
+              Point2D currPoint = new Point2D(event.getX(), event.getY());
+              if(shapiroBuilding.isWithinRegion(currPoint, allFloors.get(currentFloor))){
+                System.out.println("I'm in Shapiro Building");
+              }else{
+                System.out.println("I'm outside");
+              }
+            });
   }
 
   private void switchFloor(String floor) {
@@ -113,17 +161,44 @@ public class MapEditorController extends AbsController {
     unodes.forEach(this::drawNode);
   }
 
+  // this also does some initialization now
   private void drawNode(MicroNode unode) {
 
     Point2D p = unode.point;
-    Circle c = new Circle(p.getX(), p.getY(), 4);
+    CircleNode c = new CircleNode(unode.id, p.getX(), p.getY(), 4);
     c.setStrokeWidth(5);
     // c.setFill(Color.TRANSPARENT);
     c.setFill(Color.rgb(12, 212, 252));
     c.setStroke(Color.rgb(12, 212, 252)); // #208036
 
+    c.setOnMouseClicked(
+        event -> {
+          fillMicroNodeFields(event, c);
+        });
+
     nodesGroup.getChildren().add(c);
   }
+
+  /**
+   * event handler for mouse click on nodes which checks for double click and fills fields for X and
+   * Y location on map, (and TODO: gets info from db about building and floor ?)
+   *
+   * @param e
+   * @param c
+   */
+  public void fillMicroNodeFields(MouseEvent e, CircleNode c) {
+    if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+      System.out.println(
+          "I'm circle: "
+              + c.getCircleNodeID()
+              + " my cord is: "
+              + c.getCenterX()
+              + " and am being double clicked");
+      xMicroNodeText.setText(String.valueOf(c.getCenterX()));
+      yMicroNodeText.setText(String.valueOf(c.getCenterY()));
+    }
+  }
+
   /*
     public Point2D convert(Point2D p) {
 
