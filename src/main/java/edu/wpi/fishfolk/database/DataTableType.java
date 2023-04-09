@@ -1,6 +1,6 @@
 package edu.wpi.fishfolk.database;
 
-public enum DataEditTable {
+public enum DataTableType {
   MICRONODE,
   LOCATION,
   MOVE,

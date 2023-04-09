@@ -1,9 +1,8 @@
 package edu.wpi.fishfolk.database;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 /** @author Christian */
 public class Fdb {
@@ -162,13 +161,6 @@ public class Fdb {
     }
   }
 
-  public void loadTablesFromCSV() {
-    micronodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv", false);
-    locationTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Location.csv", false);
-    moveTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
-    edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
-  }
-
   /**
    * Check if table exists within database.
    *
@@ -194,5 +186,49 @@ public class Fdb {
       System.out.println(e.getMessage());
       return false;
     }
+  }
+
+  public int getMostRecentUNode(String longname) {
+    ArrayList<String[]> results =
+        moveTable.executeQuery("SELECT id, date", "WHERE longname = '" + longname + "';");
+
+    results.forEach(
+        res -> {
+          res[1] = Move.sanitizeDate(res[1]);
+          System.out.println(Arrays.toString(res));
+        });
+
+    // sort results based on date
+    results.sort(Comparator.comparing(result -> LocalDate.parse(result[1], Move.format)));
+
+    // extract id from last result
+    return Integer.parseInt(results.get(results.size() - 1)[0]);
+  }
+
+  /**
+   * Perform a join operation on two tables along the match column. The returned ArrayList contains
+   * the requested headers in the first index and each element afterwards represents one row, not
+   * including
+   *
+   * @param selectHeaders
+   * @param left
+   * @param right
+   * @param match
+   * @return
+   */
+  /*
+  public ArrayList<String[]> join(String[] selectHeaders, DataTableType left, DataTableType right, String match){
+
+
+
+  }
+
+   */
+
+  public void loadTablesFromCSV() {
+    micronodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv", false);
+    locationTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Location.csv", false);
+    moveTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
+    edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
   }
 }

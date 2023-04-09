@@ -52,10 +52,9 @@ public interface ITable {
   /**
    * Get all the rows in this table.
    *
-   * @return an array of ArrayList<String> where each element corresponds to a row. The first
-   *     element contains the headers in an array.
+   * @return an ArrayList<String[]> where each element corresponds to a row in the Table.
    */
-  ArrayList<String>[] getAll();
+  ArrayList<String[]> getAll();
 
   /**
    * Insert the provided TableEntry into the Table.

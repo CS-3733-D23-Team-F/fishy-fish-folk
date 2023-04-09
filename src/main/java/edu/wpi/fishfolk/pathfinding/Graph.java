@@ -1,9 +1,12 @@
 package edu.wpi.fishfolk.pathfinding;
 
-import edu.wpi.fishfolk.database.Table;
+import edu.wpi.fishfolk.database.Fdb;
+import edu.wpi.fishfolk.database.Location;
+import edu.wpi.fishfolk.database.MicroNode;
+import edu.wpi.fishfolk.database.Move;
+import java.time.LocalDate;
 import java.util.*;
 import javafx.geometry.Point2D;
-import lombok.Setter;
 
 public class Graph {
 
@@ -13,73 +16,127 @@ public class Graph {
 
   int size;
   double[][] adjMat;
-  Node[] nodes;
-
-  ArrayList<Integer> elevatorIDs;
+  MicroNode[] unodes;
   HashMap<Integer, Integer> id2idx; // string id to index in nodes array and adjacency matrix
+  HashMap<String, ArrayList<Integer>> elevLet2ids;
   private int lastIdx;
 
-  @Setter Table nodeTable;
-  @Setter Table edgeTable;
+  private Fdb dbConnection;
 
-  public Graph(Table nodeTable, Table edgeTable) {
+  public Graph(Fdb dbConnection) {
 
-    this.size = nodeTable.size();
+    this.dbConnection = dbConnection;
+
+    this.size = dbConnection.micronodeTable.size();
 
     adjMat = new double[size][size];
-    nodes = new Node[size];
+    unodes = new MicroNode[size];
     id2idx = new HashMap<>(size * 4 / 3 + 1); // default load factor is 75% = 3/4
-    elevatorIDs = new ArrayList<Integer>();
+    elevLet2ids = new HashMap<>(32); // estimate of number of elevator nodes
 
     lastIdx = 0;
-
-    this.nodeTable = nodeTable;
-    this.edgeTable = edgeTable;
 
     populate();
   }
 
+  private static void accept(String[] move) {
+    move[2] = Move.sanitizeDate(move[2]);
+  }
+
   public void populate() {
 
-    ArrayList<Node> nodes =
-            (ArrayList<Node>)
-                    Arrays.stream(nodeTable.getAll())
-                            .toList()
-                            .stream()
-                            .map(
-                                    elt -> {
-                                      Node n = new Node();
-                                      n.construct(elt);
-                                      return n;
-                                    })
-                            .toList();
-    int nodeCount = 0, edgeCount = 0;
+    ArrayList<String[]> unodesLst = dbConnection.micronodeTable.getAll();
+    ArrayList<String[]> moves = dbConnection.moveTable.getAll();
+    ArrayList<String[]> locations = dbConnection.locationTable.getAll();
+    ArrayList<String[]> edges = dbConnection.edgeTable.getAll();
 
-    for (Node node : nodes) {
-      if (addNode(node)) nodeCount++;
+    // put unodes into array and record in id2idx
+    Iterator<String[]> itr = unodesLst.iterator();
+    int idx = 0;
+    while (itr.hasNext()) {
+
+      MicroNode unode = new MicroNode();
+      unode.construct(new ArrayList<>(List.of(itr.next())));
+
+      unodes[idx] = unode;
+
+      id2idx.put(Integer.parseInt(unode.id), idx);
+      idx++;
+
+      // record node ids of elevator nodes
+      if (unode.containsType(NodeType.ELEV)) {
+
+        for (String letter : unode.getElevLetters()) {
+
+          // add nid to the list of ids associated with the elevator's letter
+          ArrayList<Integer> lst = new ArrayList<>();
+          lst.add(unode.nid);
+          elevLet2ids.merge(
+              letter,
+              lst,
+              (lst1, lst2) -> {
+                lst1.addAll(lst2);
+                return lst1;
+              });
+        }
+      }
     }
 
-    ArrayList<String>[] edges = edgeTable.getAll();
+    // compare moves by the natural order of their dates
 
-    // index 0 has the headers
-    for (int i = 1; i < edges.length; i++) {
-      int n1 = Integer.parseInt(edges[i].get(0));
-      int n2 = Integer.parseInt(edges[i].get(1));
-      if (addEdge(n1, n2)) edgeCount++;
+    // ensure move dates follow the above format
+    moves.forEach(
+        move -> {
+          move[2] = Move.sanitizeDate(move[2]);
+        });
+
+    moves.sort(Comparator.comparing(move -> LocalDate.parse(move[2], Move.format)));
+
+    HashMap<String, Integer> lname2id = new HashMap<>(size * 4 / 3 + 1);
+
+    itr = moves.iterator();
+    while (itr.hasNext()) {
+      String[] move = itr.next();
+      // one unode per location. also sorted by date so later moves overwrite previous mappings
+      lname2id.put(move[1], Integer.parseInt(move[0]));
     }
+
+    // associate locations to unodes
+    locations.forEach(
+        elt -> {
+          Location loc = new Location();
+          loc.construct(new ArrayList<>(List.of(elt)));
+
+          // from lname -> get id -> get idx
+          int i = id2idx.get(lname2id.get(loc.longname));
+
+          // 2 way connection from location <-> unode
+          loc.assign(unodes[i]);
+          unodes[i].addLocation(loc);
+        });
+
+    edges.forEach(
+        edge -> {
+          int n1 = Integer.parseInt(edge[0]);
+          int n2 = Integer.parseInt(edge[1]);
+          addEdge(n1, n2);
+        });
+
+    // TODO test different values for this cost
+    int edgeCount = edges.size() + connectElevators(250);
 
     System.out.println(
-            "[Graph.populate]: Populated graph with "
-                    + nodeCount
-                    + " nodes and "
-                    + edgeCount
-                    + " edges.");
+        "[Graph.populate]: Populated graph with "
+            + unodes.length
+            + " nodes and "
+            + edgeCount
+            + " edges.");
   }
 
   public void resize(int newSize) {
 
     double[][] newAdjMat = new double[newSize][newSize];
-    Node[] newNodes = new Node[newSize];
+    MicroNode[] newNodes = new MicroNode[newSize];
     HashMap<Integer, Integer> newid2idx = new HashMap<>(newSize * 4 / 3 + 1);
 
     // copy adjmat
@@ -92,7 +149,7 @@ public class Graph {
 
     // copy array of nodes
     for (int i = 0; i < size; i++) {
-      newNodes[i] = nodes[i];
+      newNodes[i] = unodes[i];
     }
 
     // copy id2idx map
@@ -103,84 +160,86 @@ public class Graph {
     size = newSize;
   }
 
-  public boolean addNode(Node n) {
-
-    if (id2idx.containsKey(n.id)) { // duplicates
-      return false;
-    }
-
-    if (n.type.equals(NodeType.ELEV)) {
-      elevatorIDs.add(lastIdx);
-    }
-
-    id2idx.put(n.nid, lastIdx);
-    nodes[lastIdx] = n;
-
-    lastIdx++;
-    return true;
-  }
-
   public boolean removeNode(String id) {
 
     Integer idx = id2idx.get(id);
 
-    if (id2idx.remove(id) == null) { // requested node is not in graph
+    if (id2idx.remove(idx) == null) { // requested node is not in graph
       return false;
     }
 
-    nodes[idx] = null; // remove from nodes array
+    unodes[idx] = null; // remove from nodes array
     return false;
   }
 
-  public boolean addEdge(int n1, int n2) {
+  /**
+   * Add the edges between the two given nodes.
+   *
+   * @param nid1 first node id
+   * @param nid2 second node id
+   * @return
+   */
+  public boolean addEdge(int nid1, int nid2) {
 
-    Integer idx1 = id2idx.get(n1);
-    Integer idx2 = id2idx.get(n2);
+    Integer idx1 = id2idx.get(nid1);
+    Integer idx2 = id2idx.get(nid2);
     int adjust = 0;
 
     if (idx1 != null && idx2 != null) {
 
-      // Adds edges between all nodes in a elevator on different floors
-      if (nodes[idx1].type.equals(NodeType.ELEV) && nodes[idx2].type.equals(NodeType.ELEV)) {
-        String eleLetter = nodes[idx1].longName.substring(8, 10); // Elevator letter identifier
-        for (int other = 0; other < elevatorIDs.size(); other++) {
-
-          if (nodes[elevatorIDs.get(other)]
-                  .longName
-                  .substring(8, 10)
-                  .equals(eleLetter) // letters match
-                  && (adjMat[idx1][elevatorIDs.get(other)] == 0) // No edge currently
-                  && !nodes[elevatorIDs.get(other)].floor.equals(nodes[idx1].floor)) { // Not itself
-
-            adjMat[idx1][elevatorIDs.get(other)] = 250;
-            adjMat[elevatorIDs.get(other)][idx1] = 250;
-            nodes[idx1].degree++;
-            nodes[elevatorIDs.get(other)].degree++;
-          }
-        }
-        return true;
-      }
-
       // Add weights to stairs
-      if (nodes[idx1].type.equals(NodeType.STAI) && nodes[idx2].type.equals(NodeType.STAI)) {
+      // TODO: make this dependent on a boolean parameter passed by the pathfinding controller
+      if (unodes[idx1].containsType(NodeType.STAI) && unodes[idx2].containsType(NodeType.STAI)) {
         adjust = 250;
       }
 
       // System.out.println(edge.id);
 
-      Point2D point1 = nodes[idx1].point;
-      Point2D point2 = nodes[idx2].point;
+      Point2D point1 = unodes[idx1].point;
+      Point2D point2 = unodes[idx2].point;
 
       adjMat[idx1][idx2] = point1.distance(point2) + adjust;
       adjMat[idx2][idx1] = point1.distance(point2) + adjust;
-      nodes[idx1].degree++;
-      nodes[idx2].degree++;
+      unodes[idx1].degree++;
+      unodes[idx2].degree++;
 
       return true;
 
     } else {
       return false;
     }
+  }
+
+  /**
+   * Connect every pair of elevators in the same shaft with a fixed cost edge.
+   *
+   * @param cost the cost of taking the elevator
+   * @return the number of elevator connections added
+   */
+  private int connectElevators(double cost) {
+
+    int count = 0;
+
+    for (String letter : elevLet2ids.keySet()) {
+
+      ArrayList<Integer> nids = elevLet2ids.get(letter);
+      int n = nids.size();
+
+      // connect up associated ids:
+      for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+
+          int idxi = id2idx.get(i), idxj = id2idx.get(j);
+          if (adjMat[idxi][idxj] <= 0) count++;
+          adjMat[idxi][idxj] = cost;
+          adjMat[idxj][idxi] = cost;
+          unodes[idxi].degree++;
+          unodes[idxj].degree++;
+        }
+      }
+    }
+
+    return count;
   }
 
   public Path bfs(int start, int end) {
@@ -196,7 +255,7 @@ public class Graph {
     LinkedList<Integer> queue = new LinkedList<>(); // queue of next nodes to look at in bfs
 
     int[] previous =
-            new int[size]; // used to store the ids of the previous node in order to retrace the path
+        new int[size]; // used to store the ids of the previous node in order to retrace the path
 
     queue.add(start);
 
@@ -207,11 +266,11 @@ public class Graph {
       if (cur == end) { // reached end
         Path path = new Path();
 
-        path.addFirst(end, nodes[id2idx.get(end)].point);
+        path.addFirst(end, unodes[id2idx.get(end)].point);
 
         while (cur != start) { // retrace path from the end to the start
           int prev = previous[id2idx.get(cur)];
-          path.addFirst(prev, nodes[id2idx.get(prev)].point);
+          path.addFirst(prev, unodes[id2idx.get(prev)].point);
           cur = prev;
         }
 
@@ -223,8 +282,8 @@ public class Graph {
         for (int other = 0; other < size; other++) {
 
           if (adjMat[id2idx.get(cur)][other] != 0.0 // Fixed to 0.0 now that matrix is edge weights
-                  && !visited[other]) { // 1 means cur is connected to other
-            int next = nodes[other].nid;
+              && !visited[other]) { // 1 means cur is connected to other
+            int next = unodes[other].nid;
             previous[id2idx.get(next)] = cur;
             queue.addLast(next);
           }
@@ -252,16 +311,13 @@ public class Graph {
     // initialize distance from start node and heuristic arrays
     // distance from start node: 0 for start, -MIN_INT for all others
     // heuristic: approximate distances from all points to the target endpoint
-    String endFloor = nodes[id2idx.get(end)].floor;
-    Point2D endPoint = nodes[id2idx.get(end)].point;
+    String endFloor = unodes[id2idx.get(end)].floor;
+    Point2D endPoint = unodes[id2idx.get(end)].point;
 
     for (int node = 0; node < size; node++) {
 
       fromStart[node] = Integer.MIN_VALUE;
       heuristic[node] = Integer.MIN_VALUE;
-
-      // TODO heuristic for two nodes on different floors
-
     }
 
     fromStart[id2idx.get(start)] = 0;
@@ -275,12 +331,12 @@ public class Graph {
       // update adjacent nodes
       for (int node = 0; node < size; node++) {
         if (!(adjMat[current_node][node] == 0.0) // Check if nodes are adjacent
-                && !visited[node]) { // Make sure unvisited node
+            && !visited[node]) { // Make sure unvisited node
 
           // if going to adjacent node via current is better than the previous path to node, update
           // fromStart[node]
           if (fromStart[node] < 0
-                  || fromStart[current_node] + adjMat[current_node][node] < fromStart[node]) {
+              || fromStart[current_node] + adjMat[current_node][node] < fromStart[node]) {
 
             fromStart[node] = fromStart[current_node] + adjMat[current_node][node];
             lastVisited[node] = current_node;
@@ -295,10 +351,10 @@ public class Graph {
 
         if (!visited[other] && fromStart[other] > -1) {
 
-          if (heuristic[other] < -501 && nodes[other].floor.equals(endFloor)) {
-            heuristic[other] = nodes[other].point.distance(endPoint) - 500;
+          if (heuristic[other] < -501 && unodes[other].floor.equals(endFloor)) {
+            heuristic[other] = unodes[other].point.distance(endPoint) - 500;
           } else if (heuristic[other] < -501) {
-            heuristic[other] = nodes[other].point.distance(endPoint);
+            heuristic[other] = unodes[other].point.distance(endPoint);
           }
 
           double cost = fromStart[other] + heuristic[other];
@@ -319,21 +375,21 @@ public class Graph {
     while (!(current_node == id2idx.get(start))) {
 
       // start new path when hitting a new floor
-      if (!nodes[current_node].floor.equals(currentFloor)) {
+      if (!unodes[current_node].floor.equals(currentFloor)) {
         Path path = new Path();
-        currentFloor = nodes[current_node].floor;
+        currentFloor = unodes[current_node].floor;
         path.setFloor(currentFloor);
         paths.add(0, path);
         numpaths++;
       }
 
       // add current node at beginning of first path
-      paths.get(0).addFirst(nodes[current_node].nid, nodes[current_node].point);
+      paths.get(0).addFirst(unodes[current_node].nid, unodes[current_node].point);
 
       current_node = lastVisited[current_node];
     }
     // add start node to beginning of first path
-    paths.get(0).addFirst(start, nodes[current_node].point);
+    paths.get(0).addFirst(start, unodes[current_node].point);
 
     System.out.println(paths.toString());
 
@@ -347,7 +403,7 @@ public class Graph {
   }
 
   public double distance(String n1, String n2) {
-    return nodes[id2idx.get(n1)].point.distance(nodes[id2idx.get(n2)].point);
+    return unodes[id2idx.get(n1)].point.distance(unodes[id2idx.get(n2)].point);
   }
 
   public void speedTest(int n, boolean verbose) {
@@ -395,7 +451,7 @@ public class Graph {
     int idx = id2idx.get(nodeId);
     for (int i = 0; i < size; i++) {
       if (adjMat[idx][i] != 0) {
-        neighbors.add(nodes[i].id);
+        neighbors.add(unodes[i].id);
       }
     }
     return neighbors;

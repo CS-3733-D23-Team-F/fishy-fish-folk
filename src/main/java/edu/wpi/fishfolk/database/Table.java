@@ -245,10 +245,9 @@ public class Table implements ITable {
   }
 
   @Override
-  public ArrayList<String>[] getAll() {
+  public ArrayList<String[]> getAll() {
 
-    ArrayList<String>[] data = new ArrayList[size() + 1];
-    data[0] = headers;
+    ArrayList<String[]> data = new ArrayList<>();
 
     try {
 
@@ -258,14 +257,12 @@ public class Table implements ITable {
       statement.execute(query);
       ResultSet results = statement.getResultSet();
 
-      int idx = 1;
       while (results.next()) {
-        ArrayList<String> row = new ArrayList<>(numHeaders);
+        String[] row = new String[numHeaders];
         for (int i = 1; i <= numHeaders; i++) {
-          row.add(results.getString(i));
+          row[i - 1] = results.getString(i);
         }
-        data[idx] = row;
-        idx++;
+        data.add(row);
       }
 
     } catch (SQLException e) {

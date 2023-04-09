@@ -1,10 +1,13 @@
 package edu.wpi.fishfolk.database;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Move extends TableEntry {
   public String longName;
   public String date;
+
+  public static final DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
   @Override
   public boolean construct(ArrayList<String> data) {
@@ -32,5 +35,14 @@ public class Move extends TableEntry {
     this.id = Integer.toString(nodeId);
     this.longName = longName;
     this.date = date;
+  }
+
+  public static String sanitizeDate(String date) {
+    String[] pieces = date.split("/");
+    // add 0's to single digit days and months
+    if (pieces[0].length() == 1) pieces[0] = "0" + pieces[0];
+    if (pieces[1].length() == 1) pieces[1] = "0" + pieces[1];
+    if (pieces[2].length() == 2) pieces[2] = "20" + pieces[2];
+    return String.join("/", pieces);
   }
 }

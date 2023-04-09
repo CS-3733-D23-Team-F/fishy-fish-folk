@@ -11,10 +11,10 @@ public abstract class AbsController {
 
   static Fdb dbConnection;
 
-  protected final ArrayList<String> floors = new ArrayList<>(List.of("L2", "L1", "1", "2", "3"));
+  protected final ArrayList<String> allFloors = new ArrayList<>(List.of("L2", "L1", "1", "2", "3"));
 
   // BTM - Building for Transformative Medicine
-  protected final ArrayList<String> buildings =
+  protected final ArrayList<String> allBuildings =
       new ArrayList<>(List.of("15 Francis", "45 Francis", "BTM", "Shapiro", "Tower"));
 
   HashMap<String, String> mapImgURLs;
