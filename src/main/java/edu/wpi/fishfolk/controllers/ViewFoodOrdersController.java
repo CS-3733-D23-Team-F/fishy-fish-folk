@@ -150,16 +150,12 @@ public class ViewFoodOrdersController extends AbsController {
     foodOrders = new ArrayList<FoodOrder>();
     // TODO load food orders from database
 
-    ArrayList<String>[] tableOrders = foodOrderTable.getAll();
-    boolean headersHandled = false;
-    for (ArrayList<String> tableEntry : tableOrders) {
-      if (headersHandled) {
-        FoodOrder order = new FoodOrder();
-        order.construct(tableEntry);
-        foodOrders.add(order);
-      } else {
-        headersHandled = true;
-      }
+    ArrayList<String[]> tableOrders = foodOrderTable.getAll();
+    for (String[] orderArr : tableOrders) {
+
+      FoodOrder order = new FoodOrder();
+      order.construct(new ArrayList<>(List.of(orderArr)));
+      foodOrders.add(order);
     }
   }
 

@@ -1,27 +1,83 @@
 package edu.wpi.fishfolk.database;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 /** @author Christian */
 public class Fdb {
 
-  // public NodeTable nodeTable;
-
   public Table micronodeTable;
-
   public Table locationTable;
-
   public Table moveTable;
   public Table edgeTable;
 
   public Connection conn;
 
+  private HashSet<String> freeIDs;
+
   public Fdb() {
 
     this.conn = connect("teamfdb", "teamf", "teamf60");
+
     initialize();
+
+    int maxID = 3000;
+
+    freeIDs = new HashSet<>((maxID - 100) / 5 * 4 / 3 + 1); // about 780 to start
+
+    // add all ids from 100 -> 3000 counting by 5
+    for (int i = 100; i <= maxID; i += 5) {
+      freeIDs.add(Integer.toString(i));
+    }
+
+    // remove the ids already in the database
+    micronodeTable
+            .getColumn("id")
+            .forEach(
+                    id -> {
+                      freeIDs.remove(id);
+                    });
+  }
+
+  public boolean processEdit(DataEdit edit) {
+
+    // handle ids
+    switch (edit.type) {
+      case INSERT:
+        edit.id = getNextID();
+        break;
+
+      case REMOVE:
+        freeID(edit.id);
+        break;
+    }
+
+    switch (edit.table) {
+      case MICRONODE:
+        return micronodeTable.update(edit);
+
+      case LOCATION:
+        return locationTable.update(edit);
+
+      case MOVE:
+        return moveTable.update(edit);
+
+      case EDGE:
+        return edgeTable.update(edit);
+    }
+
+    return false;
+  }
+
+  public String getNextID() {
+    String id = freeIDs.iterator().next();
+    freeIDs.iterator().remove();
+    return id;
+  }
+
+  public void freeID(String id) {
+    freeIDs.add(id);
   }
 
   /**
@@ -44,25 +100,26 @@ public class Fdb {
       micronodeTable = new Table(conn, "micronode");
       micronodeTable.init(false);
       micronodeTable.setHeaders(
-          new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
-          new ArrayList<>(List.of("int", "double", "double", "String", "String")));
+              new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
+              new ArrayList<>(List.of("int", "double", "double", "String2", "String16")));
 
       locationTable = new Table(conn, "location");
       locationTable.init(false);
       locationTable.setHeaders(
-          new ArrayList<>(List.of("longname", "shortname", "type")),
-          new ArrayList<>(List.of("String", "String", "String")));
+              new ArrayList<>(List.of("longname", "shortname", "type")),
+              new ArrayList<>(List.of("String64", "String64", "String4")));
 
       moveTable = new Table(conn, "move");
       moveTable.init(false);
       moveTable.setHeaders(
-          new ArrayList<>(List.of("id", "longname", "date")),
-          new ArrayList<>(List.of("int", "String", "String")));
+              new ArrayList<>(List.of("id", "longname", "date")),
+              new ArrayList<>(List.of("int", "String64", "String16")));
 
       edgeTable = new Table(conn, "edge");
       edgeTable.init(false);
       edgeTable.setHeaders(
-          new ArrayList<>(List.of("node1", "node2")), new ArrayList<>(List.of("String", "String")));
+              new ArrayList<>(List.of("node1", "node2")),
+              new ArrayList<>(List.of("String8", "String8")));
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -77,7 +134,7 @@ public class Fdb {
    * @param dbPass Password
    * @return Database connection object (null if no connection is made)
    */
-  public Connection connect(String dbName, String dbUser, String dbPass) {
+  private Connection connect(String dbName, String dbUser, String dbPass) {
     Connection db = null;
     String dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
     try {
@@ -103,6 +160,93 @@ public class Fdb {
       System.out.println(e.getMessage());
     }
   }
+
+  /**
+   * Check if table exists within database.
+   *
+   * @param db Database connection
+   * @param tbName Table name
+   * @return True if table exists in database
+   */
+  private boolean tableExists(Connection db, String tbName) {
+    Statement statement;
+    try {
+      statement = db.createStatement();
+      String query =
+              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+                      + db.getSchema()
+                      + "' AND tablename = '"
+                      + tbName
+                      + "');";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+      return results.getBoolean("exists");
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+  }
+
+  public int getMostRecentUNode(String longname) {
+    ArrayList<String[]> results =
+            moveTable.executeQuery("SELECT id, date", "WHERE longname = '" + longname + "';");
+
+    results.forEach(
+            res -> {
+              res[1] = Move.sanitizeDate(res[1]);
+              System.out.println(Arrays.toString(res));
+            });
+
+    // sort results based on date
+    results.sort(Comparator.comparing(result -> LocalDate.parse(result[1], Move.format)));
+
+    // extract id from last result
+    return Integer.parseInt(results.get(results.size() - 1)[0]);
+  }
+
+  public ArrayList<String[]> getMostRecentLocations(String id){
+
+    ArrayList<String[]> results =
+            moveTable.executeQuery("SELECT longname, date", "WHERE id = '" + id + "';");
+
+    results.forEach(
+            res -> {
+              res[1] = Move.sanitizeDate(res[1]);
+              System.out.println(Arrays.toString(res));
+            });
+
+    // sort results based on date
+    results.sort(Comparator.comparing(result -> LocalDate.parse(result[1], Move.format)));
+
+    ArrayList<String[]> locations = new ArrayList<>();
+
+    for(String[] result : results){
+      locations.add( locationTable.get("longname", result[0]).toArray( new String[3]));
+    }
+
+    return locations;
+  }
+
+  /**
+   * Perform a join operation on two tables along the match column. The returned ArrayList contains
+   * the requested headers in the first index and each element afterwards represents one row, not
+   * including
+   *
+   * @param selectHeaders
+   * @param left
+   * @param right
+   * @param match
+   * @return
+   */
+  /*
+  public ArrayList<String[]> join(String[] selectHeaders, DataTableType left, DataTableType right, String match){
+
+
+
+  }
+
+   */
 
   public void loadTablesFromCSV() {
     micronodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv", false);

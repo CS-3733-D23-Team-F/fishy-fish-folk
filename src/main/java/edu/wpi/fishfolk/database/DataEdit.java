@@ -1,14 +1,19 @@
 package edu.wpi.fishfolk.database;
 
-public class DataEdit {
+public abstract class DataEdit {
 
+  public String pkey;
   public String id;
-  public String attr;
-  public String value;
 
-  public DataEdit(String id, String attr, String value) {
+  public DataTableType table;
+  public DataEditType type;
+
+  public DataEdit(DataTableType table, String pkey, String id, DataEditType type) {
+
+    this.pkey = pkey;
     this.id = id;
-    this.attr = attr;
-    this.value = value;
+
+    this.table = table;
+    this.type = type;
   }
 }

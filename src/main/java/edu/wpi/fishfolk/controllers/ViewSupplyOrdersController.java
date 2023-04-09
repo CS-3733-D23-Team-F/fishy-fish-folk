@@ -150,16 +150,12 @@ public class ViewSupplyOrdersController extends AbsController {
   private void loadOrders() throws InterruptedException {
     supplyOrders = new ArrayList<SupplyOrder>();
 
-    ArrayList<String>[] tableOrders = supplyOrderTable.getAll();
-    boolean headersHandled = false;
-    for (ArrayList<String> tableEntry : tableOrders) {
-      if (headersHandled) {
-        SupplyOrder order = new SupplyOrder();
-        order.construct(tableEntry);
-        supplyOrders.add(order);
-      } else {
-        headersHandled = true;
-      }
+    ArrayList<String[]> tableOrders = supplyOrderTable.getAll();
+    for (String[] orderArr : tableOrders) {
+
+      SupplyOrder order = new SupplyOrder();
+      order.construct(new ArrayList<>(List.of(orderArr)));
+      supplyOrders.add(order);
     }
   }
 
