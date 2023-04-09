@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.database;
 
-public enum EdgeEditType {
-  ADD,
+public enum DataEditType {
+  INSERT,
+  UPDATE,
   REMOVE;
 }
