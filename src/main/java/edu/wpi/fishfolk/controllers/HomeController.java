@@ -6,6 +6,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -42,6 +43,12 @@ public class HomeController {
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
   @FXML MFXButton homeButton;
+  @FXML ImageView pathfindingIcon;
+  @FXML ImageView mealIcon;
+  @FXML ImageView supplyIcon;
+  @FXML ImageView mapIcon;
+  @FXML ImageView signageIcon;
+  @FXML ImageView orderIcon;
 
   @FXML
   public void initialize() {
@@ -55,7 +62,6 @@ public class HomeController {
     supplyOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
     viewOrderButton.setOnMouseClicked(
         event -> {
