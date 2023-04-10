@@ -2,8 +2,6 @@ package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.util.ArrayList;
-import java.util.List;
-
 import javafx.geometry.Point2D;
 import lombok.Getter;
 
