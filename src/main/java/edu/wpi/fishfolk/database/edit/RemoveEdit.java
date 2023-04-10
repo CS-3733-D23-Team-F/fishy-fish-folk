@@ -1,4 +1,6 @@
-package edu.wpi.fishfolk.database;
+package edu.wpi.fishfolk.database.edit;
+
+import edu.wpi.fishfolk.database.DataTableType;
 
 public class RemoveEdit extends DataEdit {
 

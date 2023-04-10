@@ -15,7 +15,7 @@ public abstract class AbsController {
 
   // BTM - Building for Transformative Medicine
   protected final ArrayList<String> allBuildings =
-          new ArrayList<>(List.of("15 Francis", "45 Francis", "BTM", "Shapiro", "Tower"));
+      new ArrayList<>(List.of("15 Francis", "45 Francis", "BTM", "Shapiro", "Tower"));
 
   HashMap<String, String> mapImgURLs;
   HashMap<String, Image> images;
@@ -41,6 +41,4 @@ public abstract class AbsController {
 
     dbConnection = new Fdb();
   }
-
-
 }

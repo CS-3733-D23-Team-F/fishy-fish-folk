@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database;
 
+import edu.wpi.fishfolk.database.edit.DataEdit;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -22,7 +23,7 @@ public class Fdb {
 
     initialize();
 
-    int maxID = 3000;
+    int maxID = 4000;
 
     freeIDs = new HashSet<>((maxID - 100) / 5 * 4 / 3 + 1); // about 780 to start
 
@@ -33,11 +34,13 @@ public class Fdb {
 
     // remove the ids already in the database
     micronodeTable
-            .getColumn("id")
-            .forEach(
-                    id -> {
-                      freeIDs.remove(id);
-                    });
+        .getColumn("id")
+        .forEach(
+            id -> {
+              freeIDs.remove(id);
+            });
+
+    System.out.println("num ids left " + freeIDs.size());
   }
 
   public boolean processEdit(DataEdit edit) {
@@ -45,7 +48,7 @@ public class Fdb {
     // handle ids
     switch (edit.type) {
       case INSERT:
-        edit.id = getNextID();
+        // edit.id = getNextID();
         break;
 
       case REMOVE:
@@ -71,8 +74,9 @@ public class Fdb {
   }
 
   public String getNextID() {
-    String id = freeIDs.iterator().next();
-    freeIDs.iterator().remove();
+    Iterator<String> itr = freeIDs.iterator();
+    String id = itr.next();
+    itr.remove();
     return id;
   }
 
@@ -100,26 +104,26 @@ public class Fdb {
       micronodeTable = new Table(conn, "micronode");
       micronodeTable.init(false);
       micronodeTable.setHeaders(
-              new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
-              new ArrayList<>(List.of("int", "double", "double", "String2", "String16")));
+          new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
+          new ArrayList<>(List.of("int", "double", "double", "String2", "String16")));
 
       locationTable = new Table(conn, "location");
       locationTable.init(false);
       locationTable.setHeaders(
-              new ArrayList<>(List.of("longname", "shortname", "type")),
-              new ArrayList<>(List.of("String64", "String64", "String4")));
+          new ArrayList<>(List.of("longname", "shortname", "type")),
+          new ArrayList<>(List.of("String64", "String64", "String4")));
 
       moveTable = new Table(conn, "move");
       moveTable.init(false);
       moveTable.setHeaders(
-              new ArrayList<>(List.of("id", "longname", "date")),
-              new ArrayList<>(List.of("int", "String64", "String16")));
+          new ArrayList<>(List.of("id", "longname", "date")),
+          new ArrayList<>(List.of("int", "String64", "String16")));
 
       edgeTable = new Table(conn, "edge");
       edgeTable.init(false);
       edgeTable.setHeaders(
-              new ArrayList<>(List.of("node1", "node2")),
-              new ArrayList<>(List.of("String8", "String8")));
+          new ArrayList<>(List.of("node1", "node2")),
+          new ArrayList<>(List.of("String8", "String8")));
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -173,11 +177,11 @@ public class Fdb {
     try {
       statement = db.createStatement();
       String query =
-              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-                      + db.getSchema()
-                      + "' AND tablename = '"
-                      + tbName
-                      + "');";
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + db.getSchema()
+              + "' AND tablename = '"
+              + tbName
+              + "');";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -190,13 +194,13 @@ public class Fdb {
 
   public int getMostRecentUNode(String longname) {
     ArrayList<String[]> results =
-            moveTable.executeQuery("SELECT id, date", "WHERE longname = '" + longname + "';");
+        moveTable.executeQuery("SELECT id, date", "WHERE longname = '" + longname + "';");
 
     results.forEach(
-            res -> {
-              res[1] = Move.sanitizeDate(res[1]);
-              System.out.println(Arrays.toString(res));
-            });
+        res -> {
+          res[1] = Move.sanitizeDate(res[1]);
+          System.out.println(Arrays.toString(res));
+        });
 
     // sort results based on date
     results.sort(Comparator.comparing(result -> LocalDate.parse(result[1], Move.format)));
@@ -205,24 +209,24 @@ public class Fdb {
     return Integer.parseInt(results.get(results.size() - 1)[0]);
   }
 
-  public ArrayList<String[]> getMostRecentLocations(String id){
+  public ArrayList<String[]> getMostRecentLocations(String id) {
 
     ArrayList<String[]> results =
-            moveTable.executeQuery("SELECT longname, date", "WHERE id = '" + id + "';");
+        moveTable.executeQuery("SELECT longname, date", "WHERE id = '" + id + "';");
 
     results.forEach(
-            res -> {
-              res[1] = Move.sanitizeDate(res[1]);
-              System.out.println(Arrays.toString(res));
-            });
+        res -> {
+          res[1] = Move.sanitizeDate(res[1]);
+          System.out.println(Arrays.toString(res));
+        });
 
     // sort results based on date
     results.sort(Comparator.comparing(result -> LocalDate.parse(result[1], Move.format)));
 
     ArrayList<String[]> locations = new ArrayList<>();
 
-    for(String[] result : results){
-      locations.add( locationTable.get("longname", result[0]).toArray( new String[3]));
+    for (String[] result : results) {
+      locations.add(locationTable.get("longname", result[0]).toArray(new String[3]));
     }
 
     return locations;

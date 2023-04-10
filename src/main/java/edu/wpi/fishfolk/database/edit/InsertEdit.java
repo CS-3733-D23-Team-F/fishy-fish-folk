@@ -1,10 +1,11 @@
-package edu.wpi.fishfolk.database;
+package edu.wpi.fishfolk.database.edit;
 
+import edu.wpi.fishfolk.database.DataTableType;
 import java.util.ArrayList;
 
 public class InsertEdit extends DataEdit {
 
-  ArrayList<String> data;
+  public ArrayList<String> data;
 
   public InsertEdit(DataTableType table, String pkey, String id, ArrayList<String> data) {
 

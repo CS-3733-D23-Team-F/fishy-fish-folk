@@ -31,4 +31,8 @@ public class BuildingRegion {
     }
     return false;
   }
+
+  public static String getBuilding(double x, double y, String floor) {
+    return "bingus tower";
+  }
 }

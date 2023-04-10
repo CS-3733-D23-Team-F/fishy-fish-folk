@@ -3,20 +3,22 @@ package edu.wpi.fishfolk.controllers;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.database.BuildingRegion;
 import edu.wpi.fishfolk.database.CircleNode;
+import edu.wpi.fishfolk.database.DataTableType;
 import edu.wpi.fishfolk.database.MicroNode;
+import edu.wpi.fishfolk.database.edit.InsertEdit;
+import edu.wpi.fishfolk.database.edit.RemoveEdit;
+import edu.wpi.fishfolk.database.edit.UpdateEdit;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.image.Image;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import net.kurobako.gesturefx.GesturePane;
@@ -35,6 +37,12 @@ public class MapEditorController extends AbsController {
   @FXML MFXTextField buildingMicroNodeText;
   @FXML MFXTextField floorMicroNodeText;
 
+  @FXML MFXButton addNode;
+  @FXML MFXButton delNode;
+
+  private EDITOR_STATE state;
+  private String currentEditingNode;
+
   private Group nodesGroup;
 
   private int currentFloor = 2;
@@ -49,28 +57,12 @@ public class MapEditorController extends AbsController {
 
   @FXML
   private void initialize() {
-    // pane.centreOn();
 
     // copy contents, not reference
     ArrayList<String> floorsReverse = new ArrayList<>(allFloors);
     Collections.reverse(floorsReverse);
 
     floorSelector.getItems().addAll(floorsReverse);
-
-    mapImgURLs = new HashMap<>();
-
-    mapImgURLs.put("L1", "map/00_thelowerlevel1.png");
-    mapImgURLs.put("L2", "map/00_thelowerlevel2.png");
-    mapImgURLs.put("GG", "map/00_thegroundfloor.png");
-    mapImgURLs.put("1", "map/01_thefirstfloor.png");
-    mapImgURLs.put("2", "map/02_thesecondfloor.png");
-    mapImgURLs.put("3", "map/03_thethirdfloor.png");
-
-    images = new HashMap<>();
-
-    for (String floor : mapImgURLs.keySet()) {
-      images.put(floor, new Image(Fapp.class.getResourceAsStream(mapImgURLs.get(floor))));
-    }
 
     nodesGroup = new Group();
     drawGroup.getChildren().add(nodesGroup);
@@ -91,7 +83,6 @@ public class MapEditorController extends AbsController {
             floorSelector.setText("Floor " + allFloors.get(currentFloor));
           }
         });
-
     backButton.setOnMouseClicked(
         event -> {
           if (currentFloor > 0) {
@@ -100,13 +91,14 @@ public class MapEditorController extends AbsController {
             floorSelector.setText("Floor " + allFloors.get(currentFloor));
           }
         });
+
     pane.centreOn(new Point2D(1700, 1100));
     pane.zoomTo(0.4, new Point2D(2500, 1600));
 
-
-
     Polygon shapiroPoly = new Polygon();
-    shapiroPoly.getPoints().addAll(
+    shapiroPoly
+        .getPoints()
+        .addAll(
             1774.133, 2266.667,
             1095.733, 2263.467,
             1081.333, 1839.467,
@@ -118,21 +110,56 @@ public class MapEditorController extends AbsController {
             1271.733, 1769.067,
             1751.733, 1773.867,
             1751.733, 1799.467,
-            1772.533, 1802.667
-    );
+            1772.533, 1802.667);
     ArrayList<Polygon> shapiroPolyList = new ArrayList<Polygon>();
     shapiroPolyList.add(shapiroPoly);
     shapiroBuilding = new BuildingRegion(shapiroPolyList, "Shapiro", "1");
 
+    state = EDITOR_STATE.IDLE;
+
     // prints mouse location to screen when clicked on map. Used to calculate building boundaries
     mapImg.setOnMouseClicked(
+        event -> {
+          System.out.println("X: " + event.getX() + " Y: " + event.getY());
+          Point2D currPoint = new Point2D(event.getX(), event.getY());
+          if (shapiroBuilding.isWithinRegion(currPoint, allFloors.get(currentFloor))) {
+            System.out.println("I'm in Shapiro Building");
+          } else {
+            System.out.println("I'm outside");
+          }
+
+          if (state == EDITOR_STATE.ADDING) {
+            System.out.println("adding at " + event.getX() + ", " + event.getY());
+            insertNode(event.getX(), event.getY());
+            state = EDITOR_STATE.IDLE;
+
+          } else if (state == EDITOR_STATE.EDITING) {
+            state = EDITOR_STATE.IDLE;
+            currentEditingNode = "";
+            fillMicroNodeFields("", "", "", "");
+          }
+        });
+
+    addNode.setOnMouseClicked(
+        event -> {
+          // go to adding state no matter the previous state
+          state = EDITOR_STATE.ADDING;
+        });
+
+    delNode.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
+
+            deleteNode(currentEditingNode);
+          }
+        });
+
+    Fapp.getPrimaryStage()
+        .getScene()
+        .setOnKeyPressed(
             event -> {
-              System.out.println("X: " + event.getX() + " Y: " + event.getY());
-              Point2D currPoint = new Point2D(event.getX(), event.getY());
-              if(shapiroBuilding.isWithinRegion(currPoint, allFloors.get(currentFloor))){
-                System.out.println("I'm in Shapiro Building");
-              }else{
-                System.out.println("I'm outside");
+              if (event.getCode() == KeyCode.DELETE && state == EDITOR_STATE.EDITING) {
+                deleteNode(currentEditingNode);
               }
             });
   }
@@ -167,58 +194,114 @@ public class MapEditorController extends AbsController {
     Point2D p = unode.point;
     CircleNode c = new CircleNode(unode.id, p.getX(), p.getY(), 4);
     c.setStrokeWidth(5);
-    // c.setFill(Color.TRANSPARENT);
     c.setFill(Color.rgb(12, 212, 252));
     c.setStroke(Color.rgb(12, 212, 252)); // #208036
 
-    c.setOnMouseClicked(
+    c.setOnMousePressed(
         event -> {
-          fillMicroNodeFields(event, c);
+          state = EDITOR_STATE.EDITING;
+          currentEditingNode = c.getCircleNodeID();
+          fillMicroNodeFields(
+              String.valueOf(unode.point.getX()),
+              String.valueOf(unode.point.getY()),
+              unode.floor,
+              unode.building);
+        });
+
+    c.setOnMouseDragged(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
+            c.setCenterX(event.getX());
+            c.setCenterY(event.getY());
+            pane.setGestureEnabled(false);
+          }
+        });
+
+    c.setOnMouseReleased(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
+
+            pane.setGestureEnabled(true);
+
+            c.setCenterX(event.getX());
+            c.setCenterY(event.getY());
+
+            unode.point = new Point2D(event.getX(), event.getY());
+
+            // process edits for both x and y
+            dbConnection.processEdit(
+                new UpdateEdit(
+                    DataTableType.MICRONODE,
+                    "id",
+                    unode.id,
+                    "x",
+                    Double.toString(unode.point.getX())));
+
+            dbConnection.processEdit(
+                new UpdateEdit(
+                    DataTableType.MICRONODE,
+                    "id",
+                    unode.id,
+                    "y",
+                    Double.toString(unode.point.getY())));
+          }
         });
 
     nodesGroup.getChildren().add(c);
   }
 
   /**
-   * event handler for mouse click on nodes which checks for double click and fills fields for X and
-   * Y location on map, (and TODO: gets info from db about building and floor ?)
+   * Fill in text fields for MicroNodes.
    *
-   * @param e
-   * @param c
+   * @param x
+   * @param y
+   * @param floor
+   * @param building
    */
-  public void fillMicroNodeFields(MouseEvent e, CircleNode c) {
-    if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-      System.out.println(
-          "I'm circle: "
-              + c.getCircleNodeID()
-              + " my cord is: "
-              + c.getCenterX()
-              + " and am being double clicked");
-      xMicroNodeText.setText(String.valueOf(c.getCenterX()));
-      yMicroNodeText.setText(String.valueOf(c.getCenterY()));
-    }
+  private void fillMicroNodeFields(String x, String y, String floor, String building) {
+
+    xMicroNodeText.setText(x);
+    yMicroNodeText.setText(y);
+    floorMicroNodeText.setText(floor);
+    buildingMicroNodeText.setText(building);
   }
 
-  /*
-    public Point2D convert(Point2D p) {
+  private void deleteNode(String id) {
 
-      // center gets mapped to center. center1 -> center2
+    Iterator<Node> itr = nodesGroup.getChildren().iterator();
+    while (itr.hasNext()) {
 
-      // values from viewport
-      Point2D center1 = new Point2D(900 + 4050 / 2, 150 + 3000 / 2);
+      CircleNode curr = (CircleNode) itr.next();
 
-      // fit width/height
-      Point2D center2 = new Point2D(810 / 2, 605 / 2);
-
-      Point2D rel = p.subtract(center1); // p relative to the center
-
-      // strech x and y separately
-      // fit width/height / img width/height
-      double x = rel.getX() * 810 / 4050;
-      double y = rel.getY() * 605 / 3000 + 44;
-
-      return new Point2D(x, y).add(center2);
+      if (curr.getCircleNodeID().equals(id)) {
+        itr.remove();
+        System.out.println("removed node" + curr.getCircleNodeID());
+      }
     }
-  */
 
+    dbConnection.processEdit(new RemoveEdit(DataTableType.MICRONODE, "id", id));
+
+    currentEditingNode = "";
+    state = EDITOR_STATE.IDLE;
+  }
+
+  private void insertNode(double x, double y) {
+
+    String id = dbConnection.getNextID();
+
+    String floor = allFloors.get(currentFloor);
+    MicroNode unode =
+        new MicroNode(Integer.parseInt(id), x, y, floor, BuildingRegion.getBuilding(x, y, floor));
+
+    drawNode(unode);
+
+    dbConnection.processEdit(
+        new InsertEdit(DataTableType.MICRONODE, "id", id, unode.deconstruct()));
+  }
+}
+
+enum EDITOR_STATE {
+  IDLE,
+  ADDING,
+  EDITING;
 }
