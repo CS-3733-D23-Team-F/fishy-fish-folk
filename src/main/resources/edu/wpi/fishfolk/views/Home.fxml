@@ -64,6 +64,9 @@
                      </effect>
                   </Text>
                </children>
+               <effect>
+                  <DropShadow />
+               </effect>
             </AnchorPane>
          </children>
       </HBox>
@@ -130,9 +133,9 @@
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
-                              <MFXButton fx:id="officeButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="Office Supplies" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0">
+                              <MFXButton fx:id="conferenceButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" stylesheets="@../Styles/style.css" text="Conference Room" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0">
                                  <font>
-                                    <Font name="Open Sans Bold" size="31.0" />
+                                    <Font name="Open Sans Bold" size="27.0" />
                                  </font>
                                  <opaqueInsets>
                                     <Insets />
@@ -141,9 +144,9 @@
                                     <Insets left="25.0" />
                                  </padding>
                                  <graphic>
-                                    <ImageView fx:id="supplyIcon" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" styleClass="btnIcon">
+                                    <ImageView fx:id="conferenceIcon" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" styleClass="btnIcon">
                                        <image>
-                                          <Image url="@../images/delivery.png" />
+                                          <Image url="@../images/conference.png" />
                                        </image>
                                        <viewport>
                                           <Rectangle2D />
@@ -151,17 +154,17 @@
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
-                              <MFXButton fx:id="mealButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Meal Delivery" textFill="WHITE" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                              <MFXButton fx:id="serviceButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Service Request" textFill="WHITE" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
                                  <font>
-                                    <Font name="Open Sans Bold" size="31.0" />
+                                    <Font name="Open Sans Bold" size="28.0" />
                                  </font>
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
                                  <graphic>
-                                    <ImageView fx:id="mealIcon" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" styleClass="btnIcon">
+                                    <ImageView fx:id="serviceIcon" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" styleClass="btnIcon">
                                        <image>
-                                          <Image url="@../images/food.png" />
+                                          <Image url="@../images/box.png" />
                                        </image>
                                        <viewport>
                                           <Rectangle2D />
