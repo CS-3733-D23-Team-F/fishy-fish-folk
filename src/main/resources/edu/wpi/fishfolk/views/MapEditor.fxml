@@ -156,7 +156,7 @@
                                  <children>
                                     <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="X:">
                                        <font>
-                                          <Font name="Open Sans Regular" size="17.0" />
+                                          <Font name="Open Sans Bold" size="17.0" />
                                        </font>
                                        <HBox.margin>
                                           <Insets />
@@ -182,7 +182,7 @@
                                     </MFXTextField>
                                     <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Y:">
                                        <font>
-                                          <Font name="Open Sans Regular" size="17.0" />
+                                          <Font name="Open Sans Bold" size="17.0" />
                                        </font>
                                        <HBox.margin>
                                           <Insets left="10.0" />
@@ -215,7 +215,7 @@
                                  <children>
                                     <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Floor:">
                                        <font>
-                                          <Font name="Open Sans Regular" size="17.0" />
+                                          <Font name="Open Sans Bold" size="17.0" />
                                        </font>
                                        <HBox.margin>
                                           <Insets left="15.0" />
@@ -241,7 +241,7 @@
                                     </MFXTextField>
                                     <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Building:">
                                        <font>
-                                          <Font name="Open Sans Regular" size="17.0" />
+                                          <Font name="Open Sans Bold" size="17.0" />
                                        </font>
                                        <HBox.margin>
                                           <Insets left="10.0" />
@@ -314,13 +314,13 @@
                                  <children>
                                     <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Short Name:">
                                        <font>
-                                          <Font name="Open Sans Regular" size="16.0" />
+                                          <Font name="Open Sans Bold" size="16.0" />
                                        </font>
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
                                     </Text>
-                                    <MFXTextField fx:id="shortNameLocationText" borderGap="0.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="110.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS">
+                                    <MFXTextField fx:id="shortnameText" borderGap="0.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="100.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS">
                                        <font>
                                           <Font name="Open Sans Regular" size="11.0" />
                                        </font>
@@ -335,18 +335,18 @@
                                           </InnerShadow>
                                        </effect>
                                        <HBox.margin>
-                                          <Insets left="5.0" right="5.0" />
+                                          <Insets left="5.0" right="17.0" />
                                        </HBox.margin>
                                     </MFXTextField>
                                     <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:">
                                        <font>
-                                          <Font name="Open Sans Regular" size="17.0" />
+                                          <Font name="Open Sans Bold" size="16.0" />
                                        </font>
                                        <HBox.margin>
                                           <Insets left="5.0" />
                                        </HBox.margin>
                                     </Text>
-                                    <MFXTextField fx:id="yMicroNodeText1" borderGap="0.0" maxHeight="25.0" maxWidth="35.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS">
+                                    <MFXTextField fx:id="typeText" borderGap="0.0" maxHeight="25.0" maxWidth="35.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS">
                                        <font>
                                           <Font name="Open Sans Regular" size="11.0" />
                                        </font>
@@ -376,13 +376,13 @@
                                  <children>
                                     <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Long Name:">
                                        <font>
-                                          <Font name="Open Sans Regular" size="17.0" />
+                                          <Font name="Open Sans Bold" size="16.0" />
                                        </font>
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
                                     </Text>
-                                    <MFXTextField fx:id="longNameLocationText" allowEdit="false" borderGap="0.0" maxHeight="25.0" minHeight="25.0" minWidth="220.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                                    <MFXTextField fx:id="longnameText" allowEdit="false" borderGap="0.0" maxHeight="25.0" minHeight="25.0" minWidth="220.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                                        <font>
                                           <Font name="Open Sans Regular" size="15.0" />
                                        </font>
