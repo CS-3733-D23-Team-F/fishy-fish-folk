@@ -1,5 +1,9 @@
 package edu.wpi.fishfolk.database;
 
+import edu.wpi.fishfolk.database.edit.DataEdit;
+import edu.wpi.fishfolk.database.edit.InsertEdit;
+import edu.wpi.fishfolk.database.edit.RemoveEdit;
+import edu.wpi.fishfolk.database.edit.UpdateEdit;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;

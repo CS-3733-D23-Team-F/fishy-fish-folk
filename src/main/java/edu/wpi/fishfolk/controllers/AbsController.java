@@ -38,5 +38,7 @@ public abstract class AbsController {
     for (String floor : mapImgURLs.keySet()) {
       images.put(floor, new Image(Fapp.class.getResourceAsStream(mapImgURLs.get(floor))));
     }
+
+    dbConnection = new Fdb();
   }
 }

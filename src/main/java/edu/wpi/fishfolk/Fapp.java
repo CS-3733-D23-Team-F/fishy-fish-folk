@@ -47,7 +47,7 @@ public class Fapp extends Application {
     primaryStage.setScene(scene);
     primaryStage.show();
 
-    Navigation.navigate(Screen.PATHFINDING);
+    Navigation.navigate(Screen.MAP_EDITOR);
   }
 
   @Override
