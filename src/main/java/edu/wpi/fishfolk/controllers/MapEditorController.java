@@ -141,7 +141,8 @@ public class MapEditorController extends AbsController {
           } else if (state == EDITOR_STATE.EDITING) {
             state = EDITOR_STATE.IDLE;
             currentEditingNode = "";
-            fillMicroNodeFields("", "", "", "");
+            clearMicroNodeFields();
+            clearLocationFields();
           }
         });
 
@@ -191,8 +192,6 @@ public class MapEditorController extends AbsController {
 
   private void switchFloor(String floor) {
 
-    System.out.println("switching floor to " + floor);
-
     mapImg.setImage(images.get(floor));
 
     nodesGroup.getChildren().clear();
@@ -208,7 +207,7 @@ public class MapEditorController extends AbsController {
                 })
             .toList();
 
-    System.out.println(unodes.size());
+    // System.out.println(unodes.size());
 
     unodes.forEach(this::drawNode);
   }
@@ -236,15 +235,9 @@ public class MapEditorController extends AbsController {
                       })
                   .toList();
 
-          System.out.println(currentEditingLocations.size());
-
           currentEditingLocationIdx = 0;
 
-          fillMicroNodeFields(
-              String.valueOf(unode.point.getX()),
-              String.valueOf(unode.point.getY()),
-              unode.floor,
-              unode.building);
+          fillMicroNodeFields(unode);
 
           if (currentEditingLocations.size() > 1) {
             nextLocation.setVisible(true);
@@ -254,7 +247,11 @@ public class MapEditorController extends AbsController {
             prevLocation.setVisible(false);
           }
 
-          fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+          if (currentEditingLocations.size() > 0) {
+            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+          } else {
+            clearLocationFields();
+          }
         });
 
     c.setOnMouseDragged(
@@ -302,17 +299,21 @@ public class MapEditorController extends AbsController {
   /**
    * Fill in text fields for MicroNodes.
    *
-   * @param x
-   * @param y
-   * @param floor
-   * @param building
+   * @param unode the MicroNode whose data to fill in.
    */
-  private void fillMicroNodeFields(String x, String y, String floor, String building) {
+  private void fillMicroNodeFields(MicroNode unode) {
 
-    xText.setText(x);
-    yText.setText(y);
-    floorText.setText(floor);
-    buildingText.setText(building);
+    xText.setText(Double.toString(unode.point.getX()));
+    yText.setText(Double.toString(unode.point.getY()));
+    floorText.setText(unode.floor);
+    buildingText.setText(unode.building);
+  }
+
+  private void clearMicroNodeFields() {
+    xText.setText("");
+    yText.setText("");
+    floorText.setText("");
+    buildingText.setText("");
   }
 
   private void fillLocationFields(Location loc) {
@@ -320,6 +321,13 @@ public class MapEditorController extends AbsController {
     shortnameText.setText(loc.shortname);
     typeText.setText(loc.type.toString());
     longnameText.setText(loc.longname);
+  }
+
+  private void clearLocationFields() {
+
+    shortnameText.setText("");
+    typeText.setText("");
+    longnameText.setText("");
   }
 
   private void deleteNode(String id) {
@@ -350,6 +358,7 @@ public class MapEditorController extends AbsController {
         new MicroNode(Integer.parseInt(id), x, y, floor, BuildingRegion.getBuilding(x, y, floor));
 
     drawNode(unode);
+    // fillMicroNodeFields();
 
     dbConnection.processEdit(
         new InsertEdit(DataTableType.MICRONODE, "id", id, unode.deconstruct()));
