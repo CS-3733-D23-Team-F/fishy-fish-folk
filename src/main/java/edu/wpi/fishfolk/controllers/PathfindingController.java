@@ -73,17 +73,18 @@ public class PathfindingController extends AbsController {
 
     zoomIn.setOnMouseClicked(
         event -> {
+          javafx.geometry.Bounds bounds = pane.getTargetViewport();
           pane.animate(Duration.millis(200))
               .interpolateWith(Interpolator.EASE_BOTH)
-              .zoomBy(zoom + 0.2, new Point2D(2500, 1600));
+              .zoomBy(zoom + 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
         });
 
     zoomOut.setOnMouseClicked(
         event -> {
-          // pane.centreOn(new Point2D(3600, 1500));
+          javafx.geometry.Bounds bounds = pane.getTargetViewport();
           pane.animate(Duration.millis(200))
               .interpolateWith(Interpolator.EASE_BOTH)
-              .zoomBy(zoom - 0.2, new Point2D(2500, 1600));
+              .zoomBy(zoom - 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
         });
 
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));

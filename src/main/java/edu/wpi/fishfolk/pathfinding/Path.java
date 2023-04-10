@@ -146,6 +146,7 @@ public class Path {
 
   /**
    * Finds a center point from a number of points in a path
+   *
    * @param numShown Number of points to center around
    * @return A point that centers around bounds of current point
    */
