@@ -160,7 +160,7 @@
                                           <Insets />
                                        </HBox.margin>
                                     </Text>
-                                    <MFXTextField borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS" fx:id="xMicroNodeText">
+                                    <MFXTextField borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS" fx:id="xText">
                                        <font>
                                           <Font name="Open Sans Regular" size="11.0" />
                                        </font>
@@ -182,7 +182,7 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </Text>
-                                    <MFXTextField fx:id="yMicroNodeText" borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" maxWidth="35.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS">
+                                    <MFXTextField fx:id="yText" borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" maxWidth="35.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS">
                                        <font>
                                           <Font name="Open Sans Regular" size="11.0" />
                                        </font>
@@ -211,7 +211,7 @@
                                           <Insets left="15.0" />
                                        </HBox.margin>
                                     </Text>
-                                    <MFXTextField fx:id="floorMicroNodeText" allowEdit="false" borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                                    <MFXTextField fx:id="floorText" allowEdit="false" borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                                        <font>
                                           <Font name="Open Sans Regular" size="15.0" />
                                        </font>
@@ -233,7 +233,7 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </Text>
-                                    <MFXTextField fx:id="buildingMicroNodeText" allowEdit="false" borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" minHeight="25.0" minWidth="95.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                                    <MFXTextField fx:id="buildingText" allowEdit="false" borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" minHeight="25.0" minWidth="95.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                                        <font>
                                           <Font name="Open Sans Regular" size="15.0" />
                                        </font>
