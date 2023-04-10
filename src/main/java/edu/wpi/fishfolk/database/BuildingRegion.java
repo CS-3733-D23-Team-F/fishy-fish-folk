@@ -1,33 +1,30 @@
 package edu.wpi.fishfolk.database;
 
 import java.awt.*;
-import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
 
 public class BuildingRegion {
   // collection of RegionShapes and building name
 
+  public String getBuildingName() {
+    return buildingName;
+  }
+
   String buildingName;
 
   String floor;
-  ArrayList<Polygon> components;
+  Polygon region;
 
-  public BuildingRegion(ArrayList<Polygon> components, String buildingName, String floor) {
-    this.components = components;
+  public BuildingRegion(Polygon region, String buildingName, String floor) {
+    this.region = region;
     this.buildingName = buildingName;
     this.floor = floor;
   }
 
-  public void addPolygon(Polygon poly) {
-    components.add(poly);
-  }
-
   public boolean isWithinRegion(Point2D interestPoint, String curFloor) {
-    for (Polygon component : components) {
-      if (component.contains(interestPoint) && this.floor.equals(curFloor)) {
-        return true;
-      }
+    if (region.contains(interestPoint) && this.floor.equals(curFloor)) {
+      return true;
     }
     return false;
   }
