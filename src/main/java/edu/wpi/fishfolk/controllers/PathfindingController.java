@@ -166,7 +166,11 @@ public class PathfindingController extends AbsController {
           // create segments for each path and put into groups
           drawPaths(paths);
           currentFloor = 0;
+          pane.animate(Duration.millis(200))
+              .interpolateWith(Interpolator.EASE_BOTH)
+              .centreOn(paths.get(0).centerToPath(7));
           displayFloor(currentFloor);
+
           // directionInstructions.setText("Instructions: \n\n" + path.getDirections());
         });
 

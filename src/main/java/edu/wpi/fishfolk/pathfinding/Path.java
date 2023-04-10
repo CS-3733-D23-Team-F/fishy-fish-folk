@@ -143,6 +143,57 @@ public class Path {
 
     return nodes.equals(other.nodes);
   }
+
+  /**
+   * Finds a center point from a number of points in a path
+   * @param numShown Number of points to center around
+   * @return A point that centers around bounds of current point
+   */
+  public Point2D centerToPath(int numShown) {
+    double[] bounds = new double[4];
+
+    if (numShown > numNodes) {
+      numShown = numNodes;
+    }
+
+    double maxX = -1;
+    double maxY = -1;
+    double minX = -1;
+    double minY = -1;
+
+    for (int point = 0; point < numShown; point++) {
+
+      if (maxX == -1) { // Values unassigned
+        maxX = points.get(point).getX();
+        maxY = points.get(point).getY();
+        minX = maxX;
+        minY = maxY;
+      }
+
+      // Setting new bounds if greater than current bounds
+      if (points.get(point).getX() > maxX) {
+        maxX = points.get(point).getX();
+      }
+      if (points.get(point).getY() > maxY) {
+        maxY = points.get(point).getY();
+      }
+      if (points.get(point).getX() < minX) {
+        minX = points.get(point).getX();
+      }
+      if (points.get(point).getY() < minY) {
+        minY = points.get(point).getY();
+      }
+    }
+
+    System.out.println(minX + "");
+    System.out.println(maxX + "");
+    System.out.println(minY + "");
+    System.out.println(maxY + "");
+
+    Point2D point = new Point2D((maxX + minX) / 2.0, (maxY + minY) / 2.0);
+
+    return point;
+  }
 }
 
 class PathSegment {
