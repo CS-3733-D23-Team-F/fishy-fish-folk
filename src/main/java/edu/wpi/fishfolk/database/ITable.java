@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database;
 
+import edu.wpi.fishfolk.database.edit.DataEdit;
 import java.util.ArrayList;
 
 public interface ITable {

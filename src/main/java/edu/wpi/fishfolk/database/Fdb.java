@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database;
 
+import edu.wpi.fishfolk.database.edit.DataEdit;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -22,7 +23,7 @@ public class Fdb {
 
     initialize();
 
-    int maxID = 3000;
+    int maxID = 4000;
 
     freeIDs = new HashSet<>((maxID - 100) / 5 * 4 / 3 + 1); // about 780 to start
 
@@ -38,6 +39,8 @@ public class Fdb {
             id -> {
               freeIDs.remove(id);
             });
+
+    System.out.println("num ids left " + freeIDs.size());
   }
 
   public boolean processEdit(DataEdit edit) {
@@ -45,7 +48,7 @@ public class Fdb {
     // handle ids
     switch (edit.type) {
       case INSERT:
-        edit.id = getNextID();
+        // edit.id = getNextID();
         break;
 
       case REMOVE:
@@ -71,8 +74,9 @@ public class Fdb {
   }
 
   public String getNextID() {
-    String id = freeIDs.iterator().next();
-    freeIDs.iterator().remove();
+    Iterator<String> itr = freeIDs.iterator();
+    String id = itr.next();
+    itr.remove();
     return id;
   }
 

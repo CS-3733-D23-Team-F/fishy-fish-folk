@@ -254,7 +254,7 @@
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" maxHeight="75.0" maxWidth="330.0" minHeight="75.0" minWidth="330.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <MFXButton fx:id="discardButton1" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="35.0" maxWidth="125.0" minHeight="35.0" minWidth="125.0" style="-fx-background-color: #F1F1F1; -fx-text-fill: #000000;" text="Add Node" textFill="#181818" HBox.hgrow="ALWAYS">
+                                    <MFXButton fx:id="addNode" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="35.0" maxWidth="125.0" minHeight="35.0" minWidth="125.0" style="-fx-background-color: #F1F1F1; -fx-text-fill: #000000;" text="Add Node" textFill="#181818" HBox.hgrow="ALWAYS">
                                        <font>
                                           <Font name="Open Sans Bold" size="17.0" />
                                        </font>
