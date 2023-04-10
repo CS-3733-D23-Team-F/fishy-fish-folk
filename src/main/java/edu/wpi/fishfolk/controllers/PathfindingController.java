@@ -10,12 +10,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -24,18 +25,12 @@ import net.kurobako.gesturefx.GesturePane;
 
 public class PathfindingController extends AbsController {
 
-  /*
-    @FXML MFXButton signageNav;
-
+  @FXML MFXButton signageNav;
   @FXML MFXButton mealNav;
-
   @FXML MFXButton officeNav;
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
-
   @FXML MFXButton sideBar;
-
-   */
 
   @FXML MFXButton exitButton;
 
@@ -55,7 +50,8 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton homeButton;
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
-
+  @FXML MFXButton zoomOut;
+  @FXML MFXButton zoomIn;
   @FXML GesturePane pane;
   int start, end;
   Graph graph;
@@ -63,6 +59,7 @@ public class PathfindingController extends AbsController {
 
   ArrayList<String> floors;
   int currentFloor;
+  int zoom;
 
   public PathfindingController() {
     super();
@@ -74,20 +71,21 @@ public class PathfindingController extends AbsController {
 
     // segments = new LinkedList<>();
 
-    pane.setOnMouseClicked(
-        e -> {
-          if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-            Point2D pivotOnTarget =
-                pane.targetPointAt(new Point2D(e.getX(), e.getY()))
-                    .orElse(pane.targetPointAtViewportCentre());
-            // increment of scale makes more sense exponentially instead of linearly
-            pane.animate(Duration.millis(200))
-                .interpolateWith(Interpolator.EASE_BOTH)
-                .zoomBy(pane.getCurrentScale(), pivotOnTarget);
-          }
+    zoomIn.setOnMouseClicked(
+        event -> {
+          pane.animate(Duration.millis(200))
+              .interpolateWith(Interpolator.EASE_BOTH)
+              .zoomBy(zoom + 0.2, new Point2D(2500, 1600));
         });
 
-    /*
+    zoomOut.setOnMouseClicked(
+        event -> {
+          // pane.centreOn(new Point2D(3600, 1500));
+          pane.animate(Duration.millis(200))
+              .interpolateWith(Interpolator.EASE_BOTH)
+              .zoomBy(zoom - 0.2, new Point2D(2500, 1600));
+        });
+
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
@@ -95,8 +93,8 @@ public class PathfindingController extends AbsController {
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
-    exitButton.setOnMouseClicked(event -> System.exit(0));
 
+    exitButton.setOnMouseClicked(event -> System.exit(0));
     slider.setTranslateX(-400);
     sideBarClose.setVisible(false);
     menuWrap.setVisible(false);
@@ -106,10 +104,8 @@ public class PathfindingController extends AbsController {
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
-
           slide.setToX(400);
           slide.play();
-
           slider.setTranslateX(-400);
           menuWrap.setVisible(true);
           slide.setOnFinished(
@@ -118,7 +114,6 @@ public class PathfindingController extends AbsController {
                 sideBarClose.setVisible(true);
               });
         });
-
     sideBarClose.setOnMouseClicked(
         event -> {
           menuWrap.setVisible(false);
@@ -128,17 +123,13 @@ public class PathfindingController extends AbsController {
           slide.setNode(slider);
           slide.setToX(-400);
           slide.play();
-
           slider.setTranslateX(0);
-
           slide.setOnFinished(
               (ActionEvent e) -> {
                 sideBar.setVisible(true);
                 sideBarClose.setVisible(false);
               });
         });
-
-     */
 
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
@@ -166,7 +157,6 @@ public class PathfindingController extends AbsController {
 
     currentFloor = 0;
     floors = new ArrayList<>();
-
     graph = new Graph(dbConnection);
 
     submitBtn.setOnMouseClicked(
@@ -239,28 +229,6 @@ public class PathfindingController extends AbsController {
   }
 
   private Line line(Point2D p1, Point2D p2) {
-    p1 = convert(p1);
-    p2 = convert(p2);
     return new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-  }
-
-  public Point2D convert(Point2D p) {
-
-    // center gets mapped to center. center1 -> center2
-
-    // values from viewport
-    Point2D center1 = new Point2D(900 + 4050 / 2, 150 + 3000 / 2);
-
-    // fit width/height
-    Point2D center2 = new Point2D(900 / 2, 600 / 2);
-
-    Point2D rel = p.subtract(center1); // p relative to the center
-
-    // strech x and y separately
-    // fit width/height / img width/height
-    double x = rel.getX() * 900 / 4050;
-    double y = rel.getY() * 600 / 3000;
-
-    return new Point2D(x, y).add(center2);
   }
 }
