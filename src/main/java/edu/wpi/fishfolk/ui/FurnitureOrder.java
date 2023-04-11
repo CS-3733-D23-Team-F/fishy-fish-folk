@@ -79,7 +79,8 @@ public class FurnitureOrder extends TableEntry {
     return true;
   }
 
-  // deconstruct() converts the currentFurnitureOrder into an ArrayList<String> for the furnitureorder table format
+  // deconstruct() converts the currentFurnitureOrder into an ArrayList<String> for the
+  // furnitureorder table format
   public ArrayList<String> deconstruct() {
     ArrayList<String> deconstruction = new ArrayList<String>();
     deconstruction.add(formID);

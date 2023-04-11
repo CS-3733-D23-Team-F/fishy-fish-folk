@@ -232,25 +232,13 @@ public class Fdb {
     return locations;
   }
 
-  /**
-   * Perform a join operation on two tables along the match column. The returned ArrayList contains
-   * the requested headers in the first index and each element afterwards represents one row, not
-   * including
-   *
-   * @param selectHeaders
-   * @param left
-   * @param right
-   * @param match
-   * @return
-   */
-  /*
-  public ArrayList<String[]> join(String[] selectHeaders, DataTableType left, DataTableType right, String match){
+  public List<String> getDestLongnames() {
 
-
-
+    return locationTable
+        .executeQuery("SELECT longname", "WHERE type != 'HALL' ORDER BY longname ASC").stream()
+        .map(elt -> elt[0])
+        .toList();
   }
-
-   */
 
   public void loadTablesFromCSV() {
     micronodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv", false);

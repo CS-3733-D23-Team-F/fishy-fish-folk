@@ -37,7 +37,7 @@ public class FurnitureOrderController extends AbsController {
       radioButton5,
       radioButton6,
       radioButton7;
-  @FXML ChoiceBox roomSelector;
+  @FXML ChoiceBox<String> roomSelector;
   @FXML MFXDatePicker deliveryDate;
   @FXML MFXTextField notesTextField;
   @FXML MFXButton cancelButton;
@@ -78,7 +78,6 @@ public class FurnitureOrderController extends AbsController {
             List.of(
                 "String", "String", "String", "String", "String", "String", "String", "String")));
   }
-
 
   // initialize() sets the preliminary fields for the page and defines the functionality of the
   // relevant items
@@ -227,7 +226,7 @@ public class FurnitureOrderController extends AbsController {
 
   // loadRoomChoice() fills the possible options in the Room Numver choicebox
   public void loadRoomChoice() {
-    // roomSelector.getItems().addAll(dbConnection.nodeTable.getDestLongNames());
+    roomSelector.getItems().addAll(dbConnection.getDestLongnames());
   }
 
   // deselectRadios() will deselect all of the given buttons.
@@ -247,7 +246,6 @@ public class FurnitureOrderController extends AbsController {
     offButton6.setSelected(false);
   }
 
-
   // getDate() returns the date. idk what the date function looked like as a string i was curious
   public String getDate() {
     return "" + deliveryDate.getCurrentDate();
@@ -264,7 +262,6 @@ public class FurnitureOrderController extends AbsController {
     if (radioButton6.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(5);
     if (radioButton7.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(6);
   }
-
 
   // submit() creates the final currentFurnitureOrder and uses its fields to send data to the
   // furnitureorder table

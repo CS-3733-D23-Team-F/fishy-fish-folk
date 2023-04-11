@@ -6,7 +6,6 @@ import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.CreditCardInfo;
 import edu.wpi.fishfolk.ui.FoodItem;
 import edu.wpi.fishfolk.ui.FoodOrder;
-import edu.wpi.fishfolk.ui.Room;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -191,12 +190,15 @@ public class FoodOrderController extends AbsController {
   }
 
   void loadRooms() {
+    /*
     roomsServiced = new ArrayList<String>();
     roomsServiced.add(Room.generic1.toString());
     roomsServiced.add(Room.generic2.toString());
     roomsServiced.add(Room.generic3.toString());
     roomsServiced.add(Room.generic4.toString());
-    roomSelector.getItems().addAll(roomsServiced);
+
+     */
+    roomSelector.getItems().addAll(dbConnection.getDestLongnames());
   }
 
   void loadMenu() {

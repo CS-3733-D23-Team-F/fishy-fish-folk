@@ -48,7 +48,6 @@ public class Fapp extends Application {
     primaryStage.show();
 
     Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS);
-
   }
 
   @Override
