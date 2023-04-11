@@ -12,6 +12,7 @@ public class Fdb {
   public Table locationTable;
   public Table moveTable;
   public Table edgeTable;
+  public Table userAccountTable;
 
   public Connection conn;
 
@@ -124,6 +125,12 @@ public class Fdb {
       edgeTable.setHeaders(
           new ArrayList<>(List.of("node1", "node2")),
           new ArrayList<>(List.of("String8", "String8")));
+
+      userAccountTable = new Table(conn, "useraccounts");
+      userAccountTable.init(false);
+      userAccountTable.setHeaders(
+              new ArrayList<>(List.of("username", "passhash", "permissions")),
+              new ArrayList<>(List.of("String64", "int", "String64")));
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());

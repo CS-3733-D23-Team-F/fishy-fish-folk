@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -12,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
 
 public class LoginController extends AbsController {
   @FXML MFXButton signageNav;
@@ -33,6 +36,9 @@ public class LoginController extends AbsController {
   @FXML MFXButton loginBtn;
   @FXML MFXTextField loginIDField;
   @FXML MFXPasswordField loginPassField;
+  @FXML MFXTextField newAccountIDField;
+  @FXML MFXPasswordField newAccountPassField;
+  @FXML MFXButton newAccountBtn;
 
   @FXML
   private void initialize() {
@@ -46,6 +52,7 @@ public class LoginController extends AbsController {
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     exitButton.setOnMouseClicked(event -> System.exit(0));
     loginBtn.setOnMouseClicked(loginHandler);
+    newAccountBtn.setOnMouseClicked(newAccountHandler);
 
     slider.setTranslateX(-400);
     sideBarClose.setVisible(false);
@@ -91,10 +98,31 @@ public class LoginController extends AbsController {
   public final EventHandler<MouseEvent> loginHandler =
       event -> {
         String loginID = loginIDField.getText();
-        String password = loginPassField.getText();
+        int passhash = loginPassField.getText().hashCode(); // literally never store the original password
         System.out.print("LoginID: ");
         System.out.println(loginID);
-        System.out.print("Password: ");
-        System.out.println(password);
+        System.out.print("Passhash: ");
+        System.out.println(passhash);
+        //TODO: split off function to validate account info
+        ArrayList<String> row = dbConnection.userAccountTable.get("username", loginID);
+        if (row == null)
+        {
+            System.out.println("Did not find an account with the given userID!");
+            return;
+        }
+        if (!row.get(2).equals(String.valueOf(passhash)))
+        {
+            System.out.println("Password hash did not match the one stored in the table.");
+            return;
+        }
+        System.out.println("Username and password matched a known account.");
+      };
+
+  public final EventHandler<MouseEvent> newAccountHandler =
+      event -> {
+        String newAccountID = newAccountIDField.getText();
+        int newAccountPassHash = newAccountPassField.getText().hashCode();
+        // new account has no permissions/role (probably going to change this down the line)
+        // how to add new accounts to table? must check other examples
       };
 }
