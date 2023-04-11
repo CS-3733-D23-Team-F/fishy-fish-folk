@@ -37,21 +37,27 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton delNode;
 
   @FXML MFXTextField longnameText;
+  @FXML MFXTextField longnameText1;
   @FXML MFXTextField shortnameText;
   @FXML MFXTextField typeText;
+  @FXML MFXTextField dateText;
   @FXML MFXButton nextLocation;
   @FXML MFXButton prevLocation;
+  @FXML MFXButton nextMove;
+  @FXML MFXButton prevMove;
 
   private EDITOR_STATE state;
   private String currentEditingNode;
   private List<Location> currentEditingLocations;
   private int currentEditingLocationIdx;
-
+  private List<Move> currentEditingMoves;
+  private int currentEditingMovesIdx;
   private Group nodesGroup;
 
   private int currentFloor = 2;
   private List<MicroNode> unodes;
 
+  private List<Move> moves;
   private BuildingRegion shapiroBuilding;
 
   public MapEditorController() {
@@ -61,7 +67,6 @@ public class MapEditorController extends AbsController {
 
   @FXML
   private void initialize() {
-
     // copy contents, not reference
     ArrayList<String> floorsReverse = new ArrayList<>(allFloors);
     Collections.reverse(floorsReverse);
@@ -121,6 +126,7 @@ public class MapEditorController extends AbsController {
 
     state = EDITOR_STATE.IDLE;
     currentEditingLocationIdx = 0;
+    currentEditingMovesIdx = 0;
 
     // prints mouse location to screen when clicked on map. Used to calculate building boundaries
     mapImg.setOnMouseClicked(
@@ -178,7 +184,6 @@ public class MapEditorController extends AbsController {
             fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
           }
         });
-
     prevLocation.setOnMouseClicked(
         event -> {
           if (state == EDITOR_STATE.EDITING) {
@@ -186,6 +191,25 @@ public class MapEditorController extends AbsController {
               currentEditingLocationIdx--;
             }
             fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+          }
+        });
+    nextMove.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
+            if (currentEditingMovesIdx < currentEditingMoves.size() - 1) {
+              currentEditingMovesIdx++;
+            }
+            fillMoveFields(currentEditingMoves.get(currentEditingMovesIdx));
+          }
+        });
+
+    prevMove.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
+            if (currentEditingMovesIdx > 0) {
+              currentEditingMovesIdx--;
+            }
+            fillMoveFields(currentEditingMoves.get(currentEditingMovesIdx));
           }
         });
   }
@@ -210,6 +234,7 @@ public class MapEditorController extends AbsController {
     // System.out.println(unodes.size());
 
     unodes.forEach(this::drawNode);
+    // moves.forEach();
   }
 
   // this also does some initialization now
@@ -236,21 +261,32 @@ public class MapEditorController extends AbsController {
                   .toList();
 
           currentEditingLocationIdx = 0;
+          currentEditingMovesIdx = 0;
 
           fillMicroNodeFields(unode);
 
           if (currentEditingLocations.size() > 1) {
             nextLocation.setVisible(true);
             prevLocation.setVisible(true);
+            nextMove.setVisible(true);
+            prevMove.setVisible(true);
           } else {
             nextLocation.setVisible(false);
             prevLocation.setVisible(false);
+            nextMove.setVisible(false);
+            prevMove.setVisible(false);
           }
 
           if (currentEditingLocations.size() > 0) {
             fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
           } else {
             clearLocationFields();
+          }
+
+          if (currentEditingMoves.size() > 0) {
+            fillMoveFields(currentEditingMoves.get(currentEditingMovesIdx));
+          } else {
+            clearMoveFields();
           }
         });
 
@@ -321,6 +357,7 @@ public class MapEditorController extends AbsController {
     shortnameText.setText(loc.shortname);
     typeText.setText(loc.type.toString());
     longnameText.setText(loc.longname);
+    longnameText1.setText(loc.longname);
   }
 
   private void clearLocationFields() {
@@ -328,6 +365,19 @@ public class MapEditorController extends AbsController {
     shortnameText.setText("");
     typeText.setText("");
     longnameText.setText("");
+    longnameText1.setText("");
+  }
+
+  private void fillMoveFields(Move mave) {
+    longnameText.setText(mave.longName);
+    longnameText1.setText(mave.longName);
+    dateText.setText(mave.date);
+  }
+
+  private void clearMoveFields() {
+    longnameText.setText("");
+    longnameText1.setText("");
+    dateText.setText("");
   }
 
   private void deleteNode(String id) {

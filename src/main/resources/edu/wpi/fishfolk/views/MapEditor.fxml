@@ -320,7 +320,7 @@
                                           <Insets />
                                        </HBox.margin>
                                     </Text>
-                                    <MFXTextField fx:id="shortnameText" borderGap="0.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="100.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS">
+                                    <MFXTextField fx:id="shortnameText" borderGap="0.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="100.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" HBox.hgrow="ALWAYS">
                                        <font>
                                           <Font name="Open Sans Regular" size="11.0" />
                                        </font>
@@ -384,7 +384,7 @@
                                     </Text>
                                     <MFXTextField fx:id="longnameText" allowEdit="false" borderGap="0.0" maxHeight="25.0" minHeight="25.0" minWidth="220.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                                        <font>
-                                          <Font name="Open Sans Regular" size="15.0" />
+                                          <Font name="Open Sans Regular" size="11.0" />
                                        </font>
                                        <textFill>
                                           <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
@@ -430,7 +430,92 @@
                               <Insets />
                            </opaqueInsets>
                         </VBox>
-                        <VBox maxHeight="125.0" minHeight="125.0" style="-fx-border-color: #012D5A;" VBox.vgrow="ALWAYS" />
+                        <VBox maxHeight="125.0" minHeight="125.0" style="-fx-border-color: #012D5A;" VBox.vgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="CENTER_RIGHT" maxHeight="56.0" minHeight="25.0" prefHeight="56.0" prefWidth="330.0">
+                                 <children>
+                                    <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Long Name:">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Text>
+                                    <MFXTextField fx:id="longnameText1" borderGap="0.0" maxHeight="25.0" maxWidth="201.0" minHeight="25.0" minWidth="100.0" prefHeight="25.0" prefWidth="201.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="11.0" />
+                                       </font>
+                                       <textFill>
+                                          <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                       </textFill>
+                                       <effect>
+                                          <InnerShadow>
+                                             <color>
+                                                <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" />
+                                             </color>
+                                          </InnerShadow>
+                                       </effect>
+                                       <HBox.margin>
+                                          <Insets left="5.0" right="17.0" />
+                                       </HBox.margin>
+                                    </MFXTextField>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" maxHeight="41.0" minHeight="25.0" prefHeight="41.0" prefWidth="330.0">
+                                 <children>
+                                    <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Date: ">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Text>
+                                    <MFXTextField fx:id="dateText" allowEdit="false" borderGap="0.0" maxHeight="25.0" minHeight="25.0" minWidth="220.0" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                       <textFill>
+                                          <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                       </textFill>
+                                       <effect>
+                                          <InnerShadow>
+                                             <color>
+                                                <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" />
+                                             </color>
+                                          </InnerShadow>
+                                       </effect>
+                                       <HBox.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </HBox.margin>
+                                    </MFXTextField>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" maxHeight="76.0" maxWidth="330.0" minHeight="61.0" minWidth="330.0" prefHeight="76.0" prefWidth="330.0">
+                                 <children>
+                                    <MFXButton fx:id="prevMove" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="35.0" maxWidth="125.0" minHeight="35.0" minWidth="125.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Previous" textFill="#181818" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="17.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </MFXButton>
+                                    <MFXButton fx:id="nextMove" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="35.0" maxWidth="125.0" minHeight="35.0" minWidth="125.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Next" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="15.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </MFXButton>
+                                 </children>
+                              </HBox>
+                           </children></VBox>
                         <VBox maxHeight="125.0" minHeight="125.0" style="-fx-border-color: #012D5A;" VBox.vgrow="ALWAYS">
                            <effect>
                               <Blend />
