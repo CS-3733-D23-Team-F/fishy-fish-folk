@@ -3,10 +3,13 @@ package edu.wpi.fishfolk.controllers;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -27,8 +30,9 @@ public class LoginController extends AbsController {
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
   @FXML MFXButton homeButton;
-  @FXML MFXButton loginAttemptBtn;
+  @FXML MFXButton loginBtn;
   @FXML MFXTextField loginIDField;
+  @FXML MFXPasswordField loginPassField;
 
   @FXML
   private void initialize() {
@@ -41,6 +45,7 @@ public class LoginController extends AbsController {
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     exitButton.setOnMouseClicked(event -> System.exit(0));
+    loginBtn.setOnMouseClicked(loginHandler);
 
     slider.setTranslateX(-400);
     sideBarClose.setVisible(false);
@@ -83,10 +88,13 @@ public class LoginController extends AbsController {
         });
   }
 
-  public static void onLoginButton(Screen screen) {
-  }
-
-  public static boolean attemptLogin(String id) {
-      return false;
-  }
+  public final EventHandler<MouseEvent> loginHandler =
+      event -> {
+        String loginID = loginIDField.getText();
+        String password = loginPassField.getText();
+        System.out.print("LoginID: ");
+        System.out.println(loginID);
+        System.out.print("Password: ");
+        System.out.println(password);
+      };
 }
