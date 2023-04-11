@@ -164,13 +164,20 @@
                         </VBox>
                      </children>
                   </AnchorPane>
-                  <MFXButton fx:id="loginBtn" layoutX="525.0" layoutY="404.0" prefHeight="106.0" prefWidth="188.0" text="Log In">
+                  <MFXButton fx:id="loginBtn" layoutX="287.0" layoutY="339.0" prefHeight="106.0" prefWidth="188.0" text="Log In">
                      <font>
                         <Font size="21.0" />
                      </font>
                   </MFXButton>
-                  <MFXTextField fx:id="loginIDField" layoutX="502.0" layoutY="237.0" prefHeight="53.0" prefWidth="245.0" promptText="User ID" />
-                  <MFXPasswordField fx:id="loginPassField" layoutX="502.0" layoutY="318.0" prefHeight="50.0" prefWidth="246.0" promptText="Password/PIN" />
+                  <MFXTextField fx:id="loginIDField" layoutX="264.0" layoutY="172.0" prefHeight="53.0" prefWidth="245.0" promptText="User ID" />
+                  <MFXPasswordField fx:id="loginPassField" layoutX="264.0" layoutY="253.0" prefHeight="50.0" prefWidth="246.0" promptText="Password/PIN" />
+                  <MFXButton fx:id="newAccountBtn" layoutX="780.0" layoutY="335.0" prefHeight="106.0" prefWidth="188.0" text="Create Account (Admin)">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXTextField fx:id="newAccountIDField" layoutX="757.0" layoutY="168.0" prefHeight="53.0" prefWidth="245.0" promptText="User ID" />
+                  <MFXPasswordField fx:id="newAccountPassField" layoutX="757.0" layoutY="249.0" prefHeight="50.0" prefWidth="246.0" promptText="Password/PIN" />
                </children>
             </AnchorPane>
          </children>

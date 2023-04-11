@@ -129,8 +129,8 @@ public class Fdb {
       userAccountTable = new Table(conn, "useraccounts");
       userAccountTable.init(false);
       userAccountTable.setHeaders(
-              new ArrayList<>(List.of("username", "passhash", "permissions")),
-              new ArrayList<>(List.of("String64", "int", "String64")));
+          new ArrayList<>(List.of("username", "passhash", "permissions")),
+          new ArrayList<>(List.of("String64", "int", "String64")));
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
