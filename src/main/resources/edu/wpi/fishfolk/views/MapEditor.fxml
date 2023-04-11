@@ -1,35 +1,449 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import net.kurobako.gesturefx.GesturePane?>
 
-<AnchorPane minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorController">
-    <children>
-        <MFXScrollPane layoutX="120.0" layoutY="7.0" prefHeight="657.0" prefWidth="1166.0">
-            <content>
-                <TableView fx:id="table" minHeight="675.0" minWidth="1200.0" prefHeight="675.0" prefWidth="1233.0" translateX="120.0">
-                    <columns>
-                        <TableColumn fx:id="id" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" text="ID" />
-                        <TableColumn maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" text="X" fx:id="x" />
-                        <TableColumn fx:id="y" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" text="Y" />
-                        <TableColumn fx:id="floor" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" text="floor" />
-                        <TableColumn fx:id="building" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="building" />
-                        <TableColumn fx:id="type" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" text="Type" />
-                        <TableColumn fx:id="longName" maxWidth="-Infinity" minWidth="200.0" prefWidth="200.0" text="name" />
-                        <TableColumn fx:id="shortName" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="abbreviation" />
-                  <TableColumn fx:id="date" maxWidth="-Infinity" minWidth="75.0" prefWidth="75.0" text="date" />
-                  <TableColumn fx:id="edges" maxWidth="-Infinity" minWidth="125.0" prefWidth="125.0" text="adjacent" />
-                    </columns>
-                </TableView>
-            </content>
-        </MFXScrollPane>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="732.0" layoutX="-9.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" width="129.0" />
-        <MFXButton fx:id="backButton" layoutX="12.0" layoutY="14.0" prefHeight="56.0" prefWidth="98.0" text="BACK" />
-      <MFXButton fx:id="importCSVButton" layoutX="12.0" layoutY="115.0" prefHeight="26.0" prefWidth="98.0" text="IMPORT CSV" />
-      <MFXButton fx:id="exportCSVButton" layoutX="12.0" layoutY="152.0" prefHeight="26.0" prefWidth="98.0" text="EXPORT CSV" />
-    </children>
-</AnchorPane>
+<VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorController">
+   <children>
+      <HBox maxHeight="84.8" minHeight="84.8" VBox.vgrow="ALWAYS">
+         <children>
+            <AnchorPane maxHeight="84.8" minHeight="84.8" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
+               <children>
+                  <MFXButton fx:id="sideBar" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <graphic>
+                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/532-5328945_menu-bar-icon-white-clipart-png-download-menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="sideBarClose" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" style="-fx-background-color: #001d3a;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <graphic>
+                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/532-5328945_menu-bar-icon-white-clipart-png-download-menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="homeButton" depthLevel="LEVEL3" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" styleClass="navButtons" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
+                     <graphic>
+                        <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/home.png" />
+                           </image>
+                           <effect>
+                              <ColorAdjust brightness="1.0" />
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <Text fill="WHITE" layoutX="1134.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FISHY-FISH-FOLK" AnchorPane.bottomAnchor="14.96875" AnchorPane.rightAnchor="100.0">
+                     <font>
+                        <Font name="Open Sans Bold" size="32.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="4.64" offsetY="2.0" radius="0.6599999999999999" spread="0.13" width="0.0">
+                           <color>
+                              <Color red="0.6184210777282715" green="0.6126949191093445" blue="0.6126949191093445" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <StackPane minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox minWidth="120.0" StackPane.alignment="CENTER" />
+            <HBox StackPane.alignment="CENTER">
+               <children>
+                  <StackPane alignment="TOP_LEFT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <GesturePane fx:id="pane" hbarPolicy="NEVER" maxHeight="600" maxWidth="900" minHeight="600" minWidth="900" vbarPolicy="NEVER" StackPane.alignment="TOP_LEFT">
+                           <Group fx:id="drawGroup">
+                              <ImageView fx:id="mapImg" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../map/00_thelowerlevel1.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+      
+                           </Group>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <StackPane.margin>
+                              <Insets top="15.0" />
+                           </StackPane.margin>
+                        </GesturePane>
+                        <HBox alignment="TOP_CENTER" fillHeight="false" maxHeight="40.0" minHeight="40.0" StackPane.alignment="TOP_CENTER">
+                           <children>
+                              <MFXComboBox fx:id="floorSelector" alignment="CENTER" maxHeight="40.0" maxWidth="170.0" minHeight="40.0" minWidth="170.0" text="Floor 1" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="17.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </MFXComboBox>
+                              <VBox alignment="CENTER" fillWidth="false" maxHeight="35.0" maxWidth="15.0" minHeight="35.0" minWidth="15.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <MFXButton fx:id="nextButton" buttonType="RAISED" graphicTextGap="0.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" style="-fx-background-color: #012D5A;" text="^" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="16.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets top="6.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="backButton" buttonType="RAISED" ellipsisString="v" graphicTextGap="0.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" style="-fx-background-color: #012D5A;" text="v" textFill="WHITE" VBox.vgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="12.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="2.0" />
+                                       </VBox.margin>
+                                    </MFXButton>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <StackPane.margin>
+                              <Insets top="25.0" />
+                           </StackPane.margin>
+                        </HBox>
+                     </children>
+                  </StackPane>
+                  <VBox maxHeight="500.0" maxWidth="330.0" minHeight="500.0" minWidth="330.0" style="-fx-background-color: #0464b4;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox maxHeight="126.0" minHeight="125.0" minWidth="330.0" style="-fx-border-color: #ffffff;" VBox.vgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="CENTER_RIGHT" maxHeight="25.0" minHeight="25.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="X:">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="17.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Text>
+                                    <MFXTextField borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS" fx:id="xMicroNodeText">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="11.0" />
+                                       </font>
+                                       <textFill>
+                                          <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                                       </textFill>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                       <HBox.margin>
+                                          <Insets left="10.0" right="54.0" />
+                                       </HBox.margin>
+                                    </MFXTextField>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Y:">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="17.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                    <MFXTextField fx:id="yMicroNodeText" borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" maxWidth="35.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff;" textLimit="20" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="11.0" />
+                                       </font>
+                                       <textFill>
+                                          <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                                       </textFill>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                       <HBox.margin>
+                                          <Insets left="10.0" right="57.0" />
+                                       </HBox.margin>
+                                    </MFXTextField>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets right="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" maxHeight="25.0" minHeight="25.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Floor:">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="17.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="15.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                    <MFXTextField fx:id="floorMicroNodeText" allowEdit="false" borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                       <textFill>
+                                          <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                                       </textFill>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </MFXTextField>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Building:">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="17.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                    <MFXTextField fx:id="buildingMicroNodeText" allowEdit="false" borderGap="0.0" floatMode="DISABLED" maxHeight="25.0" minHeight="25.0" minWidth="95.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                       <textFill>
+                                          <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                                       </textFill>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                       <HBox.margin>
+                                          <Insets left="10.0" right="80.0" />
+                                       </HBox.margin>
+                                    </MFXTextField>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" maxHeight="75.0" maxWidth="330.0" minHeight="75.0" minWidth="330.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <MFXButton fx:id="addNode" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="35.0" maxWidth="125.0" minHeight="35.0" minWidth="125.0" style="-fx-background-color: #F1F1F1; -fx-text-fill: #000000;" text="Add Node" textFill="#181818" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="17.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </MFXButton>
+                                    <MFXButton fx:id="delNode" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="35.0" maxWidth="125.0" minHeight="35.0" minWidth="125.0" style="-fx-background-color: #F1F1F1;" text="Delete Node" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="15.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </MFXButton>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                           <effect>
+                              <DropShadow spread="0.22">
+                                 <color>
+                                    <Color red="0.6421052813529968" green="0.6302144527435303" blue="0.6302144527435303" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox maxHeight="125.0" minHeight="125.0" style="-fx-border-color: #ffffff;" VBox.vgrow="ALWAYS">
+                           <effect>
+                              <DropShadow spread="0.22">
+                                 <color>
+                                    <Color red="0.6421052813529968" green="0.6302144527435303" blue="0.6302144527435303" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox maxHeight="125.0" minHeight="125.0" style="-fx-border-color: #ffffff;" VBox.vgrow="ALWAYS">
+                           <effect>
+                              <DropShadow spread="0.22">
+                                 <color>
+                                    <Color red="0.6421052813529968" green="0.6302144527435303" blue="0.6302144527435303" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </VBox>
+                        <VBox maxHeight="125.0" minHeight="125.0" style="-fx-border-color: #ffffff;" VBox.vgrow="ALWAYS">
+                           <effect>
+                              <DropShadow spread="0.22">
+                                 <color>
+                                    <Color red="0.6421052813529968" green="0.6302144527435303" blue="0.6302144527435303" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </VBox>
+                        <HBox alignment="CENTER_RIGHT" maxHeight="75.0" maxWidth="330.0" minHeight="75.0" minWidth="330.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <MFXButton fx:id="discardButton" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="50.0" maxWidth="125.0" minHeight="50.0" minWidth="125.0" style="-fx-background-color: #F1F1F1; -fx-text-fill: #000000;" text="DISCARD" textFill="#181818" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="75.0" />
+                                 </HBox.margin>
+                              </MFXButton>
+                              <MFXButton fx:id="saveButton" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="50.0" maxWidth="125.0" minHeight="50.0" minWidth="125.0" style="-fx-background-color: #F0BF4C; -fx-text-fill: #012D5A;" text="SAVE" textFill="#712424" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </MFXButton>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="33.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="25.0" right="10.0" top="15.0" />
+                     </HBox.margin>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </VBox>
+               </children>
+               <StackPane.margin>
+                  <Insets left="15.0" />
+               </StackPane.margin>
+            </HBox>
+            <AnchorPane fx:id="menuWrap" disable="true" minWidth="70.0" visible="false">
+               <children>
+                  <AnchorPane fx:id="slider" maxWidth="400.0" minWidth="400.0" style="-fx-background-color: #054982;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-400.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <VBox maxWidth="400.0" minWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Meal Delivery" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="signageNav" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Signage" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="officeNav" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Office Supplies" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="140.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="pathfindingNav" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Pathfinding" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="210.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="mapEditorNav" alignment="BOTTOM_LEFT" layoutX="5.0" layoutY="400.0" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Map Editor" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="280.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="viewFood" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="View Food Order" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="350.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="viewSupply" alignment="BOTTOM_LEFT" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="View Supply Order" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="420.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="exitButton" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" styleClass="sideNav" text="Exit Application" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="25.0" />
+                                       </font>
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/powerOff.png" />
+                                             </image>
+                                             <effect>
+                                                <ColorAdjust brightness="1.0" />
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                       <padding>
+                                          <Insets left="40.0" />
+                                       </padding>
+                                    </MFXButton>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+   </children>
+</VBox>

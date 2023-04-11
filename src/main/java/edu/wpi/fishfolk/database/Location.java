@@ -4,14 +4,23 @@ import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.util.ArrayList;
 
 public class Location extends TableEntry {
+
   public String longname;
   public String shortname;
   public NodeType type;
+
+  boolean assigned;
+  MicroNode unode;
+
+  public Location() {}
 
   public Location(String longname, String shortname, NodeType nodeType) {
     this.longname = longname;
     this.shortname = shortname;
     this.type = nodeType;
+
+    assigned = false;
+    unode = null;
   }
 
   @Override
@@ -33,5 +42,19 @@ public class Location extends TableEntry {
     data.add(shortname);
     data.add(type.toString());
     return data;
+  }
+
+  public boolean assign(MicroNode unode) {
+
+    this.unode = unode;
+    boolean ret = !assigned; // not yet assigned -> return true and vice versa
+    assigned = true;
+    return ret;
+  }
+
+  public MicroNode unassign() {
+    assigned = false;
+    // no need to set unode to null as long as assigned is used to check instead of null
+    return unode;
   }
 }

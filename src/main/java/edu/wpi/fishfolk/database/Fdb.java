@@ -1,18 +1,87 @@
 package edu.wpi.fishfolk.database;
 
+import edu.wpi.fishfolk.database.edit.DataEdit;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.*;
 
 /** @author Christian */
 public class Fdb {
 
-  public NodeTable nodeTable;
+  public Table micronodeTable;
+  public Table locationTable;
+  public Table moveTable;
   public Table edgeTable;
 
   public Connection conn;
 
+  private HashSet<String> freeIDs;
+
   public Fdb() {
 
     this.conn = connect("teamfdb", "teamf", "teamf60");
+
+    initialize();
+
+    int maxID = 4000;
+
+    freeIDs = new HashSet<>((maxID - 100) / 5 * 4 / 3 + 1); // about 780 to start
+
+    // add all ids from 100 -> 3000 counting by 5
+    for (int i = 100; i <= maxID; i += 5) {
+      freeIDs.add(Integer.toString(i));
+    }
+
+    // remove the ids already in the database
+    micronodeTable
+        .getColumn("id")
+        .forEach(
+            id -> {
+              freeIDs.remove(id);
+            });
+
+    System.out.println("num ids left " + freeIDs.size());
+  }
+
+  public boolean processEdit(DataEdit edit) {
+
+    // handle ids
+    switch (edit.type) {
+      case INSERT:
+        // edit.id = getNextID();
+        break;
+
+      case REMOVE:
+        freeID(edit.id);
+        break;
+    }
+
+    switch (edit.table) {
+      case MICRONODE:
+        return micronodeTable.update(edit);
+
+      case LOCATION:
+        return locationTable.update(edit);
+
+      case MOVE:
+        return moveTable.update(edit);
+
+      case EDGE:
+        return edgeTable.update(edit);
+    }
+
+    return false;
+  }
+
+  public String getNextID() {
+    Iterator<String> itr = freeIDs.iterator();
+    String id = itr.next();
+    itr.remove();
+    return id;
+  }
+
+  public void freeID(String id) {
+    freeIDs.add(id);
   }
 
   /**
@@ -20,39 +89,46 @@ public class Fdb {
    * and edge tables. TODO: Database name, user, password and table names are hardcoded -> Make them
    * configurable
    */
-
-  /*
   public void initialize() {
 
     try {
 
       // STEP 1: Connect to PostgreSQL database
 
-      db = connect("teamfdb", "teamf", "teamf60");
-      db.setSchema("teamfdbd");
-      System.out.println("[Fdb.initialize]: Current schema: " + db.getSchema() + ".");
+      conn = connect("teamfdb", "teamf", "teamf60");
+      conn.setSchema("iter1db");
+      System.out.println("[Fdb.initialize]: Current schema: " + conn.getSchema() + ".");
 
       // STEP 2: Establish table objects
 
-      nodeTable = new NodeTable(db, "nodetable2");
-      if (createTable(db, nodeTable.getTableName())) {
-        nodeTable.addHeaders();
-      }
+      micronodeTable = new Table(conn, "micronode");
+      micronodeTable.init(false);
+      micronodeTable.setHeaders(
+          new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
+          new ArrayList<>(List.of("int", "double", "double", "String2", "String16")));
 
-      edgeTable = new EdgeTable(db, "edgetable2");
-      if (createTable(db, edgeTable.getTableName())) {
-        edgeTable.addHeaders();
-      }
+      locationTable = new Table(conn, "location");
+      locationTable.init(false);
+      locationTable.setHeaders(
+          new ArrayList<>(List.of("longname", "shortname", "type")),
+          new ArrayList<>(List.of("String64", "String64", "String4")));
 
-      nodeTable.setEdgeTable(edgeTable);
-      edgeTable.setNodeTable(nodeTable);
+      moveTable = new Table(conn, "move");
+      moveTable.init(false);
+      moveTable.setHeaders(
+          new ArrayList<>(List.of("id", "longname", "date")),
+          new ArrayList<>(List.of("int", "String64", "String16")));
+
+      edgeTable = new Table(conn, "edge");
+      edgeTable.init(false);
+      edgeTable.setHeaders(
+          new ArrayList<>(List.of("node1", "node2")),
+          new ArrayList<>(List.of("String8", "String8")));
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
   }
-
-   */
 
   /**
    * Connect to a PostgreSQL database.
@@ -62,7 +138,7 @@ public class Fdb {
    * @param dbPass Password
    * @return Database connection object (null if no connection is made)
    */
-  public Connection connect(String dbName, String dbUser, String dbPass) {
+  private Connection connect(String dbName, String dbUser, String dbPass) {
     Connection db = null;
     String dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
     try {
@@ -96,7 +172,7 @@ public class Fdb {
    * @param tbName Table name
    * @return True if table exists in database
    */
-  public boolean tableExists(Connection db, String tbName) {
+  private boolean tableExists(Connection db, String tbName) {
     Statement statement;
     try {
       statement = db.createStatement();
@@ -116,86 +192,70 @@ public class Fdb {
     }
   }
 
-  /**
-   * Creates a new empty table within database if it doesn't exist.
-   *
-   * @param conn Database connection
-   * @param tableName Table name
-   * @return True if a new table is created
-   */
-  public boolean createTable(Connection conn, String tableName) {
-    Statement statement;
-    try {
-      statement = conn.createStatement();
-      if (tableExists(conn, tableName)) {
-        System.out.println("[Fdb.createTable]: Table " + tableName + " already exists.");
-        return false;
-      } else {
-        String query = "CREATE TABLE " + tableName + " (id VARCHAR(10) PRIMARY KEY);";
-        statement.executeUpdate(query);
-        System.out.println("[Fdb.createTable]: Table " + tableName + " created.");
-        return true;
-      }
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-      return false;
+  public int getMostRecentUNode(String longname) {
+    ArrayList<String[]> results =
+        moveTable.executeQuery("SELECT id, date", "WHERE longname = '" + longname + "';");
+
+    results.forEach(
+        res -> {
+          res[1] = Move.sanitizeDate(res[1]);
+          System.out.println(Arrays.toString(res));
+        });
+
+    // sort results based on date
+    results.sort(Comparator.comparing(result -> LocalDate.parse(result[1], Move.format)));
+
+    // extract id from last result
+    return Integer.parseInt(results.get(results.size() - 1)[0]);
+  }
+
+  public ArrayList<String[]> getMostRecentLocations(String id) {
+
+    ArrayList<String[]> results =
+        moveTable.executeQuery("SELECT longname, date", "WHERE id = '" + id + "';");
+
+    results.forEach(
+        res -> {
+          res[1] = Move.sanitizeDate(res[1]);
+          System.out.println(Arrays.toString(res));
+        });
+
+    // sort results based on date
+    results.sort(Comparator.comparing(result -> LocalDate.parse(result[1], Move.format)));
+
+    ArrayList<String[]> locations = new ArrayList<>();
+
+    for (String[] result : results) {
+      locations.add(locationTable.get("longname", result[0]).toArray(new String[3]));
     }
+
+    return locations;
   }
 
-  /** Runs through all the methods to test their functionality. DEBUG ONLY */
-  /*
-  public void runTests() {
-
-    System.out.println("\n--- TESTING NODE TABLE ---\n");
-
-    nodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/L1Nodes.csv");
-
-    Node existingNode = nodeTable.getNode("CCONF001L1");
-    Node newNode =
-        new Node(
-            "CDEPT999L1",
-            new Point2D(1980, 844),
-            "L1",
-            "Tower",
-            NodeType.DEPT,
-            "Day Surgery Family Waiting Floor L1",
-            "Department C002L1");
-    Node newNodeUpdated =
-        new Node(
-            "CDEPT999L1",
-            new Point2D(1980, 844),
-            "L2",
-            "Space",
-            NodeType.DEPT,
-            "Night Surgery Family Waiting Floor L1",
-            "Department C002L1");
-
-    nodeTable.insertNode(existingNode);
-    nodeTable.insertNode(newNode);
-
-    nodeTable.updateNode(newNodeUpdated);
-
-    nodeTable.removeNode(existingNode);
-
-    nodeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/L1NodesOutput.csv");
-
-    System.out.println("\n--- TESTING EDGE TABLE ---\n");
-
-    edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/L1Edges.csv");
-
-    Edge existingEdge = edgeTable.getEdge("CCONF002L1_WELEV00HL1");
-
-    Edge newEdge = new Edge("CDEPT002L1", "CDEPT003L1");
-    Edge newEdgeUpdated = new Edge("CDEPT002L1AAA", "CDEPT003L1AAA");
-
-    edgeTable.insertEdge(existingEdge);
-    edgeTable.insertEdge(newEdge);
-
-    edgeTable.updateEdge(newEdgeUpdated);
-
-    edgeTable.removeEdge(existingEdge);
-
-    edgeTable.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/L1EdgesOutput.csv");
-  }
+  /**
+   * Perform a join operation on two tables along the match column. The returned ArrayList contains
+   * the requested headers in the first index and each element afterwards represents one row, not
+   * including
+   *
+   * @param selectHeaders
+   * @param left
+   * @param right
+   * @param match
+   * @return
    */
+  /*
+  public ArrayList<String[]> join(String[] selectHeaders, DataTableType left, DataTableType right, String match){
+
+
+
+  }
+
+   */
+
+  public void loadTablesFromCSV() {
+    micronodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv", false);
+    locationTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Location.csv", false);
+    moveTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
+    edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
+  }
 }

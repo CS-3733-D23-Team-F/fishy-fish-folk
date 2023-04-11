@@ -39,7 +39,7 @@
                         </ImageView>
                      </graphic>
                   </MFXButton>
-                  <MFXButton fx:id="homeButton" depthLevel="LEVEL3" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" styleClass="navButtons" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
+                  <MFXButton fx:id="homeButton" depthLevel="LEVEL3" maxHeight="84.8" maxWidth="84.8" minHeight="84.8" minWidth="84.8" styleClass="sideNav" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
                      <graphic>
                         <ImageView depthTest="ENABLE" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -70,18 +70,18 @@
       </HBox>
       <StackPane minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
          <children>
-            <ImageView fitHeight="635.0" fitWidth="1280.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+            <ImageView fitHeight="635.2" fitWidth="1280.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
                <image>
                   <Image url="@../images/hospitalImg.png" />
                </image>
                <viewport>
-                  <Rectangle2D height="1250.0" minX="250.0" minY="700.0" width="2500.0" />
+                  <Rectangle2D height="952.8" minX="200.0" minY="310.0" width="1920.0" />
                </viewport>
                <StackPane.margin>
                   <Insets />
                </StackPane.margin>
             </ImageView>
-            <HBox alignment="CENTER" minWidth="120.0" StackPane.alignment="CENTER" />
+            <HBox alignment="CENTER" minWidth="120.0" opacity="0.46" style="-fx-background-color: #000000;" StackPane.alignment="CENTER" />
             <VBox maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0">
                <children>
                   <HBox alignment="CENTER" VBox.vgrow="ALWAYS" />
@@ -100,16 +100,13 @@
                                     <Insets left="60.0" top="45.0" />
                                  </padding>
                                  <graphic>
-                                    <ImageView cache="true" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="signageIcon" cache="true" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" styleClass="btnIcon">
                                        <image>
                                           <Image url="@../images/pathfinding.png" />
                                        </image>
                                        <viewport>
-                                          <Rectangle2D height="1130.0" width="1200.0" />
+                                          <Rectangle2D />
                                        </viewport>
-                                       <effect>
-                                          <ColorAdjust brightness="-0.35" contrast="1.0" hue="-0.51" saturation="1.0" />
-                                       </effect>
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
@@ -124,16 +121,13 @@
                                     <Insets left="60.0" top="45.0" />
                                  </padding>
                                  <graphic>
-                                    <ImageView cache="true" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="mapIcon" cache="true" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" styleClass="btnIcon">
                                        <image>
                                           <Image url="@../images/mapEditor.png" />
                                        </image>
                                        <viewport>
-                                          <Rectangle2D height="550.0" width="600.0" />
+                                          <Rectangle2D />
                                        </viewport>
-                                       <effect>
-                                          <ColorAdjust brightness="0.22" contrast="1.0" hue="-0.77" saturation="1.0" />
-                                       </effect>
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
@@ -148,20 +142,17 @@
                                     <Insets left="25.0" />
                                  </padding>
                                  <graphic>
-                                    <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="supplyIcon" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" styleClass="btnIcon">
                                        <image>
                                           <Image url="@../images/delivery.png" />
                                        </image>
-                                       <effect>
-                                          <ColorAdjust brightness="0.29" contrast="0.35" hue="-0.59" saturation="1.0" />
-                                       </effect>
                                        <viewport>
                                           <Rectangle2D />
                                        </viewport>
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
-                              <MFXButton fx:id="mealButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31; -fx-background-image: url(&quot;images/food.png&quot;);" styleClass="navButtons" text="Meal Delivery" textFill="WHITE" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                              <MFXButton fx:id="mealButton" alignment="BASELINE_LEFT" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="260.0" maxWidth="260.0" minHeight="260.0" minWidth="260.0" style="-fx-border-radius: 40; -fx-background-radius: 31;" styleClass="navButtons" text="Meal Delivery" textFill="WHITE" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
                                  <font>
                                     <Font name="Open Sans Bold" size="31.0" />
                                  </font>
@@ -169,16 +160,13 @@
                                     <Insets />
                                  </opaqueInsets>
                                  <graphic>
-                                    <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="mealIcon" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" styleClass="btnIcon">
                                        <image>
                                           <Image url="@../images/food.png" />
                                        </image>
                                        <viewport>
-                                          <Rectangle2D height="330.0" width="330.0" />
+                                          <Rectangle2D />
                                        </viewport>
-                                       <effect>
-                                          <ColorAdjust brightness="0.12" contrast="0.45" hue="-0.52" saturation="-0.45" />
-                                       </effect>
                                     </ImageView>
                                  </graphic>
                                  <padding>
@@ -196,13 +184,10 @@
                                     <Insets left="40.0" />
                                  </padding>
                                  <graphic>
-                                    <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="pathfindingIcon" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" styleClass="btnIcon">
                                        <image>
                                           <Image url="@../images/wayfinding.png" />
                                        </image>
-                                       <effect>
-                                          <ColorAdjust brightness="0.62" contrast="1.0" hue="-0.84" saturation="-0.15" />
-                                       </effect>
                                        <viewport>
                                           <Rectangle2D />
                                        </viewport>
@@ -220,13 +205,10 @@
                                     <Insets left="45.0" />
                                  </padding>
                                  <graphic>
-                                    <ImageView fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="orderIcon" fitHeight="144.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" styleClass="btnIcon">
                                        <image>
                                           <Image url="@../images/order.png" />
                                        </image>
-                                       <effect>
-                                          <ColorAdjust brightness="0.81" contrast="1.0" hue="-0.36" saturation="0.27" />
-                                       </effect>
                                        <viewport>
                                           <Rectangle2D />
                                        </viewport>
@@ -272,7 +254,7 @@
                   <HBox alignment="CENTER" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
-            <AnchorPane fx:id="menuWrap" disable="true" minWidth="70.0">
+            <AnchorPane fx:id="menuWrap" disable="true" minWidth="70.0" visible="false">
                <children>
                   <AnchorPane fx:id="slider" maxWidth="400.0" minWidth="400.0" style="-fx-background-color: #054982;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-400.0" AnchorPane.topAnchor="0.0">
                      <children>

@@ -11,7 +11,9 @@ public enum Screen {
   VIEW_FOOD_ORDERS("views/ViewFoodOrders.fxml"),
   VIEW_SUPPLY_ORDERS("views/ViewSupplyOrders.fxml"),
   PATHFINDING("views/Pathfinding.fxml"),
-  LOGIN("views/Login.fxml");
+  LOGIN("views/Login.fxml"),
+  OLD_MAP_EDITOR("views/OldMapEditor.fxml"),
+  TEMPLATE("views/Template.fxml");
 
   private final String filename;
 
