@@ -79,6 +79,7 @@ public class FurnitureOrderController extends AbsController {
                 "String", "String", "String", "String", "String", "String", "String", "String")));
   }
 
+
   // initialize() sets the preliminary fields for the page and defines the functionality of the
   // relevant items
   // ex. radioButton functionality, drop-down menus, etc.
@@ -246,8 +247,8 @@ public class FurnitureOrderController extends AbsController {
     offButton6.setSelected(false);
   }
 
+
   // getDate() returns the date. idk what the date function looked like as a string i was curious
-  // lol
   public String getDate() {
     return "" + deliveryDate.getCurrentDate();
   }
@@ -263,6 +264,7 @@ public class FurnitureOrderController extends AbsController {
     if (radioButton6.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(5);
     if (radioButton7.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(6);
   }
+
 
   // submit() creates the final currentFurnitureOrder and uses its fields to send data to the
   // furnitureorder table

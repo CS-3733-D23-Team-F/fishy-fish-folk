@@ -239,28 +239,8 @@ public class PathfindingController extends AbsController {
   }
 
   private Line line(Point2D p1, Point2D p2) {
-    p1 = convert(p1);
-    p2 = convert(p2);
+    //p1 = convert(p1);
+    //p2 = convert(p2);
     return new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-  }
-
-  public Point2D convert(Point2D p) {
-
-    // center gets mapped to center. center1 -> center2
-
-    // values from viewport
-    Point2D center1 = new Point2D(900 + 4050 / 2, 150 + 3000 / 2);
-
-    // fit width/height
-    Point2D center2 = new Point2D(900 / 2, 600 / 2);
-
-    Point2D rel = p.subtract(center1); // p relative to the center
-
-    // strech x and y separately
-    // fit width/height / img width/height
-    double x = rel.getX() * 900 / 4050;
-    double y = rel.getY() * 600 / 3000;
-
-    return new Point2D(x, y).add(center2);
   }
 }
