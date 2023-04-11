@@ -14,7 +14,7 @@
 
 <VBox minHeight="1080.0" minWidth="1920.0" style="-fx-background-color: #F4F4F4;" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.HomeController">
    <children>
-      <StackPane minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
+      <StackPane VBox.vgrow="ALWAYS">
          <children>
             <ImageView fitHeight="1080.0" fitWidth="1920.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
                <image>
@@ -78,7 +78,7 @@
                                              <graphic>
                                                 <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../images/pathfinding.png" />
+                                                      <Image url="@../images/flower.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
@@ -93,7 +93,7 @@
                                              <graphic>
                                                 <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../images/pathfinding.png" />
+                                                      <Image url="@../images/furniture.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
@@ -108,7 +108,7 @@
                                              <graphic>
                                                 <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../images/pathfinding.png" />
+                                                      <Image url="@../images/conference.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
@@ -204,7 +204,7 @@
                                        <graphic>
                                           <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../images/delivery.png" />
+                                                <Image url="@../images/box.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
@@ -219,7 +219,7 @@
                                        <graphic>
                                           <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../images/deliveryH.png" />
+                                                <Image url="@../images/boxH.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>

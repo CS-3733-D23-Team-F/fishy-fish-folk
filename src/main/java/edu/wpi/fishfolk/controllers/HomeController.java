@@ -24,11 +24,6 @@ public class HomeController {
   @FXML MFXButton exitButton;
   @FXML AnchorPane slider;
   @FXML MFXButton serviceNav;
-  @FXML MFXButton signageButton;
-  @FXML MFXButton mealButton;
-  @FXML MFXButton officeButton;
-  @FXML MFXButton pathfindingButton;
-  @FXML MFXButton mapEditorButton;
   @FXML AnchorPane menuWrap;
   @FXML MFXButton closeServiceNav;
   @FXML MFXButton furnitureNav;
@@ -50,10 +45,12 @@ public class HomeController {
     // navigateButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SERVICE_REQUEST));
 
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
-    // mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
-    // officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
+    supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     closeServiceNav.setVisible(false);
