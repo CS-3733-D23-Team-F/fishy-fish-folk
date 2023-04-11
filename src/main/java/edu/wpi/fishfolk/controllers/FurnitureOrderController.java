@@ -23,7 +23,7 @@ import javafx.util.Duration;
 public class FurnitureOrderController extends AbsController {
   // definitions for furnitureorder table's headers
   private static String[] headersArray = {
-    "id", "serviceType", "item", "roomNum", "date", "notes", "status", "assignee"
+    "id", "servicetype", "item", "roomnum", "date", "notes", "status", "assignee"
   };
 
   public static ArrayList<String> headers = new ArrayList<String>(Arrays.asList(headersArray));
@@ -71,7 +71,7 @@ public class FurnitureOrderController extends AbsController {
   public FurnitureOrderController() {
     super();
     furnitureOrderTable = new Table(dbConnection.conn, "furnitureorder");
-    furnitureOrderTable.init(false);
+    furnitureOrderTable.init(true);
     furnitureOrderTable.addHeaders(
         FurnitureOrderController.headers,
         new ArrayList<>(
@@ -79,7 +79,8 @@ public class FurnitureOrderController extends AbsController {
                 "String", "String", "String", "String", "String", "String", "String", "String")));
   }
 
-  // initialize() sets the preliminary fields for the page and defines the functionality of the relevant items
+  // initialize() sets the preliminary fields for the page and defines the functionality of the
+  // relevant items
   // ex. radioButton functionality, drop-down menus, etc.
   public void initialize() {
     loadOptions();
@@ -225,7 +226,7 @@ public class FurnitureOrderController extends AbsController {
 
   // loadRoomChoice() fills the possible options in the Room Numver choicebox
   public void loadRoomChoice() {
-    roomSelector.getItems().addAll(dbConnection.nodeTable.getDestLongNames());
+    // roomSelector.getItems().addAll(dbConnection.nodeTable.getDestLongNames());
   }
 
   // deselectRadios() will deselect all of the given buttons.
@@ -245,7 +246,8 @@ public class FurnitureOrderController extends AbsController {
     offButton6.setSelected(false);
   }
 
-  //getDate() returns the date. idk what the date function looked like as a string i was curious lol
+  // getDate() returns the date. idk what the date function looked like as a string i was curious
+  // lol
   public String getDate() {
     return "" + deliveryDate.getCurrentDate();
   }
@@ -262,7 +264,8 @@ public class FurnitureOrderController extends AbsController {
     if (radioButton7.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(6);
   }
 
-  // submit() creates the final currentFurnitureOrder and uses its fields to send data to the furnitureorder table
+  // submit() creates the final currentFurnitureOrder and uses its fields to send data to the
+  // furnitureorder table
   void submit() {
     currentFurnitureOrder.setServiceType("" + requestTypePicker.getValue());
     if (radioButton1.isSelected()) currentFurnitureOrder.addFurniture(furnitureOptions.get(0));

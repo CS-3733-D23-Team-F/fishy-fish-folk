@@ -33,7 +33,8 @@ public class FurnitureOrder extends TableEntry {
   }
 
   // setRoomNum() sets the room number for the given FurnitureOrder
-  // the rooms are based on the nodes in NodeTable as defined in loadRoomChoice() in FurnitureOrderController
+  // the rooms are based on the nodes in NodeTable as defined in loadRoomChoice() in
+  // FurnitureOrderController
   public void setRoomNum(String room) {
     this.roomNum = room;
   }
@@ -57,35 +58,29 @@ public class FurnitureOrder extends TableEntry {
 
   // construct() converts the values from a given furnitureorder table row into a FurnitureOrder
   public boolean construct(ArrayList<String> data) {
-    FurnitureOrder currentFurnitureOrder = new FurnitureOrder();
-    currentFurnitureOrder.formID = data.get(0);
-    currentFurnitureOrder.serviceType = data.get(1);
-    if (data.get(2).equals(FurnitureItem.bed.furnitureName))
-      currentFurnitureOrder.furnitureItem = FurnitureItem.bed;
-    if (data.get(2).equals(FurnitureItem.chair.furnitureName))
-      currentFurnitureOrder.furnitureItem = FurnitureItem.chair;
-    if (data.get(2).equals(FurnitureItem.desk.furnitureName))
-      currentFurnitureOrder.furnitureItem = FurnitureItem.desk;
+    formID = data.get(0);
+    serviceType = data.get(1);
+    if (data.get(2).equals(FurnitureItem.bed.furnitureName)) furnitureItem = FurnitureItem.bed;
+    if (data.get(2).equals(FurnitureItem.chair.furnitureName)) furnitureItem = FurnitureItem.chair;
+    if (data.get(2).equals(FurnitureItem.desk.furnitureName)) furnitureItem = FurnitureItem.desk;
     if (data.get(2).equals(FurnitureItem.fileCabinet.furnitureName))
-      currentFurnitureOrder.furnitureItem = FurnitureItem.fileCabinet;
-    if (data.get(2).equals(FurnitureItem.clock.furnitureName))
-      currentFurnitureOrder.furnitureItem = FurnitureItem.clock;
-    if (data.get(2).equals(FurnitureItem.xRay.furnitureName))
-      currentFurnitureOrder.furnitureItem = FurnitureItem.xRay;
+      furnitureItem = FurnitureItem.fileCabinet;
+    if (data.get(2).equals(FurnitureItem.clock.furnitureName)) furnitureItem = FurnitureItem.clock;
+    if (data.get(2).equals(FurnitureItem.xRay.furnitureName)) furnitureItem = FurnitureItem.xRay;
     if (data.get(2).equals(FurnitureItem.trashCan.furnitureName))
-      currentFurnitureOrder.furnitureItem = FurnitureItem.trashCan;
-    currentFurnitureOrder.roomNum = data.get(3);
-    currentFurnitureOrder.deliveryDate = data.get(4);
-    currentFurnitureOrder.notes = data.get(5);
-    if (data.get(6).equals("notSubmitted"))
-      currentFurnitureOrder.setStatus(FormStatus.notSubmitted);
-    if (data.get(6).equals("submitted")) currentFurnitureOrder.setStatus(FormStatus.submitted);
-    if (data.get(6).equals("cancelled")) currentFurnitureOrder.setStatus(FormStatus.cancelled);
-    if (data.get(6).equals("filled")) currentFurnitureOrder.setStatus(FormStatus.filled);
+      furnitureItem = FurnitureItem.trashCan;
+    roomNum = data.get(3);
+    deliveryDate = data.get(4);
+    notes = data.get(5);
+    if (data.get(6).equals("notSubmitted")) setStatus(FormStatus.notSubmitted);
+    if (data.get(6).equals("submitted")) setStatus(FormStatus.submitted);
+    if (data.get(6).equals("cancelled")) setStatus(FormStatus.cancelled);
+    if (data.get(6).equals("filled")) setStatus(FormStatus.filled);
     return true;
   }
 
-  // deconstruct() converts the currentFurnitureOrder into an ArrayList<String> for the furnitureorder table format
+  // deconstruct() converts the currentFurnitureOrder into an ArrayList<String> for the
+  // furnitureorder table format
   public ArrayList<String> deconstruct() {
     ArrayList<String> deconstruction = new ArrayList<String>();
     deconstruction.add(formID);
