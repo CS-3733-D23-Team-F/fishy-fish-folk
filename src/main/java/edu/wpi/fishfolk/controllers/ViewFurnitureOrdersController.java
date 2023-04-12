@@ -53,12 +53,12 @@ public class ViewFurnitureOrdersController extends AbsController {
   public ViewFurnitureOrdersController() {
     super();
     furnitureOrderTable = new Table(dbConnection.conn, "furnitureorder");
+    furnitureOrderTable.init(false);
     furnitureOrderTable.addHeaders(
         FurnitureOrderController.headers,
         new ArrayList<>(
             List.of(
                 "String", "String", "String", "String", "String", "String", "String", "String")));
-    furnitureOrderTable.init(false);
   }
 
   @FXML
@@ -229,7 +229,7 @@ public class ViewFurnitureOrdersController extends AbsController {
       itemsText.setText(itemsTextContent);
       deliveryTimeText.setText(furnitureOrders.get(currentOrderNumber).deliveryDate);
       int numLines = itemsTextContent.split("\n").length + 1;
-      itemsTextContainer.setPrefHeight(52 * numLines);
+      itemsTextContainer.setPrefHeight(60 * numLines);
       assigneeText.setText(furnitureOrders.get(currentOrderNumber).assignee);
       switch (furnitureOrders.get(currentOrderNumber).formStatus) {
         case filled:

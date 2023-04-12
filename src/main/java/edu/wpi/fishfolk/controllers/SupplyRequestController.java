@@ -7,7 +7,6 @@ import edu.wpi.fishfolk.ui.SupplyItem;
 import edu.wpi.fishfolk.ui.SupplyOrder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +14,7 @@ import java.util.List;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -31,7 +31,7 @@ public class SupplyRequestController extends AbsController {
   @FXML MFXButton signageNav;
 
   @FXML MFXButton mealNav;
-  @FXML MFXComboBox<String> roomSelector;
+  @FXML ComboBox<String> roomSelector;
 
   @FXML MFXButton officeNav;
 

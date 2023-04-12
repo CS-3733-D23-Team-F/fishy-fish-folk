@@ -68,7 +68,7 @@ public class FurnitureOrderController extends AbsController {
   public FurnitureOrderController() {
     super();
     furnitureOrderTable = new Table(dbConnection.conn, "furnitureorder");
-    furnitureOrderTable.init(true);
+    furnitureOrderTable.init(false);
     furnitureOrderTable.addHeaders(
         FurnitureOrderController.headers,
         new ArrayList<>(
