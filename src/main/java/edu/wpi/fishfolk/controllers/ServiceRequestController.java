@@ -37,6 +37,7 @@ public class ServiceRequestController {
     mealButton.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     // flowerButton.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    flowerButton.setDisable(true);
 
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
