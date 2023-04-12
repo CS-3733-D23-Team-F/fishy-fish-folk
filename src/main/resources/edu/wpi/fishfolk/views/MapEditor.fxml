@@ -96,56 +96,74 @@
                               <DropShadow />
                            </effect>
                            <StackPane.margin>
-                              <Insets top="15.0" />
+                              <Insets bottom="15.0" top="15.0" />
                            </StackPane.margin>
                         </GesturePane>
-                        <HBox alignment="TOP_CENTER" fillHeight="false" maxHeight="40.0" minHeight="40.0" StackPane.alignment="TOP_CENTER">
+                        <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <MFXComboBox fx:id="floorSelector" alignment="CENTER" maxHeight="40.0" maxWidth="170.0" minHeight="40.0" minWidth="170.0" text="Floor 1" HBox.hgrow="ALWAYS">
-                                 <font>
-                                    <Font name="Open Sans Regular" size="17.0" />
-                                 </font>
+                              <HBox alignment="TOP_CENTER" fillHeight="false" maxHeight="40.0" minHeight="50.0">
+                                 <children>
+                                    <MFXComboBox fx:id="floorSelector" alignment="CENTER" maxHeight="40.0" maxWidth="170.0" minHeight="40.0" minWidth="170.0" text="Floor 1" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="17.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets top="10.0" />
+                                       </padding>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </MFXComboBox>
+                                    <VBox alignment="CENTER" fillWidth="false" maxHeight="35.0" maxWidth="15.0" minHeight="35.0" minWidth="15.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <MFXButton fx:id="nextButton" buttonType="RAISED" graphicTextGap="0.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" style="-fx-background-color: #012D5A;" text="^" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
+                                             <font>
+                                                <Font name="Open Sans Bold" size="16.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets top="6.0" />
+                                             </padding>
+                                          </MFXButton>
+                                          <MFXButton fx:id="backButton" buttonType="RAISED" ellipsisString="v" graphicTextGap="0.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" style="-fx-background-color: #012D5A;" text="v" textFill="WHITE" VBox.vgrow="ALWAYS">
+                                             <font>
+                                                <Font name="Open Sans Bold" size="12.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets top="2.0" />
+                                             </VBox.margin>
+                                          </MFXButton>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="15.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                 </children>
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
-                                 <padding>
-                                    <Insets top="10.0" />
-                                 </padding>
-                                 <effect>
-                                    <DropShadow />
-                                 </effect>
-                              </MFXComboBox>
-                              <VBox alignment="CENTER" fillWidth="false" maxHeight="35.0" maxWidth="15.0" minHeight="35.0" minWidth="15.0" HBox.hgrow="ALWAYS">
+                              </HBox>
+                              <HBox prefHeight="540.0" />
+                              <HBox alignment="TOP_CENTER" prefHeight="30.0">
                                  <children>
-                                    <MFXButton fx:id="nextButton" buttonType="RAISED" graphicTextGap="0.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" style="-fx-background-color: #012D5A;" text="^" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="16.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets top="6.0" />
-                                       </padding>
+                                    <MFXButton fx:id="importBtn" buttonType="RAISED" maxWidth="120.0" minHeight="30.0" style="-fx-border-color: #012D5A;" text="Import from CSV" textFill="#181818">
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
                                     </MFXButton>
-                                    <MFXButton fx:id="backButton" buttonType="RAISED" ellipsisString="v" graphicTextGap="0.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" style="-fx-background-color: #012D5A;" text="v" textFill="WHITE" VBox.vgrow="ALWAYS">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="12.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="2.0" />
-                                       </VBox.margin>
-                                    </MFXButton>
+                                    <MFXButton fx:id="exportBtn" buttonType="RAISED" layoutX="421.0" layoutY="10.0" maxHeight="30.0" minWidth="120.0" style="-fx-border-color: #012D5A;" text="Export to CSV" />
                                  </children>
-                                 <HBox.margin>
-                                    <Insets left="15.0" />
-                                 </HBox.margin>
-                              </VBox>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
                            </children>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <StackPane.margin>
-                              <Insets top="25.0" />
-                           </StackPane.margin>
-                        </HBox>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </VBox>
                      </children>
                   </StackPane>
                   <VBox maxHeight="500.0" maxWidth="330.0" minHeight="500.0" minWidth="330.0" style="-fx-background-color: #F1F1F1;" HBox.hgrow="ALWAYS">

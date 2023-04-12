@@ -10,6 +10,7 @@ import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.io.File;
 import java.util.*;
 import java.util.List;
 import javafx.animation.TranslateTransition;
@@ -23,6 +24,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
@@ -61,6 +64,9 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
 
+  @FXML MFXButton importBtn;
+  @FXML MFXButton exportBtn;
+
   @FXML MFXButton addNode;
   @FXML MFXButton delNode;
 
@@ -69,6 +75,9 @@ public class MapEditorController extends AbsController {
   @FXML MFXTextField typeText;
   @FXML MFXButton nextLocation;
   @FXML MFXButton prevLocation;
+
+  FileChooser fileChooser;
+  DirectoryChooser dirChooser;
 
   private EDITOR_STATE state;
   private String currentEditingNode;
@@ -1106,6 +1115,40 @@ public class MapEditorController extends AbsController {
             clearMicroNodeFields();
             clearLocationFields();
           }
+        });
+
+    importBtn.setOnAction(
+        event -> {
+          fileChooser.setTitle("Select the Node CSV file");
+          String microNodePath =
+              fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Location CSV file");
+          String locationPath =
+              fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Move CSV file");
+          String movePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Edge CSV file");
+          String edgePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          dbConnection.micronodeTable.importCSV(microNodePath, false);
+          dbConnection.locationTable.importCSV(locationPath, false);
+          dbConnection.moveTable.importCSV(movePath, false);
+          dbConnection.edgeTable.importCSV(edgePath, false);
+          initialize();
+        });
+
+    exportBtn.setOnAction(
+        event -> {
+          dirChooser.setTitle("Select Export Directory");
+          String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+          dbConnection.micronodeTable.importCSV(exportPath, false);
+          dbConnection.locationTable.importCSV(exportPath, false);
+          dbConnection.moveTable.importCSV(exportPath, false);
+          dbConnection.edgeTable.importCSV(exportPath, false);
+          fileChooser.setInitialDirectory(new File(exportPath));
         });
 
     addNode.setOnMouseClicked(
