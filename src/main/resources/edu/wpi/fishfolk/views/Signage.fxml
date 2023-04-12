@@ -71,31 +71,68 @@
             <HBox minWidth="120.0" />
             <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0">
                <children>
-                  <Text layoutX="172.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;- Surgery" wrappingWidth="294.53675842285156" AnchorPane.leftAnchor="0.0">
+                  <Text layoutX="172.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="← Surgery" wrappingWidth="294.53675842285156" AnchorPane.leftAnchor="0.0">
                      <font>
                         <Font name="Open Sans Bold" size="48.0" />
                      </font>
                   </Text>
-                  <Text layoutX="836.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Front Desk -&gt;" textAlignment="RIGHT" wrappingWidth="377.53675842285156" AnchorPane.rightAnchor="0.0">
+                  <Text layoutX="836.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Financial →" textAlignment="RIGHT" wrappingWidth="377.53675842285156" AnchorPane.rightAnchor="0.0">
+                     <font>
+                        <Font name="Open Sans Bold" size="48.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="backButton" layoutX="335.0" layoutY="412.0" prefHeight="93.0" prefWidth="370.0" style="-fx-background-color: #012D5A;" text="Return Home" textFill="WHITE">
+                     <font>
+                        <Font name="Open Sans Bold" size="45.0" />
+                     </font>
+                  </MFXButton>
+                  <ImageView fitHeight="266.0" fitWidth="370.0" layoutX="341.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/hospitalImg1.PNG" />
+                     </image>
+                  </ImageView>
+                  <Text layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="← Vision" wrappingWidth="294.53675842285156">
+                     <font>
+                        <Font name="Open Sans Bold" size="48.0" />
+                     </font>
+                  </Text>
+                  <Text layoutY="393.0" strokeType="OUTSIDE" strokeWidth="0.0" text="← Cafe" wrappingWidth="294.53675842285156">
+                     <font>
+                        <Font name="Open Sans Bold" size="48.0" />
+                     </font>
+                  </Text>
+                  <Text layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="← Restroom" wrappingWidth="294.53675842285156">
+                     <font>
+                        <Font name="Open Sans Bold" size="48.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="662.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Elevator →" textAlignment="RIGHT" wrappingWidth="377.53675842285156">
+                     <font>
+                        <Font name="Open Sans Bold" size="48.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="662.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Front Desk →" textAlignment="RIGHT" wrappingWidth="377.53675842285156">
+                     <font>
+                        <Font name="Open Sans Bold" size="48.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="662.0" layoutY="393.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Radiology →" textAlignment="RIGHT" wrappingWidth="377.53675842285156">
+                     <font>
+                        <Font name="Open Sans Bold" size="48.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="373.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exit ↓" textAlignment="CENTER" wrappingWidth="294.53675842285156">
+                     <font>
+                        <Font name="Open Sans Bold" size="48.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="373.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pediatrics ↑" textAlignment="CENTER" wrappingWidth="294.53675842285156">
                      <font>
                         <Font name="Open Sans Bold" size="48.0" />
                      </font>
                   </Text>
                </children>
             </AnchorPane>
-            <MFXButton fx:id="backButton" prefHeight="174.0" prefWidth="369.0" style="-fx-background-color: #012D5A;" text="Return Home" textFill="WHITE">
-               <font>
-                  <Font name="Open Sans Bold" size="45.0" />
-               </font>
-            </MFXButton>
-            <ImageView fitHeight="200.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
-               <image>
-                  <Image url="@../images/hospitalImg1.PNG" />
-               </image>
-               <StackPane.margin>
-                  <Insets top="15.0" />
-               </StackPane.margin>
-            </ImageView>
             <AnchorPane fx:id="menuWrap" disable="true" minWidth="70.0" visible="false">
                <children>
                   <AnchorPane fx:id="slider" maxWidth="400.0" minWidth="400.0" style="-fx-background-color: #054982;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-400.0" AnchorPane.topAnchor="0.0">
