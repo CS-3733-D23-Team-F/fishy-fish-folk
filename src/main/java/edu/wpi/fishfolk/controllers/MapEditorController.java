@@ -5,19 +5,25 @@ import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.edit.InsertEdit;
 import edu.wpi.fishfolk.database.edit.RemoveEdit;
 import edu.wpi.fishfolk.database.edit.UpdateEdit;
+import edu.wpi.fishfolk.navigation.Navigation;
+import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.*;
 import java.util.List;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
 public class MapEditorController extends AbsController {
@@ -25,6 +31,7 @@ public class MapEditorController extends AbsController {
   @FXML MFXComboBox<String> floorSelector;
   @FXML ImageView mapImg;
   @FXML GesturePane pane;
+  @FXML MFXButton homeButton;
   @FXML public Group drawGroup;
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
@@ -33,6 +40,27 @@ public class MapEditorController extends AbsController {
   @FXML MFXTextField yText;
   @FXML MFXTextField buildingText;
   @FXML MFXTextField floorText;
+
+  @FXML MFXButton signageNav;
+
+  @FXML MFXButton mealNav;
+
+  @FXML MFXButton officeNav;
+  @FXML MFXButton pathfindingNav;
+  @FXML MFXButton mapEditorNav;
+  @FXML MFXButton furnitureNav;
+  @FXML MFXButton viewFurniture;
+
+  @FXML MFXButton sideBar;
+
+  @FXML MFXButton exitButton;
+
+  @FXML MFXButton sideBarClose;
+  @FXML AnchorPane slider;
+  @FXML AnchorPane menuWrap;
+  @FXML MFXButton viewFood;
+  @FXML MFXButton viewSupply;
+
   @FXML MFXButton addNode;
   @FXML MFXButton delNode;
 
@@ -75,6 +103,58 @@ public class MapEditorController extends AbsController {
 
   @FXML
   private void initialize() {
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+    viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
+    officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    exitButton.setOnMouseClicked(event -> System.exit(0));
+
+    slider.setTranslateX(-400);
+    sideBarClose.setVisible(false);
+    menuWrap.setVisible(false);
+    sideBar.setOnMouseClicked(
+        event -> {
+          menuWrap.setDisable(false);
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+
+          slide.setToX(400);
+          slide.play();
+
+          slider.setTranslateX(-400);
+          menuWrap.setVisible(true);
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                sideBar.setVisible(false);
+                sideBarClose.setVisible(true);
+              });
+        });
+
+    sideBarClose.setOnMouseClicked(
+        event -> {
+          menuWrap.setVisible(false);
+          menuWrap.setDisable(true);
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+          slide.setToX(-400);
+          slide.play();
+
+          slider.setTranslateX(0);
+
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                sideBar.setVisible(true);
+                sideBarClose.setVisible(false);
+              });
+        });
 
     // copy contents, not reference
     ArrayList<String> floorsReverse = new ArrayList<>(allFloors);
@@ -86,7 +166,7 @@ public class MapEditorController extends AbsController {
     drawGroup.getChildren().add(nodesGroup);
 
     switchFloor(allFloors.get(currentFloor));
-
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     floorSelector.setOnAction(
         event -> {
           currentFloor = allFloors.indexOf(floorSelector.getValue());
@@ -1008,12 +1088,12 @@ public class MapEditorController extends AbsController {
                       || buildingFloor.isWithinRegion(currPoint, allFloors.get(currentFloor));
             }
             if (inThisBuilding) {
-              buildingMicroNodeText.setText(building.get(0).getBuildingName());
-              // System.out.println("I'm in: " + building.get(0).getBuildingName());
+              buildingText.setText(building.get(0).getBuildingName());
+              System.out.println("I'm in: " + building.get(0).getBuildingName());
             }
           }
           if (!inAnyBuilding) {
-            buildingMicroNodeText.setText("");
+            buildingText.setText("");
           }
           if (state == EDITOR_STATE.ADDING) {
             System.out.println("adding at " + event.getX() + ", " + event.getY());

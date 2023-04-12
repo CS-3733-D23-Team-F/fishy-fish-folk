@@ -60,7 +60,7 @@ public class FurnitureOrderController extends AbsController {
   @FXML MFXButton sideBarClose;
   @FXML AnchorPane slider;
   @FXML MFXButton viewFood;
-  @FXML MFXButton viewSupply;
+  @FXML MFXButton viewSupply, viewFurniture, furnitureNav;
   @FXML MFXButton homeButton;
 
   FurnitureOrder currentFurnitureOrder = new FurnitureOrder();
@@ -89,13 +89,7 @@ public class FurnitureOrderController extends AbsController {
     cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     furnitureSubmitButton.setOnMouseClicked(event -> submit());
     // clearButton.setOnMouseClicked(event -> clearAllFields());
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
-    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
-    officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
-    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
-    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
-    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     exitButton.setOnMouseClicked(event -> System.exit(0));
     radioButton1.setOnMouseClicked(
@@ -161,6 +155,18 @@ public class FurnitureOrderController extends AbsController {
                 radioButton4,
                 radioButton5,
                 radioButton6));
+
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+    viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
+    officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
     sideBarClose.setVisible(false);
