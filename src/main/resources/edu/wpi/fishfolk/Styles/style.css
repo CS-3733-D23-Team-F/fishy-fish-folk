@@ -51,6 +51,36 @@
     -fx-image: url("../images/wayfindingH.png");
 }
 
+.navButtons > #flowerIcon{
+    -fx-image: url("../images/flower.png");
+}
+
+.navButtons:hover > #flowerIcon{
+    -fx-image: url("../images/flowerH.png");
+}
+.navButtons > #furnitureIcon{
+     -fx-image: url("../images/furniture.png");
+ }
+
+.navButtons:hover > #furnitureIcon{
+    -fx-image: url("../images/furnitureH.png");
+}
+
+.navButtons > #serviceIcon{
+    -fx-image: url("../images/box.png");
+}
+
+.navButtons:hover > #serviceIcon{
+    -fx-image: url("../images/boxH.png");
+}
+
+.navButtons > #conferenceIcon{
+    -fx-image: url("../images/conference.png");
+}
+
+.navButtons:hover > #conferenceIcon{
+    -fx-image: url("../images/conferenceH.png");
+}
 
 .sideNav:hover{
     -fx-background-color: #0e4675;
