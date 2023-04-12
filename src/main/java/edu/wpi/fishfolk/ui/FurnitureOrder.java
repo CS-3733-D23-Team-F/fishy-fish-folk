@@ -76,6 +76,7 @@ public class FurnitureOrder extends TableEntry {
     if (data.get(6).equals("submitted")) setStatus(FormStatus.submitted);
     if (data.get(6).equals("cancelled")) setStatus(FormStatus.cancelled);
     if (data.get(6).equals("filled")) setStatus(FormStatus.filled);
+    assignee = data.get(7);
     return true;
   }
 
