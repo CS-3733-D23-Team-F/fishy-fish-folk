@@ -49,7 +49,7 @@ public class HomeController {
 
   @FXML
   public void initialize() {
-
+    conferenceButton.setDisable(true);
     signageButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     serviceButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SERVICE_REQUEST));
     // conferenceButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
