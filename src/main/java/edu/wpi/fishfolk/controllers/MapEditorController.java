@@ -5,7 +5,7 @@ import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.edit.InsertEdit;
 import edu.wpi.fishfolk.database.edit.RemoveEdit;
 import edu.wpi.fishfolk.database.edit.UpdateEdit;
-import edu.wpi.fishfolk.mapeditor.BuildingChecker;import edu.wpi.fishfolk.mapeditor.BuildingRegion;
+import edu.wpi.fishfolk.mapeditor.BuildingChecker;
 import edu.wpi.fishfolk.mapeditor.CircleNode;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
@@ -25,7 +25,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -153,6 +152,9 @@ public class MapEditorController extends AbsController {
               });
         });
 
+    pane.centreOn(new Point2D(1700, 1100));
+    pane.zoomTo(0.4, new Point2D(2500, 1600));
+
     // copy contents, not reference
     ArrayList<String> floorsReverse = new ArrayList<>(allFloors);
     Collections.reverse(floorsReverse);
@@ -163,7 +165,7 @@ public class MapEditorController extends AbsController {
     drawGroup.getChildren().add(nodesGroup);
 
     switchFloor(allFloors.get(currentFloor));
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+
     floorSelector.setOnAction(
         event -> {
           currentFloor = allFloors.indexOf(floorSelector.getValue());
@@ -187,9 +189,6 @@ public class MapEditorController extends AbsController {
           }
         });
 
-    pane.centreOn(new Point2D(1700, 1100));
-    pane.zoomTo(0.4, new Point2D(2500, 1600));
-
     state = EDITOR_STATE.IDLE;
     currentEditingLocationIdx = 0;
 
@@ -199,11 +198,12 @@ public class MapEditorController extends AbsController {
     mapImg.setOnMouseClicked(
         event -> {
 
-          //System.out.println(event.getX() + ", " + event.getY() + ",");
+          // System.out.println(event.getX() + ", " + event.getY() + ",");
 
           if (state == EDITOR_STATE.ADDING) {
-            System.out.println("adding at " + event.getX() + ", " + event.getY());
+            // System.out.println("adding at " + event.getX() + ", " + event.getY());
             insertNode(event.getX(), event.getY());
+            delNode.setDisable(false);
             state = EDITOR_STATE.IDLE;
 
           } else if (state == EDITOR_STATE.EDITING) {
@@ -213,6 +213,9 @@ public class MapEditorController extends AbsController {
             clearLocationFields();
           }
         });
+
+    fileChooser = new FileChooser();
+    dirChooser = new DirectoryChooser();
 
     importBtn.setOnAction(
         event -> {
@@ -252,6 +255,8 @@ public class MapEditorController extends AbsController {
         event -> {
           // go to adding state no matter the previous state
           state = EDITOR_STATE.ADDING;
+          // disable deleting when adding
+          delNode.setDisable(true);
         });
 
     delNode.setOnMouseClicked(
@@ -375,6 +380,10 @@ public class MapEditorController extends AbsController {
             c.setCenterY(event.getY());
 
             unode.point = new Point2D(event.getX(), event.getY());
+            unode.building = buildingChecker.getBuilding(unode.point, allFloors.get(currentFloor));
+
+            fillMicroNodeFields(unode);
+            fillLocationFields(unode.getLocations().get(currentEditingLocationIdx));
 
             // process edits for both x and y
             dbConnection.processEdit(
@@ -457,8 +466,12 @@ public class MapEditorController extends AbsController {
 
     String floor = allFloors.get(currentFloor);
     MicroNode unode =
-        new MicroNode(Integer.parseInt(id), x, y, floor,
-                buildingChecker.getBuilding(new Point2D(x, y), floor));
+        new MicroNode(
+            Integer.parseInt(id),
+            x,
+            y,
+            floor,
+            buildingChecker.getBuilding(new Point2D(x, y), floor));
 
     drawNode(unode);
 
