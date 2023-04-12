@@ -100,9 +100,9 @@
 
 
 Line{
-    -fx-stroke-width: 2;
+    -fx-stroke-width: 4;
     -fx-stroke-line-cap: round;
-    -fx-stroke: #028A0F;
+    -fx-stroke: #0CD4FC;
 }
 
 Micronode:hover{
