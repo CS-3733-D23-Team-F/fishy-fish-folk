@@ -4,6 +4,8 @@
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXRadioButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ScrollPane?>
@@ -106,7 +108,7 @@
                               <Font name="Open Sans Regular" size="26.0" />
                            </font>
                         </MFXTextField>
-                        <ChoiceBox fx:id="roomSelector" layoutY="370.0" prefHeight="85.0" prefWidth="700.0" />
+                        <MFXComboBox fx:id="roomSelector" layoutY="370.0" prefHeight="85.0" prefWidth="700.0" />
                         <ScrollPane layoutY="96.0" prefHeight="265.0" prefWidth="1040.0">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="438.0" prefWidth="460.0">

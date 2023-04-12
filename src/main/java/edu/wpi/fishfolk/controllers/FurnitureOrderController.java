@@ -6,10 +6,7 @@ import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.FurnitureItem;
 import edu.wpi.fishfolk.ui.FurnitureOrder;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXDatePicker;
-import io.github.palexdev.materialfx.controls.MFXRadioButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.controls.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +34,7 @@ public class FurnitureOrderController extends AbsController {
       radioButton5,
       radioButton6,
       radioButton7;
-  @FXML ChoiceBox<String> roomSelector;
+  @FXML MFXComboBox<String> roomSelector;
   @FXML MFXDatePicker deliveryDate;
   @FXML MFXTextField notesTextField;
   @FXML MFXButton cancelButton;

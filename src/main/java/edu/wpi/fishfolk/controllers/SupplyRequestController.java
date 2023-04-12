@@ -7,6 +7,7 @@ import edu.wpi.fishfolk.ui.SupplyItem;
 import edu.wpi.fishfolk.ui.SupplyOrder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ public class SupplyRequestController extends AbsController {
   @FXML MFXButton signageNav;
 
   @FXML MFXButton mealNav;
+  @FXML MFXComboBox<String> roomSelector;
 
   @FXML MFXButton officeNav;
 
@@ -121,6 +123,7 @@ public class SupplyRequestController extends AbsController {
                 sideBarClose.setVisible(false);
               });
         });
+    loadRooms();
   }
 
   void loadOptions() {
@@ -133,6 +136,10 @@ public class SupplyRequestController extends AbsController {
     supplyOptions.add(SupplyItem.supply6);
     supplyOptions.add(SupplyItem.supply7);
     supplyOptions.add(SupplyItem.supply8);
+  }
+
+  void loadRooms() {
+    roomSelector.getItems().addAll(dbConnection.getDestLongnames());
   }
 
   private void addToOrder(int supplyNum) {
@@ -195,7 +202,7 @@ public class SupplyRequestController extends AbsController {
     else addToOrder(7);
     if (check7.isSelected()) addToOrder(6);
     else addToOrder(7);
-    currentSupplyOrder.roomNum = roomNumTextField.getText();
+    currentSupplyOrder.roomNum = roomSelector.getValue();
     currentSupplyOrder.link = linkTextField.getText();
     currentSupplyOrder.notes = notesTextField.getText();
     if (submittable()) {

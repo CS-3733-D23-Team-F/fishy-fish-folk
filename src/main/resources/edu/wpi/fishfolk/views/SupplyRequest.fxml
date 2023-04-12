@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
@@ -142,16 +143,18 @@
                               </AnchorPane>
                            </content>
                         </ScrollPane>
-                        <MFXTextField fx:id="linkTextField" minHeight="88.0" minWidth="720.0" promptText="LINK IF OUT OF STOCK" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="370.0">
+                        <MFXTextField fx:id="linkTextField" minHeight="88.0" minWidth="347.0" prefHeight="88.0" prefWidth="347.0" promptText="LINK IF OUT OF STOCK" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="370.0">
                            <font>
                               <Font name="Open Sans Regular" size="26.0" />
                            </font>
                         </MFXTextField>
-                        <MFXTextField fx:id="roomNumTextField" maxHeight="88.0" maxWidth="310.0" minHeight="88.0" minWidth="316.0" promptText="ROOM#" AnchorPane.bottomAnchor="177.20000000000005" AnchorPane.leftAnchor="0.0">
+                        <MFXComboBox fx:id="roomSelector" maxHeight="88.0" maxWidth="682.0" minHeight="88.0"
+                                     minWidth="316.0" prefHeight="88.0" prefWidth="682.0" promptText="ROOM"
+                                     AnchorPane.bottomAnchor="177.0" AnchorPane.leftAnchor="0.0">
                            <font>
-                              <Font name="Open Sans Regular" size="26.0" />
+                              <Font name="Open Sans Regular" size="20.0" />
                            </font>
-                        </MFXTextField>
+                        </MFXComboBox>
                         <MFXTextField fx:id="notesTextField" prefHeight="88.0" prefWidth="720.0" promptText="ADDITIONAL NOTES" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
                               <Font name="Open Sans Regular" size="26.0" />
