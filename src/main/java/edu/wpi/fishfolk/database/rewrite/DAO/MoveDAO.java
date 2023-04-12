@@ -12,8 +12,8 @@ public class MoveDAO implements IDAO<Move> {
 
   private final ArrayList<String> headers;
 
-  private HashMap<Integer, Node> tableMap;
-  private ArrayList<DataEdit<Node>> dataEdits;
+  private HashMap<Integer, Move> tableMap;
+  private ArrayList<DataEdit<Move>> dataEdits;
 
   /** DAO for Move table in PostgreSQL database. */
   public MoveDAO() {

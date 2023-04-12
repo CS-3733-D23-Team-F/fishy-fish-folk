@@ -13,8 +13,8 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
 
     private final ArrayList<String> headers;
 
-    private HashMap<Integer, Node> tableMap;
-    private ArrayList<DataEdit<Node>> dataEdits;
+    private HashMap<Integer, FlowerRequest> tableMap;
+    private ArrayList<DataEdit<FlowerRequest>> dataEdits;
 
     /** DAO for Flower Request table in PostgreSQL database. */
     public FlowerRequestDAO() {

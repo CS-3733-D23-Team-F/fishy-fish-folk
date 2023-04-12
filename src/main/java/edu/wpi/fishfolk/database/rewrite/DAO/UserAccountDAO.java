@@ -13,8 +13,8 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
     private final ArrayList<String> headers;
 
-    private HashMap<Integer, Node> tableMap;
-    private ArrayList<DataEdit<Node>> dataEdits;
+    private HashMap<Integer, UserAccount> tableMap;
+    private ArrayList<DataEdit<UserAccount>> dataEdits;
 
     /** DAO for User Account Request table in PostgreSQL database. */
     public UserAccountDAO() {

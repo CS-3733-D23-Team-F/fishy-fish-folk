@@ -13,8 +13,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
     private final ArrayList<String> headers;
 
-    private HashMap<Integer, Node> tableMap;
-    private ArrayList<DataEdit<Node>> dataEdits;
+    private HashMap<Integer, FoodRequest> tableMap;
+    private ArrayList<DataEdit<FoodRequest>> dataEdits;
 
     /** DAO for Food Request table in PostgreSQL database. */
     public FoodRequestDAO() {

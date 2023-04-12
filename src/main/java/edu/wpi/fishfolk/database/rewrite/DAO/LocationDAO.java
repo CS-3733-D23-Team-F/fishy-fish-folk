@@ -12,8 +12,8 @@ public class LocationDAO implements IDAO<Location> {
 
   private final ArrayList<String> headers;
 
-  private HashMap<Integer, Node> tableMap;
-  private ArrayList<DataEdit<Node>> dataEdits;
+  private HashMap<Integer, Location> tableMap;
+  private ArrayList<DataEdit<Location>> dataEdits;
 
   /** DAO for Location table in PostgreSQL database. */
   public LocationDAO() {

@@ -13,8 +13,8 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
 
     private final ArrayList<String> headers;
 
-    private HashMap<Integer, Node> tableMap;
-    private ArrayList<DataEdit<Node>> dataEdits;
+    private HashMap<Integer, FurnitureRequest> tableMap;
+    private ArrayList<DataEdit<FurnitureRequest>> dataEdits;
 
     /** DAO for Furniture Request table in PostgreSQL database. */
     public FurnitureRequestDAO() {

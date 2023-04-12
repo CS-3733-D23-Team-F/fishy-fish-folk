@@ -12,8 +12,8 @@ public class EdgeDAO implements IDAO<Edge> {
 
   private final ArrayList<String> headers;
 
-  private HashMap<Integer, Node> tableMap;
-  private ArrayList<DataEdit<Node>> dataEdits;
+  private HashMap<Integer, Edge> tableMap;
+  private ArrayList<DataEdit<Edge>> dataEdits;
 
   /** DAO for Edge table in PostgreSQL database. */
   public EdgeDAO() {

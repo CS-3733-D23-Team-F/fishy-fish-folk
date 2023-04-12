@@ -13,8 +13,8 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
     private final ArrayList<String> headers;
 
-    private HashMap<Integer, Node> tableMap;
-    private ArrayList<DataEdit<Node>> dataEdits;
+    private HashMap<Integer, ConferenceRequest> tableMap;
+    private ArrayList<DataEdit<ConferenceRequest>> dataEdits;
 
     /** DAO for Conference Request table in PostgreSQL database. */
     public ConferenceRequestDAO() {

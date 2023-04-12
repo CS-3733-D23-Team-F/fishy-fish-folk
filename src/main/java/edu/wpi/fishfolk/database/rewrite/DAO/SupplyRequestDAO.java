@@ -13,8 +13,8 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
 
     private final ArrayList<String> headers;
 
-    private HashMap<Integer, Node> tableMap;
-    private ArrayList<DataEdit<Node>> dataEdits;
+    private HashMap<Integer, SupplyRequest> tableMap;
+    private ArrayList<DataEdit<SupplyRequest>> dataEdits;
 
     /** DAO for Supply Request table in PostgreSQL database. */
     public SupplyRequestDAO() {
