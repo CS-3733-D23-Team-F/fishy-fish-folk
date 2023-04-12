@@ -211,22 +211,21 @@ public class Fdb {
 
   public ArrayList<String[]> getMostRecentLocations(String id) {
 
-    ArrayList<String[]> results =
-        moveTable.executeQuery("SELECT longname, date", "WHERE id = '" + id + "';");
+    ArrayList<String[]> moves =
+        moveTable.executeQuery("SELECT longname, date", "WHERE id = '" + id + "'");
 
-    results.forEach(
-        res -> {
-          res[1] = Move.sanitizeDate(res[1]);
-          System.out.println(Arrays.toString(res));
+    moves.forEach(
+        move -> {
+          move[1] = Move.sanitizeDate(move[1]);
         });
 
     // sort results based on date
-    results.sort(Comparator.comparing(result -> LocalDate.parse(result[1], Move.format)));
+    moves.sort(Comparator.comparing(move -> LocalDate.parse(move[1], Move.format)));
 
     ArrayList<String[]> locations = new ArrayList<>();
 
-    for (String[] result : results) {
-      locations.add(locationTable.get("longname", result[0]).toArray(new String[3]));
+    for (String[] move : moves) {
+      locations.add(locationTable.get("longname", move[0]).toArray(new String[3]));
     }
 
     return locations;

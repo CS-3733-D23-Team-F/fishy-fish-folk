@@ -1,10 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
-import edu.wpi.fishfolk.database.BuildingRegion;
-import edu.wpi.fishfolk.database.CircleNode;
-import edu.wpi.fishfolk.database.DataTableType;
-import edu.wpi.fishfolk.database.MicroNode;
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.edit.InsertEdit;
 import edu.wpi.fishfolk.database.edit.RemoveEdit;
 import edu.wpi.fishfolk.database.edit.UpdateEdit;
@@ -32,16 +29,23 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
 
-  @FXML MFXTextField xMicroNodeText;
-  @FXML MFXTextField yMicroNodeText;
-  @FXML MFXTextField buildingMicroNodeText;
-  @FXML MFXTextField floorMicroNodeText;
-
+  @FXML MFXTextField xText;
+  @FXML MFXTextField yText;
+  @FXML MFXTextField buildingText;
+  @FXML MFXTextField floorText;
   @FXML MFXButton addNode;
   @FXML MFXButton delNode;
 
+  @FXML MFXTextField longnameText;
+  @FXML MFXTextField shortnameText;
+  @FXML MFXTextField typeText;
+  @FXML MFXButton nextLocation;
+  @FXML MFXButton prevLocation;
+
   private EDITOR_STATE state;
   private String currentEditingNode;
+  private List<Location> currentEditingLocations;
+  private int currentEditingLocationIdx;
 
   private Group nodesGroup;
 
@@ -985,6 +989,7 @@ public class MapEditorController extends AbsController {
     buildings.add(f45Building);
 
     state = EDITOR_STATE.IDLE;
+    currentEditingLocationIdx = 0;
 
     // prints mouse location to screen when clicked on map. Used to calculate building boundaries
     mapImg.setOnMouseClicked(
@@ -1018,7 +1023,8 @@ public class MapEditorController extends AbsController {
           } else if (state == EDITOR_STATE.EDITING) {
             state = EDITOR_STATE.IDLE;
             currentEditingNode = "";
-            fillMicroNodeFields("", "", "", "");
+            clearMicroNodeFields();
+            clearLocationFields();
           }
         });
 
@@ -1044,11 +1050,29 @@ public class MapEditorController extends AbsController {
                 deleteNode(currentEditingNode);
               }
             });
+
+    nextLocation.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
+            if (currentEditingLocationIdx < currentEditingLocations.size() - 1) {
+              currentEditingLocationIdx++;
+            }
+            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+          }
+        });
+
+    prevLocation.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
+            if (currentEditingLocationIdx > 0) {
+              currentEditingLocationIdx--;
+            }
+            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+          }
+        });
   }
 
   private void switchFloor(String floor) {
-
-    System.out.println("switching floor to " + floor);
 
     mapImg.setImage(images.get(floor));
 
@@ -1065,7 +1089,7 @@ public class MapEditorController extends AbsController {
                 })
             .toList();
 
-    System.out.println(unodes.size());
+    // System.out.println(unodes.size());
 
     unodes.forEach(this::drawNode);
   }
@@ -1082,12 +1106,34 @@ public class MapEditorController extends AbsController {
     c.setOnMousePressed(
         event -> {
           state = EDITOR_STATE.EDITING;
-          currentEditingNode = c.getCircleNodeID();
-          fillMicroNodeFields(
-              String.valueOf(unode.point.getX()),
-              String.valueOf(unode.point.getY()),
-              unode.floor,
-              unode.building);
+          currentEditingNode = unode.id;
+          currentEditingLocations =
+              dbConnection.getMostRecentLocations(unode.id).stream()
+                  .map(
+                      elt -> {
+                        Location loc = new Location();
+                        loc.construct(new ArrayList<>(Arrays.asList(elt)));
+                        return loc;
+                      })
+                  .toList();
+
+          currentEditingLocationIdx = 0;
+
+          fillMicroNodeFields(unode);
+
+          if (currentEditingLocations.size() > 1) {
+            nextLocation.setVisible(true);
+            prevLocation.setVisible(true);
+          } else {
+            nextLocation.setVisible(false);
+            prevLocation.setVisible(false);
+          }
+
+          if (currentEditingLocations.size() > 0) {
+            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+          } else {
+            clearLocationFields();
+          }
         });
 
     c.setOnMouseDragged(
@@ -1135,17 +1181,35 @@ public class MapEditorController extends AbsController {
   /**
    * Fill in text fields for MicroNodes.
    *
-   * @param x
-   * @param y
-   * @param floor
-   * @param building
+   * @param unode the MicroNode whose data to fill in.
    */
-  private void fillMicroNodeFields(String x, String y, String floor, String building) {
+  private void fillMicroNodeFields(MicroNode unode) {
 
-    xMicroNodeText.setText(x);
-    yMicroNodeText.setText(y);
-    floorMicroNodeText.setText(floor);
-    buildingMicroNodeText.setText(building);
+    xText.setText(Double.toString(unode.point.getX()));
+    yText.setText(Double.toString(unode.point.getY()));
+    floorText.setText(unode.floor);
+    buildingText.setText(unode.building);
+  }
+
+  private void clearMicroNodeFields() {
+    xText.setText("");
+    yText.setText("");
+    floorText.setText("");
+    buildingText.setText("");
+  }
+
+  private void fillLocationFields(Location loc) {
+
+    shortnameText.setText(loc.shortname);
+    typeText.setText(loc.type.toString());
+    longnameText.setText(loc.longname);
+  }
+
+  private void clearLocationFields() {
+
+    shortnameText.setText("");
+    typeText.setText("");
+    longnameText.setText("");
   }
 
   private void deleteNode(String id) {
@@ -1176,6 +1240,7 @@ public class MapEditorController extends AbsController {
         new MicroNode(Integer.parseInt(id), x, y, floor, BuildingRegion.getBuilding(x, y, floor));
 
     drawNode(unode);
+    // fillMicroNodeFields();
 
     dbConnection.processEdit(
         new InsertEdit(DataTableType.MICRONODE, "id", id, unode.deconstruct()));

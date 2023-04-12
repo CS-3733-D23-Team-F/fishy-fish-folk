@@ -105,4 +105,6 @@ Line{
     -fx-stroke: #028A0F;
 }
 
-
+Micronode:hover{
+    -fx-border-color: yellow;
+}

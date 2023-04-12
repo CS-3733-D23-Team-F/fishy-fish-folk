@@ -3,6 +3,7 @@ package edu.wpi.fishfolk.database;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
+import lombok.Getter;
 
 /** */
 public class MicroNode extends TableEntry {
@@ -13,7 +14,7 @@ public class MicroNode extends TableEntry {
   public String building;
 
   public int degree;
-  private ArrayList<Location> locations;
+  @Getter private ArrayList<Location> locations;
 
   public MicroNode() {
     super();
