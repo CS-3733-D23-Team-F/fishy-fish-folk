@@ -220,7 +220,7 @@ public class ViewSupplyOrdersController extends AbsController {
           "\n\nNotes:\n" + addLineBreaks(supplyOrders.get(currentOrderNumber).notes);
       itemsText.setText(itemsTextContent);
       int numLines = itemsTextContent.split("\n").length + 1;
-      itemsTextContainer.setPrefHeight(64 * numLines);
+      itemsTextContainer.setPrefHeight(60 * numLines);
       assigneeText.setText(supplyOrders.get(currentOrderNumber).assignee);
       switch (supplyOrders.get(currentOrderNumber).formStatus) {
         case filled:
@@ -257,6 +257,7 @@ public class ViewSupplyOrdersController extends AbsController {
       deliveryRoomText.setText("");
       linkText.setText("");
       assigneeText.setText("");
+      statusText.setText("");
       viewingNumberText.setText("No orders to view");
       cancelButton.setDisable(true);
       filledButton.setDisable(true);

@@ -243,6 +243,7 @@ public class ViewFoodOrdersController extends AbsController {
       itemsTextContainer.setPrefHeight(0);
       deliveryRoomText.setText("");
       deliveryTimeText.setText("");
+      statusText.setText("");
       assigneeText.setText("");
       viewingNumberText.setText("No orders to view");
       cancelButton.setDisable(true);
