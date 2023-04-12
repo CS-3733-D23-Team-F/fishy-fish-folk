@@ -1,13 +1,8 @@
 package edu.wpi.fishfolk.database.rewrite;
 
-import edu.wpi.fishfolk.database.rewrite.DAO.EdgeDAO;
-import edu.wpi.fishfolk.database.rewrite.DAO.LocationDAO;
-import edu.wpi.fishfolk.database.rewrite.DAO.MoveDAO;
-import edu.wpi.fishfolk.database.rewrite.DAO.NodeDAO;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Edge;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Location;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Move;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
+import edu.wpi.fishfolk.database.rewrite.DAO.*;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.*;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,19 +11,41 @@ public class Fdb {
 
   private final Connection dbConnection;
 
+  // Hospital Map Tables
   private final NodeDAO nodeTable;
   private final LocationDAO locationTable;
   private final MoveDAO moveTable;
   private final EdgeDAO edgeTable;
 
+  // Service Request Tables
+  private final FoodRequestDAO foodRequestTable;
+  private final SupplyRequestDAO supplyRequestTable;
+  private final FurnitureRequestDAO furnitureRequestTable;
+  private final FlowerRequestDAO flowerRequestTable;
+  private final ConferenceRequestDAO conferenceRequestTable;
+
+  // Login & User Accounts Tables
+  private final UserAccountDAO userAccountTable;
+
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb() {
     this.dbConnection = connect("teamfdb", "teamf", "teamf60");
 
+    // Hospital Map Tables
     this.nodeTable = new NodeDAO();
     this.locationTable = new LocationDAO();
     this.moveTable = new MoveDAO();
     this.edgeTable = new EdgeDAO();
+
+    // Service Request Tables
+    this.foodRequestTable = new FoodRequestDAO();
+    this.supplyRequestTable = new SupplyRequestDAO();
+    this.furnitureRequestTable = new FurnitureRequestDAO();
+    this.flowerRequestTable = new FlowerRequestDAO();
+    this.conferenceRequestTable = new ConferenceRequestDAO();
+
+    // Login & User Accounts Tables
+    this.userAccountTable = new UserAccountDAO();
   }
 
   /**
@@ -82,6 +99,18 @@ public class Fdb {
       return moveTable.insertEntry((Move) entry);
     } else if (entry instanceof Edge) {
       return edgeTable.insertEntry((Edge) entry);
+    } else if (entry instanceof FoodRequest) {
+      return foodRequestTable.insertEntry((FoodRequest) entry);
+    } else if (entry instanceof SupplyRequest) {
+      return supplyRequestTable.insertEntry((SupplyRequest) entry);
+    } else if (entry instanceof FurnitureRequest) {
+      return furnitureRequestTable.insertEntry((FurnitureRequest) entry);
+    } else if (entry instanceof FlowerRequest) {
+      return flowerRequestTable.insertEntry((FlowerRequest) entry);
+    } else if (entry instanceof ConferenceRequest) {
+      return conferenceRequestTable.insertEntry((ConferenceRequest) entry);
+    } else if (entry instanceof UserAccount) {
+      return userAccountTable.insertEntry((UserAccount) entry);
     }
 
     return false;
@@ -102,7 +131,19 @@ public class Fdb {
     } else if (entry instanceof Move) {
       return moveTable.updateEntry((Move) entry);
     } else if (entry instanceof Edge) {
-      return edgeTable.removeEntry((Edge) entry);
+      return edgeTable.updateEntry((Edge) entry);
+    } else if (entry instanceof FoodRequest) {
+      return foodRequestTable.updateEntry((FoodRequest) entry);
+    } else if (entry instanceof SupplyRequest) {
+      return supplyRequestTable.updateEntry((SupplyRequest) entry);
+    } else if (entry instanceof FurnitureRequest) {
+      return furnitureRequestTable.updateEntry((FurnitureRequest) entry);
+    } else if (entry instanceof FlowerRequest) {
+      return flowerRequestTable.updateEntry((FlowerRequest) entry);
+    } else if (entry instanceof ConferenceRequest) {
+      return conferenceRequestTable.updateEntry((ConferenceRequest) entry);
+    } else if (entry instanceof UserAccount) {
+      return userAccountTable.updateEntry((UserAccount) entry);
     }
 
     return false;
@@ -124,6 +165,18 @@ public class Fdb {
       return moveTable.removeEntry((Move) entry);
     } else if (entry instanceof Edge) {
       return edgeTable.removeEntry((Edge) entry);
+    } else if (entry instanceof FoodRequest) {
+      return foodRequestTable.removeEntry((FoodRequest) entry);
+    } else if (entry instanceof SupplyRequest) {
+      return supplyRequestTable.removeEntry((SupplyRequest) entry);
+    } else if (entry instanceof FurnitureRequest) {
+      return furnitureRequestTable.removeEntry((FurnitureRequest) entry);
+    } else if (entry instanceof FlowerRequest) {
+      return flowerRequestTable.removeEntry((FlowerRequest) entry);
+    } else if (entry instanceof ConferenceRequest) {
+      return conferenceRequestTable.removeEntry((ConferenceRequest) entry);
+    } else if (entry instanceof UserAccount) {
+      return userAccountTable.removeEntry((UserAccount) entry);
     }
 
     return false;
