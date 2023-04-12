@@ -2,46 +2,46 @@ package edu.wpi.fishfolk.database.rewrite.DAO;
 
 import edu.wpi.fishfolk.database.rewrite.DataEdit;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Location;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.Move;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class LocationDAO implements IDAO<Location> {
+public class MoveDAO implements IDAO<Move> {
 
   private final ArrayList<String> headers;
 
   private HashMap<Integer, Node> tableMap;
   private ArrayList<DataEdit<Node>> dataEdits;
 
-  /** DAO for Location table in PostgreSQL database. */
-  public LocationDAO() {
-    this.headers = new ArrayList<>(List.of("longname", "shortname", "type"));
+  /** DAO for Move table in PostgreSQL database. */
+  public MoveDAO() {
+    this.headers = new ArrayList<>(List.of("id", "longname", "date"));
   }
 
   @Override
-  public boolean insertEntry(Location entry) {
+  public boolean insertEntry(Move entry) {
     return false;
   }
 
   @Override
-  public boolean updateEntry(Location entry) {
+  public boolean updateEntry(Move entry) {
     return false;
   }
 
   @Override
-  public boolean removeEntry(Location entry) {
+  public boolean removeEntry(Move entry) {
     return false;
   }
 
   @Override
-  public Location getEntry(String identifier) {
+  public Move getEntry(String identifier) {
     return null;
   }
 
   @Override
-  public ArrayList<Location> getAllEntries() {
+  public ArrayList<Move> getAllEntries() {
     return null;
   }
 
