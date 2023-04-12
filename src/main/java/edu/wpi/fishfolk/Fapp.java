@@ -44,7 +44,7 @@ public class Fapp extends Application {
     scene.getStylesheets().add(Fapp.class.getResource("Styles/style.css").toExternalForm());
 
     // scene.getStylesheets().add("../resources/edu/wpi/fishfolk/Styles/style.css");
-    primaryStage.setFullScreen(true);
+    primaryStage.setMaximized(true);
     primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
     primaryStage.setScene(scene);
     primaryStage.show();
