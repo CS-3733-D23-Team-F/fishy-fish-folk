@@ -20,6 +20,8 @@ public class HomeController {
   @FXML MFXButton officeNav;
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
+  @FXML MFXButton furnitureNav;
+  @FXML MFXButton viewFurniture;
 
   @FXML MFXButton sideBar;
 
@@ -36,6 +38,7 @@ public class HomeController {
   @FXML MFXButton orderBack;
   @FXML MFXButton supplyOrder;
   @FXML MFXButton foodOrder;
+  @FXML MFXButton furnitureOrder;
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
   @FXML MFXButton homeButton;
@@ -52,8 +55,10 @@ public class HomeController {
     mapEditorButton.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     foodOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     supplyOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+    furnitureOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+    viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
 
     viewOrderButton.setOnMouseClicked(
         event -> {
@@ -73,6 +78,7 @@ public class HomeController {
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));

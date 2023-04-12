@@ -263,6 +263,7 @@ public class ViewFurnitureOrdersController extends AbsController {
       itemsTextContainer.setPrefHeight(0);
       deliveryRoomText.setText("");
       assigneeText.setText("");
+      deliveryTimeText.setText("");
       viewingNumberText.setText("No orders to view");
       cancelButton.setDisable(true);
       filledButton.setDisable(true);

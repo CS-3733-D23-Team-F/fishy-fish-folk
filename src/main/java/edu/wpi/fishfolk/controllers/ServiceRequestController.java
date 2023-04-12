@@ -33,7 +33,7 @@ public class ServiceRequestController {
 
   @FXML
   public void initialize() {
-    // furnitureButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    furnitureButton.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     mealButton.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     // flowerButton.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
