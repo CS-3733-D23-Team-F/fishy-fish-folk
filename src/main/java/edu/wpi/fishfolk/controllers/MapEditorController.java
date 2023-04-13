@@ -1,110 +1,223 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
-import edu.wpi.fishfolk.database.DataEdit;
-import edu.wpi.fishfolk.database.EdgeEdit;
-import edu.wpi.fishfolk.database.EdgeEditType;
-import edu.wpi.fishfolk.database.ObservableNode;
+import edu.wpi.fishfolk.database.*;
+import edu.wpi.fishfolk.database.edit.InsertEdit;
+import edu.wpi.fishfolk.database.edit.RemoveEdit;
+import edu.wpi.fishfolk.database.edit.UpdateEdit;
+import edu.wpi.fishfolk.mapeditor.BuildingChecker;
+import edu.wpi.fishfolk.mapeditor.CircleNode;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import edu.wpi.fishfolk.pathfinding.Node;
-import edu.wpi.fishfolk.pathfinding.NodeType;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.File;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
-import java.util.regex.Pattern;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.List;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
+import net.kurobako.gesturefx.GesturePane;
 
 public class MapEditorController extends AbsController {
-  @FXML private TableView<ObservableNode> table;
-  @FXML private TableColumn<ObservableNode, String> id;
-  @FXML private TableColumn<ObservableNode, String> x;
-  @FXML private TableColumn<ObservableNode, String> y;
-  @FXML private TableColumn<ObservableNode, String> floor;
-  @FXML private TableColumn<ObservableNode, String> building;
-  @FXML private TableColumn<ObservableNode, String> type;
-  @FXML private TableColumn<ObservableNode, String> longName;
-  @FXML private TableColumn<ObservableNode, String> shortName;
-  @FXML private TableColumn<ObservableNode, String> date;
-  @FXML private TableColumn<ObservableNode, String> edges;
+
+  @FXML MFXComboBox<String> floorSelector;
+  @FXML ImageView mapImg;
+  @FXML GesturePane pane;
+  @FXML MFXButton homeButton;
+  @FXML public Group drawGroup;
+  @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
-  @FXML MFXButton importCSVButton;
-  @FXML MFXButton exportCSVButton;
+
+  @FXML MFXTextField xText;
+  @FXML MFXTextField yText;
+  @FXML MFXTextField buildingText;
+  @FXML MFXTextField floorText;
+
+  @FXML MFXButton signageNav;
+
+  @FXML MFXButton mealNav;
+
+  @FXML MFXButton officeNav;
+  @FXML MFXButton pathfindingNav;
+  @FXML MFXButton mapEditorNav;
+  @FXML MFXButton furnitureNav;
+  @FXML MFXButton viewFurniture;
+
+  @FXML MFXButton sideBar;
+
+  @FXML MFXButton exitButton;
+
+  @FXML MFXButton sideBarClose;
+  @FXML AnchorPane slider;
+  @FXML AnchorPane menuWrap;
+  @FXML MFXButton viewFood;
+  @FXML MFXButton viewSupply;
+
+  @FXML MFXButton importBtn;
+  @FXML MFXButton exportBtn;
+
+  @FXML MFXButton addNode;
+  @FXML MFXButton delNode;
+
+  @FXML MFXTextField longnameText;
+  @FXML MFXTextField shortnameText;
+  @FXML MFXTextField typeText;
+  @FXML MFXButton nextLocation;
+  @FXML MFXButton prevLocation;
 
   FileChooser fileChooser;
   DirectoryChooser dirChooser;
 
-  private HashMap<String, Integer> id2row;
+  private EDITOR_STATE state;
+  private String currentEditingNode;
+  private List<Location> currentEditingLocations;
+  private int currentEditingLocationIdx;
 
-  private ArrayList<DataEdit> dataEdits;
-  private ArrayList<EdgeEdit> edgeEdits;
+  private Group nodesGroup;
 
-  // set of possible floors
-  private HashSet<String> validFloors;
+  private int currentFloor = 2;
+  private List<MicroNode> unodes;
 
-  // set of nodes that are allowed as edge edits
-  private HashSet<String> validNodes;
-  private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{1,2}/\\d{1,2}/\\d{4}$");
+  private BuildingChecker buildingChecker;
+
+  public MapEditorController() {
+    super();
+    // System.out.println("constructed pathfinding controller");
+  }
 
   @FXML
-  public void initialize() {
-    // sets up the columns in the table
-    id.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("id"));
-    x.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("x"));
-    y.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("y"));
-    floor.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("floor"));
-    building.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("building"));
-    type.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("type"));
-    longName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("longName"));
-    shortName.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("shortName"));
-    date.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("date"));
-    edges.setCellValueFactory(new PropertyValueFactory<ObservableNode, String>("adjacentNodes"));
+  private void initialize() {
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+    viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
+    officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    exitButton.setOnMouseClicked(event -> System.exit(0));
 
-    backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
-
-    validNodes = new HashSet<>();
-    id2row = new HashMap<>();
-    // load data
-    populateTable(getNodes());
-
-    table.setEditable(true);
-
-    x.setCellFactory(TextFieldTableCell.forTableColumn());
-    y.setCellFactory(TextFieldTableCell.forTableColumn());
-    floor.setCellFactory(TextFieldTableCell.forTableColumn());
-    building.setCellFactory(TextFieldTableCell.forTableColumn());
-    type.setCellFactory(TextFieldTableCell.forTableColumn());
-    longName.setCellFactory(TextFieldTableCell.forTableColumn());
-    shortName.setCellFactory(TextFieldTableCell.forTableColumn());
-    date.setCellFactory(TextFieldTableCell.forTableColumn());
-    edges.setCellFactory(TextFieldTableCell.forTableColumn());
-
-    x.setOnEditCommit(this::handleEdit_X);
-    y.setOnEditCommit(this::handleEdit_Y);
-    floor.setOnEditCommit(this::handleEdit_Floor);
-    building.setOnEditCommit(this::handleEdit_Building);
-    type.setOnEditCommit(this::handleEdit_Type);
-    longName.setOnEditCommit(this::handleEdit_LongName);
-    shortName.setOnEditCommit(this::handleEdit_ShortName);
-    date.setOnEditCommit(this::handleEdit_Date);
-    edges.setOnEditCommit(this::handleEdit_Edges);
-
-    backButton.setOnAction(
+    slider.setTranslateX(-400);
+    sideBarClose.setVisible(false);
+    menuWrap.setVisible(false);
+    sideBar.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.HOME);
+          menuWrap.setDisable(false);
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+
+          slide.setToX(400);
+          slide.play();
+
+          slider.setTranslateX(-400);
+          menuWrap.setVisible(true);
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                sideBar.setVisible(false);
+                sideBarClose.setVisible(true);
+              });
         });
 
-    importCSVButton.setOnAction(
+    sideBarClose.setOnMouseClicked(
+        event -> {
+          menuWrap.setVisible(false);
+          menuWrap.setDisable(true);
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+          slide.setToX(-400);
+          slide.play();
+
+          slider.setTranslateX(0);
+
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                sideBar.setVisible(true);
+                sideBarClose.setVisible(false);
+              });
+        });
+
+    pane.centreOn(new Point2D(1700, 1100));
+    pane.zoomTo(0.4, new Point2D(2500, 1600));
+
+    // copy contents, not reference
+    ArrayList<String> floorsReverse = new ArrayList<>(allFloors);
+    Collections.reverse(floorsReverse);
+
+    floorSelector.getItems().addAll(floorsReverse);
+
+    nodesGroup = new Group();
+    drawGroup.getChildren().add(nodesGroup);
+
+    switchFloor(allFloors.get(currentFloor));
+
+    floorSelector.setOnAction(
+        event -> {
+          currentFloor = allFloors.indexOf(floorSelector.getValue());
+          switchFloor(allFloors.get(currentFloor));
+          floorSelector.setText("Floor " + allFloors.get(currentFloor));
+        });
+    nextButton.setOnMouseClicked(
+        event -> {
+          if (currentFloor < allFloors.size() - 1) {
+            currentFloor++;
+            switchFloor(allFloors.get(currentFloor));
+            floorSelector.setText("Floor " + allFloors.get(currentFloor));
+          }
+        });
+    backButton.setOnMouseClicked(
+        event -> {
+          if (currentFloor > 0) {
+            currentFloor--;
+            switchFloor(allFloors.get(currentFloor));
+            floorSelector.setText("Floor " + allFloors.get(currentFloor));
+          }
+        });
+
+    state = EDITOR_STATE.IDLE;
+    currentEditingLocationIdx = 0;
+
+    buildingChecker = new BuildingChecker();
+
+    // prints mouse location to screen when clicked on map. Used to calculate building boundaries
+    mapImg.setOnMouseClicked(
+        event -> {
+
+          // System.out.println(event.getX() + ", " + event.getY() + ",");
+
+          if (state == EDITOR_STATE.ADDING) {
+            // System.out.println("adding at " + event.getX() + ", " + event.getY());
+            insertNode(event.getX(), event.getY());
+            delNode.setDisable(false);
+            state = EDITOR_STATE.IDLE;
+
+          } else if (state == EDITOR_STATE.EDITING) {
+            state = EDITOR_STATE.IDLE;
+            currentEditingNode = "";
+            clearMicroNodeFields();
+            clearLocationFields();
+          }
+        });
+
+    fileChooser = new FileChooser();
+    dirChooser = new DirectoryChooser();
+
+    importBtn.setOnAction(
         event -> {
           fileChooser.setTitle("Select the Node CSV file");
           String microNodePath =
@@ -120,395 +233,255 @@ public class MapEditorController extends AbsController {
           fileChooser.setTitle("Select the Edge CSV file");
           String edgePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
 
-          dbConnection.nodeTable.importCSV(microNodePath, locationPath, movePath, false);
+          dbConnection.micronodeTable.importCSV(microNodePath, false);
+          dbConnection.locationTable.importCSV(locationPath, false);
+          dbConnection.moveTable.importCSV(movePath, false);
           dbConnection.edgeTable.importCSV(edgePath, false);
-          table.getItems().clear();
           initialize();
         });
 
-    exportCSVButton.setOnAction(
+    exportBtn.setOnAction(
         event -> {
           dirChooser.setTitle("Select Export Directory");
           String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-          dbConnection.nodeTable.exportCSV(exportPath, exportPath, exportPath);
-          dbConnection.edgeTable.exportCSV(exportPath);
+          dbConnection.micronodeTable.importCSV(exportPath, false);
+          dbConnection.locationTable.importCSV(exportPath, false);
+          dbConnection.moveTable.importCSV(exportPath, false);
+          dbConnection.edgeTable.importCSV(exportPath, false);
           fileChooser.setInitialDirectory(new File(exportPath));
         });
 
-    validFloors = new HashSet<>();
-    validFloors.addAll(List.of("L2", "L1", "GG", "1", "2", "3"));
+    addNode.setOnMouseClicked(
+        event -> {
+          // go to adding state no matter the previous state
+          state = EDITOR_STATE.ADDING;
+          // disable deleting when adding
+          delNode.setDisable(true);
+        });
 
-    dataEdits = new ArrayList<>();
-    edgeEdits = new ArrayList<>();
+    delNode.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
 
-    fileChooser = new FileChooser();
-    dirChooser = new DirectoryChooser();
+            deleteNode(currentEditingNode);
+          }
+        });
+
+    Fapp.getPrimaryStage()
+        .getScene()
+        .setOnKeyPressed(
+            event -> {
+              if (event.getCode() == KeyCode.DELETE && state == EDITOR_STATE.EDITING) {
+                deleteNode(currentEditingNode);
+              }
+            });
+
+    nextLocation.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
+            if (currentEditingLocationIdx < currentEditingLocations.size() - 1) {
+              currentEditingLocationIdx++;
+            }
+            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+          }
+        });
+
+    prevLocation.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
+            if (currentEditingLocationIdx > 0) {
+              currentEditingLocationIdx--;
+            }
+            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+          }
+        });
   }
 
-  public void handleEdit_X(TableColumn.CellEditEvent<ObservableNode, String> t) {
+  private void switchFloor(String floor) {
 
-    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+    mapImg.setImage(images.get(floor));
 
-    boolean verified = true;
-    // check value is a valid double
-    try {
-      Double.parseDouble(t.getNewValue());
-    } catch (NumberFormatException e) {
-      verified = false;
-    }
+    nodesGroup.getChildren().clear();
 
-    if (verified) {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).x = t.getNewValue();
-      t.getTableView().refresh();
-      DataEdit edit = new DataEdit(id, "x", t.getNewValue());
-      dataEdits.add(edit);
-      submitEdits();
-      System.out.println("[MapEditorController.handleEdit_X]: Successfully updated X column.");
-    } else {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).x =
-          "**" + t.getOldValue() + "**";
-      t.getTableView().refresh();
-    }
+    unodes =
+        dbConnection.micronodeTable.executeQuery("SELECT *", "WHERE floor = '" + floor + "'")
+            .stream()
+            .map(
+                elt -> {
+                  MicroNode un = new MicroNode();
+                  un.construct(new ArrayList(List.<String>of(elt)));
+                  return un;
+                })
+            .toList();
+
+    // System.out.println(unodes.size());
+
+    unodes.forEach(this::drawNode);
   }
 
-  private void handleEdit_Y(TableColumn.CellEditEvent<ObservableNode, String> t) {
+  // this also does some initialization now
+  private void drawNode(MicroNode unode) {
 
-    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+    Point2D p = unode.point;
+    CircleNode c = new CircleNode(unode.id, p.getX(), p.getY(), 4);
+    c.setStrokeWidth(5);
+    c.setFill(Color.rgb(12, 212, 252));
+    c.setStroke(Color.rgb(12, 212, 252)); // #208036
 
-    boolean verified = true;
-    // check value is a valid double
-    try {
-      Double.parseDouble(t.getNewValue());
-    } catch (NumberFormatException e) {
-      verified = false;
-    }
+    c.setOnMousePressed(
+        event -> {
+          state = EDITOR_STATE.EDITING;
+          currentEditingNode = unode.id;
+          currentEditingLocations =
+              dbConnection.getMostRecentLocations(unode.id).stream()
+                  .map(
+                      elt -> {
+                        Location loc = new Location();
+                        loc.construct(new ArrayList<>(Arrays.asList(elt)));
+                        return loc;
+                      })
+                  .toList();
 
-    if (verified) {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).y = t.getNewValue();
-      t.getTableView().refresh();
-      DataEdit edit = new DataEdit(id, "y", t.getNewValue());
-      dataEdits.add(edit);
-      submitEdits();
-      System.out.println("[MapEditorController.handleEdit_y]: Successfully updated Y column.");
-    } else {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).y =
-          "**" + t.getOldValue() + "**";
-      t.getTableView().refresh();
-    }
-  }
+          currentEditingLocationIdx = 0;
 
-  private void handleEdit_Floor(TableColumn.CellEditEvent<ObservableNode, String> t) {
+          fillMicroNodeFields(unode);
 
-    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+          if (currentEditingLocations.size() > 1) {
+            nextLocation.setVisible(true);
+            prevLocation.setVisible(true);
+          } else {
+            nextLocation.setVisible(false);
+            prevLocation.setVisible(false);
+          }
 
-    // fixed set of valid floors
-    boolean verified = validFloors.contains(t.getNewValue());
+          if (currentEditingLocations.size() > 0) {
+            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+          } else {
+            clearLocationFields();
+          }
+        });
 
-    if (verified) {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).floor = t.getNewValue();
-      t.getTableView().refresh();
-      DataEdit edit = new DataEdit(id, "floor", t.getNewValue());
-      dataEdits.add(edit);
-      submitEdits();
-      System.out.println(
-          "[MapEditorController.handleEdit_floor]: Successfully updated floor column.");
-    } else {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).floor =
-          "**" + t.getOldValue() + "**";
-      t.getTableView().refresh();
-    }
-  }
+    c.setOnMouseDragged(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
+            c.setCenterX(event.getX());
+            c.setCenterY(event.getY());
+            pane.setGestureEnabled(false);
+          }
+        });
 
-  private void handleEdit_Building(TableColumn.CellEditEvent<ObservableNode, String> t) {
+    c.setOnMouseReleased(
+        event -> {
+          if (state == EDITOR_STATE.EDITING) {
 
-    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+            pane.setGestureEnabled(true);
 
-    // nothing to verify for building
+            c.setCenterX(event.getX());
+            c.setCenterY(event.getY());
 
-    t.getTableView().getItems().get(t.getTablePosition().getRow()).building = t.getNewValue();
-    t.getTableView().refresh();
-    DataEdit edit = new DataEdit(id, "building", t.getNewValue());
-    dataEdits.add(edit);
-    submitEdits();
-    System.out.println(
-        "[MapEditorController.handleEdit_building]: Successfully updated building column.");
-  }
+            unode.point = new Point2D(event.getX(), event.getY());
+            unode.building = buildingChecker.getBuilding(unode.point, allFloors.get(currentFloor));
 
-  private void handleEdit_Type(TableColumn.CellEditEvent<ObservableNode, String> t) {
+            fillMicroNodeFields(unode);
+            fillLocationFields(unode.getLocations().get(currentEditingLocationIdx));
 
-    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
+            // process edits for both x and y
+            dbConnection.processEdit(
+                new UpdateEdit(
+                    DataTableType.MICRONODE,
+                    "id",
+                    unode.id,
+                    "x",
+                    Double.toString(unode.point.getX())));
 
-    boolean verified = true;
-    // test valueOf of new value to determine validity
-    try {
-      NodeType.valueOf(t.getNewValue());
-    } catch (IllegalArgumentException e) {
-      verified = false;
-    }
+            dbConnection.processEdit(
+                new UpdateEdit(
+                    DataTableType.MICRONODE,
+                    "id",
+                    unode.id,
+                    "y",
+                    Double.toString(unode.point.getY())));
+          }
+        });
 
-    if (verified) {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).type = t.getNewValue();
-      t.getTableView().refresh();
-      DataEdit edit = new DataEdit(id, "type", t.getNewValue());
-      dataEdits.add(edit);
-      submitEdits();
-      System.out.println(
-          "[MapEditorController.handleEdit_type]: Successfully updated type column.");
-    } else {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).type =
-          "**" + t.getOldValue() + "**";
-      t.getTableView().refresh();
-    }
-  }
-
-  private void handleEdit_LongName(TableColumn.CellEditEvent<ObservableNode, String> t) {
-
-    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
-
-    // longname should be at least 5 characters
-    boolean verified = t.getNewValue().length() >= 5;
-
-    if (verified) {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).longName = t.getNewValue();
-      t.getTableView().refresh();
-      DataEdit edit = new DataEdit(id, "longName", t.getNewValue());
-      dataEdits.add(edit);
-      submitEdits();
-      System.out.println(
-          "[MapEditorController.handleEdit_longName]: Successfully updated longname column.");
-    } else {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).longName =
-          "**" + t.getOldValue() + "**";
-      t.getTableView().refresh();
-    }
-
-    // removeAnyOldCommits(nodeid, header); // not strictly necessary
-  }
-
-  private void handleEdit_ShortName(TableColumn.CellEditEvent<ObservableNode, String> t) {
-
-    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
-
-    // shortname is max 25 characters
-    boolean verified = t.getNewValue().length() <= 25;
-
-    if (verified) {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).shortName = t.getNewValue();
-      t.getTableView().refresh();
-      DataEdit edit = new DataEdit(id, "shortName", t.getNewValue());
-      dataEdits.add(edit);
-      submitEdits();
-      System.out.println(
-          "[MapEditorController.handleEdit_shortName]: Successfully updated shortname column.");
-    } else {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).shortName =
-          "**" + t.getOldValue() + "**";
-      t.getTableView().refresh();
-    }
-  }
-
-  private void handleEdit_Date(TableColumn.CellEditEvent<ObservableNode, String> t) {
-
-    String id = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
-
-    // check value is a valid date structure
-
-    boolean verified = DATE_PATTERN.matcher(t.getNewValue()).matches();
-
-    if (verified) {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).date = t.getNewValue();
-      t.getTableView().refresh();
-      DataEdit edit = new DataEdit(id, "date", t.getNewValue());
-      dataEdits.add(edit);
-      submitEdits();
-      System.out.println("[MapEditorController.handleEdit_date]: Successfully updated date column");
-    } else {
-      t.getTableView().getItems().get(t.getTablePosition().getRow()).date =
-          "**" + t.getOldValue() + "**";
-      t.getTableView().refresh();
-    }
-  }
-
-  private void handleEdit_Edges(TableColumn.CellEditEvent<ObservableNode, String> t) {
-
-    String[] prev = t.getOldValue().split(", ");
-    String[] changed = t.getNewValue().split(", ");
-    Arrays.sort(prev);
-    Arrays.sort(changed);
-
-    t.getTableView().getItems().get(t.getTablePosition().getRow()).adjacentNodes = t.getNewValue();
-
-    // ensure that all nodes in the changed string are valid
-    boolean verified = validNodes.containsAll(List.of(changed));
-
-    if (verified) {
-
-      System.out.println("Verified edit to edges");
-
-      String start = t.getTableView().getItems().get(t.getTablePosition().getRow()).id;
-
-      // find differences between prev and changed
-      // https://stackoverflow.com/questions/3476672/algorithm-to-get-changes-between-two-arrays
-      int pIdx = 0, cIdx = 0;
-      while (pIdx < prev.length && cIdx < changed.length) {
-
-        int comp = prev[pIdx].compareTo(changed[cIdx]);
-
-        if (comp < 0) {
-          // pidx got removed
-          edgeEdits.add(new EdgeEdit(EdgeEditType.REMOVE, start, prev[pIdx]));
-          pIdx++;
-
-        } else if (comp > 0) {
-          // cidx got added
-          edgeEdits.add(new EdgeEdit(EdgeEditType.ADD, start, changed[cIdx]));
-          cIdx++;
-
-        } else {
-          // equal so this edge is unchanged
-          pIdx++;
-          cIdx++;
-        }
-      }
-
-      System.out.println(
-          "[MapEditorController.handleEdit_edge]: Successfully updated edges column.");
-      submitEdits();
-    }
-  }
-
-  public static void sortObsNodes(ObservableList<ObservableNode> list) {
-    list.sort((o1, o2) -> (o1.getSortable()).compareTo(o2.getSortable()));
-  }
-
-  public ObservableList<ObservableNode> getNodes() {
-
-    ObservableList<ObservableNode> observableNodes = FXCollections.observableArrayList();
-
-    Node[] nodes = dbConnection.nodeTable.getAllNodes();
-    ArrayList<String> dates = dbConnection.nodeTable.getColumn("date");
-
-    // map from node ids to index in array of nodes (equal index in list of observable nodes)
-    HashMap<String, Integer> id2idx = new HashMap<>(nodes.length * 4 / 3 + 1);
-
-    // put together node data and dates and leave edges blank for now
-    for (int i = 0; i < nodes.length; i++) {
-      id2idx.put(nodes[i].id, i);
-      observableNodes.add(new ObservableNode(nodes[i], dates.get(i), new ArrayList<>()));
-
-      // save valid node ids to make verifying edge edits faster
-      validNodes.add(nodes[i].id);
-
-      // record in id2row
-      id2row.put(nodes[i].id, i);
-    }
-
-    // each element is an arraylist <str1, str2>
-    // first element has the headers <"node1", "node2">
-    // each element after that is <"startID", "endID">
-    ArrayList<String>[] edgesRaw = dbConnection.edgeTable.getAll();
-
-    for (int i = 1; i < edgesRaw.length; i++) {
-
-      String start = edgesRaw[i].get(0);
-      String end = edgesRaw[i].get(1);
-
-      // add end to start's adjacent nodes
-      int startIdx = id2idx.get(start);
-      observableNodes.get(startIdx).addAdjNode(end);
-
-      // add start to end's adjacent nodes
-      int endIdx = id2idx.get(end);
-      observableNodes.get(endIdx).addAdjNode(start);
-    }
-
-    for (ObservableNode obsNode : observableNodes) {
-      obsNode.setAdjacentNodes();
-    }
-
-    sortObsNodes(observableNodes);
-
-    return observableNodes;
-  }
-
-  public void populateTable(ObservableList<ObservableNode> nodes) {
-    table.setItems(nodes);
+    nodesGroup.getChildren().add(c);
   }
 
   /**
-   * Request NodeTable to queue edits to database. On each edit's success: 1. Make the BG of the
-   * cell white, 2. Remove DataEdit from collection.
+   * Fill in text fields for MicroNodes.
+   *
+   * @param unode the MicroNode whose data to fill in.
    */
-  public void submitEdits() {
+  private void fillMicroNodeFields(MicroNode unode) {
 
-    dataEdits.removeIf(edit -> dbConnection.nodeTable.update(edit.id, edit.attr, edit.value));
+    xText.setText(Double.toString(unode.point.getX()));
+    yText.setText(Double.toString(unode.point.getY()));
+    floorText.setText(unode.floor);
+    buildingText.setText(unode.building);
+  }
 
-    for (EdgeEdit edit : edgeEdits) {
+  private void clearMicroNodeFields() {
+    xText.setText("");
+    yText.setText("");
+    floorText.setText("");
+    buildingText.setText("");
+  }
 
-      switch (edit.type) {
-        case ADD:
-          dbConnection.edgeTable.insert(new ArrayList<>(List.of(edit.node1, edit.node2)));
+  private void fillLocationFields(Location loc) {
 
-          table.getItems().get(id2row.get(edit.node1)).addAdjNode(edit.node2);
+    shortnameText.setText(loc.shortname);
+    typeText.setText(loc.type.toString());
+    longnameText.setText(loc.longname);
+  }
 
-          table.getItems().get(id2row.get(edit.node2)).addAdjNode(edit.node1);
+  private void clearLocationFields() {
 
-          break;
+    shortnameText.setText("");
+    typeText.setText("");
+    longnameText.setText("");
+  }
 
-        case REMOVE:
-          table.getItems().get(id2row.get(edit.node1)).removeAdjNode(edit.node2);
+  private void deleteNode(String id) {
 
-          table.getItems().get(id2row.get(edit.node2)).removeAdjNode(edit.node1);
+    Iterator<Node> itr = nodesGroup.getChildren().iterator();
+    while (itr.hasNext()) {
 
-          /*
-          EXAMPLE QUERY:
+      CircleNode curr = (CircleNode) itr.next();
 
-          DELETE FROM proto2db.edge
-          WHERE (proto2db.edge.node1 = '<node1>' AND proto2db.edge.node2 = '<node2>')
-          OR (proto2db.edge.node1 = '<node2>' AND proto2db.edge.node2 = '<node1>');
-           */
-
-          try {
-            String query =
-                "DELETE FROM "
-                    + dbConnection.conn.getSchema()
-                    + "."
-                    + dbConnection.edgeTable.getTableName()
-                    + " WHERE ("
-                    + dbConnection.conn.getSchema()
-                    + "."
-                    + dbConnection.edgeTable.getTableName()
-                    + ".node1 = '"
-                    + edit.node1
-                    + "' AND "
-                    + dbConnection.conn.getSchema()
-                    + "."
-                    + dbConnection.edgeTable.getTableName()
-                    + ".node2 = '"
-                    + edit.node2
-                    + "') OR ("
-                    + dbConnection.conn.getSchema()
-                    + "."
-                    + dbConnection.edgeTable.getTableName()
-                    + ".node1 = '"
-                    + edit.node2
-                    + "' AND "
-                    + dbConnection.conn.getSchema()
-                    + "."
-                    + dbConnection.edgeTable.getTableName()
-                    + ".node2 = '"
-                    + edit.node1
-                    + "');";
-
-            Statement statement = dbConnection.conn.createStatement();
-            statement.executeUpdate(query);
-
-          } catch (SQLException e) {
-            System.out.println(e.getMessage());
-          }
-          break;
+      if (curr.getCircleNodeID().equals(id)) {
+        itr.remove();
+        System.out.println("removed node" + curr.getCircleNodeID());
       }
     }
-    table.refresh();
+
+    dbConnection.processEdit(new RemoveEdit(DataTableType.MICRONODE, "id", id));
+
+    currentEditingNode = "";
+    state = EDITOR_STATE.IDLE;
   }
+
+  private void insertNode(double x, double y) {
+
+    String id = dbConnection.getNextID();
+
+    String floor = allFloors.get(currentFloor);
+    MicroNode unode =
+        new MicroNode(
+            Integer.parseInt(id),
+            x,
+            y,
+            floor,
+            buildingChecker.getBuilding(new Point2D(x, y), floor));
+
+    drawNode(unode);
+
+    dbConnection.processEdit(
+        new InsertEdit(DataTableType.MICRONODE, "id", id, unode.deconstruct()));
+  }
+}
+
+enum EDITOR_STATE {
+  IDLE,
+  ADDING,
+  EDITING;
 }

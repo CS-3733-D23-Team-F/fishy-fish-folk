@@ -14,6 +14,7 @@ import java.util.List;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -30,6 +31,7 @@ public class SupplyRequestController extends AbsController {
   @FXML MFXButton signageNav;
 
   @FXML MFXButton mealNav;
+  @FXML ComboBox<String> roomSelector;
 
   @FXML MFXButton officeNav;
 
@@ -44,7 +46,7 @@ public class SupplyRequestController extends AbsController {
   SupplyOrder currentSupplyOrder = new SupplyOrder();
   ArrayList<SupplyItem> supplyOptions;
   @FXML MFXButton cancelButton;
-  @FXML MFXButton supplySubmitButton;
+  @FXML MFXButton supplySubmitButton, viewFurniture, furnitureNav;
   @FXML MFXButton clearButton;
   @FXML MFXCheckbox check1, check2, check3, check4, check5, check6, check7;
   @FXML MFXTextField linkTextField, roomNumTextField, notesTextField;
@@ -68,14 +70,17 @@ public class SupplyRequestController extends AbsController {
     cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     supplySubmitButton.setOnMouseClicked(event -> submit());
     clearButton.setOnMouseClicked(event -> clearAllFields());
+
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+    viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
-    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
-    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
@@ -118,6 +123,7 @@ public class SupplyRequestController extends AbsController {
                 sideBarClose.setVisible(false);
               });
         });
+    loadRooms();
   }
 
   void loadOptions() {
@@ -130,6 +136,10 @@ public class SupplyRequestController extends AbsController {
     supplyOptions.add(SupplyItem.supply6);
     supplyOptions.add(SupplyItem.supply7);
     supplyOptions.add(SupplyItem.supply8);
+  }
+
+  void loadRooms() {
+    roomSelector.getItems().addAll(dbConnection.getDestLongnames());
   }
 
   private void addToOrder(int supplyNum) {
@@ -192,7 +202,7 @@ public class SupplyRequestController extends AbsController {
     else addToOrder(7);
     if (check7.isSelected()) addToOrder(6);
     else addToOrder(7);
-    currentSupplyOrder.roomNum = roomNumTextField.getText();
+    currentSupplyOrder.roomNum = roomSelector.getValue();
     currentSupplyOrder.link = linkTextField.getText();
     currentSupplyOrder.notes = notesTextField.getText();
     if (submittable()) {

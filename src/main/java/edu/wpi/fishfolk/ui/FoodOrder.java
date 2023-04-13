@@ -117,7 +117,7 @@ public class FoodOrder extends TableEntry {
     deliveryLocation = data.get(4);
     String dateTime = data.get(5);
     deliveryTime =
-        LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("E, MM/dd - h:mayyyy"));
+        LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("E, MM/dd - h:mmayyyy"));
     payer = CreditCardInfo.dummy;
     return true;
   }
@@ -158,7 +158,7 @@ public class FoodOrder extends TableEntry {
     }
     item.add(assignee);
     item.add(deliveryLocation);
-    item.add(deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd - h:mayyyy")));
+    item.add(deliveryTime.format(DateTimeFormatter.ofPattern("EE, MM/dd - h:mmayyyy")));
     return item;
   }
 

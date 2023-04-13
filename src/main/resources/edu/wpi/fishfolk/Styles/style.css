@@ -3,9 +3,83 @@
     -fx-background-color: #012D5A;
 }
 .navButtons:hover{
-    -fx-background-color: #0464b4;
-    -fx-stroke: yellow;
-    -fx-stroke-width: 5px;
+    -fx-background-color: #F0BF4C;
+    -fx-text-fill: #012D5A;
+}
+
+.navButtons > #mapIcon{
+    -fx-image: url("../images/mapEditor.png");
+}
+
+.navButtons:hover > #mapIcon{
+    -fx-image: url("../images/mapEditorH.png");
+}
+
+.navButtons > #signageIcon{
+    -fx-image: url("../images/pathfinding.png");
+}
+
+.navButtons:hover > #signageIcon{
+    -fx-image: url("../images/pathfindingH.png");
+}
+.navButtons > #mealIcon{
+    -fx-image: url("../images/food.png");
+}
+
+.navButtons:hover > #mealIcon{
+    -fx-image: url("../images/foodH.png");
+}
+.navButtons > #supplyIcon{
+    -fx-image: url("../images/delivery.png");
+}
+
+.navButtons:hover > #supplyIcon{
+    -fx-image: url("../images/deliveryH.png");
+}
+.navButtons > #orderIcon{
+    -fx-image: url("../images/order.png");
+}
+
+.navButtons:hover > #orderIcon{
+    -fx-image: url("../images/orderH.png");
+}
+.navButtons > #pathfindingIcon{
+    -fx-image: url("../images/wayfinding.png");
+}
+
+.navButtons:hover > #pathfindingIcon{
+    -fx-image: url("../images/wayfindingH.png");
+}
+
+.navButtons > #flowerIcon{
+    -fx-image: url("../images/flower.png");
+}
+
+.navButtons:hover > #flowerIcon{
+    -fx-image: url("../images/flowerH.png");
+}
+.navButtons > #furnitureIcon{
+     -fx-image: url("../images/furniture.png");
+ }
+
+.navButtons:hover > #furnitureIcon{
+    -fx-image: url("../images/furnitureH.png");
+}
+
+.navButtons > #serviceIcon{
+    -fx-image: url("../images/box.png");
+}
+
+.navButtons:hover > #serviceIcon{
+    -fx-image: url("../images/boxH.png");
+}
+
+.navButtons > #conferenceIcon{
+    -fx-image: url("../images/conference.png");
+}
+
+.navButtons:hover > #conferenceIcon{
+    -fx-image: url("../images/conferenceH.png");
 }
 
 .sideNav:hover{
@@ -17,7 +91,7 @@
 }
 
 .orderBtn:hover{
-    -fx-border-color: yellow;
+    -fx-border-color: #F0BF4C;
 }
 
 .backOrderBtn:hover{
@@ -26,8 +100,11 @@
 
 
 Line{
-    -fx-stroke-width: 5;
+    -fx-stroke-width: 4;
     -fx-stroke-line-cap: round;
-    -fx-stroke: red;
+    -fx-stroke: #0CD4FC;
+}
 
+Micronode:hover{
+    -fx-border-color: yellow;
 }
