@@ -1,13 +1,11 @@
 package edu.wpi.fishfolk.pathfinding;
 
-import edu.wpi.fishfolk.database.MicroNode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public class DFS extends Pathfinder {
 
-  public DFS(Graph g){
+  public DFS(Graph g) {
     super(g);
   }
 
@@ -46,14 +44,14 @@ public class DFS extends Pathfinder {
       foundNew = false;
 
       while (!foundNew && !(searched == size - 1)) {
-        //searched adjacent to cur and not yet visited
-        if ( graph.adjacent(graph.id2idx(cur), searched) && !visited[searched]) {
+        // searched adjacent to cur and not yet visited
+        if (graph.adjacent(graph.id2idx(cur), searched) && !visited[searched]) {
 
-          //proceed if stairs allowed, not at stairs
+          // proceed if stairs allowed, not at stairs
           // ignore stair condition at start
           if (stairs
-                  || ! graph.getNodeFromIdx(searched).containsType(NodeType.STAI)
-                  || graph.getNodeFromIdx(searched).nid == start) {
+              || !graph.getNodeFromIdx(searched).containsType(NodeType.STAI)
+              || graph.getNodeFromIdx(searched).nid == start) {
 
             int next = graph.getNodeFromIdx(searched).nid;
             previous[graph.id2idx(next)] = cur;

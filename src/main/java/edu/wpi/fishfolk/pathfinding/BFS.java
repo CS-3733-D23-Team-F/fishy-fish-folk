@@ -1,60 +1,58 @@
 package edu.wpi.fishfolk.pathfinding;
 
-import edu.wpi.fishfolk.database.MicroNode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public class BFS extends Pathfinder {
 
-    public BFS(Graph g){
-        super(g);
+  public BFS(Graph g) {
+    super(g);
+  }
+
+  public ArrayList<Path> pathfind(int start, int end, boolean stairs) {
+
+    if (!graph.containsNode(start) || !graph.containsNode(end)) {
+      return null;
     }
 
-    public ArrayList<Path> pathfind(int start, int end, boolean stairs) {
+    int size = graph.getSize();
 
-        if (!graph.containsNode(start) || !graph.containsNode(end)) {
-            return null;
-        }
+    boolean[] visited = new boolean[size];
+    int[] previous = new int[size];
 
-        int size = graph.getSize();
+    LinkedList<Integer> queue = new LinkedList<>(); // queue of next nodes to look at in bfs
 
-        boolean[] visited = new boolean[size];
-        int[] previous =new int[size];
+    queue.add(start);
 
-        LinkedList<Integer> queue = new LinkedList<>(); // queue of next nodes to look at in bfs
+    int cur = start;
 
-        queue.add(start);
+    while (!(cur == end)) {
 
-        int cur = start;
+      cur = queue.removeFirst();
 
-        while (!(cur == end)) {
+      if (!visited[graph.id2idx(cur)]) { // found a new node
 
-            cur = queue.removeFirst();
+        for (int other = 0; other < size; other++) {
 
-            if (!visited[graph.id2idx(cur)]) { // found a new node
+          if (graph.adjacent(graph.id2idx(cur), other) && !visited[other]) {
 
-                for (int other = 0; other < size; other++) {
+            // proceed if stairs allowed, not at stairs
+            // ignore stair condition at start
+            if (stairs
+                || !graph.getNodeFromIdx(other).containsType(NodeType.STAI)
+                || graph.getNodeFromIdx(other).nid == start) {
 
-                    if ( graph.adjacent(graph.id2idx(cur), other) && !visited[other]) {
-
-                        //proceed if stairs allowed, not at stairs
-                        // ignore stair condition at start
-                        if (stairs
-                                || ! graph.getNodeFromIdx(other).containsType(NodeType.STAI)
-                                || graph.getNodeFromIdx(other).nid == start) {
-
-                            int next = graph.getNodeFromIdx(other).nid;
-                            previous[graph.id2idx(next)] = cur;
-                            queue.addLast(next);
-                        }
-                    }
-
-                    visited[graph.id2idx(cur)] = true;
-                }
+              int next = graph.getNodeFromIdx(other).nid;
+              previous[graph.id2idx(next)] = cur;
+              queue.addLast(next);
             }
-        }
+          }
 
-        return backtrack(cur, start, previous);
+          visited[graph.id2idx(cur)] = true;
+        }
+      }
     }
+
+    return backtrack(cur, start, previous);
+  }
 }

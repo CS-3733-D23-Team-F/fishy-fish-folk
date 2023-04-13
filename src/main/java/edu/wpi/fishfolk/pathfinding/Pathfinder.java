@@ -22,6 +22,7 @@ public abstract class Pathfinder {
 
   /**
    * Backtrack through the graph using the array of previous nodes.
+   *
    * @param endIdx the index of the end node in the arrays used by this object's Graph.
    * @param start the id of the start node. The returned paths will start at this node.
    * @param lastVisited the array storing which node was last visited before every node
@@ -54,6 +55,5 @@ public abstract class Pathfinder {
     paths.get(0).addFirst(graph.getNodeFromID(start));
 
     return paths;
-
   }
 }
