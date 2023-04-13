@@ -125,6 +125,19 @@ public class Fdb {
           new ArrayList<>(List.of("node1", "node2")),
           new ArrayList<>(List.of("String8", "String8")));
 
+      Runtime.getRuntime()
+          .addShutdownHook(
+              new Thread(
+                  () -> {
+                    try {
+                      Thread.sleep(200);
+                      disconnect();
+                    } catch (InterruptedException e) {
+                      Thread.currentThread().interrupt();
+                      e.printStackTrace();
+                    }
+                  }));
+
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
