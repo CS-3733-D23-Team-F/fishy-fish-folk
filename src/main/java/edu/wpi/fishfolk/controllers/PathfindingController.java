@@ -219,12 +219,17 @@ public class PathfindingController extends AbsController {
           for (int i = 1; i < path.numNodes; i++) {
             segments.add(line(path.points.get(i - 1), path.points.get(i)));
           }
-          Group g = new Group();
-          g.getChildren().addAll(segments);
-          pathGroup.getChildren().add(g);
-          g.setVisible(false);
 
-          floors.add(path.floor);
+          if (!(path.numNodes == 1)
+              || (path.equals(paths.get(0)))
+              || (path.equals(paths.get(paths.size() - 1)))) {
+            Group g = new Group();
+            g.getChildren().addAll(segments);
+            pathGroup.getChildren().add(g);
+            g.setVisible(false);
+
+            floors.add(path.floor);
+          }
         });
   }
 
