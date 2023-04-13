@@ -1,7 +1,7 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
-import java.awt.geom.Point2D;
+import javafx.geometry.Point2D;
 import lombok.Getter;
 import lombok.Setter;
 

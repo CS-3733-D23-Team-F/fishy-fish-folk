@@ -1,6 +1,6 @@
 package edu.wpi.fishfolk.database.rewrite.DAO;
 
-import edu.wpi.fishfolk.database.rewrite.DataEdit;
+import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Move;
 import java.util.ArrayList;

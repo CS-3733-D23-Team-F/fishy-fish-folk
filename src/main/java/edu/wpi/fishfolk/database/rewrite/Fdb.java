@@ -11,7 +11,7 @@ public class Fdb {
   private final Connection dbConnection;
 
   // Hospital Map Tables
-  private final NodeDAO nodeTable;
+  public final NodeDAO nodeTable;
   private final LocationDAO locationTable;
   private final MoveDAO moveTable;
   private final EdgeDAO edgeTable;
@@ -28,6 +28,7 @@ public class Fdb {
 
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb() {
+
     this.dbConnection = connect("teamfdb", "teamf", "teamf60");
 
     // Hospital Map Tables
@@ -62,6 +63,7 @@ public class Fdb {
       Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
       if (db != null) {
         System.out.println("[Fdb.connect]: Connection established.");
+        db.setSchema("proto2db");
       } else {
         System.out.println("[Fdb.connect]: Connection failed.");
       }
