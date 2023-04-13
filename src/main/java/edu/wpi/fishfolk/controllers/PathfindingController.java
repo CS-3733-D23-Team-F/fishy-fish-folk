@@ -169,8 +169,8 @@ public class PathfindingController extends AbsController {
 
     submitBtn.setOnMouseClicked(
         event -> {
-          pathfinder = new BFS();
-          paths = pathfinder.pathfind(start, end, graph, true);
+          pathfinder = new AStar();
+          paths = pathfinder.pathfind(start, end, graph, false);
 
           // create segments for each path and put into groups
 

@@ -56,8 +56,12 @@ public class AStar implements IPathfinding {
           if (fromStart[node] < 0
               || fromStart[current_node] + adjMat[current_node][node] < fromStart[node]) {
 
-            fromStart[node] = fromStart[current_node] + adjMat[current_node][node];
-            lastVisited[node] = current_node;
+            if ((stairs || !unodes[current_node].containsType(NodeType.STAI))
+                || current_node == id2idx.get(start)) {
+              fromStart[node] = fromStart[current_node] + adjMat[current_node][node];
+              lastVisited[node] = current_node;
+              System.out.println(unodes[node].nid);
+            }
           }
         }
       }
