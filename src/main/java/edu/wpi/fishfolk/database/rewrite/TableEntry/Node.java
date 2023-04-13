@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
+import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import java.awt.geom.Point2D;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ public class Node {
   @Getter @Setter private Point2D point;
   @Getter @Setter private String floor;
   @Getter @Setter private String building;
+  @Getter @Setter private EntryStatus status;
 
   /**
    * Table entry type: Node
@@ -24,5 +26,6 @@ public class Node {
     this.point = point;
     this.floor = floor;
     this.building = building;
+    this.status = EntryStatus.UNCHANGED;
   }
 }

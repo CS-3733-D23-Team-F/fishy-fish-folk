@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.database.rewrite.DAO;
 
 import edu.wpi.fishfolk.database.rewrite.DataEdit;
+import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
 import java.util.ArrayList;
@@ -21,6 +22,12 @@ public class NodeDAO implements IDAO<Node> {
 
   @Override
   public boolean insertEntry(Node entry) {
+
+    entry.setStatus(EntryStatus.NEW);
+    tableMap.put(entry.getNodeID(), entry);
+
+    dataEdits.add(new DataEdit<Node>(entry, ""))
+
     return false;
   }
 

@@ -6,21 +6,22 @@ import lombok.Setter;
 
 public class ConferenceRequest {
 
-    @Getter @Setter private String id;
-    @Getter @Setter private String assignee;
-    @Getter @Setter private FormStatus status;
+  @Getter @Setter private String id;
+  @Getter @Setter private String assignee;
+  @Getter @Setter private FormStatus status;
 
-    // TODO: Additional fields
+  // TODO: Additional fields
 
-    /**
-     * Table entry type: Conference Request
-     * @param id Unique ID of request
-     * @param assignee Assignee of request
-     * @param status Status of request
-     */
-    public ConferenceRequest(String id, String assignee, FormStatus status) {
-        this.id = id;
-        this.assignee = assignee;
-        this.status = status;
-    }
+  /**
+   * Table entry type: Conference Request
+   *
+   * @param id Unique ID of request
+   * @param assignee Assignee of request
+   * @param status Status of request
+   */
+  public ConferenceRequest(String id, String assignee, FormStatus status) {
+    this.id = id;
+    this.assignee = assignee;
+    this.status = status;
+  }
 }

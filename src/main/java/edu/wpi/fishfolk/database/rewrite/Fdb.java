@@ -2,7 +2,6 @@ package edu.wpi.fishfolk.database.rewrite;
 
 import edu.wpi.fishfolk.database.rewrite.DAO.*;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.*;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

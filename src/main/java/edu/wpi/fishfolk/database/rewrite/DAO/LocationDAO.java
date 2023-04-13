@@ -3,7 +3,6 @@ package edu.wpi.fishfolk.database.rewrite.DAO;
 import edu.wpi.fishfolk.database.rewrite.DataEdit;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Location;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
