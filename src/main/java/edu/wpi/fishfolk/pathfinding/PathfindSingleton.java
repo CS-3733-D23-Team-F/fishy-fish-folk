@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.pathfinding;
 
+@Deprecated
 public enum PathfindSingleton {
   PATHFIND_SINGLETON;
 

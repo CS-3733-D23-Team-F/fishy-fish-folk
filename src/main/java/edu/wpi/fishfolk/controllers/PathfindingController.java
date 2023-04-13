@@ -52,6 +52,9 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton zoomOut;
   @FXML MFXButton zoomIn;
   @FXML GesturePane pane;
+
+  Pathfinder pathfinder;
+
   int start, end;
   Graph graph;
   ArrayList<Path> paths;
@@ -68,26 +71,7 @@ public class PathfindingController extends AbsController {
   @FXML
   private void initialize() {
 
-    PathfindSingleton pathfinder = PathfindSingleton.PATHFIND_SINGLETON;
-
-    // segments = new LinkedList<>();
-
-    zoomIn.setOnMouseClicked(
-        event -> {
-          javafx.geometry.Bounds bounds = pane.getTargetViewport();
-          pane.animate(Duration.millis(200))
-              .interpolateWith(Interpolator.EASE_BOTH)
-              .zoomBy(zoom + 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
-        });
-
-    zoomOut.setOnMouseClicked(
-        event -> {
-          javafx.geometry.Bounds bounds = pane.getTargetViewport();
-          pane.animate(Duration.millis(200))
-              .interpolateWith(Interpolator.EASE_BOTH)
-              .zoomBy(zoom - 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
-        });
-
+    // buttons to other pages
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
     viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
@@ -99,6 +83,7 @@ public class PathfindingController extends AbsController {
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
+    // left menu
     slider.setTranslateX(-400);
     sideBarClose.setVisible(false);
     menuWrap.setVisible(false);
@@ -141,6 +126,22 @@ public class PathfindingController extends AbsController {
         });
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
+    zoomIn.setOnMouseClicked(
+        event -> {
+          javafx.geometry.Bounds bounds = pane.getTargetViewport();
+          pane.animate(Duration.millis(200))
+              .interpolateWith(Interpolator.EASE_BOTH)
+              .zoomBy(zoom + 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
+        });
+
+    zoomOut.setOnMouseClicked(
+        event -> {
+          javafx.geometry.Bounds bounds = pane.getTargetViewport();
+          pane.animate(Duration.millis(200))
+              .interpolateWith(Interpolator.EASE_BOTH)
+              .zoomBy(zoom - 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
+        });
+
     List<String> nodeNames =
         dbConnection.locationTable
             .executeQuery("SELECT longname", "WHERE type != 'HALL' ORDER BY longname ASC").stream()
@@ -169,8 +170,8 @@ public class PathfindingController extends AbsController {
 
     submitBtn.setOnMouseClicked(
         event -> {
-          pathfinder.setPathMethod(new AStar());
-          paths = pathfinder.getPathMethod().pathfind(start, end, graph, true);
+          pathfinder = new AStar(graph);
+          paths = pathfinder.pathfind(start, end, true);
 
           // create segments for each path and put into groups
 

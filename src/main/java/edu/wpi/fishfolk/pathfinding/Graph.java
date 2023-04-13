@@ -7,6 +7,7 @@ import edu.wpi.fishfolk.database.Move;
 import java.time.LocalDate;
 import java.util.*;
 import javafx.geometry.Point2D;
+import lombok.Getter;
 
 public class Graph {
 
@@ -14,12 +15,15 @@ public class Graph {
   // https://stackoverflow.com/questions/3287003/three-ways-to-store-a-graph-in-memory-advantages-and-disadvantages
   // in the future maybe switch to adjacency list
 
-  int size;
-  double[][] adjMat;
-  MicroNode[] unodes;
-  HashMap<Integer, Integer> id2idx; // string id to index in nodes array and adjacency matrix
-  HashMap<String, ArrayList<Integer>> elevLet2ids;
-  private int lastIdx;
+  @Getter private int size;
+  @Getter private double[][] adjMat;
+  @Getter private MicroNode[] unodes;
+
+  @Getter
+  private HashMap<Integer, Integer>
+      id2idx; // string id to index in nodes array and adjacency matrix
+
+  @Getter private HashMap<String, ArrayList<Integer>> elevLet2ids;
 
   private Fdb dbConnection;
 
@@ -33,8 +37,6 @@ public class Graph {
     unodes = new MicroNode[size];
     id2idx = new HashMap<>(size * 4 / 3 + 1); // default load factor is 75% = 3/4
     elevLet2ids = new HashMap<>(32); // estimate of number of elevator nodes
-
-    lastIdx = 0;
 
     populate();
   }
@@ -295,5 +297,29 @@ public class Graph {
       }
     }
     return neighbors;
+  }
+
+  public int id2idx(int id) {
+    return id2idx.get(id);
+  }
+
+  public MicroNode getNodeFromID(int id) {
+    return unodes[id2idx.get(id)];
+  }
+
+  public MicroNode getNodeFromIdx(int idx) {
+    return unodes[idx];
+  }
+
+  public boolean containsNode(int id) {
+    return id2idx.containsKey(id);
+  }
+
+  public boolean adjacent(int n1, int n2) {
+    return adjMat[n1][n2] > 0;
+  }
+
+  public double getEdgeWeight(int n1, int n2) {
+    return adjMat[n1][n2];
   }
 }
