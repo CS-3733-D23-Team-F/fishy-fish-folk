@@ -22,7 +22,9 @@ public abstract class AbsController {
 
   public AbsController() {
 
-    dbConnection = new Fdb();
+    if (dbConnection == null) {
+      dbConnection = new Fdb();
+    }
 
     mapImgURLs = new HashMap<>();
 
