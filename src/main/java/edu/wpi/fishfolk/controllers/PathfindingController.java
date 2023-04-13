@@ -56,8 +56,6 @@ public class PathfindingController extends AbsController {
   Graph graph;
   ArrayList<Path> paths;
 
-  IPathfinding pathfinder;
-
   ArrayList<String> floors;
   int currentFloor;
   int zoom;
@@ -69,6 +67,8 @@ public class PathfindingController extends AbsController {
 
   @FXML
   private void initialize() {
+
+    PathfindSingleton pathfinder = PathfindSingleton.PATHFIND_SINGLETON;
 
     // segments = new LinkedList<>();
 
@@ -169,8 +169,8 @@ public class PathfindingController extends AbsController {
 
     submitBtn.setOnMouseClicked(
         event -> {
-          pathfinder = new BFS();
-          paths = pathfinder.pathfind(start, end, graph, false);
+          pathfinder.setPathMethod(new AStar());
+          paths = pathfinder.getPathMethod().pathfind(start, end, graph, true);
 
           // create segments for each path and put into groups
 
