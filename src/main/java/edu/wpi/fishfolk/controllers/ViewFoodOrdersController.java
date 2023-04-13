@@ -53,10 +53,10 @@ public class ViewFoodOrdersController extends AbsController {
   public ViewFoodOrdersController() {
     super();
     foodOrderTable = new Table(dbConnection.conn, "foodorder");
+    foodOrderTable.init(false);
     foodOrderTable.addHeaders(
         FoodOrderController.headers,
         new ArrayList<>(List.of("String", "String", "String", "String", "String", "String")));
-    foodOrderTable.init(false);
   }
 
   @FXML

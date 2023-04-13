@@ -53,11 +53,11 @@ public class ViewSupplyOrdersController extends AbsController {
   public ViewSupplyOrdersController() {
     super();
     supplyOrderTable = new Table(dbConnection.conn, "supplyrequest");
+    supplyOrderTable.init(false);
     supplyOrderTable.addHeaders(
         SupplyRequestController.headers,
         new ArrayList<>(
             List.of("String", "String", "String", "String", "String", "String", "String")));
-    supplyOrderTable.init(false);
   }
 
   @FXML
