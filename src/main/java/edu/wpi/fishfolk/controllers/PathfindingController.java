@@ -2,8 +2,7 @@ package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import edu.wpi.fishfolk.pathfinding.Graph;
-import edu.wpi.fishfolk.pathfinding.Path;
+import edu.wpi.fishfolk.pathfinding.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,6 +55,8 @@ public class PathfindingController extends AbsController {
   int start, end;
   Graph graph;
   ArrayList<Path> paths;
+
+  IPathfinding pathfinder;
 
   ArrayList<String> floors;
   int currentFloor;
@@ -168,7 +169,8 @@ public class PathfindingController extends AbsController {
 
     submitBtn.setOnMouseClicked(
         event -> {
-          paths = graph.AStar(start, end);
+          pathfinder = new AStar();
+          paths = pathfinder.pathfind(start, end, graph, true);
 
           // create segments for each path and put into groups
           drawPaths(paths);
