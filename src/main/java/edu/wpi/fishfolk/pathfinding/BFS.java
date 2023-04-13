@@ -59,6 +59,8 @@ public class BFS implements IPathfinding {
     ArrayList<Path> paths = new ArrayList<>();
     int numpaths = -1;
 
+    int prev = cur;
+
     while (cur != start) {
 
       // start new path when hitting a new floor
@@ -70,10 +72,12 @@ public class BFS implements IPathfinding {
         numpaths++;
       }
 
-      int prev = previous[id2idx.get(cur)];
       paths.get(0).addFirst(prev, unodes[id2idx.get(prev)].point);
+      prev = previous[id2idx.get(cur)];
       cur = prev;
     }
+
+    paths.get(0).addFirst(cur, unodes[id2idx.get(cur)].point);
 
     return paths;
   }

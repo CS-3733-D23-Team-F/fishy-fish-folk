@@ -169,10 +169,11 @@ public class PathfindingController extends AbsController {
 
     submitBtn.setOnMouseClicked(
         event -> {
-          pathfinder = new AStar();
+          pathfinder = new BFS();
           paths = pathfinder.pathfind(start, end, graph, true);
 
           // create segments for each path and put into groups
+
           drawPaths(paths);
           currentFloor = 0;
           pane.animate(Duration.millis(200))
