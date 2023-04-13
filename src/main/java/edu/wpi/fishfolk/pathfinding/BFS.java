@@ -44,10 +44,12 @@ public class BFS implements IPathfinding {
         for (int other = 0; other < size; other++) {
 
           if (adjMat[id2idx.get(cur)][other] != 0.0 // Fixed to 0.0 now that matrix is edge weights
-              && !visited[other]) { // 1 means cur is connected to other
-            int next = unodes[other].nid;
-            previous[id2idx.get(next)] = cur;
-            queue.addLast(next);
+              && !visited[other]) {
+            if (stairs || !unodes[other].containsType(NodeType.STAI) || unodes[other].nid == end) {
+              int next = unodes[other].nid;
+              previous[id2idx.get(next)] = cur;
+              queue.addLast(next);
+            }
           }
 
           visited[id2idx.get(cur)] = true;
