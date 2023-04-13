@@ -12,6 +12,15 @@ public class AStar implements IPathfinding {
   MicroNode[] unodes;
   HashMap<Integer, Integer> id2idx;
 
+  /**
+   * Finds the path between to locations using the A* algorithm
+   *
+   * @param start The ID of the starting location
+   * @param end The ID of the ending location
+   * @param graph Graph which contains an adjacency matrix of all locations
+   * @param stairs Boolean that indicates if stairs are allowed, false for no stairs
+   * @return ArrayList of Paths, each item in the list is a path on a separate floor
+   */
   public ArrayList<Path> pathfind(int start, int end, Graph graph, boolean stairs) {
     this.size = graph.size;
     this.adjMat = graph.adjMat;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class BFS implements IPathfinding {
+public class DFS implements IPathfinding {
 
   int size;
   double[][] adjMat;
@@ -13,7 +13,7 @@ public class BFS implements IPathfinding {
   HashMap<Integer, Integer> id2idx;
 
   /**
-   * Finds the path between to locations using the Breadth First Search algorithm
+   * Finds the path between to locations using the Depth First Search algorithm
    *
    * @param start The ID of the starting location
    * @param end The ID of the ending location
@@ -31,36 +31,45 @@ public class BFS implements IPathfinding {
       return null;
     }
 
-    boolean[] visited = new boolean[size];
+    LinkedList<Integer> stack = new LinkedList<>(); // queue of next nodes to look at in bfs
 
-    LinkedList<Integer> queue = new LinkedList<>(); // queue of next nodes to look at in bfs
-
-    int[] previous =
-        new int[size]; // used to store the ids of the previous node in order to retrace the path
-
-    queue.add(start);
+    int[] previous = new int[size];
 
     int cur = start;
 
+    stack.add(start);
+
+    int searched = 0;
+    boolean foundNew = false;
+
+    boolean[] visited = new boolean[size];
+
     while (!(cur == end)) {
 
-      cur = queue.removeFirst();
+      cur = stack.getLast();
 
-      if (!visited[id2idx.get(cur)]) { // found a new node
+      searched = 0;
+      foundNew = false;
 
-        for (int other = 0; other < size; other++) {
-
-          if (adjMat[id2idx.get(cur)][other] != 0.0 // Fixed to 0.0 now that matrix is edge weights
-              && !visited[other]) {
-            if (stairs || !unodes[other].containsType(NodeType.STAI) || unodes[other].nid == end) {
-              int next = unodes[other].nid;
-              previous[id2idx.get(next)] = cur;
-              queue.addLast(next);
-            }
+      while (!foundNew && !(searched == size - 1)) {
+        if (adjMat[id2idx.get(cur)][searched] != 0.0 // Fixed to 0.0 now that matrix is edge weights
+            && !visited[searched]) {
+          if (stairs
+              || !unodes[searched].containsType(NodeType.STAI)
+              || unodes[searched].nid == end) {
+            int next = unodes[searched].nid;
+            previous[id2idx.get(next)] = cur;
+            stack.addLast(next);
+            foundNew = true;
           }
-
-          visited[id2idx.get(cur)] = true;
         }
+
+        searched++;
+      }
+      visited[id2idx.get(cur)] = true;
+
+      if (!foundNew) {
+        stack.removeLast();
       }
     }
 
