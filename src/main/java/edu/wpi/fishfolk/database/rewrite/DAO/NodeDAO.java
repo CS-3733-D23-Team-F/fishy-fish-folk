@@ -198,6 +198,7 @@ public class NodeDAO implements IDAO<Node> {
 
     try {
 
+      // Print active thread (DEBUG)
       System.out.println(
           "[NodeDAO.updateDatabase]: Updating database in " + Thread.currentThread().getName());
 
@@ -245,14 +246,17 @@ public class NodeDAO implements IDAO<Node> {
       // while (dataEditQueue.hasNext()) {
       for (int i = 0; (i < dataEditQueue.getBatchLimit()) && dataEditQueue.hasNext(); i++) {
 
+        // Get the next data edit in the queue
         DataEdit<Node> dataEdit = dataEditQueue.next();
 
+        // Print update info (DEBUG)
         System.out.println(
             "[NodeDAO.updateDatabase]: "
                 + dataEdit.getType()
                 + " Node "
                 + dataEdit.getNewEntry().getNodeID());
 
+        // Change behavior based on data edit type
         switch (dataEdit.getType()) {
           case INSERT:
 
@@ -301,6 +305,7 @@ public class NodeDAO implements IDAO<Node> {
       return false;
     }
 
+    // On success
     return true;
   }
 }

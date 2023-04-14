@@ -29,16 +29,27 @@ public class DataEditQueue<T> {
    * @return True if a batch update is required, false otherwise
    */
   public boolean add(DataEdit<T> dataEdit, boolean countEntry) {
+
+    // Add data edit to queue
     dataEditQueue.add(dataEdit);
+
+    // Count the entry if required
     if (countEntry) editCount += 1;
 
+    // Return if the batch limit has been reached
     return (editCount >= batchLimit);
   }
 
   /** Remove the most recently added data edit from the queue. Modifies the pointer if necessary. */
   public void removeRecent() {
+
+    // If the size of the queue matches the pointer, decrease the pointer to stay in bounds
     if (pointer == (dataEditQueue.size() - 1)) pointer -= 1;
+
+    // Remove the most recently added item to the queue
     dataEditQueue.remove(dataEditQueue.get(dataEditQueue.size() - 1));
+
+    // Decrease the edit count
     editCount -= 1;
   }
 
@@ -49,9 +60,14 @@ public class DataEditQueue<T> {
    * @return The most recently added data edit
    */
   public DataEdit<T> popRecent() {
-    if (pointer == (dataEditQueue.size() - 1)) pointer -= 1;
+
+    // Get the most recently added data edit in the queue
     DataEdit<T> edit = dataEditQueue.get(dataEditQueue.size() - 1);
+
+    // Remove it from the queue
     removeRecent();
+
+    // Return it
     return edit;
   }
 
@@ -61,7 +77,11 @@ public class DataEditQueue<T> {
    * @return DataEdit at pointer.
    */
   public DataEdit<T> next() {
+
+    // Increment the pointer (data edit is being sent to database)
     pointer += 1;
+
+    // Return the next data edit in the queue
     return dataEditQueue.get(pointer - 1);
   }
 
@@ -71,10 +91,18 @@ public class DataEditQueue<T> {
    * @return True if there is, false otherwise
    */
   public boolean hasNext() {
+
     try {
+
+      // Try to get the data edit at index pointer
       dataEditQueue.get(pointer);
+
+      // If it exists, return true
       return true;
+
     } catch (IndexOutOfBoundsException e) {
+
+      // If it does not exist, return false
       return false;
     }
   }
