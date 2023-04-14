@@ -23,6 +23,11 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
   }
 
   @Override
+  public void populateLocalTable() {
+
+  }
+
+  @Override
   public boolean insertEntry(FlowerRequest entry) {
     return false;
   }
@@ -45,6 +50,11 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
   @Override
   public ArrayList<FlowerRequest> getAllEntries() {
     return null;
+  }
+
+  @Override
+  public void undoChange() {
+
   }
 
   @Override

@@ -20,6 +20,11 @@ public class EdgeDAO implements IDAO<Edge> {
   }
 
   @Override
+  public void populateLocalTable() {
+
+  }
+
+  @Override
   public boolean insertEntry(Edge entry) {
     return false;
   }
@@ -42,6 +47,11 @@ public class EdgeDAO implements IDAO<Edge> {
   @Override
   public ArrayList<Edge> getAllEntries() {
     return null;
+  }
+
+  @Override
+  public void undoChange() {
+
   }
 
   @Override

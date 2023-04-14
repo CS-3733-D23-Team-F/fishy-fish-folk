@@ -20,6 +20,11 @@ public class LocationDAO implements IDAO<Location> {
   }
 
   @Override
+  public void populateLocalTable() {
+
+  }
+
+  @Override
   public boolean insertEntry(Location entry) {
     return false;
   }
@@ -42,6 +47,11 @@ public class LocationDAO implements IDAO<Location> {
   @Override
   public ArrayList<Location> getAllEntries() {
     return null;
+  }
+
+  @Override
+  public void undoChange() {
+
   }
 
   @Override

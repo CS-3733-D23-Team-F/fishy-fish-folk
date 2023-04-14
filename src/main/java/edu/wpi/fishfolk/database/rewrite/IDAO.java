@@ -5,6 +5,11 @@ import java.util.ArrayList;
 public interface IDAO<T> {
 
   /**
+   * Take all entries from a PostgreSQL database and populate a local table.
+   */
+  void populateLocalTable();
+
+  /**
    * Insert an entry into a local table.
    *
    * @param entry Entry to insert
@@ -43,9 +48,8 @@ public interface IDAO<T> {
    */
   ArrayList<T> getAllEntries();
 
-  //  TODO: Return this method to the interface upon single DAO completion
-  //  /** Undo a change to a local table. */
-  //  void undoChange();
+  /** Undo a change to a local table. */
+  void undoChange();
 
   /**
    * Updates PostgreSQL database to reflect staged edits.

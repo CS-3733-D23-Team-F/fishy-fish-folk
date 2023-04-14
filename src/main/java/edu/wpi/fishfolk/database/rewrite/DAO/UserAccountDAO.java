@@ -20,6 +20,11 @@ public class UserAccountDAO implements IDAO<UserAccount> {
   }
 
   @Override
+  public void populateLocalTable() {
+
+  }
+
+  @Override
   public boolean insertEntry(UserAccount entry) {
     return false;
   }
@@ -42,6 +47,11 @@ public class UserAccountDAO implements IDAO<UserAccount> {
   @Override
   public ArrayList<UserAccount> getAllEntries() {
     return null;
+  }
+
+  @Override
+  public void undoChange() {
+
   }
 
   @Override

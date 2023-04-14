@@ -23,6 +23,11 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
   }
 
   @Override
+  public void populateLocalTable() {
+
+  }
+
+  @Override
   public boolean insertEntry(FurnitureRequest entry) {
     return false;
   }
@@ -45,6 +50,11 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
   @Override
   public ArrayList<FurnitureRequest> getAllEntries() {
     return null;
+  }
+
+  @Override
+  public void undoChange() {
+
   }
 
   @Override

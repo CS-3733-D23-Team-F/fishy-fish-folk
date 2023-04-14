@@ -20,6 +20,11 @@ public class MoveDAO implements IDAO<Move> {
   }
 
   @Override
+  public void populateLocalTable() {
+
+  }
+
+  @Override
   public boolean insertEntry(Move entry) {
     return false;
   }
@@ -42,6 +47,11 @@ public class MoveDAO implements IDAO<Move> {
   @Override
   public ArrayList<Move> getAllEntries() {
     return null;
+  }
+
+  @Override
+  public void undoChange() {
+
   }
 
   @Override
