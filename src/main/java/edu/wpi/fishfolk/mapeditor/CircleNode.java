@@ -1,4 +1,4 @@
-package edu.wpi.fishfolk.database;
+package edu.wpi.fishfolk.mapeditor;
 
 import javafx.scene.shape.Circle;
 

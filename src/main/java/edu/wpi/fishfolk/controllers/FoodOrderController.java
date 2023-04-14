@@ -6,7 +6,6 @@ import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.CreditCardInfo;
 import edu.wpi.fishfolk.ui.FoodItem;
 import edu.wpi.fishfolk.ui.FoodOrder;
-import edu.wpi.fishfolk.ui.Room;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -51,6 +50,8 @@ public class FoodOrderController extends AbsController {
   @FXML MFXButton removeOneButton, removeTwoButton, removeThreeButton;
   @FXML MFXButton plusHour, plusDay, minusHour, minusDay, asapButton;
   @FXML MFXButton clearButton, cancelButton, submitButton;
+  @FXML MFXButton viewFurniture;
+  @FXML MFXButton furnitureNav;
   @FXML Text itemText1, itemText2, itemText3;
   @FXML Text itemPrice1, itemPrice2, itemPrice3;
   @FXML Text itemQuantity1, itemQuantity2, itemQuantity3;
@@ -86,19 +87,21 @@ public class FoodOrderController extends AbsController {
     minusDay.setOnAction(event -> undelayDay());
     minusHour.setOnAction(event -> undelayHour());
 
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+    viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
     sideBarClose.setVisible(false);
-
+    menuWrap.setVisible(false);
     sideBar.setOnMouseClicked(
         event -> {
           menuWrap.setDisable(false);
@@ -110,7 +113,7 @@ public class FoodOrderController extends AbsController {
           slide.play();
 
           slider.setTranslateX(-400);
-
+          menuWrap.setVisible(true);
           slide.setOnFinished(
               (ActionEvent e) -> {
                 sideBar.setVisible(false);
@@ -120,6 +123,7 @@ public class FoodOrderController extends AbsController {
 
     sideBarClose.setOnMouseClicked(
         event -> {
+          menuWrap.setVisible(false);
           menuWrap.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
@@ -191,12 +195,15 @@ public class FoodOrderController extends AbsController {
   }
 
   void loadRooms() {
+    /*
     roomsServiced = new ArrayList<String>();
     roomsServiced.add(Room.generic1.toString());
     roomsServiced.add(Room.generic2.toString());
     roomsServiced.add(Room.generic3.toString());
     roomsServiced.add(Room.generic4.toString());
-    roomSelector.getItems().addAll(roomsServiced);
+
+     */
+    roomSelector.getItems().addAll(dbConnection.getDestLongnames());
   }
 
   void loadMenu() {

@@ -43,7 +43,7 @@ public class ViewFoodOrdersController extends AbsController {
   @FXML AnchorPane slider;
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
-  @FXML MFXButton homeButton;
+  @FXML MFXButton homeButton, viewFurniture, furnitureNav;
 
   int currentOrderNumber;
   List<FoodOrder> foodOrders;
@@ -53,22 +53,24 @@ public class ViewFoodOrdersController extends AbsController {
   public ViewFoodOrdersController() {
     super();
     foodOrderTable = new Table(dbConnection.conn, "foodorder");
+    foodOrderTable.init(false);
     foodOrderTable.addHeaders(
         FoodOrderController.headers,
         new ArrayList<>(List.of("String", "String", "String", "String", "String", "String")));
-    foodOrderTable.init(false);
   }
 
   @FXML
   private void initialize() throws InterruptedException {
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+    viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
-    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
-    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     slider.setTranslateX(-400);
@@ -241,6 +243,7 @@ public class ViewFoodOrdersController extends AbsController {
       itemsTextContainer.setPrefHeight(0);
       deliveryRoomText.setText("");
       deliveryTimeText.setText("");
+      statusText.setText("");
       assigneeText.setText("");
       viewingNumberText.setText("No orders to view");
       cancelButton.setDisable(true);

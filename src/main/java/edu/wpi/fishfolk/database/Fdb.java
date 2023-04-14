@@ -12,7 +12,6 @@ public class Fdb {
   public Table locationTable;
   public Table moveTable;
   public Table edgeTable;
-  public Table userAccountTable;
 
   public Connection conn;
 
@@ -20,7 +19,7 @@ public class Fdb {
 
   public Fdb() {
 
-    this.conn = connect("teamfdb", "teamf", "teamf60");
+    // this.conn = connect("teamfdb", "teamf", "teamf60");
 
     initialize();
 
@@ -126,11 +125,18 @@ public class Fdb {
           new ArrayList<>(List.of("node1", "node2")),
           new ArrayList<>(List.of("String8", "String8")));
 
-      userAccountTable = new Table(conn, "useraccounts");
-      userAccountTable.init(false);
-      userAccountTable.setHeaders(
-          new ArrayList<>(List.of("username", "passhash", "permissions")),
-          new ArrayList<>(List.of("String64", "int", "String64")));
+      Runtime.getRuntime()
+          .addShutdownHook(
+              new Thread(
+                  () -> {
+                    try {
+                      Thread.sleep(200);
+                      disconnect();
+                    } catch (InterruptedException e) {
+                      Thread.currentThread().interrupt();
+                      e.printStackTrace();
+                    }
+                  }));
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -218,46 +224,33 @@ public class Fdb {
 
   public ArrayList<String[]> getMostRecentLocations(String id) {
 
-    ArrayList<String[]> results =
-        moveTable.executeQuery("SELECT longname, date", "WHERE id = '" + id + "';");
+    ArrayList<String[]> moves =
+        moveTable.executeQuery("SELECT longname, date", "WHERE id = '" + id + "'");
 
-    results.forEach(
-        res -> {
-          res[1] = Move.sanitizeDate(res[1]);
-          System.out.println(Arrays.toString(res));
+    moves.forEach(
+        move -> {
+          move[1] = Move.sanitizeDate(move[1]);
         });
 
     // sort results based on date
-    results.sort(Comparator.comparing(result -> LocalDate.parse(result[1], Move.format)));
+    moves.sort(Comparator.comparing(move -> LocalDate.parse(move[1], Move.format)));
 
     ArrayList<String[]> locations = new ArrayList<>();
 
-    for (String[] result : results) {
-      locations.add(locationTable.get("longname", result[0]).toArray(new String[3]));
+    for (String[] move : moves) {
+      locations.add(locationTable.get("longname", move[0]).toArray(new String[3]));
     }
 
     return locations;
   }
 
-  /**
-   * Perform a join operation on two tables along the match column. The returned ArrayList contains
-   * the requested headers in the first index and each element afterwards represents one row, not
-   * including
-   *
-   * @param selectHeaders
-   * @param left
-   * @param right
-   * @param match
-   * @return
-   */
-  /*
-  public ArrayList<String[]> join(String[] selectHeaders, DataTableType left, DataTableType right, String match){
+  public List<String> getDestLongnames() {
 
-
-
+    return locationTable
+        .executeQuery("SELECT longname", "WHERE type != 'HALL' ORDER BY longname ASC").stream()
+        .map(elt -> elt[0])
+        .toList();
   }
-
-   */
 
   public void loadTablesFromCSV() {
     micronodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv", false);
