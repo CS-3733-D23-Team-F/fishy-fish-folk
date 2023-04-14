@@ -20,9 +20,7 @@ public class LocationDAO implements IDAO<Location> {
   }
 
   @Override
-  public void populateLocalTable() {
-
-  }
+  public void populateLocalTable() {}
 
   @Override
   public boolean insertEntry(Location entry) {
@@ -50,9 +48,7 @@ public class LocationDAO implements IDAO<Location> {
   }
 
   @Override
-  public void undoChange() {
-
-  }
+  public void undoChange() {}
 
   @Override
   public boolean updateDatabase() {

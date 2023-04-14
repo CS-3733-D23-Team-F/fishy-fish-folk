@@ -22,9 +22,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
   }
 
   @Override
-  public void populateLocalTable() {
-
-  }
+  public void populateLocalTable() {}
 
   @Override
   public boolean insertEntry(SupplyRequest entry) {
@@ -52,9 +50,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
   }
 
   @Override
-  public void undoChange() {
-
-  }
+  public void undoChange() {}
 
   @Override
   public boolean updateDatabase() {

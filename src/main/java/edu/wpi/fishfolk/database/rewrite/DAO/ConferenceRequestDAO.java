@@ -20,9 +20,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
   }
 
   @Override
-  public void populateLocalTable() {
-
-  }
+  public void populateLocalTable() {}
 
   @Override
   public boolean insertEntry(ConferenceRequest entry) {
@@ -50,9 +48,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
   }
 
   @Override
-  public void undoChange() {
-
-  }
+  public void undoChange() {}
 
   @Override
   public boolean updateDatabase() {

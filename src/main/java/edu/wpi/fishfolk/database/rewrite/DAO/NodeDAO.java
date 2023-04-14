@@ -5,8 +5,6 @@ import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
-import javafx.geometry.Point2D;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
+import javafx.geometry.Point2D;
 
 public class NodeDAO implements IDAO<Node> {
 

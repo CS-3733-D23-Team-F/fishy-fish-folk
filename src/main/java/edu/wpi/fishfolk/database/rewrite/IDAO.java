@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 public interface IDAO<T> {
 
-  /**
-   * Take all entries from a PostgreSQL database and populate a local table.
-   */
+  /** Take all entries from a PostgreSQL database and populate a local table. */
   void populateLocalTable();
 
   /**

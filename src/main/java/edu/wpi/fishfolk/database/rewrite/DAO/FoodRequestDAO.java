@@ -23,9 +23,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
   }
 
   @Override
-  public void populateLocalTable() {
-
-  }
+  public void populateLocalTable() {}
 
   @Override
   public boolean insertEntry(FoodRequest entry) {
@@ -53,9 +51,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
   }
 
   @Override
-  public void undoChange() {
-
-  }
+  public void undoChange() {}
 
   @Override
   public boolean updateDatabase() {

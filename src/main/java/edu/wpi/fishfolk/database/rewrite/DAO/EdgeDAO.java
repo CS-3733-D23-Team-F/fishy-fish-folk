@@ -20,9 +20,7 @@ public class EdgeDAO implements IDAO<Edge> {
   }
 
   @Override
-  public void populateLocalTable() {
-
-  }
+  public void populateLocalTable() {}
 
   @Override
   public boolean insertEntry(Edge entry) {
@@ -50,9 +48,7 @@ public class EdgeDAO implements IDAO<Edge> {
   }
 
   @Override
-  public void undoChange() {
-
-  }
+  public void undoChange() {}
 
   @Override
   public boolean updateDatabase() {

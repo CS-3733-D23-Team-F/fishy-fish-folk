@@ -20,9 +20,7 @@ public class MoveDAO implements IDAO<Move> {
   }
 
   @Override
-  public void populateLocalTable() {
-
-  }
+  public void populateLocalTable() {}
 
   @Override
   public boolean insertEntry(Move entry) {
@@ -50,9 +48,7 @@ public class MoveDAO implements IDAO<Move> {
   }
 
   @Override
-  public void undoChange() {
-
-  }
+  public void undoChange() {}
 
   @Override
   public boolean updateDatabase() {
