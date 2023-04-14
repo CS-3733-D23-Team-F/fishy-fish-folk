@@ -12,7 +12,7 @@ public class Fdb {
 
   // Hospital Map Tables
   public final NodeDAO nodeTable;
-  private final LocationDAO locationTable;
+  public final LocationDAO locationTable;
   private final MoveDAO moveTable;
   private final EdgeDAO edgeTable;
 
@@ -33,7 +33,7 @@ public class Fdb {
 
     // Hospital Map Tables
     this.nodeTable = new NodeDAO(dbConnection);
-    this.locationTable = new LocationDAO();
+    this.locationTable = new LocationDAO(dbConnection);
     this.moveTable = new MoveDAO();
     this.edgeTable = new EdgeDAO();
 
@@ -46,6 +46,14 @@ public class Fdb {
 
     // Login & User Accounts Tables
     this.userAccountTable = new UserAccountDAO();
+
+    Runtime.getRuntime()
+        .addShutdownHook(
+            new Thread(
+                () -> {
+                  nodeTable.updateDatabase(true);
+                  locationTable.updateDatabase(true);
+                }));
   }
 
   /**

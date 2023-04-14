@@ -77,7 +77,11 @@ public class NodeDAO implements IDAO<Node> {
       dataEditQueue.setEditCount(0);
 
       // Update database in separate thread
-      Thread removeThread = new Thread(this::updateDatabase);
+      Thread removeThread =
+          new Thread(
+              () -> {
+                updateDatabase(false);
+              });
       removeThread.start();
     }
 
@@ -101,7 +105,11 @@ public class NodeDAO implements IDAO<Node> {
       dataEditQueue.setEditCount(0);
 
       // Update database in separate thread
-      Thread removeThread = new Thread(this::updateDatabase);
+      Thread removeThread =
+          new Thread(
+              () -> {
+                updateDatabase(false);
+              });
       removeThread.start();
     }
 
@@ -112,7 +120,26 @@ public class NodeDAO implements IDAO<Node> {
   }
 
   @Override
-  public boolean removeEntry(Node entry) {
+  public boolean removeEntry(Object identifier) {
+
+    // Check if input identifier is correct type
+    if (!(identifier instanceof Integer)) {
+      System.out.println(
+          "[NodeDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
+      return false;
+    }
+
+    Integer nodeID = (Integer) identifier;
+
+    // Check if local table contains identifier
+    if (!tableMap.containsKey(nodeID)) {
+      System.out.println(
+          "[NodeDAO.removeEntry]: Identifier " + nodeID + " does not exist in local table.");
+      return false;
+    }
+
+    // Get entry from local table
+    Node entry = tableMap.get(nodeID);
 
     // Mark entry Node status as NEW
     entry.setStatus(EntryStatus.NEW);
@@ -124,7 +151,11 @@ public class NodeDAO implements IDAO<Node> {
       dataEditQueue.setEditCount(0);
 
       // Update database in separate thread
-      Thread removeThread = new Thread(this::updateDatabase);
+      Thread removeThread =
+          new Thread(
+              () -> {
+                updateDatabase(false);
+              });
       removeThread.start();
     }
 
@@ -135,20 +166,25 @@ public class NodeDAO implements IDAO<Node> {
   }
 
   @Override
-  public Node getEntry(String identifier) {
+  public Node getEntry(Object identifier) {
 
-    try {
-
-      // Parse indentifier to integer
-      int nodeID = Integer.parseInt(identifier);
-
-      // Return Node object from local table
-      return tableMap.get(nodeID);
-
-    } catch (NumberFormatException e) {
-      System.out.println(e.getMessage());
+    // Check if input identifier is correct type
+    if (!(identifier instanceof Integer)) {
+      System.out.println("[NodeDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
       return null;
     }
+
+    Integer nodeID = (Integer) identifier;
+
+    // Check if local table contains identifier
+    if (!tableMap.containsKey(nodeID)) {
+      System.out.println(
+          "[NodeDAO.getEntry]: Identifier " + nodeID + " does not exist in local table.");
+      return null;
+    }
+
+    // Return Node object from local table
+    return tableMap.get(nodeID);
   }
 
   @Override
@@ -173,7 +209,7 @@ public class NodeDAO implements IDAO<Node> {
       case INSERT:
 
         // REMOVE the entry if it was an INSERT
-        removeEntry(dataEdit.getNewEntry());
+        removeEntry(dataEdit.getNewEntry().getNodeID());
         break;
 
       case UPDATE:
@@ -194,7 +230,7 @@ public class NodeDAO implements IDAO<Node> {
   }
 
   @Override
-  public boolean updateDatabase() {
+  public boolean updateDatabase(boolean updateAll) {
 
     try {
 
@@ -244,7 +280,10 @@ public class NodeDAO implements IDAO<Node> {
 
       // For each data edit in the data edit stack, perform the indicated update to the db table
       // while (dataEditQueue.hasNext()) {
-      for (int i = 0; (i < dataEditQueue.getBatchLimit()) && dataEditQueue.hasNext(); i++) {
+      for (int i = 0; (i < dataEditQueue.getBatchLimit()) || updateAll; i++) {
+
+        // If there is no data edit to use, break for loop
+        if (!dataEditQueue.hasNext()) break;
 
         // Get the next data edit in the queue
         DataEdit<Node> dataEdit = dataEditQueue.next();
@@ -292,7 +331,6 @@ public class NodeDAO implements IDAO<Node> {
 
             // Execute the query
             preparedRemove.executeUpdate();
-
             break;
         }
 
@@ -301,9 +339,20 @@ public class NodeDAO implements IDAO<Node> {
         tableMap.put(dataEdit.getNewEntry().getNodeID(), dataEdit.getNewEntry());
       }
     } catch (SQLException e) {
+
+      // Print active thread error (DEBUG)
+      System.out.println(
+          "[NodeDAO.updateDatabase]: Error updating database in "
+              + Thread.currentThread().getName());
+
       System.out.println(e.getMessage());
       return false;
     }
+
+    // Print active thread end (DEBUG)
+    System.out.println(
+        "[NodeDAO.updateDatabase]: Finished updating database in "
+            + Thread.currentThread().getName());
 
     // On success
     return true;

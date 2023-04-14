@@ -22,8 +22,20 @@ public class Main {
 
     fdb.updateEntry(new Node(9997, new Point2D(1999, 1999), "carpet", "bingus"));
 
-    fdb.removeEntry(new Node(9998, new Point2D(300, 400), "tile", "bingus"));
-
+    fdb.removeEntry(9998);
+    //
     // fdb.nodeTable.updateDatabase();
+
+    //    fdb.insertEntry(new Location(".Loooong name", "Short name", NodeType.INFO));
+    //    fdb.insertEntry(new Location(".Bingus Tower III", "Bingus", NodeType.DEPT));
+    //    fdb.insertEntry(new Location(".Joseph Biden", "Joe", NodeType.INFO));
+    //
+    //    fdb.updateEntry(new Location(".Bingus Tower III", "BINGUSSSSSSSS", NodeType.DEPT));
+    //    fdb.locationTable.undoChange();
+    //    fdb.locationTable.undoChange();
+    //
+    //    fdb.updateEntry(new Location(".Loooong name", "This name is SHORT", NodeType.INFO));
+    //
+    //    fdb.removeEntry(new Location(".Bingus Tower III", "Bingus", NodeType.DEPT));
   }
 }

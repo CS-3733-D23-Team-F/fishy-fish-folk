@@ -33,12 +33,12 @@ public class MoveDAO implements IDAO<Move> {
   }
 
   @Override
-  public boolean removeEntry(Move entry) {
+  public boolean removeEntry(Object identifier) {
     return false;
   }
 
   @Override
-  public Move getEntry(String identifier) {
+  public Move getEntry(Object identifier) {
     return null;
   }
 
@@ -51,7 +51,7 @@ public class MoveDAO implements IDAO<Move> {
   public void undoChange() {}
 
   @Override
-  public boolean updateDatabase() {
+  public boolean updateDatabase(boolean updateAll) {
     return false;
   }
 }

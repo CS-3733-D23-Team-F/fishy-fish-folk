@@ -33,12 +33,12 @@ public class UserAccountDAO implements IDAO<UserAccount> {
   }
 
   @Override
-  public boolean removeEntry(UserAccount entry) {
+  public boolean removeEntry(Object identifier) {
     return false;
   }
 
   @Override
-  public UserAccount getEntry(String identifier) {
+  public UserAccount getEntry(Object identifier) {
     return null;
   }
 
@@ -51,7 +51,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
   public void undoChange() {}
 
   @Override
-  public boolean updateDatabase() {
+  public boolean updateDatabase(boolean updateAll) {
     return false;
   }
 }

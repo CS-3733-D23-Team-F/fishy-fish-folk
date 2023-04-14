@@ -35,12 +35,12 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
   }
 
   @Override
-  public boolean removeEntry(SupplyRequest entry) {
+  public boolean removeEntry(Object identifier) {
     return false;
   }
 
   @Override
-  public SupplyRequest getEntry(String identifier) {
+  public SupplyRequest getEntry(Object identifier) {
     return null;
   }
 
@@ -53,7 +53,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
   public void undoChange() {}
 
   @Override
-  public boolean updateDatabase() {
+  public boolean updateDatabase(boolean updateAll) {
     return false;
   }
 }

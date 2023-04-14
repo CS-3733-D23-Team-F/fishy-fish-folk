@@ -33,12 +33,12 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
   }
 
   @Override
-  public boolean removeEntry(ConferenceRequest entry) {
+  public boolean removeEntry(Object identifier) {
     return false;
   }
 
   @Override
-  public ConferenceRequest getEntry(String identifier) {
+  public ConferenceRequest getEntry(Object identifier) {
     return null;
   }
 
@@ -51,7 +51,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
   public void undoChange() {}
 
   @Override
-  public boolean updateDatabase() {
+  public boolean updateDatabase(boolean updateAll) {
     return false;
   }
 }

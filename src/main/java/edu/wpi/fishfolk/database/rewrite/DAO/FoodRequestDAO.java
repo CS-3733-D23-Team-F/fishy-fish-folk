@@ -36,12 +36,12 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
   }
 
   @Override
-  public boolean removeEntry(FoodRequest entry) {
+  public boolean removeEntry(Object identifier) {
     return false;
   }
 
   @Override
-  public FoodRequest getEntry(String identifier) {
+  public FoodRequest getEntry(Object identifier) {
     return null;
   }
 
@@ -54,7 +54,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
   public void undoChange() {}
 
   @Override
-  public boolean updateDatabase() {
+  public boolean updateDatabase(boolean updateAll) {
     return false;
   }
 }

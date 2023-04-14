@@ -36,12 +36,12 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
   }
 
   @Override
-  public boolean removeEntry(FlowerRequest entry) {
+  public boolean removeEntry(Object identifier) {
     return false;
   }
 
   @Override
-  public FlowerRequest getEntry(String identifier) {
+  public FlowerRequest getEntry(Object identifier) {
     return null;
   }
 
@@ -54,7 +54,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
   public void undoChange() {}
 
   @Override
-  public boolean updateDatabase() {
+  public boolean updateDatabase(boolean updateAll) {
     return false;
   }
 }

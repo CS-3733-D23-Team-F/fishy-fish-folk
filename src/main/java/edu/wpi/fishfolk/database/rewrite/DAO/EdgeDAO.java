@@ -33,12 +33,12 @@ public class EdgeDAO implements IDAO<Edge> {
   }
 
   @Override
-  public boolean removeEntry(Edge entry) {
+  public boolean removeEntry(Object identifier) {
     return false;
   }
 
   @Override
-  public Edge getEntry(String identifier) {
+  public Edge getEntry(Object identifier) {
     return null;
   }
 
@@ -51,7 +51,7 @@ public class EdgeDAO implements IDAO<Edge> {
   public void undoChange() {}
 
   @Override
-  public boolean updateDatabase() {
+  public boolean updateDatabase(boolean updateAll) {
     return false;
   }
 }

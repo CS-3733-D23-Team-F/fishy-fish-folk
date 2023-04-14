@@ -16,7 +16,7 @@ public interface IDAO<T> {
   boolean insertEntry(T entry);
 
   /**
-   * Update an entry in a local table.
+   * Update an entry in a local table. Assure the node has a valid local ID.
    *
    * @param entry Entry to update
    * @return True on successful update, false otherwise
@@ -24,20 +24,21 @@ public interface IDAO<T> {
   boolean updateEntry(T entry);
 
   /**
-   * Remove an entry from a local table.
+   * Remove an entry from a local table. Assure the identifier is valid (method will otherwise
+   * return false)
    *
-   * @param entry Entry to remove
+   * @param identifier The entry's unique identifier (i.e. ID number)
    * @return True on successful removal, false otherwise
    */
-  boolean removeEntry(T entry);
+  boolean removeEntry(Object identifier);
 
   /**
    * Retrieve an entry from a local table.
    *
-   * @param identifier The entry's identifier (i.e. ID number)
+   * @param identifier The entry's unique identifier (i.e. ID number)
    * @return The retrieved entry, null on failure
    */
-  T getEntry(String identifier);
+  T getEntry(Object identifier);
 
   /**
    * Retrieve a list of all entries in a local table.
@@ -52,7 +53,8 @@ public interface IDAO<T> {
   /**
    * Updates PostgreSQL database to reflect staged edits.
    *
+   * @param updateAll True if ignoring batch limit, false if abiding
    * @return True on successful update, false otherwise
    */
-  boolean updateDatabase();
+  boolean updateDatabase(boolean updateAll);
 }

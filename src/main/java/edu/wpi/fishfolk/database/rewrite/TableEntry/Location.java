@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
+import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,7 @@ public class Location {
   @Getter @Setter private String longName;
   @Getter @Setter private String shortName;
   @Getter @Setter private NodeType nodeType;
+  @Getter @Setter private EntryStatus status;
 
   /**
    * Table entry type: Location
@@ -21,5 +23,6 @@ public class Location {
     this.longName = longName;
     this.shortName = shortName;
     this.nodeType = nodeType;
+    this.status = EntryStatus.OLD;
   }
 }

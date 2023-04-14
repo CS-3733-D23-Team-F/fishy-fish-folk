@@ -36,12 +36,12 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
   }
 
   @Override
-  public boolean removeEntry(FurnitureRequest entry) {
+  public boolean removeEntry(Object identifier) {
     return false;
   }
 
   @Override
-  public FurnitureRequest getEntry(String identifier) {
+  public FurnitureRequest getEntry(Object identifier) {
     return null;
   }
 
@@ -54,7 +54,7 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
   public void undoChange() {}
 
   @Override
-  public boolean updateDatabase() {
+  public boolean updateDatabase(boolean updateAll) {
     return false;
   }
 }
