@@ -70,8 +70,16 @@ public class NodeDAO implements IDAO<Node> {
     // Mark entry Node status as NEW
     entry.setStatus(EntryStatus.NEW);
 
-    // Push an INSERT to the data edit stack
-    dataEditQueue.add(new DataEdit<>(entry, DataEditType.INSERT));
+    // Push an INSERT to the data edit stack, update the db if the batch limit has been reached
+    if (dataEditQueue.add(new DataEdit<>(entry, DataEditType.INSERT), true)) {
+
+      // Reset edit count
+      dataEditQueue.setEditCount(0);
+
+      // Update database in separate thread
+      Thread removeThread = new Thread(this::updateDatabase);
+      removeThread.start();
+    }
 
     // Put entry Node in local table
     tableMap.put(entry.getNodeID(), entry);
@@ -82,11 +90,20 @@ public class NodeDAO implements IDAO<Node> {
   @Override
   public boolean updateEntry(Node entry) {
 
-    // Mark entry Node status as MODIFIED
-    entry.setStatus(EntryStatus.MODIFIED);
+    // Mark entry Node status as NEW
+    entry.setStatus(EntryStatus.NEW);
 
-    // Push an UPDATE to the data edit stack
-    dataEditQueue.add(new DataEdit<>(tableMap.get(entry.getNodeID()), entry, DataEditType.UPDATE));
+    // Push an UPDATE to the data edit stack, update the db if the batch limit has been reached
+    if (dataEditQueue.add(
+        new DataEdit<>(tableMap.get(entry.getNodeID()), entry, DataEditType.UPDATE), true)) {
+
+      // Reset edit count
+      dataEditQueue.setEditCount(0);
+
+      // Update database in separate thread
+      Thread removeThread = new Thread(this::updateDatabase);
+      removeThread.start();
+    }
 
     // Update entry Node in local table
     tableMap.put(entry.getNodeID(), entry);
@@ -97,11 +114,19 @@ public class NodeDAO implements IDAO<Node> {
   @Override
   public boolean removeEntry(Node entry) {
 
-    // Mark entry Node status as MODIFIED
-    entry.setStatus(EntryStatus.MODIFIED);
+    // Mark entry Node status as NEW
+    entry.setStatus(EntryStatus.NEW);
 
-    // Push a REMOVE to the data edit stack
-    dataEditQueue.add(new DataEdit<>(entry, DataEditType.REMOVE));
+    // Push a REMOVE to the data edit stack, update the db if the batch limit has been reached
+    if (dataEditQueue.add(new DataEdit<>(entry, DataEditType.REMOVE), true)) {
+
+      // Reset edit count
+      dataEditQueue.setEditCount(0);
+
+      // Update database in separate thread
+      Thread removeThread = new Thread(this::updateDatabase);
+      removeThread.start();
+    }
 
     // Remove entry Node from local table
     tableMap.remove(entry.getNodeID(), entry);
@@ -111,6 +136,7 @@ public class NodeDAO implements IDAO<Node> {
 
   @Override
   public Node getEntry(String identifier) {
+
     try {
 
       // Parse indentifier to integer
@@ -172,6 +198,9 @@ public class NodeDAO implements IDAO<Node> {
 
     try {
 
+      System.out.println(
+          "[NodeDAO.updateDatabase]: Updating database in " + Thread.currentThread().getName());
+
       // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
       String insert =
           "INSERT INTO "
@@ -213,9 +242,16 @@ public class NodeDAO implements IDAO<Node> {
       PreparedStatement preparedRemove = dbConnection.prepareStatement(remove);
 
       // For each data edit in the data edit stack, perform the indicated update to the db table
-      while (dataEditQueue.hasNext()) {
+      // while (dataEditQueue.hasNext()) {
+      for (int i = 0; (i < dataEditQueue.getBatchLimit()) && dataEditQueue.hasNext(); i++) {
 
         DataEdit<Node> dataEdit = dataEditQueue.next();
+
+        System.out.println(
+            "[NodeDAO.updateDatabase]: "
+                + dataEdit.getType()
+                + " Node "
+                + dataEdit.getNewEntry().getNodeID());
 
         switch (dataEdit.getType()) {
           case INSERT:
@@ -255,6 +291,10 @@ public class NodeDAO implements IDAO<Node> {
 
             break;
         }
+
+        // Mark Node in local table as OLD
+        dataEdit.getNewEntry().setStatus(EntryStatus.OLD);
+        tableMap.put(dataEdit.getNewEntry().getNodeID(), dataEdit.getNewEntry());
       }
     } catch (SQLException e) {
       System.out.println(e.getMessage());

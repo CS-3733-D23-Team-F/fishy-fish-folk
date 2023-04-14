@@ -26,6 +26,6 @@ public class Node {
     this.point = point;
     this.floor = floor;
     this.building = building;
-    this.status = EntryStatus.UNCHANGED;
+    this.status = EntryStatus.OLD;
   }
 }
