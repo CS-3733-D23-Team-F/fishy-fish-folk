@@ -14,6 +14,7 @@ public enum Screen {
   VIEW_FURNITURE_ORDERS("views/ViewFurnitureOrders.fxml"),
   PATHFINDING("views/Pathfinding.fxml"),
 
+  MOVE_EDITOR("views/MoveEditor.fxml"),
   OLD_MAP_EDITOR("views/OldMapEditor.fxml"),
   TEMPLATE("views/Template.fxml");
   private final String filename;
