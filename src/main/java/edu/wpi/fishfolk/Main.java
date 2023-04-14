@@ -12,9 +12,9 @@ public class Main {
 
     Fdb fdb = new Fdb();
 
-    fdb.nodeTable.insertEntry(new Node(9997, new Point2D(100, 200), "carpet", "bingus"));
-    fdb.nodeTable.insertEntry(new Node(9998, new Point2D(300, 400), "tile", "bingus"));
-    fdb.nodeTable.insertEntry(new Node(9999, new Point2D(500, 600), "uhh, dirt?", "bingus"));
+    fdb.insertEntry(new Node(9997, new Point2D(100, 200), "carpet", "bingus"));
+    fdb.insertEntry(new Node(9998, new Point2D(300, 400), "tile", "bingus"));
+    fdb.insertEntry(new Node(9999, new Point2D(500, 600), "uhh, dirt?", "bingus"));
 
     fdb.updateEntry(new Node(9998, new Point2D(777, 777), "tile", "bingus"));
     fdb.nodeTable.undoChange();
