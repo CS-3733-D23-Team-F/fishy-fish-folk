@@ -100,20 +100,24 @@ public class NodeDAO implements IDAO<Node> {
     return allNodes;
   }
 
-  public void undoChange() {
+  @Override
+  public void undoChanges(int amount) {
 
-    DataEdit<Node> dataEdit = dataEdits.pop();
+    for (int i = 0; i < amount; i++) {
 
-    switch (dataEdit.getType()) {
-      case INSERT:
-        removeEntry(dataEdit.getNewEntry());
-        break;
-      case UPDATE:
-        updateEntry(dataEdit.getOldEntry());
-        break;
-      case REMOVE:
-        insertEntry(dataEdit.getNewEntry());
-        break;
+      DataEdit<Node> dataEdit = dataEdits.pop();
+
+      switch (dataEdit.getType()) {
+        case INSERT:
+          removeEntry(dataEdit.getNewEntry());
+          break;
+        case UPDATE:
+          updateEntry(dataEdit.getOldEntry());
+          break;
+        case REMOVE:
+          insertEntry(dataEdit.getNewEntry());
+          break;
+      }
     }
   }
 

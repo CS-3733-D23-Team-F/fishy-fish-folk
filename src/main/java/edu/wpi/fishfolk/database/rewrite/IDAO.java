@@ -44,6 +44,12 @@ public interface IDAO<T> {
   ArrayList<T> getAllEntries();
 
   /**
+   * Undo changes to a local table.
+   * @param amount Amount of changes to undo at once
+   */
+  void undoChanges(int amount);
+
+  /**
    * Updates PostgreSQL database to reflect staged edits.
    *
    * @return True on successful update, false otherwise
