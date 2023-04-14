@@ -32,7 +32,7 @@ public class Fdb {
     this.dbConnection = connect("teamfdb", "teamf", "teamf60");
 
     // Hospital Map Tables
-    this.nodeTable = new NodeDAO();
+    this.nodeTable = new NodeDAO(dbConnection);
     this.locationTable = new LocationDAO();
     this.moveTable = new MoveDAO();
     this.edgeTable = new EdgeDAO();

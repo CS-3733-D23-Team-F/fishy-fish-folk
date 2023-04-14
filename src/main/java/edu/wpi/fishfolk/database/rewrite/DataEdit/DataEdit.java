@@ -4,7 +4,8 @@ import lombok.Getter;
 
 public class DataEdit<T> {
 
-  @Getter private final T entry;
+  @Getter private final T oldEntry;
+  @Getter private final T newEntry;
   //  @Getter private final String header;
   //  @Getter private final Object value;
   @Getter private final DataEditType type;
@@ -26,11 +27,27 @@ public class DataEdit<T> {
   /**
    * Representation of an edit of a single attribute or entire entry in a table.
    *
-   * @param entry Table entry receiving an edit (can be new)
+   * @param oldEntry Table entry receiving an edit
+   * @param newEntry Table entry to perform the edit with
    * @param type Type of data edit (insert, update, remove)
    */
-  public DataEdit(T entry, DataEditType type) {
-    this.entry = entry;
+  public DataEdit(T oldEntry, T newEntry, DataEditType type) {
+    this.oldEntry = oldEntry;
+    this.newEntry = newEntry;
+    //    this.header = null;
+    //    this.value = null;
+    this.type = type;
+  }
+
+  /**
+   * Representation of an edit of a single attribute or entire entry in a table.
+   *
+   * @param newEntry Table entry to perform the edit with
+   * @param type Type of data edit (insert, update, remove)
+   */
+  public DataEdit(T newEntry, DataEditType type) {
+    this.oldEntry = null;
+    this.newEntry = newEntry;
     //    this.header = null;
     //    this.value = null;
     this.type = type;
