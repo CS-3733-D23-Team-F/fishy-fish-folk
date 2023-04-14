@@ -34,15 +34,18 @@ public class NodeDAO implements IDAO<Node> {
   }
 
   public void populateLocalTable() {
+
     try {
 
+      // Prepare SQL query to select all nodes from the db table
       String getAll = "SELECT * FROM " + dbConnection.getSchema() + "." + this.tableName + ";";
-
       PreparedStatement preparedGetAll = dbConnection.prepareStatement(getAll);
 
+      // Execute the query
       preparedGetAll.execute();
       ResultSet results = preparedGetAll.getResultSet();
 
+      // For each Node in the results, create a new Node object and put it in the local table
       while (results.next()) {
         Node node =
             new Node(
@@ -163,6 +166,7 @@ public class NodeDAO implements IDAO<Node> {
 
     try {
 
+      // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
       String insert =
           "INSERT INTO "
               + dbConnection.getSchema()
@@ -202,19 +206,26 @@ public class NodeDAO implements IDAO<Node> {
       PreparedStatement preparedUpdate = dbConnection.prepareStatement(update);
       PreparedStatement preparedRemove = dbConnection.prepareStatement(remove);
 
+      // For each data edit in the data edit stack, perform the indicated update to the db table
       for (DataEdit<Node> dataEdit : dataEdits) {
+
         switch (dataEdit.getType()) {
           case INSERT:
+
+            // Put the new Node's data into the prepared query
             preparedInsert.setInt(1, dataEdit.getNewEntry().getNodeID());
             preparedInsert.setDouble(2, dataEdit.getNewEntry().getPoint().getX());
             preparedInsert.setDouble(3, dataEdit.getNewEntry().getPoint().getY());
             preparedInsert.setString(4, dataEdit.getNewEntry().getFloor());
             preparedInsert.setString(5, dataEdit.getNewEntry().getBuilding());
 
+            // Execute the query
             preparedInsert.executeUpdate();
-
             break;
+
           case UPDATE:
+
+            // Put the new Node's data into the prepared query
             preparedUpdate.setString(1, String.valueOf(dataEdit.getNewEntry().getNodeID()));
             preparedUpdate.setDouble(2, dataEdit.getNewEntry().getPoint().getX());
             preparedUpdate.setDouble(3, dataEdit.getNewEntry().getPoint().getY());
@@ -222,18 +233,23 @@ public class NodeDAO implements IDAO<Node> {
             preparedUpdate.setString(5, dataEdit.getNewEntry().getBuilding());
             preparedUpdate.setString(6, String.valueOf(dataEdit.getNewEntry().getNodeID()));
 
+            // Execute the query
             preparedUpdate.executeUpdate();
-
             break;
+
           case REMOVE:
+
+            // Put the new Node's data into the prepared query
             preparedRemove.setString(1, String.valueOf(dataEdit.getNewEntry().getNodeID()));
 
+            // Execute the query
             preparedRemove.executeUpdate();
 
             break;
         }
       }
 
+      // Empty the data edits stack
       dataEdits.clear();
 
     } catch (SQLException e) {
