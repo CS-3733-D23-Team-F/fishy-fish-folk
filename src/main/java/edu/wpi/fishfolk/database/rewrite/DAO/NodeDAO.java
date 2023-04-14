@@ -22,8 +22,8 @@ public class NodeDAO implements IDAO<Node> {
   private final String tableName;
   private final ArrayList<String> headers;
 
-  private HashMap<Integer, Node> tableMap;
-  private Stack<DataEdit<Node>> dataEdits;
+  private final HashMap<Integer, Node> tableMap;
+  private final Stack<DataEdit<Node>> dataEdits;
 
   /** DAO for Node table in PostgreSQL database. */
   public NodeDAO(Connection dbConnection) {
