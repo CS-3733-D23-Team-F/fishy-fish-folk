@@ -2,6 +2,7 @@ package edu.wpi.fishfolk.database.rewrite.DAO;
 
 import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEditType;
+import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
@@ -12,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
 import javafx.geometry.Point2D;
 
 public class NodeDAO implements IDAO<Node> {
@@ -23,7 +23,7 @@ public class NodeDAO implements IDAO<Node> {
   private final ArrayList<String> headers;
 
   private final HashMap<Integer, Node> tableMap;
-  private final Stack<DataEdit<Node>> dataEdits;
+  private final DataEditQueue<Node> dataEditQueue;
 
   /** DAO for Node table in PostgreSQL database. */
   public NodeDAO(Connection dbConnection) {
@@ -31,7 +31,7 @@ public class NodeDAO implements IDAO<Node> {
     this.tableName = "micronode";
     this.headers = new ArrayList<>(List.of("id", "x", "y", "floor", "building"));
     this.tableMap = new HashMap<>();
-    this.dataEdits = new Stack<>();
+    this.dataEditQueue = new DataEditQueue<>();
 
     populateLocalTable();
   }
@@ -71,7 +71,7 @@ public class NodeDAO implements IDAO<Node> {
     entry.setStatus(EntryStatus.NEW);
 
     // Push an INSERT to the data edit stack
-    dataEdits.push(new DataEdit<>(entry, DataEditType.INSERT));
+    dataEditQueue.add(new DataEdit<>(entry, DataEditType.INSERT));
 
     // Put entry Node in local table
     tableMap.put(entry.getNodeID(), entry);
@@ -86,7 +86,7 @@ public class NodeDAO implements IDAO<Node> {
     entry.setStatus(EntryStatus.MODIFIED);
 
     // Push an UPDATE to the data edit stack
-    dataEdits.push(new DataEdit<>(tableMap.get(entry.getNodeID()), entry, DataEditType.UPDATE));
+    dataEditQueue.add(new DataEdit<>(tableMap.get(entry.getNodeID()), entry, DataEditType.UPDATE));
 
     // Update entry Node in local table
     tableMap.put(entry.getNodeID(), entry);
@@ -101,7 +101,7 @@ public class NodeDAO implements IDAO<Node> {
     entry.setStatus(EntryStatus.MODIFIED);
 
     // Push a REMOVE to the data edit stack
-    dataEdits.add(new DataEdit<>(entry, DataEditType.REMOVE));
+    dataEditQueue.add(new DataEdit<>(entry, DataEditType.REMOVE));
 
     // Remove entry Node from local table
     tableMap.remove(entry.getNodeID(), entry);
@@ -139,8 +139,8 @@ public class NodeDAO implements IDAO<Node> {
 
   public void undoChange() {
 
-    // Peek the top item of the data edit stack
-    DataEdit<Node> dataEdit = dataEdits.peek();
+    // Pop the top item of the data edit stack
+    DataEdit<Node> dataEdit = dataEditQueue.popRecent();
 
     // Change behavior based on its data edit type
     switch (dataEdit.getType()) {
@@ -162,6 +162,9 @@ public class NodeDAO implements IDAO<Node> {
         insertEntry(dataEdit.getNewEntry());
         break;
     }
+
+    // Pop the record of the undo from the data edits stack
+    dataEditQueue.removeRecent();
   }
 
   @Override
@@ -210,7 +213,9 @@ public class NodeDAO implements IDAO<Node> {
       PreparedStatement preparedRemove = dbConnection.prepareStatement(remove);
 
       // For each data edit in the data edit stack, perform the indicated update to the db table
-      for (DataEdit<Node> dataEdit : dataEdits) {
+      while (dataEditQueue.hasNext()) {
+
+        DataEdit<Node> dataEdit = dataEditQueue.next();
 
         switch (dataEdit.getType()) {
           case INSERT:
@@ -251,10 +256,6 @@ public class NodeDAO implements IDAO<Node> {
             break;
         }
       }
-
-      // Empty the data edits stack
-      dataEdits.clear();
-
     } catch (SQLException e) {
       System.out.println(e.getMessage());
       return false;

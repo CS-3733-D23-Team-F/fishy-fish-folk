@@ -18,10 +18,11 @@ public class Main {
 
     fdb.updateEntry(new Node(9998, new Point2D(777, 777), "tile", "bingus"));
     fdb.nodeTable.undoChange();
+    fdb.nodeTable.undoChange();
 
     fdb.updateEntry(new Node(9997, new Point2D(1999, 1999), "carpet", "bingus"));
 
-    fdb.removeEntry(new Node(9999, new Point2D(500, 600), "uhh, dirt?", "bingus"));
+    fdb.removeEntry(new Node(9998, new Point2D(300, 400), "tile", "bingus"));
 
     fdb.nodeTable.updateDatabase();
   }
