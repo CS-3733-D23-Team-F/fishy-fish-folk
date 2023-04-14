@@ -47,6 +47,8 @@ public class HomeController {
   @FXML MFXButton serviceButton;
   @FXML MFXButton conferenceButton;
 
+  @FXML MFXButton loginBtn;
+
   @FXML
   public void initialize() {
     conferenceButton.setDisable(true);
@@ -58,6 +60,7 @@ public class HomeController {
     foodOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     supplyOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
     furnitureOrder.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
+    loginBtn.setOnMouseClicked(event -> Navigation.navigate(Screen.LOGIN));
 
     viewOrderButton.setOnMouseClicked(
         event -> {

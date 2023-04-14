@@ -5,11 +5,11 @@ import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import java.util.ArrayList;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
@@ -34,9 +34,8 @@ public class LoginController extends AbsController {
   @FXML MFXButton loginBtn;
   @FXML MFXTextField loginIDField;
   @FXML MFXPasswordField loginPassField;
-  @FXML MFXTextField newAccountIDField;
-  @FXML MFXPasswordField newAccountPassField;
-  @FXML MFXButton newAccountBtn;
+
+  @FXML Label errorBox;
 
   @FXML
   private void initialize() {
@@ -50,7 +49,7 @@ public class LoginController extends AbsController {
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     exitButton.setOnMouseClicked(event -> System.exit(0));
     loginBtn.setOnMouseClicked(loginHandler);
-    newAccountBtn.setOnMouseClicked(newAccountHandler);
+    errorBox.setText("");
 
     slider.setTranslateX(-400);
     sideBarClose.setVisible(false);
@@ -102,24 +101,9 @@ public class LoginController extends AbsController {
         System.out.println(loginID);
         System.out.print("Passhash: ");
         System.out.println(passhash);
-        // TODO: split off function to validate account info
-        ArrayList<String> row = dbConnection.userAccountTable.get("username", loginID);
-        if (row == null) {
-          System.out.println("Did not find an account with the given userID!");
-          return;
-        }
-        if (!row.get(2).equals(String.valueOf(passhash))) {
-          System.out.println("Password hash did not match the one stored in the table.");
-          return;
-        }
-        System.out.println("Username and password matched a known account.");
-      };
 
-  public final EventHandler<MouseEvent> newAccountHandler =
-      event -> {
-        String newAccountID = newAccountIDField.getText();
-        int newAccountPassHash = newAccountPassField.getText().hashCode();
-        // new account has no permissions/role (probably going to change this down the line)
-        // how to add new accounts to table? must check other examples
+        errorBox.setText("Incorrect password!");
+        errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
+        // TODO: split off function to validate account info
       };
 }
