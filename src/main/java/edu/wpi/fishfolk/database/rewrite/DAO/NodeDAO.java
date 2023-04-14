@@ -7,8 +7,10 @@ import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import javafx.geometry.Point2D;
 
 public class NodeDAO implements IDAO<Node> {
 
@@ -27,6 +29,33 @@ public class NodeDAO implements IDAO<Node> {
     this.headers = new ArrayList<>(List.of("id", "x", "y", "floor", "building"));
     this.tableMap = new HashMap<>();
     this.dataEdits = new Stack<>();
+
+    populateLocalTable();
+  }
+
+  public void populateLocalTable() {
+    try {
+
+      String getAll = "SELECT * FROM " + dbConnection.getSchema() + "." + this.tableName + ";";
+
+      PreparedStatement preparedGetAll = dbConnection.prepareStatement(getAll);
+
+      preparedGetAll.execute();
+      ResultSet results = preparedGetAll.getResultSet();
+
+      while (results.next()) {
+        Node node =
+            new Node(
+                Integer.parseInt(results.getString(headers.get(0))),
+                new Point2D(results.getDouble(headers.get(1)), results.getDouble(headers.get(2))),
+                results.getString(headers.get(3)),
+                results.getString(headers.get(4)));
+        tableMap.put(node.getNodeID(), node);
+      }
+
+    } catch (SQLException | NumberFormatException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Override
@@ -83,6 +112,7 @@ public class NodeDAO implements IDAO<Node> {
 
       // Return Node object from local table
       return tableMap.get(nodeID);
+
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
       return null;
@@ -93,6 +123,7 @@ public class NodeDAO implements IDAO<Node> {
   public ArrayList<Node> getAllEntries() {
     ArrayList<Node> allNodes = new ArrayList<>();
 
+    // Add all Nodes in local table to a list
     for (int nodeID : tableMap.keySet()) {
       allNodes.add(tableMap.get(nodeID));
     }
@@ -100,24 +131,30 @@ public class NodeDAO implements IDAO<Node> {
     return allNodes;
   }
 
-  @Override
-  public void undoChanges(int amount) {
+  public void undoChange() {
 
-    for (int i = 0; i < amount; i++) {
+    // Peek the top item of the data edit stack
+    DataEdit<Node> dataEdit = dataEdits.peek();
 
-      DataEdit<Node> dataEdit = dataEdits.pop();
+    // Change behavior based on its data edit type
+    switch (dataEdit.getType()) {
+      case INSERT:
 
-      switch (dataEdit.getType()) {
-        case INSERT:
-          removeEntry(dataEdit.getNewEntry());
-          break;
-        case UPDATE:
-          updateEntry(dataEdit.getOldEntry());
-          break;
-        case REMOVE:
-          insertEntry(dataEdit.getNewEntry());
-          break;
-      }
+        // REMOVE the entry if it was an INSERT
+        removeEntry(dataEdit.getNewEntry());
+        break;
+
+      case UPDATE:
+
+        // UPDATE the entry if it was an UPDATE
+        updateEntry(dataEdit.getOldEntry());
+        break;
+
+      case REMOVE:
+
+        // REMOVE the entry if it was an INSERT
+        insertEntry(dataEdit.getNewEntry());
+        break;
     }
   }
 
@@ -132,12 +169,6 @@ public class NodeDAO implements IDAO<Node> {
               + "."
               + this.tableName
               + " VALUES (?, ?, ?, ?, ?);";
-
-      /*
-      UPDATE table_name
-      SET column1 = value1, column2 = value2, ...
-      WHERE condition;
-       */
 
       String update =
           "UPDATE "
@@ -202,11 +233,14 @@ public class NodeDAO implements IDAO<Node> {
             break;
         }
       }
+
+      dataEdits.clear();
+
     } catch (SQLException e) {
       System.out.println(e.getMessage());
-      System.out.println(Arrays.toString(e.getStackTrace()));
+      return false;
     }
 
-    return false;
+    return true;
   }
 }

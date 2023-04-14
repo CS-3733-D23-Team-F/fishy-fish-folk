@@ -17,7 +17,7 @@ public class Main {
     fdb.nodeTable.insertEntry(new Node(9999, new Point2D(500, 600), "uhh, dirt?", "bingus"));
 
     fdb.updateEntry(new Node(9998, new Point2D(777, 777), "tile", "bingus"));
-    fdb.nodeTable.undoChanges(1);
+    fdb.nodeTable.undoChange();
 
     fdb.updateEntry(new Node(9997, new Point2D(1999, 1999), "carpet", "bingus"));
 
