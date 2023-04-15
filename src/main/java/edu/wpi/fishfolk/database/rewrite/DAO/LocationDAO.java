@@ -341,4 +341,14 @@ public class LocationDAO implements IDAO<Location> {
     // On success
     return true;
   }
+
+  @Override
+  public boolean importCSV(String filepath, boolean backup) {
+    return false;
+  }
+
+  @Override
+  public boolean exportCSV(String directory) {
+    return false;
+  }
 }

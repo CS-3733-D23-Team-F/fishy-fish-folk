@@ -50,5 +50,7 @@ public class Main {
     fdb.updateEntry(new Location(".Loooong name", "This name is SHORT", NodeType.INFO));
 
     fdb.removeEntry(".Bingus Tower III", TableEntryType.LOCATION);
+
+    fdb.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/", TableEntryType.NODE);
   }
 }

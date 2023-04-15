@@ -102,18 +102,20 @@ public class DataEditQueue<T> {
    */
   public boolean hasNext() {
 
-    try {
+    return pointer < dataEditQueue.size();
 
-      // Try to get the data edit at index pointer
-      dataEditQueue.get(pointer);
-
-      // If it exists, return true
-      return true;
-
-    } catch (IndexOutOfBoundsException e) {
-
-      // If it does not exist, return false
-      return false;
-    }
+    //    try {
+    //
+    //      // Try to get the data edit at index pointer
+    //      dataEditQueue.get(pointer);
+    //
+    //      // If it exists, return true
+    //      return true;
+    //
+    //    } catch (IndexOutOfBoundsException e) {
+    //
+    //      // If it does not exist, return false
+    //      return false;
+    //    }
   }
 }

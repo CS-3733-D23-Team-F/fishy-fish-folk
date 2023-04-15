@@ -6,13 +6,14 @@ import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.*;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.geometry.Point2D;
 
 public class NodeDAO implements IDAO<Node> {
@@ -347,5 +348,107 @@ public class NodeDAO implements IDAO<Node> {
 
     // On success
     return true;
+  }
+
+  @Override
+  public boolean importCSV(String filepath, boolean backup) {
+
+    String[] pathArr = filepath.split("/");
+
+    if (backup) {
+
+      // filepath except for last part (actual file name)
+      StringBuilder folder = new StringBuilder();
+      for (int i = 0; i < pathArr.length - 1; i++) {
+        folder.append(pathArr[i]).append("/");
+      }
+      exportCSV(folder.toString());
+    }
+
+    try (BufferedReader br =
+        new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
+
+      // delete the old data
+      dbConnection
+          .createStatement()
+          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+
+      // skip first row of csv which has the headers
+      String line = br.readLine();
+
+      String insert =
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " VALUES (?, ?, ?, ?, ?);";
+
+      PreparedStatement insertPS = dbConnection.prepareStatement(insert);
+
+      while ((line = br.readLine()) != null) {
+
+        String[] parts = line.split(",");
+
+        Node n =
+            new Node(
+                Integer.parseInt(parts[0]),
+                new Point2D(Double.parseDouble(parts[1]), Double.parseDouble(parts[2])),
+                parts[3],
+                parts[4]);
+
+        tableMap.put(n.getNodeID(), n);
+
+        insertPS.setInt(1, n.getNodeID());
+        insertPS.setDouble(2, n.getX());
+        insertPS.setDouble(2, n.getY());
+        insertPS.setString(3, n.getFloor());
+        insertPS.setString(4, n.getBuilding());
+
+        insertPS.executeUpdate();
+      }
+
+      return true;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+  }
+
+  @Override
+  public boolean exportCSV(String directory) {
+
+    LocalDateTime dateTime = LocalDateTime.now();
+
+    // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ofPattern-java.lang.String-
+    String filename =
+        tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
+
+    try {
+      PrintStream out = new PrintStream(new FileOutputStream(directory + "\\" + filename));
+
+      out.println(String.join(",", headers));
+
+      for (Map.Entry<Integer, Node> entry : tableMap.entrySet()) {
+        Node n = entry.getValue();
+        out.println(
+            n.getNodeID()
+                + ","
+                + n.getX()
+                + ","
+                + n.getY()
+                + ","
+                + n.getFloor()
+                + ","
+                + n.getBuilding());
+      }
+
+      out.close();
+      return true;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
   }
 }

@@ -35,7 +35,7 @@ public interface IDAO<T> {
   /**
    * Retrieve an entry from a local table.
    *
-   * @param identifier The entry's unique identifier (i.e. ID number)
+   * @param identifier The entry's unique identifier
    * @return The retrieved entry, null on failure
    */
   T getEntry(Object identifier);
@@ -57,4 +57,21 @@ public interface IDAO<T> {
    * @return True on successful update, false otherwise
    */
   boolean updateDatabase(boolean updateAll);
+
+  /**
+   * Imports data from a CSV file, overwriting the data stored in the table.
+   *
+   * @param filepath The CSV file to read from
+   * @param backup True if a backup should get saved before overwriting.
+   * @return True on succesful import, false otherwise.
+   */
+  boolean importCSV(String filepath, boolean backup);
+
+  /**
+   * Exports the entire table to a CSV file.
+   *
+   * @param directory The directory to place the CSV file.
+   * @return True on successful export, false otherwise.
+   */
+  boolean exportCSV(String directory);
 }

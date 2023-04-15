@@ -54,4 +54,14 @@ public class EdgeDAO implements IDAO<Edge> {
   public boolean updateDatabase(boolean updateAll) {
     return false;
   }
+
+  @Override
+  public boolean importCSV(String filepath, boolean backup) {
+    return false;
+  }
+
+  @Override
+  public boolean exportCSV(String directory) {
+    return false;
+  }
 }

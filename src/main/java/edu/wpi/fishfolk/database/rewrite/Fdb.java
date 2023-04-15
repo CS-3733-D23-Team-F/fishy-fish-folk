@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Fdb {
 
@@ -26,6 +27,8 @@ public class Fdb {
 
   // Login & User Accounts Tables
   private final UserAccountDAO userAccountTable;
+
+  // TODO use map from tabletype -> dao table object to simplify delegation
 
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb() {
@@ -104,22 +107,31 @@ public class Fdb {
 
     if (entry instanceof Node) {
       return nodeTable.insertEntry((Node) entry);
+
     } else if (entry instanceof Location) {
       return locationTable.insertEntry((Location) entry);
+
     } else if (entry instanceof Move) {
       return moveTable.insertEntry((Move) entry);
+
     } else if (entry instanceof Edge) {
       return edgeTable.insertEntry((Edge) entry);
+
     } else if (entry instanceof FoodRequest) {
       return foodRequestTable.insertEntry((FoodRequest) entry);
+
     } else if (entry instanceof SupplyRequest) {
       return supplyRequestTable.insertEntry((SupplyRequest) entry);
+
     } else if (entry instanceof FurnitureRequest) {
       return furnitureRequestTable.insertEntry((FurnitureRequest) entry);
+
     } else if (entry instanceof FlowerRequest) {
       return flowerRequestTable.insertEntry((FlowerRequest) entry);
+
     } else if (entry instanceof ConferenceRequest) {
       return conferenceRequestTable.insertEntry((ConferenceRequest) entry);
+
     } else if (entry instanceof UserAccount) {
       return userAccountTable.insertEntry((UserAccount) entry);
     }
@@ -137,22 +149,31 @@ public class Fdb {
 
     if (entry instanceof Node) {
       return nodeTable.updateEntry((Node) entry);
+
     } else if (entry instanceof Location) {
       return locationTable.updateEntry((Location) entry);
+
     } else if (entry instanceof Move) {
       return moveTable.updateEntry((Move) entry);
+
     } else if (entry instanceof Edge) {
       return edgeTable.updateEntry((Edge) entry);
+
     } else if (entry instanceof FoodRequest) {
       return foodRequestTable.updateEntry((FoodRequest) entry);
+
     } else if (entry instanceof SupplyRequest) {
       return supplyRequestTable.updateEntry((SupplyRequest) entry);
+
     } else if (entry instanceof FurnitureRequest) {
       return furnitureRequestTable.updateEntry((FurnitureRequest) entry);
+
     } else if (entry instanceof FlowerRequest) {
       return flowerRequestTable.updateEntry((FlowerRequest) entry);
+
     } else if (entry instanceof ConferenceRequest) {
       return conferenceRequestTable.updateEntry((ConferenceRequest) entry);
+
     } else if (entry instanceof UserAccount) {
       return userAccountTable.updateEntry((UserAccount) entry);
     }
@@ -271,6 +292,7 @@ public class Fdb {
    * @param tableEntryType Type of table to revert a change to
    */
   public void undoChange(TableEntryType tableEntryType) {
+
     switch (tableEntryType) {
       case NODE:
         nodeTable.undoChange();
@@ -303,5 +325,94 @@ public class Fdb {
         userAccountTable.undoChange();
         break;
     }
+  }
+
+  /**
+   * Import a CSV file into a table
+   *
+   * @param tableEntryType The type of table to import into
+   * @param filepath
+   * @param backup
+   * @return true on success, false otherwise
+   */
+  public boolean importCSV(String filepath, boolean backup, TableEntryType tableEntryType) {
+
+    System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(filepath).toMatchResult().group());
+
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.importCSV(filepath, backup);
+
+      case LOCATION:
+        return locationTable.importCSV(filepath, backup);
+
+      case MOVE:
+        return moveTable.importCSV(filepath, backup);
+
+      case EDGE:
+        return edgeTable.importCSV(filepath, backup);
+
+      case FOOD_REQUEST:
+        return foodRequestTable.importCSV(filepath, backup);
+
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.importCSV(filepath, backup);
+
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.importCSV(filepath, backup);
+
+      case FLOWER_REQUEST:
+        return flowerRequestTable.importCSV(filepath, backup);
+
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.importCSV(filepath, backup);
+
+      case USER_ACCOUNT:
+        return userAccountTable.importCSV(filepath, backup);
+    }
+    return false;
+  }
+
+  /**
+   * Export a table to a CSV file
+   *
+   * @param directory The directory to export the file into
+   * @param tableEntryType The type of table to export
+   * @return true on success, false otherwise
+   */
+  public boolean exportCSV(String directory, TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.exportCSV(directory);
+
+      case LOCATION:
+        return locationTable.exportCSV(directory);
+
+      case MOVE:
+        return moveTable.exportCSV(directory);
+
+      case EDGE:
+        return edgeTable.exportCSV(directory);
+
+      case FOOD_REQUEST:
+        return foodRequestTable.exportCSV(directory);
+
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.exportCSV(directory);
+
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.exportCSV(directory);
+
+      case FLOWER_REQUEST:
+        return flowerRequestTable.exportCSV(directory);
+
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.exportCSV(directory);
+
+      case USER_ACCOUNT:
+        return userAccountTable.exportCSV(directory);
+    }
+    return false;
   }
 }

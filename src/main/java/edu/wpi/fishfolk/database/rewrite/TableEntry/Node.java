@@ -28,4 +28,12 @@ public class Node {
     this.building = building;
     this.status = EntryStatus.OLD;
   }
+
+  public double getX() {
+    return point.getX();
+  }
+
+  public double getY() {
+    return point.getY();
+  }
 }
