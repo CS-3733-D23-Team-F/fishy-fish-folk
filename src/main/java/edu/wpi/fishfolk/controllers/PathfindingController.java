@@ -26,14 +26,15 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXButton signageNav;
   @FXML MFXButton mealNav;
-  @FXML MFXButton officeNav;
+  @FXML MFXButton supplyNav;
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
-  @FXML MFXButton sideBar;
+  @FXML AnchorPane serviceBar;
+  @FXML MFXButton serviceNav;
 
   @FXML MFXButton exitButton;
 
-  @FXML MFXButton sideBarClose;
+  @FXML MFXButton closeServiceNav;
   @FXML AnchorPane slider;
   @FXML AnchorPane menuWrap;
   @FXML MFXButton submitBtn;
@@ -77,7 +78,6 @@ public class PathfindingController extends AbsController {
     viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
-    officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
@@ -85,45 +85,8 @@ public class PathfindingController extends AbsController {
 
     // left menu
     slider.setTranslateX(-400);
-    sideBarClose.setVisible(false);
     menuWrap.setVisible(false);
-    sideBar.setOnMouseClicked(
-        event -> {
-          menuWrap.setDisable(false);
-          TranslateTransition slide = new TranslateTransition();
-          slide.setDuration(Duration.seconds(0.4));
-          slide.setNode(slider);
 
-          slide.setToX(400);
-          slide.play();
-
-          slider.setTranslateX(-400);
-          menuWrap.setVisible(true);
-          slide.setOnFinished(
-              (ActionEvent e) -> {
-                sideBar.setVisible(false);
-                sideBarClose.setVisible(true);
-              });
-        });
-
-    sideBarClose.setOnMouseClicked(
-        event -> {
-          menuWrap.setVisible(false);
-          menuWrap.setDisable(true);
-          TranslateTransition slide = new TranslateTransition();
-          slide.setDuration(Duration.seconds(0.4));
-          slide.setNode(slider);
-          slide.setToX(-400);
-          slide.play();
-
-          slider.setTranslateX(0);
-
-          slide.setOnFinished(
-              (ActionEvent e) -> {
-                sideBar.setVisible(true);
-                sideBarClose.setVisible(false);
-              });
-        });
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
     zoomIn.setOnMouseClicked(
@@ -140,6 +103,62 @@ public class PathfindingController extends AbsController {
           pane.animate(Duration.millis(200))
               .interpolateWith(Interpolator.EASE_BOTH)
               .zoomBy(zoom - 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
+        });
+
+
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    // mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
+    // officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    exitButton.setOnMouseClicked(event -> System.exit(0));
+
+    closeServiceNav.setVisible(false);
+    closeServiceNav.setDisable(true);
+
+    serviceNav.setOnMouseClicked(
+        event -> {
+          // menuWrap.setDisable(false);
+          serviceBar.setVisible(true);
+          serviceBar.setDisable(false);
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+
+          slide.setToY(490);
+          slide.play();
+
+          // slider.setTranslateY(-400);
+          slider.setTranslateY(490);
+          // menuWrap.setVisible(true);
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                serviceNav.setVisible(false);
+                closeServiceNav.setVisible(true);
+                serviceNav.setDisable(true);
+                closeServiceNav.setDisable(false);
+              });
+        });
+
+    closeServiceNav.setOnMouseClicked(
+        event -> {
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(slider);
+          slide.setToY(0);
+          slide.play();
+
+          slider.setTranslateY(0);
+
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                serviceNav.setVisible(true);
+                closeServiceNav.setVisible(false);
+                serviceNav.setDisable(false);
+                closeServiceNav.setDisable(true);
+                serviceBar.setVisible(false);
+                serviceBar.setDisable(true);
+              });
         });
 
     List<String> nodeNames =

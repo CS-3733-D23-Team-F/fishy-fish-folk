@@ -39,7 +39,8 @@ public class Fapp extends Application {
 
     final Scene scene = new Scene(root);
 
-    primaryStage.setFullScreen(false);
+    primaryStage.setFullScreen(true);
+    primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
     // scene.getStylesheets().add("" + Fapp.class.getResource("Styles/style.css"));
     scene.getStylesheets().add(Fapp.class.getResource("Styles/style.css").toExternalForm());
 
