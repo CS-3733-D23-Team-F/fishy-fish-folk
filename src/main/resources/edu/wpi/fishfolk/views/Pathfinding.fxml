@@ -345,15 +345,20 @@
                         </MFXButton>
                      </children>
                   </HBox>
-                  <MFXButton fx:id="slideUp" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minHeight="27.0" minWidth="79.0" StackPane.alignment="BOTTOM_CENTER">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/up.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </MFXButton>
+                  <VBox alignment="BOTTOM_CENTER" StackPane.alignment="TOP_CENTER">
+                     <children>
+                        <MFXButton fx:id="slideUp" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minHeight="27.0" minWidth="79.0">
+                           <graphic>
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/up.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MFXButton>
+                        <HBox />
+                     </children>
+                  </VBox>
                </children>
                <HBox.margin>
                   <Insets />
