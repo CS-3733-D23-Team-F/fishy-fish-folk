@@ -150,7 +150,6 @@ public class ViewFoodOrdersController extends AbsController {
 
   private void loadOrders() throws InterruptedException {
     foodOrders = new ArrayList<FoodOrder>();
-    // TODO load food orders from database
 
     ArrayList<String[]> tableOrders = foodOrderTable.getAll();
     for (String[] orderArr : tableOrders) {
