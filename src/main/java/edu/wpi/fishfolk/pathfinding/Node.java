@@ -4,7 +4,6 @@ import edu.wpi.fishfolk.database.TableEntry;
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
 
-@Deprecated
 public class Node extends TableEntry {
 
   public int nid; // int representation of string id. for use instead of parsing

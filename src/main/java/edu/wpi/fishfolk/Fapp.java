@@ -39,18 +39,18 @@ public class Fapp extends Application {
 
     final Scene scene = new Scene(root);
 
-    primaryStage.setFullScreen(true);
+    primaryStage.setFullScreen(false);
     primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
     // scene.getStylesheets().add("" + Fapp.class.getResource("Styles/style.css"));
     scene.getStylesheets().add(Fapp.class.getResource("Styles/style.css").toExternalForm());
 
     // scene.getStylesheets().add("../resources/edu/wpi/fishfolk/Styles/style.css");
-    primaryStage.setMaximized(true);
-    primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
+    // primaryStage.setMaximized(true);
+    // primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
     primaryStage.setScene(scene);
     primaryStage.show();
 
-    Navigation.navigate(Screen.HOME);
+    Navigation.navigate(Screen.PATHFINDING);
   }
 
   @Override

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Group?>
@@ -12,6 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
@@ -241,9 +243,9 @@
             <StackPane maxHeight="1080.0" maxWidth="1720.0" minHeight="1080.0" minWidth="1720.0" HBox.hgrow="ALWAYS">
                <children>
       
-                              <GesturePane fx:id="pane" hbarPolicy="NEVER" maxHeight="1080.0" maxWidth="1720.0" minHeight="1080.0" minWidth="1720.0" vbarPolicy="NEVER" StackPane.alignment="TOP_LEFT">
+                              <GesturePane fx:id="pane" hbarPolicy="NEVER" vbarPolicy="NEVER" StackPane.alignment="TOP_LEFT">
                               <Group fx:id="pathGroup">
-                              <ImageView fx:id="mapImg" pickOnBounds="true" AnchorPane.leftAnchor="-36.0" AnchorPane.topAnchor="-226.0">
+                              <ImageView fx:id="mapImg" pickOnBounds="true" AnchorPane.leftAnchor="-459.0" AnchorPane.topAnchor="-145.0">
                                  <image>
                                     <Image url="@../map/00_thelowerlevel1.png" />
                                  </image>
@@ -260,10 +262,15 @@
                      <children>
                         <MFXButton fx:id="zoomIn" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" style="-fx-background-color: #012D5A;" text="+" textFill="WHITE" VBox.vgrow="ALWAYS">
                            <font>
-                              <Font name="Open Sans Bold" size="25.0" />
+                              <Font name="Open Sans Bold" size="24.0" />
                            </font>
                         </MFXButton>
-                        <MFXButton fx:id="zoomOut" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" style="-fx-background-color: #012D5A;" text="-" textFill="WHITE" VBox.vgrow="ALWAYS">
+                        <MFXButton fx:id="zoomOut" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" style="-fx-background-color: #012D5A; -fx-border-radius: 0;" text="-" textFill="WHITE" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Open Sans Bold" size="24.0" />
+                           </font>
+                        </MFXButton>
+                        <MFXButton buttonType="RAISED" depthLevel="LEVEL3" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" style="-fx-background-color: #012D5A;" text="-" textFill="WHITE">
                            <font>
                               <Font name="Open Sans Bold" size="25.0" />
                            </font>
@@ -281,16 +288,72 @@
                         <DropShadow height="0.0" offsetY="1.0" radius="0.0" width="0.0" />
                      </effect>
                      <children>
-                        <Text fill="#454343" strokeType="OUTSIDE" strokeWidth="0.0" text="Viewing: ">
+                        <Text fill="#454343" strokeType="OUTSIDE" strokeWidth="0.0" text="Viewing: " HBox.hgrow="ALWAYS">
                            <font>
-                              <Font name="Open Sans Regular" size="20.0" />
+                              <Font name="Open Sans Regular" size="15.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="20.0" />
+                              <Insets left="40.0" />
                            </HBox.margin>
                         </Text>
+                        <Text fx:id="floorDisplay" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="floorDisplay" text="Floor 1" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Text>
+                        <MFXFilterComboBox fx:id="startSelector" alignment="CENTER" minHeight="37.0" minWidth="195.0" promptText="Starting point" style="-fx-background-color: #ffffff; -fx-border-color: #012D5A;" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                           <textFill>
+                              <Color red="0.6196078658103943" green="0.6392157077789307" blue="0.658823549747467" opacity="0.8700000047683716" />
+                           </textFill>
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </MFXFilterComboBox>
+                        <MFXFilterComboBox fx:id="endSelector" alignment="CENTER" minHeight="37.0" minWidth="195.0" promptText="Ending point" style="-fx-background-color: #ffffff; -fx-border-color: #012D5A;">
+                           <textFill>
+                              <Color red="0.6196078658103943" green="0.6392157077789307" blue="0.658823549747467" opacity="0.8700000047683716" />
+                           </textFill>
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </MFXFilterComboBox>
+                        <MFXButton fx:id="clearBtn" buttonType="RAISED" contentDisplay="CENTER" depthLevel="LEVEL3" graphicTextGap="0.0" minHeight="37.0" minWidth="118.0" style="-fx-background-color: #012D5A; -fx-border-radius: 10;" text="Clear" textAlignment="CENTER" textFill="WHITE" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </MFXButton>
                      </children>
                   </HBox>
+                  <MFXButton fx:id="slideUp" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minHeight="27.0" minWidth="79.0" StackPane.alignment="BOTTOM_CENTER">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/up.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
                </children>
                <HBox.margin>
                   <Insets />

@@ -110,3 +110,7 @@ Line{
 Micronode:hover{
     -fx-border-color: yellow;
 }
+
+.floorDisplay{
+    -fx-font-weight: bold;
+}

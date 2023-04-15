@@ -4,6 +4,7 @@ import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.pathfinding.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,10 +15,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
@@ -35,9 +36,10 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXButton closeServiceNav;
   @FXML AnchorPane slider;
-  @FXML MFXButton submitBtn;
-  @FXML ChoiceBox<String> startSelector;
-  @FXML ChoiceBox<String> endSelector;
+  @FXML Text floorDisplay;
+
+  @FXML MFXFilterComboBox<String> startSelector;
+  @FXML MFXFilterComboBox<String> endSelector;
   @FXML MFXButton clearBtn;
 
   @FXML Group pathGroup;
@@ -50,6 +52,7 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton zoomOut;
   @FXML MFXButton zoomIn;
   @FXML GesturePane pane;
+  @FXML MFXButton slideUp;
 
   Pathfinder pathfinder;
 
@@ -155,26 +158,25 @@ public class PathfindingController extends AbsController {
 
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end
-
+    endSelector.setDisable(true);
     startSelector.setOnAction(
         event -> {
+          pathGroup.getChildren().clear();
+          pathGroup.getChildren().add(mapImg);
+
+          // clear list of floors
+          floors.clear();
           start = dbConnection.getMostRecentUNode(startSelector.getValue());
           // floor of the selected unode id
           currentFloor = 0;
           System.out.println("start node: " + start);
+          endSelector.setVisible(true);
+          endSelector.setDisable(false);
         });
     endSelector.setOnAction(
         event -> {
           end = dbConnection.getMostRecentUNode(endSelector.getValue());
           System.out.println("end node: " + end);
-        });
-
-    currentFloor = 0;
-    floors = new ArrayList<>();
-    graph = new Graph(dbConnection);
-
-    submitBtn.setOnMouseClicked(
-        event -> {
           pathfinder = new AStar(graph);
           paths = pathfinder.pathfind(start, end, true);
 
@@ -186,26 +188,30 @@ public class PathfindingController extends AbsController {
               .interpolateWith(Interpolator.EASE_BOTH)
               .centreOn(paths.get(0).centerToPath(7));
           displayFloor(currentFloor);
-
-          // directionInstructions.setText("Instructions: \n\n" + path.getDirections());
+          endSelector.setDisable(true);
         });
 
-    nextButton.setOnMouseClicked(
-        event -> {
-          if (currentFloor < floors.size() - 1) {
-            currentFloor++;
-          }
-          displayFloor(currentFloor);
-        });
+    currentFloor = 0;
+    floors = new ArrayList<>();
+    graph = new Graph(dbConnection);
 
-    backButton.setOnMouseClicked(
-        event -> {
-          if (currentFloor >= 1) {
-            currentFloor--;
-          }
-          displayFloor(currentFloor);
-        });
+    /*
+            nextButton.setOnMouseClicked(
+                event -> {
+                  if (currentFloor < floors.size() - 1) {
+                    currentFloor++;
+                  }
+                  displayFloor(currentFloor);
+                });
 
+            backButton.setOnMouseClicked(
+                event -> {
+                  if (currentFloor >= 1) {
+                    currentFloor--;
+                  }
+                  displayFloor(currentFloor);
+                });
+    */
     clearBtn.setOnMouseClicked(
         event -> {
           // clear paths
@@ -242,7 +248,7 @@ public class PathfindingController extends AbsController {
   private void displayFloor(int floor) {
 
     mapImg.setImage(images.get(floors.get(floor)));
-
+    floorDisplay.setText("Floor " + floors.get(floor));
     Iterator<javafx.scene.Node> itr = pathGroup.getChildren().iterator();
     itr.next(); // skip first child which is the imageview
 
