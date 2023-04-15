@@ -43,6 +43,11 @@ public class DataEditQueue<T> {
   /** Remove the most recently added data edit from the queue. Modifies the pointer if necessary. */
   public void removeRecent() {
 
+    // Check if queue is empty
+    if (dataEditQueue.isEmpty()) {
+      return;
+    }
+
     // If the size of the queue matches the pointer, decrease the pointer to stay in bounds
     if (pointer == (dataEditQueue.size() - 1)) pointer -= 1;
 
@@ -60,6 +65,11 @@ public class DataEditQueue<T> {
    * @return The most recently added data edit
    */
   public DataEdit<T> popRecent() {
+
+    // Check if queue is empty
+    if (dataEditQueue.isEmpty()) {
+      return null;
+    }
 
     // Get the most recently added data edit in the queue
     DataEdit<T> edit = dataEditQueue.get(dataEditQueue.size() - 1);

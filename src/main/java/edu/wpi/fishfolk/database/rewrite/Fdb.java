@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.database.rewrite.TableEntry.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Fdb {
 
@@ -51,6 +52,7 @@ public class Fdb {
         .addShutdownHook(
             new Thread(
                 () -> {
+                  System.out.println("[Fdb]: Shutdown received...");
                   nodeTable.updateDatabase(true);
                   locationTable.updateDatabase(true);
                 }));
@@ -194,6 +196,75 @@ public class Fdb {
   }
 
   /**
+   * Returns an entry from a local table that matches the unique identifier specified.
+   *
+   * @param identifier The intended entry's table entry type
+   * @param tableEntryType The intended entry's table entry type
+   * @return The intended table entry, null on error
+   */
+  public Object getEntry(Object identifier, TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.getEntry(identifier);
+      case LOCATION:
+        return locationTable.getEntry(identifier);
+      case MOVE:
+        return moveTable.getEntry(identifier);
+      case EDGE:
+        return edgeTable.getEntry(identifier);
+      case FOOD_REQUEST:
+        return foodRequestTable.getEntry(identifier);
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.getEntry(identifier);
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.getEntry(identifier);
+      case FLOWER_REQUEST:
+        return flowerRequestTable.getEntry(identifier);
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.getEntry(identifier);
+      case USER_ACCOUNT:
+        return userAccountTable.getEntry(identifier);
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns all entries in a local table in a list.
+   *
+   * @param tableEntryType The intended table's table entry type
+   * @return The intended table entries as a list, null on error
+   */
+  public ArrayList<?> getAllEntries(TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.getAllEntries();
+      case LOCATION:
+        return locationTable.getAllEntries();
+      case MOVE:
+        return moveTable.getAllEntries();
+      case EDGE:
+        return edgeTable.getAllEntries();
+      case FOOD_REQUEST:
+        return foodRequestTable.getAllEntries();
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.getAllEntries();
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.getAllEntries();
+      case FLOWER_REQUEST:
+        return flowerRequestTable.getAllEntries();
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.getAllEntries();
+      case USER_ACCOUNT:
+        return userAccountTable.getAllEntries();
+    }
+
+    return null;
+  }
+
+  /**
    * Reverts the most recent change made to a local table. The reverted change will not occur in a
    * PostgreSQL database.
    *
@@ -203,24 +274,34 @@ public class Fdb {
     switch (tableEntryType) {
       case NODE:
         nodeTable.undoChange();
+        break;
       case LOCATION:
         locationTable.undoChange();
+        break;
       case MOVE:
         moveTable.undoChange();
+        break;
       case EDGE:
         edgeTable.undoChange();
+        break;
       case FOOD_REQUEST:
         foodRequestTable.undoChange();
+        break;
       case SUPPLY_REQUEST:
         supplyRequestTable.undoChange();
+        break;
       case FURNITURE_REQUEST:
         furnitureRequestTable.undoChange();
+        break;
       case FLOWER_REQUEST:
         flowerRequestTable.undoChange();
+        break;
       case CONFERENCE_REQUEST:
         conferenceRequestTable.undoChange();
+        break;
       case USER_ACCOUNT:
         userAccountTable.undoChange();
+        break;
     }
   }
 }

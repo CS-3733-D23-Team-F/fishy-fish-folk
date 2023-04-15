@@ -192,6 +192,9 @@ public class NodeDAO implements IDAO<Node> {
     // Pop the top item of the data edit stack
     DataEdit<Node> dataEdit = dataEditQueue.popRecent();
 
+    // Check if there is an update to be done
+    if (dataEdit == null) return;
+
     // Change behavior based on its data edit type
     switch (dataEdit.getType()) {
       case INSERT:
