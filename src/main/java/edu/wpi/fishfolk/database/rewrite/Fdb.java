@@ -58,6 +58,8 @@ public class Fdb {
                   System.out.println("[Fdb]: Shutdown received...");
                   nodeTable.updateDatabase(true);
                   locationTable.updateDatabase(true);
+
+                  disconnect();
                 }));
   }
 
