@@ -16,7 +16,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
   /** DAO for User Account Request table in PostgreSQL database. */
   public UserAccountDAO() {
-    this.headers = new ArrayList<>(List.of("username", "passwordhash", "permissions"));
+    this.headers = new ArrayList<>(List.of("username", "passhash", "permissions"));
   }
 
   @Override
