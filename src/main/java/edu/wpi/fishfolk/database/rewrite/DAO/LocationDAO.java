@@ -7,10 +7,7 @@ import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Location;
 import edu.wpi.fishfolk.pathfinding.NodeType;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +31,47 @@ public class LocationDAO implements IDAO<Location> {
     this.dataEditQueue = new DataEditQueue<>();
 
     populateLocalTable();
+  }
+
+  @Override
+  public void init(boolean drop){
+
+    try {
+      Statement statement = dbConnection.createStatement();
+      String query =
+              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+                      + dbConnection.getSchema()
+                      + "' AND tablename = '"
+                      + tableName
+                      + "');";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+
+      // drop if a table already exists with this name and drop is true
+      if (results.getBoolean("exists")) {
+
+        if (drop) { // drop and replace with new table
+          query = "DROP TABLE " + tableName + ";";
+          statement.execute(query);
+        }
+        // exists but dont drop - do nothing
+
+      } else {
+        // doesnt exist, create as usual
+        query = "CREATE TABLE " + tableName
+                + " (longname VARCHAR(64) PRIMARY KEY," // 64 char
+                + " x REAL," //4 bytes
+                + " y REAL,"
+                + " floor VARCHAR(2)," //2 characters
+                + " building VARCHAR(16));"; //16 characters
+        statement.executeUpdate(query);
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
   }
 
   @Override

@@ -4,6 +4,13 @@ import java.util.ArrayList;
 
 public interface IDAO<T> {
 
+  /**
+   * Init the table in the PostgreSQL.
+   *
+   * @param drop True if the old table should get dropped in creating the new one.
+   */
+  void init(boolean drop);
+
   /** Take all entries from a PostgreSQL database and populate a local table. */
   void populateLocalTable();
 

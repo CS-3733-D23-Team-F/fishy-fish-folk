@@ -76,7 +76,7 @@ public class Fdb {
       Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
       if (db != null) {
         System.out.println("[Fdb.connect]: Connection established.");
-        db.setSchema("proto2db");
+        db.setSchema("iter2db");
       } else {
         System.out.println("[Fdb.connect]: Connection failed.");
       }
