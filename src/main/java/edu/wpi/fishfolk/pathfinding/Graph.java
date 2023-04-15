@@ -7,6 +7,7 @@ import edu.wpi.fishfolk.database.Move;
 import java.time.LocalDate;
 import java.util.*;
 import javafx.geometry.Point2D;
+import lombok.Getter;
 
 public class Graph {
 
@@ -14,12 +15,15 @@ public class Graph {
   // https://stackoverflow.com/questions/3287003/three-ways-to-store-a-graph-in-memory-advantages-and-disadvantages
   // in the future maybe switch to adjacency list
 
-  int size;
-  double[][] adjMat;
-  MicroNode[] unodes;
-  HashMap<Integer, Integer> id2idx; // string id to index in nodes array and adjacency matrix
-  HashMap<String, ArrayList<Integer>> elevLet2ids;
-  private int lastIdx;
+  @Getter private int size;
+  @Getter private double[][] adjMat;
+  @Getter private MicroNode[] unodes;
+
+  @Getter
+  private HashMap<Integer, Integer>
+      id2idx; // string id to index in nodes array and adjacency matrix
+
+  @Getter private HashMap<String, ArrayList<Integer>> elevLet2ids;
 
   private Fdb dbConnection;
 
@@ -33,8 +37,6 @@ public class Graph {
     unodes = new MicroNode[size];
     id2idx = new HashMap<>(size * 4 / 3 + 1); // default load factor is 75% = 3/4
     elevLet2ids = new HashMap<>(32); // estimate of number of elevator nodes
-
-    lastIdx = 0;
 
     populate();
   }
@@ -242,166 +244,6 @@ public class Graph {
     return count;
   }
 
-  public Path bfs(int start, int end) {
-
-    // check for correctness by inputting edge list into https://graphonline.ru/en/
-
-    if (!id2idx.containsKey(start) || !id2idx.containsKey(end)) {
-      return null;
-    }
-
-    boolean[] visited = new boolean[size];
-
-    LinkedList<Integer> queue = new LinkedList<>(); // queue of next nodes to look at in bfs
-
-    int[] previous =
-        new int[size]; // used to store the ids of the previous node in order to retrace the path
-
-    queue.add(start);
-
-    while (!queue.isEmpty()) {
-
-      int cur = queue.removeFirst();
-
-      if (cur == end) { // reached end
-        Path path = new Path();
-
-        path.addFirst(end, unodes[id2idx.get(end)].point);
-
-        while (cur != start) { // retrace path from the end to the start
-          int prev = previous[id2idx.get(cur)];
-          path.addFirst(prev, unodes[id2idx.get(prev)].point);
-          cur = prev;
-        }
-
-        return path;
-      }
-
-      if (!visited[id2idx.get(cur)]) { // found a new node
-
-        for (int other = 0; other < size; other++) {
-
-          if (adjMat[id2idx.get(cur)][other] != 0.0 // Fixed to 0.0 now that matrix is edge weights
-              && !visited[other]) { // 1 means cur is connected to other
-            int next = unodes[other].nid;
-            previous[id2idx.get(next)] = cur;
-            queue.addLast(next);
-          }
-
-          visited[id2idx.get(cur)] = true;
-        }
-      }
-    }
-
-    return null;
-  }
-
-  public ArrayList<Path> AStar(int start, int end) {
-
-    if (!id2idx.containsKey(start) || !id2idx.containsKey(end)) {
-      return null;
-    }
-
-    double[] fromStart = new double[size];
-    double[] heuristic = new double[size];
-    boolean[] visited = new boolean[size]; // true means found the shortest path to this node
-    int[] lastVisited = new int[size];
-    int current_node = id2idx.get(start);
-
-    // initialize distance from start node and heuristic arrays
-    // distance from start node: 0 for start, -MIN_INT for all others
-    // heuristic: approximate distances from all points to the target endpoint
-    String endFloor = unodes[id2idx.get(end)].floor;
-    Point2D endPoint = unodes[id2idx.get(end)].point;
-
-    for (int node = 0; node < size; node++) {
-
-      fromStart[node] = Integer.MIN_VALUE;
-      heuristic[node] = Integer.MIN_VALUE;
-    }
-
-    fromStart[id2idx.get(start)] = 0;
-
-    while (!(current_node == id2idx.get(end))) {
-
-      visited[current_node] = true;
-
-      // System.out.println(nodes[current_node].id);
-
-      // update adjacent nodes
-      for (int node = 0; node < size; node++) {
-        if (!(adjMat[current_node][node] == 0.0) // Check if nodes are adjacent
-            && !visited[node]) { // Make sure unvisited node
-
-          // if going to adjacent node via current is better than the previous path to node, update
-          // fromStart[node]
-          if (fromStart[node] < 0
-              || fromStart[current_node] + adjMat[current_node][node] < fromStart[node]) {
-
-            fromStart[node] = fromStart[current_node] + adjMat[current_node][node];
-            lastVisited[node] = current_node;
-          }
-        }
-      }
-
-      // choose the next node based off of distance to start and heuristic
-      double min = Integer.MAX_VALUE;
-
-      for (int other = 0; other < size; other++) {
-
-        if (!visited[other] && fromStart[other] > -1) {
-
-          if (heuristic[other] < -501 && unodes[other].floor.equals(endFloor)) {
-            heuristic[other] = unodes[other].point.distance(endPoint) - 500;
-          } else if (heuristic[other] < -501) {
-            heuristic[other] = unodes[other].point.distance(endPoint);
-          }
-
-          double cost = fromStart[other] + heuristic[other];
-
-          if (cost >= -501 && cost < min) {
-            min = cost;
-            current_node = other;
-          }
-        }
-      }
-    }
-
-    String currentFloor = "";
-    ArrayList<Path> paths = new ArrayList<>();
-    int numpaths = -1;
-
-    // retrace path from the end to the start
-    while (!(current_node == id2idx.get(start))) {
-
-      // start new path when hitting a new floor
-      if (!unodes[current_node].floor.equals(currentFloor)) {
-        Path path = new Path();
-        currentFloor = unodes[current_node].floor;
-        path.setFloor(currentFloor);
-        paths.add(0, path);
-        numpaths++;
-      }
-
-      // add current node at beginning of first path
-      paths.get(0).addFirst(unodes[current_node].nid, unodes[current_node].point);
-
-      current_node = lastVisited[current_node];
-    }
-    // add start node to beginning of first path
-    paths.get(0).addFirst(start, unodes[current_node].point);
-
-    System.out.println(paths.toString());
-
-    // path.addFirst(start, nodes[id2idx.get(start)].point);
-
-    // System.out.println(path.pathLength());
-
-    // System.out.println(path.getDirections());
-
-    return paths;
-  }
-
   public double distance(String n1, String n2) {
     return unodes[id2idx.get(n1)].point.distance(unodes[id2idx.get(n2)].point);
   }
@@ -455,5 +297,29 @@ public class Graph {
       }
     }
     return neighbors;
+  }
+
+  public int id2idx(int id) {
+    return id2idx.get(id);
+  }
+
+  public MicroNode getNodeFromID(int id) {
+    return unodes[id2idx.get(id)];
+  }
+
+  public MicroNode getNodeFromIdx(int idx) {
+    return unodes[idx];
+  }
+
+  public boolean containsNode(int id) {
+    return id2idx.containsKey(id);
+  }
+
+  public boolean adjacent(int n1, int n2) {
+    return adjMat[n1][n2] > 0;
+  }
+
+  public double getEdgeWeight(int n1, int n2) {
+    return adjMat[n1][n2];
   }
 }

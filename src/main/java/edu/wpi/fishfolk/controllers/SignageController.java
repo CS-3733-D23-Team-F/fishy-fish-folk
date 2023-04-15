@@ -11,24 +11,20 @@ import javafx.util.Duration;
 
 public class SignageController {
   @FXML MFXButton backButton;
-  @FXML MFXButton homeButton;
   @FXML MFXButton signageNav;
 
   @FXML MFXButton mealNav;
 
-  @FXML MFXButton officeNav;
-  @FXML MFXButton pathfindingNav;
+  @FXML MFXButton supplyNav;
   @FXML MFXButton mapEditorNav;
-  @FXML MFXButton furnitureNav;
-  @FXML MFXButton viewFurniture;
-
-  @FXML MFXButton sideBar;
+  @FXML MFXButton pathfindingNav;
 
   @FXML MFXButton exitButton;
 
-  @FXML MFXButton sideBarClose;
+  @FXML MFXButton closeServiceNav;
+  @FXML MFXButton serviceNav;
+  @FXML AnchorPane serviceBar;
   @FXML AnchorPane slider;
-  @FXML AnchorPane menuWrap;
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
 
@@ -36,57 +32,60 @@ public class SignageController {
   public void initialize() {
 
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
-
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
-    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
-    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
-    viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
-    officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
-    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
-    slider.setTranslateX(-400);
-    sideBarClose.setVisible(false);
-    menuWrap.setVisible(false);
-    sideBar.setOnMouseClicked(
+    closeServiceNav.setVisible(false);
+    closeServiceNav.setDisable(true);
+
+    serviceNav.setOnMouseClicked(
         event -> {
-          menuWrap.setDisable(false);
+          // menuWrap.setDisable(false);
+          serviceBar.setVisible(true);
+          serviceBar.setDisable(false);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
 
-          slide.setToX(400);
+          slide.setToY(490);
           slide.play();
 
-          slider.setTranslateX(-400);
-          menuWrap.setVisible(true);
+          // slider.setTranslateY(-400);
+          slider.setTranslateY(490);
+          // menuWrap.setVisible(true);
           slide.setOnFinished(
               (ActionEvent e) -> {
-                sideBar.setVisible(false);
-                sideBarClose.setVisible(true);
+                serviceNav.setVisible(false);
+                closeServiceNav.setVisible(true);
+                serviceNav.setDisable(true);
+                closeServiceNav.setDisable(false);
               });
         });
 
-    sideBarClose.setOnMouseClicked(
+    closeServiceNav.setOnMouseClicked(
         event -> {
-          menuWrap.setVisible(false);
-          menuWrap.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
-          slide.setToX(-400);
+          slide.setToY(0);
           slide.play();
 
-          slider.setTranslateX(0);
+          slider.setTranslateY(0);
 
           slide.setOnFinished(
               (ActionEvent e) -> {
-                sideBar.setVisible(true);
-                sideBarClose.setVisible(false);
+                serviceNav.setVisible(true);
+                closeServiceNav.setVisible(false);
+                serviceNav.setDisable(false);
+                closeServiceNav.setDisable(true);
+                serviceBar.setVisible(false);
+                serviceBar.setDisable(true);
               });
         });
   }

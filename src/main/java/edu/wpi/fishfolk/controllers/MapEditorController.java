@@ -12,7 +12,6 @@ import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import java.io.File;
 import java.util.*;
 import java.util.List;
 import javafx.animation.TranslateTransition;
@@ -35,7 +34,6 @@ public class MapEditorController extends AbsController {
   @FXML MFXComboBox<String> floorSelector;
   @FXML ImageView mapImg;
   @FXML GesturePane pane;
-  @FXML MFXButton homeButton;
   @FXML public Group drawGroup;
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
@@ -49,24 +47,22 @@ public class MapEditorController extends AbsController {
 
   @FXML MFXButton mealNav;
 
-  @FXML MFXButton officeNav;
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
   @FXML MFXButton furnitureNav;
-  @FXML MFXButton viewFurniture;
 
-  @FXML MFXButton sideBar;
+  @FXML MFXButton closeServiceNav;
+  @FXML MFXButton flowerNav;
+  @FXML MFXButton conferenceNav;
+  @FXML AnchorPane serviceBar;
+  @FXML MFXButton supplyNav;
+  @FXML MFXButton serviceNav;
 
   @FXML MFXButton exitButton;
 
-  @FXML MFXButton sideBarClose;
   @FXML AnchorPane slider;
-  @FXML AnchorPane menuWrap;
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply;
-
-  @FXML MFXButton importBtn;
-  @FXML MFXButton exportBtn;
 
   @FXML MFXButton addNode;
   @FXML MFXButton delNode;
@@ -99,61 +95,63 @@ public class MapEditorController extends AbsController {
 
   @FXML
   private void initialize() {
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
-    viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
-    officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
-    slider.setTranslateX(-400);
-    sideBarClose.setVisible(false);
-    menuWrap.setVisible(false);
-    sideBar.setOnMouseClicked(
+    closeServiceNav.setVisible(false);
+    closeServiceNav.setDisable(true);
+
+    serviceNav.setOnMouseClicked(
         event -> {
-          menuWrap.setDisable(false);
+          // menuWrap.setDisable(false);
+          serviceBar.setVisible(true);
+          serviceBar.setDisable(false);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
 
-          slide.setToX(400);
+          slide.setToY(490);
           slide.play();
 
-          slider.setTranslateX(-400);
-          menuWrap.setVisible(true);
+          slider.setTranslateY(490);
           slide.setOnFinished(
               (ActionEvent e) -> {
-                sideBar.setVisible(false);
-                sideBarClose.setVisible(true);
+                serviceNav.setVisible(false);
+                closeServiceNav.setVisible(true);
+                serviceNav.setDisable(true);
+                closeServiceNav.setDisable(false);
               });
         });
 
-    sideBarClose.setOnMouseClicked(
+    closeServiceNav.setOnMouseClicked(
         event -> {
-          menuWrap.setVisible(false);
-          menuWrap.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
-          slide.setToX(-400);
+          slide.setToY(0);
           slide.play();
 
-          slider.setTranslateX(0);
+          slider.setTranslateY(0);
 
           slide.setOnFinished(
               (ActionEvent e) -> {
-                sideBar.setVisible(true);
-                sideBarClose.setVisible(false);
+                serviceNav.setVisible(true);
+                closeServiceNav.setVisible(false);
+                serviceNav.setDisable(false);
+                closeServiceNav.setDisable(true);
+                serviceBar.setVisible(false);
+                serviceBar.setDisable(true);
               });
         });
-
-    pane.centreOn(new Point2D(1700, 1100));
-    pane.zoomTo(0.4, new Point2D(2500, 1600));
 
     // copy contents, not reference
     ArrayList<String> floorsReverse = new ArrayList<>(allFloors);
@@ -194,12 +192,12 @@ public class MapEditorController extends AbsController {
 
     buildingChecker = new BuildingChecker();
 
+    pane.centreOn(new Point2D(1700, 1100));
+    pane.zoomTo(0.4, new Point2D(2500, 1600));
+
     // prints mouse location to screen when clicked on map. Used to calculate building boundaries
     mapImg.setOnMouseClicked(
         event -> {
-
-          // System.out.println(event.getX() + ", " + event.getY() + ",");
-
           if (state == EDITOR_STATE.ADDING) {
             // System.out.println("adding at " + event.getX() + ", " + event.getY());
             insertNode(event.getX(), event.getY());
@@ -216,40 +214,6 @@ public class MapEditorController extends AbsController {
 
     fileChooser = new FileChooser();
     dirChooser = new DirectoryChooser();
-
-    importBtn.setOnAction(
-        event -> {
-          fileChooser.setTitle("Select the Node CSV file");
-          String microNodePath =
-              fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-
-          fileChooser.setTitle("Select the Location CSV file");
-          String locationPath =
-              fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-
-          fileChooser.setTitle("Select the Move CSV file");
-          String movePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-
-          fileChooser.setTitle("Select the Edge CSV file");
-          String edgePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-
-          dbConnection.micronodeTable.importCSV(microNodePath, false);
-          dbConnection.locationTable.importCSV(locationPath, false);
-          dbConnection.moveTable.importCSV(movePath, false);
-          dbConnection.edgeTable.importCSV(edgePath, false);
-          initialize();
-        });
-
-    exportBtn.setOnAction(
-        event -> {
-          dirChooser.setTitle("Select Export Directory");
-          String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-          dbConnection.micronodeTable.importCSV(exportPath, false);
-          dbConnection.locationTable.importCSV(exportPath, false);
-          dbConnection.moveTable.importCSV(exportPath, false);
-          dbConnection.edgeTable.importCSV(exportPath, false);
-          fileChooser.setInitialDirectory(new File(exportPath));
-        });
 
     addNode.setOnMouseClicked(
         event -> {
@@ -474,6 +438,7 @@ public class MapEditorController extends AbsController {
             buildingChecker.getBuilding(new Point2D(x, y), floor));
 
     drawNode(unode);
+    // fillMicroNodeFields();
 
     dbConnection.processEdit(
         new InsertEdit(DataTableType.MICRONODE, "id", id, unode.deconstruct()));

@@ -84,6 +84,8 @@
 
 .sideNav:hover{
     -fx-background-color: #0e4675;
+    -fx-border-color: transparent transparent transparent #F0BF4C;
+    -fx-border-width: 4px;
 }
 
 .sideNav{
@@ -107,4 +109,8 @@ Line{
 
 Micronode:hover{
     -fx-border-color: yellow;
+}
+
+.floorDisplay{
+    -fx-font-weight: bold;
 }
