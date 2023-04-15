@@ -159,33 +159,35 @@ public class Fdb {
   }
 
   /**
-   * Remove an entru from the PostgreSQL database.
+   * Remove an entry from the PostgreSQL database.
    *
-   * @param entry Entry to remove
+   * @param identifier The entry's unique identifier (i.e. ID number)
+   * @param tableEntryType The intended entry's table entry type
    * @return True on successful removal, false otherwise
    */
-  public boolean removeEntry(Object entry) {
+  public boolean removeEntry(Object identifier, TableEntryType tableEntryType) {
 
-    if (entry instanceof Node) {
-      return nodeTable.removeEntry((Node) entry);
-    } else if (entry instanceof Location) {
-      return locationTable.removeEntry((Location) entry);
-    } else if (entry instanceof Move) {
-      return moveTable.removeEntry((Move) entry);
-    } else if (entry instanceof Edge) {
-      return edgeTable.removeEntry((Edge) entry);
-    } else if (entry instanceof FoodRequest) {
-      return foodRequestTable.removeEntry((FoodRequest) entry);
-    } else if (entry instanceof SupplyRequest) {
-      return supplyRequestTable.removeEntry((SupplyRequest) entry);
-    } else if (entry instanceof FurnitureRequest) {
-      return furnitureRequestTable.removeEntry((FurnitureRequest) entry);
-    } else if (entry instanceof FlowerRequest) {
-      return flowerRequestTable.removeEntry((FlowerRequest) entry);
-    } else if (entry instanceof ConferenceRequest) {
-      return conferenceRequestTable.removeEntry((ConferenceRequest) entry);
-    } else if (entry instanceof UserAccount) {
-      return userAccountTable.removeEntry((UserAccount) entry);
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.removeEntry(identifier);
+      case LOCATION:
+        return locationTable.removeEntry(identifier);
+      case MOVE:
+        return moveTable.removeEntry(identifier);
+      case EDGE:
+        return edgeTable.removeEntry(identifier);
+      case FOOD_REQUEST:
+        return foodRequestTable.removeEntry(identifier);
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.removeEntry(identifier);
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.removeEntry(identifier);
+      case FLOWER_REQUEST:
+        return flowerRequestTable.removeEntry(identifier);
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.removeEntry(identifier);
+      case USER_ACCOUNT:
+        return userAccountTable.removeEntry(identifier);
     }
 
     return false;

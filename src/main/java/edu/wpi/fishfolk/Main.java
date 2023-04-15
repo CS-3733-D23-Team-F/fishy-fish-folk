@@ -2,6 +2,7 @@ package edu.wpi.fishfolk;
 
 import edu.wpi.fishfolk.database.rewrite.Fdb;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.TableEntryType;
 import javafx.geometry.Point2D;
 
 public class Main {
@@ -22,7 +23,7 @@ public class Main {
 
     fdb.updateEntry(new Node(9997, new Point2D(1999, 1999), "carpet", "bingus"));
 
-    fdb.removeEntry(9998);
+    fdb.removeEntry(9998, TableEntryType.NODE);
     //
     // fdb.nodeTable.updateDatabase();
 
