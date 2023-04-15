@@ -193,5 +193,34 @@ public class Fdb {
     return false;
   }
 
-  // TODO: Add generic undoChange method
+  /**
+   * Reverts the most recent change made to a local table. The reverted change will not occur in a
+   * PostgreSQL database.
+   *
+   * @param tableEntryType Type of table to revert a change to
+   */
+  public void undoChange(TableEntryType tableEntryType) {
+    switch (tableEntryType) {
+      case NODE:
+        nodeTable.undoChange();
+      case LOCATION:
+        locationTable.undoChange();
+      case MOVE:
+        moveTable.undoChange();
+      case EDGE:
+        edgeTable.undoChange();
+      case FOOD_REQUEST:
+        foodRequestTable.undoChange();
+      case SUPPLY_REQUEST:
+        supplyRequestTable.undoChange();
+      case FURNITURE_REQUEST:
+        furnitureRequestTable.undoChange();
+      case FLOWER_REQUEST:
+        flowerRequestTable.undoChange();
+      case CONFERENCE_REQUEST:
+        conferenceRequestTable.undoChange();
+      case USER_ACCOUNT:
+        userAccountTable.undoChange();
+    }
+  }
 }
