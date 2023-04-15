@@ -18,7 +18,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
@@ -36,7 +35,6 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXButton closeServiceNav;
   @FXML AnchorPane slider;
-  @FXML AnchorPane menuWrap;
   @FXML MFXButton submitBtn;
   @FXML ChoiceBox<String> startSelector;
   @FXML ChoiceBox<String> endSelector;
@@ -44,12 +42,11 @@ public class PathfindingController extends AbsController {
 
   @FXML Group pathGroup;
   @FXML ImageView mapImg;
-  @FXML Text directionInstructions;
+  // @FXML Text directionInstructions;
   @FXML MFXButton backButton;
   @FXML MFXButton nextButton;
-  @FXML MFXButton homeButton;
   @FXML MFXButton viewFood;
-  @FXML MFXButton viewSupply, viewFurniture, furnitureNav;
+  @FXML MFXButton viewSupply, furnitureNav;
   @FXML MFXButton zoomOut;
   @FXML MFXButton zoomIn;
   @FXML GesturePane pane;
@@ -75,19 +72,12 @@ public class PathfindingController extends AbsController {
     // buttons to other pages
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
-    viewFurniture.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FURNITURE_ORDERS));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
-
-    // left menu
-    slider.setTranslateX(-400);
-    menuWrap.setVisible(false);
-
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
     zoomIn.setOnMouseClicked(
         event -> {
@@ -105,7 +95,6 @@ public class PathfindingController extends AbsController {
               .zoomBy(zoom - 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
         });
 
-
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     // mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     // officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
@@ -118,7 +107,6 @@ public class PathfindingController extends AbsController {
 
     serviceNav.setOnMouseClicked(
         event -> {
-          // menuWrap.setDisable(false);
           serviceBar.setVisible(true);
           serviceBar.setDisable(false);
           TranslateTransition slide = new TranslateTransition();
@@ -128,9 +116,7 @@ public class PathfindingController extends AbsController {
           slide.setToY(490);
           slide.play();
 
-          // slider.setTranslateY(-400);
           slider.setTranslateY(490);
-          // menuWrap.setVisible(true);
           slide.setOnFinished(
               (ActionEvent e) -> {
                 serviceNav.setVisible(false);
