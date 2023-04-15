@@ -20,6 +20,11 @@ public class EdgeDAO implements IDAO<Edge> {
   }
 
   @Override
+  public void init(boolean drop) {
+
+  }
+
+  @Override
   public void populateLocalTable() {}
 
   @Override

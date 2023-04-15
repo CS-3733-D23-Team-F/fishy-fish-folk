@@ -22,6 +22,11 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
   }
 
   @Override
+  public void init(boolean drop) {
+
+  }
+
+  @Override
   public void populateLocalTable() {}
 
   @Override

@@ -23,6 +23,11 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
   }
 
   @Override
+  public void init(boolean drop) {
+
+  }
+
+  @Override
   public void populateLocalTable() {}
 
   @Override

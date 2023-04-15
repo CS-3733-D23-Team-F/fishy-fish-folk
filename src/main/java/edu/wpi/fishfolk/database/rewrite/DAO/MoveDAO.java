@@ -20,6 +20,11 @@ public class MoveDAO implements IDAO<Move> {
   }
 
   @Override
+  public void init(boolean drop) {
+
+  }
+
+  @Override
   public void populateLocalTable() {}
 
   @Override

@@ -23,6 +23,11 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
   }
 
   @Override
+  public void init(boolean drop) {
+
+  }
+
+  @Override
   public void populateLocalTable() {}
 
   @Override
