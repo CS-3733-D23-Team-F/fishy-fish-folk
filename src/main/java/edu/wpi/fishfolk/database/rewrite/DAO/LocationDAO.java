@@ -32,6 +32,8 @@ public class LocationDAO implements IDAO<Location> {
     this.headers = new ArrayList<>(List.of("longname", "shortname", "type"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
+
+    populateLocalTable();
   }
 
   @Override
@@ -76,11 +78,7 @@ public class LocationDAO implements IDAO<Location> {
       dataEditQueue.setEditCount(0);
 
       // Update database in separate thread
-      Thread removeThread =
-          new Thread(
-              () -> {
-                updateDatabase(false);
-              });
+      Thread removeThread = new Thread(() -> updateDatabase(false));
       removeThread.start();
     }
 
@@ -104,11 +102,7 @@ public class LocationDAO implements IDAO<Location> {
       dataEditQueue.setEditCount(0);
 
       // Update database in separate thread
-      Thread removeThread =
-          new Thread(
-              () -> {
-                updateDatabase(false);
-              });
+      Thread removeThread = new Thread(() -> updateDatabase(false));
       removeThread.start();
     }
 
@@ -119,36 +113,70 @@ public class LocationDAO implements IDAO<Location> {
   }
 
   @Override
-  public boolean removeEntry(Object localID) {
-    //
-    //    // Mark entry Location status as NEW
-    //    entry.setStatus(EntryStatus.NEW);
-    //
-    //    // Push a REMOVE to the data edit stack, update the db if the batch limit has been reached
-    //    if (dataEditQueue.add(new DataEdit<>(entry, DataEditType.REMOVE), true)) {
-    //
-    //      // Reset edit count
-    //      dataEditQueue.setEditCount(0);
-    //
-    //      // Update database in separate thread
-    //      Thread removeThread =
-    //          new Thread(
-    //              () -> {
-    //                updateDatabase(false);
-    //              });
-    //      removeThread.start();
-    //    }
-    //
-    //    // Remove entry Location from local table
-    //    tableMap.remove(entry.getLongName(), entry);
+  public boolean removeEntry(Object identifier) {
+
+    // Check if input identifier is correct type
+    if (!(identifier instanceof String)) {
+      System.out.println(
+          "[LocationDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
+      return false;
+    }
+
+    String locationID = (String) identifier;
+
+    // Check if local table contains identifier
+    if (!tableMap.containsKey(locationID)) {
+      System.out.println(
+          "[LocationDAO.removeEntry]: Identifier "
+              + locationID
+              + " does not exist in local table.");
+      return false;
+    }
+
+    // Get entry from local table
+    Location entry = tableMap.get(locationID);
+
+    // Mark entry Node status as NEW
+    entry.setStatus(EntryStatus.NEW);
+
+    // Push a REMOVE to the data edit stack, update the db if the batch limit has been reached
+    if (dataEditQueue.add(new DataEdit<>(entry, DataEditType.REMOVE), true)) {
+
+      // Reset edit count
+      dataEditQueue.setEditCount(0);
+
+      // Update database in separate thread
+      Thread removeThread = new Thread(() -> updateDatabase(false));
+      removeThread.start();
+    }
+
+    // Remove entry Node from local table
+    tableMap.remove(entry.getLongName(), entry);
 
     return true;
   }
 
   @Override
   public Location getEntry(Object identifier) {
-    // Return Location object from local table
-    return tableMap.get(identifier);
+
+    // Check if input identifier is correct type
+    if (!(identifier instanceof String)) {
+      System.out.println(
+          "[LocationDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
+      return null;
+    }
+
+    String locationID = (String) identifier;
+
+    // Check if local table contains identifier
+    if (!tableMap.containsKey(locationID)) {
+      System.out.println(
+          "[LocationDAO.getEntry]: Identifier " + locationID + " does not exist in local table.");
+      return null;
+    }
+
+    // Return Node object from local table
+    return tableMap.get(locationID);
   }
 
   @Override
@@ -174,7 +202,7 @@ public class LocationDAO implements IDAO<Location> {
       case INSERT:
 
         // REMOVE the entry if it was an INSERT
-        removeEntry(-1 /*dataEdit.getNewEntry()*/);
+        removeEntry(dataEdit.getNewEntry().getLongName());
         break;
 
       case UPDATE:

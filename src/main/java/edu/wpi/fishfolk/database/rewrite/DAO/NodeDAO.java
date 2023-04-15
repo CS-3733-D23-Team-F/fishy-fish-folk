@@ -77,11 +77,7 @@ public class NodeDAO implements IDAO<Node> {
       dataEditQueue.setEditCount(0);
 
       // Update database in separate thread
-      Thread removeThread =
-          new Thread(
-              () -> {
-                updateDatabase(false);
-              });
+      Thread removeThread = new Thread(() -> updateDatabase(false));
       removeThread.start();
     }
 
@@ -105,11 +101,7 @@ public class NodeDAO implements IDAO<Node> {
       dataEditQueue.setEditCount(0);
 
       // Update database in separate thread
-      Thread removeThread =
-          new Thread(
-              () -> {
-                updateDatabase(false);
-              });
+      Thread removeThread = new Thread(() -> updateDatabase(false));
       removeThread.start();
     }
 
@@ -151,11 +143,7 @@ public class NodeDAO implements IDAO<Node> {
       dataEditQueue.setEditCount(0);
 
       // Update database in separate thread
-      Thread removeThread =
-          new Thread(
-              () -> {
-                updateDatabase(false);
-              });
+      Thread removeThread = new Thread(() -> updateDatabase(false));
       removeThread.start();
     }
 
