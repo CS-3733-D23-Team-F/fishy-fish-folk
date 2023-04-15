@@ -172,7 +172,7 @@
                   </MFXButton>
                   <MFXTextField fx:id="loginIDField" layoutX="495.0" layoutY="170.0" prefHeight="53.0" prefWidth="245.0" promptText="User ID" />
                   <MFXPasswordField fx:id="loginPassField" layoutX="494.0" layoutY="257.0" prefHeight="50.0" prefWidth="246.0" promptText="Password/PIN" />
-                  <Label fx:id="errorBox" layoutX="472.0" layoutY="335.0" prefHeight="18.0" prefWidth="300.0" style="-fx-alignment: center; -fx-background-color: white;" textAlignment="CENTER" />
+                  <Label fx:id="errorBox" layoutX="472.0" layoutY="335.0" prefHeight="18.0" prefWidth="300.0" style="-fx-alignment: center; -fx-background-color: F4F4F4;" textAlignment="CENTER" />
                </children>
             </AnchorPane>
          </children>
