@@ -1,32 +1,27 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
-import edu.wpi.fishfolk.database.*;
-import edu.wpi.fishfolk.database.edit.InsertEdit;
-import edu.wpi.fishfolk.database.edit.RemoveEdit;
-import edu.wpi.fishfolk.database.edit.UpdateEdit;
+import edu.wpi.fishfolk.database.TableEntry.Location;
+import edu.wpi.fishfolk.database.TableEntry.Node;
+import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.mapeditor.BuildingChecker;
-import edu.wpi.fishfolk.mapeditor.CircleNode;
-import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 import java.util.List;
-import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
 public class MapEditorController extends AbsController {
@@ -77,16 +72,18 @@ public class MapEditorController extends AbsController {
   DirectoryChooser dirChooser;
 
   private EDITOR_STATE state;
-  private String currentEditingNode;
+  private int currentEditingNode;
   private List<Location> currentEditingLocations;
   private int currentEditingLocationIdx;
 
   private Group nodesGroup;
 
   private int currentFloor = 2;
-  private List<MicroNode> unodes;
+  private List<Node> nodes;
 
   private BuildingChecker buildingChecker;
+
+  private LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
 
   public MapEditorController() {
     super();
@@ -95,63 +92,6 @@ public class MapEditorController extends AbsController {
 
   @FXML
   private void initialize() {
-
-    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
-    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
-
-    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
-    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
-
-    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
-    exitButton.setOnMouseClicked(event -> System.exit(0));
-
-    closeServiceNav.setVisible(false);
-    closeServiceNav.setDisable(true);
-
-    serviceNav.setOnMouseClicked(
-        event -> {
-          // menuWrap.setDisable(false);
-          serviceBar.setVisible(true);
-          serviceBar.setDisable(false);
-          TranslateTransition slide = new TranslateTransition();
-          slide.setDuration(Duration.seconds(0.4));
-          slide.setNode(slider);
-
-          slide.setToY(490);
-          slide.play();
-
-          slider.setTranslateY(490);
-          slide.setOnFinished(
-              (ActionEvent e) -> {
-                serviceNav.setVisible(false);
-                closeServiceNav.setVisible(true);
-                serviceNav.setDisable(true);
-                closeServiceNav.setDisable(false);
-              });
-        });
-
-    closeServiceNav.setOnMouseClicked(
-        event -> {
-          TranslateTransition slide = new TranslateTransition();
-          slide.setDuration(Duration.seconds(0.4));
-          slide.setNode(slider);
-          slide.setToY(0);
-          slide.play();
-
-          slider.setTranslateY(0);
-
-          slide.setOnFinished(
-              (ActionEvent e) -> {
-                serviceNav.setVisible(true);
-                closeServiceNav.setVisible(false);
-                serviceNav.setDisable(false);
-                closeServiceNav.setDisable(true);
-                serviceBar.setVisible(false);
-                serviceBar.setDisable(true);
-              });
-        });
 
     // copy contents, not reference
     ArrayList<String> floorsReverse = new ArrayList<>(allFloors);
@@ -206,8 +146,8 @@ public class MapEditorController extends AbsController {
 
           } else if (state == EDITOR_STATE.EDITING) {
             state = EDITOR_STATE.IDLE;
-            currentEditingNode = "";
-            clearMicroNodeFields();
+            currentEditingNode = -1;
+            clearNodeFields();
             clearLocationFields();
           }
         });
@@ -267,27 +207,18 @@ public class MapEditorController extends AbsController {
 
     nodesGroup.getChildren().clear();
 
-    unodes =
-        dbConnection.micronodeTable.executeQuery("SELECT *", "WHERE floor = '" + floor + "'")
-            .stream()
-            .map(
-                elt -> {
-                  MicroNode un = new MicroNode();
-                  un.construct(new ArrayList(List.<String>of(elt)));
-                  return un;
-                })
-            .toList();
+    nodes = dbConnection.getNodesOnFloor(floor);
 
     // System.out.println(unodes.size());
 
-    unodes.forEach(this::drawNode);
+    nodes.forEach(this::drawNode);
   }
 
   // this also does some initialization now
-  private void drawNode(MicroNode unode) {
+  private void drawNode(Node node) {
 
-    Point2D p = unode.point;
-    CircleNode c = new CircleNode(unode.id, p.getX(), p.getY(), 4);
+    Point2D p = node.getPoint();
+    NodeCircle c = new NodeCircle(node.getNodeID(), p.getX(), p.getY(), 4);
     c.setStrokeWidth(5);
     c.setFill(Color.rgb(12, 212, 252));
     c.setStroke(Color.rgb(12, 212, 252)); // #208036
@@ -295,20 +226,13 @@ public class MapEditorController extends AbsController {
     c.setOnMousePressed(
         event -> {
           state = EDITOR_STATE.EDITING;
-          currentEditingNode = unode.id;
-          currentEditingLocations =
-              dbConnection.getMostRecentLocations(unode.id).stream()
-                  .map(
-                      elt -> {
-                        Location loc = new Location();
-                        loc.construct(new ArrayList<>(Arrays.asList(elt)));
-                        return loc;
-                      })
-                  .toList();
 
+          currentEditingNode = node.getNodeID();
+
+          currentEditingLocations = dbConnection.getLocations(node.getNodeID(), today);
           currentEditingLocationIdx = 0;
 
-          fillMicroNodeFields(unode);
+          fillNodeFields(node);
 
           if (currentEditingLocations.size() > 1) {
             nextLocation.setVisible(true);
@@ -343,28 +267,15 @@ public class MapEditorController extends AbsController {
             c.setCenterX(event.getX());
             c.setCenterY(event.getY());
 
-            unode.point = new Point2D(event.getX(), event.getY());
-            unode.building = buildingChecker.getBuilding(unode.point, allFloors.get(currentFloor));
+            node.setPoint(new Point2D(event.getX(), event.getY()));
+            node.setBuilding(buildingChecker
+                    .getBuilding(node.getPoint(), allFloors.get(currentFloor)));
 
-            fillMicroNodeFields(unode);
-            fillLocationFields(unode.getLocations().get(currentEditingLocationIdx));
+            fillNodeFields(node);
+            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
 
-            // process edits for both x and y
-            dbConnection.processEdit(
-                new UpdateEdit(
-                    DataTableType.MICRONODE,
-                    "id",
-                    unode.id,
-                    "x",
-                    Double.toString(unode.point.getX())));
-
-            dbConnection.processEdit(
-                new UpdateEdit(
-                    DataTableType.MICRONODE,
-                    "id",
-                    unode.id,
-                    "y",
-                    Double.toString(unode.point.getY())));
+            //update node in database with updated x & y
+            dbConnection.updateEntry(node);
           }
         });
 
@@ -372,19 +283,19 @@ public class MapEditorController extends AbsController {
   }
 
   /**
-   * Fill in text fields for MicroNodes.
+   * Fill in text fields for Nodes.
    *
-   * @param unode the MicroNode whose data to fill in.
+   * @param node the Node whose data to fill in.
    */
-  private void fillMicroNodeFields(MicroNode unode) {
+  private void fillNodeFields(Node node) {
 
-    xText.setText(Double.toString(unode.point.getX()));
-    yText.setText(Double.toString(unode.point.getY()));
-    floorText.setText(unode.floor);
-    buildingText.setText(unode.building);
+    xText.setText(Double.toString(node.getX()));
+    yText.setText(Double.toString(node.getY()));
+    floorText.setText(node.getFloor());
+    buildingText.setText(node.getBuilding());
   }
 
-  private void clearMicroNodeFields() {
+  private void clearNodeFields() {
     xText.setText("");
     yText.setText("");
     floorText.setText("");
@@ -393,9 +304,9 @@ public class MapEditorController extends AbsController {
 
   private void fillLocationFields(Location loc) {
 
-    shortnameText.setText(loc.shortname);
-    typeText.setText(loc.type.toString());
-    longnameText.setText(loc.longname);
+    shortnameText.setText(loc.getShortName());
+    typeText.setText(loc.getNodeType().toString());
+    longnameText.setText(loc.getLongName());
   }
 
   private void clearLocationFields() {
@@ -405,43 +316,36 @@ public class MapEditorController extends AbsController {
     longnameText.setText("");
   }
 
-  private void deleteNode(String id) {
+  private void deleteNode(int nodeID) {
 
-    Iterator<Node> itr = nodesGroup.getChildren().iterator();
+    Iterator<javafx.scene.Node> itr = nodesGroup.getChildren().iterator();
     while (itr.hasNext()) {
 
-      CircleNode curr = (CircleNode) itr.next();
+      NodeCircle curr = (NodeCircle) itr.next();
 
-      if (curr.getCircleNodeID().equals(id)) {
+      if (curr.getNodeID() == nodeID) {
         itr.remove();
-        System.out.println("removed node" + curr.getCircleNodeID());
+        System.out.println("removed node" + nodeID);
       }
     }
 
-    dbConnection.processEdit(new RemoveEdit(DataTableType.MICRONODE, "id", id));
+    //remove from database
+    dbConnection.removeEntry(nodeID, TableEntryType.NODE);
 
-    currentEditingNode = "";
+    currentEditingNode = -1;
     state = EDITOR_STATE.IDLE;
   }
 
   private void insertNode(double x, double y) {
 
-    String id = dbConnection.getNextID();
+    int id = dbConnection.getNextNodeID();
 
     String floor = allFloors.get(currentFloor);
-    MicroNode unode =
-        new MicroNode(
-            Integer.parseInt(id),
-            x,
-            y,
-            floor,
-            buildingChecker.getBuilding(new Point2D(x, y), floor));
+    Node node = new Node(id, new Point2D(x, y), floor,
+                buildingChecker.getBuilding(new Point2D(x, y), floor));
 
-    drawNode(unode);
-    // fillMicroNodeFields();
-
-    dbConnection.processEdit(
-        new InsertEdit(DataTableType.MICRONODE, "id", id, unode.deconstruct()));
+    drawNode(node);
+    dbConnection.insertEntry(node);
   }
 }
 
