@@ -20,9 +20,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
   }
 
   @Override
-  public void init(boolean drop) {
-
-  }
+  public void init(boolean drop) {}
 
   @Override
   public void populateLocalTable() {}

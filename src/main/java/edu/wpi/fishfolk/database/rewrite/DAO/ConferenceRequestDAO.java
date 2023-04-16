@@ -20,9 +20,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
   }
 
   @Override
-  public void init(boolean drop) {
-
-  }
+  public void init(boolean drop) {}
 
   @Override
   public void populateLocalTable() {}

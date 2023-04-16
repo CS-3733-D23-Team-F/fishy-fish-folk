@@ -1,11 +1,10 @@
 package edu.wpi.fishfolk;
 
 import edu.wpi.fishfolk.database.rewrite.Fdb;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Location;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.FoodRequest;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.TableEntryType;
-import edu.wpi.fishfolk.pathfinding.NodeType;
-import javafx.geometry.Point2D;
+import edu.wpi.fishfolk.ui.FormStatus;
+import java.time.LocalDateTime;
 
 public class Main {
 
@@ -17,40 +16,103 @@ public class Main {
 
     // Test NodeDAO
 
-//    fdb.insertEntry(new Node(9997, new Point2D(100, 200), "carpet", "bingus"));
-//    fdb.insertEntry(new Node(9998, new Point2D(300, 400), "tile", "bingus"));
-//    fdb.insertEntry(new Node(9999, new Point2D(500, 600), "uhh, dirt?", "bingus"));
-//
-//    fdb.updateEntry(new Node(9998, new Point2D(777, 777), "tile", "bingus"));
-//
-//    System.out.println("[Main]: " + fdb.getEntry(9998, TableEntryType.NODE));
-//    System.out.println("[Main]: " + fdb.getAllEntries(TableEntryType.NODE));
-//
-//    fdb.undoChange(TableEntryType.NODE);
-//    fdb.undoChange(TableEntryType.NODE);
-//
-//    fdb.updateEntry(new Node(9997, new Point2D(1999, 1999), "carpet", "bingus"));
-//
-//    fdb.removeEntry(9998, TableEntryType.NODE);
+    //    fdb.insertEntry(new Node(9997, new Point2D(100, 200), "carpet", "bingus"));
+    //    fdb.insertEntry(new Node(9998, new Point2D(300, 400), "tile", "bingus"));
+    //    fdb.insertEntry(new Node(9999, new Point2D(500, 600), "uhh, dirt?", "bingus"));
+    //
+    //    fdb.updateEntry(new Node(9998, new Point2D(777, 777), "tile", "bingus"));
+    //
+    //    System.out.println("[Main]: " + fdb.getEntry(9998, TableEntryType.NODE));
+    //    System.out.println("[Main]: " + fdb.getAllEntries(TableEntryType.NODE));
+    //
+    //    fdb.undoChange(TableEntryType.NODE);
+    //    fdb.undoChange(TableEntryType.NODE);
+    //
+    //    fdb.updateEntry(new Node(9997, new Point2D(1999, 1999), "carpet", "bingus"));
+    //
+    //    fdb.removeEntry(9998, TableEntryType.NODE);
 
     // Test LocationDAO
 
-//    fdb.insertEntry(new Location(".Loooong name", "Short name", NodeType.INFO));
-//    fdb.insertEntry(new Location(".Bingus Tower III", "Bingus", NodeType.DEPT));
-//    fdb.insertEntry(new Location(".Joseph Biden", "Joe", NodeType.INFO));
-//
-//    fdb.updateEntry(new Location(".Bingus Tower III", "BINGUSSSSSSSS", NodeType.DEPT));
-//
-//    System.out.println("[Main]: " + fdb.getEntry(".Bingus Tower III", TableEntryType.LOCATION));
-//    System.out.println("[Main]: " + fdb.getAllEntries(TableEntryType.LOCATION));
-//
-//    fdb.undoChange(TableEntryType.LOCATION);
-//    fdb.undoChange(TableEntryType.LOCATION);
-//
-//    fdb.updateEntry(new Location(".Loooong name", "This name is SHORT", NodeType.INFO));
-//
-//    fdb.removeEntry(".Bingus Tower III", TableEntryType.LOCATION);
-//
-//    fdb.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/", TableEntryType.NODE);
+    //    fdb.insertEntry(new Location(".Loooong name", "Short name", NodeType.INFO));
+    //    fdb.insertEntry(new Location(".Bingus Tower III", "Bingus", NodeType.DEPT));
+    //    fdb.insertEntry(new Location(".Joseph Biden", "Joe", NodeType.INFO));
+    //
+    //    fdb.updateEntry(new Location(".Bingus Tower III", "BINGUSSSSSSSS", NodeType.DEPT));
+    //
+    //    System.out.println("[Main]: " + fdb.getEntry(".Bingus Tower III",
+    // TableEntryType.LOCATION));
+    //    System.out.println("[Main]: " + fdb.getAllEntries(TableEntryType.LOCATION));
+    //
+    //    fdb.undoChange(TableEntryType.LOCATION);
+    //    fdb.undoChange(TableEntryType.LOCATION);
+    //
+    //    fdb.updateEntry(new Location(".Loooong name", "This name is SHORT", NodeType.INFO));
+    //
+    //    fdb.removeEntry(".Bingus Tower III", TableEntryType.LOCATION);
+    //
+    //    fdb.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/", TableEntryType.NODE);
+
+    // Test FoodRequestDAO
+
+    fdb.insertEntry(
+        new FoodRequest(
+            1,
+            "Person A",
+            FormStatus.submitted,
+            "lmao",
+            1.11,
+            "SL 116",
+            LocalDateTime.now(),
+            "Bingus"));
+    fdb.insertEntry(
+        new FoodRequest(
+            2,
+            "Person B",
+            FormStatus.submitted,
+            "lmao",
+            2.22,
+            "SL 117",
+            LocalDateTime.now(),
+            "Bingus"));
+    fdb.insertEntry(
+        new FoodRequest(
+            3,
+            "Person C",
+            FormStatus.submitted,
+            "lmao",
+            3.33,
+            "SL 118",
+            LocalDateTime.now(),
+            "Bingus"));
+
+    fdb.updateEntry(
+        new FoodRequest(
+            2,
+            "Person B",
+            FormStatus.submitted,
+            "lmao",
+            99.99,
+            "SL 117",
+            LocalDateTime.now(),
+            "Bingus"));
+
+    fdb.undoChange(TableEntryType.FOOD_REQUEST);
+    fdb.undoChange(TableEntryType.FOOD_REQUEST);
+
+    fdb.updateEntry(
+        new FoodRequest(
+            1,
+            "Person A",
+            FormStatus.submitted,
+            "LOLLLLLLLL",
+            1.11,
+            "SL 116",
+            LocalDateTime.now(),
+            "Bingus"));
+
+    fdb.removeEntry(2, TableEntryType.FOOD_REQUEST);
+
+    fdb.exportCSV("D:\\", TableEntryType.FOOD_REQUEST);
   }
 }

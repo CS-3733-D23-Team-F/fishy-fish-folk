@@ -30,20 +30,21 @@ public class LocationDAO implements IDAO<Location> {
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
 
+    init(false);
     populateLocalTable();
   }
 
   @Override
-  public void init(boolean drop){
+  public void init(boolean drop) {
 
     try {
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-                      + dbConnection.getSchema()
-                      + "' AND tablename = '"
-                      + tableName
-                      + "');";
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "');";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -59,19 +60,20 @@ public class LocationDAO implements IDAO<Location> {
 
       } else {
         // doesnt exist, create as usual
-        query = "CREATE TABLE " + tableName
+        query =
+            "CREATE TABLE "
+                + tableName
                 + " (longname VARCHAR(64) PRIMARY KEY," // 64 char
-                + " x REAL," //4 bytes
+                + " x REAL," // 4 bytes
                 + " y REAL,"
-                + " floor VARCHAR(2)," //2 characters
-                + " building VARCHAR(16));"; //16 characters
+                + " floor VARCHAR(2)," // 2 characters
+                + " building VARCHAR(16));"; // 16 characters
         statement.executeUpdate(query);
       }
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
-
   }
 
   @Override
@@ -318,7 +320,7 @@ public class LocationDAO implements IDAO<Location> {
         System.out.println(
             "[LocationDAO.updateDatabase]: "
                 + dataEdit.getType()
-                + " Node "
+                + " Location "
                 + dataEdit.getNewEntry().getLongName());
 
         // Change behavior based on data edit type

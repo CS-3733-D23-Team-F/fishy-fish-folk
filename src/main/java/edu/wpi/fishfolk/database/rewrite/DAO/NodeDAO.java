@@ -29,25 +29,26 @@ public class NodeDAO implements IDAO<Node> {
   /** DAO for Node table in PostgreSQL database. */
   public NodeDAO(Connection dbConnection) {
     this.dbConnection = dbConnection;
-    this.tableName = "micronode";
+    this.tableName = "node";
     this.headers = new ArrayList<>(List.of("id", "x", "y", "floor", "building"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
 
+    init(false);
     populateLocalTable();
   }
 
   @Override
-  public void init(boolean drop){
+  public void init(boolean drop) {
 
     try {
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-                      + dbConnection.getSchema()
-                      + "' AND tablename = '"
-                      + tableName
-                      + "');";
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "');";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -63,19 +64,20 @@ public class NodeDAO implements IDAO<Node> {
 
       } else {
         // doesnt exist, create as usual
-        query = "CREATE TABLE " + tableName
+        query =
+            "CREATE TABLE "
+                + tableName
                 + " (id SMALLINT PRIMARY KEY," // 2 bytes: -2^15 to 2^15-1
-                + " x REAL," //4 bytes
+                + " x REAL," // 4 bytes
                 + " y REAL,"
-                + " floor VARCHAR(2)," //2 characters
-                + " building VARCHAR(16));"; //16 characters
+                + " floor VARCHAR(2)," // 2 characters
+                + " building VARCHAR(16));"; // 16 characters
         statement.executeUpdate(query);
       }
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
-
   }
 
   public void populateLocalTable() {
@@ -93,11 +95,11 @@ public class NodeDAO implements IDAO<Node> {
       // For each Node in the results, create a new Node object and put it in the local table
       while (results.next()) {
         Node node =
-                new Node(
-                        Integer.parseInt(results.getString(headers.get(0))),
-                        new Point2D(results.getDouble(headers.get(1)), results.getDouble(headers.get(2))),
-                        results.getString(headers.get(3)),
-                        results.getString(headers.get(4)));
+            new Node(
+                Integer.parseInt(results.getString(headers.get(0))),
+                new Point2D(results.getDouble(headers.get(1)), results.getDouble(headers.get(2))),
+                results.getString(headers.get(3)),
+                results.getString(headers.get(4)));
         tableMap.put(node.getNodeID(), node);
       }
 
@@ -137,7 +139,7 @@ public class NodeDAO implements IDAO<Node> {
 
     // Push an UPDATE to the data edit stack, update the db if the batch limit has been reached
     if (dataEditQueue.add(
-            new DataEdit<>(tableMap.get(entry.getNodeID()), entry, DataEditType.UPDATE), true)) {
+        new DataEdit<>(tableMap.get(entry.getNodeID()), entry, DataEditType.UPDATE), true)) {
 
       // Reset edit count
       dataEditQueue.setEditCount(0);
@@ -159,7 +161,7 @@ public class NodeDAO implements IDAO<Node> {
     // Check if input identifier is correct type
     if (!(identifier instanceof Integer)) {
       System.out.println(
-              "[NodeDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
+          "[NodeDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
       return false;
     }
 
@@ -168,7 +170,7 @@ public class NodeDAO implements IDAO<Node> {
     // Check if local table contains identifier
     if (!tableMap.containsKey(nodeID)) {
       System.out.println(
-              "[NodeDAO.removeEntry]: Identifier " + nodeID + " does not exist in local table.");
+          "[NodeDAO.removeEntry]: Identifier " + nodeID + " does not exist in local table.");
       return false;
     }
 
@@ -209,7 +211,7 @@ public class NodeDAO implements IDAO<Node> {
     // Check if local table contains identifier
     if (!tableMap.containsKey(nodeID)) {
       System.out.println(
-              "[NodeDAO.getEntry]: Identifier " + nodeID + " does not exist in local table.");
+          "[NodeDAO.getEntry]: Identifier " + nodeID + " does not exist in local table.");
       return null;
     }
 
@@ -269,43 +271,43 @@ public class NodeDAO implements IDAO<Node> {
 
       // Print active thread (DEBUG)
       System.out.println(
-              "[NodeDAO.updateDatabase]: Updating database in " + Thread.currentThread().getName());
+          "[NodeDAO.updateDatabase]: Updating database in " + Thread.currentThread().getName());
 
       // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
       String insert =
-              "INSERT INTO "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " VALUES (?, ?, ?, ?, ?);";
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " VALUES (?, ?, ?, ?, ?);";
 
       String update =
-              "UPDATE "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " SET "
-                      + headers.get(0)
-                      + " = ?, "
-                      + headers.get(1)
-                      + " = ?, "
-                      + headers.get(2)
-                      + " = ?, "
-                      + headers.get(3)
-                      + " = ?, "
-                      + headers.get(4)
-                      + " = ? WHERE "
-                      + headers.get(0)
-                      + " = ?;";
+          "UPDATE "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " SET "
+              + headers.get(0)
+              + " = ?, "
+              + headers.get(1)
+              + " = ?, "
+              + headers.get(2)
+              + " = ?, "
+              + headers.get(3)
+              + " = ?, "
+              + headers.get(4)
+              + " = ? WHERE "
+              + headers.get(0)
+              + " = ?;";
 
       String remove =
-              "DELETE FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " WHERE "
-                      + headers.get(0)
-                      + " = ?;";
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " WHERE "
+              + headers.get(0)
+              + " = ?;";
 
       PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
       PreparedStatement preparedUpdate = dbConnection.prepareStatement(update);
@@ -323,10 +325,10 @@ public class NodeDAO implements IDAO<Node> {
 
         // Print update info (DEBUG)
         System.out.println(
-                "[NodeDAO.updateDatabase]: "
-                        + dataEdit.getType()
-                        + " Node "
-                        + dataEdit.getNewEntry().getNodeID());
+            "[NodeDAO.updateDatabase]: "
+                + dataEdit.getType()
+                + " Node "
+                + dataEdit.getNewEntry().getNodeID());
 
         // Change behavior based on data edit type
         switch (dataEdit.getType()) {
@@ -375,8 +377,8 @@ public class NodeDAO implements IDAO<Node> {
 
       // Print active thread error (DEBUG)
       System.out.println(
-              "[NodeDAO.updateDatabase]: Error updating database in "
-                      + Thread.currentThread().getName());
+          "[NodeDAO.updateDatabase]: Error updating database in "
+              + Thread.currentThread().getName());
 
       System.out.println(e.getMessage());
       return false;
@@ -384,8 +386,8 @@ public class NodeDAO implements IDAO<Node> {
 
     // Print active thread end (DEBUG)
     System.out.println(
-            "[NodeDAO.updateDatabase]: Finished updating database in "
-                    + Thread.currentThread().getName());
+        "[NodeDAO.updateDatabase]: Finished updating database in "
+            + Thread.currentThread().getName());
 
     // On success
     return true;
@@ -407,22 +409,22 @@ public class NodeDAO implements IDAO<Node> {
     }
 
     try (BufferedReader br =
-                 new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
+        new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
 
       // delete the old data
       dbConnection
-              .createStatement()
-              .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+          .createStatement()
+          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
 
       // skip first row of csv which has the headers
       String line = br.readLine();
 
       String insert =
-              "INSERT INTO "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " VALUES (?, ?, ?, ?, ?);";
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " VALUES (?, ?, ?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
@@ -431,11 +433,11 @@ public class NodeDAO implements IDAO<Node> {
         String[] parts = line.split(",");
 
         Node n =
-                new Node(
-                        Integer.parseInt(parts[0]),
-                        new Point2D(Double.parseDouble(parts[1]), Double.parseDouble(parts[2])),
-                        parts[3],
-                        parts[4]);
+            new Node(
+                Integer.parseInt(parts[0]),
+                new Point2D(Double.parseDouble(parts[1]), Double.parseDouble(parts[2])),
+                parts[3],
+                parts[4]);
 
         tableMap.put(n.getNodeID(), n);
 
@@ -463,7 +465,7 @@ public class NodeDAO implements IDAO<Node> {
 
     // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ofPattern-java.lang.String-
     String filename =
-            tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
+        tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
 
     try {
       PrintStream out = new PrintStream(new FileOutputStream(directory + "\\" + filename));
@@ -473,15 +475,15 @@ public class NodeDAO implements IDAO<Node> {
       for (Map.Entry<Integer, Node> entry : tableMap.entrySet()) {
         Node n = entry.getValue();
         out.println(
-                n.getNodeID()
-                        + ","
-                        + n.getX()
-                        + ","
-                        + n.getY()
-                        + ","
-                        + n.getFloor()
-                        + ","
-                        + n.getBuilding());
+            n.getNodeID()
+                + ","
+                + n.getX()
+                + ","
+                + n.getY()
+                + ","
+                + n.getFloor()
+                + ","
+                + n.getBuilding());
       }
 
       out.close();

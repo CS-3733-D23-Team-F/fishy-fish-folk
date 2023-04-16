@@ -1,52 +1,62 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
-import edu.wpi.fishfolk.ui.CreditCardInfo;
-import edu.wpi.fishfolk.ui.FoodItem;
+import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 
 public class FoodRequest {
 
-  @Getter @Setter private String id;
+  // Common
+  @Getter @Setter private int foodRequestID;
   @Getter @Setter private String assignee;
-  @Getter @Setter private FormStatus status;
-  @Getter @Setter private ArrayList<FoodItem> items;
-  @Getter @Setter private LocalDateTime time;
-  @Getter @Setter private CreditCardInfo payer;
-  @Getter @Setter private String location;
-  @Getter @Setter private float totalPrice;
+  @Getter @Setter private FormStatus formStatus;
+  @Getter @Setter private String notes;
+
+  // Specific
+  @Getter @Setter private double totalPrice;
+  @Getter @Setter private String deliveryRoom;
+  @Getter @Setter private LocalDateTime deliveryTime;
+  @Getter @Setter private String recipientName;
+  // @Getter @Setter private List<FoodItem> foodItems;
+
+  // For DAO
+  @Getter @Setter private EntryStatus status;
 
   /**
    * Table entry type: Food Request
    *
-   * @param id Unique ID of request
+   * @param foodRequestID Unique ID of food request
    * @param assignee Assignee of request
-   * @param status Status of request
-   * @param items Food items of request
-   * @param time Time of request
-   * @param payer Payment information of request
-   * @param location Location of request
-   * @param totalPrice Price of request
+   * @param formStatus Form status of request
+   * @param notes Additional notes of request
+   * @param totalPrice Total price of request
+   * @param deliveryRoom Delivery room of request
+   * @param deliveryTime Delivery time of request
+   * @param recipientName Request recipient's name //@param foodItems Food items requested
    */
   public FoodRequest(
-      String id,
+      int foodRequestID,
       String assignee,
-      FormStatus status,
-      ArrayList<FoodItem> items,
-      LocalDateTime time,
-      CreditCardInfo payer,
-      String location,
-      float totalPrice) {
-    this.id = id;
+      FormStatus formStatus,
+      String notes,
+      double totalPrice,
+      String deliveryRoom,
+      LocalDateTime deliveryTime,
+      String recipientName
+      /*List<FoodItem> foodItems*/ ) {
+    this.foodRequestID = foodRequestID;
     this.assignee = assignee;
-    this.status = status;
-    this.items = items;
-    this.time = time;
-    this.payer = payer;
-    this.location = location;
+    this.formStatus = formStatus;
+    this.notes = notes;
+
     this.totalPrice = totalPrice;
+    this.deliveryRoom = deliveryRoom;
+    this.deliveryTime = deliveryTime;
+    this.recipientName = recipientName;
+    // this.foodItems = foodItems;
+
+    this.status = EntryStatus.OLD;
   }
 }
