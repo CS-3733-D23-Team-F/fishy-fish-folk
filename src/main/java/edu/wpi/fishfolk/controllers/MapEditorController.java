@@ -4,7 +4,6 @@ import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.database.BuildingRegion;
 import edu.wpi.fishfolk.database.CircleNode;
 import edu.wpi.fishfolk.database.DataTableType;
-import edu.wpi.fishfolk.database.MicroNode;
 import edu.wpi.fishfolk.database.edit.InsertEdit;
 import edu.wpi.fishfolk.database.edit.RemoveEdit;
 import edu.wpi.fishfolk.database.edit.UpdateEdit;

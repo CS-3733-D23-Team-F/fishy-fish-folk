@@ -38,7 +38,7 @@ public class Fdb {
     // Hospital Map Tables
     this.nodeTable = new NodeDAO(dbConnection);
     this.locationTable = new LocationDAO(dbConnection);
-    this.moveTable = new MoveDAO();
+    this.moveTable = new MoveDAO(dbConnection);
     this.edgeTable = new EdgeDAO();
 
     // Service Request Tables

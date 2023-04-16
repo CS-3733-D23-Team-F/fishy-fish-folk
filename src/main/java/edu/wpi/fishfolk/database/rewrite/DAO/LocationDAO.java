@@ -6,11 +6,17 @@ import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Location;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
+import javafx.geometry.Point2D;
+import java.io.*;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LocationDAO implements IDAO<Location> {
 
@@ -30,6 +36,7 @@ public class LocationDAO implements IDAO<Location> {
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
 
+    init(false);
     populateLocalTable();
   }
 
@@ -60,11 +67,9 @@ public class LocationDAO implements IDAO<Location> {
       } else {
         // doesnt exist, create as usual
         query = "CREATE TABLE " + tableName
-                + " (longname VARCHAR(64) PRIMARY KEY," // 64 char
-                + " x REAL," //4 bytes
-                + " y REAL,"
-                + " floor VARCHAR(2)," //2 characters
-                + " building VARCHAR(16));"; //16 characters
+                + " (longname VARCHAR(64) PRIMARY KEY," //64 char
+                + " shortname VARCHAR(64)," //64 characters
+                + " type VARCHAR(4));"; //4 characters
         statement.executeUpdate(query);
       }
 
@@ -174,7 +179,7 @@ public class LocationDAO implements IDAO<Location> {
     // Get entry from local table
     Location entry = tableMap.get(locationID);
 
-    // Mark entry Node status as NEW
+    // Mark entry Location status as NEW
     entry.setStatus(EntryStatus.NEW);
 
     // Push a REMOVE to the data edit stack, update the db if the batch limit has been reached
@@ -188,7 +193,7 @@ public class LocationDAO implements IDAO<Location> {
       removeThread.start();
     }
 
-    // Remove entry Node from local table
+    // Remove entry Location from local table
     tableMap.remove(entry.getLongName(), entry);
 
     return true;
@@ -213,20 +218,20 @@ public class LocationDAO implements IDAO<Location> {
       return null;
     }
 
-    // Return Node object from local table
+    // Return Location object from local table
     return tableMap.get(locationID);
   }
 
   @Override
   public ArrayList<Location> getAllEntries() {
-    ArrayList<Location> allNodes = new ArrayList<>();
+    ArrayList<Location> allLocs = new ArrayList<>();
 
     // Add all Locations in local table to a list
     for (String longName : tableMap.keySet()) {
-      allNodes.add(tableMap.get(longName));
+      allLocs.add(tableMap.get(longName));
     }
 
-    return allNodes;
+    return allLocs;
   }
 
   @Override
@@ -322,13 +327,15 @@ public class LocationDAO implements IDAO<Location> {
                 + dataEdit.getNewEntry().getLongName());
 
         // Change behavior based on data edit type
+
+        Location newLocEntry = dataEdit.getNewEntry();
         switch (dataEdit.getType()) {
           case INSERT:
 
             // Put the new Location's data into the prepared query
-            preparedInsert.setString(1, dataEdit.getNewEntry().getLongName());
-            preparedInsert.setString(2, dataEdit.getNewEntry().getShortName());
-            preparedInsert.setString(3, dataEdit.getNewEntry().getNodeType().toString());
+            preparedInsert.setString(1, newLocEntry.getLongName());
+            preparedInsert.setString(2, newLocEntry.getShortName());
+            preparedInsert.setString(3, newLocEntry.getNodeType().toString());
 
             // Execute the query
             preparedInsert.executeUpdate();
@@ -337,10 +344,10 @@ public class LocationDAO implements IDAO<Location> {
           case UPDATE:
 
             // Put the new Location's data into the prepared query
-            preparedUpdate.setString(1, dataEdit.getNewEntry().getLongName());
-            preparedUpdate.setString(2, dataEdit.getNewEntry().getShortName());
-            preparedUpdate.setString(3, dataEdit.getNewEntry().getNodeType().toString());
-            preparedUpdate.setString(4, dataEdit.getNewEntry().getLongName());
+            preparedUpdate.setString(1, newLocEntry.getLongName());
+            preparedUpdate.setString(2, newLocEntry.getShortName());
+            preparedUpdate.setString(3, newLocEntry.getNodeType().toString());
+            preparedUpdate.setString(4, newLocEntry.getLongName());
 
             // Execute the query
             preparedUpdate.executeUpdate();
@@ -349,7 +356,7 @@ public class LocationDAO implements IDAO<Location> {
           case REMOVE:
 
             // Put the new Location's data into the prepared query
-            preparedRemove.setString(1, dataEdit.getNewEntry().getLongName());
+            preparedRemove.setString(1, newLocEntry.getLongName());
 
             // Execute the query
             preparedRemove.executeUpdate();
@@ -382,11 +389,91 @@ public class LocationDAO implements IDAO<Location> {
 
   @Override
   public boolean importCSV(String filepath, boolean backup) {
-    return false;
+
+    String[] pathArr = filepath.split("/");
+
+    if (backup) {
+
+      // filepath except for last part (actual file name)
+      StringBuilder folder = new StringBuilder();
+      for (int i = 0; i < pathArr.length - 1; i++) {
+        folder.append(pathArr[i]).append("/");
+      }
+      exportCSV(folder.toString());
+    }
+
+    try (BufferedReader br =
+        new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
+
+      // delete the old data
+      dbConnection
+              .createStatement()
+              .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+
+      // skip first row of csv which has the headers
+      String line = br.readLine();
+
+      String insert =
+              "INSERT INTO "
+                      + dbConnection.getSchema()
+                      + "."
+                      + this.tableName
+                      + " VALUES (?, ?, ?);";
+
+      PreparedStatement insertPS = dbConnection.prepareStatement(insert);
+
+      while ((line = br.readLine()) != null) {
+
+        String[] parts = line.split(",");
+
+        Location l = new Location(parts[0],parts[1], NodeType.valueOf(parts[2]));
+
+        tableMap.put(l.getLongName(), l);
+
+        insertPS.setString(1, l.getLongName());
+        insertPS.setString(2, l.getShortName());
+        insertPS.setString(3, l.getNodeType().toString());
+
+        insertPS.executeUpdate();
+      }
+
+      return true;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
   }
 
   @Override
   public boolean exportCSV(String directory) {
-    return false;
+
+    LocalDateTime dateTime = LocalDateTime.now();
+
+    // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ofPattern-java.lang.String-
+    String filename =
+        tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
+
+    try {
+      PrintStream out = new PrintStream(new FileOutputStream(directory + "\\" + filename));
+
+      out.println(String.join(",", headers));
+
+      for (Map.Entry<String, Location> entry : tableMap.entrySet()) {
+        Location l = entry.getValue();
+        out.println(
+                l.getLongName()
+        + "," + l.getShortName()
+        + "," + l.getNodeType().toString());
+      }
+
+      out.close();
+      return true;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
   }
+
 }

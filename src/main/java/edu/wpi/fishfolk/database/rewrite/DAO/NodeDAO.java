@@ -34,6 +34,7 @@ public class NodeDAO implements IDAO<Node> {
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
 
+    init(false);
     populateLocalTable();
   }
 
