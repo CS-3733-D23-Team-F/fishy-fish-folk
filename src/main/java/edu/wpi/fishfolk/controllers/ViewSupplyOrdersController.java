@@ -3,6 +3,7 @@ package edu.wpi.fishfolk.controllers;
 import static edu.wpi.fishfolk.ui.FormStatus.cancelled;
 import static edu.wpi.fishfolk.ui.FormStatus.filled;
 
+import edu.wpi.fishfolk.database.Table;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.SupplyOrder;
