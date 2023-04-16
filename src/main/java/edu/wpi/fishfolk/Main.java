@@ -175,5 +175,81 @@ public class Main {
 
       fdb.exportCSV("D:\\", TableEntryType.SUPPLY_REQUEST);
     }
+
+    // Test FurnitureRequestDAO
+    if (false) {
+      fdb.insertEntry(
+          new FurnitureRequest(
+              LocalDateTime.of(2020, 2, 2, 2, 2),
+              "Wilson Wong",
+              FormStatus.submitted,
+              "These sure are notes",
+              "Couch",
+              "Clean",
+              "OH 106",
+              LocalDateTime.of(1500, 2, 2, 2, 2)));
+      fdb.insertEntry(
+          new FurnitureRequest(
+              LocalDateTime.of(2021, 2, 2, 2, 2),
+              "Wilson Wong",
+              FormStatus.submitted,
+              "LETTERS",
+              "Couch",
+              "Clean",
+              "OH 106",
+              LocalDateTime.of(1500, 2, 2, 2, 2)));
+      fdb.insertEntry(
+          new FurnitureRequest(
+              LocalDateTime.of(2022, 2, 2, 2, 2),
+              "Wilson Wong",
+              FormStatus.submitted,
+              "numbers??",
+              "Couch",
+              "Clean",
+              "OH 106",
+              LocalDateTime.of(1500, 2, 2, 2, 2)));
+
+      fdb.updateEntry(
+          new FurnitureRequest(
+              LocalDateTime.of(2021, 2, 2, 2, 2),
+              "ME LMAO",
+              FormStatus.submitted,
+              "LETTERS",
+              "Couch",
+              "Clean",
+              "OH 106",
+              LocalDateTime.of(1500, 2, 2, 2, 2)));
+
+      fdb.undoChange(TableEntryType.FURNITURE_REQUEST);
+      fdb.undoChange(TableEntryType.FURNITURE_REQUEST);
+
+      fdb.updateEntry(
+          new FurnitureRequest(
+              LocalDateTime.of(2020, 2, 2, 2, 2),
+              "Wilson Wong",
+              FormStatus.submitted,
+              "These AREN'T notes",
+              "Couch",
+              "Clean",
+              "OH 106",
+              LocalDateTime.of(1500, 2, 2, 2, 2)));
+
+      fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.FURNITURE_REQUEST);
+
+      fdb.exportCSV("D:\\", TableEntryType.FURNITURE_REQUEST);
+    }
+
+    /*
+     * Test format:
+     * INSERT A
+     * INSERT B
+     * INSERT C
+     * UPDATE B
+     * UNDO
+     * UNDO
+     * UPDATE A
+     * REMOVE B
+     * EXPORT CSV
+     */
   }
 }
