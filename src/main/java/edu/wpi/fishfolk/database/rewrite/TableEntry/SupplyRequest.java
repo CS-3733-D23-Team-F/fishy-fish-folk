@@ -1,46 +1,55 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
+import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.SupplyItem;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 
 public class SupplyRequest {
 
-  @Getter @Setter private String id;
+  // Common
+  @Getter @Setter private LocalDateTime supplyRequestID;
   @Getter @Setter private String assignee;
-  @Getter @Setter private FormStatus status;
+  @Getter @Setter private FormStatus formStatus;
+  @Getter @Setter private String notes;
+
+  // Specific
   @Getter @Setter private ArrayList<SupplyItem> supplies;
   @Getter @Setter private String link;
   @Getter @Setter private String roomNumber;
-  @Getter @Setter private String notes;
+
+  // For DAO
+  @Getter @Setter private EntryStatus status;
 
   /**
    * Table entry type: Supply Request
    *
-   * @param id Unique id of request
+   * @param supplyRequestID Unique id of request
    * @param assignee Assignee of request
-   * @param status Status of request
+   * @param formStatus Status of request
+   * @param notes Additional notes of request
    * @param supplies Supply items of request
    * @param link Link to supply items if out of stock
    * @param roomNumber Room number of request
-   * @param notes Additional notes of request
    */
   public SupplyRequest(
-      String id,
+      LocalDateTime supplyRequestID,
       String assignee,
-      FormStatus status,
+      FormStatus formStatus,
+      String notes,
       ArrayList<SupplyItem> supplies,
       String link,
-      String roomNumber,
-      String notes) {
-    this.id = id;
+      String roomNumber) {
+    this.supplyRequestID = supplyRequestID;
     this.assignee = assignee;
-    this.status = status;
+    this.formStatus = formStatus;
+    this.notes = notes;
     this.supplies = supplies;
     this.link = link;
     this.roomNumber = roomNumber;
-    this.notes = notes;
+    this.status = EntryStatus.OLD;
   }
 }

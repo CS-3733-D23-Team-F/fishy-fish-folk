@@ -1,10 +1,7 @@
 package edu.wpi.fishfolk;
 
 import edu.wpi.fishfolk.database.rewrite.Fdb;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.FoodRequest;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Location;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.TableEntryType;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.*;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.time.LocalDateTime;
@@ -119,6 +116,64 @@ public class Main {
       fdb.removeEntry(2, TableEntryType.FOOD_REQUEST);
 
       fdb.exportCSV("D:\\", TableEntryType.FOOD_REQUEST);
+    }
+
+    // Test SupplyRequestDAO
+    if (false) {
+      fdb.insertEntry(
+          new SupplyRequest(
+              LocalDateTime.of(2020, 2, 2, 2, 2),
+              "Me",
+              FormStatus.submitted,
+              "I need sleep",
+              null,
+              "www.pizza.com",
+              "20000"));
+      fdb.insertEntry(
+          new SupplyRequest(
+              LocalDateTime.of(2021, 2, 2, 2, 2),
+              "Me",
+              FormStatus.submitted,
+              "I need more sleep",
+              null,
+              "wpi.edu",
+              "20000"));
+      fdb.insertEntry(
+          new SupplyRequest(
+              LocalDateTime.of(2022, 2, 2, 2, 2),
+              "Me",
+              FormStatus.submitted,
+              "Yup",
+              null,
+              "the internet",
+              "20000"));
+
+      fdb.updateEntry(
+          new SupplyRequest(
+              LocalDateTime.of(2021, 2, 2, 2, 2),
+              "Me",
+              FormStatus.submitted,
+              "I need EVEN more sleep",
+              null,
+              "wpi.edu",
+              "200009"));
+
+      fdb.undoChange(TableEntryType.SUPPLY_REQUEST);
+      fdb.undoChange(TableEntryType.SUPPLY_REQUEST);
+
+      fdb.updateEntry(
+          new SupplyRequest(
+              LocalDateTime.of(2020, 2, 2, 2, 2),
+              "Me",
+              FormStatus.submitted,
+              "I need food i guess (and sleep)",
+              null,
+              "www.pizza.com",
+              "20000"));
+
+      fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.SUPPLY_REQUEST);
+
+      fdb.exportCSV("D:\\", TableEntryType.SUPPLY_REQUEST);
     }
   }
 }

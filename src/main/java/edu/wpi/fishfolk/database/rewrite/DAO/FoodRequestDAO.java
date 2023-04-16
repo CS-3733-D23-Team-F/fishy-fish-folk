@@ -87,6 +87,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
                 + "deliverytime TIMESTAMP,"
                 + "recipientname VARCHAR(64)"
                 + ");";
+        // TODO: Sub-table for items
         statement.executeUpdate(query);
       }
 
@@ -466,18 +467,17 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
-      int idTracker = 1;
       while ((line = br.readLine()) != null) {
 
         String[] parts = line.split(",");
 
         FoodRequest fr =
             new FoodRequest(
-                idTracker,
+                Integer.parseInt(parts[0]),
                 parts[1],
                 FormStatus.valueOf(parts[2]),
                 parts[3],
@@ -488,16 +488,16 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
         tableMap.put(fr.getFoodRequestID(), fr);
 
-        insertPS.setString(1, fr.getAssignee());
-        insertPS.setString(2, fr.getFormStatus().toString());
-        insertPS.setString(3, fr.getNotes());
-        insertPS.setDouble(4, fr.getTotalPrice());
-        insertPS.setString(5, fr.getDeliveryRoom());
-        insertPS.setTimestamp(6, Timestamp.valueOf(fr.getDeliveryTime()));
-        insertPS.setString(7, fr.getRecipientName());
+        insertPS.setInt(1, fr.getFoodRequestID());
+        insertPS.setString(2, fr.getAssignee());
+        insertPS.setString(3, fr.getFormStatus().toString());
+        insertPS.setString(4, fr.getNotes());
+        insertPS.setDouble(5, fr.getTotalPrice());
+        insertPS.setString(6, fr.getDeliveryRoom());
+        insertPS.setTimestamp(7, Timestamp.valueOf(fr.getDeliveryTime()));
+        insertPS.setString(8, fr.getRecipientName());
 
         insertPS.executeUpdate();
-        idTracker += 1;
       }
 
       return true;
