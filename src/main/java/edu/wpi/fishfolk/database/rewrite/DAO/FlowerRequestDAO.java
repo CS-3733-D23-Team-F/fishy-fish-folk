@@ -242,14 +242,14 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
 
   @Override
   public ArrayList<FlowerRequest> getAllEntries() {
-    ArrayList<FlowerRequest> allSupplyRequests = new ArrayList<>();
+    ArrayList<FlowerRequest> allFlowerRequests = new ArrayList<>();
 
     // Add all entries in local table to a list
     for (LocalDateTime flowerRequestID : tableMap.keySet()) {
-      allSupplyRequests.add(tableMap.get(flowerRequestID));
+      allFlowerRequests.add(tableMap.get(flowerRequestID));
     }
 
-    return allSupplyRequests;
+    return allFlowerRequests;
   }
 
   @Override

@@ -302,6 +302,37 @@ public class Main {
       fdb.exportCSV("D:\\", TableEntryType.FLOWER_REQUEST);
     }
 
+    // Test ConferenceRequestDAO
+    if (false) {
+      fdb.insertEntry(
+          new ConferenceRequest(
+              LocalDateTime.of(2020, 2, 2, 2, 2), "Nobody", FormStatus.submitted, "Yep"));
+      fdb.insertEntry(
+          new ConferenceRequest(
+              LocalDateTime.of(2021, 2, 2, 2, 2), "Somebody?", FormStatus.submitted, "Yep"));
+      fdb.insertEntry(
+          new ConferenceRequest(
+              LocalDateTime.of(2022, 2, 2, 2, 2), "Secret person", FormStatus.submitted, "Yep"));
+
+      fdb.updateEntry(
+          new ConferenceRequest(
+              LocalDateTime.of(2021, 2, 2, 2, 2), "Somebody?", FormStatus.submitted, "CHANGE"));
+
+      fdb.undoChange(TableEntryType.CONFERENCE_REQUEST);
+      fdb.undoChange(TableEntryType.CONFERENCE_REQUEST);
+
+      fdb.updateEntry(
+          new ConferenceRequest(
+              LocalDateTime.of(2020, 2, 2, 2, 2),
+              "Nobody",
+              FormStatus.submitted,
+              "ANOTHER CHANGE"));
+
+      fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.CONFERENCE_REQUEST);
+
+      fdb.exportCSV("D:\\", TableEntryType.CONFERENCE_REQUEST);
+    }
+
     /*
      * Test format:
      * INSERT A

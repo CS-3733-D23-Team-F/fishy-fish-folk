@@ -46,7 +46,7 @@ public class Fdb {
     this.supplyRequestTable = new SupplyRequestDAO(dbConnection);
     this.furnitureRequestTable = new FurnitureRequestDAO(dbConnection);
     this.flowerRequestTable = new FlowerRequestDAO(dbConnection);
-    this.conferenceRequestTable = new ConferenceRequestDAO();
+    this.conferenceRequestTable = new ConferenceRequestDAO(dbConnection);
 
     // Login & User Accounts Tables
     this.userAccountTable = new UserAccountDAO(dbConnection);
@@ -62,6 +62,7 @@ public class Fdb {
                   supplyRequestTable.updateDatabase(true);
                   furnitureRequestTable.updateDatabase(true);
                   flowerRequestTable.updateDatabase(true);
+                  conferenceRequestTable.updateDatabase(true);
 
                   disconnect();
                 }));

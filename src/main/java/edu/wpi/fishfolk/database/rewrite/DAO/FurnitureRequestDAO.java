@@ -243,14 +243,14 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
 
   @Override
   public ArrayList<FurnitureRequest> getAllEntries() {
-    ArrayList<FurnitureRequest> allSupplyRequests = new ArrayList<>();
+    ArrayList<FurnitureRequest> allFurnitureRequests = new ArrayList<>();
 
     // Add all entries in local table to a list
     for (LocalDateTime furnitureRequestID : tableMap.keySet()) {
-      allSupplyRequests.add(tableMap.get(furnitureRequestID));
+      allFurnitureRequests.add(tableMap.get(furnitureRequestID));
     }
 
-    return allSupplyRequests;
+    return allFurnitureRequests;
   }
 
   @Override
