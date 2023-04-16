@@ -223,7 +223,10 @@ public class EdgeDAO implements IDAO<Edge> {
 
       // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
       String insert =
-          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?);";
+          "INSERT INTO "
+                  + dbConnection.getSchema()
+                  + "." + this.tableName
+                  + " VALUES (?, ?);";
 
       String remove =
           "DELETE FROM "

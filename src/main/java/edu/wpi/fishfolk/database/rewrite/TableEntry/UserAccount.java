@@ -1,26 +1,43 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
+import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import lombok.Getter;
 import lombok.Setter;
 
 public class UserAccount {
 
-  @Getter @Setter private String username;
-  @Getter @Setter private String passwordHash;
-  @Getter @Setter private String permissions; // TODO: Change to more specialized enum
+  @Getter private final String username;
+  @Getter @Setter private String password;
 
-  // Email
+  @Getter @Setter private String email; //TODO check email format using regex in constructor & setter
+  @Getter @Setter private PermissionLevel level;
+
+  //for database versioning
+  @Getter @Setter private EntryStatus status;
 
   /**
    * Table entry type: User Account
    *
    * @param username Username of account
-   * @param passwordHash Hashed password of account (NOT PLAINTEXT)
-   * @param permissions Permission level of account
+   * @param password Hashed password of account (NOT PLAINTEXT)
+   * @param email Email address of account
+   * @param permissionLevel Permission level of account
    */
-  public UserAccount(String username, String passwordHash, String permissions) {
+  public UserAccount(
+      String username, String password, String email, PermissionLevel permissionLevel) {
     this.username = username;
-    this.passwordHash = passwordHash;
-    this.permissions = permissions;
+    this.password = password;
+    this.email = email;
+    this.level = permissionLevel;
   }
+
+  @Override
+  public boolean equals(Object other){
+
+    if(other instanceof UserAccount){
+      return username.equals(((UserAccount) other).email);
+
+    } else return false;
+  }
+
 }

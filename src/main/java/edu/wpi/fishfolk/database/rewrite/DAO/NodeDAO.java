@@ -330,16 +330,18 @@ public class NodeDAO implements IDAO<Node> {
                 + " Node "
                 + dataEdit.getNewEntry().getNodeID());
 
+        Node newNodeEntry = dataEdit.getNewEntry();
+
         // Change behavior based on data edit type
         switch (dataEdit.getType()) {
           case INSERT:
 
             // Put the new Node's data into the prepared query
-            preparedInsert.setInt(1, dataEdit.getNewEntry().getNodeID());
-            preparedInsert.setDouble(2, dataEdit.getNewEntry().getPoint().getX());
-            preparedInsert.setDouble(3, dataEdit.getNewEntry().getPoint().getY());
-            preparedInsert.setString(4, dataEdit.getNewEntry().getFloor());
-            preparedInsert.setString(5, dataEdit.getNewEntry().getBuilding());
+            preparedInsert.setInt(1, newNodeEntry.getNodeID());
+            preparedInsert.setDouble(2, newNodeEntry.getPoint().getX());
+            preparedInsert.setDouble(3, newNodeEntry.getPoint().getY());
+            preparedInsert.setString(4, newNodeEntry.getFloor());
+            preparedInsert.setString(5, newNodeEntry.getBuilding());
 
             // Execute the query
             preparedInsert.executeUpdate();
@@ -348,12 +350,12 @@ public class NodeDAO implements IDAO<Node> {
           case UPDATE:
 
             // Put the new Node's data into the prepared query
-            preparedUpdate.setString(1, String.valueOf(dataEdit.getNewEntry().getNodeID()));
-            preparedUpdate.setDouble(2, dataEdit.getNewEntry().getPoint().getX());
-            preparedUpdate.setDouble(3, dataEdit.getNewEntry().getPoint().getY());
-            preparedUpdate.setString(4, dataEdit.getNewEntry().getFloor());
-            preparedUpdate.setString(5, dataEdit.getNewEntry().getBuilding());
-            preparedUpdate.setString(6, String.valueOf(dataEdit.getNewEntry().getNodeID()));
+            preparedUpdate.setInt(1, newNodeEntry.getNodeID());
+            preparedUpdate.setDouble(2, newNodeEntry.getX());
+            preparedUpdate.setDouble(3, newNodeEntry.getY());
+            preparedUpdate.setString(4, newNodeEntry.getFloor());
+            preparedUpdate.setString(5, newNodeEntry.getBuilding());
+            preparedUpdate.setInt(6, newNodeEntry.getNodeID());
 
             // Execute the query
             preparedUpdate.executeUpdate();
@@ -362,7 +364,7 @@ public class NodeDAO implements IDAO<Node> {
           case REMOVE:
 
             // Put the new Node's data into the prepared query
-            preparedRemove.setString(1, String.valueOf(dataEdit.getNewEntry().getNodeID()));
+            preparedRemove.setInt(1, newNodeEntry.getNodeID());
 
             // Execute the query
             preparedRemove.executeUpdate();
@@ -443,9 +445,9 @@ public class NodeDAO implements IDAO<Node> {
 
         insertPS.setInt(1, n.getNodeID());
         insertPS.setDouble(2, n.getX());
-        insertPS.setDouble(2, n.getY());
-        insertPS.setString(3, n.getFloor());
-        insertPS.setString(4, n.getBuilding());
+        insertPS.setDouble(3, n.getY());
+        insertPS.setString(4, n.getFloor());
+        insertPS.setString(5, n.getBuilding());
 
         insertPS.executeUpdate();
       }
@@ -494,4 +496,5 @@ public class NodeDAO implements IDAO<Node> {
       return false;
     }
   }
+
 }

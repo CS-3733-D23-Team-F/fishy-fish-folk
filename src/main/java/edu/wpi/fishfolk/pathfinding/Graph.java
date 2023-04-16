@@ -1,7 +1,6 @@
 package edu.wpi.fishfolk.pathfinding;
 
 import edu.wpi.fishfolk.database.Fdb;
-import edu.wpi.fishfolk.database.Move;
 import java.time.LocalDate;
 import java.util.*;
 import javafx.geometry.Point2D;

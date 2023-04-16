@@ -49,7 +49,7 @@ public class Fdb {
     this.conferenceRequestTable = new ConferenceRequestDAO();
 
     // Login & User Accounts Tables
-    this.userAccountTable = new UserAccountDAO();
+    this.userAccountTable = new UserAccountDAO(dbConnection);
 
     Runtime.getRuntime()
         .addShutdownHook(
