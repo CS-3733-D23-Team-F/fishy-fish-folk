@@ -9,6 +9,8 @@ public class UserAccount {
   @Getter @Setter private String passwordHash;
   @Getter @Setter private String permissions; // TODO: Change to more specialized enum
 
+  // Email
+
   /**
    * Table entry type: User Account
    *

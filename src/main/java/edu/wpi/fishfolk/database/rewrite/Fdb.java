@@ -43,7 +43,7 @@ public class Fdb {
 
     // Service Request Tables
     this.foodRequestTable = new FoodRequestDAO(dbConnection);
-    this.supplyRequestTable = new SupplyRequestDAO();
+    this.supplyRequestTable = new SupplyRequestDAO(dbConnection);
     this.furnitureRequestTable = new FurnitureRequestDAO();
     this.flowerRequestTable = new FlowerRequestDAO();
     this.conferenceRequestTable = new ConferenceRequestDAO();
@@ -59,6 +59,7 @@ public class Fdb {
                   nodeTable.updateDatabase(true);
                   locationTable.updateDatabase(true);
                   foodRequestTable.updateDatabase(true);
+                  supplyRequestTable.updateDatabase(true);
 
                   disconnect();
                 }));
@@ -330,6 +331,7 @@ public class Fdb {
     }
   }
 
+  // TODO: ALL commas need to be removed/refactored from text fields before exporting
   /**
    * Import a CSV file into a table
    *
