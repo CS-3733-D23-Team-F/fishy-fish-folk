@@ -39,7 +39,10 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton zoomIn;
   @FXML GesturePane pane;
   @FXML MFXButton slideUp;
+  @FXML MFXButton slideDown;
   @FXML VBox textInstruct;
+
+  @FXML Text dirText;
 
   Pathfinder pathfinder;
 
@@ -67,21 +70,31 @@ public class PathfindingController extends AbsController {
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(textInstruct);
-
+          slideUp.setDisable(true);
+          slideUp.setVisible(false);
+          slideDown.setVisible(true);
+          slideDown.setDisable(false);
           slide.setToY(0);
           slide.play();
 
           textInstruct.setTranslateY(0);
-          slide.setOnFinished(
-              (ActionEvent e) -> {
-                /*
-                serviceNav.setVisible(false);
-                closeServiceNav.setVisible(true);
-                serviceNav.setDisable(true);
-                closeServiceNav.setDisable(false);
+          slide.setOnFinished((ActionEvent e) -> {});
+        });
 
-                 */
-              });
+    slideDown.setOnMouseClicked(
+        event -> {
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(textInstruct);
+          slideUp.setDisable(false);
+          slideUp.setVisible(true);
+          slideDown.setVisible(false);
+          slideDown.setDisable(true);
+          slide.setToY(252);
+          slide.play();
+
+          textInstruct.setTranslateY(252);
+          slide.setOnFinished((ActionEvent e) -> {});
         });
 
     zoomIn.setOnMouseClicked(
@@ -139,6 +152,7 @@ public class PathfindingController extends AbsController {
               .centreOn(paths.get(0).centerToPath(7));
           displayFloor(currentFloor);
           endSelector.setDisable(true);
+          dirText.setText(paths.get(0).getDirections());
         });
 
     currentFloor = 0;
