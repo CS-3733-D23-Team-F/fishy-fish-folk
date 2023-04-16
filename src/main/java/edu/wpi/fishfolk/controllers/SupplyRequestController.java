@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.database.Table;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.SupplyItem;
