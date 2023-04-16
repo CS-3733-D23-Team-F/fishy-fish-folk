@@ -13,8 +13,8 @@ public class Fdb {
   private final Connection dbConnection;
 
   // Hospital Map Tables
-  public final NodeDAO nodeTable;
-  public final LocationDAO locationTable;
+  private final NodeDAO nodeTable;
+  private final LocationDAO locationTable;
   private final MoveDAO moveTable;
   private final EdgeDAO edgeTable;
 
@@ -42,7 +42,7 @@ public class Fdb {
     this.edgeTable = new EdgeDAO();
 
     // Service Request Tables
-    this.foodRequestTable = new FoodRequestDAO();
+    this.foodRequestTable = new FoodRequestDAO(dbConnection);
     this.supplyRequestTable = new SupplyRequestDAO();
     this.furnitureRequestTable = new FurnitureRequestDAO();
     this.flowerRequestTable = new FlowerRequestDAO();
@@ -58,6 +58,7 @@ public class Fdb {
                   System.out.println("[Fdb]: Shutdown received...");
                   nodeTable.updateDatabase(true);
                   locationTable.updateDatabase(true);
+                  foodRequestTable.updateDatabase(true);
 
                   disconnect();
                 }));
