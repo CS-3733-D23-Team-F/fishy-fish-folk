@@ -246,8 +246,8 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
     ArrayList<FurnitureRequest> allSupplyRequests = new ArrayList<>();
 
     // Add all entries in local table to a list
-    for (LocalDateTime supplyRequestID : tableMap.keySet()) {
-      allSupplyRequests.add(tableMap.get(supplyRequestID));
+    for (LocalDateTime furnitureRequestID : tableMap.keySet()) {
+      allSupplyRequests.add(tableMap.get(furnitureRequestID));
     }
 
     return allSupplyRequests;

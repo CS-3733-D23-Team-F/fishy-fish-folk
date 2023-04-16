@@ -239,6 +239,69 @@ public class Main {
       fdb.exportCSV("D:\\", TableEntryType.FURNITURE_REQUEST);
     }
 
+    // Test FlowerRequestDAO
+    if (false) {
+      fdb.insertEntry(
+          new FlowerRequest(
+              LocalDateTime.of(2020, 2, 2, 2, 2),
+              "Trajan",
+              FormStatus.submitted,
+              "No changes made",
+              null,
+              null,
+              "ur mom",
+              2.00));
+      fdb.insertEntry(
+          new FlowerRequest(
+              LocalDateTime.of(2021, 2, 2, 2, 2),
+              "Jon",
+              FormStatus.submitted,
+              "No changes made",
+              null,
+              null,
+              "ur mom",
+              2.00));
+      fdb.insertEntry(
+          new FlowerRequest(
+              LocalDateTime.of(2022, 2, 2, 2, 2),
+              "Charlie",
+              FormStatus.submitted,
+              "No changes made",
+              null,
+              null,
+              "ur mom",
+              2.00));
+
+      fdb.updateEntry(
+          new FlowerRequest(
+              LocalDateTime.of(2021, 2, 2, 2, 2),
+              "Jon",
+              FormStatus.submitted,
+              "Changed one word lol",
+              null,
+              null,
+              "ur mom",
+              2.00));
+
+      fdb.undoChange(TableEntryType.FLOWER_REQUEST);
+      fdb.undoChange(TableEntryType.FLOWER_REQUEST);
+
+      fdb.updateEntry(
+          new FlowerRequest(
+              LocalDateTime.of(2020, 2, 2, 2, 2),
+              "Trajan",
+              FormStatus.submitted,
+              "Uhhhhhhhh notes",
+              null,
+              null,
+              "ur mom",
+              2.00));
+
+      fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.FLOWER_REQUEST);
+
+      fdb.exportCSV("D:\\", TableEntryType.FLOWER_REQUEST);
+    }
+
     /*
      * Test format:
      * INSERT A
