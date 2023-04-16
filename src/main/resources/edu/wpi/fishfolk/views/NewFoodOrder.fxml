@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="1080.0" minWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewFoodOrderController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="600.0" layoutX="250.0" layoutY="238.0" stroke="#012d5a" strokeType="INSIDE" width="1200.0" />
+      <MFXButton fx:id="cancelButton" layoutX="250.0" layoutY="900.0" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #012d5a;" text="Cancel" textFill="WHITE">
+         <font>
+            <Font name="Open Sans Regular" size="26.0" />
+         </font>
+      </MFXButton>
+      <MFXButton fx:id="clearButton" layoutX="530.0" layoutY="900.0" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #012d5a;" text="Clear" textFill="WHITE">
+         <font>
+            <Font name="Open Sans Regular" size="26.0" />
+         </font>
+      </MFXButton>
+       <MFXButton fx:id="checkoutButton" layoutX="1230.0" layoutY="900.0" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #f0Bf4c;" text="Checkout" textFill="#012d5a">
+           <font>
+               <Font name="Open Sans Regular" size="26.0" />
+           </font>
+       </MFXButton>
+      <AnchorPane fx:id="cartViewPane" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>
