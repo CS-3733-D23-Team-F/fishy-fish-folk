@@ -39,7 +39,7 @@ public class Fdb {
     this.nodeTable = new NodeDAO(dbConnection);
     this.locationTable = new LocationDAO(dbConnection);
     this.moveTable = new MoveDAO(dbConnection);
-    this.edgeTable = new EdgeDAO();
+    this.edgeTable = new EdgeDAO(dbConnection);
 
     // Service Request Tables
     this.foodRequestTable = new FoodRequestDAO(dbConnection);

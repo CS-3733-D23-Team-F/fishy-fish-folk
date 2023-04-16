@@ -96,10 +96,10 @@ public class NodeDAO implements IDAO<Node> {
       while (results.next()) {
         Node node =
             new Node(
-                Integer.parseInt(results.getString(headers.get(0))),
-                new Point2D(results.getDouble(headers.get(1)), results.getDouble(headers.get(2))),
-                results.getString(headers.get(3)),
-                results.getString(headers.get(4)));
+                results.getInt(1),
+                new Point2D(results.getDouble(2), results.getDouble(3)),
+                results.getString(4),
+                results.getString(5));
         tableMap.put(node.getNodeID(), node);
       }
 
@@ -255,7 +255,7 @@ public class NodeDAO implements IDAO<Node> {
 
       case REMOVE:
 
-        // REMOVE the entry if it was an INSERT
+        // INSERT the entry if it was a REMOVE
         insertEntry(dataEdit.getNewEntry());
         break;
     }

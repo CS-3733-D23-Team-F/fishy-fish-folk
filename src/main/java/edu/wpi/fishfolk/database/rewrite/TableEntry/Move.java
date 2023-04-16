@@ -1,8 +1,8 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
+import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import java.sql.Date;
 import java.time.LocalDate;
-import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,14 +28,17 @@ public class Move {
 
   /**
    * Get unique id for this move for use in the local Hashmap.
+   *
    * @return
    */
-  public String getMoveID(){
+  public String getMoveID() {
     return longName + date.toString();
   }
 
   /**
-   * Sanitize dates stored as strings to fit dd/MM/yyyy format. Adds leading zeroes and "20" in front of shorthand years.
+   * Sanitize dates stored as strings to fit dd/MM/yyyy format. Adds leading zeroes and "20" in
+   * front of shorthand years.
+   *
    * @param date
    * @return
    */
@@ -50,9 +53,10 @@ public class Move {
 
   /**
    * Convert from LocalDate to SQL date
+   *
    * @return
    */
-  public Date getSQLDate(){
+  public Date getSQLDate() {
     return Date.valueOf(date);
   }
 }

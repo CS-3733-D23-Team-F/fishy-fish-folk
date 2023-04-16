@@ -6,9 +6,7 @@ import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.Location;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;
 import edu.wpi.fishfolk.pathfinding.NodeType;
-import javafx.geometry.Point2D;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -41,16 +39,16 @@ public class LocationDAO implements IDAO<Location> {
   }
 
   @Override
-  public void init(boolean drop){
+  public void init(boolean drop) {
 
     try {
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-                      + dbConnection.getSchema()
-                      + "' AND tablename = '"
-                      + tableName
-                      + "');";
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "');";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -66,17 +64,18 @@ public class LocationDAO implements IDAO<Location> {
 
       } else {
         // doesnt exist, create as usual
-        query = "CREATE TABLE " + tableName
-                + " (longname VARCHAR(64) PRIMARY KEY," //64 char
-                + " shortname VARCHAR(64)," //64 characters
-                + " type VARCHAR(4));"; //4 characters
+        query =
+            "CREATE TABLE "
+                + tableName
+                + " (longname VARCHAR(64) PRIMARY KEY," // 64 char
+                + " shortname VARCHAR(64)," // 64 characters
+                + " type VARCHAR(4));"; // 4 characters
         statement.executeUpdate(query);
       }
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
-
   }
 
   @Override
@@ -259,7 +258,7 @@ public class LocationDAO implements IDAO<Location> {
 
       case REMOVE:
 
-        // REMOVE the entry if it was an INSERT
+        // INSERT the entry if it was a REMOVE
         insertEntry(dataEdit.getNewEntry());
         break;
     }
@@ -407,18 +406,14 @@ public class LocationDAO implements IDAO<Location> {
 
       // delete the old data
       dbConnection
-              .createStatement()
-              .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+          .createStatement()
+          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
 
       // skip first row of csv which has the headers
       String line = br.readLine();
 
       String insert =
-              "INSERT INTO "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " VALUES (?, ?, ?);";
+          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
@@ -426,7 +421,7 @@ public class LocationDAO implements IDAO<Location> {
 
         String[] parts = line.split(",");
 
-        Location l = new Location(parts[0],parts[1], NodeType.valueOf(parts[2]));
+        Location l = new Location(parts[0], parts[1], NodeType.valueOf(parts[2]));
 
         tableMap.put(l.getLongName(), l);
 
@@ -461,10 +456,7 @@ public class LocationDAO implements IDAO<Location> {
 
       for (Map.Entry<String, Location> entry : tableMap.entrySet()) {
         Location l = entry.getValue();
-        out.println(
-                l.getLongName()
-        + "," + l.getShortName()
-        + "," + l.getNodeType().toString());
+        out.println(l.getLongName() + "," + l.getShortName() + "," + l.getNodeType().toString());
       }
 
       out.close();
@@ -475,5 +467,4 @@ public class LocationDAO implements IDAO<Location> {
       return false;
     }
   }
-
 }

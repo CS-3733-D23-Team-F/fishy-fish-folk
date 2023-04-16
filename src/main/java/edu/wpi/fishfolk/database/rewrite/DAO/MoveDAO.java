@@ -5,12 +5,16 @@ import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Location;import edu.wpi.fishfolk.database.rewrite.TableEntry.Move;import edu.wpi.fishfolk.pathfinding.NodeType;
-import java.io.*;import java.sql.*;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.Move;
+import java.io.*;
+import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;import java.time.format.DateTimeFormatter;import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;import java.util.Map;
+import java.util.List;
+import java.util.Map;
 
 public class MoveDAO implements IDAO<Move> {
 
@@ -21,8 +25,6 @@ public class MoveDAO implements IDAO<Move> {
 
   private final HashMap<String, Move> tableMap;
   private final DataEditQueue<Move> dataEditQueue;
-
-  //TODO rewrite queries to use both longname and date
 
   /** DAO for Move table in PostgreSQL database. */
   public MoveDAO(Connection dbConnection) {
@@ -38,16 +40,16 @@ public class MoveDAO implements IDAO<Move> {
   }
 
   @Override
-  public void init(boolean drop){
+  public void init(boolean drop) {
 
     try {
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-                      + dbConnection.getSchema()
-                      + "' AND tablename = '"
-                      + tableName
-                      + "');";
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "');";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -63,9 +65,11 @@ public class MoveDAO implements IDAO<Move> {
 
       } else {
         // doesnt exist, create as usual
-        query = "CREATE TABLE " + tableName
+        query =
+            "CREATE TABLE "
+                + tableName
                 + " (id SMALLINT," // 2 bytes: -2^15 to 2^15-1
-                + " longname VARCHAR(64)," //64 characters
+                + " longname VARCHAR(64)," // 64 characters
                 + " date date);"; // (day, month, year) in 4 bytes
         statement.executeUpdate(query);
       }
@@ -73,7 +77,6 @@ public class MoveDAO implements IDAO<Move> {
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
-
   }
 
   @Override
@@ -81,7 +84,7 @@ public class MoveDAO implements IDAO<Move> {
 
     try {
 
-      // Prepare SQL query to select all nodes from the db table
+      // Prepare SQL query to select all entries from the db table
       String getAll = "SELECT * FROM " + dbConnection.getSchema() + "." + this.tableName + ";";
       PreparedStatement preparedGetAll = dbConnection.prepareStatement(getAll);
 
@@ -92,10 +95,10 @@ public class MoveDAO implements IDAO<Move> {
       // For each Move in the results, create a new Move object and put it in the local table
       while (results.next()) {
         Move move =
-                new Move(
-                        Integer.parseInt(results.getString(1)),
-                        results.getString(2),
-                        LocalDate.parse(results.getString(3)));
+            new Move(
+                Integer.parseInt(results.getString(1)),
+                results.getString(2),
+                LocalDate.parse(results.getString(3)));
         tableMap.put(move.getMoveID(), move);
       }
 
@@ -130,12 +133,12 @@ public class MoveDAO implements IDAO<Move> {
 
   @Override
   public boolean updateEntry(Move entry) {
-    // Mark entry Node status as NEW
+    // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 
     // Push an UPDATE to the data edit stack, update the db if the batch limit has been reached
     if (dataEditQueue.add(
-            new DataEdit<>(tableMap.get(entry.getMoveID()), entry, DataEditType.UPDATE), true)) {
+        new DataEdit<>(tableMap.get(entry.getMoveID()), entry, DataEditType.UPDATE), true)) {
 
       // Reset edit count
       dataEditQueue.setEditCount(0);
@@ -145,7 +148,7 @@ public class MoveDAO implements IDAO<Move> {
       removeThread.start();
     }
 
-    // Update entry Node in local table
+    // Update entry in local table
     tableMap.put(entry.getMoveID(), entry);
 
     return true;
@@ -157,7 +160,7 @@ public class MoveDAO implements IDAO<Move> {
     // Check if input identifier is correct type
     if (!(identifier instanceof String)) {
       System.out.println(
-              "[MoveDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
+          "[MoveDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
       return false;
     }
 
@@ -166,14 +169,14 @@ public class MoveDAO implements IDAO<Move> {
     // Check if local table contains identifier
     if (!tableMap.containsKey(moveID)) {
       System.out.println(
-              "[MoveDAO.removeEntry]: Identifier " + moveID + " does not exist in local table.");
+          "[MoveDAO.removeEntry]: Identifier " + moveID + " does not exist in local table.");
       return false;
     }
 
     // Get entry from local table
     Move entry = tableMap.get(moveID);
 
-    // Mark entry Node status as NEW
+    // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 
     // Push a REMOVE to the data edit stack, update the db if the batch limit has been reached
@@ -198,8 +201,7 @@ public class MoveDAO implements IDAO<Move> {
 
     // Check if input identifier is correct type
     if (!(identifier instanceof String)) {
-      System.out.println(
-              "[MoveDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
+      System.out.println("[MoveDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
       return null;
     }
 
@@ -208,7 +210,7 @@ public class MoveDAO implements IDAO<Move> {
     // Check if local table contains identifier
     if (!tableMap.containsKey(moveID)) {
       System.out.println(
-              "[MoveDAO.getEntry]: Identifier " + moveID + " does not exist in local table.");
+          "[MoveDAO.getEntry]: Identifier " + moveID + " does not exist in local table.");
       return null;
     }
 
@@ -253,7 +255,7 @@ public class MoveDAO implements IDAO<Move> {
 
       case REMOVE:
 
-        // REMOVE the entry if it was an INSERT
+        // INSERT the entry if it was a REMOVE
         insertEntry(dataEdit.getNewEntry());
         break;
     }
@@ -268,39 +270,39 @@ public class MoveDAO implements IDAO<Move> {
 
       // Print active thread (DEBUG)
       System.out.println(
-              "[MoveDAO.updateDatabase]: Updating database in " + Thread.currentThread().getName());
+          "[MoveDAO.updateDatabase]: Updating database in " + Thread.currentThread().getName());
 
       // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
       String insert =
-              "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?, ?);";
+          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?, ?);";
 
       String update =
-              "UPDATE "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " SET "
-                      + headers.get(0)
-                      + " = ?, "
-                      + headers.get(1)
-                      + " = ?, "
-                      + headers.get(2)
-                      + " = ? WHERE "
-                      + headers.get(0) //longname matches
-                      + " = ? AND "
-                      + headers.get(2) //and date matches
-                      + " = ?;";
+          "UPDATE "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " SET "
+              + headers.get(0)
+              + " = ?, "
+              + headers.get(1)
+              + " = ?, "
+              + headers.get(2)
+              + " = ? WHERE "
+              + headers.get(0) // longname matches
+              + " = ? AND "
+              + headers.get(2) // and date matches
+              + " = ?;";
 
       String remove =
-              "DELETE FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " WHERE "
-                      + headers.get(0) //longname matches
-                      + " = ? AND "
-                      + headers.get(2) //and date matches
-                      + " = ?;";
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " WHERE "
+              + headers.get(0) // longname matches
+              + " = ? AND "
+              + headers.get(2) // and date matches
+              + " = ?;";
 
       PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
       PreparedStatement preparedUpdate = dbConnection.prepareStatement(update);
@@ -318,17 +320,17 @@ public class MoveDAO implements IDAO<Move> {
 
         // Print update info (DEBUG)
         System.out.println(
-                "[MoveDAO.updateDatabase]: "
-                        + dataEdit.getType()
-                        + " Move "
-                        + dataEdit.getNewEntry().getLongName());
+            "[MoveDAO.updateDatabase]: "
+                + dataEdit.getType()
+                + " Move "
+                + dataEdit.getNewEntry().getLongName());
 
         Move newMoveEntry = dataEdit.getNewEntry();
         // Change behavior based on data edit type
         switch (dataEdit.getType()) {
           case INSERT:
 
-            // Put the new Location's data into the prepared query
+            // Put the new Move's data into the prepared query
             preparedInsert.setInt(1, newMoveEntry.getNodeID());
             preparedInsert.setString(2, newMoveEntry.getLongName());
             preparedInsert.setDate(3, Date.valueOf(newMoveEntry.getDate()));
@@ -339,11 +341,11 @@ public class MoveDAO implements IDAO<Move> {
 
           case UPDATE:
 
-            // Put the new Location's data into the prepared query
+            // Put the new Move's data into the prepared query
             preparedUpdate.setInt(1, newMoveEntry.getNodeID());
             preparedUpdate.setString(2, newMoveEntry.getLongName());
             preparedUpdate.setDate(3, Date.valueOf(newMoveEntry.getDate()));
-            //match both longname and date
+            // match both longname and date
             preparedUpdate.setString(4, newMoveEntry.getLongName());
             preparedUpdate.setDate(5, Date.valueOf(newMoveEntry.getDate()));
 
@@ -353,7 +355,7 @@ public class MoveDAO implements IDAO<Move> {
 
           case REMOVE:
 
-            // Put the new Location's data into the prepared query matching both longname and date
+            // Put the new Move's data into the prepared query matching both longname and date
             preparedRemove.setString(1, newMoveEntry.getLongName());
             preparedRemove.setDate(2, Date.valueOf(newMoveEntry.getDate()));
 
@@ -362,16 +364,16 @@ public class MoveDAO implements IDAO<Move> {
             break;
         }
 
-        // Mark Location in local table as OLD
+        // Mark Move in local table as OLD
         dataEdit.getNewEntry().setStatus(EntryStatus.OLD);
-        tableMap.put(dataEdit.getNewEntry().getLongName(), dataEdit.getNewEntry());
+        tableMap.put(dataEdit.getNewEntry().getMoveID(), dataEdit.getNewEntry());
       }
     } catch (SQLException e) {
 
       // Print active thread error (DEBUG)
       System.out.println(
-              "[LocationDAO.updateDatabase]: Error updating database in "
-                      + Thread.currentThread().getName());
+          "[MoveDAO.updateDatabase]: Error updating database in "
+              + Thread.currentThread().getName());
 
       System.out.println(e.getMessage());
       return false;
@@ -379,8 +381,8 @@ public class MoveDAO implements IDAO<Move> {
 
     // Print active thread end (DEBUG)
     System.out.println(
-            "[LocationDAO.updateDatabase]: Finished updating database in "
-                    + Thread.currentThread().getName());
+        "[MoveDAO.updateDatabase]: Finished updating database in "
+            + Thread.currentThread().getName());
 
     // On success
     return true;
@@ -402,22 +404,18 @@ public class MoveDAO implements IDAO<Move> {
     }
 
     try (BufferedReader br =
-                 new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
+        new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
 
       // delete the old data
       dbConnection
-              .createStatement()
-              .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+          .createStatement()
+          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
 
       // skip first row of csv which has the headers
       String line = br.readLine();
 
       String insert =
-              "INSERT INTO "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " VALUES (?, ?, ?);";
+          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
@@ -427,12 +425,13 @@ public class MoveDAO implements IDAO<Move> {
 
         String[] parts = line.split(",");
 
-        //ensure that date is in dd/MM/yyyy format. add leading zeroes where necessary
+        // ensure that date is in dd/MM/yyyy format. add leading zeroes where necessary
 
-        Move m = new Move(Integer.parseInt(parts[0]) ,parts[1],
-                LocalDate.parse(
-                        Move.sanitizeDate(parts[2]),
-                        formatter));
+        Move m =
+            new Move(
+                Integer.parseInt(parts[0]),
+                parts[1],
+                LocalDate.parse(Move.sanitizeDate(parts[2]), formatter));
 
         tableMap.put(m.getMoveID(), m);
 
@@ -457,22 +456,19 @@ public class MoveDAO implements IDAO<Move> {
 
     // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ofPattern-java.lang.String-
     String filename =
-            tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
+        tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
 
     try {
       PrintStream out = new PrintStream(new FileOutputStream(directory + "\\" + filename));
 
       out.println(String.join(",", headers));
 
-      //write date to CSV in same LocalDate format as used in import
+      // write date to CSV in same LocalDate format as used in import
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
       for (Map.Entry<String, Move> entry : tableMap.entrySet()) {
         Move m = entry.getValue();
-        out.println(
-                m.getNodeID()
-                        + "," + m.getLongName()
-                        + "," + formatter.format(m.getDate()));
+        out.println(m.getNodeID() + "," + m.getLongName() + "," + formatter.format(m.getDate()));
       }
 
       out.close();
@@ -483,5 +479,4 @@ public class MoveDAO implements IDAO<Move> {
       return false;
     }
   }
-
 }
