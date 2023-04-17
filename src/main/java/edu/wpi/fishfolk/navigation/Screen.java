@@ -11,6 +11,7 @@ public enum Screen {
   MAP_EDITOR("views/MapEditor.fxml"),
   VIEW_FOOD_ORDERS("views/ViewFoodOrders.fxml"),
   VIEW_SUPPLY_ORDERS("views/ViewSupplyOrders.fxml"),
+  FLOWER_REQUEST("views/FlowerOrder.fxml"),
   VIEW_FURNITURE_ORDERS("views/ViewFurnitureOrders.fxml"),
   PATHFINDING("views/Pathfinding.fxml"),
   LOGIN("views/Login.fxml"),
