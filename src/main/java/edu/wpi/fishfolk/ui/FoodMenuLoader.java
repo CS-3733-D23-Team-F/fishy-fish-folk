@@ -20,7 +20,7 @@ public class FoodMenuLoader {
             "It's orange juice, what else did you expect me to write here? Oh, it comes with pulp.",
             "images/OJ.jpg",
             1.70f,
-            FoodCategory.dessert));
+            FoodCategory.drink));
 
     returnable.add(
         new NewFoodMenuItem(
