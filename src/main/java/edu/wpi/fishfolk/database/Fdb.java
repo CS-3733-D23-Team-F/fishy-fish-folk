@@ -454,6 +454,12 @@ public class Fdb {
     return dates.keySet().stream().map(locationTable::getEntry).toList();
   }
 
+  /**
+   * Get the Node ID corresponding to the given Location on a given date
+   * @param longname the longname of the Location
+   * @param date
+   * @return
+   */
   public int getNodeIDFromLocation(String longname, LocalDate date){
 
     int nodeID = -1;
@@ -475,7 +481,7 @@ public class Fdb {
   /**
    * Get the Nodes on the given floor.
    * @param floor
-   * @return List<Node>
+   * @return
    */
   public List<Node> getNodesOnFloor(String floor){
 
@@ -490,6 +496,10 @@ public class Fdb {
 
   }
 
+  /**
+   * Get the longnames of the Locations that aren't of type HALL, ELEV, or STAI
+   * @return
+   */
   public List<String> getDestLongnames(){
 
     return locationTable.getAllEntries().stream()
@@ -503,6 +513,8 @@ public class Fdb {
     return nodeTable.getNextID();
   }
 
-
+  public int getNumNodes(){
+    return nodeTable.getNumNodes();
+  }
 
 }

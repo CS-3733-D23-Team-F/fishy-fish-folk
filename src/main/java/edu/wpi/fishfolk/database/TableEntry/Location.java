@@ -12,6 +12,8 @@ public class Location {
   @Getter @Setter private NodeType nodeType;
   @Getter @Setter private EntryStatus status;
 
+  @Getter @Setter private Node node;
+
   /**
    * Table entry type: Location
    *

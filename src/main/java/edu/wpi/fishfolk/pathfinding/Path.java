@@ -1,9 +1,9 @@
 package edu.wpi.fishfolk.pathfinding;
 
-import edu.wpi.fishfolk.database.MicroNode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import edu.wpi.fishfolk.database.TableEntry.Node;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,8 +30,8 @@ public class Path {
     numNodes++;
   }
 
-  public void addFirst(MicroNode unode) {
-    addFirst(unode.nid, unode.point);
+  public void addFirst(Node unode) {
+    addFirst(unode.getNodeID(), unode.getPoint());
   }
 
   public int removeLast() {

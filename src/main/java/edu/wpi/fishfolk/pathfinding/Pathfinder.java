@@ -38,9 +38,9 @@ public abstract class Pathfinder {
     while (!(endIdx == graph.id2idx(start))) {
 
       // start new path when hitting a new floor
-      if (!graph.getNodeFromIdx(endIdx).floor.equals(currentFloor)) {
+      if (!graph.getNodeFromIdx(endIdx).getFloor().equals(currentFloor)) {
         Path path = new Path();
-        currentFloor = graph.getNodeFromIdx(endIdx).floor;
+        currentFloor = graph.getNodeFromIdx(endIdx).getFloor();
         path.setFloor(currentFloor);
         paths.add(0, path);
         numpaths++;

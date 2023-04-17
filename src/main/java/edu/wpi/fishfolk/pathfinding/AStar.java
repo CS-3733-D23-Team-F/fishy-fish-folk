@@ -1,6 +1,6 @@
 package edu.wpi.fishfolk.pathfinding;
 
-import edu.wpi.fishfolk.database.MicroNode;
+import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.util.ArrayList;
 
 public class AStar extends Pathfinder {
@@ -29,7 +29,7 @@ public class AStar extends Pathfinder {
     // initialize distance from start node and heuristic arrays
     // distance from start node: 0 for start, -MIN_INT for all others
     // heuristic: approximate distances from all points to the target endpoint
-    MicroNode endNode = graph.getNodeFromID(end);
+    Node endNode = graph.getNodeFromID(end);
 
     for (int node = 0; node < size; node++) {
 
@@ -76,13 +76,14 @@ public class AStar extends Pathfinder {
 
         if (!visited[other] && fromStart[other] > -1) {
 
-          MicroNode otherNode = graph.getNodeFromIdx(other);
+          Node otherNode = graph.getNodeFromIdx(other);
 
-          if (heuristic[other] < -501 && otherNode.floor.equals(endNode.floor)) {
-            heuristic[other] = otherNode.point.distance(endNode.point) - 500;
+          //TODO figure out why check heuristic < 500?
+          if (heuristic[other] < -501 && otherNode.getFloor().equals(endNode.getFloor())) {
+            heuristic[other] = otherNode.getPoint().distance(endNode.getPoint()) - 500;
 
           } else if (heuristic[other] < -501) {
-            heuristic[other] = otherNode.point.distance(endNode.point);
+            heuristic[other] = otherNode.getPoint().distance(endNode.getPoint());
           }
 
           double cost = fromStart[other] + heuristic[other];

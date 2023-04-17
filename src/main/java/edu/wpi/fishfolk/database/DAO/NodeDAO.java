@@ -11,7 +11,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import javafx.geometry.Point2D;
+import javafx.geometry.Point2D;import lombok.Getter;
 
 public class NodeDAO implements IDAO<Node> {
 
@@ -24,6 +24,7 @@ public class NodeDAO implements IDAO<Node> {
   private final DataEditQueue<Node> dataEditQueue;
 
   private final HashSet<Integer> freeIDs;
+  @Getter private int numNodes;
 
   /** DAO for Node table in PostgreSQL database. */
   public NodeDAO(Connection dbConnection) {
@@ -120,6 +121,7 @@ public class NodeDAO implements IDAO<Node> {
 
     //record that ID is taken
     freeIDs.remove(entry.getNodeID());
+    numNodes++;
 
     // Push an INSERT to the data edit stack, update the db if the batch limit has been reached
     if (dataEditQueue.add(new DataEdit<>(entry, DataEditType.INSERT), true)) {
@@ -183,6 +185,7 @@ public class NodeDAO implements IDAO<Node> {
 
     //free up id
     freeIDs.add(nodeID);
+    numNodes--;
 
     // Get entry from local table
     Node entry = tableMap.get(nodeID);
@@ -453,6 +456,8 @@ public class NodeDAO implements IDAO<Node> {
 
         //record that id is taken
         freeIDs.remove(n.getNodeID());
+        numNodes++;
+
         //store node in local table
         tableMap.put(n.getNodeID(), n);
 
@@ -510,6 +515,10 @@ public class NodeDAO implements IDAO<Node> {
     }
   }
 
+  /**
+   * Gets the next free id but does not reserve it.
+   * @return
+   */
   public int getNextID(){
     return freeIDs.iterator().next();
   }
