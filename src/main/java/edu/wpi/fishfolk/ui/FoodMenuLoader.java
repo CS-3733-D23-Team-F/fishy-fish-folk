@@ -22,6 +22,22 @@ public class FoodMenuLoader {
             1.70f,
             FoodCategory.dessert));
 
+    returnable.add(
+        new NewFoodMenuItem(
+            "Apple Pie",
+            "A slice of house-made apple pie. This description used to be about Orange Juice, but I decided that wasn't useful.",
+            "images/aplPie.jpg",
+            4.33f,
+            FoodCategory.dessert));
+
+    returnable.add(
+        new NewFoodMenuItem(
+            "Cherry Pie",
+            "Cherries. In a pie. Isn't that wonderful? And, for less than the price of apple pie! What isn't to love?",
+            "images/cherryPie.jpg",
+            4.07f,
+            FoodCategory.dessert));
+
     return returnable;
   }
 }

@@ -3,7 +3,6 @@ package edu.wpi.fishfolk.controllers;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import edu.wpi.fishfolk.ui.FoodCategory;
 import edu.wpi.fishfolk.ui.FoodMenuLoader;
 import edu.wpi.fishfolk.ui.NewFoodCart;
 import edu.wpi.fishfolk.ui.NewFoodMenuItem;
@@ -64,20 +63,6 @@ public class NewFoodOrderController extends AbsController {
       menuTabs[i] = new ArrayList<NewFoodMenuItem>();
     }
 
-    // temp
-    NewFoodMenuItem chocoCake =
-        new NewFoodMenuItem(
-            "Chocolate Cake",
-            "A slice of Delicious, Scrumptious, Overly well described Chocolate Cake. Optionally served with whipped cream.",
-            "images/chocoCake.jpg",
-            3.50f,
-            FoodCategory.dessert);
-
-    for (int i = 0; i < 7; i++) {
-      menuTabs[4].add(chocoCake);
-    }
-
-    // new version starts here
     List<NewFoodMenuItem> allItems = FoodMenuLoader.loadItems();
     for (NewFoodMenuItem item : allItems) {
       switch (item.getCat()) {
@@ -240,7 +225,7 @@ public class NewFoodOrderController extends AbsController {
   private void loadCart() {
     List<NewFoodCart.quantityItem> items = cart.getItems();
     VBox itemsBox = new VBox();
-    itemsBox.setPrefHeight(140 * items.size());
+    itemsBox.setPrefHeight(130 * items.size());
     itemsBox.setPrefWidth(1190);
     for (NewFoodCart.quantityItem item : items) {
       AnchorPane itemPane = new AnchorPane();
