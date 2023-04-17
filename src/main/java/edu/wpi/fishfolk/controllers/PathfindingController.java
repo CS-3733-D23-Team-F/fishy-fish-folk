@@ -1,16 +1,17 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.pathfinding.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import javafx.animation.Interpolator;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +23,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
@@ -37,9 +40,7 @@ public class PathfindingController extends AbsController {
 
   @FXML Group pathGroup;
   @FXML ImageView mapImg;
-  // @FXML Text directionInstructions;
-  @FXML MFXButton viewFood;
-  @FXML MFXButton viewSupply, furnitureNav;
+
   @FXML MFXButton zoomOut;
   @FXML MFXButton zoomIn;
   @FXML GesturePane pane;
@@ -58,8 +59,13 @@ public class PathfindingController extends AbsController {
 
   ArrayList<String> floors;
   int currentFloor;
+
+  ArrayList<ParallelTransition> pathAnimations;
+
   int zoom;
   ArrayList<TextDirection> textDirections;
+
+  private LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
 
   public PathfindingController() {
     super();
@@ -118,43 +124,42 @@ public class PathfindingController extends AbsController {
               .zoomBy(zoom - 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
         });
 
-    List<String> nodeNames =
-        dbConnection.locationTable
-            .executeQuery("SELECT longname", "WHERE type != 'HALL' ORDER BY longname ASC").stream()
-            .map(elt -> elt[0])
-            .toList();
+    List<String> nodeNames = dbConnection.getDestLongnames();
 
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end
     endSelector.setDisable(true);
+
     startSelector.setOnAction(
         event -> {
           pathGroup.getChildren().clear();
           pathGroup.getChildren().add(mapImg);
           // clear list of floors
           floors.clear();
-          start = dbConnection.getMostRecentUNode(startSelector.getValue());
+          start = dbConnection.getNodeIDFromLocation(startSelector.getValue(), today);
           // floor of the selected unode id
           currentFloor = 0;
           System.out.println("start node: " + start);
           endSelector.setVisible(true);
           endSelector.setDisable(false);
         });
+
     endSelector.setOnAction(
         event -> {
-          end = dbConnection.getMostRecentUNode(endSelector.getValue());
+          end = dbConnection.getNodeIDFromLocation(endSelector.getValue(), today);
           System.out.println("end node: " + end);
           pathfinder = new AStar(graph);
           paths = pathfinder.pathfind(start, end, true);
 
-          // create segments for each path and put into groups
+          // index 0 in floors in this path - not allFloors
+          currentFloor = 0;
 
           drawPaths(paths);
-          currentFloor = 0;
           pane.animate(Duration.millis(200))
               .interpolateWith(Interpolator.EASE_BOTH)
               .centreOn(paths.get(0).centerToPath(7));
-          displayFloor(currentFloor);
+
+          displayFloor();
           endSelector.setDisable(true);
           textDirections = new ArrayList<>();
           textDirections.addAll(parseDirections(paths.get(0).getDirections()));
@@ -193,27 +198,6 @@ public class PathfindingController extends AbsController {
           }
         });
 
-    currentFloor = 0;
-    floors = new ArrayList<>();
-    graph = new Graph(dbConnection);
-
-    /*
-            nextButton.setOnMouseClicked(
-                event -> {
-                  if (currentFloor < floors.size() - 1) {
-                    currentFloor++;
-                  }
-                  displayFloor(currentFloor);
-                });
-
-            backButton.setOnMouseClicked(
-                event -> {
-                  if (currentFloor >= 1) {
-                    currentFloor--;
-                  }
-                  displayFloor(currentFloor);
-                });
-    */
     clearBtn.setOnMouseClicked(
         event -> {
           // clear paths
@@ -223,6 +207,12 @@ public class PathfindingController extends AbsController {
           // clear list of floors
           floors.clear();
         });
+
+    currentFloor = 0;
+    floors = new ArrayList<>();
+    pathAnimations = new ArrayList<>();
+
+    graph = new Graph(dbConnection);
   }
 
   private List<TextDirection> parseDirections(ArrayList<String> directions) {
@@ -249,41 +239,169 @@ public class PathfindingController extends AbsController {
 
   private void drawPaths(ArrayList<Path> paths) {
 
-    paths.forEach(
-        path -> {
-          LinkedList<Line> segments = new LinkedList<>();
-          for (int i = 1; i < path.numNodes; i++) {
-            segments.add(line(path.points.get(i - 1), path.points.get(i)));
-          }
+    for (int i = 0; i < paths.size(); i++) {
+      Path path = paths.get(i);
+      // skip paths of length 1 (going through elevator node)
+      // except for first and last path
+      if (path.numNodes > 1 || i == 0 || i == paths.size() - 1) {
 
-          if (!(path.numNodes == 1)
-              || (path.equals(paths.get(0)))
-              || (path.equals(paths.get(paths.size() - 1)))) {
-            Group g = new Group();
-            g.getChildren().addAll(segments);
-            pathGroup.getChildren().add(g);
-            g.setVisible(false);
+        // group to store this floor's path
+        Group g = new Group();
 
-            floors.add(path.floor);
-          }
-        });
+        double pathLength = path.pathLength();
+
+        // create points to move along path
+        int numPoints = (int) (pathLength * 0.04);
+
+        ParallelTransition parallelTransition = new ParallelTransition();
+        Duration duration = new Duration(1000);
+        Point2D[] points = path.interpolate(numPoints);
+
+        for (int j = 0; j < numPoints; j++) {
+          Circle c = new Circle(5);
+          c.setFill(Color.rgb(4, 100, 180));
+          g.getChildren().add(c);
+
+          // one animation object per point moving along its segment
+          Polyline segment =
+              new Polyline(
+                  points[j].getX(), points[j].getY(), points[j + 1].getX(), points[j + 1].getY());
+
+          PathTransition animation = new PathTransition(duration, segment, c);
+          animation.setInterpolator(Interpolator.LINEAR);
+          animation.setCycleCount(Timeline.INDEFINITE);
+          animation.setAutoReverse(false);
+          parallelTransition.getChildren().add(animation);
+        }
+
+        pathAnimations.add(parallelTransition);
+
+        // add buttons to start and end of paths on each floor
+        if (i == 0) {
+          Point2D p1 = path.points.get(0);
+          NodeCircle start = new NodeCircle(-1, p1.getX(), p1.getY(), 12);
+          start.setFill(Color.rgb(1, 45, 90));
+          g.getChildren().add(start);
+
+          Point2D p2 = path.points.get(path.numNodes - 1);
+          g.getChildren()
+              .add(
+                  generatePathButtons(
+                      p2.getX(),
+                      p2.getY(),
+                      direction(path.getFloor(), paths.get(1).getFloor()),
+                      true));
+
+        } else if (i == paths.size() - 1) { // last path segment
+          Point2D p1 = path.points.get(0);
+          g.getChildren()
+              .add(
+                  generatePathButtons(
+                      p1.getX(),
+                      p1.getY(),
+                      direction(path.getFloor(), paths.get(paths.size() - 2).getFloor()),
+                      false));
+
+          Point2D p2 = path.points.get(path.numNodes - 1);
+          NodeCircle end = new NodeCircle(-1, p2.getX(), p2.getY(), 12);
+          end.setFill(Color.rgb(1, 45, 90));
+          g.getChildren().add(end);
+
+        } else { // middle path segment. draw a regular path button at each endpoint
+          Point2D p1 = path.points.get(0);
+          g.getChildren()
+              .add(
+                  generatePathButtons(
+                      p1.getX(),
+                      p1.getY(),
+                      direction(
+                          path.getFloor(), // this button goes in reverse
+                          paths.get(i - 1).getFloor()),
+                      false));
+
+          Point2D p2 = path.points.get(path.numNodes - 1);
+          g.getChildren()
+              .add(
+                  generatePathButtons(
+                      p2.getX(),
+                      p2.getY(),
+                      direction(path.getFloor(), paths.get(i + 1).getFloor()),
+                      true));
+        }
+
+        pathGroup.getChildren().add(g);
+        g.setVisible(false);
+
+        floors.add(path.getFloor());
+      }
+    }
   }
 
-  private void displayFloor(int floor) {
+  /**
+   * Generate the buttons that appear on paths at elevator / stair nodes to go up or down a floor.
+   *
+   * @param x
+   * @param y
+   * @param up true if this button goes up , false if down
+   * @param forwards true if this button goes forwards in the path, false if backwards
+   * @return a JavaFX Node object to draw
+   */
+  private javafx.scene.Node generatePathButtons(double x, double y, boolean up, boolean forwards) {
 
-    mapImg.setImage(images.get(floors.get(floor)));
-    floorDisplay.setText("Floor " + floors.get(floor));
+    NodeCircle nc = new NodeCircle(-1, x, y, 8);
+    nc.setFill(Color.rgb(4, 100, 180));
+    nc.setOnMouseClicked(
+        event -> {
+          if (forwards) {
+            nextFloor();
+          } else {
+            prevFloor();
+          }
+          displayFloor();
+        });
+    return nc;
+  }
+
+  private void nextFloor() {
+    if (currentFloor < floors.size() - 1) {
+      currentFloor++;
+    }
+  }
+
+  private void prevFloor() {
+    if (currentFloor > 0) {
+      currentFloor--;
+    }
+  }
+
+  /** Display the floor indexed by the class variable currentFloor */
+  private void displayFloor() {
+
+    mapImg.setImage(images.get(floors.get(currentFloor)));
+    floorDisplay.setText("Floor " + floors.get(currentFloor));
+
     Iterator<javafx.scene.Node> itr = pathGroup.getChildren().iterator();
     itr.next(); // skip first child which is the imageview
-
     while (itr.hasNext()) {
       itr.next().setVisible(false);
     }
 
-    pathGroup.getChildren().get(floor + 1).setVisible(true);
+    pathAnimations.forEach(ParallelTransition::stop);
+
+    pathGroup.getChildren().get(currentFloor + 1).setVisible(true);
+    System.out.println(
+        "parallel animations: " + pathAnimations.get(currentFloor).getChildren().size());
+    pathAnimations.get(currentFloor).play();
   }
 
-  private Line line(Point2D p1, Point2D p2) {
-    return new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+  /**
+   * Get the direction between two floors
+   *
+   * @param currFloor
+   * @param nextFloor
+   * @return true if the second is higher than the first, otherwise false
+   */
+  private boolean direction(String currFloor, String nextFloor) {
+    return allFloors.indexOf(currFloor) < allFloors.indexOf(nextFloor);
   }
 }

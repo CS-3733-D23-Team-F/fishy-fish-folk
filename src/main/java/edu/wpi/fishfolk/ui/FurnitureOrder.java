@@ -1,9 +1,8 @@
 package edu.wpi.fishfolk.ui;
 
-import edu.wpi.fishfolk.database.TableEntry;
 import java.util.ArrayList;
 
-public class FurnitureOrder extends TableEntry {
+public class FurnitureOrder {
   public FurnitureItem furnitureItem;
   public String serviceType;
   public String roomNum;

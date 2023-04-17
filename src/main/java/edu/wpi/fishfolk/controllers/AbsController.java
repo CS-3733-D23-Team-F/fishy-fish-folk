@@ -30,7 +30,7 @@ public abstract class AbsController {
 
     mapImgURLs.put("L1", "map/00_thelowerlevel1.png");
     mapImgURLs.put("L2", "map/00_thelowerlevel2.png");
-    mapImgURLs.put("GG", "map/00_thegroundfloor.png");
+    // mapImgURLs.put("GG", "map/00_thegroundfloor.png");
     mapImgURLs.put("1", "map/01_thefirstfloor.png");
     mapImgURLs.put("2", "map/02_thesecondfloor.png");
     mapImgURLs.put("3", "map/03_thethirdfloor.png");

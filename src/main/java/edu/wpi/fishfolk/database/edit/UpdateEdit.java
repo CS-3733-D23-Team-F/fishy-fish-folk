@@ -1,7 +1,5 @@
 package edu.wpi.fishfolk.database.edit;
 
-import edu.wpi.fishfolk.database.DataTableType;
-
 public class UpdateEdit extends DataEdit {
 
   public String attribute, value;
