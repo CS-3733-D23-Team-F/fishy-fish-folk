@@ -23,6 +23,20 @@
                <Font name="Open Sans Regular" size="26.0" />
            </font>
        </MFXButton>
-      <AnchorPane fx:id="cartViewPane" prefHeight="200.0" prefWidth="200.0" />
+      <AnchorPane fx:id="cartViewPane" layoutX="200.0" layoutY="100.0" prefHeight="880.0" prefWidth="1300.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="880.0" stroke="#012d5a" strokeType="INSIDE" width="1300.0" />
+            <MFXButton fx:id="backButton" layoutX="50.0" layoutY="800.0" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #012d5a;" text="Back to Menu" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Regular" size="26.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="submitButton" layoutX="330.0" layoutY="800.0" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #f0Bf4c;" text="Confirm Order" textFill="#012d5a">
+               <font>
+                  <Font name="Open Sans Regular" size="26.0" />
+               </font>
+            </MFXButton>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
