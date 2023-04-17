@@ -2,9 +2,9 @@ package edu.wpi.fishfolk.ui;
 
 public class NewFoodItem {
   String name;
-  byte quantity;
+  int quantity;
 
-  public NewFoodItem(String n, byte q) {
+  public NewFoodItem(String n, int q) {
     name = n;
     quantity = q;
   }

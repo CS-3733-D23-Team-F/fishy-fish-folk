@@ -46,6 +46,7 @@ public class NewFoodOrderController extends AbsController {
   private void initialize() {
     loadMenu();
     loadRooms();
+    cart = new NewFoodCart();
     cartViewPane.setVisible(false);
     cartViewPane.setDisable(true);
     cancelButton.setOnAction(event -> cancel());
@@ -95,7 +96,8 @@ public class NewFoodOrderController extends AbsController {
   }
 
   private void openCart() {
-    // todo load cart items into CartItemsPane
+    loadCart();
+    notesField.setWrapText(true);
     cartViewPane.setDisable(false);
     cartViewPane.setVisible(true);
   }
@@ -105,7 +107,9 @@ public class NewFoodOrderController extends AbsController {
     cartViewPane.setVisible(false);
   }
 
-  private void submit() {}
+  private void submit() {
+    // todo send orders to DB on submission
+  }
 
   private void tab(int target) {
     List<NewFoodMenuItem> items = menuTabs[target];
@@ -192,7 +196,7 @@ public class NewFoodOrderController extends AbsController {
           itemPane.getChildren().add(addItemButton);
           itemRow.getChildren().add(itemPane);
         } catch (Exception E) {
-          // This row does not have a 2nd item
+          // This row does not have a 2nd item - thrown here by indexOutOfBoundsException
           System.out.println("Should only get here once, here's what happened " + E.toString());
           AnchorPane itemPane = new AnchorPane();
           itemPane.setPrefHeight(250);
@@ -203,5 +207,112 @@ public class NewFoodOrderController extends AbsController {
       itemRows.getChildren().add(itemRow);
     }
     menuItemsPane.setContent(itemRows);
+  }
+
+  private void loadCart() {
+    List<NewFoodCart.quantityItem> items = cart.getItems();
+    VBox itemsBox = new VBox();
+    itemsBox.setPrefHeight(140 * items.size());
+    itemsBox.setPrefWidth(1190);
+    for (NewFoodCart.quantityItem item : items) {
+      AnchorPane itemPane = new AnchorPane();
+      itemPane.setPrefHeight(130);
+      itemPane.setPrefWidth(1190);
+      Rectangle bgRectangle = new Rectangle();
+      bgRectangle.setArcHeight(5);
+      bgRectangle.setArcWidth(5);
+      bgRectangle.setFill(Paint.valueOf("WHITE"));
+      bgRectangle.setHeight(90);
+      bgRectangle.setWidth(1150);
+      bgRectangle.setLayoutX(20);
+      bgRectangle.setLayoutY(20);
+      bgRectangle.setStroke(Paint.valueOf("#012d5a"));
+      bgRectangle.setStrokeType(StrokeType.INSIDE);
+      itemPane.getChildren().add(bgRectangle);
+      Text itemName = new Text();
+      itemName.setText(item.getItem().getName());
+      itemName.setLayoutY(75);
+      itemName.setLayoutX(42);
+      itemName.setStrokeType(StrokeType.OUTSIDE);
+      itemName.setStrokeWidth(0);
+      itemName.setWrappingWidth(300);
+      itemName.setFont(new Font("Open Sans Regular", 26));
+      itemName.setTextAlignment(TextAlignment.LEFT);
+      itemPane.getChildren().add(itemName);
+      Text unitPrice = new Text();
+      unitPrice.setText(String.format("$%.2f", item.getItem().getPrice()));
+      unitPrice.setLayoutY(75);
+      unitPrice.setLayoutX(302);
+      unitPrice.setStrokeType(StrokeType.OUTSIDE);
+      unitPrice.setStrokeWidth(0);
+      unitPrice.setWrappingWidth(100);
+      unitPrice.setFont(new Font("Open Sans Regular", 26));
+      unitPrice.setTextAlignment(TextAlignment.LEFT);
+      itemPane.getChildren().add(unitPrice);
+      Text quantityText = new Text();
+      quantityText.setText(String.format("x%d", item.getQuantity()));
+      quantityText.setLayoutY(75);
+      quantityText.setLayoutX(497);
+      quantityText.setStrokeType(StrokeType.OUTSIDE);
+      quantityText.setStrokeWidth(0);
+      quantityText.setWrappingWidth(100);
+      quantityText.setFont(new Font("Open Sans Regular", 26));
+      quantityText.setTextAlignment(TextAlignment.CENTER);
+      itemPane.getChildren().add(quantityText);
+      Text totalPrice = new Text();
+      totalPrice.setText(String.format("$%.2f", item.getItem().getPrice() * item.getQuantity()));
+      totalPrice.setLayoutY(75);
+      totalPrice.setLayoutX(700);
+      totalPrice.setStrokeType(StrokeType.OUTSIDE);
+      totalPrice.setStrokeWidth(0);
+      totalPrice.setWrappingWidth(100);
+      totalPrice.setFont(new Font("Open Sans Regular", 26));
+      totalPrice.setTextAlignment(TextAlignment.LEFT);
+      itemPane.getChildren().add(totalPrice);
+      MFXButton minusButton = new MFXButton();
+      minusButton.setLayoutX(450);
+      minusButton.setLayoutY(51);
+      minusButton.setText("-");
+      minusButton.setMinHeight(28);
+      minusButton.setMinWidth(28);
+      minusButton.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 14;");
+      final NewFoodMenuItem currentItem = item.getItem();
+      minusButton.setOnAction(
+          event -> {
+            cart.remove(currentItem);
+            loadCart();
+          });
+      itemPane.getChildren().add(minusButton);
+      MFXButton plusButton = new MFXButton();
+      plusButton.setLayoutX(616);
+      plusButton.setLayoutY(51);
+      plusButton.setText("+");
+      plusButton.setMinHeight(28);
+      plusButton.setMinWidth(28);
+      plusButton.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 14;");
+      plusButton.setOnAction(
+          event -> {
+            cart.add(currentItem);
+            loadCart();
+          });
+      itemPane.getChildren().add(plusButton);
+      MFXButton removeButton = new MFXButton();
+      removeButton.setText("Remove from Order");
+      removeButton.setLayoutX(844);
+      removeButton.setLayoutY(38);
+      removeButton.setPrefHeight(55);
+      removeButton.setPrefWidth(309);
+      removeButton.setFont(new Font("Open Sans Regular", 26));
+      removeButton.setStyle("-fx-background-color: #900000;");
+      removeButton.setTextFill(Paint.valueOf("WHITE"));
+      removeButton.setOnAction(
+          event -> {
+            cart.removeAll(currentItem);
+            loadCart();
+          });
+      itemPane.getChildren().add(removeButton);
+      itemsBox.getChildren().add(itemPane);
+    }
+    cartItemsPane.setContent(itemsBox);
   }
 }
