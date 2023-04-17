@@ -1,25 +1,19 @@
 package edu.wpi.fishfolk.ui;
 
-public class NewFoodMenuItem {
-  String description;
-  String name;
-  float price;
-  String imageLoc;
-  category cat;
+import lombok.Getter;
 
-  public NewFoodMenuItem(String n, String d, String i, float p, category c) {
+public class NewFoodMenuItem {
+  @Getter String description;
+  @Getter String name;
+  @Getter float price;
+  @Getter String imageLoc;
+  @Getter FoodCategory cat;
+
+  public NewFoodMenuItem(String n, String d, String i, float p, FoodCategory c) {
     name = n;
     description = d;
     imageLoc = i;
     price = p;
     cat = c;
-  }
-
-  public enum category {
-    app,
-    drink,
-    main,
-    side,
-    dessert;
   }
 }
