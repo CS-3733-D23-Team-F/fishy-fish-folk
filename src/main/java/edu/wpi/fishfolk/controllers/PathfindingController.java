@@ -14,8 +14,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
+import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -172,7 +171,7 @@ public class PathfindingController extends AbsController {
               TextInstructionController instructionController = fxmlLoader.getController();
               instructionController.setData(textDirections.get(i), i + 1);
 
-              if (col == 4) {
+              if (col == 3) {
                 col = 0;
                 row++;
               }
@@ -181,11 +180,11 @@ public class PathfindingController extends AbsController {
 
               grid.setMinWidth(Region.USE_COMPUTED_SIZE);
               grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-              grid.setMaxWidth(Region.USE_PREF_SIZE);
+              grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
 
               grid.setMinHeight(Region.USE_COMPUTED_SIZE);
               grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-              grid.setMaxHeight(Region.USE_PREF_SIZE);
+              grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
 
               GridPane.setMargin(anchorPane, new Insets(10));
             }
