@@ -3,7 +3,9 @@ package edu.wpi.fishfolk.controllers;
 import edu.wpi.fishfolk.pathfinding.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
-import java.time.LocalDate;import java.time.Month;import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,60 +24,60 @@ import net.kurobako.gesturefx.GesturePane;
 
 public class PathfindingController extends AbsController {
 
-    @FXML Text floorDisplay;
+  @FXML Text floorDisplay;
 
-    @FXML MFXFilterComboBox<String> startSelector;
-    @FXML MFXFilterComboBox<String> endSelector;
-    @FXML MFXButton clearBtn;
+  @FXML MFXFilterComboBox<String> startSelector;
+  @FXML MFXFilterComboBox<String> endSelector;
+  @FXML MFXButton clearBtn;
 
-    @FXML Group pathGroup;
-    @FXML ImageView mapImg;
-    // @FXML Text directionInstructions;
-    @FXML MFXButton backButton;
-    @FXML MFXButton nextButton;
-    @FXML MFXButton viewFood;
-    @FXML MFXButton viewSupply, furnitureNav;
-    @FXML MFXButton zoomOut;
-    @FXML MFXButton zoomIn;
-    @FXML GesturePane pane;
-    @FXML MFXButton slideUp;
-    @FXML VBox textInstruct;
+  @FXML Group pathGroup;
+  @FXML ImageView mapImg;
+  // @FXML Text directionInstructions;
+  @FXML MFXButton backButton;
+  @FXML MFXButton nextButton;
+  @FXML MFXButton viewFood;
+  @FXML MFXButton viewSupply, furnitureNav;
+  @FXML MFXButton zoomOut;
+  @FXML MFXButton zoomIn;
+  @FXML GesturePane pane;
+  @FXML MFXButton slideUp;
+  @FXML VBox textInstruct;
 
-    Pathfinder pathfinder;
+  Pathfinder pathfinder;
 
-    int start, end;
-    Graph graph;
-    ArrayList<Path> paths;
+  int start, end;
+  Graph graph;
+  ArrayList<Path> paths;
 
-    ArrayList<String> floors;
-    int currentFloor;
-    int zoom;
+  ArrayList<String> floors;
+  int currentFloor;
+  int zoom;
 
-    private LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
+  private LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
 
-    public PathfindingController() {
-        super();
-        // System.out.println("constructed pathfinding controller");
-    }
+  public PathfindingController() {
+    super();
+    // System.out.println("constructed pathfinding controller");
+  }
 
-    @FXML
-    private void initialize() {
+  @FXML
+  private void initialize() {
 
-        // buttons to other pages
-        slideUp.setOnMouseClicked(
-                event -> {
-                    // serviceBar.setVisible(true);
-                    // serviceBar.setDisable(false);
-                    TranslateTransition slide = new TranslateTransition();
-                    slide.setDuration(Duration.seconds(0.4));
-                    slide.setNode(textInstruct);
+    // buttons to other pages
+    slideUp.setOnMouseClicked(
+        event -> {
+          // serviceBar.setVisible(true);
+          // serviceBar.setDisable(false);
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(textInstruct);
 
-                    slide.setToY(0);
-                    slide.play();
+          slide.setToY(0);
+          slide.play();
 
-                    textInstruct.setTranslateY(0);
-                    slide.setOnFinished(
-                            (ActionEvent e) -> {
+          textInstruct.setTranslateY(0);
+          slide.setOnFinished(
+              (ActionEvent e) -> {
                 /*
                 serviceNav.setVisible(false);
                 closeServiceNav.setVisible(true);
@@ -83,65 +85,65 @@ public class PathfindingController extends AbsController {
                 closeServiceNav.setDisable(false);
 
                  */
-                            });
-                });
+              });
+        });
 
-        zoomIn.setOnMouseClicked(
-                event -> {
-                    javafx.geometry.Bounds bounds = pane.getTargetViewport();
-                    pane.animate(Duration.millis(200))
-                            .interpolateWith(Interpolator.EASE_BOTH)
-                            .zoomBy(zoom + 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
-                });
+    zoomIn.setOnMouseClicked(
+        event -> {
+          javafx.geometry.Bounds bounds = pane.getTargetViewport();
+          pane.animate(Duration.millis(200))
+              .interpolateWith(Interpolator.EASE_BOTH)
+              .zoomBy(zoom + 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
+        });
 
-        zoomOut.setOnMouseClicked(
-                event -> {
-                    javafx.geometry.Bounds bounds = pane.getTargetViewport();
-                    pane.animate(Duration.millis(200))
-                            .interpolateWith(Interpolator.EASE_BOTH)
-                            .zoomBy(zoom - 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
-                });
+    zoomOut.setOnMouseClicked(
+        event -> {
+          javafx.geometry.Bounds bounds = pane.getTargetViewport();
+          pane.animate(Duration.millis(200))
+              .interpolateWith(Interpolator.EASE_BOTH)
+              .zoomBy(zoom - 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
+        });
 
-        List<String> nodeNames = dbConnection.getDestLongnames();
+    List<String> nodeNames = dbConnection.getDestLongnames();
 
-        startSelector.getItems().addAll(nodeNames);
-        endSelector.getItems().addAll(nodeNames); // same options for start and end
-        endSelector.setDisable(true);
-        startSelector.setOnAction(
-                event -> {
-                    pathGroup.getChildren().clear();
-                    pathGroup.getChildren().add(mapImg);
+    startSelector.getItems().addAll(nodeNames);
+    endSelector.getItems().addAll(nodeNames); // same options for start and end
+    endSelector.setDisable(true);
+    startSelector.setOnAction(
+        event -> {
+          pathGroup.getChildren().clear();
+          pathGroup.getChildren().add(mapImg);
 
-                    // clear list of floors
-                    floors.clear();
-                    start = dbConnection.getNodeIDFromLocation(startSelector.getValue(), today);
-                    // floor of the selected unode id
-                    currentFloor = 0;
-                    System.out.println("start node: " + start);
-                    endSelector.setVisible(true);
-                    endSelector.setDisable(false);
-                });
-        endSelector.setOnAction(
-                event -> {
-                    end = dbConnection.getNodeIDFromLocation(endSelector.getValue(), today);
-                    System.out.println("end node: " + end);
-                    pathfinder = new AStar(graph);
-                    paths = pathfinder.pathfind(start, end, true);
+          // clear list of floors
+          floors.clear();
+          start = dbConnection.getNodeIDFromLocation(startSelector.getValue(), today);
+          // floor of the selected unode id
+          currentFloor = 0;
+          System.out.println("start node: " + start);
+          endSelector.setVisible(true);
+          endSelector.setDisable(false);
+        });
+    endSelector.setOnAction(
+        event -> {
+          end = dbConnection.getNodeIDFromLocation(endSelector.getValue(), today);
+          System.out.println("end node: " + end);
+          pathfinder = new AStar(graph);
+          paths = pathfinder.pathfind(start, end, true);
 
-                    // create segments for each path and put into groups
+          // create segments for each path and put into groups
 
-                    drawPaths(paths);
-                    currentFloor = 0;
-                    pane.animate(Duration.millis(200))
-                            .interpolateWith(Interpolator.EASE_BOTH)
-                            .centreOn(paths.get(0).centerToPath(7));
-                    displayFloor(currentFloor);
-                    endSelector.setDisable(true);
-                });
+          drawPaths(paths);
+          currentFloor = 0;
+          pane.animate(Duration.millis(200))
+              .interpolateWith(Interpolator.EASE_BOTH)
+              .centreOn(paths.get(0).centerToPath(7));
+          displayFloor(currentFloor);
+          endSelector.setDisable(true);
+        });
 
-        currentFloor = 0;
-        floors = new ArrayList<>();
-        graph = new Graph(dbConnection);
+    currentFloor = 0;
+    floors = new ArrayList<>();
+    graph = new Graph(dbConnection);
 
     /*
             nextButton.setOnMouseClicked(
@@ -160,54 +162,54 @@ public class PathfindingController extends AbsController {
                   displayFloor(currentFloor);
                 });
     */
-        clearBtn.setOnMouseClicked(
-                event -> {
-                    // clear paths
-                    pathGroup.getChildren().clear();
-                    pathGroup.getChildren().add(mapImg);
+    clearBtn.setOnMouseClicked(
+        event -> {
+          // clear paths
+          pathGroup.getChildren().clear();
+          pathGroup.getChildren().add(mapImg);
 
-                    // clear list of floors
-                    floors.clear();
-                });
+          // clear list of floors
+          floors.clear();
+        });
+  }
+
+  private void drawPaths(ArrayList<Path> paths) {
+
+    paths.forEach(
+        path -> {
+          LinkedList<Line> segments = new LinkedList<>();
+          for (int i = 1; i < path.numNodes; i++) {
+            segments.add(line(path.points.get(i - 1), path.points.get(i)));
+          }
+
+          if (!(path.numNodes == 1)
+              || (path.equals(paths.get(0)))
+              || (path.equals(paths.get(paths.size() - 1)))) {
+            Group g = new Group();
+            g.getChildren().addAll(segments);
+            pathGroup.getChildren().add(g);
+            g.setVisible(false);
+
+            floors.add(path.floor);
+          }
+        });
+  }
+
+  private void displayFloor(int floor) {
+
+    mapImg.setImage(images.get(floors.get(floor)));
+    floorDisplay.setText("Floor " + floors.get(floor));
+    Iterator<javafx.scene.Node> itr = pathGroup.getChildren().iterator();
+    itr.next(); // skip first child which is the imageview
+
+    while (itr.hasNext()) {
+      itr.next().setVisible(false);
     }
 
-    private void drawPaths(ArrayList<Path> paths) {
+    pathGroup.getChildren().get(floor + 1).setVisible(true);
+  }
 
-        paths.forEach(
-                path -> {
-                    LinkedList<Line> segments = new LinkedList<>();
-                    for (int i = 1; i < path.numNodes; i++) {
-                        segments.add(line(path.points.get(i - 1), path.points.get(i)));
-                    }
-
-                    if (!(path.numNodes == 1)
-                            || (path.equals(paths.get(0)))
-                            || (path.equals(paths.get(paths.size() - 1)))) {
-                        Group g = new Group();
-                        g.getChildren().addAll(segments);
-                        pathGroup.getChildren().add(g);
-                        g.setVisible(false);
-
-                        floors.add(path.floor);
-                    }
-                });
-    }
-
-    private void displayFloor(int floor) {
-
-        mapImg.setImage(images.get(floors.get(floor)));
-        floorDisplay.setText("Floor " + floors.get(floor));
-        Iterator<javafx.scene.Node> itr = pathGroup.getChildren().iterator();
-        itr.next(); // skip first child which is the imageview
-
-        while (itr.hasNext()) {
-            itr.next().setVisible(false);
-        }
-
-        pathGroup.getChildren().get(floor + 1).setVisible(true);
-    }
-
-    private Line line(Point2D p1, Point2D p2) {
-        return new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-    }
+  private Line line(Point2D p1, Point2D p2) {
+    return new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+  }
 }

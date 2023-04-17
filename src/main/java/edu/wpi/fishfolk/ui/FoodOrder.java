@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class FoodOrder extends TableEntry {
+public class FoodOrder {
   public LinkedList<FoodItem> items;
   public LocalDateTime deliveryTime;
   public CreditCardInfo payer;

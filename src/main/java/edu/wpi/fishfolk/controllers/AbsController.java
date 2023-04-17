@@ -1,10 +1,10 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.Fdb;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import edu.wpi.fishfolk.database.Fdb;
 import javafx.scene.image.Image;
 
 public abstract class AbsController {

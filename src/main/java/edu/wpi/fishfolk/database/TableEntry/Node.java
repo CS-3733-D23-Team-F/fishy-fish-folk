@@ -1,9 +1,12 @@
 package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.database.EntryStatus;
-import edu.wpi.fishfolk.pathfinding.NodeType;import javafx.geometry.Point2D;
+import edu.wpi.fishfolk.pathfinding.NodeType;
+import java.util.HashSet;
+import java.util.List;
+import javafx.geometry.Point2D;
 import lombok.Getter;
-import lombok.Setter;import java.util.HashMap;import java.util.HashSet;import java.util.List;
+import lombok.Setter;
 
 public class Node {
 
@@ -40,29 +43,29 @@ public class Node {
     return point.getY();
   }
 
-  public boolean addLocation(Location l){
+  public boolean addLocation(Location l) {
     return locations.add(l);
   }
 
-  public boolean removeLocation(Location l){
+  public boolean removeLocation(Location l) {
     return locations.remove(l);
   }
 
-  public List<Location> getLocations(){
+  public List<Location> getLocations() {
     return locations.stream().toList();
   }
 
-  public boolean containsType(NodeType type){
-    for(Location loc : locations){
-      if(loc.getNodeType() == type) return true;
+  public boolean containsType(NodeType type) {
+    for (Location loc : locations) {
+      if (loc.getNodeType() == type) return true;
     }
     return false;
   }
 
-  public List<String> getElevLetters(){
+  public List<String> getElevLetters() {
     return locations.stream()
-            .filter(loc -> loc.getNodeType() == NodeType.ELEV)
-            .map(loc -> loc.getLongName().substring(8, 10)) //extract elevator letter
-            .toList();
+        .filter(loc -> loc.getNodeType() == NodeType.ELEV)
+        .map(loc -> loc.getLongName().substring(8, 10)) // extract elevator letter
+        .toList();
   }
 }

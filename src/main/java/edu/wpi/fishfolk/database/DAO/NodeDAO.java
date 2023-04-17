@@ -11,7 +11,8 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import javafx.geometry.Point2D;import lombok.Getter;
+import javafx.geometry.Point2D;
+import lombok.Getter;
 
 public class NodeDAO implements IDAO<Node> {
 
@@ -31,7 +32,7 @@ public class NodeDAO implements IDAO<Node> {
     this.dbConnection = dbConnection;
     this.tableName = "node";
     this.headers = new ArrayList<>(List.of("id", "x", "y", "floor", "building"));
-    this.tableMap = new HashMap<>(800); //a little more than (3000-100)/5 * 4/3 = 730
+    this.tableMap = new HashMap<>(800); // a little more than (3000-100)/5 * 4/3 = 730
     this.dataEditQueue = new DataEditQueue<>();
     freeIDs = new HashSet<>(800);
 
@@ -42,7 +43,7 @@ public class NodeDAO implements IDAO<Node> {
   @Override
   public void init(boolean drop) {
 
-    for(int i = 100; i < 4000; i += 5){
+    for (int i = 100; i < 4000; i += 5) {
       freeIDs.add(i);
     }
 
@@ -119,7 +120,7 @@ public class NodeDAO implements IDAO<Node> {
     // Mark entry Node status as NEW
     entry.setStatus(EntryStatus.NEW);
 
-    //record that ID is taken
+    // record that ID is taken
     freeIDs.remove(entry.getNodeID());
     numNodes++;
 
@@ -183,7 +184,7 @@ public class NodeDAO implements IDAO<Node> {
       return false;
     }
 
-    //free up id
+    // free up id
     freeIDs.add(nodeID);
     numNodes--;
 
@@ -454,11 +455,11 @@ public class NodeDAO implements IDAO<Node> {
                 parts[3],
                 parts[4]);
 
-        //record that id is taken
+        // record that id is taken
         freeIDs.remove(n.getNodeID());
         numNodes++;
 
-        //store node in local table
+        // store node in local table
         tableMap.put(n.getNodeID(), n);
 
         insertPS.setInt(1, n.getNodeID());
@@ -517,10 +518,10 @@ public class NodeDAO implements IDAO<Node> {
 
   /**
    * Gets the next free id but does not reserve it.
+   *
    * @return
    */
-  public int getNextID(){
+  public int getNextID() {
     return freeIDs.iterator().next();
   }
-
 }

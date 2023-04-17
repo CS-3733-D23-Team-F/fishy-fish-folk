@@ -268,13 +268,13 @@ public class MapEditorController extends AbsController {
             c.setCenterY(event.getY());
 
             node.setPoint(new Point2D(event.getX(), event.getY()));
-            node.setBuilding(buildingChecker
-                    .getBuilding(node.getPoint(), allFloors.get(currentFloor)));
+            node.setBuilding(
+                buildingChecker.getBuilding(node.getPoint(), allFloors.get(currentFloor)));
 
             fillNodeFields(node);
             fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
 
-            //update node in database with updated x & y
+            // update node in database with updated x & y
             dbConnection.updateEntry(node);
           }
         });
@@ -329,7 +329,7 @@ public class MapEditorController extends AbsController {
       }
     }
 
-    //remove from database
+    // remove from database
     dbConnection.removeEntry(nodeID, TableEntryType.NODE);
 
     currentEditingNode = -1;
@@ -341,8 +341,9 @@ public class MapEditorController extends AbsController {
     int id = dbConnection.getNextNodeID();
 
     String floor = allFloors.get(currentFloor);
-    Node node = new Node(id, new Point2D(x, y), floor,
-                buildingChecker.getBuilding(new Point2D(x, y), floor));
+    Node node =
+        new Node(
+            id, new Point2D(x, y), floor, buildingChecker.getBuilding(new Point2D(x, y), floor));
 
     drawNode(node);
     dbConnection.insertEntry(node);

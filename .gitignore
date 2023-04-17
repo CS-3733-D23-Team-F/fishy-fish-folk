@@ -168,3 +168,11 @@ src/main/resources/edu/wpi/fishfolk/csv/*
 !src/main/resources/edu/wpi/fishfolk/csv/Move.csv
 !src/main/resources/edu/wpi/fishfolk/csv/Location.csv
 !src/main/resources/edu/wpi/fishfolk/csv/Edge.csv
+
+
+src/main/java/edu/wpi/fishfolk/controllers/FoodOrderController.java
+src/main/java/edu/wpi/fishfolk/controllers/ViewFoodOrdersController.java
+src/main/java/edu/wpi/fishfolk/controllers/SupplyRequestController.java
+src/main/java/edu/wpi/fishfolk/controllers/ViewSupplyOrdersController.java
+src/main/java/edu/wpi/fishfolk/controllers/FurnitureOrderController.java
+src/main/java/edu/wpi/fishfolk/controllers/ViewFurnitureOrdersController.java

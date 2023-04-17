@@ -9,10 +9,12 @@ public class UserAccount {
   @Getter private final String username;
   @Getter @Setter private String password;
 
-  @Getter @Setter private String email; //TODO check email format using regex in constructor & setter
+  @Getter @Setter
+  private String email; // TODO check email format using regex in constructor & setter
+
   @Getter @Setter private PermissionLevel level;
 
-  //for database versioning
+  // for database versioning
   @Getter @Setter private EntryStatus status;
 
   /**
@@ -32,12 +34,11 @@ public class UserAccount {
   }
 
   @Override
-  public boolean equals(Object other){
+  public boolean equals(Object other) {
 
-    if(other instanceof UserAccount){
+    if (other instanceof UserAccount) {
       return username.equals(((UserAccount) other).email);
 
     } else return false;
   }
-
 }

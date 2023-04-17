@@ -1,9 +1,9 @@
 package edu.wpi.fishfolk.pathfinding;
 
+import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import edu.wpi.fishfolk.database.TableEntry.Node;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 import lombok.Setter;

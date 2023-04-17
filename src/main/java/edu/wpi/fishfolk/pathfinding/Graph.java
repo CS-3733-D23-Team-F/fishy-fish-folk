@@ -1,11 +1,10 @@
 package edu.wpi.fishfolk.pathfinding;
 
-import java.time.LocalDate;
-import java.util.*;
 import edu.wpi.fishfolk.database.Fdb;
-import edu.wpi.fishfolk.database.TableEntry.Node;
 import edu.wpi.fishfolk.database.TableEntry.Edge;
+import edu.wpi.fishfolk.database.TableEntry.Node;
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
+import java.util.*;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 
@@ -42,47 +41,58 @@ public class Graph {
 
   public void populate() {
 
-    //get Nodes from table into array and record elevators
+    // get Nodes from table into array and record elevators
 
-    int[] nodeCount = {0}; //array is technically final but allows modification of elements inside lambda
-    nodes = dbConnection.getAllEntries(TableEntryType.NODE).stream().map(elt -> {
+    int[] nodeCount = {
+      0
+    }; // array is technically final but allows modification of elements inside lambda
+    nodes =
+        dbConnection.getAllEntries(TableEntryType.NODE).stream()
+            .map(
+                elt -> {
+                  Node node = (Node) elt;
+                  nodes[nodeCount[0]] = node;
 
-      Node node = (Node) elt;
-      nodes[nodeCount[0]] = node;
+                  id2idx.put(node.getNodeID(), nodeCount[0]);
+                  nodeCount[0]++;
 
-      id2idx.put(node.getNodeID(), nodeCount[0]);
-      nodeCount[0]++;
+                  if (node.containsType(NodeType.ELEV)) {
+                    for (String letter : node.getElevLetters()) {
 
-      if(node.containsType(NodeType.ELEV)){
-        for (String letter : node.getElevLetters()) {
-
-          // add nid to the list of ids associated with the elevator's letter
-          ArrayList<Integer> lst = new ArrayList<>(List.of(node.getNodeID()));
-          elevLet2ids.merge(letter, lst, (lst1, lst2) -> {
-            lst1.addAll(lst2);
-            return lst1;
-          });
-        }
-      }
-      return node;
-    }).toArray(Node[]::new);
+                      // add nid to the list of ids associated with the elevator's letter
+                      ArrayList<Integer> lst = new ArrayList<>(List.of(node.getNodeID()));
+                      elevLet2ids.merge(
+                          letter,
+                          lst,
+                          (lst1, lst2) -> {
+                            lst1.addAll(lst2);
+                            return lst1;
+                          });
+                    }
+                  }
+                  return node;
+                })
+            .toArray(Node[]::new);
 
     int[] edgeCount = {0};
-    dbConnection.getAllEntries(TableEntryType.EDGE).forEach(elt -> {
-      Edge edge = (Edge) elt;
-      addEdge(edge.getStartNode(), edge.getEndNode());
-      edgeCount[0]++;
-    });
+    dbConnection
+        .getAllEntries(TableEntryType.EDGE)
+        .forEach(
+            elt -> {
+              Edge edge = (Edge) elt;
+              addEdge(edge.getStartNode(), edge.getEndNode());
+              edgeCount[0]++;
+            });
 
     // TODO test different values for this cost
     edgeCount[0] += connectElevators(250);
 
     System.out.println(
-            "[Graph.populate]: Populated graph with "
-                    + nodeCount[0]
-                    + " nodes and "
-                    + edgeCount[0]
-                    + " edges.");
+        "[Graph.populate]: Populated graph with "
+            + nodeCount[0]
+            + " nodes and "
+            + edgeCount[0]
+            + " edges.");
   }
 
   public void resize(int newSize) {

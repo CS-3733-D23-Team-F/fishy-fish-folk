@@ -78,7 +78,7 @@ public class AStar extends Pathfinder {
 
           Node otherNode = graph.getNodeFromIdx(other);
 
-          //TODO figure out why check heuristic < 500?
+          // TODO figure out why check heuristic < 500?
           if (heuristic[other] < -501 && otherNode.getFloor().equals(endNode.getFloor())) {
             heuristic[other] = otherNode.getPoint().distance(endNode.getPoint()) - 500;
 

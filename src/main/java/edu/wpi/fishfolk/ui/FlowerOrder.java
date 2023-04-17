@@ -1,10 +1,8 @@
 package edu.wpi.fishfolk.ui;
 
-import edu.wpi.fishfolk.database.TableEntry;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class FlowerOrder extends TableEntry {
+public class FlowerOrder {
 
   public LinkedList<FlowerItem> items;
 
@@ -45,15 +43,5 @@ public class FlowerOrder extends TableEntry {
       return false;
     formStatus = FormStatus.submitted;
     return true;
-  }
-
-  @Override
-  public boolean construct(ArrayList<String> data) {
-    return false;
-  }
-
-  @Override
-  public ArrayList<String> deconstruct() {
-    return null;
   }
 }

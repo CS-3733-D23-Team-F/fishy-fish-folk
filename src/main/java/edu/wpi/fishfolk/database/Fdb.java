@@ -1,11 +1,12 @@
 package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.database.DAO.*;
-import edu.wpi.fishfolk.database.TableEntry.*;import edu.wpi.fishfolk.pathfinding.NodeType;
+import edu.wpi.fishfolk.database.TableEntry.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.LocalDate;import java.util.*;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Fdb {
@@ -52,17 +53,17 @@ public class Fdb {
     this.userAccountTable = new UserAccountDAO(dbConnection);
 
     Runtime.getRuntime()
-            .addShutdownHook(
-                    new Thread(
-                            () -> {
-                              System.out.println("[Fdb]: Shutdown received...");
-                              nodeTable.updateDatabase(true);
-                              locationTable.updateDatabase(true);
-                              foodRequestTable.updateDatabase(true);
-                              supplyRequestTable.updateDatabase(true);
+        .addShutdownHook(
+            new Thread(
+                () -> {
+                  System.out.println("[Fdb]: Shutdown received...");
+                  nodeTable.updateDatabase(true);
+                  locationTable.updateDatabase(true);
+                  foodRequestTable.updateDatabase(true);
+                  supplyRequestTable.updateDatabase(true);
 
-                              disconnect();
-                            }));
+                  disconnect();
+                }));
   }
 
   /**
@@ -423,53 +424,55 @@ public class Fdb {
 
   /**
    * Get the most recent locations at the given node.
+   *
    * @param nodeID
    * @return List<Location>
    */
-  public List<Location> getLocations(int nodeID, LocalDate date){
+  public List<Location> getLocations(int nodeID, LocalDate date) {
 
     HashMap<String, LocalDate> dates = new HashMap<>();
 
     List<Move> allMoves = moveTable.getAllEntries();
 
-    //filter by nodeid and location
-    allMoves.forEach(move -> {
-      if(move.getNodeID() == nodeID
-              && move.getDate().isBefore(date)){
-        dates.put(move.getLongName(), move.getDate());
-      }
-    });
+    // filter by nodeid and location
+    allMoves.forEach(
+        move -> {
+          if (move.getNodeID() == nodeID && move.getDate().isBefore(date)) {
+            dates.put(move.getLongName(), move.getDate());
+          }
+        });
 
-    //second pass through all moves to check if longnames in moves
+    // second pass through all moves to check if longnames in moves
     // later get moved to a different node
-    allMoves.forEach(move -> {
-      String longname = move.getLongName();
-      if(dates.containsKey(longname)
-              && move.getDate().isAfter(dates.get(longname))){
-        dates.remove(longname);
-      }
-    });
+    allMoves.forEach(
+        move -> {
+          String longname = move.getLongName();
+          if (dates.containsKey(longname) && move.getDate().isAfter(dates.get(longname))) {
+            dates.remove(longname);
+          }
+        });
 
-    //get location for each longname left over in dates map
+    // get location for each longname left over in dates map
     return dates.keySet().stream().map(locationTable::getEntry).toList();
   }
 
   /**
    * Get the Node ID corresponding to the given Location on a given date
+   *
    * @param longname the longname of the Location
    * @param date
    * @return
    */
-  public int getNodeIDFromLocation(String longname, LocalDate date){
+  public int getNodeIDFromLocation(String longname, LocalDate date) {
 
     int nodeID = -1;
     LocalDate lastMoveDate = LocalDate.MIN;
 
-    for(Move move : moveTable.getAllEntries()){
+    for (Move move : moveTable.getAllEntries()) {
 
       if (move.getLongName().equals(longname)
-              && move.getDate().isBefore(date)
-              && move.getDate().isAfter(lastMoveDate)) {
+          && move.getDate().isBefore(date)
+          && move.getDate().isAfter(lastMoveDate)) {
         lastMoveDate = move.getDate();
         nodeID = move.getNodeID();
       }
@@ -480,41 +483,40 @@ public class Fdb {
 
   /**
    * Get the Nodes on the given floor.
+   *
    * @param floor
    * @return
    */
-  public List<Node> getNodesOnFloor(String floor){
+  public List<Node> getNodesOnFloor(String floor) {
 
     /* two options:
     1. push all changes to database and query directly
     2. iterate over localtable and filter
      */
 
-    //using option 2 for simplicity
-    return nodeTable.getAllEntries().stream()
-            .filter(n -> n.getFloor().equals(floor)).toList();
-
+    // using option 2 for simplicity
+    return nodeTable.getAllEntries().stream().filter(n -> n.getFloor().equals(floor)).toList();
   }
 
   /**
    * Get the longnames of the Locations that aren't of type HALL, ELEV, or STAI
+   *
    * @return
    */
-  public List<String> getDestLongnames(){
+  public List<String> getDestLongnames() {
 
     return locationTable.getAllEntries().stream()
-            .filter(Location::isDestination)
-            .map(Location::getLongName)
-            .sorted()
-            .toList();
+        .filter(Location::isDestination)
+        .map(Location::getLongName)
+        .sorted()
+        .toList();
   }
 
-  public int getNextNodeID(){
+  public int getNextNodeID() {
     return nodeTable.getNextID();
   }
 
-  public int getNumNodes(){
+  public int getNumNodes() {
     return nodeTable.getNumNodes();
   }
-
 }

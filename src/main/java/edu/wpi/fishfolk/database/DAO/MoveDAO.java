@@ -205,7 +205,7 @@ public class MoveDAO implements IDAO<Move> {
       return null;
     }
 
-    //remember that moveID is the longame concatenated with the move date
+    // remember that moveID is the longame concatenated with the move date
     String moveID = (String) identifier;
 
     // Check if local table contains identifier

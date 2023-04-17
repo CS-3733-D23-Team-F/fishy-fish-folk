@@ -28,9 +28,7 @@ public class Location {
     this.status = EntryStatus.OLD;
   }
 
-  public boolean isDestination(){
-    return nodeType != NodeType.HALL
-            & nodeType != NodeType.ELEV
-            & nodeType != NodeType.STAI;
+  public boolean isDestination() {
+    return nodeType != NodeType.HALL & nodeType != NodeType.ELEV & nodeType != NodeType.STAI;
   }
 }
