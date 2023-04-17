@@ -33,10 +33,7 @@ public class PathfindingController extends AbsController {
   @FXML Group pathGroup;
   @FXML ImageView mapImg;
   // @FXML Text directionInstructions;
-  @FXML MFXButton backButton;
-  @FXML MFXButton nextButton;
-  @FXML MFXButton viewFood;
-  @FXML MFXButton viewSupply, furnitureNav;
+
   @FXML MFXButton zoomOut;
   @FXML MFXButton zoomIn;
   @FXML GesturePane pane;
@@ -105,6 +102,7 @@ public class PathfindingController extends AbsController {
         });
 
     List<String> nodeNames = dbConnection.getDestLongnames();
+    System.out.println(nodeNames.size());
 
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end

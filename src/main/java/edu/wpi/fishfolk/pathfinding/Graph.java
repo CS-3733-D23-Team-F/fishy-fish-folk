@@ -51,7 +51,6 @@ public class Graph {
             .map(
                 elt -> {
                   Node node = (Node) elt;
-                  nodes[nodeCount[0]] = node;
 
                   id2idx.put(node.getNodeID(), nodeCount[0]);
                   nodeCount[0]++;

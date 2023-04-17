@@ -107,6 +107,7 @@ public class NodeDAO implements IDAO<Node> {
                 results.getString(4),
                 results.getString(5));
         tableMap.put(node.getNodeID(), node);
+        numNodes++;
       }
 
     } catch (SQLException | NumberFormatException e) {
@@ -457,7 +458,6 @@ public class NodeDAO implements IDAO<Node> {
 
         // record that id is taken
         freeIDs.remove(n.getNodeID());
-        numNodes++;
 
         // store node in local table
         tableMap.put(n.getNodeID(), n);

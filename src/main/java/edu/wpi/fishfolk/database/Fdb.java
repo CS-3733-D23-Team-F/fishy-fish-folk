@@ -42,6 +42,8 @@ public class Fdb {
     this.moveTable = new MoveDAO(dbConnection);
     this.edgeTable = new EdgeDAO(dbConnection);
 
+    importLocalCSV();
+
     // Service Request Tables
     this.foodRequestTable = new FoodRequestDAO(dbConnection);
     this.supplyRequestTable = new SupplyRequestDAO(dbConnection);
@@ -100,6 +102,14 @@ public class Fdb {
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
+  }
+
+  /** Internal method to import from local CSVs. */
+  private void importLocalCSV() {
+    nodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Node.csv", false);
+    locationTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Location.csv", false);
+    moveTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
+    edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
   }
 
   /**

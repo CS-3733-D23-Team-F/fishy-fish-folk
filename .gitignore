@@ -164,7 +164,7 @@ gradle-app.setting
 src/main/resources/edu/wpi/fishfolk/csv/*
 
 # except these csvs since they are our data
-!src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv
+!src/main/resources/edu/wpi/fishfolk/csv/Node.csv
 !src/main/resources/edu/wpi/fishfolk/csv/Move.csv
 !src/main/resources/edu/wpi/fishfolk/csv/Location.csv
 !src/main/resources/edu/wpi/fishfolk/csv/Edge.csv
