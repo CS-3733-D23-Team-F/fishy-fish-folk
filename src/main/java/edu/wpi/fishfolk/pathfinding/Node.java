@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk.pathfinding;
 
-import edu.wpi.fishfolk.database.TableEntry;
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
 

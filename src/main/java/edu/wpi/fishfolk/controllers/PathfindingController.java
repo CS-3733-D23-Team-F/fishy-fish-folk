@@ -8,10 +8,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -36,6 +39,7 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton zoomIn;
   @FXML GesturePane pane;
   @FXML MFXButton slideUp;
+  @FXML VBox textInstruct;
 
   Pathfinder pathfinder;
 
@@ -56,6 +60,29 @@ public class PathfindingController extends AbsController {
   private void initialize() {
 
     // buttons to other pages
+    slideUp.setOnMouseClicked(
+        event -> {
+          // serviceBar.setVisible(true);
+          // serviceBar.setDisable(false);
+          TranslateTransition slide = new TranslateTransition();
+          slide.setDuration(Duration.seconds(0.4));
+          slide.setNode(textInstruct);
+
+          slide.setToY(0);
+          slide.play();
+
+          textInstruct.setTranslateY(0);
+          slide.setOnFinished(
+              (ActionEvent e) -> {
+                /*
+                serviceNav.setVisible(false);
+                closeServiceNav.setVisible(true);
+                serviceNav.setDisable(true);
+                closeServiceNav.setDisable(false);
+
+                 */
+              });
+        });
 
     zoomIn.setOnMouseClicked(
         event -> {
