@@ -37,6 +37,7 @@ public class NewFoodOrderController extends AbsController {
   @FXML AnchorPane cartViewPane;
   List<NewFoodMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
   NewFoodCart cart;
+  MFXButton[] tabButtons;
 
   public NewFoodOrderController() {
     super();
@@ -54,6 +55,12 @@ public class NewFoodOrderController extends AbsController {
     checkoutButton.setOnAction(event -> openCart());
     submitButton.setOnAction(event -> submit());
     backButton.setOnAction(event -> closeCart());
+    appsTab.setOnAction(event -> tab(0));
+    sidesTab.setOnAction(event -> tab(1));
+    mainsTab.setOnAction(event -> tab(2));
+    drinksTab.setOnAction(event -> tab(3));
+    dessertsTab.setOnAction(event -> tab(4));
+    tabButtons = new MFXButton[] {appsTab, sidesTab, mainsTab, drinksTab, dessertsTab};
     tab(4);
   }
 
@@ -220,6 +227,13 @@ public class NewFoodOrderController extends AbsController {
       itemRows.getChildren().add(itemRow);
     }
     menuItemsPane.setContent(itemRows);
+    for (int i = 0; i < 5; i++) {
+      if (i == target) {
+        tabButtons[i].setDisable(true);
+      } else {
+        tabButtons[i].setDisable(false);
+      }
+    }
   }
 
   private void loadCart() {
