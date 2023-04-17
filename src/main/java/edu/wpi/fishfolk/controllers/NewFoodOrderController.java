@@ -4,6 +4,7 @@ import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FoodCategory;
+import edu.wpi.fishfolk.ui.FoodMenuLoader;
 import edu.wpi.fishfolk.ui.NewFoodCart;
 import edu.wpi.fishfolk.ui.NewFoodMenuItem;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -68,18 +69,45 @@ public class NewFoodOrderController extends AbsController {
         new NewFoodMenuItem(
             "Chocolate Cake",
             "A slice of Delicious, Scrumptious, Overly well described Chocolate Cake. Optionally served with whipped cream.",
-            "images/chocoCake.jpg", // jesus if i can
-            // just get this
-            // to work
-            // this'll look
-            // amazing
+            "images/chocoCake.jpg",
             3.50f,
             FoodCategory.dessert);
 
     for (int i = 0; i < 7; i++) {
       menuTabs[4].add(chocoCake);
     }
-    // todo this might be a large pain with how much menu there is to do (categorization etc)
+
+    // new version starts here
+    List<NewFoodMenuItem> allItems = FoodMenuLoader.loadItems();
+    for (NewFoodMenuItem item : allItems) {
+      switch (item.getCat()) {
+        case app:
+          {
+            menuTabs[0].add(item);
+            break;
+          }
+        case side:
+          {
+            menuTabs[1].add(item);
+            break;
+          }
+        case main:
+          {
+            menuTabs[2].add(item);
+            break;
+          }
+        case drink:
+          {
+            menuTabs[3].add(item);
+            break;
+          }
+        case dessert:
+          {
+            menuTabs[4].add(item);
+            break;
+          }
+      }
+    }
   }
 
   private void loadRooms() {
