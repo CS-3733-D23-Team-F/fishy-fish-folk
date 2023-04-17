@@ -13,7 +13,7 @@ public class Path {
   public ArrayList<Integer> nodes;
   public ArrayList<Point2D> points;
 
-  @Getter @Setter public String floor;
+  @Getter @Setter private String floor;
 
   public int numNodes;
 
@@ -52,6 +52,52 @@ public class Path {
     }
 
     return length;
+  }
+
+  /**
+   * Return an array of Point2D evenly spaced along the path.
+   *
+   * @param count
+   * @return
+   */
+  public Point2D[] interpolate(int count) {
+
+    Point2D[] interPoints = new Point2D[count + 1];
+    double[] segmentLengths = new double[numNodes - 1];
+    double totalLength = 0;
+
+    for (int i = 0; i < numNodes - 1; i++) {
+      segmentLengths[i] = points.get(i).distance(points.get(i + 1));
+      totalLength += segmentLengths[i];
+    }
+
+    final double dist = totalLength / count;
+
+    // place points dist apart along a segment until a point goes off the end of the segment
+    // place the next one along the next segment taking into account how much dist was used on the
+    // previous segment
+    // see https://www.desmos.com/calculator/xtue9yffxh
+
+    int nextIdx = 1; // index of the path point in front
+    Point2D prev = points.get(0), next = points.get(nextIdx);
+    double currSegment = prev.distance(next);
+    double remainder = currSegment;
+
+    for (int i = 0; i < count; i++) {
+      interPoints[i] = prev.interpolate(next, 1 - (remainder / currSegment));
+      remainder -= dist;
+
+      // went over this segment, move on to the next one
+      if (remainder < 0 && nextIdx < numNodes - 1) {
+        prev = next;
+        nextIdx++;
+        next = points.get(nextIdx);
+        currSegment = prev.distance(next);
+        remainder = currSegment + remainder;
+      }
+    }
+    interPoints[count] = next;
+    return interPoints;
   }
 
   public String getDirections() {
@@ -191,10 +237,13 @@ public class Path {
       }
     }
 
+    /*
     System.out.println(minX + "");
     System.out.println(maxX + "");
     System.out.println(minY + "");
     System.out.println(maxY + "");
+
+     */
 
     Point2D point = new Point2D((maxX + minX) / 2.0, (maxY + minY) / 2.0);
 

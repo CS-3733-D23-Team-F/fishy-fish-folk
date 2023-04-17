@@ -8,10 +8,8 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import javafx.animation.Interpolator;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -19,7 +17,8 @@ import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
@@ -50,6 +49,9 @@ public class PathfindingController extends AbsController {
 
   ArrayList<String> floors;
   int currentFloor;
+
+  ArrayList<ParallelTransition> pathAnimations;
+
   int zoom;
 
   private LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
@@ -104,11 +106,11 @@ public class PathfindingController extends AbsController {
         });
 
     List<String> nodeNames = dbConnection.getDestLongnames();
-    System.out.println(nodeNames.size());
 
     startSelector.getItems().addAll(nodeNames);
     endSelector.getItems().addAll(nodeNames); // same options for start and end
     endSelector.setDisable(true);
+
     startSelector.setOnAction(
         event -> {
           pathGroup.getChildren().clear();
@@ -123,6 +125,7 @@ public class PathfindingController extends AbsController {
           endSelector.setVisible(true);
           endSelector.setDisable(false);
         });
+
     endSelector.setOnAction(
         event -> {
           end = dbConnection.getNodeIDFromLocation(endSelector.getValue(), today);
@@ -142,27 +145,6 @@ public class PathfindingController extends AbsController {
           endSelector.setDisable(true);
         });
 
-    currentFloor = 0;
-    floors = new ArrayList<>();
-    graph = new Graph(dbConnection);
-
-    /*
-            nextButton.setOnMouseClicked(
-                event -> {
-                  if (currentFloor < floors.size() - 1) {
-                    currentFloor++;
-                  }
-                  displayFloor(currentFloor);
-                });
-
-            backButton.setOnMouseClicked(
-                event -> {
-                  if (currentFloor >= 1) {
-                    currentFloor--;
-                  }
-                  displayFloor(currentFloor);
-                });
-    */
     clearBtn.setOnMouseClicked(
         event -> {
           // clear paths
@@ -172,6 +154,12 @@ public class PathfindingController extends AbsController {
           // clear list of floors
           floors.clear();
         });
+
+    currentFloor = 0;
+    floors = new ArrayList<>();
+    pathAnimations = new ArrayList<>();
+
+    graph = new Graph(dbConnection);
   }
 
   private void drawPaths(ArrayList<Path> paths) {
@@ -182,15 +170,38 @@ public class PathfindingController extends AbsController {
       // except for first and last path
       if (path.numNodes > 1 || i == 0 || i == paths.size() - 1) {
 
-        LinkedList<Line> segments = new LinkedList<>();
-        for (int j = 1; j < path.numNodes; j++) {
-          segments.add(line(path.points.get(j - 1), path.points.get(j)));
-        }
         // group to store this floor's path
         Group g = new Group();
-        g.getChildren().addAll(segments);
 
-        // add icons to start and end of paths on each floor
+        double pathLength = path.pathLength();
+
+        // create points to move along path
+        int numPoints = (int) (pathLength * 0.04);
+
+        ParallelTransition parallelTransition = new ParallelTransition();
+        Duration duration = new Duration(1000);
+        Point2D[] points = path.interpolate(numPoints);
+
+        for (int j = 0; j < numPoints; j++) {
+          Circle c = new Circle(5);
+          c.setFill(Color.rgb(4, 100, 180));
+          g.getChildren().add(c);
+
+          // one animation object per point moving along its segment
+          Polyline segment =
+              new Polyline(
+                  points[j].getX(), points[j].getY(), points[j + 1].getX(), points[j + 1].getY());
+
+          PathTransition animation = new PathTransition(duration, segment, c);
+          animation.setInterpolator(Interpolator.LINEAR);
+          animation.setCycleCount(Timeline.INDEFINITE);
+          animation.setAutoReverse(false);
+          parallelTransition.getChildren().add(animation);
+        }
+
+        pathAnimations.add(parallelTransition);
+
+        // add buttons to start and end of paths on each floor
         if (i == 0) {
           Point2D p1 = path.points.get(0);
           NodeCircle start = new NodeCircle(-1, p1.getX(), p1.getY(), 12);
@@ -246,7 +257,7 @@ public class PathfindingController extends AbsController {
         pathGroup.getChildren().add(g);
         g.setVisible(false);
 
-        floors.add(path.floor);
+        floors.add(path.getFloor());
       }
     }
   }
@@ -293,18 +304,19 @@ public class PathfindingController extends AbsController {
 
     mapImg.setImage(images.get(floors.get(currentFloor)));
     floorDisplay.setText("Floor " + floors.get(currentFloor));
+
     Iterator<javafx.scene.Node> itr = pathGroup.getChildren().iterator();
     itr.next(); // skip first child which is the imageview
-
     while (itr.hasNext()) {
       itr.next().setVisible(false);
     }
 
-    pathGroup.getChildren().get(currentFloor + 1).setVisible(true);
-  }
+    pathAnimations.forEach(ParallelTransition::stop);
 
-  private Line line(Point2D p1, Point2D p2) {
-    return new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+    pathGroup.getChildren().get(currentFloor + 1).setVisible(true);
+    System.out.println(
+        "parallel animations: " + pathAnimations.get(currentFloor).getChildren().size());
+    pathAnimations.get(currentFloor).play();
   }
 
   /**
@@ -315,7 +327,6 @@ public class PathfindingController extends AbsController {
    * @return true if the second is higher than the first, otherwise false
    */
   private boolean direction(String currFloor, String nextFloor) {
-    System.out.println(allFloors.indexOf(currFloor) + "->" + allFloors.indexOf(nextFloor));
     return allFloors.indexOf(currFloor) < allFloors.indexOf(nextFloor);
   }
 }
