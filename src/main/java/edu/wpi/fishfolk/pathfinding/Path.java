@@ -54,7 +54,7 @@ public class Path {
     return length;
   }
 
-  public String getDirections() {
+  public ArrayList<String> getDirections() {
 
     // split path into segments: three points determine a segment
     // to avoid overlaps, dont add the start->mid portion except for the first
@@ -115,25 +115,28 @@ public class Path {
     }
 
     // create directions from condensed segments
-    String directions = "start at " + nodes.get(0) + "\n";
+
+    ArrayList<String> directions = new ArrayList<>();
+    // commented out since this is not needed for new text direction
+    // = "start at " + nodes.get(0) + "\n";
 
     for (PathSegment segment : segments) {
 
       switch (segment.type) {
         case STRAIGHT:
           String dist = String.format("%.1f", segment.end.distance(segment.start));
-          directions += "straight for " + dist + "\n";
+          directions.add(dist);
           break;
         case RIGHT:
-          directions += "turn right \n";
+          directions.add("right");
           break;
         case LEFT:
-          directions += "turn left \n";
+          directions.add("left");
           break;
       }
     }
 
-    directions += "end at " + nodes.get(numNodes - 1) + "\n";
+    // directions += "end at " + nodes.get(numNodes - 1) + "\n";
     System.out.println(segments.size() + " steps");
     return directions;
   }

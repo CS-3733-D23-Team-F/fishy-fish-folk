@@ -1,8 +1,10 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.pathfinding.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,9 +13,14 @@ import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -31,8 +38,6 @@ public class PathfindingController extends AbsController {
   @FXML Group pathGroup;
   @FXML ImageView mapImg;
   // @FXML Text directionInstructions;
-  @FXML MFXButton backButton;
-  @FXML MFXButton nextButton;
   @FXML MFXButton viewFood;
   @FXML MFXButton viewSupply, furnitureNav;
   @FXML MFXButton zoomOut;
@@ -42,7 +47,8 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton slideDown;
   @FXML VBox textInstruct;
 
-  @FXML Text dirText;
+  @FXML ScrollPane scroll;
+  @FXML GridPane grid;
 
   Pathfinder pathfinder;
 
@@ -53,6 +59,7 @@ public class PathfindingController extends AbsController {
   ArrayList<String> floors;
   int currentFloor;
   int zoom;
+  ArrayList<TextDirection> textDirections;
 
   public PathfindingController() {
     super();
@@ -65,8 +72,6 @@ public class PathfindingController extends AbsController {
     // buttons to other pages
     slideUp.setOnMouseClicked(
         event -> {
-          // serviceBar.setVisible(true);
-          // serviceBar.setDisable(false);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(textInstruct);
@@ -152,7 +157,29 @@ public class PathfindingController extends AbsController {
               .centreOn(paths.get(0).centerToPath(7));
           displayFloor(currentFloor);
           endSelector.setDisable(true);
-          dirText.setText(paths.get(0).getDirections());
+          textDirections = new ArrayList<>();
+          textDirections.addAll(parseDirections(paths.get(0).getDirections()));
+          int col = 0;
+          int row = 0;
+          try {
+            for (int i = 0; i < textDirections.size(); i++) {
+              FXMLLoader fxmlLoader = new FXMLLoader();
+              fxmlLoader.setLocation(Fapp.class.getResource("views/TextInstruciton.fxml"));
+
+              AnchorPane anchorPane = fxmlLoader.load();
+
+              TextInstructionController instructionController = fxmlLoader.getController();
+              instructionController.setData(textDirections.get(i));
+              if (col == 3) {
+                col = 0;
+                row++;
+              }
+              grid.add(anchorPane, col++, row);
+              GridPane.setMargin(anchorPane, new Insets(10));
+            }
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         });
 
     currentFloor = 0;
@@ -185,6 +212,19 @@ public class PathfindingController extends AbsController {
           // clear list of floors
           floors.clear();
         });
+  }
+
+  private List<TextDirection> parseDirections(ArrayList<String> directions) {
+    List<TextDirection> textDirections = new ArrayList<>();
+    TextDirection textDirection;
+    for (int i = 0; i < directions.size() - 1; i++) {
+      textDirection = new TextDirection();
+      textDirection.setDirection(directions.get(i));
+      textDirection.setDistance(directions.get(i + 1));
+      textDirections.add(textDirection);
+    }
+
+    return textDirections;
   }
 
   private void drawPaths(ArrayList<Path> paths) {

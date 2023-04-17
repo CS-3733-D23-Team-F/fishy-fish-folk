@@ -10,6 +10,8 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -160,7 +162,7 @@
             </StackPane>
             <HBox alignment="CENTER_LEFT" maxHeight="252.0" minHeight="252.0" style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="TOP_CENTER" maxWidth="600.0" minWidth="600.0">
+                  <VBox alignment="TOP_CENTER" maxWidth="600.0" minWidth="600.0" HBox.hgrow="ALWAYS">
                      <children>
                         <ImageView fitHeight="70.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                            <image>
@@ -187,13 +189,13 @@
                      </children>
                   </VBox>
                   <Line endX="-100.0" endY="217.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5" style="-fx-stroke: #454343; -fx-stroke-width: 0.5;" HBox.hgrow="ALWAYS" />
-                  <MFXScrollPane fitToHeight="true" fitToWidth="true" HBox.hgrow="ALWAYS">
+                  <MFXScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" prefHeight="252.0" prefWidth="546.0" HBox.hgrow="ALWAYS">
                      <content>
-                        <Text fx:id="dirText" fill="#454343" strokeType="OUTSIDE" strokeWidth="0.0" text="Diretions" wrappingWidth="130.046875">
-                           <font>
-                              <Font name="Open Sans Regular" size="24.0" />
-                           </font>
-                        </Text>
+                        <GridPane fx:id="grid">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                        </GridPane>
                      </content>
                   </MFXScrollPane>
                </children></HBox>
