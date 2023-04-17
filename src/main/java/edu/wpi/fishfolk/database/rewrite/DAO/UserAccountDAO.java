@@ -5,10 +5,16 @@ import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.Node;import edu.wpi.fishfolk.database.rewrite.TableEntry.PermissionLevel;import edu.wpi.fishfolk.database.rewrite.TableEntry.UserAccount;import javafx.geometry.Point2D;
-import java.io.*;import java.sql.*;import java.time.LocalDateTime;import java.time.format.DateTimeFormatter;import java.util.ArrayList;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.PermissionLevel;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.UserAccount;
+import java.io.*;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;import java.util.Map;
+import java.util.List;
+import java.util.Map;
 
 public class UserAccountDAO implements IDAO<UserAccount> {
 
@@ -38,11 +44,11 @@ public class UserAccountDAO implements IDAO<UserAccount> {
     try {
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-                      + dbConnection.getSchema()
-                      + "' AND tablename = '"
-                      + tableName
-                      + "');";
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "');";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -59,12 +65,12 @@ public class UserAccountDAO implements IDAO<UserAccount> {
       } else {
         // doesnt exist, create as usual
         query =
-                "CREATE TABLE "
-                        + tableName
-                        + " (username VARCHAR(32) PRIMARY KEY," // 32 characters
-                        + " password VARCHAR(32),"
-                        + " email VARCHAR(64),"
-                        + " level VARCHAR(8));"; //enum values are 4-5 chars
+            "CREATE TABLE "
+                + tableName
+                + " (username VARCHAR(32) PRIMARY KEY," // 32 characters
+                + " password VARCHAR(32),"
+                + " email VARCHAR(64),"
+                + " level VARCHAR(8));"; // enum values are 4-5 chars
         statement.executeUpdate(query);
       }
 
@@ -88,7 +94,9 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
       // For each entry in the results, create a new object and put it in the local table
       while (results.next()) {
-        UserAccount account = new UserAccount(results.getString(1),
+        UserAccount account =
+            new UserAccount(
+                results.getString(1),
                 results.getString(2),
                 results.getString(3),
                 PermissionLevel.valueOf(results.getString(4)));
@@ -132,7 +140,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
     // Push an UPDATE to the data edit stack, update the db if the batch limit has been reached
     if (dataEditQueue.add(
-            new DataEdit<>(tableMap.get(entry.getUsername()), entry, DataEditType.UPDATE), true)) {
+        new DataEdit<>(tableMap.get(entry.getUsername()), entry, DataEditType.UPDATE), true)) {
 
       // Reset edit count
       dataEditQueue.setEditCount(0);
@@ -154,7 +162,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
     // Check if input identifier is correct type
     if (!(identifier instanceof String)) {
       System.out.println(
-              "[UserAccountDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
+          "[UserAccountDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
       return false;
     }
 
@@ -163,7 +171,9 @@ public class UserAccountDAO implements IDAO<UserAccount> {
     // Check if local table contains identifier
     if (!tableMap.containsKey(username)) {
       System.out.println(
-              "[UserAccountDAO.removeEntry]: Identifier " + username + " does not exist in local table.");
+          "[UserAccountDAO.removeEntry]: Identifier "
+              + username
+              + " does not exist in local table.");
       return false;
     }
 
@@ -196,7 +206,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
     // Check if input identifier is correct type
     if (!(identifier instanceof String)) {
       System.out.println(
-              "[UserAccountDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
+          "[UserAccountDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
       return null;
     }
 
@@ -205,7 +215,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
     // Check if local table contains identifier
     if (!tableMap.containsKey(username)) {
       System.out.println(
-              "[UserAccountDAO.getEntry]: Identifier " + username + " does not exist in local table.");
+          "[UserAccountDAO.getEntry]: Identifier " + username + " does not exist in local table.");
       return null;
     }
 
@@ -267,41 +277,42 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
       // Print active thread (DEBUG)
       System.out.println(
-              "[UserAccountDAO.updateDatabase]: Updating database in " + Thread.currentThread().getName());
+          "[UserAccountDAO.updateDatabase]: Updating database in "
+              + Thread.currentThread().getName());
 
       // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
       String insert =
-              "INSERT INTO "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " VALUES (?, ?, ?, ?);";
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " VALUES (?, ?, ?, ?);";
 
       String update =
-              "UPDATE "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " SET "
-                      + headers.get(0)
-                      + " = ?, "
-                      + headers.get(1)
-                      + " = ?, "
-                      + headers.get(2)
-                      + " = ?, "
-                      + headers.get(3)
-                      + " = ? WHERE "
-                      + headers.get(0)
-                      + " = ?;";
+          "UPDATE "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " SET "
+              + headers.get(0)
+              + " = ?, "
+              + headers.get(1)
+              + " = ?, "
+              + headers.get(2)
+              + " = ?, "
+              + headers.get(3)
+              + " = ? WHERE "
+              + headers.get(0)
+              + " = ?;";
 
       String remove =
-              "DELETE FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " WHERE "
-                      + headers.get(0)
-                      + " = ?;";
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " WHERE "
+              + headers.get(0)
+              + " = ?;";
 
       PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
       PreparedStatement preparedUpdate = dbConnection.prepareStatement(update);
@@ -319,10 +330,10 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
         // Print update info (DEBUG)
         System.out.println(
-                "[UserAccountDAO.updateDatabase]: "
-                        + dataEdit.getType()
-                        + " UserAccount "
-                        + dataEdit.getNewEntry().getUsername());
+            "[UserAccountDAO.updateDatabase]: "
+                + dataEdit.getType()
+                + " UserAccount "
+                + dataEdit.getNewEntry().getUsername());
 
         UserAccount newAccountEntry = dataEdit.getNewEntry();
 
@@ -372,8 +383,8 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
       // Print active thread error (DEBUG)
       System.out.println(
-              "[UserAccountDAO.updateDatabase]: Error updating database in "
-                      + Thread.currentThread().getName());
+          "[UserAccountDAO.updateDatabase]: Error updating database in "
+              + Thread.currentThread().getName());
 
       System.out.println(e.getMessage());
       return false;
@@ -381,8 +392,8 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
     // Print active thread end (DEBUG)
     System.out.println(
-            "[UserAccountDAO.updateDatabase]: Finished updating database in "
-                    + Thread.currentThread().getName());
+        "[UserAccountDAO.updateDatabase]: Finished updating database in "
+            + Thread.currentThread().getName());
 
     // On success
     return true;
@@ -404,22 +415,22 @@ public class UserAccountDAO implements IDAO<UserAccount> {
     }
 
     try (BufferedReader br =
-                 new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
+        new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
 
       // delete the old data
       dbConnection
-              .createStatement()
-              .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+          .createStatement()
+          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
 
       // skip first row of csv which has the headers
       String line = br.readLine();
 
       String insert =
-              "INSERT INTO "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + " VALUES (?, ?, ?, ?);";
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " VALUES (?, ?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
@@ -427,10 +438,8 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
         String[] parts = line.split(",");
 
-        UserAccount account = new UserAccount(parts[0],
-                parts[1],
-                parts[2],
-                PermissionLevel.valueOf(parts[3]));
+        UserAccount account =
+            new UserAccount(parts[0], parts[1], parts[2], PermissionLevel.valueOf(parts[3]));
 
         tableMap.put(account.getUsername(), account);
 
@@ -457,7 +466,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
     // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ofPattern-java.lang.String-
     String filename =
-            tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
+        tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
 
     try {
       PrintStream out = new PrintStream(new FileOutputStream(directory + "\\" + filename));
@@ -467,7 +476,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
       for (Map.Entry<String, UserAccount> entry : tableMap.entrySet()) {
         UserAccount acc = entry.getValue();
         out.println(
-                acc.getUsername()
+            acc.getUsername()
                 + ","
                 + acc.getPassword()
                 + ","
@@ -484,5 +493,4 @@ public class UserAccountDAO implements IDAO<UserAccount> {
       return false;
     }
   }
-
 }

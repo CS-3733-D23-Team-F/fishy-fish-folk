@@ -11,7 +11,7 @@ public class Main {
 
   public static void main(String[] args) {
 
-    // Fapp.launch(Fapp.class, args); // run ui
+    Fapp.launch(Fapp.class, args); // run ui
 
     Fdb fdb = new Fdb();
 
