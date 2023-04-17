@@ -21,6 +21,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -131,7 +132,6 @@ public class PathfindingController extends AbsController {
         event -> {
           pathGroup.getChildren().clear();
           pathGroup.getChildren().add(mapImg);
-
           // clear list of floors
           floors.clear();
           start = dbConnection.getMostRecentUNode(startSelector.getValue());
@@ -160,21 +160,33 @@ public class PathfindingController extends AbsController {
           textDirections = new ArrayList<>();
           textDirections.addAll(parseDirections(paths.get(0).getDirections()));
           int col = 0;
-          int row = 0;
+          int row = 1;
+
           try {
             for (int i = 0; i < textDirections.size(); i++) {
               FXMLLoader fxmlLoader = new FXMLLoader();
-              fxmlLoader.setLocation(Fapp.class.getResource("views/TextInstruciton.fxml"));
+              fxmlLoader.setLocation(Fapp.class.getResource("views/TextInstruction.fxml"));
 
               AnchorPane anchorPane = fxmlLoader.load();
 
               TextInstructionController instructionController = fxmlLoader.getController();
-              instructionController.setData(textDirections.get(i));
-              if (col == 3) {
+              instructionController.setData(textDirections.get(i), i + 1);
+
+              if (col == 4) {
                 col = 0;
                 row++;
               }
+
               grid.add(anchorPane, col++, row);
+
+              grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+              grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+              grid.setMaxWidth(Region.USE_PREF_SIZE);
+
+              grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+              grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+              grid.setMaxHeight(Region.USE_PREF_SIZE);
+
               GridPane.setMargin(anchorPane, new Insets(10));
             }
           } catch (IOException e) {
@@ -217,10 +229,19 @@ public class PathfindingController extends AbsController {
   private List<TextDirection> parseDirections(ArrayList<String> directions) {
     List<TextDirection> textDirections = new ArrayList<>();
     TextDirection textDirection;
-    for (int i = 0; i < directions.size() - 1; i++) {
+    for (int i = 0; i < directions.size() - 2; i += 2) {
+
       textDirection = new TextDirection();
-      textDirection.setDirection(directions.get(i));
-      textDirection.setDistance(directions.get(i + 1));
+      if (i == 0) {
+        textDirection.setDirection("straight");
+        textDirection.setDistance(directions.get(i));
+        i = -1;
+      } else {
+        System.out.println(
+            "direction: " + directions.get(i) + " distance: " + directions.get(i + 1));
+        textDirection.setDirection(directions.get(i));
+        textDirection.setDistance(directions.get(i + 1));
+      }
       textDirections.add(textDirection);
     }
 
