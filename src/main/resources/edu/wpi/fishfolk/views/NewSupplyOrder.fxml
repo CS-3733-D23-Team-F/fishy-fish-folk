@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewSupplyOrderController">
+   <ScrollPane hbarPolicy="NEVER" layoutX="248.0" layoutY="139.0" prefHeight="615.0" prefWidth="1200.0">
+     <content>
+       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="607.0" prefWidth="1192.0">
+            <children>
+               <MFXRectangleToggleNode fx:id="rectangle1" layoutX="-8.0" layoutY="-10.0" prefHeight="113.0" prefWidth="1213.0" text="PENCIL                                                                                                      " wrapText="true">
+                  <font>
+                     <Font name="Open Sans Regular" size="36.0" />
+                  </font>
+               </MFXRectangleToggleNode>
+               <MFXRectangleToggleNode fx:id="rectangle2" layoutX="-8.0" layoutY="100.0" prefHeight="113.0" prefWidth="1222.0" text="PENCIL                                                                                                      ">
+                  <font>
+                     <Font name="Open Sans Regular" size="36.0" />
+                  </font>
+               </MFXRectangleToggleNode>
+               <MFXRectangleToggleNode fx:id="rectangle3" layoutX="-8.0" layoutY="210.0" prefHeight="113.0" prefWidth="1222.0" text="PENCIL                                                                                                      ">
+                  <font>
+                     <Font name="Open Sans Regular" size="36.0" />
+                  </font>
+               </MFXRectangleToggleNode>
+               <MFXRectangleToggleNode fx:id="rectangle4" layoutX="-8.0" layoutY="320.0" prefHeight="113.0" prefWidth="1222.0" text="PENCIL                                                                                                      ">
+                  <font>
+                     <Font name="Open Sans Regular" size="36.0" />
+                  </font>
+               </MFXRectangleToggleNode>
+               <MFXRectangleToggleNode fx:id="rectangle41" layoutX="-8.0" layoutY="430.0" prefHeight="113.0" prefWidth="1222.0" text="PENCIL                                                                                                      ">
+                  <font>
+                     <Font name="Open Sans Regular" size="36.0" />
+                  </font>
+               </MFXRectangleToggleNode>
+               <MFXRectangleToggleNode fx:id="rectangle411" layoutX="-8.0" layoutY="540.0" prefHeight="113.0" prefWidth="1222.0" text="PENCIL                                                                                                      ">
+                  <font>
+                     <Font name="Open Sans Regular" size="36.0" />
+                  </font>
+               </MFXRectangleToggleNode>
+               <MFXRectangleToggleNode fx:id="rectangle4111" layoutX="-9.0" layoutY="650.0" prefHeight="113.0" prefWidth="1222.0" text="PENCIL                                                                                                      ">
+                  <font>
+                     <Font name="Open Sans Regular" size="36.0" />
+                  </font>
+               </MFXRectangleToggleNode>
+            </children></AnchorPane>
+     </content>
+   </ScrollPane>
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="616.0" layoutX="1461.0" layoutY="138.0" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+
+</AnchorPane>
