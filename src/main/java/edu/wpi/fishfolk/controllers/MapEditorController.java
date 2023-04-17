@@ -14,6 +14,8 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.*;
 import java.util.List;
+
+import io.github.palexdev.materialfx.controls.MFXToggleButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +25,8 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -42,36 +46,25 @@ public class MapEditorController extends AbsController {
   @FXML MFXTextField yText;
   @FXML MFXTextField buildingText;
   @FXML MFXTextField floorText;
-
-  @FXML MFXButton signageNav;
-
-  @FXML MFXButton mealNav;
-
-  @FXML MFXButton pathfindingNav;
-  @FXML MFXButton mapEditorNav;
-  @FXML MFXButton furnitureNav;
-
-  @FXML MFXButton closeServiceNav;
-  @FXML MFXButton flowerNav;
-  @FXML MFXButton conferenceNav;
-  @FXML AnchorPane serviceBar;
-  @FXML MFXButton supplyNav;
-  @FXML MFXButton serviceNav;
-
-  @FXML MFXButton exitButton;
-
-  @FXML AnchorPane slider;
-  @FXML MFXButton viewFood;
-  @FXML MFXButton viewSupply;
-
   @FXML MFXButton addNode;
   @FXML MFXButton delNode;
-
   @FXML MFXTextField longnameText;
   @FXML MFXTextField shortnameText;
   @FXML MFXTextField typeText;
   @FXML MFXButton nextLocation;
   @FXML MFXButton prevLocation;
+  @FXML MFXButton addEdge;
+  @FXML MFXButton delEdge;
+  @FXML MFXButton importCSV;
+  @FXML MFXButton exportCSV;
+  @FXML
+  HBox buttonPane;
+  @FXML
+    VBox nodePane;
+  @FXML
+    MFXToggleButton toggleAll;
+  @FXML MFXToggleButton toggleSelected;
+
 
   FileChooser fileChooser;
   DirectoryChooser dirChooser;
@@ -95,63 +88,6 @@ public class MapEditorController extends AbsController {
 
   @FXML
   private void initialize() {
-
-    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
-    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
-
-    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
-    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
-
-    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
-    exitButton.setOnMouseClicked(event -> System.exit(0));
-
-    closeServiceNav.setVisible(false);
-    closeServiceNav.setDisable(true);
-
-    serviceNav.setOnMouseClicked(
-        event -> {
-          // menuWrap.setDisable(false);
-          serviceBar.setVisible(true);
-          serviceBar.setDisable(false);
-          TranslateTransition slide = new TranslateTransition();
-          slide.setDuration(Duration.seconds(0.4));
-          slide.setNode(slider);
-
-          slide.setToY(490);
-          slide.play();
-
-          slider.setTranslateY(490);
-          slide.setOnFinished(
-              (ActionEvent e) -> {
-                serviceNav.setVisible(false);
-                closeServiceNav.setVisible(true);
-                serviceNav.setDisable(true);
-                closeServiceNav.setDisable(false);
-              });
-        });
-
-    closeServiceNav.setOnMouseClicked(
-        event -> {
-          TranslateTransition slide = new TranslateTransition();
-          slide.setDuration(Duration.seconds(0.4));
-          slide.setNode(slider);
-          slide.setToY(0);
-          slide.play();
-
-          slider.setTranslateY(0);
-
-          slide.setOnFinished(
-              (ActionEvent e) -> {
-                serviceNav.setVisible(true);
-                closeServiceNav.setVisible(false);
-                serviceNav.setDisable(false);
-                closeServiceNav.setDisable(true);
-                serviceBar.setVisible(false);
-                serviceBar.setDisable(true);
-              });
-        });
 
     // copy contents, not reference
     ArrayList<String> floorsReverse = new ArrayList<>(allFloors);
@@ -221,6 +157,7 @@ public class MapEditorController extends AbsController {
           state = EDITOR_STATE.ADDING;
           // disable deleting when adding
           delNode.setDisable(true);
+
         });
 
     delNode.setOnMouseClicked(
