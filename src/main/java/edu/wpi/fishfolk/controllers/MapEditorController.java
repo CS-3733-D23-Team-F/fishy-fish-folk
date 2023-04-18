@@ -8,6 +8,8 @@ import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.mapeditor.BuildingChecker;
 import edu.wpi.fishfolk.mapeditor.EdgeLine;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
+import edu.wpi.fishfolk.navigation.Navigation;
+import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -46,7 +48,7 @@ public class MapEditorController extends AbsController {
   @FXML MFXTextField longnameText;
   @FXML MFXTextField shortnameText;
   @FXML MFXTextField typeText;
-
+  @FXML MFXButton moveEditorNav;
   @FXML MFXButton addEdge;
   @FXML MFXButton delEdge;
   @FXML MFXToggleButton toggleAll;
@@ -118,6 +120,8 @@ public class MapEditorController extends AbsController {
             floorSelector.setText("Floor " + allFloors.get(currentFloor));
           }
         });
+
+    moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
     state = EDITOR_STATE.IDLE;
     currentEditingNode = -1;

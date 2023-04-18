@@ -47,7 +47,15 @@
                   <DropShadow height="6.0" offsetY="1.0" radius="2.5" width="6.0" />
                </effect>
                <children>
-                  <HBox HBox.hgrow="ALWAYS" />
+                  <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                     <children>
+                        <MFXButton fx:id="moveEditorNav" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" graphicTextGap="10.0" maxHeight="45.0" maxWidth="180.0" minHeight="45.0" minWidth="180.0" prefHeight="45.0" prefWidth="187.0" text="Move/Location Editor" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                        </MFXButton>
+                     </children>
+                  </HBox>
                   <VBox alignment="CENTER" maxWidth="280.0" minWidth="280.0" HBox.hgrow="ALWAYS">
                      <children>
                         <MFXButton fx:id="addNode" buttonType="RAISED" graphicTextGap="10.0" maxHeight="45.0" maxWidth="180.0" minHeight="45.0" minWidth="180.0" text="Add Node" textFill="#012d5a" VBox.vgrow="ALWAYS">

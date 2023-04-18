@@ -10,10 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../Styles/style.css" fx:controller="edu.wpi.fishfolk.controllers.RootController">
+<BorderPane stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.RootController">
    <left>
-      <AnchorPane maxWidth="200.0" minWidth="200.0" style="-fx-background-color: #012D5A;"  BorderPane.alignment="CENTER">
+      <AnchorPane maxWidth="200.0" minWidth="200.0" style="-fx-background-color: #012D5A;" BorderPane.alignment="CENTER">
          <children>
             <VBox maxWidth="200.0" minWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -161,6 +160,21 @@
                                  </graphic>
                               </MFXButton>
                               <MFXButton fx:id="pathfindingNav" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Pathfinding" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="140.0">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="16.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/wayfinding.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </MFXButton>
+                              <MFXButton fx:id="moveEditorNav" alignment="BOTTOM_LEFT" buttonType="RAISED" layoutX="5.0" layoutY="210.0" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Move editor" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="210.0">
                                  <font>
                                     <Font name="Open Sans Bold" size="16.0" />
                                  </font>

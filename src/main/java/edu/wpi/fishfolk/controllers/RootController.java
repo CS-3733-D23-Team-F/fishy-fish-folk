@@ -14,6 +14,7 @@ public class RootController {
   @FXML MFXButton mealNav;
   // @FXML MFXButton supplyNav;
   @FXML MFXButton pathfindingNav;
+  @FXML MFXButton moveEditorNav;
   @FXML MFXButton mapEditorNav;
   @FXML AnchorPane serviceBar;
   @FXML MFXButton serviceNav;
@@ -35,12 +36,16 @@ public class RootController {
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
     exitButton.setOnMouseClicked(event -> System.exit(0));
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    signageNav.setOnMouseClicked(
+        event -> Navigation.navigate(Screen.SIGNAGE)); // why is this repeated??
     // mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
     // officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
-    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    mapEditorNav.setOnMouseClicked(
+        event -> Navigation.navigate(Screen.MAP_EDITOR)); // why is this repeated??
+    pathfindingNav.setOnMouseClicked(
+        event -> Navigation.navigate(Screen.PATHFINDING)); // why is this repeated??
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     closeServiceNav.setVisible(false);
