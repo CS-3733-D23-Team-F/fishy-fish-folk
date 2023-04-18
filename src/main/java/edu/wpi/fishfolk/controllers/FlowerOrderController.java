@@ -171,14 +171,14 @@ public class FlowerOrderController extends AbsController {
               + (flowerAmounts[itemNum] * prices[itemNum]));
       cartItem.setY(30 + (50 * (numCartItems - 1)));
       cartItem.setX(10);
-      cartItem.setFont(new Font("Courier", 30));
+      cartItem.setFont(new Font("Courier", 20));
       cartItem.setTextAlignment(TextAlignment.CENTER);
       cartItem.setVisible(true);
       g.getChildren().add(cartItem);
       orderValues[itemNum] = cartItem;
 
       MFXButton removeButton = new MFXButton();
-      removeButton.setLayoutX(435);
+      removeButton.setLayoutX(300);
       removeButton.setLayoutY(5 + (50 * (numCartItems - 1)));
       removeButton.setMinHeight(30);
       removeButton.setMinWidth(100);
