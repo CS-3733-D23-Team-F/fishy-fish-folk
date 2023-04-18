@@ -54,8 +54,15 @@
                   <children>
                      <TableView fx:id="foodTable" prefHeight="570.0" prefWidth="1186.0">
                        <columns>
-                         <TableColumn prefWidth="75.0" text="C1" />
-                         <TableColumn prefWidth="75.0" text="C2" />
+                         <TableColumn fx:id="foodid" prefWidth="75.0" text="ID" />
+                         <TableColumn fx:id="foodassignee" prefWidth="75.0" text="Assignee" />
+                           <TableColumn fx:id="foodtotalprice" prefWidth="75.0" text="Total Price" />
+                           <TableColumn fx:id="foodstatus" prefWidth="75.0" text="Form Status" />
+                           <TableColumn fx:id="fooddeliveryroom" prefWidth="96.4000244140625" text="Delivery Room" />
+                           <TableColumn fx:id="fooddeliverytime" prefWidth="90.00003051757812" text="Delivery Time" />
+                           <TableColumn fx:id="foodrecipientname" prefWidth="103.20001220703125" text="Recipient Name" />
+                           <TableColumn fx:id="foodnotes" prefWidth="59.199951171875" text="Notes" />
+                           <TableColumn fx:id="fooditems" prefWidth="67.99993896484375" text="Items" />
                        </columns>
                      </TableView>
                   </children>
@@ -68,8 +75,13 @@
                   <children>
                      <TableView fx:id="supplyTable" prefHeight="570.0" prefWidth="1186.0">
                         <columns>
-                           <TableColumn prefWidth="75.0" text="C1" />
-                           <TableColumn prefWidth="75.0" text="C2" />
+                           <TableColumn fx:id="supplyid" prefWidth="75.0" text="ID" />
+                           <TableColumn fx:id="supplyassignee" prefWidth="75.0" text="Assignee" />
+                           <TableColumn fx:id="supplystatus" prefWidth="75.0" text="Form Status" />
+                           <TableColumn fx:id="supplydeliveryroom" prefWidth="108.7999267578125" text="Delivery Room" />
+                           <TableColumn fx:id="supplylink" prefWidth="59.20001220703125" text="Link" />
+                           <TableColumn fx:id="supplynotes" prefWidth="58.0" text="Notes" />
+                           <TableColumn fx:id="supplysupplies" prefWidth="75.0" text="Supplies" />
                         </columns>
                      </TableView>
                   </children></AnchorPane>
@@ -81,8 +93,14 @@
                   <children>
                      <TableView fx:id="furnitureTable" prefHeight="570.0" prefWidth="1186.0">
                         <columns>
-                           <TableColumn prefWidth="75.0" text="C1" />
-                           <TableColumn prefWidth="75.0" text="C2" />
+                           <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
+                           <TableColumn fx:id="furnitureassignee" prefWidth="75.0" text="Assignee" />
+                           <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
+                           <TableColumn fx:id="furnituredeliveryroom" prefWidth="98.7999267578125" text="Delivery Room" />
+                           <TableColumn fx:id="furnituredeliverydate" prefWidth="94.0" text="Delivery Date" />
+                           <TableColumn fx:id="furniturenotes" prefWidth="67.99996948242188" text="Notes" />
+                           <TableColumn fx:id="furnitureservicetype" prefWidth="89.20001220703125" text="Service Type" />
+                           <TableColumn fx:id="furniturefurniture" prefWidth="78.4000244140625" text="Furniture" />
                         </columns>
                      </TableView>
                   </children></AnchorPane>
@@ -94,8 +112,14 @@
                   <children>
                      <TableView fx:id="flowerTable" prefHeight="570.0" prefWidth="1186.0">
                         <columns>
-                           <TableColumn prefWidth="75.0" text="C1" />
-                           <TableColumn prefWidth="75.0" text="C2" />
+                           <TableColumn fx:id="flowerid" prefWidth="75.0" text="ID" />
+                           <TableColumn fx:id="flowerassignee" prefWidth="75.0" text="Assignee" />
+                           <TableColumn fx:id="flowertotalprice" prefWidth="75.0" text="Total Price" />
+                           <TableColumn fx:id="flowerstatus" prefWidth="75.0" text="Form Status" />
+                           <TableColumn fx:id="flowerdeliveryroom" prefWidth="102.4000244140625" text="Delivery Room" />
+                           <TableColumn fx:id="flowerdeliverytime" prefWidth="91.19998168945312" text="Delivery Time" />
+                           <TableColumn fx:id="flowerrecipientname" prefWidth="108.4000244140625" text="Recipient Name" />
+                           <TableColumn fx:id="floweritems" minWidth="2.00006103515625" prefWidth="66.0" text="Items" />
                         </columns>
                      </TableView>
                   </children></AnchorPane>
