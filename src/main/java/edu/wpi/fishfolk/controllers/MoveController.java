@@ -23,7 +23,9 @@ public class MoveController extends AbsController {
   @FXML TableView<ObservableLocation> locationtable;
   @FXML TableColumn<ObservableLocation, String> locationlongname, shortname, type;
   @FXML MFXTextField nodetext, movelongnametext, datetext;
-  @FXML MFXButton submitmove;
+  @FXML MFXTextField locationlongnametext, shortnametext, typetext;
+  @FXML MFXButton submitmove, submitlocation;
+  @FXML MFXButton clearMove, clearLocation;
 
   private ObservableList<ObservableMove> observableMoves;
 
@@ -78,6 +80,34 @@ public class MoveController extends AbsController {
 
           System.out.println(newMove + " " + dbConnection.insertEntry(newMove));
         });
+
+    /*submitlocation.setOnMouseClicked(
+    event -> {
+      Move newMove =
+              new Move(
+                      Integer.parseInt(nodetext.getText()),
+                      movelongnametext.getText(),
+                      ObservableMove.parseDate(datetext.getText()));
+
+      observableMoves.addAll(new ObservableMove(newMove));
+
+      dbConnection.insertEntry(newMove);
+    });*/
+
+    clearMove.setOnMouseClicked(event -> MoveClear());
+    clearLocation.setOnMouseClicked(event -> LocationClear());
+  }
+
+  private void MoveClear() {
+    nodetext.setText("");
+    movelongnametext.setText("");
+    datetext.setText("");
+  }
+
+  private void LocationClear() {
+    locationlongnametext.setText("");
+    shortnametext.setText("");
+    typetext.setText("");
   }
 
   private void editNodeID(TableColumn.CellEditEvent<ObservableMove, String> event) {
