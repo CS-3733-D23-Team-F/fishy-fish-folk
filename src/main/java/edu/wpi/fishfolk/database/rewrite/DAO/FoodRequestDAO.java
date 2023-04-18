@@ -646,10 +646,10 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
 
     try {
 
-      // Create empty list so store all food items
+      // Create empty list so store all items
       ArrayList<NewFoodItem> allFoodItems = new ArrayList<>();
 
-      // Query the subtable to return only food items with the specified subtableID
+      // Query the subtable to return only items with the specified subtableID
       Statement statement = dbConnection.createStatement();
       String query =
           "SELECT * FROM "
