@@ -24,7 +24,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
   private final String tableName;
   private final ArrayList<String> headers;
 
-  private final HashMap<Integer, FoodRequest> tableMap;
+  private final HashMap<LocalDateTime, FoodRequest> tableMap;
   private final DataEditQueue<FoodRequest> dataEditQueue;
 
   /** DAO for Food Request table in PostgreSQL database. */
@@ -80,7 +80,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
             "CREATE TABLE "
                 + tableName
                 + " ("
-                + "id INT PRIMARY KEY,"
+                + "id TIMESTAMP PRIMARY KEY,"
                 + "assignee VARCHAR(64),"
                 + "status VARCHAR(12),"
                 + "notes VARCHAR(256),"
@@ -117,7 +117,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
       while (results.next()) {
         FoodRequest foodRequest =
             new FoodRequest(
-                results.getInt(headers.get(0)),
+                results.getTimestamp(headers.get(0)).toLocalDateTime(),
                 results.getString(headers.get(1)),
                 FormStatus.valueOf(results.getString(headers.get(2))),
                 results.getString(headers.get(3)),
@@ -185,13 +185,13 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
   public boolean removeEntry(Object identifier) {
 
     // Check if input identifier is correct type
-    if (!(identifier instanceof Integer)) {
+    if (!(identifier instanceof LocalDateTime)) {
       System.out.println(
           "[FoodRequestDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
       return false;
     }
 
-    Integer foodRequestID = (Integer) identifier;
+    LocalDateTime foodRequestID = (LocalDateTime) identifier;
 
     // Check if local table contains identifier
     if (!tableMap.containsKey(foodRequestID)) {
@@ -229,13 +229,13 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
   public FoodRequest getEntry(Object identifier) {
 
     // Check if input identifier is correct type
-    if (!(identifier instanceof Integer)) {
+    if (!(identifier instanceof LocalDateTime)) {
       System.out.println(
           "[FoodRequestDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
       return null;
     }
 
-    Integer foodRequestID = (Integer) identifier;
+    LocalDateTime foodRequestID = (LocalDateTime) identifier;
 
     // Check if local table contains identifier
     if (!tableMap.containsKey(foodRequestID)) {
@@ -255,7 +255,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
     ArrayList<FoodRequest> allFoodRequests = new ArrayList<>();
 
     // Add all FoodRequests in local table to a list
-    for (int foodRequestID : tableMap.keySet()) {
+    for (LocalDateTime foodRequestID : tableMap.keySet()) {
       allFoodRequests.add(tableMap.get(foodRequestID));
     }
 
@@ -373,7 +373,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
           case INSERT:
 
             // Put the new FoodRequest's data into the prepared query
-            preparedInsert.setInt(1, dataEdit.getNewEntry().getFoodRequestID());
+            preparedInsert.setTimestamp(
+                1, Timestamp.valueOf(dataEdit.getNewEntry().getFoodRequestID()));
             preparedInsert.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedInsert.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedInsert.setString(4, dataEdit.getNewEntry().getNotes());
@@ -393,7 +394,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
           case UPDATE:
 
             // Put the new FoodRequest's data into the prepared query
-            preparedUpdate.setInt(1, dataEdit.getNewEntry().getFoodRequestID());
+            preparedUpdate.setTimestamp(
+                1, Timestamp.valueOf(dataEdit.getNewEntry().getFoodRequestID()));
             preparedUpdate.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedUpdate.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedUpdate.setString(4, dataEdit.getNewEntry().getNotes());
@@ -402,7 +404,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
             preparedUpdate.setTimestamp(
                 7, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryTime()));
             preparedUpdate.setString(8, dataEdit.getNewEntry().getRecipientName());
-            preparedUpdate.setInt(9, dataEdit.getNewEntry().getFoodRequestID());
+            preparedUpdate.setTimestamp(
+                9, Timestamp.valueOf(dataEdit.getNewEntry().getFoodRequestID()));
 
             // Execute the query
             preparedUpdate.executeUpdate();
@@ -413,7 +416,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
           case REMOVE:
 
             // Put the new FoodRequest's data into the prepared query
-            preparedRemove.setInt(1, dataEdit.getNewEntry().getFoodRequestID());
+            preparedRemove.setTimestamp(
+                1, Timestamp.valueOf(dataEdit.getNewEntry().getFoodRequestID()));
 
             // Execute the query
             deleteAllFoodItems(dataEdit.getNewEntry().getFoodRequestID());
@@ -445,7 +449,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
     return true;
   }
 
-  private int getFoodItemsTableID(int foodRequestID) {
+  private int getFoodItemsTableID(LocalDateTime foodRequestID) {
     try {
       Statement statement = dbConnection.createStatement();
       String query =
@@ -454,7 +458,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
               + "."
               + tableName
               + " WHERE id = '"
-              + foodRequestID
+              + Timestamp.valueOf(foodRequestID)
               + "';";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
@@ -523,7 +527,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
     }
   }
 
-  private void setFoodItems(int foodRequestID, List<FoodItem> items) {
+  private void setFoodItems(LocalDateTime foodRequestID, List<FoodItem> items) {
     try {
 
       Statement exists = dbConnection.createStatement();
@@ -585,7 +589,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
     }
   }
 
-  private void deleteAllFoodItems(int foodRequestID) {
+  private void deleteAllFoodItems(LocalDateTime foodRequestID) {
     try {
 
       String deleteAll =
@@ -647,7 +651,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
         FoodRequest fr =
             new FoodRequest(
-                Integer.parseInt(parts[0]),
+                LocalDateTime.parse(parts[0]),
                 parts[1],
                 FormStatus.valueOf(parts[2]),
                 parts[3],
@@ -659,7 +663,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
         tableMap.put(fr.getFoodRequestID(), fr);
 
-        insertPS.setInt(1, fr.getFoodRequestID());
+        insertPS.setTimestamp(1, Timestamp.valueOf(fr.getFoodRequestID()));
         insertPS.setString(2, fr.getAssignee());
         insertPS.setString(3, fr.getFormStatus().toString());
         insertPS.setString(4, fr.getNotes());
@@ -693,7 +697,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
       out.println(String.join(",", headers));
 
-      for (Map.Entry<Integer, FoodRequest> entry : tableMap.entrySet()) {
+      for (Map.Entry<LocalDateTime, FoodRequest> entry : tableMap.entrySet()) {
         FoodRequest fr = entry.getValue();
         out.println(
             fr.getFoodRequestID()

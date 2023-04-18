@@ -11,7 +11,7 @@ import lombok.Setter;
 public class FoodRequest {
 
   // Common
-  @Getter @Setter private int foodRequestID;
+  @Getter @Setter private LocalDateTime foodRequestID;
   @Getter @Setter private String assignee;
   @Getter @Setter private FormStatus formStatus;
   @Getter @Setter private String notes;
@@ -41,7 +41,7 @@ public class FoodRequest {
    * @param foodItems Food items requested
    */
   public FoodRequest(
-      int foodRequestID,
+      LocalDateTime foodRequestID,
       String assignee,
       FormStatus formStatus,
       String notes,
@@ -51,6 +51,41 @@ public class FoodRequest {
       String recipientName,
       List<FoodItem> foodItems) {
     this.foodRequestID = foodRequestID;
+    this.assignee = assignee;
+    this.formStatus = formStatus;
+    this.notes = notes;
+
+    this.totalPrice = totalPrice;
+    this.deliveryRoom = deliveryRoom;
+    this.deliveryTime = deliveryTime;
+    this.recipientName = recipientName;
+    this.foodItems = foodItems;
+
+    this.status = EntryStatus.OLD;
+  }
+
+  /**
+   * Table entry type: Food Request; This one sets the LocalDateTime to now.
+   *
+   * @param assignee Assignee of request
+   * @param formStatus Form status of request
+   * @param notes Additional notes of request
+   * @param totalPrice Total price of request
+   * @param deliveryRoom Delivery room of request
+   * @param deliveryTime Delivery time of request
+   * @param recipientName Request recipient's name
+   * @param foodItems Food items requested
+   */
+  public FoodRequest(
+      String assignee,
+      FormStatus formStatus,
+      String notes,
+      double totalPrice,
+      String deliveryRoom,
+      LocalDateTime deliveryTime,
+      String recipientName,
+      List<FoodItem> foodItems) {
+    this.foodRequestID = LocalDateTime.now();
     this.assignee = assignee;
     this.formStatus = formStatus;
     this.notes = notes;
