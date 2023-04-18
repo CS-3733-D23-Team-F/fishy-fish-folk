@@ -57,7 +57,7 @@
                   <HBox VBox.vgrow="ALWAYS">
                      <children>
                         <HBox HBox.hgrow="ALWAYS" />
-                        <ScrollPane fx:id="menuItemsPane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="595.0" prefWidth="1195.0" style="-fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
+                        <ScrollPane fx:id="menuItemsPane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="500.0" prefWidth="1195.0" style="-fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
                            <content>
                               <VBox spacing="25.0">
                                  <children>
