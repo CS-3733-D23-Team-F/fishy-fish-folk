@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1720.0" style="-fx-background-color: d9d9d9;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FlowerOrderController">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="1080.0" stroke="#d9d9d9" strokeType="INSIDE" width="1720.0" />
+                <MFXButton fx:id="ClearButton" layoutX="1125.0" layoutY="950.0" prefHeight="55.0" prefWidth="250.0" style="-fx-background-color: #012d5a;" text="Clear All" textFill="WHITE">
+                    <font>
+                        <Font name="Open Sans Regular" size="18.0" />
+                    </font>
+                </MFXButton>
+            <ScrollPane fx:id="itemWindow" hbarPolicy="NEVER" layoutX="75.0" layoutY="150.0" prefHeight="900.0" prefWidth="1000.0" style="-fx-background-color: ffffff;" vbarPolicy="ALWAYS">
+              <content>
+                <AnchorPane fx:id="itemPane" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="1000.0" style="-fx-background-color: ffffff;" />
+              </content>
+            </ScrollPane>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d9d9d9" height="850.0" layoutX="1125.0" layoutY="75.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="550.0" />
+            <MFXButton fx:id="SubmitButton" layoutX="1425.0" layoutY="950.0" prefHeight="55.0" prefWidth="250.0" style="-fx-background-color: #f0Bf4c;" text="Submit Order" textFill="#012d5a">
+               <font>
+                  <Font name="Open Sans Regular" size="18.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="exoticTab" layoutX="327.0" layoutY="75.0" prefHeight="55.0" prefWidth="250.0" style="-fx-background-color: #012d5a; -fx-border-width: 3; -fx-border-color: #000000;" text="Exotic Collection" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Regular" size="18.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="springTab" layoutX="80.0" layoutY="75.0" prefHeight="55.0" prefWidth="250.0" style="-fx-background-color: #f0Bf4c; -fx-border-width: 3; -fx-border-color: #000000;" text="Spring Collection" textFill="#012d5a">
+               <font>
+                  <Font name="Open Sans Regular" size="18.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="saleTab" layoutX="573.0" layoutY="75.0" prefHeight="55.0" prefWidth="250.0" style="-fx-background-color: #012d5a; -fx-border-width: 3; -fx-border-color: #000000;" text="On Sale" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Regular" size="18.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="favoriteTab" layoutX="820.0" layoutY="75.0" prefHeight="55.0" prefWidth="250.0" style="-fx-background-color: #012d5a; -fx-border-width: 3; -fx-border-color: #000000;" text="Customer Favorites" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Regular" size="18.0" />
+               </font>
+            </MFXButton>
+      <ScrollPane hbarPolicy="NEVER" layoutX="1125.0" layoutY="75.0" prefHeight="650.0" prefWidth="549.0" style="-fx-background-color: d9d9d9;">
+        <content>
+          <AnchorPane fx:id="orderPane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="550.0" />
+        </content>
+      </ScrollPane>
+      <MFXFilterComboBox fx:id="locationPicker" layoutX="1213.0" layoutY="738.0" prefHeight="40.0" prefWidth="375.0" promptText="Order Location" />
+      <MFXTextField fx:id="nameBox" alignment="TOP_LEFT" layoutX="1213.0" layoutY="797.0" prefHeight="49.0" prefWidth="375.0" promptText="Recipiant Name">
+         <font>
+            <Font size="14.0" />
+         </font></MFXTextField>
+      <MFXTextField fx:id="dateBox" alignment="TOP_LEFT" layoutX="1212.0" layoutY="860.0" prefHeight="49.0" prefWidth="375.0" promptText="Date and Time of Delivery">
+         <font>
+            <Font size="14.0" />
+         </font></MFXTextField>
+            </children>
+</AnchorPane>

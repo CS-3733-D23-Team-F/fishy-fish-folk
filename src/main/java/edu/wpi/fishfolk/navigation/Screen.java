@@ -12,6 +12,7 @@ public enum Screen {
   VIEW_MASTER_ORDER("views/MasterViewOrder.fxml"),
   VIEW_FOOD_ORDERS("views/ViewFoodOrders.fxml"),
   VIEW_SUPPLY_ORDERS("views/ViewSupplyOrders.fxml"),
+  FLOWER_REQUEST("views/FlowerOrder.fxml"),
   VIEW_FURNITURE_ORDERS("views/ViewFurnitureOrders.fxml"),
   PATHFINDING("views/Pathfinding.fxml"),
   LOGIN("views/Login.fxml"),
