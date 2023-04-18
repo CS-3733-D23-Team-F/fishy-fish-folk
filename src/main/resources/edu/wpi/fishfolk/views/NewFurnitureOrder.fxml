@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewSupplyOrderController">
+    <ScrollPane hbarPolicy="NEVER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="1200.0">
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="1192.0">
+                <children>
+                    <MFXRectangleToggleNode fx:id="rectangle1" layoutX="-8.0" prefHeight="100.0" prefWidth="1200.0" text="REPLACEMENT                                                                                                                            " wrapText="true">
+                        <font>
+                            <Font name="Open Sans Regular" size="30.0" />
+                        </font>
+                    </MFXRectangleToggleNode>
+                    <MFXRectangleToggleNode fx:id="rectangle2" layoutX="-8.0" layoutY="100.0" prefHeight="100.0" prefWidth="1200.0" text="CLEANING                                                                                                                                  ">
+                        <font>
+                            <Font name="Open Sans Regular" size="30.0" />
+                        </font>
+                    </MFXRectangleToggleNode>
+                    <MFXRectangleToggleNode fx:id="rectangle3" layoutX="-8.0" layoutY="200.0" prefHeight="100.0" prefWidth="1200.0" text="DELIVERY                                                                                                                            ">
+                        <font>
+                            <Font name="Open Sans Regular" size="30.0" />
+                        </font>
+                    </MFXRectangleToggleNode>
+                    <MFXRectangleToggleNode fx:id="rectangle4" layoutX="-8.0" layoutY="300.0" prefHeight="100.0" prefWidth="1200.0" text="MAINTENANCE                                                                                                                          ">
+                        <font>
+                            <Font name="Open Sans Regular" size="30.0" />
+                        </font>
+                    </MFXRectangleToggleNode>
+                    <MFXRectangleToggleNode fx:id="rectangle5" layoutX="-8.0" layoutY="400.0" prefHeight="100.0" prefWidth="1200.0" text="REMOVAL                                                                                                                         ">
+                        <font>
+                            <Font name="Open Sans Regular" size="30.0" />
+                        </font>
+                    </MFXRectangleToggleNode>
+                </children></AnchorPane>
+        </content>
+    </ScrollPane>
+    <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="501.0" layoutX="1256.0" layoutY="50.0" stroke="TRANSPARENT" strokeType="INSIDE" width="25.0" />
+    <Rectangle accessibleText="Text" arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="518.0" layoutX="1237.0" layoutY="37.0" stroke="TRANSPARENT" strokeType="INSIDE" width="17.0" />
+    <MFXTextField fx:id="linkTextField" layoutX="50.0" layoutY="570.0" prefHeight="86.0" prefWidth="1186.0" promptText="LINK IF NOT LISTED">
+        <font>
+            <Font name="Open Sans Regular" size="26.0" />
+        </font>
+        <textFill>
+            <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
+        </textFill>
+    </MFXTextField>
+    <MFXTextField fx:id="notesTextField" layoutX="616.0" layoutY="675.0" prefHeight="86.0" prefWidth="620.0" promptText="ADDITIONAL NOTES">
+        <font>
+            <Font name="Open Sans Regular" size="26.0" />
+        </font>
+        <textFill>
+            <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
+        </textFill>
+    </MFXTextField>
+    <MFXFilterComboBox fx:id="roomSelector" layoutX="50.0" layoutY="675.0" prefHeight="86.0" prefWidth="551.0" promptText="ROOM">
+        <font>
+            <Font name="Open Sans Regular" size="26.0" />
+        </font>
+        <textFill>
+            <Color red="0.5299999713897705" green="0.5299999713897705" blue="0.5299999713897705" opacity="0.8700000047683716" />
+        </textFill>
+    </MFXFilterComboBox>
+    <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="86.0" layoutX="47.0" layoutY="569.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="1192.0" />
+    <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="86.0" layoutX="613.0" layoutY="675.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="626.0" />
+    <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="86.0" layoutX="47.0" layoutY="675.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="556.0" />
+    <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="505.0" layoutX="48.0" layoutY="48.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="1190.0" />
+    <Rectangle fx:id="cancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="50.0" layoutY="785.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
+    <Text disable="true" fill="WHITE" layoutX="96.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CANCEL">
+        <font>
+            <Font name="Open Sans Bold" size="26.0" />
+        </font>
+    </Text>
+    <Rectangle fx:id="clearButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="416.0" layoutY="784.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
+    <Text disable="true" fill="WHITE" layoutX="472.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CLEAR">
+        <font>
+            <Font name="Open Sans Bold" size="26.0" />
+        </font>
+    </Text>
+    <Rectangle fx:id="supplySubmitButton" arcHeight="20.0" arcWidth="20.0" fill="#f0bf4c" height="63.0" layoutX="1049.0" layoutY="784.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
+    <Text disable="true" fill="WHITE" layoutX="1093.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SUBMIT">
+        <font>
+            <Font name="Open Sans Bold" size="26.0" />
+        </font>
+    </Text>
+
+</AnchorPane>
