@@ -2,6 +2,7 @@
 
 package edu.wpi.fishfolk.ui;
 
+@Deprecated
 public class User {
   String name;
   CreditCardInfo payment;

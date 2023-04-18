@@ -40,9 +40,9 @@ public class BFS extends Pathfinder {
             // ignore stair condition at start
             if (stairs
                 || !graph.getNodeFromIdx(other).containsType(NodeType.STAI)
-                || graph.getNodeFromIdx(other).nid == start) {
+                || graph.getNodeFromIdx(other).getNodeID() == start) {
 
-              int next = graph.getNodeFromIdx(other).nid;
+              int next = graph.getNodeFromIdx(other).getNodeID();
               previous[graph.id2idx(next)] = cur;
               queue.addLast(next);
             }

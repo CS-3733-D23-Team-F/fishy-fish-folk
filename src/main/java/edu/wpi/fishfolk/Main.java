@@ -1,7 +1,7 @@
 package edu.wpi.fishfolk;
 
-import edu.wpi.fishfolk.database.rewrite.Fdb;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.*;
+import edu.wpi.fishfolk.database.Fdb;
+import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.time.LocalDateTime;

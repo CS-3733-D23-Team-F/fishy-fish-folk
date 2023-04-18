@@ -2,6 +2,8 @@ package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.database.Fdb;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,8 @@ public abstract class AbsController {
 
   static Fdb dbConnection;
 
-  protected final ArrayList<String> allFloors = new ArrayList<>(List.of("L2", "L1", "1", "2", "3"));
+  protected static final ArrayList<String> allFloors =
+      new ArrayList<>(List.of("L2", "L1", "1", "2", "3"));
 
   // BTM - Building for Transformative Medicine
   protected final ArrayList<String> allBuildings =
@@ -19,6 +22,8 @@ public abstract class AbsController {
 
   HashMap<String, String> mapImgURLs;
   HashMap<String, Image> images;
+
+  public static final LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
 
   public AbsController() {
 
@@ -30,7 +35,7 @@ public abstract class AbsController {
 
     mapImgURLs.put("L1", "map/00_thelowerlevel1.png");
     mapImgURLs.put("L2", "map/00_thelowerlevel2.png");
-    mapImgURLs.put("GG", "map/00_thegroundfloor.png");
+    // mapImgURLs.put("GG", "map/00_thegroundfloor.png");
     mapImgURLs.put("1", "map/01_thefirstfloor.png");
     mapImgURLs.put("2", "map/02_thesecondfloor.png");
     mapImgURLs.put("3", "map/03_thethirdfloor.png");

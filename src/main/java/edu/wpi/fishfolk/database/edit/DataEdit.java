@@ -1,7 +1,5 @@
 package edu.wpi.fishfolk.database.edit;
 
-import edu.wpi.fishfolk.database.DataTableType;
-
 public abstract class DataEdit {
 
   public String pkey;

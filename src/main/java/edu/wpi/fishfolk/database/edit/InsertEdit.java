@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk.database.edit;
 
-import edu.wpi.fishfolk.database.DataTableType;
 import java.util.ArrayList;
 
 public class InsertEdit extends DataEdit {
