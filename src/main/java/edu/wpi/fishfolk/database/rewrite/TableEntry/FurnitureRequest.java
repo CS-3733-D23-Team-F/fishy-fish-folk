@@ -72,4 +72,23 @@ public class FurnitureRequest {
     this.deliveryDate = deliveryDate;
     this.status = EntryStatus.OLD;
   }
+
+  public FurnitureRequest(
+          String assignee,
+          FormStatus formStatus,
+          String notes,
+          FurnitureItem item,
+          ServiceType serviceType,
+          String roomNumber,
+          LocalDateTime deliveryDate) {
+    this.furnitureRequestID = LocalDateTime.now();
+    this.assignee = assignee;
+    this.formStatus = formStatus;
+    this.notes = notes;
+    this.item = item;
+    this.serviceType = serviceType;
+    this.roomNumber = roomNumber;
+    this.deliveryDate = deliveryDate;
+    this.status = EntryStatus.OLD;
+  }
 }

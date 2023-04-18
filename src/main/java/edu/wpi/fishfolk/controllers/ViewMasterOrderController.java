@@ -110,21 +110,21 @@ public class ViewMasterOrderController extends AbsController {
         new PropertyValueFactory<SupplyOrderObservable, String>("supplysupplies"));
 
     furnitureid.setCellValueFactory(
-        new PropertyValueFactory<FurnitureOrderObservable, String>("ID"));
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureid"));
     furnitureassignee.setCellValueFactory(
-        new PropertyValueFactory<FurnitureOrderObservable, String>("Assignee"));
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureassignee"));
     furniturestatus.setCellValueFactory(
-        new PropertyValueFactory<FurnitureOrderObservable, String>("Form Status"));
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturestatus"));
     furnituredeliveryroom.setCellValueFactory(
-        new PropertyValueFactory<FurnitureOrderObservable, String>("Delivery Room"));
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnituredeliveryroom"));
     furnituredeliverydate.setCellValueFactory(
-        new PropertyValueFactory<FurnitureOrderObservable, String>("Delivery Date"));
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnituredeliverydate"));
     furniturenotes.setCellValueFactory(
-        new PropertyValueFactory<FurnitureOrderObservable, String>("Notes"));
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturenotes"));
     furnitureservicetype.setCellValueFactory(
-        new PropertyValueFactory<FurnitureOrderObservable, String>("Service Type"));
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureservicetype"));
     furniturefurniture.setCellValueFactory(
-        new PropertyValueFactory<FurnitureOrderObservable, String>("Furniture"));
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturefurniture"));
 
     flowerid.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));
