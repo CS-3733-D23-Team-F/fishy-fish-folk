@@ -77,7 +77,7 @@ public class NewFoodOrderController extends AbsController {
     tab(0);
   }
 
-  /** Load food items into Respoective menu tabs */
+  /** Load food items into Respective menu tabs */
   private void loadMenu() {
     menuTabs = new List[5];
     for (int i = 0; i < 5; i++) {
