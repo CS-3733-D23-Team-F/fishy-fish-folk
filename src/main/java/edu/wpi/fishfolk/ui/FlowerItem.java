@@ -14,6 +14,6 @@ public class FlowerItem {
   }
 
   public String toString() {
-    return String.format("%dx $%.2d %s", amount, fullCost / amount, itemName);
+    return String.format("%dx $%.2f " + itemName, amount, fullCost / amount);
   }
 }

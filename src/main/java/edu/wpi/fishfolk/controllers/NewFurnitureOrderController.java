@@ -174,7 +174,8 @@ public class NewFurnitureOrderController extends AbsController {
       currentFurnitureOrder.serviceType = ServiceType.replacement;
     if (serviceradioButton2.isSelected()) currentFurnitureOrder.serviceType = ServiceType.cleaning;
     if (serviceradioButton3.isSelected()) currentFurnitureOrder.serviceType = ServiceType.delivery;
-    if (serviceradioButton4.isSelected()) currentFurnitureOrder.serviceType = ServiceType.maintenance;
+    if (serviceradioButton4.isSelected())
+      currentFurnitureOrder.serviceType = ServiceType.maintenance;
     if (serviceradioButton5.isSelected()) currentFurnitureOrder.serviceType = ServiceType.removal;
   }
 
@@ -188,7 +189,7 @@ public class NewFurnitureOrderController extends AbsController {
     currentFurnitureOrder.addDate(getDate());
     currentFurnitureOrder.setStatus(FormStatus.submitted);
     // furnitureOrderTable.insert(currentFurnitureOrder);
-    //dbConnection.insertEntry
+    // dbConnection.insertEntry
     Navigation.navigate(Screen.HOME);
   }
 }
