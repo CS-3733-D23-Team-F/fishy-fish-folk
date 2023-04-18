@@ -6,6 +6,7 @@ import java.util.List;
 public class FoodMenuLoader {
   /**
    * Prepares a list of food menu items to display
+   *
    * @return The list of all menu items
    */
   public static List<NewFoodMenuItem> loadItems() {
@@ -45,7 +46,7 @@ public class FoodMenuLoader {
     returnable.add(
         new NewFoodMenuItem(
             "Garden Salad",
-            "Have you ever wanted to eat a garden? Well now you can! Introducing the worlds first edible garden, dirt included. Please don't plant rhubarb.",
+            "Have you ever wanted to eat a garden? Well now you can! Introducing the world's first edible soil. Please don't plant rhubarb.",
             "images/gardensalad.png",
             2.49f,
             FoodCategory.app));
@@ -69,7 +70,7 @@ public class FoodMenuLoader {
     returnable.add(
         new NewFoodMenuItem(
             "Strawberry Yogurt",
-            "Our food provider cannot guarantee that this product is yogurt, they keep saying something about Icelandic skyr being 'close enough'. Maybe that's why its so expensive.",
+            "Our food provider cannot guarantee that this product is yogurt, they keep saying something about Icelandic skyr being 'close enough'.",
             "images/strawberryyogurt.jpg",
             5.29f,
             FoodCategory.app));
