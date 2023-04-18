@@ -14,7 +14,7 @@
 <AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewSupplyOrderController">
     <ScrollPane hbarPolicy="NEVER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="551.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a; -fx-border-width: 3;" vbarPolicy="NEVER">
         <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="556.0">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="551.0">
                 <children>
                     <MFXRectangleToggleNode fx:id="rectangle1" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="REPLACEMENT                                                                                                                            " wrapText="true">
                         <font>
@@ -80,31 +80,36 @@
             <Font name="Open Sans Bold" size="26.0" />
         </font>
     </Text>
-   <ScrollPane hbarPolicy="NEVER" layoutX="616.0" layoutY="55.0" prefHeight="500.0" prefWidth="620.0" vbarPolicy="NEVER">
+   <ScrollPane hbarPolicy="NEVER" layoutX="616.0" layoutY="50.0" prefHeight="500.0" prefWidth="620.0" style="-fx-border-color: #012d5a; -fx-border-width: 3; -fx-border-radius: 5;" vbarPolicy="NEVER">
       <content>
-         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="620.0">
+         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="620.0">
             <children>
-               <MFXRectangleToggleNode fx:id="rectangle11" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="REPLACEMENT                                                                                                                            " wrapText="true">
+               <MFXRectangleToggleNode fx:id="rectangle11" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="HOSPITAL BED" wrapText="true">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle21" layoutY="100.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="CLEANING                                                                                                                                  ">
+               <MFXRectangleToggleNode fx:id="rectangle21" alignment="CENTER_LEFT" layoutY="100.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="DESK">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle31" layoutX="-8.0" layoutY="200.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="DELIVERY                                                                                                                            ">
+               <MFXRectangleToggleNode fx:id="rectangle31" alignment="CENTER_LEFT" layoutX="-8.0" layoutY="200.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="CHAIR">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle41" layoutX="-8.0" layoutY="300.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="MAINTENANCE                                                                                                                          ">
+               <MFXRectangleToggleNode fx:id="rectangle41" alignment="CENTER_LEFT" layoutX="-8.0" layoutY="300.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="FILE CABINET">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle51" layoutX="-8.0" layoutY="400.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="REMOVAL                                                                                                                         ">
+               <MFXRectangleToggleNode fx:id="rectangle51" alignment="CENTER_LEFT" layoutX="-8.0" layoutY="400.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="CLOCK">
+                  <font>
+                     <Font name="Open Sans Regular" size="30.0" />
+                  </font>
+               </MFXRectangleToggleNode>
+               <MFXRectangleToggleNode fx:id="rectangle511" alignment="CENTER_LEFT" layoutX="2.0" layoutY="500.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="TRASHCAN">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
@@ -118,5 +123,10 @@
          <Font name="Open Sans Light" size="26.0" />
       </font>
    </MFXDatePicker>
+   <Text layoutX="50.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of Service: ">
+      <font>
+         <Font name="Open Sans SemiBold" size="26.0" />
+      </font>
+   </Text>
 
 </AnchorPane>
