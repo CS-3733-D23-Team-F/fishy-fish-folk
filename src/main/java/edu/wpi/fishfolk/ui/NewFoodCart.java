@@ -6,18 +6,17 @@ import lombok.Getter;
 
 public class NewFoodCart {
   @Getter List<quantityItem> items;
-  float totalPrice;
+  @Getter float totalPrice;
 
-  /**
-   * Creates an empty cart
-   */
+  /** Creates an empty cart */
   public NewFoodCart() {
     items = new ArrayList<quantityItem>();
     totalPrice = 0;
   }
 
   /**
-   * allows for tracking of quantity of a menu item rather than a food item (which lacks other necessary features)
+   * allows for tracking of quantity of a menu item rather than a food item (which lacks other
+   * necessary features)
    */
   public static class quantityItem {
     @Getter NewFoodMenuItem item;
@@ -25,6 +24,7 @@ public class NewFoodCart {
 
     /**
      * Creates a quantity item to track the quantity of a given item
+     *
      * @param i the item to track the quantity of
      */
     quantityItem(NewFoodMenuItem i) {
@@ -35,6 +35,7 @@ public class NewFoodCart {
 
   /**
    * adds an item to the cart
+   *
    * @param item the item to add
    */
   public void add(NewFoodMenuItem item) {
@@ -50,6 +51,7 @@ public class NewFoodCart {
 
   /**
    * removes an item from the cart, with no effect if the item is not in the cart
+   *
    * @param item the item to remove
    * @return whether the item was removed (typically false if the item was not in the cart)
    */
@@ -67,6 +69,7 @@ public class NewFoodCart {
 
   /**
    * Gets all of the items in the cart as a list of FoodItem
+   *
    * @return The List of items in the cart
    */
   public List<NewFoodItem> getSubmittableItems() {
@@ -79,6 +82,7 @@ public class NewFoodCart {
 
   /**
    * removes all instances of a given item from the cart
+   *
    * @param item the item to remove all of
    */
   public void removeAll(NewFoodMenuItem item) {

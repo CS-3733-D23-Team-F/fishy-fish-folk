@@ -5,9 +5,11 @@ import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FoodMenuLoader;
 import edu.wpi.fishfolk.ui.NewFoodCart;
+import edu.wpi.fishfolk.ui.NewFoodItem;
 import edu.wpi.fishfolk.ui.NewFoodMenuItem;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -43,9 +45,7 @@ public class NewFoodOrderController extends AbsController {
     super();
   }
 
-  /**
-   * Prepare buttons, cart, items, room selector, and load the appetizers tab
-   */
+  /** Prepare buttons, cart, items, room selector, and load the appetizers tab */
   @FXML
   private void initialize() {
     loadMenu();
@@ -67,9 +67,7 @@ public class NewFoodOrderController extends AbsController {
     tab(0);
   }
 
-  /**
-   * Load food items into Respoective menu tabs
-   */
+  /** Load food items into Respoective menu tabs */
   private void loadMenu() {
     menuTabs = new List[5];
     for (int i = 0; i < 5; i++) {
@@ -108,31 +106,23 @@ public class NewFoodOrderController extends AbsController {
     }
   }
 
-  /**
-   * Load room list into Room Selector
-   */
+  /** Load room list into Room Selector */
   private void loadRooms() {
     // todo write function once exists on DB side
   }
 
-  /**
-   * remove all items from the cart
-   */
+  /** remove all items from the cart */
   private void clear() {
     cart = new NewFoodCart();
   }
 
-  /**
-   * Clear the cart, and Return Home
-   */
+  /** Clear the cart, and Return Home */
   private void cancel() {
     cart = null;
     Navigation.navigate(Screen.HOME); // todo discuss changing this to service request
   }
 
-  /**
-   * Load cart items into viewable format, and put the cart on screen
-   */
+  /** Load cart items into viewable format, and put the cart on screen */
   private void openCart() {
     loadCart();
     notesField.setWrapText(true);
@@ -140,23 +130,75 @@ public class NewFoodOrderController extends AbsController {
     cartViewPane.setVisible(true);
   }
 
-  /**
-   * Hide the cart
-   */
+  /** Hide the cart */
   private void closeCart() {
     cartViewPane.setDisable(true);
     cartViewPane.setVisible(false);
   }
 
-  /**
-   * Confirm the order, and add it to the Database
-   */
+  /** Confirm the order, and add it to the Database */
   private void submit() {
+    if (cart.getTotalPrice() == 0) {
+      itemsError();
+      return;
+    }
+    LocalTime time = parseTime();
+    if (time == null) {
+      timeError();
+      return;
+    }
+    String notes = notesField.getText();
+    String room = roomSelector.getValue();
+    if (room == null) {
+      roomError();
+      return;
+    }
+    List<NewFoodItem> items = cart.getSubmittableItems();
     // todo send orders to DB on submission
   }
 
   /**
+   * gets the time in the time selector
+   *
+   * @return the time as a LocalTime
+   */
+  private LocalTime parseTime() {
+    String timeSel = timeSelector.getText();
+    int pos = timeSel.indexOf(":");
+    int h = -1, m = -1;
+    if (pos != 0) {
+      h = Integer.parseInt(timeSel.substring(0, pos));
+      if (timeSel.length() - pos >= 3) {
+        m = Integer.parseInt(timeSel.substring(pos + 1, pos + 3));
+      }
+    }
+    if (h == -1 || m == -1) {
+      return null;
+    }
+    if (timeSel.toLowerCase().indexOf("pm") >= 0) {
+      if (h != 12) {
+        h += 12;
+      }
+    } else if (timeSel.toLowerCase().indexOf("am") >= 0) {
+      if (h == 12) {
+        h = 0;
+      }
+    }
+    return LocalTime.of(h, m);
+  }
+
+  /** Informs the user they have not input a valid time */
+  private void timeError() {}
+
+  /** informs the user they have not selected a room */
+  private void roomError() {}
+
+  /** informs the user they have not selected any items */
+  private void itemsError() {}
+
+  /**
    * Loads a tab to the on-screen menu
+   *
    * @param target the page to load - 0 is apps, 1 is sides, 2 is mains, 3 is drinks, 4 is desserts
    */
   private void tab(int target) {
@@ -207,7 +249,7 @@ public class NewFoodOrderController extends AbsController {
           itemName.setStrokeType(StrokeType.OUTSIDE);
           itemName.setStrokeWidth(0);
           itemName.setWrappingWidth(345);
-          itemName.setFont(new Font("Open Sans Regular", 26));
+          itemName.setFont(new Font("Open Sans Bold", 26));
           itemName.setTextAlignment(TextAlignment.LEFT);
           itemPane.getChildren().add(itemName);
           Text itemPrice = new Text();
@@ -264,9 +306,7 @@ public class NewFoodOrderController extends AbsController {
     }
   }
 
-  /**
-   * prepares the visual cart with the items that have been added
-   */
+  /** prepares the visual cart with the items that have been added */
   private void loadCart() {
     List<NewFoodCart.quantityItem> items = cart.getItems();
     VBox itemsBox = new VBox();
@@ -294,7 +334,7 @@ public class NewFoodOrderController extends AbsController {
       itemName.setStrokeType(StrokeType.OUTSIDE);
       itemName.setStrokeWidth(0);
       itemName.setWrappingWidth(300);
-      itemName.setFont(new Font("Open Sans Regular", 26));
+      itemName.setFont(new Font("Open Sans Bold", 26));
       itemName.setTextAlignment(TextAlignment.LEFT);
       itemPane.getChildren().add(itemName);
       Text unitPrice = new Text();

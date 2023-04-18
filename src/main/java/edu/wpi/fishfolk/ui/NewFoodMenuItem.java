@@ -11,6 +11,7 @@ public class NewFoodMenuItem {
 
   /**
    * Creates an item to be listed on the food menu
+   *
    * @param n the name of the item
    * @param d the description of the item
    * @param i the Location of the item's image
