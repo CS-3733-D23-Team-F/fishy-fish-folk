@@ -81,7 +81,7 @@
                   <columns>
                      <TableColumn fx:id="locationlongname" prefWidth="203.0" text="Long Name" />
                      <TableColumn fx:id="shortname" prefWidth="144.0" text="Short Name" />
-                     <TableColumn fx:id="type" prefWidth="94.0" text="Type" />
+                     <TableColumn fx:id="type" prefWidth="93.0" text="Type" />
                   </columns>
                </TableView>
                <HBox alignment="CENTER" prefHeight="38.0" prefWidth="482.0" style="-fx-background-color: #012D5A;">

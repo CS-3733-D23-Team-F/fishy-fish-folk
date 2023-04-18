@@ -13,7 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;import java.time.LocalDate;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 public class MoveController extends AbsController {
 
@@ -68,7 +68,7 @@ public class MoveController extends AbsController {
     nodeid.setOnEditCommit(this::editNodeID);
     movelongname.setOnEditCommit(this::editMoveLongname);
 
-    //TODO write edit methods for move date and all location
+    // TODO write edit methods for move date and all location
 
     submitmove.setOnMouseClicked(
         event -> {
@@ -128,7 +128,7 @@ public class MoveController extends AbsController {
     dbConnection.updateEntry(newMove);
   }
 
-  //TODO test
+  // TODO test
   private void editMoveLongname(TableColumn.CellEditEvent<ObservableMove, String> event) {
 
     String oldnodeID = nodeid.getCellObservableValue(event.getRowValue()).getValue();
@@ -139,7 +139,7 @@ public class MoveController extends AbsController {
     observableMoves.removeIf(obsmove -> obsmove.matches(oldlongname, olddate));
 
     Move newMove =
-            new Move(Integer.parseInt(oldnodeID), newlongname, ObservableMove.parseDate(olddate));
+        new Move(Integer.parseInt(oldnodeID), newlongname, ObservableMove.parseDate(olddate));
     observableMoves.addAll(new ObservableMove(newMove));
 
     dbConnection.removeEntry(oldlongname + ObservableMove.parseDate(olddate), TableEntryType.MOVE);
