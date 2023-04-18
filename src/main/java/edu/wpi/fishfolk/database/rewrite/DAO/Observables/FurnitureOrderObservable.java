@@ -36,8 +36,34 @@ public class FurnitureOrderObservable {
     }
     this.furnituredeliveryroom = order.getRoomNumber();
     this.furnituredeliverydate = "" + order.getDeliveryDate();
-    this.furnitureservicetype = order.getServiceType();
+    switch (order.getServiceType()) {
+      case REMOVAL:
+        {
+          this.furnitureservicetype = "Removal";
+          break;
+        }
+      case CLEANING:
+        {
+          this.furnitureservicetype = "Cleaning";
+          break;
+        }
+      case DELIVERY:
+        {
+          this.furnitureservicetype = "Delivery";
+          break;
+        }
+      case MAINTENANCE:
+        {
+          this.furnitureservicetype = "Maintenence";
+          break;
+        }
+      case REPLACEMENT:
+        {
+          this.furnitureservicetype = "Replacement";
+          break;
+        }
+    }
     this.furniturenotes = order.getNotes();
-    this.furniturefurniture = order.getItem();
+    this.furniturefurniture = order.getItem().furnitureName;
   }
 }

@@ -38,7 +38,7 @@ public class SupplyOrderObservable {
     this.supplynotes = order.getNotes();
     String[] itemStrings = new String[order.getSupplies().size()];
     for (int i = 0; i < itemStrings.length; i++) {
-      itemStrings[i] = order.getSupplies().get(i).toString();
+      itemStrings[i] = order.getSupplies().get(i).supplyName;
     }
     String items = String.join(", ", itemStrings);
     this.supplysupplies = items;

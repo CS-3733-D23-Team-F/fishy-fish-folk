@@ -37,7 +37,7 @@ public class FlowerOrderObservable {
     }
     this.flowerdeliveryroom = order.getDeliveryLocation();
     // this.flowerdeliverytime = order.get.toString(); can't find a time mentioned in FlowerRequest?
-    this.flowerrecipientname = order.getPayer().nameOnCard;
+    this.flowerrecipientname = order.getRecipientName();
     String[] itemStrings = new String[order.getItems().size()];
     for (int i = 0; i < itemStrings.length; i++) {
       itemStrings[i] = order.getItems().get(i).toString();

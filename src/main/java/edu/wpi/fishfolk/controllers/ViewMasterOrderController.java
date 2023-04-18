@@ -4,7 +4,6 @@ import edu.wpi.fishfolk.database.rewrite.DAO.Observables.FlowerOrderObservable;
 import edu.wpi.fishfolk.database.rewrite.DAO.Observables.FoodOrderObservable;
 import edu.wpi.fishfolk.database.rewrite.DAO.Observables.FurnitureOrderObservable;
 import edu.wpi.fishfolk.database.rewrite.DAO.Observables.SupplyOrderObservable;
-import edu.wpi.fishfolk.database.rewrite.Fdb;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.*;
 import edu.wpi.fishfolk.ui.FormStatus;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -18,7 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.shape.Rectangle;
 
-public class ViewMasterOrderController {
+public class ViewMasterOrderController extends AbsController {
   @FXML TableView foodTable, supplyTable, furnitureTable, flowerTable;
   @FXML
   TableColumn foodid,
@@ -72,11 +71,8 @@ public class ViewMasterOrderController {
 
   @FXML TabPane tabPane;
 
-  Fdb dibdab;
-
   public ViewMasterOrderController() {
     super();
-    dibdab = new Fdb();
   }
 
   public void initialize() {
@@ -98,18 +94,20 @@ public class ViewMasterOrderController {
     fooditems.setCellValueFactory(
         new PropertyValueFactory<FoodOrderObservable, String>("fooditems"));
 
-    supplyid.setCellValueFactory(new PropertyValueFactory<SupplyOrderObservable, String>("ID"));
+    supplyid.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplyid"));
     supplyassignee.setCellValueFactory(
-        new PropertyValueFactory<SupplyOrderObservable, String>("Assignee"));
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplyassignee"));
     supplystatus.setCellValueFactory(
-        new PropertyValueFactory<SupplyOrderObservable, String>("Form Status"));
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplystatus"));
     supplydeliveryroom.setCellValueFactory(
-        new PropertyValueFactory<SupplyOrderObservable, String>("Delivery Room"));
-    supplylink.setCellValueFactory(new PropertyValueFactory<SupplyOrderObservable, String>("Link"));
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplydeliveryroom"));
+    supplylink.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplylink"));
     supplynotes.setCellValueFactory(
-        new PropertyValueFactory<SupplyOrderObservable, String>("Notes"));
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplynotes"));
     supplysupplies.setCellValueFactory(
-        new PropertyValueFactory<SupplyOrderObservable, String>("Supplies"));
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplysupplies"));
 
     furnitureid.setCellValueFactory(
         new PropertyValueFactory<FurnitureOrderObservable, String>("ID"));
@@ -172,7 +170,7 @@ public class ViewMasterOrderController {
 
   public ObservableList<FoodOrderObservable> getFoodOrderRows() {
     ArrayList<FoodRequest> foodList =
-        (ArrayList<FoodRequest>) dibdab.getAllEntries(TableEntryType.FOOD_REQUEST);
+        (ArrayList<FoodRequest>) dbConnection.getAllEntries(TableEntryType.FOOD_REQUEST);
     ObservableList<FoodOrderObservable> returnable = FXCollections.observableArrayList();
     for (FoodRequest request : foodList) {
       returnable.add(new FoodOrderObservable(request));
@@ -182,7 +180,7 @@ public class ViewMasterOrderController {
 
   public ObservableList<SupplyOrderObservable> getSupplyOrderRows() {
     ArrayList<SupplyRequest> supplyList =
-        (ArrayList<SupplyRequest>) dibdab.getAllEntries(TableEntryType.SUPPLY_REQUEST);
+        (ArrayList<SupplyRequest>) dbConnection.getAllEntries(TableEntryType.SUPPLY_REQUEST);
     ObservableList<SupplyOrderObservable> returnable = FXCollections.observableArrayList();
     for (SupplyRequest request : supplyList) {
       returnable.add(new SupplyOrderObservable(request));
@@ -192,7 +190,7 @@ public class ViewMasterOrderController {
 
   public ObservableList<FurnitureOrderObservable> getFurnitureOrderRows() {
     ArrayList<FurnitureRequest> furnitureList =
-        (ArrayList<FurnitureRequest>) dibdab.getAllEntries(TableEntryType.FURNITURE_REQUEST);
+        (ArrayList<FurnitureRequest>) dbConnection.getAllEntries(TableEntryType.FURNITURE_REQUEST);
     ObservableList<FurnitureOrderObservable> returnable = FXCollections.observableArrayList();
     for (FurnitureRequest request : furnitureList) {
       returnable.add(new FurnitureOrderObservable(request));
@@ -202,7 +200,7 @@ public class ViewMasterOrderController {
 
   public ObservableList<FlowerOrderObservable> getFlowerOrderRows() {
     ArrayList<FlowerRequest> flowerList =
-        (ArrayList<FlowerRequest>) dibdab.getAllEntries(TableEntryType.FLOWER_REQUEST);
+        (ArrayList<FlowerRequest>) dbConnection.getAllEntries(TableEntryType.FLOWER_REQUEST);
     ObservableList<FlowerOrderObservable> returnable = FXCollections.observableArrayList();
     for (FlowerRequest request : flowerList) {
       returnable.add(new FlowerOrderObservable(request));
@@ -213,19 +211,22 @@ public class ViewMasterOrderController {
   private void foodSetStatus(FormStatus string) {
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
-    FoodRequest dbRequest = (FoodRequest) dibdab.getEntry(food.id, TableEntryType.FOOD_REQUEST);
+    FoodRequest dbRequest =
+        (FoodRequest) dbConnection.getEntry(food.id, TableEntryType.FOOD_REQUEST);
     switch (string) {
       case filled:
         {
           dbRequest.setFormStatus(FormStatus.filled);
-          dibdab.updateEntry(dbRequest);
+          dbConnection.updateEntry(dbRequest);
           food.foodstatus = "Filled";
+          break;
         }
       case cancelled:
         {
           dbRequest.setFormStatus(FormStatus.cancelled);
-          dibdab.updateEntry(dbRequest);
+          dbConnection.updateEntry(dbRequest);
           food.foodstatus = "Cancelled";
+          break;
         }
     }
     foodTable.refresh();
@@ -235,76 +236,83 @@ public class ViewMasterOrderController {
     SupplyOrderObservable food =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
     SupplyRequest dbRequest =
-        (SupplyRequest) dibdab.getEntry(food.id, TableEntryType.SUPPLY_REQUEST);
+        (SupplyRequest) dbConnection.getEntry(food.id, TableEntryType.SUPPLY_REQUEST);
     switch (string) {
       case filled:
         {
           dbRequest.setFormStatus(FormStatus.filled);
-          dibdab.updateEntry(dbRequest);
+          dbConnection.updateEntry(dbRequest);
           food.supplystatus = "Filled";
+          break;
         }
       case cancelled:
         {
           dbRequest.setFormStatus(FormStatus.cancelled);
-          dibdab.updateEntry(dbRequest);
+          dbConnection.updateEntry(dbRequest);
           food.supplystatus = "Cancelled";
+          break;
         }
     }
-    foodTable.refresh();
+    supplyTable.refresh();
   }
 
   private void furnitureSetStatus(FormStatus string) {
     FurnitureOrderObservable food =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
     FurnitureRequest dbRequest =
-        (FurnitureRequest) dibdab.getEntry(food.id, TableEntryType.FURNITURE_REQUEST);
+        (FurnitureRequest) dbConnection.getEntry(food.id, TableEntryType.FURNITURE_REQUEST);
     switch (string) {
       case filled:
         {
           dbRequest.setFormStatus(FormStatus.filled);
-          dibdab.updateEntry(dbRequest);
+          dbConnection.updateEntry(dbRequest);
           food.furniturestatus = "Filled";
+          break;
         }
       case cancelled:
         {
           dbRequest.setFormStatus(FormStatus.cancelled);
-          dibdab.updateEntry(dbRequest);
+          dbConnection.updateEntry(dbRequest);
           food.furniturestatus = "Cancelled";
+          break;
         }
     }
-    foodTable.refresh();
+    furnitureTable.refresh();
   }
 
   private void flowerSetStatus(FormStatus string) {
     FlowerOrderObservable food =
         (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
     FlowerRequest dbRequest =
-        (FlowerRequest) dibdab.getEntry(food.id, TableEntryType.FLOWER_REQUEST);
+        (FlowerRequest) dbConnection.getEntry(food.id, TableEntryType.FLOWER_REQUEST);
     switch (string) {
       case filled:
         {
           dbRequest.setFormStatus(FormStatus.filled);
-          dibdab.updateEntry(dbRequest);
+          dbConnection.updateEntry(dbRequest);
           food.flowerstatus = "Filled";
+          break;
         }
       case cancelled:
         {
           dbRequest.setFormStatus(FormStatus.cancelled);
-          dibdab.updateEntry(dbRequest);
+          dbConnection.updateEntry(dbRequest);
           food.flowerstatus = "Cancelled";
+          break;
         }
     }
-    foodTable.refresh();
+    flowerTable.refresh();
   }
 
   private void foodAssign() {
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
-    FoodRequest dbRequest = (FoodRequest) dibdab.getEntry(food.id, TableEntryType.FOOD_REQUEST);
+    FoodRequest dbRequest =
+        (FoodRequest) dbConnection.getEntry(food.id, TableEntryType.FOOD_REQUEST);
     String assignee = foodassigneeTextField.getText();
     dbRequest.setAssignee(assignee);
     food.foodassignee = assignee;
-    dibdab.updateEntry(dbRequest);
+    dbConnection.updateEntry(dbRequest);
     foodTable.refresh();
     foodassigneeTextField.setText("");
   }
@@ -313,11 +321,11 @@ public class ViewMasterOrderController {
     SupplyOrderObservable supply =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
     SupplyRequest dbRequest =
-        (SupplyRequest) dibdab.getEntry(supply.id, TableEntryType.SUPPLY_REQUEST);
+        (SupplyRequest) dbConnection.getEntry(supply.id, TableEntryType.SUPPLY_REQUEST);
     String assignee = supplyassigneeTextField.getText();
     dbRequest.setAssignee(assignee);
     supply.supplyassignee = assignee;
-    dibdab.updateEntry(dbRequest);
+    dbConnection.updateEntry(dbRequest);
     supplyTable.refresh();
     supplyassigneeTextField.setText("");
   }
@@ -326,11 +334,11 @@ public class ViewMasterOrderController {
     FurnitureOrderObservable furniture =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
     FurnitureRequest dbRequest =
-        (FurnitureRequest) dibdab.getEntry(furniture.id, TableEntryType.FURNITURE_REQUEST);
+        (FurnitureRequest) dbConnection.getEntry(furniture.id, TableEntryType.FURNITURE_REQUEST);
     String assignee = furnitureassigneeTextField.getText();
     dbRequest.setAssignee(assignee);
     furniture.furnitureassignee = assignee;
-    dibdab.updateEntry(dbRequest);
+    dbConnection.updateEntry(dbRequest);
     furnitureTable.refresh();
     furnitureassigneeTextField.setText("");
   }
@@ -339,11 +347,11 @@ public class ViewMasterOrderController {
     FlowerOrderObservable flower =
         (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
     FlowerRequest dbRequest =
-        (FlowerRequest) dibdab.getEntry(flower.id, TableEntryType.FLOWER_REQUEST);
+        (FlowerRequest) dbConnection.getEntry(flower.id, TableEntryType.FLOWER_REQUEST);
     String assignee = flowerassigneeTextField.getText();
     dbRequest.setAssignee(assignee);
     flower.flowerassignee = assignee;
-    dibdab.updateEntry(dbRequest);
+    dbConnection.updateEntry(dbRequest);
     flowerTable.refresh();
     flowerassigneeTextField.setText("");
   }
@@ -351,7 +359,7 @@ public class ViewMasterOrderController {
   private void foodRemove() {
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
-    dibdab.removeEntry(food.id, TableEntryType.FOOD_REQUEST);
+    dbConnection.removeEntry(food.id, TableEntryType.FOOD_REQUEST);
     foodTable.getItems().remove(food);
     foodTable.refresh();
   }
@@ -359,7 +367,7 @@ public class ViewMasterOrderController {
   private void supplyRemove() {
     SupplyOrderObservable supply =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
-    dibdab.removeEntry(supply.id, TableEntryType.SUPPLY_REQUEST);
+    dbConnection.removeEntry(supply.id, TableEntryType.SUPPLY_REQUEST);
     supplyTable.getItems().remove(supply);
     supplyTable.refresh();
   }
@@ -367,7 +375,7 @@ public class ViewMasterOrderController {
   private void furnitureRemove() {
     FurnitureOrderObservable furniture =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
-    dibdab.removeEntry(furniture.id, TableEntryType.FURNITURE_REQUEST);
+    dbConnection.removeEntry(furniture.id, TableEntryType.FURNITURE_REQUEST);
     furnitureTable.getItems().remove(furniture);
     furnitureTable.refresh();
   }
@@ -375,7 +383,7 @@ public class ViewMasterOrderController {
   private void flowerRemove() {
     FurnitureOrderObservable flower =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
-    dibdab.removeEntry(flower.id, TableEntryType.FLOWER_REQUEST);
+    dbConnection.removeEntry(flower.id, TableEntryType.FLOWER_REQUEST);
     flowerTable.getItems().remove(flower);
     flowerTable.refresh();
   }

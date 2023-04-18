@@ -1,7 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
-import edu.wpi.fishfolk.database.rewrite.Fdb;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.FoodRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
@@ -44,11 +43,9 @@ public class NewFoodOrderController extends AbsController {
   private List<NewFoodMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
   private NewFoodCart cart;
   MFXButton[] tabButtons;
-  Fdb fdb;
 
   public NewFoodOrderController() {
     super();
-    fdb = new Fdb();
   }
 
   /** Prepare buttons, cart, items, room selector, and load the appetizers tab */
@@ -117,7 +114,7 @@ public class NewFoodOrderController extends AbsController {
 
   /** Load room list into Room Selector */
   private void loadRooms() {
-    roomSelector.getItems().add("The only room");
+    // roomSelector.getItems().addAll(dbConnection.getDestLongnames());
     // todo write function once exists on DB side
   }
 
@@ -183,7 +180,7 @@ public class NewFoodOrderController extends AbsController {
             deliveryTime,
             recipientField.getText(),
             items);
-    fdb.insertEntry(thisOrder);
+    dbConnection.insertEntry(thisOrder);
   }
 
   /**
