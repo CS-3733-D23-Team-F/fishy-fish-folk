@@ -68,7 +68,7 @@ public class NewFoodOrderController extends AbsController {
     tab(0);
   }
 
-  /** Load food items into Respoective menu tabs */
+  /** Load food items into Respective menu tabs */
   private void loadMenu() {
     menuTabs = new List[5];
     for (int i = 0; i < 5; i++) {
@@ -311,6 +311,7 @@ public class NewFoodOrderController extends AbsController {
         tabButtons[i].setDisable(false);
       }
     }
+    menuItemsPane.setVvalue(0);
   }
 
   /** prepares the visual cart with the items that have been added */
