@@ -29,7 +29,7 @@ public class RootController {
 
   @FXML
   public void initialize() {
-      flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
+    flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));

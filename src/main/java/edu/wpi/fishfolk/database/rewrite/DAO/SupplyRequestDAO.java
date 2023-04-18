@@ -542,12 +542,12 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
       // STEP 1: Check if the subtable exists
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-                      + dbConnection.getSchema()
-                      + "' AND tablename = '"
-                      + tableName
-                      + "supplyitems"
-                      + "');";
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "supplyitems"
+              + "');";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -561,13 +561,13 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
       // STEP 3: If it does not exist OR the table was dropped, make it exist
       if (!results.getBoolean("exists") || drop) {
         query =
-                "CREATE TABLE "
-                        + tableName
-                        + "supplyitems"
-                        + " ("
-                        + "itemkey INT,"
-                        + "itemname VARCHAR(64)"
-                        + ");";
+            "CREATE TABLE "
+                + tableName
+                + "supplyitems"
+                + " ("
+                + "itemkey INT,"
+                + "itemname VARCHAR(64)"
+                + ");";
         statement.executeUpdate(query);
       }
     } catch (SQLException e) {
@@ -583,13 +583,13 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
       // Setup query to read ID stored in tied column of main table
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT supplies FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + tableName
-                      + " WHERE id = '"
-                      + Timestamp.valueOf(requestID)
-                      + "';";
+          "SELECT supplies FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE id = '"
+              + Timestamp.valueOf(requestID)
+              + "';";
 
       // Run that shit
       statement.execute(query);
@@ -617,14 +617,14 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
       // Query the subtable to return only items with the specified subtableID
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT * FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + tableName
-                      + "supplyitems "
-                      + "WHERE itemkey = '"
-                      + subtableID
-                      + "';";
+          "SELECT * FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "supplyitems "
+              + "WHERE itemkey = '"
+              + subtableID
+              + "';";
 
       // Run the query
       statement.execute(query);
@@ -654,12 +654,12 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
 
       // Query to insert one new of subtable entries
       String insert =
-              "INSERT INTO "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + "supplyitems"
-                      + " VALUES (?, ?);";
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + "supplyitems"
+              + " VALUES (?, ?);";
 
       PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
 
@@ -682,12 +682,12 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
 
       // Query to delete items with matching subtableID
       String deleteAll =
-              "DELETE FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + tableName
-                      + "supplyitems"
-                      + " WHERE itemkey = ?;";
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "supplyitems"
+              + " WHERE itemkey = ?;";
 
       PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
 

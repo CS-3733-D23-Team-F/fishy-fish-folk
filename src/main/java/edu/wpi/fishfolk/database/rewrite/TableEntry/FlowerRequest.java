@@ -20,7 +20,7 @@ public class FlowerRequest {
   @Getter @Setter private String recipientName;
   @Getter @Setter private String deliveryLocation;
   @Getter @Setter private double totalPrice;
-  @Getter @Setter private List<FlowerItem> items; // TODO: Change to more specialized type
+  @Getter @Setter private List<FlowerItem> items;
 
   // For DAO
   @Getter @Setter private EntryStatus status;
@@ -47,6 +47,36 @@ public class FlowerRequest {
       double totalPrice,
       List<FlowerItem> items) {
     this.flowerRequestID = flowerRequestID;
+    this.assignee = assignee;
+    this.formStatus = formStatus;
+    this.notes = notes;
+    this.recipientName = recipientName;
+    this.deliveryLocation = deliveryLocation;
+    this.totalPrice = totalPrice;
+    this.items = items;
+    this.status = EntryStatus.OLD;
+  }
+
+  /**
+   * Table entry type: Flower Request; This one sets the LocalDateTime to now.
+   *
+   * @param assignee Assignee of request
+   * @param formStatus Status of request
+   * @param notes Additional notes of request
+   * @param recipientName Payment information of request
+   * @param deliveryLocation Delivery location of request
+   * @param totalPrice Price of request
+   * @param items Flower items of request
+   */
+  public FlowerRequest(
+          String assignee,
+          FormStatus formStatus,
+          String notes,
+          String recipientName,
+          String deliveryLocation,
+          double totalPrice,
+          List<FlowerItem> items) {
+    this.flowerRequestID = LocalDateTime.now();
     this.assignee = assignee;
     this.formStatus = formStatus;
     this.notes = notes;

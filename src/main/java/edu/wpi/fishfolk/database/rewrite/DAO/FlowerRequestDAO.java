@@ -556,12 +556,12 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
       // STEP 1: Check if the subtable exists
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-                      + dbConnection.getSchema()
-                      + "' AND tablename = '"
-                      + tableName
-                      + "floweritems"
-                      + "');";
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "floweritems"
+              + "');";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -575,15 +575,15 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
       // STEP 3: If it does not exist OR the table was dropped, make it exist
       if (!results.getBoolean("exists") || drop) {
         query =
-                "CREATE TABLE "
-                        + tableName
-                        + "floweritems"
-                        + " ("
-                        + "itemkey INT,"
-                        + "itemname VARCHAR(64),"
-                        + "fullcost REAL,"
-                        + "itemamount INT"
-                        + ");";
+            "CREATE TABLE "
+                + tableName
+                + "floweritems"
+                + " ("
+                + "itemkey INT,"
+                + "itemname VARCHAR(64),"
+                + "fullcost REAL,"
+                + "itemamount INT"
+                + ");";
         statement.executeUpdate(query);
       }
     } catch (SQLException e) {
@@ -599,13 +599,13 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
       // Setup query to read ID stored in tied column of main table
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT items FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + tableName
-                      + " WHERE id = '"
-                      + Timestamp.valueOf(requestID)
-                      + "';";
+          "SELECT items FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE id = '"
+              + Timestamp.valueOf(requestID)
+              + "';";
 
       // Run that shit
       statement.execute(query);
@@ -633,14 +633,14 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
       // Query the subtable to return only items with the specified subtableID
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT * FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + tableName
-                      + "floweritems "
-                      + "WHERE itemkey = '"
-                      + subtableID
-                      + "';";
+          "SELECT * FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "floweritems "
+              + "WHERE itemkey = '"
+              + subtableID
+              + "';";
 
       // Run the query
       statement.execute(query);
@@ -649,10 +649,10 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
       // For each result, create a new food item and put it in the list
       while (results.next()) {
         allFlowerItems.add(
-                new FlowerItem(
-                        results.getString("itemname"),
-                        results.getInt("itemcost"),
-                        results.getInt("itemamount")));
+            new FlowerItem(
+                results.getString("itemname"),
+                results.getInt("itemcost"),
+                results.getInt("itemamount")));
       }
 
       // Return the list
@@ -674,12 +674,12 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
 
       // Query to insert one new of subtable entries
       String insert =
-              "INSERT INTO "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + "floweritems"
-                      + " VALUES (?, ?, ?, ?);";
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + "floweritems"
+              + " VALUES (?, ?, ?, ?);";
 
       PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
 
@@ -704,12 +704,12 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
 
       // Query to delete items with matching subtableID
       String deleteAll =
-              "DELETE FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + tableName
-                      + "floweritems"
-                      + " WHERE itemkey = ?;";
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "floweritems"
+              + " WHERE itemkey = ?;";
 
       PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
 
