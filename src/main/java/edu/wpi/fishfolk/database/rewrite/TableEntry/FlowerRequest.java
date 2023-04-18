@@ -69,13 +69,13 @@ public class FlowerRequest {
    * @param items Flower items of request
    */
   public FlowerRequest(
-          String assignee,
-          FormStatus formStatus,
-          String notes,
-          String recipientName,
-          String deliveryLocation,
-          double totalPrice,
-          List<FlowerItem> items) {
+      String assignee,
+      FormStatus formStatus,
+      String notes,
+      String recipientName,
+      String deliveryLocation,
+      double totalPrice,
+      List<FlowerItem> items) {
     this.flowerRequestID = LocalDateTime.now();
     this.assignee = assignee;
     this.formStatus = formStatus;
