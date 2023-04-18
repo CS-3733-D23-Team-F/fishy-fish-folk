@@ -14,25 +14,23 @@ public class TextInstructionController {
 
   @FXML ImageView directionImage;
 
-  public void setData(TextDirection dir, int num) {
+  public void setData(TextDirection direction, int num) {
 
-    switch (dir.getDirection()) {
-      case "straight":
-        directionText.setText(num + ". Go " + dir.getDirection());
-        distanceText.setText("for " + dir.getDistance());
+    directionText.setText(num + ". " + direction.getText());
+    distanceText.setText("unused text");
+
+    // TODO add images for elevator & stairs up & down
+    switch (direction.getDirection()) {
+      case STRAIGHT:
         directionImage.setImage(new Image(Fapp.class.getResourceAsStream("images/up-arrow.png")));
         break;
-      case "left":
-        directionText.setText(num + ". Turn " + dir.getDirection());
-        distanceText.setText("then stragiht for " + dir.getDistance());
+
+      case LEFT:
         directionImage.setImage(new Image(Fapp.class.getResourceAsStream("images/left-turn.png")));
         break;
-      case "right":
-        directionText.setText(num + ". Turn " + dir.getDirection());
-        distanceText.setText("then stragiht for " + dir.getDistance());
+
+      case RIGHT:
         directionImage.setImage(new Image(Fapp.class.getResourceAsStream("images/right-turn.png")));
-        break;
-      default:
         break;
     }
   }

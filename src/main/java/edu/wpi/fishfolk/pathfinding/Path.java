@@ -4,6 +4,7 @@ import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ public class Path {
   public ArrayList<Point2D> points;
 
   @Getter @Setter private String floor;
+  @Getter @Setter private Direction toNextPath;
 
   public int numNodes;
 
@@ -100,7 +102,7 @@ public class Path {
     return interPoints;
   }
 
-  public ArrayList<String> getDirections() {
+  public List<TextDirection> getDirections() {
 
     // split path into segments: three points determine a segment
     // to avoid overlaps, dont add the start->mid portion except for the first
@@ -132,10 +134,10 @@ public class Path {
 
         if (mid.subtract(start).crossProduct(end.subtract(mid)).getZ() > 0) {
           // cross product > 0 means right turn
-          segments.add(new PathSegment(mid, PathSegmentType.RIGHT));
+          segments.add(new PathSegment(mid, Direction.RIGHT));
         } else {
 
-          segments.add(new PathSegment(mid, PathSegmentType.LEFT));
+          segments.add(new PathSegment(mid, Direction.LEFT));
         }
         segments.add(new PathSegment(mid, end)); // turning segments only account for the turn
       }
@@ -150,9 +152,10 @@ public class Path {
     while (itr.hasNext()) {
       PathSegment cur = itr.next();
 
-      if (prev.type == PathSegmentType.STRAIGHT
-          && cur.type == PathSegmentType.STRAIGHT) { // two straights in a row
-        prev.end = cur.end; // extend prev to cover current
+      // two straights in a row
+      if (prev.getDirection() == Direction.STRAIGHT && cur.getDirection() == Direction.STRAIGHT) {
+
+        prev.setEnd(cur.getEnd()); // extend prev to cover current
         itr.remove(); // removes current
 
       } else {
@@ -160,35 +163,11 @@ public class Path {
       }
     }
 
-    // create directions from condensed segments
-
-    ArrayList<String> directions = new ArrayList<>();
-    // commented out since this is not needed for new text direction
-    // = "start at " + nodes.get(0) + "\n";
-
-    for (PathSegment segment : segments) {
-
-      switch (segment.type) {
-        case STRAIGHT:
-          String dist = String.format("%.1f", segment.end.distance(segment.start));
-          directions.add(dist);
-          break;
-        case RIGHT:
-          directions.add("right");
-          break;
-        case LEFT:
-          directions.add("left");
-          break;
-      }
-    }
-
-    // directions += "end at " + nodes.get(numNodes - 1) + "\n";
-    System.out.println(segments.size() + " steps");
-    return directions;
+    return segments.stream().map(TextDirection::new).toList();
   }
 
   public String toString() {
-    return floor + ": " + nodes.toString();
+    return floor + ": " + nodes.toString() + " " + toNextPath;
   }
 
   @Override
@@ -240,43 +219,6 @@ public class Path {
       }
     }
 
-    /*
-    System.out.println(minX + "");
-    System.out.println(maxX + "");
-    System.out.println(minY + "");
-    System.out.println(maxY + "");
-
-     */
-
-    Point2D point = new Point2D((maxX + minX) / 2.0, (maxY + minY) / 2.0);
-
-    return point;
+    return new Point2D((maxX + minX) / 2.0, (maxY + minY) / 2.0);
   }
-}
-
-class PathSegment {
-
-  PathSegmentType type;
-
-  Point2D start, mid, end;
-
-  public PathSegment(Point2D start, Point2D end) {
-
-    this.type = PathSegmentType.STRAIGHT;
-
-    this.start = start;
-    this.end = end;
-  }
-
-  public PathSegment(Point2D mid, PathSegmentType dir) {
-
-    this.mid = mid;
-    this.type = dir;
-  }
-}
-
-enum PathSegmentType {
-  STRAIGHT,
-  LEFT,
-  RIGHT
 }

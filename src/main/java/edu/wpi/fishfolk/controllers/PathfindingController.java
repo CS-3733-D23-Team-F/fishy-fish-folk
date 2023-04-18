@@ -6,12 +6,12 @@ import edu.wpi.fishfolk.pathfinding.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -62,10 +62,8 @@ public class PathfindingController extends AbsController {
 
   ArrayList<ParallelTransition> pathAnimations;
 
-  int zoom;
-  ArrayList<TextDirection> textDirections;
-
-  private LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
+  private double zoom;
+  List<List<TextDirection>> textDirections;
 
   public PathfindingController() {
     super();
@@ -74,6 +72,18 @@ public class PathfindingController extends AbsController {
 
   @FXML
   private void initialize() {
+
+    Platform.runLater(
+        new Runnable() {
+
+          @Override
+          public void run() {
+            pane.centreOn(new Point2D(2500, 1200));
+            zoom = 0.5;
+            javafx.geometry.Bounds bounds = pane.getTargetViewport();
+            pane.zoomTo(zoom, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
+          }
+        });
 
     // buttons to other pages
     slideUp.setOnMouseClicked(
@@ -150,6 +160,38 @@ public class PathfindingController extends AbsController {
           System.out.println("end node: " + end);
           pathfinder = new AStar(graph);
           paths = pathfinder.pathfind(start, end, true);
+          System.out.println(paths);
+
+          textDirections = new LinkedList<>();
+
+          int lastFloorIdx = paths.size() - 1;
+
+          for (int i = 0; i <= lastFloorIdx; i++) {
+            List<TextDirection> floorDirections = new LinkedList<>(paths.get(i).getDirections());
+
+            if (i == 0) {
+              floorDirections.add(
+                  0, new TextDirection(Direction.START, "Start at " + startSelector.getValue()));
+              if (lastFloorIdx > 0) {
+                floorDirections.add(
+                    textDirectionBetweenFloors(
+                        paths.get(0).getToNextPath(), paths.get(1).getFloor()));
+              }
+            }
+
+            if (i == lastFloorIdx) {
+              if (lastFloorIdx > 0) {
+                floorDirections.add(
+                    textDirectionBetweenFloors(
+                        paths.get(lastFloorIdx - 1).getToNextPath(),
+                        paths.get(lastFloorIdx).getFloor()));
+              }
+              floorDirections.add(
+                  new TextDirection(Direction.START, "End at " + endSelector.getValue()));
+            }
+
+            textDirections.add(floorDirections);
+          }
 
           // index 0 in floors in this path - not allFloors
           currentFloor = 0;
@@ -161,8 +203,10 @@ public class PathfindingController extends AbsController {
 
           displayFloor();
           endSelector.setDisable(true);
-          textDirections = new ArrayList<>();
-          textDirections.addAll(parseDirections(paths.get(0).getDirections()));
+
+          // create text directions
+          // textDirections = new ArrayList<>();
+          // textDirections.addAll(parseDirections(paths.get(0).getDirections()));
           int col = 0;
           int row = 1;
 
@@ -174,7 +218,9 @@ public class PathfindingController extends AbsController {
               AnchorPane anchorPane = fxmlLoader.load();
 
               TextInstructionController instructionController = fxmlLoader.getController();
-              instructionController.setData(textDirections.get(i), i + 1);
+
+              // show text directions for this floor
+              instructionController.setData(textDirections.get(currentFloor).get(i), i + 1);
 
               if (col == 3) {
                 col = 0;
@@ -213,28 +259,6 @@ public class PathfindingController extends AbsController {
     pathAnimations = new ArrayList<>();
 
     graph = new Graph(dbConnection);
-  }
-
-  private List<TextDirection> parseDirections(ArrayList<String> directions) {
-    List<TextDirection> textDirections = new ArrayList<>();
-    TextDirection textDirection;
-    for (int i = 0; i < directions.size() - 2; i += 2) {
-
-      textDirection = new TextDirection();
-      if (i == 0) {
-        textDirection.setDirection("straight");
-        textDirection.setDistance(directions.get(i));
-        i = -1;
-      } else {
-        System.out.println(
-            "direction: " + directions.get(i) + " distance: " + directions.get(i + 1));
-        textDirection.setDirection(directions.get(i));
-        textDirection.setDistance(directions.get(i + 1));
-      }
-      textDirections.add(textDirection);
-    }
-
-    return textDirections;
   }
 
   private void drawPaths(ArrayList<Path> paths) {
@@ -348,6 +372,7 @@ public class PathfindingController extends AbsController {
    */
   private javafx.scene.Node generatePathButtons(double x, double y, boolean up, boolean forwards) {
 
+    // TODO set arrow up or down based on parameter
     NodeCircle nc = new NodeCircle(-1, x, y, 8);
     nc.setFill(Color.rgb(4, 100, 180));
     nc.setOnMouseClicked(
@@ -386,12 +411,35 @@ public class PathfindingController extends AbsController {
       itr.next().setVisible(false);
     }
 
+    // stop all animations
     pathAnimations.forEach(ParallelTransition::stop);
 
-    pathGroup.getChildren().get(currentFloor + 1).setVisible(true);
-    System.out.println(
-        "parallel animations: " + pathAnimations.get(currentFloor).getChildren().size());
+    // show and start animation for current floor
+    pathGroup
+        .getChildren()
+        .get(currentFloor + 1)
+        .setVisible(true); // offset by 1 because first child is gesture pane
     pathAnimations.get(currentFloor).play();
+  }
+
+  private TextDirection textDirectionBetweenFloors(Direction direction, String second) {
+
+    String text = "";
+    switch (direction) {
+      case UP_ELEV:
+        text = "Take the elevator up to " + second;
+        break;
+      case DOWN_ELEV:
+        text = "Take the elevator down to " + second;
+        break;
+      case UP_STAI:
+        text = "Take the stairs up to " + second;
+        break;
+      case DOWN_STAI:
+        text = "Take the stairs down to " + second;
+        break;
+    }
+    return new TextDirection(direction, text);
   }
 
   /**
@@ -401,7 +449,7 @@ public class PathfindingController extends AbsController {
    * @param nextFloor
    * @return true if the second is higher than the first, otherwise false
    */
-  private boolean direction(String currFloor, String nextFloor) {
+  public static boolean direction(String currFloor, String nextFloor) {
     return allFloors.indexOf(currFloor) < allFloors.indexOf(nextFloor);
   }
 }

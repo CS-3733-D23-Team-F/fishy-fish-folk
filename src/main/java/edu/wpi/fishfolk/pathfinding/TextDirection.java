@@ -1,23 +1,32 @@
 package edu.wpi.fishfolk.pathfinding;
 
+import lombok.Getter;
+
 public class TextDirection {
 
-  public String direction;
-  public String distance;
+  @Getter private Direction direction;
+  @Getter private String text;
 
-  public String getDirection() {
-    return direction;
-  }
-
-  public void setDirection(String direction) {
+  public TextDirection(Direction direction, String text) {
     this.direction = direction;
+    this.text = text;
   }
 
-  public String getDistance() {
-    return distance;
-  }
+  public TextDirection(PathSegment segment) {
+    this.direction = segment.getDirection();
 
-  public void setDistance(String distance) {
-    this.distance = distance;
+    switch (segment.getDirection()) {
+      case STRAIGHT:
+        text = "Head straight for " + segment.formatDistance();
+        break;
+
+      case LEFT:
+        text = "Turn left.";
+        break;
+
+      case RIGHT:
+        text = "Turn right.";
+        break;
+    }
   }
 }

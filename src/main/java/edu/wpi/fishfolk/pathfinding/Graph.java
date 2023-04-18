@@ -1,9 +1,8 @@
 package edu.wpi.fishfolk.pathfinding;
 
+import edu.wpi.fishfolk.controllers.AbsController;
 import edu.wpi.fishfolk.database.Fdb;
-import edu.wpi.fishfolk.database.TableEntry.Edge;
-import edu.wpi.fishfolk.database.TableEntry.Node;
-import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
+import edu.wpi.fishfolk.database.TableEntry.*;
 import java.util.*;
 import javafx.geometry.Point2D;
 import lombok.Getter;
@@ -43,14 +42,18 @@ public class Graph {
 
     // get Nodes from table into array and record elevators
 
-    int[] nodeCount = {
-      0
-    }; // array is technically final but allows modification of elements inside lambda
+    // array is technically final but allows modification of elements inside lambda
+    int[] nodeCount = {0};
+
     nodes =
         dbConnection.getAllEntries(TableEntryType.NODE).stream()
             .map(
                 elt -> {
                   Node node = (Node) elt;
+
+                  dbConnection
+                      .getLocations(node.getNodeID(), AbsController.today)
+                      .forEach(node::addLocation);
 
                   id2idx.put(node.getNodeID(), nodeCount[0]);
                   nodeCount[0]++;
@@ -175,7 +178,7 @@ public class Graph {
       for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
 
-          int idxi = id2idx.get(i), idxj = id2idx.get(j);
+          int idxi = id2idx.get(nids.get(i)), idxj = id2idx.get(nids.get(j));
           if (adjMat[idxi][idxj] <= 0) count++;
           adjMat[idxi][idxj] = cost;
           adjMat[idxj][idxi] = cost;
