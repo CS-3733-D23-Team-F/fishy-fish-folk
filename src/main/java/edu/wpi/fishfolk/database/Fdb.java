@@ -59,8 +59,12 @@ public class Fdb {
             new Thread(
                 () -> {
                   System.out.println("[Fdb]: Shutdown received...");
+
                   nodeTable.updateDatabase(true);
                   locationTable.updateDatabase(true);
+                  moveTable.updateDatabase(true);
+                  edgeTable.updateDatabase(true);
+
                   foodRequestTable.updateDatabase(true);
                   supplyRequestTable.updateDatabase(true);
 
