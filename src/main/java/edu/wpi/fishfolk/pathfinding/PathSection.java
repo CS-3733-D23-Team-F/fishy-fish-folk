@@ -4,12 +4,12 @@ import javafx.geometry.Point2D;
 import lombok.Getter;
 import lombok.Setter;
 
-public class PathSegment {
+public class PathSection {
 
   @Getter @Setter private Direction direction;
   @Getter @Setter private Point2D start, mid, end;
 
-  public PathSegment(Point2D start, Point2D end) {
+  public PathSection(Point2D start, Point2D end) {
 
     this.direction = Direction.STRAIGHT;
 
@@ -17,7 +17,7 @@ public class PathSegment {
     this.end = end;
   }
 
-  public PathSegment(Point2D mid, Direction dir) {
+  public PathSection(Point2D mid, Direction dir) {
 
     this.mid = mid;
     this.direction = dir;

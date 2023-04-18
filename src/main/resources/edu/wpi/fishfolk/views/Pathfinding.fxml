@@ -160,7 +160,7 @@
                   </MFXButton>
                </children>
             </StackPane>
-            <HBox alignment="CENTER" fillHeight="false" maxHeight="252.0" minHeight="252.0" style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="252.0" minHeight="252.0" style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="TOP_CENTER" maxWidth="330.0" minWidth="300.0" HBox.hgrow="ALWAYS">
                      <children>
@@ -192,7 +192,7 @@
                      </HBox.margin>
                   </VBox>
                   <Line endX="-100.0" endY="217.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5" style="-fx-stroke: #454343; -fx-stroke-width: 0.5;" HBox.hgrow="ALWAYS" />
-                  <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                  <HBox HBox.hgrow="ALWAYS">
                      <children>
                         <HBox HBox.hgrow="ALWAYS" />
                         <AnchorPane HBox.hgrow="ALWAYS">
@@ -208,7 +208,7 @@
                               </MFXScrollPane>
                            </children>
                         </AnchorPane>
-                        <HBox />
+                        <HBox HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children></HBox>
