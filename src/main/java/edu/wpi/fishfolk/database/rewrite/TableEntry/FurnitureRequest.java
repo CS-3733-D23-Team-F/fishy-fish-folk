@@ -1,9 +1,9 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
-import edu.wpi.fishfolk.database.rewrite.ServiceType;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.FurnitureItem;
+import edu.wpi.fishfolk.ui.ServiceType;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -74,13 +74,13 @@ public class FurnitureRequest {
   }
 
   public FurnitureRequest(
-          String assignee,
-          FormStatus formStatus,
-          String notes,
-          FurnitureItem item,
-          ServiceType serviceType,
-          String roomNumber,
-          LocalDateTime deliveryDate) {
+      String assignee,
+      FormStatus formStatus,
+      String notes,
+      FurnitureItem item,
+      ServiceType serviceType,
+      String roomNumber,
+      LocalDateTime deliveryDate) {
     this.furnitureRequestID = LocalDateTime.now();
     this.assignee = assignee;
     this.formStatus = formStatus;

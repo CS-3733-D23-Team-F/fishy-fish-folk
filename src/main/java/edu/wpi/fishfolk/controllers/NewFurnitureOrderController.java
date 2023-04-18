@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.database.Table;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.FurnitureRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FormStatus;
@@ -9,6 +10,7 @@ import edu.wpi.fishfolk.ui.FurnitureOrder;
 import edu.wpi.fishfolk.ui.ServiceType;
 import io.github.palexdev.materialfx.controls.*;
 import java.awt.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.shape.Rectangle;
@@ -154,8 +156,8 @@ public class NewFurnitureOrderController extends AbsController {
   }
 
   // getDate() returns the date. idk what the date function looked like as a string i was curious
-  public String getDate() {
-    return "" + deliveryDate.getCurrentDate();
+  public LocalDateTime getDate() {
+    return deliveryDate.getCurrentDate().atStartOfDay();
   }
 
   // setItemToRadios() checks the status of all of the buttons and sets the item in the current
@@ -188,8 +190,16 @@ public class NewFurnitureOrderController extends AbsController {
     currentFurnitureOrder.addNotes(notesTextField.getText());
     currentFurnitureOrder.addDate(getDate());
     currentFurnitureOrder.setStatus(FormStatus.submitted);
-    // furnitureOrderTable.insert(currentFurnitureOrder);
-    // dbConnection.insertEntry
+    FurnitureRequest request =
+        new FurnitureRequest(
+            "",
+            FormStatus.submitted,
+            currentFurnitureOrder.notes,
+            currentFurnitureOrder.furnitureItem,
+            currentFurnitureOrder.serviceType,
+            currentFurnitureOrder.roomNum,
+            currentFurnitureOrder.deliveryDate);
+    dbConnection.insertEntry(request);
     Navigation.navigate(Screen.HOME);
   }
 }
