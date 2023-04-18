@@ -174,7 +174,7 @@
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
-                              <MFXButton fx:id="moveEditorNav" alignment="BOTTOM_LEFT" buttonType="RAISED" layoutX="5.0" layoutY="210.0" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Move editor" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="210.0">
+                              <MFXButton fx:id="moveEditorNav" alignment="BOTTOM_LEFT" buttonType="RAISED" layoutX="5.0" layoutY="210.0" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Move Editor" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="210.0">
                                  <font>
                                     <Font name="Open Sans Bold" size="16.0" />
                                  </font>
