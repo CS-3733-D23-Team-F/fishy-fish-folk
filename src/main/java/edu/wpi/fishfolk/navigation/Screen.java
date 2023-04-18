@@ -7,7 +7,7 @@ public enum Screen {
   SIGNAGE("views/Signage.fxml"),
   FOOD_ORDER_REQUEST("views/FoodOrder.fxml"),
   SUPPLIES_REQUEST("views/NewSupplyOrder.fxml"),
-  FURNITURE_REQUEST("views/FurnitureOrder.fxml"),
+  FURNITURE_REQUEST("views/NewFurnitureOrder.fxml"),
   MAP_EDITOR("views/MapEditor.fxml"),
   VIEW_FOOD_ORDERS("views/ViewFoodOrders.fxml"),
   VIEW_SUPPLY_ORDERS("views/ViewSupplyOrders.fxml"),
