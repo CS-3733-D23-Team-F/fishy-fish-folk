@@ -13,7 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.cell.TextFieldTableCell;import java.time.LocalDate;
 
 public class MoveController extends AbsController {
 
@@ -64,6 +64,9 @@ public class MoveController extends AbsController {
                 .toList()));
 
     nodeid.setOnEditCommit(this::editNodeID);
+    movelongname.setOnEditCommit(this::editMoveLongname);
+
+    //TODO write edit methods for move date and all location
 
     submitmove.setOnMouseClicked(
         event -> {
@@ -76,7 +79,7 @@ public class MoveController extends AbsController {
           // for some reason .add doesnt work, just use .addAll(... elements)
           observableMoves.addAll(new ObservableMove(newMove));
 
-          System.out.println(newMove + " " + dbConnection.insertEntry(newMove));
+          dbConnection.insertEntry(newMove);
         });
   }
 
@@ -92,6 +95,24 @@ public class MoveController extends AbsController {
         new Move(Integer.parseInt(newnodeID), oldlongname, ObservableMove.parseDate(olddate));
     observableMoves.addAll(new ObservableMove(newMove));
 
-    System.out.println(newMove + " " + dbConnection.updateEntry(newMove));
+    dbConnection.updateEntry(newMove);
+  }
+
+  //TODO test
+  private void editMoveLongname(TableColumn.CellEditEvent<ObservableMove, String> event) {
+
+    String oldnodeID = nodeid.getCellObservableValue(event.getRowValue()).getValue();
+    String oldlongname = event.getOldValue();
+    String newlongname = event.getNewValue();
+    String olddate = date.getCellObservableValue(event.getRowValue()).getValue();
+
+    observableMoves.removeIf(obsmove -> obsmove.matches(oldlongname, olddate));
+
+    Move newMove =
+            new Move(Integer.parseInt(oldnodeID), newlongname, ObservableMove.parseDate(olddate));
+    observableMoves.addAll(new ObservableMove(newMove));
+
+    dbConnection.removeEntry(oldlongname + ObservableMove.parseDate(olddate), TableEntryType.MOVE);
+    dbConnection.insertEntry(newMove);
   }
 }
