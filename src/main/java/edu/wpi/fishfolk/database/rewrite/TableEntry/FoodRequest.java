@@ -1,8 +1,12 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
+import edu.wpi.fishfolk.ui.FoodItem;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +23,7 @@ public class FoodRequest {
   @Getter @Setter private String deliveryRoom;
   @Getter @Setter private LocalDateTime deliveryTime;
   @Getter @Setter private String recipientName;
-  // @Getter @Setter private List<FoodItem> foodItems;
+  @Getter @Setter private List<FoodItem> foodItems;
   // TODO: Subtable to include this entry
 
   // For DAO
@@ -35,7 +39,8 @@ public class FoodRequest {
    * @param totalPrice Total price of request
    * @param deliveryRoom Delivery room of request
    * @param deliveryTime Delivery time of request
-   * @param recipientName Request recipient's name //@param foodItems Food items requested
+   * @param recipientName Request recipient's name
+   * @param foodItems Food items requested
    */
   public FoodRequest(
       int foodRequestID,
@@ -45,8 +50,8 @@ public class FoodRequest {
       double totalPrice,
       String deliveryRoom,
       LocalDateTime deliveryTime,
-      String recipientName
-      /*List<FoodItem> foodItems*/ ) {
+      String recipientName,
+      List<FoodItem> foodItems ) {
     this.foodRequestID = foodRequestID;
     this.assignee = assignee;
     this.formStatus = formStatus;
@@ -56,7 +61,7 @@ public class FoodRequest {
     this.deliveryRoom = deliveryRoom;
     this.deliveryTime = deliveryTime;
     this.recipientName = recipientName;
-    // this.foodItems = foodItems;
+    this.foodItems = foodItems;
 
     this.status = EntryStatus.OLD;
   }
