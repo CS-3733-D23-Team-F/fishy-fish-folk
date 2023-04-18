@@ -295,6 +295,7 @@ public class DAOTests {
             "No changes made",
             "null",
             "null",
+                LocalDateTime.of(1500, 2, 2, 2, 2),
             2.00,
             items1));
     fdb.insertEntry(
@@ -305,6 +306,7 @@ public class DAOTests {
             "No changes made",
             "null",
             "null",
+                LocalDateTime.of(1500, 2, 2, 2, 2),
             2.00,
             items2));
     fdb.insertEntry(
@@ -315,6 +317,7 @@ public class DAOTests {
             "No changes made",
             "null",
             "null",
+                LocalDateTime.of(1500, 2, 2, 2, 2),
             2.00,
             items3));
 
@@ -326,6 +329,7 @@ public class DAOTests {
             "Changed one word lol",
             "null",
             "null",
+                LocalDateTime.of(1500, 2, 2, 2, 2),
             2.00,
             items2));
 
@@ -340,6 +344,7 @@ public class DAOTests {
             "Uhhhhhhhh notes",
             "null",
             "null",
+                LocalDateTime.of(1500, 2, 2, 2, 2),
             2.00,
             items1));
 
