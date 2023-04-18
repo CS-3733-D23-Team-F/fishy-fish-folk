@@ -559,7 +559,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
       }
 
       // STEP 3: If it does not exist OR the table was dropped, make it exist
-      if (!results.getBoolean("exists")) {
+      if (!results.getBoolean("exists") || drop) {
         query =
                 "CREATE TABLE "
                         + tableName
@@ -648,6 +648,9 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
   public void setSubtableItems(LocalDateTime requestID, List<SupplyItem> items) {
 
     try {
+
+      // Remove all food items in the subtable with a matching subtableID
+      deleteAllSubtableItems(requestID);
 
       // Query to insert one new of subtable entries
       String insert =
