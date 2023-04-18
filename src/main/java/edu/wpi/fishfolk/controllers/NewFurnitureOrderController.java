@@ -188,7 +188,7 @@ public class NewFurnitureOrderController extends AbsController {
     currentFurnitureOrder.addDate(getDate());
     currentFurnitureOrder.setStatus(FormStatus.submitted);
     // furnitureOrderTable.insert(currentFurnitureOrder);
-    dbConnection.insertEntry
+    //dbConnection.insertEntry
     Navigation.navigate(Screen.HOME);
   }
 }
