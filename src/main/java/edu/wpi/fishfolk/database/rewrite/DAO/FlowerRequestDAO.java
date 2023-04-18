@@ -6,6 +6,7 @@ import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.FlowerRequest;
+import edu.wpi.fishfolk.ui.FlowerItem;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.io.*;
 import java.sql.*;
@@ -37,10 +38,10 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 "assignee",
                 "status",
                 "notes",
-                "items",
-                "payer",
+                "recipientname",
                 "deliveryLocation",
-                "totalPrice"));
+                "totalPrice",
+                "items"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
 
@@ -80,10 +81,10 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 + "assignee VARCHAR(64),"
                 + "status VARCHAR(12),"
                 + "notes VARCHAR(256),"
-                + "items INT," // TODO: SUBTABLE in the future
-                + "payer INT," // TODO: Likely another subtable
+                + "recipientname VARCHAR(64),"
                 + "deliverylocation VARCHAR(64),"
-                + "totalprice REAL"
+                + "totalprice REAL,"
+                + "items SERIAL" // TODO: SUBTABLE in the future
                 + ");";
         statement.executeUpdate(query);
       }
@@ -115,10 +116,10 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 results.getString(headers.get(1)),
                 FormStatus.valueOf(results.getString(headers.get(2))),
                 results.getString(headers.get(3)),
-                null,
-                null,
-                results.getString(headers.get(6)),
-                results.getDouble(headers.get(7)));
+                results.getString(headers.get(4)),
+                results.getString(headers.get(5)),
+                results.getDouble(headers.get(6)),
+                getFlowerItems(results.getInt(headers.get(7))));
         tableMap.put(flowerRequest.getFlowerRequestID(), flowerRequest);
       }
 
@@ -300,7 +301,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?, ?);";
 
       String update =
           "UPDATE "
@@ -321,8 +322,6 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
               + headers.get(5)
               + " = ?, "
               + headers.get(6)
-              + " = ?, "
-              + headers.get(7)
               + " = ? WHERE "
               + headers.get(0)
               + " = ?;";
@@ -367,13 +366,14 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
             preparedInsert.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedInsert.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedInsert.setString(4, dataEdit.getNewEntry().getNotes());
-            preparedInsert.setInt(5, 0); // TODO: Subtables
-            preparedInsert.setInt(6, 0);
-            preparedInsert.setString(7, dataEdit.getNewEntry().getDeliveryLocation());
-            preparedInsert.setDouble(8, dataEdit.getNewEntry().getTotalPrice());
+            preparedInsert.setString(5, dataEdit.getNewEntry().getRecipientName());
+            preparedInsert.setString(6, dataEdit.getNewEntry().getDeliveryLocation());
+            preparedInsert.setDouble(7, dataEdit.getNewEntry().getTotalPrice());
 
             // Execute the query
             preparedInsert.executeUpdate();
+            setFlowerItems(
+                dataEdit.getNewEntry().getFlowerRequestID(), dataEdit.getNewEntry().getItems());
 
             break;
 
@@ -385,15 +385,17 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
             preparedUpdate.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedUpdate.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedUpdate.setString(4, dataEdit.getNewEntry().getNotes());
-            preparedUpdate.setInt(5, 0); // TODO: Subtables
-            preparedUpdate.setInt(6, 0);
-            preparedUpdate.setString(7, dataEdit.getNewEntry().getDeliveryLocation());
-            preparedUpdate.setDouble(8, dataEdit.getNewEntry().getTotalPrice());
+            preparedUpdate.setString(5, dataEdit.getNewEntry().getRecipientName());
+            preparedUpdate.setString(6, dataEdit.getNewEntry().getDeliveryLocation());
+            preparedUpdate.setDouble(7, dataEdit.getNewEntry().getTotalPrice());
             preparedUpdate.setTimestamp(
-                9, Timestamp.valueOf(dataEdit.getNewEntry().getFlowerRequestID()));
+                8, Timestamp.valueOf(dataEdit.getNewEntry().getFlowerRequestID()));
 
             // Execute the query
             preparedUpdate.executeUpdate();
+            setFlowerItems(
+                dataEdit.getNewEntry().getFlowerRequestID(), dataEdit.getNewEntry().getItems());
+
             break;
 
           case REMOVE:
@@ -403,6 +405,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 1, Timestamp.valueOf(dataEdit.getNewEntry().getFlowerRequestID()));
 
             // Execute the query
+            deleteAllFlowerItems(dataEdit.getNewEntry().getFlowerRequestID());
             preparedRemove.executeUpdate();
             break;
         }
@@ -429,6 +432,173 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
 
     // On success
     return true;
+  }
+
+  private int getFlowerItemsTableID(LocalDateTime flowerRequestID) {
+    try {
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT items FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE id = '"
+              + Timestamp.valueOf(flowerRequestID)
+              + "';";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+      return results.getInt("items");
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return -1;
+    }
+  }
+
+  private List<FlowerItem> getFlowerItems(int id) {
+
+    try {
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "floweritems"
+              + "');";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+
+      if (!results.getBoolean("exists")) {
+        query =
+            "CREATE TABLE "
+                + tableName
+                + "floweritems"
+                + " ("
+                + "itemkey INT,"
+                + "itemname VARCHAR(64),"
+                + "fullcost REAL,"
+                + "itemamount INT"
+                + ");";
+        statement.executeUpdate(query);
+      }
+
+      ArrayList<FlowerItem> allFlowerItems = new ArrayList<>();
+
+      query =
+          "SELECT * FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "floweritems "
+              + "WHERE itemkey = '"
+              + id
+              + "';";
+
+      statement.execute(query);
+      results = statement.getResultSet();
+
+      while (results.next()) {
+        allFlowerItems.add(
+            new FlowerItem(
+                results.getString("itemname"),
+                results.getInt("itemcost"),
+                results.getInt("itemamount")));
+      }
+
+      return allFlowerItems;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
+  }
+
+  private void setFlowerItems(LocalDateTime flowerRequestID, List<FlowerItem> items) {
+    try {
+
+      Statement exists = dbConnection.createStatement();
+      String query =
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "floweritems"
+              + "');";
+      exists.execute(query);
+      ResultSet results = exists.getResultSet();
+      results.next();
+
+      if (!results.getBoolean("exists")) {
+        query =
+            "CREATE TABLE "
+                + tableName
+                + "floweritems"
+                + " ("
+                + "itemkey INT,"
+                + "itemname VARCHAR(64),"
+                + "fullcost REAL,"
+                + "itemamount INT"
+                + ");";
+        exists.executeUpdate(query);
+      }
+
+      String deleteAll =
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "floweritems"
+              + " WHERE itemkey = ?;";
+
+      String insert =
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + "floweritems"
+              + " VALUES (?, ?, ?, ?);";
+
+      PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
+      PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
+
+      preparedDeleteAll.setInt(1, getFlowerItemsTableID(flowerRequestID));
+      preparedDeleteAll.executeUpdate();
+
+      for (FlowerItem item : items) {
+        preparedInsert.setInt(1, getFlowerItemsTableID(flowerRequestID));
+        preparedInsert.setString(2, item.itemName);
+        preparedInsert.setDouble(3, item.fullCost);
+        preparedInsert.setInt(4, item.amount);
+        preparedInsert.executeUpdate();
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  private void deleteAllFlowerItems(LocalDateTime flowerRequestID) {
+    try {
+
+      String deleteAll =
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "floweritems"
+              + " WHERE itemkey = ?;";
+
+      PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
+
+      preparedDeleteAll.setInt(1, getFlowerItemsTableID(flowerRequestID));
+      preparedDeleteAll.executeUpdate();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Override
@@ -461,7 +631,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
@@ -475,10 +645,10 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 parts[1],
                 FormStatus.valueOf(parts[2]),
                 parts[3],
-                null,
-                null,
-                parts[6],
-                Double.parseDouble(parts[7]));
+                parts[4],
+                parts[5],
+                Double.parseDouble(parts[6]),
+                getFlowerItems(Integer.parseInt(parts[7])));
 
         tableMap.put(fr.getFlowerRequestID(), fr);
 
@@ -486,10 +656,9 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
         insertPS.setString(2, fr.getAssignee());
         insertPS.setString(3, fr.getFormStatus().toString());
         insertPS.setString(4, fr.getNotes());
-        insertPS.setInt(5, 0); // TODO: Subtables
-        insertPS.setInt(6, 0);
-        insertPS.setString(7, fr.getDeliveryLocation());
-        insertPS.setDouble(8, fr.getTotalPrice());
+        insertPS.setString(5, fr.getRecipientName());
+        insertPS.setString(6, fr.getDeliveryLocation());
+        insertPS.setDouble(7, fr.getTotalPrice());
 
         insertPS.executeUpdate();
       }
@@ -527,13 +696,13 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 + ","
                 + fr.getNotes()
                 + ","
-                + fr.getItems()
-                + ","
-                + fr.getPayer()
+                + fr.getRecipientName()
                 + ","
                 + fr.getDeliveryLocation()
                 + ","
-                + fr.getTotalPrice());
+                + fr.getTotalPrice()
+                + ","
+                + getFlowerItemsTableID(fr.getFlowerRequestID()));
       }
 
       out.close();

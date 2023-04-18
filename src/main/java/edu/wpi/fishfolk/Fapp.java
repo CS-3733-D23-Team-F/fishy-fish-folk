@@ -50,7 +50,7 @@ public class Fapp extends Application {
     primaryStage.setMaximized(true);
     primaryStage.show();
 
-    Navigation.navigate(Screen.SUPPLIES_REQUEST);
+    Navigation.navigate(Screen.VIEW_MASTER_ORDER);
   }
 
   @Override
