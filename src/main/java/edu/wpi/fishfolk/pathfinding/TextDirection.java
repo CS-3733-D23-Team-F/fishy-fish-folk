@@ -13,7 +13,7 @@ public class TextDirection {
     this.text = text;
   }
 
-  public TextDirection(PathSegment segment) {
+  public TextDirection(edu.wpi.fishfolk.pathfinding.PathSegment segment) {
     this.direction = segment.getDirection();
 
     switch (segment.getDirection()) {
