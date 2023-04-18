@@ -130,6 +130,8 @@ public class LoginController extends AbsController {
           if (foundAccount.getPassword().equals(String.valueOf(passhash))) {
             // valid account
             currUser = foundAccount;
+            errorBox.setText("Logged in successfully!");
+            errorBox.setStyle("-fx-alignment: center; -fx-background-color:  green;");
           } else {
             errorBox.setText("Incorrect username or password!");
             errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
