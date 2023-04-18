@@ -1,255 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox minHeight="1080.0" minWidth="1920.0" style="-fx-background-color: #F4F4F4;" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.RootController">
+<VBox minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #F4F4F4;" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.HomeController">
    <children>
       <StackPane VBox.vgrow="ALWAYS">
          <children>
-            <ImageView fitHeight="1080.0" fitWidth="1920.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-               <image>
-                  <Image url="@../images/hospitalImg.png" />
-               </image>
-               <viewport>
-                  <Rectangle2D height="1080.0" minX="200.0" minY="310.0" width="1720.0" />
-               </viewport>
-               <StackPane.margin>
-                  <Insets left="200.0" />
-               </StackPane.margin>
-            </ImageView>
-            <HBox alignment="CENTER" minWidth="120.0" opacity="0.46" style="-fx-background-color: #000000;" StackPane.alignment="CENTER" />
-            <AnchorPane fx:id="menuWrap" minWidth="70.0">
+            <HBox alignment="CENTER_LEFT" minHeight="720.0" minWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" StackPane.alignment="CENTER">
                <children>
-                  <AnchorPane maxWidth="200.0" minWidth="200.0" style="-fx-background-color: #012D5A;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <VBox maxWidth="200.0" minWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <AnchorPane VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <AnchorPane fx:id="serviceBar" disable="true" style="-fx-background-color: #0464b4;" visible="false">
-                                       <children>
-                                          <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Meal Order" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
-                                             <font>
-                                                <Font name="Open Sans Bold" size="16.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" />
-                                             </padding>
-                                             <graphic>
-                                                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/food.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </MFXButton>
-                                          <MFXButton fx:id="supplyNav" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Supplies Order" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="140.0">
-                                             <font>
-                                                <Font name="Open Sans Bold" size="16.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" />
-                                             </padding>
-                                             <graphic>
-                                                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/delivery.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </MFXButton>
-                                          <MFXButton fx:id="flowerNav" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Flower Delivery" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="210.0">
-                                             <font>
-                                                <Font name="Open Sans Bold" size="16.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" />
-                                             </padding>
-                                             <graphic>
-                                                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/flower.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </MFXButton>
-                                          <MFXButton fx:id="furnitureNav" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Furniture Delivery" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="280.0">
-                                             <font>
-                                                <Font name="Open Sans Bold" size="16.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" />
-                                             </padding>
-                                             <graphic>
-                                                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/furniture.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </MFXButton>
-                                          <MFXButton fx:id="conferenceNav" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Conference Request" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="350.0">
-                                             <font>
-                                                <Font name="Open Sans Bold" size="16.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" />
-                                             </padding>
-                                             <graphic>
-                                                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/conference.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </MFXButton>
-                                          <MFXButton fx:id="viewFood" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="View Food Order" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="420.0">
-                                             <font>
-                                                <Font name="Open Sans Bold" size="16.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" />
-                                             </padding>
-                                             <graphic>
-                                                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/order.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </MFXButton>
-                                          <MFXButton fx:id="viewSupply" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="View Supply Order" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="490.0">
-                                             <font>
-                                                <Font name="Open Sans Bold" size="16.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" />
-                                             </padding>
-                                             <graphic>
-                                                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/order.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </MFXButton>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane fx:id="slider" maxHeight="600.0" minHeight="600.0" style="-fx-background-color: #012D5A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
-                                       <children>
-                                          <MFXButton fx:id="signageNav" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Signage" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <font>
-                                                <Font name="Open Sans Bold" size="16.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" />
-                                             </padding>
-                                             <graphic>
-                                                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/pathfinding.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </MFXButton>
-                                          <MFXButton fx:id="mapEditorNav" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Map Editor" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
-                                             <font>
-                                                <Font name="Open Sans Bold" size="16.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" />
-                                             </padding>
-                                             <graphic>
-                                                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/mapEditor.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </MFXButton>
-                                          <MFXButton fx:id="pathfindingNav" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Pathfinding" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="140.0">
-                                             <font>
-                                                <Font name="Open Sans Bold" size="16.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" />
-                                             </padding>
-                                             <graphic>
-                                                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/wayfinding.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </MFXButton>
-                                       </children>
-                                    </AnchorPane>
-                                    <MFXButton fx:id="serviceNav" alignment="BOTTOM_LEFT" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Service Request" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="16.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets left="10.0" />
-                                       </padding>
-                                       <graphic>
-                                          <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/box.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </MFXButton>
-                                    <MFXButton fx:id="closeServiceNav" alignment="BOTTOM_LEFT" buttonType="RAISED" depthLevel="LEVEL3" disable="true" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" style="-fx-background-color: #F0BF4C; -fx-text-fill: #012D5A;" styleClass="sideNav" text="Service Request" textFill="WHITE" visible="false">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="16.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets left="10.0" />
-                                       </padding>
-                                       <graphic>
-                                          <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/boxH.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </MFXButton>
-                                    <MFXButton fx:id="exitButton" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Exit Application" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="16.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/powerOff.png" />
-                                             </image>
-                                             <effect>
-                                                <ColorAdjust brightness="1.0" />
-                                             </effect>
-                                          </ImageView>
-                                       </graphic>
-                                       <padding>
-                                          <Insets left="5.0" />
-                                       </padding>
-                                    </MFXButton>
-                                 </children>
-                              </AnchorPane>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
+                  <ImageView opacity="0.5" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                     <image>
+                        <Image url="@../images/hospitalImg.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D height="1500.0" minX="350.0" minY="120.0" width="2256.0" />
+                     </viewport>
+                  </ImageView>
                </children>
-            </AnchorPane>
+            </HBox>
+            <HBox alignment="CENTER" opacity="0.46" style="-fx-background-color: #000000;" StackPane.alignment="CENTER" />
          </children>
       </StackPane>
    </children>
