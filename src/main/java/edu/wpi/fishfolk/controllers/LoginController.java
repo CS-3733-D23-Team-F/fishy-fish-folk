@@ -1,7 +1,11 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.database.TableEntry;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.TableEntryType;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.UserAccount;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.database.rewrite.Fdb;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -13,6 +17,9 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginController extends AbsController {
   @FXML MFXButton signageNav;
@@ -34,8 +41,11 @@ public class LoginController extends AbsController {
   @FXML MFXButton loginBtn;
   @FXML MFXTextField loginIDField;
   @FXML MFXPasswordField loginPassField;
-
   @FXML Label errorBox;
+
+  edu.wpi.fishfolk.database.rewrite.Fdb dbConnection = new Fdb();
+
+
 
   @FXML
   private void initialize() {
@@ -102,8 +112,29 @@ public class LoginController extends AbsController {
         System.out.print("Passhash: ");
         System.out.println(passhash);
 
-        errorBox.setText("Incorrect password!");
-        errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
-        // TODO: split off function to validate account info
+        List<UserAccount> userAccounts = (List<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
+
+        UserAccount foundAccount = null;
+        for (int i = 0; i < userAccounts.size(); i++)
+        {
+            UserAccount a = userAccounts.get(i);
+            if (a.getUsername().equals(loginID)) {
+                foundAccount = a;
+                break;
+            }
+        }
+
+        if (foundAccount == null) {
+            errorBox.setText("Incorrect username or password!");
+            errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
+        } else {
+            if (foundAccount.getPassword().equals(String.valueOf(passhash))) {
+                // valid account
+                currUser = foundAccount;
+            } else {
+                errorBox.setText("Incorrect username or password!");
+                errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
+            }
+        }
       };
 }

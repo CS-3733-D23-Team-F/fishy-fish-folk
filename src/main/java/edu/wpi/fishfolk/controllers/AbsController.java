@@ -5,11 +5,14 @@ import edu.wpi.fishfolk.database.Fdb;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import edu.wpi.fishfolk.database.rewrite.TableEntry.UserAccount;
 import javafx.scene.image.Image;
 
 public abstract class AbsController {
 
   static Fdb dbConnection;
+  static UserAccount currUser;
 
   protected final ArrayList<String> allFloors = new ArrayList<>(List.of("L2", "L1", "1", "2", "3"));
 
@@ -26,6 +29,8 @@ public abstract class AbsController {
       dbConnection = new Fdb();
     }
 
+    currUser = null;
+
     mapImgURLs = new HashMap<>();
 
     mapImgURLs.put("L1", "map/00_thelowerlevel1.png");
@@ -40,7 +45,5 @@ public abstract class AbsController {
     for (String floor : mapImgURLs.keySet()) {
       images.put(floor, new Image(Fapp.class.getResourceAsStream(mapImgURLs.get(floor))));
     }
-
-    // dbConnection = new Fdb();
   }
 }
