@@ -51,7 +51,7 @@ public class PathfindingController extends AbsController {
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
 
-  Pathfinder pathfinder;
+  PathfindSingleton pathfinder;
 
   int start, end;
   Graph graph;
@@ -158,8 +158,9 @@ public class PathfindingController extends AbsController {
         event -> {
           end = dbConnection.getNodeIDFromLocation(endSelector.getValue(), today);
           System.out.println("end node: " + end);
-          pathfinder = new AStar(graph);
-          paths = pathfinder.pathfind(start, end, true);
+          pathfinder = PathfindSingleton.PATHFINDER;
+          pathfinder.setPathMethod(new AStar(graph));
+          paths = pathfinder.getPathMethod().pathfind(start, end, true);
 
           System.out.println(paths);
 

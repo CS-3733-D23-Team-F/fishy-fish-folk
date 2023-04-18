@@ -4,23 +4,13 @@ import edu.wpi.fishfolk.controllers.PathfindingController;
 import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.util.ArrayList;
 
-public abstract class Pathfinder {
+public abstract class Pathfinder implements IPathfinding {
 
   Graph graph;
 
   public Pathfinder(Graph g) {
     this.graph = g;
   }
-
-  /**
-   * Finds the path between to locations using the A* algorithm
-   *
-   * @param start The ID of the starting location
-   * @param end The ID of the ending location
-   * @param stairs Boolean that indicates if stairs are allowed, false for no stairs
-   * @return ArrayList of Paths, each item in the list is a path on a separate floor
-   */
-  public abstract ArrayList<Path> pathfind(int start, int end, boolean stairs);
 
   /**
    * Backtrack through the graph using the array of previous nodes.
