@@ -6,11 +6,13 @@ public class FoodItem {
   public String itemName;
   public float price;
   public ArrayList<String> allergens;
+  public int quantity;
 
   public FoodItem(String name, float price, ArrayList<String> aller) {
     itemName = name;
     this.price = price;
     allergens = aller;
+    this.quantity = 10;
   }
 
   public static FoodItem generic1 = new FoodItem("Generic Soup", 4.50F, new ArrayList<String>()),

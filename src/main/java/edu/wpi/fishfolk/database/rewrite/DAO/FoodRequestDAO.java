@@ -6,6 +6,7 @@ import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.FoodRequest;
+import edu.wpi.fishfolk.ui.FoodItem;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.io.*;
 import java.sql.*;
@@ -40,7 +41,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
                 "totalprice",
                 "deliveryroom",
                 "deliverytime",
-                "recipientname"));
+                "recipientname",
+                "fooditems"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
 
@@ -85,7 +87,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
                 + "totalprice REAL,"
                 + "deliveryroom VARCHAR(64),"
                 + "deliverytime TIMESTAMP,"
-                + "recipientname VARCHAR(64)"
+                + "recipientname VARCHAR(64),"
+                + "fooditems SERIAL"
                 + ");";
         // TODO: Sub-table for items
         statement.executeUpdate(query);
@@ -121,7 +124,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
                 results.getFloat(headers.get(4)),
                 results.getString(headers.get(5)),
                 results.getTimestamp(headers.get(6)).toLocalDateTime(),
-                results.getString(headers.get(7)));
+                results.getString(headers.get(7)),
+                getFoodItems(results.getInt(headers.get(8))));
         tableMap.put(foodRequest.getFoodRequestID(), foodRequest);
       }
 
@@ -381,6 +385,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
             // Execute the query
             preparedInsert.executeUpdate();
+            setFoodItems(
+                dataEdit.getNewEntry().getFoodRequestID(), dataEdit.getNewEntry().getFoodItems());
 
             break;
 
@@ -400,6 +406,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
             // Execute the query
             preparedUpdate.executeUpdate();
+            setFoodItems(
+                dataEdit.getNewEntry().getFoodRequestID(), dataEdit.getNewEntry().getFoodItems());
             break;
 
           case REMOVE:
@@ -408,6 +416,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
             preparedRemove.setInt(1, dataEdit.getNewEntry().getFoodRequestID());
 
             // Execute the query
+            deleteAllFoodItems(dataEdit.getNewEntry().getFoodRequestID());
             preparedRemove.executeUpdate();
             break;
         }
@@ -434,6 +443,167 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
     // On success
     return true;
+  }
+
+  private int getFoodItemsTableID(int foodRequestID) {
+    try {
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT fooditems FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE id = '"
+              + foodRequestID
+              + "';";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+      return results.getInt("fooditems");
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return -1;
+    }
+  }
+
+  private List<FoodItem> getFoodItems(int id) {
+
+    try {
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "fooditems"
+              + "');";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+
+      if (!results.getBoolean("exists")) {
+        query =
+            "CREATE TABLE "
+                + tableName
+                + "fooditems"
+                + " ("
+                + "itemkey INT,"
+                + "itemname VARCHAR(64),"
+                + "itemquantity INT"
+                + ");";
+        statement.executeUpdate(query);
+      }
+
+      ArrayList<FoodItem> allFoodItems = new ArrayList<>();
+
+      query =
+          "SELECT * FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "fooditems "
+              + "WHERE itemkey = '"
+              + id
+              + "';";
+
+      statement.execute(query);
+      results = statement.getResultSet();
+
+      while (results.next()) {
+        allFoodItems.add(
+            new FoodItem(results.getString("itemname"), results.getFloat("itemquantity"), null));
+      }
+
+      return allFoodItems;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
+  }
+
+  private void setFoodItems(int foodRequestID, List<FoodItem> items) {
+    try {
+
+      Statement exists = dbConnection.createStatement();
+      String query =
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "fooditems"
+              + "');";
+      exists.execute(query);
+      ResultSet results = exists.getResultSet();
+      results.next();
+
+      if (!results.getBoolean("exists")) {
+        query =
+            "CREATE TABLE "
+                + tableName
+                + "fooditems"
+                + " ("
+                + "itemkey INT,"
+                + "itemname VARCHAR(64),"
+                + "itemquantity INT"
+                + ");";
+        exists.executeUpdate(query);
+      }
+
+      String deleteAll =
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "fooditems"
+              + " WHERE itemkey = ?;";
+
+      String insert =
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + "fooditems"
+              + " VALUES (?, ?, ?);";
+
+      PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
+      PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
+
+      preparedDeleteAll.setInt(1, getFoodItemsTableID(foodRequestID));
+      preparedDeleteAll.executeUpdate();
+
+      for (FoodItem item : items) {
+        preparedInsert.setInt(1, getFoodItemsTableID(foodRequestID));
+        preparedInsert.setString(2, item.itemName);
+        preparedInsert.setInt(3, item.quantity);
+        preparedInsert.executeUpdate();
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  private void deleteAllFoodItems(int foodRequestID) {
+    try {
+
+      String deleteAll =
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "fooditems"
+              + " WHERE itemkey = ?;";
+
+      PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
+
+      preparedDeleteAll.setInt(1, getFoodItemsTableID(foodRequestID));
+      preparedDeleteAll.executeUpdate();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Override
@@ -484,7 +654,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
                 Float.parseFloat(parts[4]),
                 parts[5],
                 LocalDateTime.parse(parts[6]),
-                parts[7]);
+                parts[7],
+                getFoodItems(Integer.parseInt(parts[8])));
 
         tableMap.put(fr.getFoodRequestID(), fr);
 

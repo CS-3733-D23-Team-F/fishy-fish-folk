@@ -4,9 +4,7 @@ import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.ui.FoodItem;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,7 +49,7 @@ public class FoodRequest {
       String deliveryRoom,
       LocalDateTime deliveryTime,
       String recipientName,
-      List<FoodItem> foodItems ) {
+      List<FoodItem> foodItems) {
     this.foodRequestID = foodRequestID;
     this.assignee = assignee;
     this.formStatus = formStatus;
