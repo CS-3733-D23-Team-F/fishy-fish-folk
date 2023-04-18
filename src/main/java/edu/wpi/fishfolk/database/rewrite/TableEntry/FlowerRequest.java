@@ -19,9 +19,10 @@ public class FlowerRequest {
   // Specific
   @Getter @Setter private String recipientName;
   @Getter @Setter private String deliveryLocation;
-  @Getter @Setter private LocalDateTime deliveryTime;
   @Getter @Setter private double totalPrice;
   @Getter @Setter private List<FlowerItem> items;
+
+  @Getter @Setter private LocalDateTime deliveryTime;
 
   // For DAO
   @Getter @Setter private EntryStatus status;

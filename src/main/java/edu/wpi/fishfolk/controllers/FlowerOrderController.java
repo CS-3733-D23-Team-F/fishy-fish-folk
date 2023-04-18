@@ -1,7 +1,19 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.FlowerRequest;
+import edu.wpi.fishfolk.navigation.Navigation;
+import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.ui.FlowerItem;
+import edu.wpi.fishfolk.ui.FormStatus;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
@@ -12,6 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import org.controlsfx.control.PopOver;
 
 public class FlowerOrderController extends AbsController {
 
@@ -23,11 +36,19 @@ public class FlowerOrderController extends AbsController {
 
   @FXML MFXButton ClearButton;
 
+  @FXML MFXButton SubmitButton;
+
   @FXML MFXButton springTab;
 
   @FXML MFXButton exoticTab;
   @FXML MFXButton saleTab;
   @FXML MFXButton favoriteTab;
+
+  @FXML MFXFilterComboBox<String> locationPicker;
+
+  @FXML MFXTextField nameBox;
+
+  @FXML MFXTextField dateBox;
 
   int numflowers;
 
@@ -95,6 +116,8 @@ public class FlowerOrderController extends AbsController {
         event -> {
           clearAll();
         });
+
+    locationPicker.getItems().add("Room1");
   }
 
   private void addFlower(int numAdded, int numTotal) {
@@ -150,6 +173,11 @@ public class FlowerOrderController extends AbsController {
     g.getChildren().add(addCartButton);
 
     itemPane.getChildren().add(g);
+
+    SubmitButton.setOnMouseClicked(
+        event -> {
+          submit();
+        });
   }
 
   public void addToCart(int itemNum) {
@@ -291,5 +319,110 @@ public class FlowerOrderController extends AbsController {
       }
     }
     numCartItems = 0;
+  }
+
+  private void submit() {
+    double totalPrice = 0;
+    String name = nameBox.getText();
+    LocalTime time = parseTime();
+
+    String location = locationPicker.getValue();
+    List<FlowerItem> items = new ArrayList<FlowerItem>();
+    for (int item = 0; item < numflowers; item++) {
+      if (!(flowerAmounts[item] == 0)) {
+        items.add(new FlowerItem(namesFlowers[item], prices[item], flowerAmounts[item]));
+        totalPrice = totalPrice + (prices[item] * flowerAmounts[item]);
+      }
+    }
+    if (totalPrice == 0) {
+      itemsError();
+      return;
+    }
+    if (location == null) {
+      roomError();
+      return;
+    }
+    if (time == null) {
+      timeError();
+      return;
+    }
+    if (name.equals("")) {
+      recipientError();
+      return;
+    }
+
+    LocalDateTime deliveryTime = LocalDateTime.of(LocalDate.now(), time);
+    if (deliveryTime.isBefore(LocalDateTime.now())) {
+      deliveryTime.plusDays(1);
+    }
+
+    FlowerRequest flowerRequest =
+        new FlowerRequest(
+            "", FormStatus.submitted, "", name, location, deliveryTime, totalPrice, items);
+    dbConnection.insertEntry(flowerRequest);
+
+    Navigation.navigate(Screen.HOME);
+  }
+
+  private LocalTime parseTime() {
+    String timeSel = dateBox.getText();
+    int pos = timeSel.indexOf(":");
+    int h = -1, m = -1;
+    if (pos != -1) {
+      h = Integer.parseInt(timeSel.substring(0, pos));
+      if (timeSel.length() - pos >= 3) {
+        m = Integer.parseInt(timeSel.substring(pos + 1, pos + 3));
+      }
+    }
+    if (h == -1 || m == -1) {
+      return null;
+    }
+    if (timeSel.toLowerCase().indexOf("pm") >= 0) {
+      if (h != 12) {
+        h += 12;
+      }
+    } else if (timeSel.toLowerCase().indexOf("am") >= 0) {
+      if (h == 12) {
+        h = 0;
+      }
+    }
+    if (h > 23 || m >= 60) {
+      return null;
+    }
+    return LocalTime.of(h, m);
+  }
+
+  /** Informs the user they have not input a valid time */
+  private void timeError() {
+    submissionError("Please enter a valid time.");
+  }
+
+  /** informs the user they have not selected a room */
+  private void roomError() {
+    submissionError("Please select a room.");
+  }
+
+  /** informs the user they have not selected any items */
+  private void itemsError() {
+    submissionError("Please select at least one item.");
+  }
+
+  /** informs the user they have not specified the recipient of the order */
+  private void recipientError() {
+    submissionError("Please enter a recipient.");
+  }
+
+  /**
+   * pops up an error if the submission is invalid
+   *
+   * @param error the error message to display
+   */
+  private void submissionError(String error) {
+    PopOver popup = new PopOver();
+    Text popText = new Text(error);
+    popText.setFont(new Font("Open Sans Regular", 18));
+    popup.setContentNode(popText);
+    popup.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+    popup.show(SubmitButton);
   }
 }

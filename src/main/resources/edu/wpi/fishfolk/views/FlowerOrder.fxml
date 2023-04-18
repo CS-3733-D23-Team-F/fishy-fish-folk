@@ -79,7 +79,7 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </MFXTextField>
-                        <MFXTextField fx:id="dateBox" alignment="TOP_LEFT" minHeight="35.0" minWidth="390.0" promptText="Date and Time of Delivery">
+                        <MFXTextField fx:id="dateBox" alignment="TOP_LEFT" minHeight="35.0" minWidth="390.0" promptText="Time of Delivery">
                            <font>
                               <Font size="14.0" />
                            </font>

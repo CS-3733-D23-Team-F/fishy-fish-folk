@@ -375,7 +375,8 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
             preparedInsert.setString(4, dataEdit.getNewEntry().getNotes());
             preparedInsert.setString(5, dataEdit.getNewEntry().getRecipientName());
             preparedInsert.setString(6, dataEdit.getNewEntry().getDeliveryLocation());
-            preparedInsert.setTimestamp(7, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryTime()));
+            preparedInsert.setTimestamp(
+                7, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryTime()));
             preparedInsert.setDouble(8, dataEdit.getNewEntry().getTotalPrice());
 
             // Execute the query
@@ -395,7 +396,8 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
             preparedUpdate.setString(4, dataEdit.getNewEntry().getNotes());
             preparedUpdate.setString(5, dataEdit.getNewEntry().getRecipientName());
             preparedUpdate.setString(6, dataEdit.getNewEntry().getDeliveryLocation());
-            preparedUpdate.setTimestamp(7, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryTime()));
+            preparedUpdate.setTimestamp(
+                7, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryTime()));
             preparedUpdate.setDouble(8, dataEdit.getNewEntry().getTotalPrice());
             preparedUpdate.setTimestamp(
                 9, Timestamp.valueOf(dataEdit.getNewEntry().getFlowerRequestID()));
