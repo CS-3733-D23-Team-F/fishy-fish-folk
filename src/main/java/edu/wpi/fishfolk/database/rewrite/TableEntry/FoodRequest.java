@@ -1,8 +1,8 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
-import edu.wpi.fishfolk.ui.FoodItem;
 import edu.wpi.fishfolk.ui.FormStatus;
+import edu.wpi.fishfolk.ui.NewFoodItem;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class FoodRequest {
   @Getter @Setter private String deliveryRoom;
   @Getter @Setter private LocalDateTime deliveryTime;
   @Getter @Setter private String recipientName;
-  @Getter @Setter private List<FoodItem> foodItems;
+  @Getter @Setter private List<NewFoodItem> foodItems;
   // TODO: Subtable to include this entry
 
   // For DAO
@@ -49,7 +49,7 @@ public class FoodRequest {
       String deliveryRoom,
       LocalDateTime deliveryTime,
       String recipientName,
-      List<FoodItem> foodItems) {
+      List<NewFoodItem> foodItems) {
     this.foodRequestID = foodRequestID;
     this.assignee = assignee;
     this.formStatus = formStatus;
@@ -84,7 +84,7 @@ public class FoodRequest {
       String deliveryRoom,
       LocalDateTime deliveryTime,
       String recipientName,
-      List<FoodItem> foodItems) {
+      List<NewFoodItem> foodItems) {
     this.foodRequestID = LocalDateTime.now();
     this.assignee = assignee;
     this.formStatus = formStatus;
