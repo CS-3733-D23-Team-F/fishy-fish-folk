@@ -38,6 +38,62 @@ public class FoodMenuLoader {
             4.07f,
             FoodCategory.dessert));
 
+    returnable.add(
+            new NewFoodMenuItem(
+                    "Garden Salad",
+                    "Have you ever wanted to eat a garden? Well now you can! Introducing the worlds first edible garden, dirt included. Please don't plant rhubarb.",
+                    "images/gardensalad.png",
+                    2.49f,
+                    FoodCategory.app));
+
+    returnable.add(
+            new NewFoodMenuItem(
+                    "Fruit Salad",
+                    "Fruit selection rotates weekly! Please note you'll get a third as much fruit salad as any other kind of salad, for no reason at all!",
+                    "images/fruitsalad.png",
+                    2.99f,
+                    FoodCategory.app));
+
+    returnable.add(
+            new NewFoodMenuItem(
+                    "Caesar Salad",
+                    "Did you know you're supposed to pronounce it 'Kaiser'? Don't let Marcus Antonius hear you say it wrong.",
+                    "images/caesarsalad.png",
+                    2.49f,
+                    FoodCategory.app));
+
+    returnable.add(
+            new NewFoodMenuItem(
+                    "Strawberry Yogurt",
+                    "Our food provider cannot guarantee that this product is yogurt, they keep saying something about Icelandic skyr being 'close enough'. Maybe that's why its so expensive.",
+                    "images/strawberryyogurt.jpg",
+                    5.29f,
+                    FoodCategory.app));
+
+    returnable.add(
+            new NewFoodMenuItem(
+                    "Milk",
+                    "Lactose intolerance will not be tolerated on these premises.",
+                    "images/milk.png",
+                    1.99f,
+                    FoodCategory.drink));
+
+    returnable.add(
+            new NewFoodMenuItem(
+                    "Water",
+                    "Fun fact: You have most likely drunk water that a dinosaur urinated a few million years ago. Have a nice day!",
+                    "images/water.png",
+                    2.49f,
+                    FoodCategory.drink));
+
+    returnable.add(
+            new NewFoodMenuItem(
+                    "Cola",
+                    "The healthiest drink on our menu, Cola has many properties that make it ideal for recovering patients. Thanks for the corporate money!",
+                    "images/cola.png",
+                    1.99f,
+                    FoodCategory.drink));
+
     return returnable;
   }
 }
