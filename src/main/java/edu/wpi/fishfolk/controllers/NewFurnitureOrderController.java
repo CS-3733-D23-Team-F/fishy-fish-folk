@@ -73,7 +73,7 @@ public class NewFurnitureOrderController extends AbsController {
   }
 
   void loadRooms() {
-    roomSelector.getItems().addAll(dbConnection.getDestLongnames());
+    // roomSelector.getItems().addAll(dbConnection.getDestLongnames());
   }
 
   private void addToOrder(int supplyNum) {
