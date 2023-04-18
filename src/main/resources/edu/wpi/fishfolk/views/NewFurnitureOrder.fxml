@@ -11,32 +11,32 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewSupplyOrderController">
+<AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewFurnitureOrderController">
     <ScrollPane hbarPolicy="NEVER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="551.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a; -fx-border-width: 3;" vbarPolicy="NEVER">
         <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="551.0">
                 <children>
-                    <MFXRectangleToggleNode fx:id="rectangle1" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="REPLACEMENT                                                                                                                            " wrapText="true">
+                    <MFXRectangleToggleNode fx:id="serviceradioButton1" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="REPLACEMENT                                                                                                                            " wrapText="true">
                         <font>
                             <Font name="Open Sans Regular" size="30.0" />
                         </font>
                     </MFXRectangleToggleNode>
-                    <MFXRectangleToggleNode fx:id="rectangle2" layoutY="100.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="CLEANING                                                                                                                                  ">
+                    <MFXRectangleToggleNode fx:id="serviceradioButton2" layoutY="100.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="CLEANING                                                                                                                                  ">
                         <font>
                             <Font name="Open Sans Regular" size="30.0" />
                         </font>
                     </MFXRectangleToggleNode>
-                    <MFXRectangleToggleNode fx:id="rectangle3" layoutY="200.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="DELIVERY                                                                                                                            ">
+                    <MFXRectangleToggleNode fx:id="serviceradioButton3" layoutY="200.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="DELIVERY                                                                                                                            ">
                         <font>
                             <Font name="Open Sans Regular" size="30.0" />
                         </font>
                     </MFXRectangleToggleNode>
-                    <MFXRectangleToggleNode fx:id="rectangle4" layoutY="300.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="MAINTENANCE                                                                                                                          ">
+                    <MFXRectangleToggleNode fx:id="serviceradioButton4" layoutY="300.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="MAINTENANCE                                                                                                                          ">
                         <font>
                             <Font name="Open Sans Regular" size="30.0" />
                         </font>
                     </MFXRectangleToggleNode>
-                    <MFXRectangleToggleNode fx:id="rectangle5" layoutY="400.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="REMOVAL                                                                                                                         ">
+                    <MFXRectangleToggleNode fx:id="serviceradioButton5" layoutY="400.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="556.0" text="REMOVAL                                                                                                                         ">
                         <font>
                             <Font name="Open Sans Regular" size="30.0" />
                         </font>
@@ -46,7 +46,7 @@
     </ScrollPane>
     <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="501.0" layoutX="1256.0" layoutY="50.0" stroke="TRANSPARENT" strokeType="INSIDE" width="25.0" />
     <Rectangle accessibleText="Text" arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="518.0" layoutX="1237.0" layoutY="37.0" stroke="TRANSPARENT" strokeType="INSIDE" width="17.0" />
-    <MFXTextField fx:id="linkTextField" layoutX="50.0" layoutY="570.0" prefHeight="86.0" prefWidth="1186.0" promptText="ADDITIONAL NOTES" style="-fx-border-color: #012d5a; -fx-border-width: 3;">
+    <MFXTextField fx:id="notesTextField" layoutX="50.0" layoutY="570.0" prefHeight="86.0" prefWidth="1186.0" promptText="ADDITIONAL NOTES" style="-fx-border-color: #012d5a; -fx-border-width: 3;">
         <font>
             <Font name="Open Sans Regular" size="26.0" />
         </font>
@@ -74,7 +74,7 @@
             <Font name="Open Sans Bold" size="26.0" />
         </font>
     </Text>
-    <Rectangle fx:id="supplySubmitButton" arcHeight="20.0" arcWidth="20.0" fill="#f0bf4c" height="63.0" layoutX="1049.0" layoutY="784.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
+    <Rectangle fx:id="furnituresubmitButton" arcHeight="20.0" arcWidth="20.0" fill="#f0bf4c" height="63.0" layoutX="1049.0" layoutY="784.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
     <Text disable="true" fill="WHITE" layoutX="1093.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SUBMIT">
         <font>
             <Font name="Open Sans Bold" size="26.0" />
@@ -84,32 +84,32 @@
       <content>
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="620.0">
             <children>
-               <MFXRectangleToggleNode fx:id="rectangle11" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="HOSPITAL BED" wrapText="true">
+               <MFXRectangleToggleNode fx:id="radioButton1" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="HOSPITAL BED" wrapText="true">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle21" alignment="CENTER_LEFT" layoutY="100.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="DESK">
+               <MFXRectangleToggleNode fx:id="radioButton2" alignment="CENTER_LEFT" layoutY="100.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="DESK">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle31" alignment="CENTER_LEFT" layoutX="-8.0" layoutY="200.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="CHAIR">
+               <MFXRectangleToggleNode fx:id="radioButton3" alignment="CENTER_LEFT" layoutX="-8.0" layoutY="200.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="CHAIR">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle41" alignment="CENTER_LEFT" layoutX="-8.0" layoutY="300.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="FILE CABINET">
+               <MFXRectangleToggleNode fx:id="radioButton4" alignment="CENTER_LEFT" layoutX="-8.0" layoutY="300.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="FILE CABINET">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle51" alignment="CENTER_LEFT" layoutX="-8.0" layoutY="400.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="CLOCK">
+               <MFXRectangleToggleNode fx:id="radioButton5" alignment="CENTER_LEFT" layoutX="-8.0" layoutY="400.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="CLOCK">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle511" alignment="CENTER_LEFT" layoutX="2.0" layoutY="500.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="TRASHCAN">
+               <MFXRectangleToggleNode fx:id="radioButton6" alignment="CENTER_LEFT" layoutX="2.0" layoutY="500.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="620.0" text="TRASHCAN">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
@@ -118,12 +118,17 @@
          </AnchorPane>
       </content>
    </ScrollPane>
-   <MFXDatePicker layoutX="616.0" layoutY="675.0" prefHeight="86.0" prefWidth="620.0" promptText="DELIVERY DATE" style="-fx-border-width: 3; -fx-border-radius: 5; -fx-border-color: #012d5a;">
+   <MFXDatePicker fx:id="deliveryDate" layoutX="616.0" layoutY="675.0" prefHeight="86.0" prefWidth="620.0" promptText="DELIVERY DATE" style="-fx-border-width: 3; -fx-border-radius: 5; -fx-border-color: #012d5a;">
       <font>
          <Font name="Open Sans Light" size="26.0" />
       </font>
    </MFXDatePicker>
-   <Text layoutX="50.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of Service: ">
+   <Text layoutX="65.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of Service: ">
+      <font>
+         <Font name="Open Sans SemiBold" size="26.0" />
+      </font>
+   </Text>
+   <Text layoutX="643.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Furniture:">
       <font>
          <Font name="Open Sans SemiBold" size="26.0" />
       </font>

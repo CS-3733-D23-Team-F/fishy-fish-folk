@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class FurnitureOrder extends TableEntry {
   public FurnitureItem furnitureItem;
-  public String serviceType;
+  public ServiceType serviceType;
   public String roomNum;
   public String deliveryDate;
   public String notes;
@@ -28,7 +28,7 @@ public class FurnitureOrder extends TableEntry {
 
   // setServiceType sets the service type for the given FurnitureOrder
   // the generic service types are defined in loadServiceTypeChoice() in FurnitureOrderController
-  public void setServiceType(String type) {
+  public void setServiceType(ServiceType type) {
     this.serviceType = type;
   }
 
@@ -59,7 +59,12 @@ public class FurnitureOrder extends TableEntry {
   // construct() converts the values from a given furnitureorder table row into a FurnitureOrder
   public boolean construct(ArrayList<String> data) {
     formID = data.get(0);
-    serviceType = data.get(1);
+    if(data.get(1).equals("replacement")) serviceType = ServiceType.replacement;
+    if(data.get(1).equals("cleaning")) serviceType = ServiceType.cleaning;
+    if(data.get(1).equals("delivery")) serviceType = ServiceType.delivery;
+    if(data.get(1).equals("maintenance")) serviceType = ServiceType.maintenance;
+    if(data.get(1).equals("removal")) serviceType = ServiceType.removal;
+
     if (data.get(2).equals(FurnitureItem.bed.furnitureName)) furnitureItem = FurnitureItem.bed;
     if (data.get(2).equals(FurnitureItem.chair.furnitureName)) furnitureItem = FurnitureItem.chair;
     if (data.get(2).equals(FurnitureItem.desk.furnitureName)) furnitureItem = FurnitureItem.desk;
@@ -85,7 +90,7 @@ public class FurnitureOrder extends TableEntry {
   public ArrayList<String> deconstruct() {
     ArrayList<String> deconstruction = new ArrayList<String>();
     deconstruction.add(formID);
-    deconstruction.add(serviceType);
+    deconstruction.add("" + serviceType);
     deconstruction.add(furnitureItem.furnitureName);
     deconstruction.add(roomNum);
     deconstruction.add(deliveryDate);
