@@ -3,8 +3,8 @@ package edu.wpi.fishfolk.ui;
 import lombok.Getter;
 
 public class NewFoodItem {
-  @Getter String name;
-  @Getter int quantity;
+  @Getter private String name;
+  @Getter private int quantity;
 
   /**
    * Creates a food item
@@ -15,5 +15,13 @@ public class NewFoodItem {
   public NewFoodItem(String n, int q) {
     name = n;
     quantity = q;
+  }
+
+  /**
+   * Returns the item in question as a string, with quantity listed before name
+   * @return a string of the item
+   */
+  public String toString() {
+    return quantity + " " + name;
   }
 }

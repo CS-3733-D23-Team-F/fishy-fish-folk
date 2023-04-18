@@ -171,6 +171,22 @@ public class FoodMenuLoader {
             5.49f,
             FoodCategory.dessert));
 
+    returnable.add(
+        new NewFoodMenuItem(
+            "Dumplings",
+            "Pork and Cabbage dumplings, served boiled. We're aware that's the worst way, we just don't care.",
+            "images/dump.jpg",
+            8f,
+            FoodCategory.app));
+
+    returnable.add(
+        new NewFoodMenuItem(
+            "Ravioli",
+            "Delicious meat, wrapped in dough, covered in sauce, Please tell us if you know of more layers, we need to go deeper.",
+            "images/rav.jpg",
+            8.99f,
+            FoodCategory.main));
+
     return returnable;
   }
 }

@@ -6,8 +6,8 @@ import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.FoodRequest;
-import edu.wpi.fishfolk.ui.FoodItem;
 import edu.wpi.fishfolk.ui.FormStatus;
+import edu.wpi.fishfolk.ui.NewFoodItem;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -471,7 +471,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
     }
   }
 
-  private List<FoodItem> getFoodItems(int id) {
+  private List<NewFoodItem> getFoodItems(int id) {
 
     try {
       Statement statement = dbConnection.createStatement();
@@ -499,7 +499,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
         statement.executeUpdate(query);
       }
 
-      ArrayList<FoodItem> allFoodItems = new ArrayList<>();
+      ArrayList<NewFoodItem> allFoodItems = new ArrayList<>();
 
       query =
           "SELECT * FROM "
@@ -516,7 +516,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
       while (results.next()) {
         allFoodItems.add(
-            new FoodItem(results.getString("itemname"), results.getFloat("itemquantity"), null));
+            new NewFoodItem(results.getString("itemname"), results.getInt("itemquantity")));
       }
 
       return allFoodItems;
@@ -527,7 +527,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
     }
   }
 
-  private void setFoodItems(LocalDateTime foodRequestID, List<FoodItem> items) {
+  private void setFoodItems(LocalDateTime foodRequestID, List<NewFoodItem> items) {
     try {
 
       Statement exists = dbConnection.createStatement();
@@ -577,10 +577,10 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
       preparedDeleteAll.setInt(1, getFoodItemsTableID(foodRequestID));
       preparedDeleteAll.executeUpdate();
 
-      for (FoodItem item : items) {
+      for (NewFoodItem item : items) {
         preparedInsert.setInt(1, getFoodItemsTableID(foodRequestID));
-        preparedInsert.setString(2, item.itemName);
-        preparedInsert.setInt(3, item.quantity);
+        preparedInsert.setString(2, item.getName());
+        preparedInsert.setInt(3, item.getQuantity());
         preparedInsert.executeUpdate();
       }
 
