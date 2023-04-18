@@ -17,9 +17,17 @@ public class FlowerOrderController extends AbsController {
 
   @FXML AnchorPane itemPane;
 
+  @FXML AnchorPane orderPane;
+
   @FXML ScrollPane itemWindow;
 
   @FXML MFXButton ClearButton;
+
+  @FXML MFXButton springTab;
+
+  @FXML MFXButton exoticTab;
+  @FXML MFXButton saleTab;
+  @FXML MFXButton favoriteTab;
 
   int numflowers;
 
@@ -29,23 +37,67 @@ public class FlowerOrderController extends AbsController {
 
   int[] flowerAmounts;
 
+  Text[] orderValues;
+
+  MFXButton[] clearOrderButtons;
+
+  MFXButton[] tabButtons;
+
+  int numCartItems;
+
+  int numSpring;
+  int numExotic;
+  int numsale;
+  int numFavorite;
+
   @FXML
   private void initialize() {
 
-    numflowers = 18;
-    itemPane.setMinHeight(100 + 300 * numflowers);
+    numSpring = 10;
+    numExotic = 4;
+    numsale = 6;
+    numFavorite = 4;
+
+    numCartItems = 0;
+    numflowers = numSpring + numExotic + numFavorite + numFavorite;
+
     namesFlowers = new String[numflowers];
     prices = new double[numflowers];
     flowerAmounts = new int[numflowers];
+    orderValues = new Text[numflowers];
+    clearOrderButtons = new MFXButton[numflowers];
 
-    for (int i = 0; i < numflowers; i++) {
-      prices[i] = 100.00;
-      namesFlowers[i] = "Flower #" + (i + 1);
-      addFlower(i);
-    }
+    tabButtons = new MFXButton[] {springTab, exoticTab, saleTab, favoriteTab};
+
+    swapTab(1);
+
+    springTab.setOnMouseClicked(
+        event -> {
+          swapTab(1);
+        });
+
+    exoticTab.setOnMouseClicked(
+        event -> {
+          swapTab(2);
+        });
+
+    saleTab.setOnMouseClicked(
+        event -> {
+          swapTab(3);
+        });
+
+    favoriteTab.setOnMouseClicked(
+        event -> {
+          swapTab(4);
+        });
+
+    ClearButton.setOnMouseClicked(
+        event -> {
+          clearAll();
+        });
   }
 
-  private void addFlower(int numAdded) {
+  private void addFlower(int numAdded, int numTotal) {
     numAdded = numAdded + 1;
     int yAdjust = 0;
     int xAdjust = 0;
@@ -63,7 +115,7 @@ public class FlowerOrderController extends AbsController {
     g.getChildren().add(i);
 
     Text flowerName = new Text();
-    flowerName.setText(namesFlowers[numAdded - 1]);
+    flowerName.setText(namesFlowers[numTotal]);
     flowerName.setY(150 + (300 * numAdded) + yAdjust);
     flowerName.setX(165 + xAdjust);
     flowerName.setFont(new Font("Courier", 30));
@@ -72,7 +124,7 @@ public class FlowerOrderController extends AbsController {
     g.getChildren().add(flowerName);
 
     Text flowerPrice = new Text();
-    flowerPrice.setText("$" + prices[numAdded - 1]);
+    flowerPrice.setText("$" + prices[numTotal]);
     flowerPrice.setY(190 + (300 * numAdded) + yAdjust);
     flowerPrice.setX(175 + xAdjust);
     flowerPrice.setFont(new Font("Courier", 30));
@@ -89,7 +141,7 @@ public class FlowerOrderController extends AbsController {
     addCartButton.setTextFill(Color.WHITE);
     addCartButton.setText("Add to Cart");
 
-    int flowerID = numAdded - 1;
+    int flowerID = numTotal;
     addCartButton.setOnMouseClicked(
         event -> {
           addToCart(flowerID);
@@ -101,6 +153,143 @@ public class FlowerOrderController extends AbsController {
   }
 
   public void addToCart(int itemNum) {
+
     flowerAmounts[itemNum] = flowerAmounts[itemNum] + 1;
+
+    if (flowerAmounts[itemNum] == 1) {
+      numCartItems++;
+      orderPane.setMinHeight(40 + (50 * (numCartItems - 1)));
+      ;
+      Group g = new Group();
+
+      Text cartItem = new Text();
+      cartItem.setText(
+          namesFlowers[itemNum]
+              + "   "
+              + flowerAmounts[itemNum]
+              + "x   $"
+              + (flowerAmounts[itemNum] * prices[itemNum]));
+      cartItem.setY(30 + (50 * (numCartItems - 1)));
+      cartItem.setX(10);
+      cartItem.setFont(new Font("Courier", 30));
+      cartItem.setTextAlignment(TextAlignment.CENTER);
+      cartItem.setVisible(true);
+      g.getChildren().add(cartItem);
+      orderValues[itemNum] = cartItem;
+
+      MFXButton removeButton = new MFXButton();
+      removeButton.setLayoutX(435);
+      removeButton.setLayoutY(5 + (50 * (numCartItems - 1)));
+      removeButton.setMinHeight(30);
+      removeButton.setMinWidth(100);
+      removeButton.setStyle("-fx-background-color: red;");
+      removeButton.setTextFill(Color.WHITE);
+      removeButton.setText("Remove");
+      g.getChildren().add(removeButton);
+      clearOrderButtons[itemNum] = removeButton;
+
+      orderPane.getChildren().add(g);
+
+      int itemID = itemNum;
+      removeButton.setOnMouseClicked(
+          event -> {
+            removeItem(itemID);
+          });
+
+    } else {
+      orderValues[itemNum].setText(
+          namesFlowers[itemNum]
+              + "   "
+              + flowerAmounts[itemNum]
+              + "x   $"
+              + (flowerAmounts[itemNum] * prices[itemNum]));
+    }
+  }
+
+  private void removeItem(int itemID) {
+    int passed = 0;
+    flowerAmounts[itemID] = 0;
+    numCartItems = numCartItems - 1;
+
+    for (int items = 0; items < numflowers; items++) {
+      if (!(flowerAmounts[items] == 0) && !(items == itemID)) {
+        if (orderValues[items].getY() > orderValues[itemID].getY()) {
+          clearOrderButtons[items].setLayoutY(orderValues[items].getY() - 75);
+          orderValues[items].setY(orderValues[items].getY() - 50);
+        }
+      }
+    }
+
+    clearOrderButtons[itemID].setVisible(false);
+    clearOrderButtons[itemID].setDisable(true);
+    orderValues[itemID].setVisible(false);
+  }
+
+  private void swapTab(int tabNum) {
+
+    itemWindow.setVvalue(0);
+
+    for (int tab = 0; tab < 4; tab++) {
+      tabButtons[tab].setStyle("-fx-background-color: #012d5a;");
+      tabButtons[tab].setTextFill(Color.WHITE);
+    }
+
+    itemPane.getChildren().remove(0, itemPane.getChildren().size());
+
+    if (tabNum == 1) {
+      tabButtons[0].setStyle("-fx-background-color:  #f0Bf4c;");
+      tabButtons[0].setTextFill(Color.BLACK);
+      itemPane.setMinHeight(200 + (525 * (1 + numSpring / 2)));
+      for (int i = 0; i < numSpring; i++) {
+        prices[i] = 100.00;
+        namesFlowers[i] = "Flower #" + (i + 1);
+        addFlower(i, i);
+      }
+    }
+
+    if (tabNum == 2) {
+      tabButtons[1].setStyle("-fx-background-color:  #f0Bf4c;");
+      tabButtons[1].setTextFill(Color.BLACK);
+      itemPane.setMinHeight(200 + (525 * (1 + numExotic / 2)));
+      for (int i = numSpring; i < numSpring + numExotic; i++) {
+        prices[i] = 150.00;
+        namesFlowers[i] = "Exotic Flower #" + (i + 1 - numSpring);
+        addFlower(i - numSpring, i);
+      }
+    }
+
+    if (tabNum == 3) {
+      tabButtons[2].setStyle("-fx-background-color:  #f0Bf4c;");
+      tabButtons[2].setTextFill(Color.BLACK);
+      itemPane.setMinHeight(200 + (525 * (1 + numsale / 2)));
+      for (int i = numSpring + numExotic; i < numSpring + numExotic + numsale; i++) {
+        prices[i] = 50.00;
+        namesFlowers[i] = "Cheap Flower #" + (i + 1 - (numSpring + numExotic));
+        addFlower(i - (numSpring + numExotic), i);
+      }
+    }
+
+    if (tabNum == 4) {
+      tabButtons[3].setStyle("-fx-background-color:  #f0Bf4c;");
+      tabButtons[3].setTextFill(Color.BLACK);
+      itemPane.setMinHeight(200 + (525 * (1 + numFavorite / 2)));
+      for (int i = numSpring + numExotic + numsale; i < numflowers; i++) {
+        prices[i] = 100.00;
+        namesFlowers[i] = "Favorite Flower #" + (i + 1 - (numSpring + numExotic + numsale));
+        addFlower(i - (numSpring + numExotic + numsale), i);
+      }
+    }
+  }
+
+  private void clearAll() {
+    for (int items = 0; items < numflowers; items++) {
+      if (!(flowerAmounts[items] == 0)) {
+        clearOrderButtons[items].setVisible(false);
+        clearOrderButtons[items].setDisable(true);
+        orderValues[items].setVisible(false);
+        flowerAmounts[items] = 0;
+      }
+    }
+    numCartItems = 0;
   }
 }
