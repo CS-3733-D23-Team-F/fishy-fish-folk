@@ -5,8 +5,11 @@ import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
+import edu.wpi.fishfolk.database.rewrite.ServiceType;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.FurnitureRequest;
 import edu.wpi.fishfolk.ui.FormStatus;
+import edu.wpi.fishfolk.ui.FurnitureItem;
+
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -80,8 +83,8 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
                 + "assignee VARCHAR(64),"
                 + "status VARCHAR(12),"
                 + "notes VARCHAR(256),"
-                + "item VARCHAR(64)," // TODO: Will hopefully be made more specific
-                + "servicetype VARCHAR(64)," // TODO: Will hopefully be made more specific
+                + "item VARCHAR(64),"
+                + "servicetype VARCHAR(64),"
                 + "roomNumber VARCHAR(64),"
                 + "deliverydate TIMESTAMP"
                 + ");";
@@ -115,8 +118,8 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
                 results.getString(headers.get(1)),
                 FormStatus.valueOf(results.getString(headers.get(2))),
                 results.getString(headers.get(3)),
-                results.getString(headers.get(4)),
-                results.getString(headers.get(5)),
+                new FurnitureItem(results.getString(headers.get(4))),
+                    ServiceType.valueOf(results.getString(headers.get(5))),
                 results.getString(headers.get(6)),
                 results.getTimestamp(headers.get(7)).toLocalDateTime());
         tableMap.put(furnitureRequest.getFurnitureRequestID(), furnitureRequest);
@@ -368,8 +371,8 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
             preparedInsert.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedInsert.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedInsert.setString(4, dataEdit.getNewEntry().getNotes());
-            preparedInsert.setString(5, dataEdit.getNewEntry().getItem()); // TODO: Specific type
-            preparedInsert.setString(6, dataEdit.getNewEntry().getServiceType());
+            preparedInsert.setString(5, dataEdit.getNewEntry().getItem().furnitureName);
+            preparedInsert.setString(6, dataEdit.getNewEntry().getServiceType().toString());
             preparedInsert.setString(7, dataEdit.getNewEntry().getRoomNumber());
             preparedInsert.setTimestamp(
                 8, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryDate()));
@@ -387,8 +390,8 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
             preparedUpdate.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedUpdate.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedUpdate.setString(4, dataEdit.getNewEntry().getNotes());
-            preparedUpdate.setString(5, dataEdit.getNewEntry().getItem()); // TODO: Specific type
-            preparedUpdate.setString(6, dataEdit.getNewEntry().getServiceType());
+            preparedUpdate.setString(5, dataEdit.getNewEntry().getItem().furnitureName);
+            preparedUpdate.setString(6, dataEdit.getNewEntry().getServiceType().toString());
             preparedUpdate.setString(7, dataEdit.getNewEntry().getRoomNumber());
             preparedUpdate.setTimestamp(
                 8, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryDate()));
@@ -478,8 +481,8 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
                 parts[1],
                 FormStatus.valueOf(parts[2]),
                 parts[3],
-                parts[4],
-                parts[5],
+                new FurnitureItem(parts[4]),
+                ServiceType.valueOf(parts[5]),
                 parts[6],
                 LocalDateTime.parse(parts[7]));
 
@@ -489,8 +492,8 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
         insertPS.setString(2, fr.getAssignee());
         insertPS.setString(3, fr.getFormStatus().toString());
         insertPS.setString(4, fr.getNotes());
-        insertPS.setString(5, fr.getItem()); // TODO: Specific type
-        insertPS.setString(6, fr.getServiceType());
+        insertPS.setString(5, fr.getItem().furnitureName);
+        insertPS.setString(6, fr.getServiceType().toString());
         insertPS.setString(7, fr.getRoomNumber());
         insertPS.setTimestamp(8, Timestamp.valueOf(fr.getDeliveryDate()));
 
@@ -530,9 +533,9 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
                 + ","
                 + fr.getNotes()
                 + ","
-                + fr.getItem()
+                + fr.getItem().furnitureName
                 + ","
-                + fr.getServiceType()
+                + fr.getServiceType().toString()
                 + ","
                 + fr.getRoomNumber()
                 + ","
