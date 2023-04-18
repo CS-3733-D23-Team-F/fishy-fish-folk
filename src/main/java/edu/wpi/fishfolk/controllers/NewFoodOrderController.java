@@ -360,6 +360,7 @@ public class NewFoodOrderController extends AbsController {
         tabButtons[i].setDisable(false);
       }
     }
+    menuItemsPane.setVvalue(0);
   }
 
   /** prepares the visual cart with the items that have been added */

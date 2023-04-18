@@ -165,14 +165,6 @@ public class FoodMenuLoader {
 
     returnable.add(
         new NewFoodMenuItem(
-            "Brownie",
-            "Some people claim that the best flavor of ice cream is cookie dough. These people have not heard of brownie cookie dough.",
-            "images/brownie.png",
-            5.49f,
-            FoodCategory.dessert));
-
-    returnable.add(
-        new NewFoodMenuItem(
             "Dumplings",
             "Pork and Cabbage dumplings, served boiled. We're aware that's the worst way, we just don't care.",
             "images/dump.jpg",
@@ -186,6 +178,46 @@ public class FoodMenuLoader {
             "images/rav.jpg",
             8.99f,
             FoodCategory.main));
+
+    returnable.add(
+        new NewFoodMenuItem(
+            "Spaghetti",
+            "You toucha my Spaghet! You'll pay for that. You'll pay 11.99, to be exact. At least you'll also get meatballs",
+            "images/spaghet.jpg",
+            11.99f,
+            FoodCategory.main));
+
+    returnable.add(
+        new NewFoodMenuItem(
+            "Meatball",
+            "A spicy meatball. Devilishly spicy. So much so we priced it after him.",
+            "images/meatball.jpg",
+            6.66f,
+            FoodCategory.side));
+
+    returnable.add(
+        new NewFoodMenuItem(
+            "Chocolate Shake",
+            "It's so nice, we added it twice! Also, we couldn't decide which category to put it in so we just did both.",
+            "images/milkshake.png",
+            7.50f,
+            FoodCategory.drink));
+
+    returnable.add(
+        new NewFoodMenuItem(
+            "Chocolate Shake",
+            "It's so nice, we added it twice! Also, we couldn't decide which category to put it in so we just did both.",
+            "images/milkshake.png",
+            7.50f,
+            FoodCategory.dessert));
+
+    returnable.add(
+        new NewFoodMenuItem(
+            "Brownie",
+            "Some people claim that the best flavor of ice cream is cookie dough. These people have not heard of brownie cookie dough.",
+            "images/brownie.png",
+            5.49f,
+            FoodCategory.dessert));
 
     return returnable;
   }

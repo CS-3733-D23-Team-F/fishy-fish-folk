@@ -19,6 +19,7 @@ public class NewFoodItem {
 
   /**
    * Returns the item in question as a string, with quantity listed before name
+   *
    * @return a string of the item
    */
   public String toString() {
