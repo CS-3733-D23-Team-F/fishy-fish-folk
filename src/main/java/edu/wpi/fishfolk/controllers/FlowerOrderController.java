@@ -239,7 +239,7 @@ public class FlowerOrderController extends AbsController {
     if (tabNum == 1) {
       tabButtons[0].setStyle("-fx-background-color:  #f0Bf4c;");
       tabButtons[0].setTextFill(Color.BLACK);
-      itemPane.setMinHeight(200 + (525 * (1 + numSpring / 2)));
+      itemPane.setMinHeight(50 + (425 * ((1 + numSpring) / 2)));
       for (int i = 0; i < numSpring; i++) {
         prices[i] = 100.00;
         namesFlowers[i] = "Flower #" + (i + 1);
@@ -250,7 +250,7 @@ public class FlowerOrderController extends AbsController {
     if (tabNum == 2) {
       tabButtons[1].setStyle("-fx-background-color:  #f0Bf4c;");
       tabButtons[1].setTextFill(Color.BLACK);
-      itemPane.setMinHeight(200 + (525 * (1 + numExotic / 2)));
+      itemPane.setMinHeight(50 + (425 * ((1 + numExotic) / 2)));
       for (int i = numSpring; i < numSpring + numExotic; i++) {
         prices[i] = 150.00;
         namesFlowers[i] = "Exotic Flower #" + (i + 1 - numSpring);
@@ -261,7 +261,7 @@ public class FlowerOrderController extends AbsController {
     if (tabNum == 3) {
       tabButtons[2].setStyle("-fx-background-color:  #f0Bf4c;");
       tabButtons[2].setTextFill(Color.BLACK);
-      itemPane.setMinHeight(200 + (525 * (1 + numsale / 2)));
+      itemPane.setMinHeight(50 + (425 * ((1 + numsale) / 2)));
       for (int i = numSpring + numExotic; i < numSpring + numExotic + numsale; i++) {
         prices[i] = 50.00;
         namesFlowers[i] = "Cheap Flower #" + (i + 1 - (numSpring + numExotic));
@@ -272,7 +272,7 @@ public class FlowerOrderController extends AbsController {
     if (tabNum == 4) {
       tabButtons[3].setStyle("-fx-background-color:  #f0Bf4c;");
       tabButtons[3].setTextFill(Color.BLACK);
-      itemPane.setMinHeight(200 + (525 * (1 + numFavorite / 2)));
+      itemPane.setMinHeight(50 + (425 * ((1 + numFavorite) / 2)));
       for (int i = numSpring + numExotic + numsale; i < numflowers; i++) {
         prices[i] = 100.00;
         namesFlowers[i] = "Favorite Flower #" + (i + 1 - (numSpring + numExotic + numsale));
