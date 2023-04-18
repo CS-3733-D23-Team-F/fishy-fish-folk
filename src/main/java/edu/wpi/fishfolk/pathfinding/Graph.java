@@ -87,7 +87,7 @@ public class Graph {
             });
 
     // TODO test different values for this cost
-    edgeCount[0] += connectElevators(250);
+    edgeCount[0] += connectElevators(50);
 
     System.out.println(
         "[Graph.populate]: Populated graph with "
@@ -142,7 +142,7 @@ public class Graph {
       // Add weights to stairs
       // TODO: make this dependent on a boolean parameter passed by the pathfinding controller
       if (nodes[idx1].containsType(NodeType.STAI) && nodes[idx2].containsType(NodeType.STAI)) {
-        adjust = 250;
+        adjust = 500;
       }
 
       // System.out.println(edge.id);
