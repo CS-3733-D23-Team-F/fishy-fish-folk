@@ -17,7 +17,7 @@ public class TextInstructionController {
   public void setData(TextDirection direction, int num) {
 
     directionText.setText(num + ". " + direction.getText());
-    distanceText.setText("unused text");
+    distanceText.setText(direction.getDistance());
 
     // TODO add images for elevator & stairs up & down
     switch (direction.getDirection()) {

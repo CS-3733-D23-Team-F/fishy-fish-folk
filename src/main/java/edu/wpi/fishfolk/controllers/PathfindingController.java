@@ -160,38 +160,11 @@ public class PathfindingController extends AbsController {
           System.out.println("end node: " + end);
           pathfinder = new AStar(graph);
           paths = pathfinder.pathfind(start, end, true);
+
           System.out.println(paths);
 
           textDirections = new LinkedList<>();
-
-          int lastFloorIdx = paths.size() - 1;
-
-          for (int i = 0; i <= lastFloorIdx; i++) {
-            List<TextDirection> floorDirections = new LinkedList<>(paths.get(i).getDirections());
-
-            if (i == 0) {
-              floorDirections.add(
-                  0, new TextDirection(Direction.START, "Start at " + startSelector.getValue()));
-              if (lastFloorIdx > 0) {
-                floorDirections.add(
-                    textDirectionBetweenFloors(
-                        paths.get(0).getToNextPath(), paths.get(1).getFloor()));
-              }
-            }
-
-            if (i == lastFloorIdx) {
-              if (lastFloorIdx > 0) {
-                floorDirections.add(
-                    textDirectionBetweenFloors(
-                        paths.get(lastFloorIdx - 1).getToNextPath(),
-                        paths.get(lastFloorIdx).getFloor()));
-              }
-              floorDirections.add(
-                  new TextDirection(Direction.START, "End at " + endSelector.getValue()));
-            }
-
-            textDirections.add(floorDirections);
-          }
+          populateTextDirections(paths);
 
           // index 0 in floors in this path - not allFloors
           currentFloor = 0;
@@ -203,45 +176,6 @@ public class PathfindingController extends AbsController {
 
           displayFloor();
           endSelector.setDisable(true);
-
-          // create text directions
-          // textDirections = new ArrayList<>();
-          // textDirections.addAll(parseDirections(paths.get(0).getDirections()));
-          int col = 0;
-          int row = 1;
-
-          try {
-            for (int i = 0; i < textDirections.size(); i++) {
-              FXMLLoader fxmlLoader = new FXMLLoader();
-              fxmlLoader.setLocation(Fapp.class.getResource("views/TextInstruction.fxml"));
-
-              AnchorPane anchorPane = fxmlLoader.load();
-
-              TextInstructionController instructionController = fxmlLoader.getController();
-
-              // show text directions for this floor
-              instructionController.setData(textDirections.get(currentFloor).get(i), i + 1);
-
-              if (col == 3) {
-                col = 0;
-                row++;
-              }
-
-              grid.add(anchorPane, col++, row);
-
-              grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-              grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-              grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-              grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-              grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-              grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-              GridPane.setMargin(anchorPane, new Insets(10));
-            }
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
         });
 
     clearBtn.setOnMouseClicked(
@@ -420,6 +354,72 @@ public class PathfindingController extends AbsController {
         .get(currentFloor + 1)
         .setVisible(true); // offset by 1 because first child is gesture pane
     pathAnimations.get(currentFloor).play();
+
+    // draw text instructions
+    int col = 0;
+    int row = 1;
+
+    try {
+      for (int i = 0; i < textDirections.size(); i++) {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(Fapp.class.getResource("views/TextInstruction.fxml"));
+
+        AnchorPane anchorPane = fxmlLoader.load();
+
+        TextInstructionController instructionController = fxmlLoader.getController();
+
+        // show text directions for this floor
+        instructionController.setData(textDirections.get(currentFloor).get(i), i + 1);
+
+        if (col == 3) {
+          col = 0;
+          row++;
+        }
+
+        col++;
+        grid.add(anchorPane, col, row);
+
+        grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+        grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+        grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+        grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+        GridPane.setMargin(anchorPane, new Insets(10));
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void populateTextDirections(ArrayList<Path> paths) {
+    int lastFloorIdx = paths.size() - 1;
+
+    for (int i = 0; i <= lastFloorIdx; i++) {
+      List<TextDirection> floorDirections = new LinkedList<>(paths.get(i).getDirections());
+
+      if (i == 0) {
+        floorDirections.add(
+            0, new TextDirection(Direction.START, "Start at " + startSelector.getValue()));
+        if (lastFloorIdx > 0) {
+          floorDirections.add(
+              textDirectionBetweenFloors(paths.get(0).getToNextPath(), paths.get(1).getFloor()));
+        }
+      }
+
+      if (i == lastFloorIdx) {
+        if (lastFloorIdx > 0) {
+          floorDirections.add(
+              textDirectionBetweenFloors(
+                  paths.get(lastFloorIdx - 1).getToNextPath(), paths.get(lastFloorIdx).getFloor()));
+        }
+        floorDirections.add(new TextDirection(Direction.START, "End at " + endSelector.getValue()));
+      }
+
+      textDirections.add(floorDirections);
+    }
   }
 
   private TextDirection textDirectionBetweenFloors(Direction direction, String second) {

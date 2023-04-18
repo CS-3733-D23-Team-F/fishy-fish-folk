@@ -6,6 +6,7 @@ public class TextDirection {
 
   @Getter private Direction direction;
   @Getter private String text;
+  @Getter private String distance = "";
 
   public TextDirection(Direction direction, String text) {
     this.direction = direction;
@@ -17,15 +18,16 @@ public class TextDirection {
 
     switch (segment.getDirection()) {
       case STRAIGHT:
-        text = "Head straight for " + segment.formatDistance();
+        text = "Head straight";
+        this.distance = segment.formatDistance();
         break;
 
       case LEFT:
-        text = "Turn left.";
+        text = "Turn left";
         break;
 
       case RIGHT:
-        text = "Turn right.";
+        text = "Turn right";
         break;
     }
   }

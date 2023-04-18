@@ -54,15 +54,15 @@ public abstract class Pathfinder {
           // determine direction from previous path to new one
 
           // invert param order since we are backtracking through the path
-          boolean up =
-              PathfindingController.direction(currentFloor, paths.get(numpaths - 1).getFloor());
+          boolean up = PathfindingController.direction(currentFloor, paths.get(1).getFloor());
           boolean elev = currentNode.containsType(NodeType.ELEV);
 
           Direction direction =
               up
                   ? (elev ? Direction.UP_ELEV : Direction.UP_STAI)
                   : (elev ? Direction.DOWN_ELEV : Direction.DOWN_STAI);
-          paths.get(numpaths - 2).setToNextPath(direction);
+
+          paths.get(0).setToNextPath(direction);
         }
       }
 
