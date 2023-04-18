@@ -3,6 +3,7 @@ package edu.wpi.fishfolk.database.rewrite.DAO.Observables;
 import static edu.wpi.fishfolk.ui.FormStatus.submitted;
 
 import edu.wpi.fishfolk.database.rewrite.TableEntry.FoodRequest;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,8 +17,10 @@ public class FoodOrderObservable {
   @Getter @Setter public String foodrecipientname;
   @Getter @Setter public String foodnotes;
   @Getter @Setter public String fooditems;
+  @Getter @Setter public LocalDateTime id;
 
   public FoodOrderObservable(FoodRequest order) {
+    this.id = order.getFoodRequestID();
     this.foodid = order.getFoodRequestID().toString();
     this.foodassignee = order.getAssignee();
     this.foodtotalprice = String.format("%.2f", order.getTotalPrice());

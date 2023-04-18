@@ -1,8 +1,11 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.database.Table;
+import edu.wpi.fishfolk.database.rewrite.Fdb;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.SupplyRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.SupplyItem;
 import edu.wpi.fishfolk.ui.SupplyOrder;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
@@ -15,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.shape.Rectangle;
 
 public class NewSupplyOrderController extends AbsController {
+  Fdb fibdab;
 
   private static String[] headersArray = {
     "id", "items", "link", "roomNum", "notes", "status", "assignee"
@@ -39,17 +43,10 @@ public class NewSupplyOrderController extends AbsController {
       rectangle7;
   @FXML MFXTextField linkTextField, notesTextField;
 
-  /*
   public NewSupplyOrderController() {
     super();
-    supplyRequestTable = new Table(dbConnection.conn, "supplyrequest");
-    supplyRequestTable.init(false);
-    supplyRequestTable.addHeaders(
-        SupplyRequestController.headers,
-        new ArrayList<>(
-            List.of("String", "String", "String", "String", "String", "String", "String")));
+    fibdab = new Fdb();
   }
-   */
 
   @FXML
   public void initialize() {
@@ -142,7 +139,15 @@ public class NewSupplyOrderController extends AbsController {
       System.out.println(currentSupplyOrder.toString());
       System.out.println(currentSupplyOrder.listItemsToString());
       currentSupplyOrder.setSubmitted();
-      // supplyRequestTable.insert(currentSupplyOrder);
+      SupplyRequest request =
+          new SupplyRequest(
+              "",
+              FormStatus.submitted,
+              notesTextField.getText(),
+              linkTextField.getText(),
+              roomSelector.getValue(),
+              currentSupplyOrder.supplies);
+      fibdab.insertEntry(request);
       Navigation.navigate(Screen.HOME);
     }
   }

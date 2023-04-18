@@ -1,5 +1,7 @@
 package edu.wpi.fishfolk.database.rewrite.DAO.Observables;
 
+import edu.wpi.fishfolk.database.rewrite.TableEntry.FurnitureRequest;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,15 +14,30 @@ public class FurnitureOrderObservable {
   @Getter @Setter public String furniturenotes;
   @Getter @Setter public String furnitureservicetype;
   @Getter @Setter public String furniturefurniture;
+  @Getter @Setter public LocalDateTime id;
 
-  public FurnitureOrderObservable() {
-    this.furnitureid = furnitureid;
-    this.furnitureassignee = furnitureassignee;
-    this.furniturestatus = furniturestatus;
-    this.furnituredeliveryroom = furnituredeliveryroom;
-    this.furnituredeliverydate = furnituredeliverydate;
-    this.furniturenotes = furniturenotes;
-    this.furnitureservicetype = furnitureservicetype;
-    this.furniturefurniture = furniturefurniture;
+  public FurnitureOrderObservable(FurnitureRequest order) {
+    this.id = order.getFurnitureRequestID();
+    this.furnitureid = order.getFurnitureRequestID().toString();
+    this.furnitureassignee = order.getAssignee();
+    switch (order.getFormStatus()) {
+      case submitted:
+        this.furniturestatus = "submitted";
+        break;
+      case notSubmitted:
+        this.furniturestatus = "Not Submitted";
+        break;
+      case cancelled:
+        this.furniturestatus = "Cancelled";
+        break;
+      case filled:
+        this.furniturestatus = "Filled";
+        break;
+    }
+    this.furnituredeliveryroom = order.getRoomNumber();
+    this.furnituredeliverydate = "" + order.getDeliveryDate();
+    this.furnitureservicetype = order.getServiceType();
+    this.furniturenotes = order.getNotes();
+    this.furniturefurniture = order.getItem();
   }
 }
