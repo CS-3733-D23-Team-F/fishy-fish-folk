@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FoodMenuLoader {
+  /**
+   * Prepares a list of food menu items to display
+   * @return The list of all menu items
+   */
   public static List<NewFoodMenuItem> loadItems() {
     List<NewFoodMenuItem> returnable = new ArrayList<NewFoodMenuItem>();
     returnable.add(

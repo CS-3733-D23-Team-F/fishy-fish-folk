@@ -12,7 +12,7 @@ import javafx.util.Duration;
 public class RootController {
   @FXML MFXButton signageNav;
   @FXML MFXButton mealNav;
-  // @FXML MFXButton supplyNav;
+  @FXML MFXButton supplyNav;
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
   @FXML AnchorPane serviceBar;
@@ -32,6 +32,7 @@ public class RootController {
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
+    supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
