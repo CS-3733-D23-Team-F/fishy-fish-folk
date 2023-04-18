@@ -41,6 +41,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
                 "notes",
                 "recipientname",
                 "deliveryLocation",
+                "deliverytime",
                 "totalPrice",
                 "items"));
     this.tableMap = new HashMap<>();
@@ -84,6 +85,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
                 + "notes VARCHAR(256),"
                 + "recipientname VARCHAR(64),"
                 + "deliverylocation VARCHAR(64),"
+                + "deliverytime TIMESTAMP,"
                 + "totalprice REAL,"
                 + "items SERIAL" // TODO: SUBTABLE in the future
                 + ");";
@@ -119,8 +121,9 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
                 results.getString(headers.get(3)),
                 results.getString(headers.get(4)),
                 results.getString(headers.get(5)),
-                results.getDouble(headers.get(6)),
-                getSubtableItems(results.getInt(headers.get(7))));
+                results.getTimestamp(headers.get(6)).toLocalDateTime(),
+                results.getDouble(headers.get(7)),
+                getSubtableItems(results.getInt(headers.get(8))));
         tableMap.put(flowerRequest.getFlowerRequestID(), flowerRequest);
       }
 
@@ -302,7 +305,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
       String update =
           "UPDATE "
@@ -323,6 +326,8 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
               + headers.get(5)
               + " = ?, "
               + headers.get(6)
+              + " = ?, "
+              + headers.get(7)
               + " = ? WHERE "
               + headers.get(0)
               + " = ?;";
@@ -369,7 +374,8 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
             preparedInsert.setString(4, dataEdit.getNewEntry().getNotes());
             preparedInsert.setString(5, dataEdit.getNewEntry().getRecipientName());
             preparedInsert.setString(6, dataEdit.getNewEntry().getDeliveryLocation());
-            preparedInsert.setDouble(7, dataEdit.getNewEntry().getTotalPrice());
+            preparedInsert.setTimestamp(7, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryTime()));
+            preparedInsert.setDouble(8, dataEdit.getNewEntry().getTotalPrice());
 
             // Execute the query
             preparedInsert.executeUpdate();
@@ -388,9 +394,10 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
             preparedUpdate.setString(4, dataEdit.getNewEntry().getNotes());
             preparedUpdate.setString(5, dataEdit.getNewEntry().getRecipientName());
             preparedUpdate.setString(6, dataEdit.getNewEntry().getDeliveryLocation());
-            preparedUpdate.setDouble(7, dataEdit.getNewEntry().getTotalPrice());
+            preparedUpdate.setTimestamp(7, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryTime()));
+            preparedUpdate.setDouble(8, dataEdit.getNewEntry().getTotalPrice());
             preparedUpdate.setTimestamp(
-                8, Timestamp.valueOf(dataEdit.getNewEntry().getFlowerRequestID()));
+                9, Timestamp.valueOf(dataEdit.getNewEntry().getFlowerRequestID()));
 
             // Execute the query
             preparedUpdate.executeUpdate();
@@ -465,7 +472,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
@@ -481,8 +488,9 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
                 parts[3],
                 parts[4],
                 parts[5],
-                Double.parseDouble(parts[6]),
-                getSubtableItems(Integer.parseInt(parts[7])));
+                LocalDateTime.parse(parts[6]),
+                Double.parseDouble(parts[7]),
+                getSubtableItems(Integer.parseInt(parts[8])));
 
         tableMap.put(fr.getFlowerRequestID(), fr);
 
@@ -492,7 +500,8 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
         insertPS.setString(4, fr.getNotes());
         insertPS.setString(5, fr.getRecipientName());
         insertPS.setString(6, fr.getDeliveryLocation());
-        insertPS.setDouble(7, fr.getTotalPrice());
+        insertPS.setTimestamp(7, Timestamp.valueOf(fr.getDeliveryTime()));
+        insertPS.setDouble(8, fr.getTotalPrice());
 
         insertPS.executeUpdate();
       }
