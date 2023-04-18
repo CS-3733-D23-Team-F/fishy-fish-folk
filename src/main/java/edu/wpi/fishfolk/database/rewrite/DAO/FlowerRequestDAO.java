@@ -48,6 +48,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
     this.dataEditQueue = new DataEditQueue<>();
 
     init(false);
+    initSubtable(false);
     populateLocalTable();
   }
 
