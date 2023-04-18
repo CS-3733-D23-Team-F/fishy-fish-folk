@@ -1,14 +1,14 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.database.TableEntry;
+import edu.wpi.fishfolk.database.rewrite.Fdb;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.UserAccount;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import edu.wpi.fishfolk.database.rewrite.Fdb;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.util.List;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,9 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoginController extends AbsController {
   @FXML MFXButton signageNav;
@@ -44,8 +41,6 @@ public class LoginController extends AbsController {
   @FXML Label errorBox;
 
   edu.wpi.fishfolk.database.rewrite.Fdb dbConnection = new Fdb();
-
-
 
   @FXML
   private void initialize() {
@@ -112,29 +107,33 @@ public class LoginController extends AbsController {
         System.out.print("Passhash: ");
         System.out.println(passhash);
 
-        List<UserAccount> userAccounts = (List<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
-
+        List<UserAccount> userAccounts =
+            (List<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
+        System.out.println(userAccounts);
         UserAccount foundAccount = null;
-        for (int i = 0; i < userAccounts.size(); i++)
-        {
-            UserAccount a = userAccounts.get(i);
-            if (a.getUsername().equals(loginID)) {
-                foundAccount = a;
-                break;
-            }
+        for (int i = 0; i < userAccounts.size(); i++) {
+          UserAccount a = userAccounts.get(i);
+          if (a.getUsername().equals(loginID)) {
+            foundAccount = a;
+            System.out.println("Found matching account!");
+            System.out.print("Actual password hash: ");
+            System.out.println(foundAccount.getPassword());
+            break;
+          }
         }
 
         if (foundAccount == null) {
+          System.out.println("No matching account was found.");
+          errorBox.setText("Incorrect username or password!");
+          errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
+        } else {
+          if (foundAccount.getPassword().equals(String.valueOf(passhash))) {
+            // valid account
+            currUser = foundAccount;
+          } else {
             errorBox.setText("Incorrect username or password!");
             errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
-        } else {
-            if (foundAccount.getPassword().equals(String.valueOf(passhash))) {
-                // valid account
-                currUser = foundAccount;
-            } else {
-                errorBox.setText("Incorrect username or password!");
-                errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
-            }
+          }
         }
       };
 }
