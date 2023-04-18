@@ -1,44 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.ViewMasterOrderController">
-   <TabPane layoutX="50.0" layoutY="50.0" prefHeight="600.0" prefWidth="1186.0" tabClosingPolicy="UNAVAILABLE">
-      <tabs>
-         <Tab text="Moves">
-            <content>
-               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+<AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MoveController">
+   <HBox prefHeight="900.0" prefWidth="1720.0" AnchorPane.topAnchor="60.0">
+      <children>
+         <VBox minWidth="80.0" prefHeight="200.0" prefWidth="100.0" />
+         <VBox>
+            <children>
+               <TableView fx:id="movetable" editable="true" prefHeight="820.0" tableMenuButtonVisible="true">
+                  <columns>
+                     <TableColumn fx:id="nodeid" prefWidth="75.0" text="Node ID" />
+                     <TableColumn fx:id="movelongname" prefWidth="200.0" text="Long Name" />
+                     <TableColumn fx:id="date" prefWidth="100.0" text="Date" />
+                  </columns>
+               </TableView>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add a new move:">
+                  <VBox.margin>
+                     <Insets bottom="5.0" left="5.0" top="10.0" />
+                  </VBox.margin>
+                  <font>
+                     <Font size="16.0" />
+                  </font>
+               </Text>
+               <HBox VBox.vgrow="NEVER">
                   <children>
-                     <TableView fx:id="foodTable" prefHeight="570.0" prefWidth="1186.0">
-                        <columns>
-                           <TableColumn fx:id="foodid" prefWidth="75.0" text="Node ID" />
-                           <TableColumn fx:id="foodassignee" prefWidth="75.0" text="Long Name" />
-                           <TableColumn fx:id="foodtotalprice" prefWidth="75.0" text="Date" />
-                        </columns>
-                     </TableView>
+                     <MFXTextField fx:id="nodetext" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="75.0" promptText="Node ID" />
+                     <MFXTextField fx:id="movelongnametext" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" promptText="Long name" />
+                     <MFXTextField fx:id="datetext" layoutX="85.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" promptText="Date" />
                   </children>
-               </AnchorPane>
-            </content>
-         </Tab>
-         <Tab text="Locations">
-            <content>
-               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <VBox.margin>
+                     <Insets />
+                  </VBox.margin>
+               </HBox>
+               <HBox>
                   <children>
-                     <TableView fx:id="supplyTable" prefHeight="570.0" prefWidth="1186.0">
-                        <columns>
-                           <TableColumn fx:id="supplyid" prefWidth="75.0" text="Long Name" />
-                           <TableColumn fx:id="supplyassignee" prefWidth="75.0" text="Short Name" />
-                           <TableColumn fx:id="supplystatus" prefWidth="75.0" text="Type" />
-                        </columns>
-                     </TableView>
-                  </children></AnchorPane>
-            </content>
-         </Tab>
-      </tabs>
-   </TabPane>
+                     <VBox prefWidth="300.0" />
+                     <MFXButton fx:id="submitmove" prefWidth="75.0" text="Submit">
+                        <HBox.margin>
+                           <Insets top="5.0" />
+                        </HBox.margin></MFXButton>
+                  </children>
+               </HBox>
+            </children>
+         </VBox>
+         <VBox minWidth="120.0" prefHeight="200.0" prefWidth="100.0" />
+         <TableView fx:id="locationtable" editable="true" tableMenuButtonVisible="true">
+            <columns>
+               <TableColumn fx:id="locationlongname" prefWidth="200.0" text="Long Name" />
+               <TableColumn fx:id="shortname" prefWidth="125.0" text="Short Name" />
+               <TableColumn fx:id="type" prefWidth="75.0" text="Type" />
+            </columns>
+         </TableView>
+         <VBox minWidth="80.0" prefHeight="200.0" prefWidth="100.0" />
+      </children>
+   </HBox>
 
 </AnchorPane>
