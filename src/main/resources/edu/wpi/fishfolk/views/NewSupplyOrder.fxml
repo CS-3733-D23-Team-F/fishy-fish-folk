@@ -50,37 +50,37 @@
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <Text fill="#888888" layoutX="400.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One package of ten #2 pencils">
+               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One package of ten #2 pencils">
                   <font>
                      <Font name="Open Sans Regular" size="26.0" />
                   </font>
                </Text>
-               <Text fill="#888888" layoutX="400.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One package of five black ballpoint pens">
+               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One package of five black ballpoint pens">
                   <font>
                      <Font name="Open Sans Regular" size="26.0" />
                   </font>
                </Text>
-               <Text fill="#888888" layoutX="400.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pink rectangle">
+               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pink rectangle">
                   <font>
                      <Font name="Open Sans Regular" size="26.0" />
                   </font>
                </Text>
-               <Text fill="#888888" layoutX="400.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One black dry-erase marker">
+               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One black dry-erase marker">
                   <font>
                      <Font name="Open Sans Regular" size="26.0" />
                   </font>
                </Text>
-               <Text fill="#888888" layoutX="400.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One black leatherbound notebad">
+               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One black leatherbound notebad">
                   <font>
                      <Font name="Open Sans Regular" size="26.0" />
                   </font>
                </Text>
-               <Text fill="#888888" layoutX="400.0" layoutY="560.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One board to clip things to">
+               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="560.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One board to clip things to">
                   <font>
                      <Font name="Open Sans Regular" size="26.0" />
                   </font>
                </Text>
-               <Text fill="#888888" layoutX="400.0" layoutY="660.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To keep the doctors away">
+               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="660.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To keep the doctors away">
                   <font>
                      <Font name="Open Sans Regular" size="26.0" />
                   </font>
