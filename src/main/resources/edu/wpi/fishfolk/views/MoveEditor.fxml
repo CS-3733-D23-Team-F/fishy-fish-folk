@@ -17,7 +17,7 @@
          <VBox minWidth="80.0" prefHeight="967.0" prefWidth="173.0" />
          <VBox prefHeight="900.0" prefWidth="501.0">
             <children>
-               <TableView fx:id="movetable" editable="true" prefHeight="820.0" tableMenuButtonVisible="true">
+               <TableView fx:id="movetable" editable="true" prefHeight="500.0" tableMenuButtonVisible="true">
                   <columns>
                      <TableColumn fx:id="nodeid" prefWidth="75.0" text="Node ID" />
                      <TableColumn fx:id="movelongname" prefWidth="200.0" text="Long Name" />
