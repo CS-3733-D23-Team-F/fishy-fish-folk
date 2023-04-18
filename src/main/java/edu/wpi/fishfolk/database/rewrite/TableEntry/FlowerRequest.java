@@ -1,10 +1,10 @@
 package edu.wpi.fishfolk.database.rewrite.TableEntry;
 
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
-import edu.wpi.fishfolk.ui.CreditCardInfo;
+import edu.wpi.fishfolk.ui.FlowerItem;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,10 +17,10 @@ public class FlowerRequest {
   @Getter @Setter private String notes;
 
   // Specific
-  @Getter @Setter private ArrayList<String> items; // TODO: Change to more specialized type
-  @Getter @Setter private CreditCardInfo payer;
+  @Getter @Setter private String recipientName;
   @Getter @Setter private String deliveryLocation;
   @Getter @Setter private double totalPrice;
+  @Getter @Setter private List<FlowerItem> items; // TODO: Change to more specialized type
 
   // For DAO
   @Getter @Setter private EntryStatus status;
@@ -32,28 +32,28 @@ public class FlowerRequest {
    * @param assignee Assignee of request
    * @param formStatus Status of request
    * @param notes Additional notes of request
-   * @param items Flower items of request
-   * @param payer Payment information of request
+   * @param recipientName Payment information of request
    * @param deliveryLocation Delivery location of request
    * @param totalPrice Price of request
+   * @param items Flower items of request
    */
   public FlowerRequest(
       LocalDateTime flowerRequestID,
       String assignee,
       FormStatus formStatus,
       String notes,
-      ArrayList<String> items,
-      CreditCardInfo payer,
+      String recipientName,
       String deliveryLocation,
-      double totalPrice) {
+      double totalPrice,
+      List<FlowerItem> items) {
     this.flowerRequestID = flowerRequestID;
     this.assignee = assignee;
     this.formStatus = formStatus;
     this.notes = notes;
-    this.items = items;
-    this.payer = payer;
+    this.recipientName = recipientName;
     this.deliveryLocation = deliveryLocation;
     this.totalPrice = totalPrice;
+    this.items = items;
     this.status = EntryStatus.OLD;
   }
 }

@@ -3,29 +3,28 @@ package edu.wpi.fishfolk.database.rewrite.TableEntry;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.ServiceType;
 import edu.wpi.fishfolk.ui.FormStatus;
-import java.time.LocalDateTime;
-
 import edu.wpi.fishfolk.ui.FurnitureItem;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
 public class FurnitureRequest {
 
   /*
-  Things a Furniture Order has:
-ID (long i'm assuming)
-Assignee (String)
-Status (enum)
-Delivery room (currently String, can change)
-Delivery Date (LocalDate -> String, can change)
-Notes (String)
-ServiceType (enum)
-Furniture (FurnitureItem)
+    Things a Furniture Order has:
+  ID (long i'm assuming)
+  Assignee (String)
+  Status (enum)
+  Delivery room (currently String, can change)
+  Delivery Date (LocalDate -> String, can change)
+  Notes (String)
+  ServiceType (enum)
+  Furniture (FurnitureItem)
 
-SupplyItem has:
-Name
+  SupplyItem has:
+  Name
 
-   */
+     */
 
   // Common
   @Getter @Setter private LocalDateTime furnitureRequestID;

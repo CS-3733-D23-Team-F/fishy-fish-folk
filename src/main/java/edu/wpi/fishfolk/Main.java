@@ -2,10 +2,11 @@ package edu.wpi.fishfolk;
 
 import edu.wpi.fishfolk.database.rewrite.Fdb;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.*;
+import edu.wpi.fishfolk.ui.FlowerItem;
 import edu.wpi.fishfolk.ui.FormStatus;
-import edu.wpi.fishfolk.ui.SupplyItem;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -135,71 +136,71 @@ public class Main {
     //    }
     //
     // Test SupplyRequestDAO
-//    if (false) {
-//
-//      ArrayList<SupplyItem> s1 = new ArrayList<>();
-//      s1.add(new SupplyItem("bingus 1", 1));
-//
-//      ArrayList<SupplyItem> s2 = new ArrayList<>();
-//      s2.add(new SupplyItem("bingus 2", 2));
-//
-//      ArrayList<SupplyItem> s3 = new ArrayList<>();
-//      s3.add(new SupplyItem("bingus 3", 3));
-//
-//      fdb.insertEntry(
-//          new SupplyRequest(
-//              LocalDateTime.of(2020, 2, 2, 2, 2),
-//              "Me",
-//              FormStatus.submitted,
-//              "I need sleep",
-//              "www.pizza.com",
-//              "20000",
-//              s1));
-//      fdb.insertEntry(
-//          new SupplyRequest(
-//              LocalDateTime.of(2021, 2, 2, 2, 2),
-//              "Me",
-//              FormStatus.submitted,
-//              "I need more sleep",
-//              "wpi.edu",
-//              "20000",
-//              s2));
-//      fdb.insertEntry(
-//          new SupplyRequest(
-//              LocalDateTime.of(2022, 2, 2, 2, 2),
-//              "Me",
-//              FormStatus.submitted,
-//              "Yup",
-//              "the internet",
-//              "20000",
-//              s3));
-//
-//      fdb.updateEntry(
-//          new SupplyRequest(
-//              LocalDateTime.of(2021, 2, 2, 2, 2),
-//              "Me",
-//              FormStatus.submitted,
-//              "I need EVEN more sleep",
-//              "wpi.edu",
-//              "200009",
-//              s2));
-//
-//      fdb.undoChange(TableEntryType.SUPPLY_REQUEST);
-//      fdb.undoChange(TableEntryType.SUPPLY_REQUEST);
-//
-//      fdb.updateEntry(
-//          new SupplyRequest(
-//              LocalDateTime.of(2020, 2, 2, 2, 2),
-//              "Me",
-//              FormStatus.submitted,
-//              "I need food i guess (and sleep)",
-//              "www.pizza.com",
-//              "20000",
-//              s1));
-//
-//      fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.SUPPLY_REQUEST);
+    //    if (false) {
+    //
+    //      ArrayList<SupplyItem> s1 = new ArrayList<>();
+    //      s1.add(new SupplyItem("bingus 1", 1));
+    //
+    //      ArrayList<SupplyItem> s2 = new ArrayList<>();
+    //      s2.add(new SupplyItem("bingus 2", 2));
+    //
+    //      ArrayList<SupplyItem> s3 = new ArrayList<>();
+    //      s3.add(new SupplyItem("bingus 3", 3));
+    //
+    //      fdb.insertEntry(
+    //          new SupplyRequest(
+    //              LocalDateTime.of(2020, 2, 2, 2, 2),
+    //              "Me",
+    //              FormStatus.submitted,
+    //              "I need sleep",
+    //              "www.pizza.com",
+    //              "20000",
+    //              s1));
+    //      fdb.insertEntry(
+    //          new SupplyRequest(
+    //              LocalDateTime.of(2021, 2, 2, 2, 2),
+    //              "Me",
+    //              FormStatus.submitted,
+    //              "I need more sleep",
+    //              "wpi.edu",
+    //              "20000",
+    //              s2));
+    //      fdb.insertEntry(
+    //          new SupplyRequest(
+    //              LocalDateTime.of(2022, 2, 2, 2, 2),
+    //              "Me",
+    //              FormStatus.submitted,
+    //              "Yup",
+    //              "the internet",
+    //              "20000",
+    //              s3));
+    //
+    //      fdb.updateEntry(
+    //          new SupplyRequest(
+    //              LocalDateTime.of(2021, 2, 2, 2, 2),
+    //              "Me",
+    //              FormStatus.submitted,
+    //              "I need EVEN more sleep",
+    //              "wpi.edu",
+    //              "200009",
+    //              s2));
+    //
+    //      fdb.undoChange(TableEntryType.SUPPLY_REQUEST);
+    //      fdb.undoChange(TableEntryType.SUPPLY_REQUEST);
+    //
+    //      fdb.updateEntry(
+    //          new SupplyRequest(
+    //              LocalDateTime.of(2020, 2, 2, 2, 2),
+    //              "Me",
+    //              FormStatus.submitted,
+    //              "I need food i guess (and sleep)",
+    //              "www.pizza.com",
+    //              "20000",
+    //              s1));
+    //
+    //      fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.SUPPLY_REQUEST);
 
-      // fdb.exportCSV("D:\\", TableEntryType.SUPPLY_REQUEST);
+    // fdb.exportCSV("D:\\", TableEntryType.SUPPLY_REQUEST);
     // }
     //
     //        // Test FurnitureRequestDAO
@@ -266,68 +267,73 @@ public class Main {
     //          fdb.exportCSV("D:\\", TableEntryType.FURNITURE_REQUEST);
     //        }
     //
-    //        // Test FlowerRequestDAO
-    //        if (false) {
-    //          fdb.insertEntry(
-    //              new FlowerRequest(
-    //                  LocalDateTime.of(2020, 2, 2, 2, 2),
-    //                  "Trajan",
-    //                  FormStatus.submitted,
-    //                  "No changes made",
-    //                  null,
-    //                  null,
-    //                  "ur mom",
-    //                  2.00));
-    //          fdb.insertEntry(
-    //              new FlowerRequest(
-    //                  LocalDateTime.of(2021, 2, 2, 2, 2),
-    //                  "Jon",
-    //                  FormStatus.submitted,
-    //                  "No changes made",
-    //                  null,
-    //                  null,
-    //                  "ur mom",
-    //                  2.00));
-    //          fdb.insertEntry(
-    //              new FlowerRequest(
-    //                  LocalDateTime.of(2022, 2, 2, 2, 2),
-    //                  "Charlie",
-    //                  FormStatus.submitted,
-    //                  "No changes made",
-    //                  null,
-    //                  null,
-    //                  "ur mom",
-    //                  2.00));
-    //
-    //          fdb.updateEntry(
-    //              new FlowerRequest(
-    //                  LocalDateTime.of(2021, 2, 2, 2, 2),
-    //                  "Jon",
-    //                  FormStatus.submitted,
-    //                  "Changed one word lol",
-    //                  null,
-    //                  null,
-    //                  "ur mom",
-    //                  2.00));
-    //
-    //          fdb.undoChange(TableEntryType.FLOWER_REQUEST);
-    //          fdb.undoChange(TableEntryType.FLOWER_REQUEST);
-    //
-    //          fdb.updateEntry(
-    //              new FlowerRequest(
-    //                  LocalDateTime.of(2020, 2, 2, 2, 2),
-    //                  "Trajan",
-    //                  FormStatus.submitted,
-    //                  "Uhhhhhhhh notes",
-    //                  null,
-    //                  null,
-    //                  "ur mom",
-    //                  2.00));
-    //
-    //          fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.FLOWER_REQUEST);
-    //
-    //          fdb.exportCSV("D:\\", TableEntryType.FLOWER_REQUEST);
-    //        }
+    // Test FlowerRequestDAO
+//    if (false) {
+//
+//      ArrayList<FlowerItem> items1 = new ArrayList<>(List.of(new FlowerItem("red", 1, 5)));
+//      ArrayList<FlowerItem> items2 = new ArrayList<>(List.of(new FlowerItem("red", 2, 5)));
+//      ArrayList<FlowerItem> items3 = new ArrayList<>(List.of(new FlowerItem("red", 3, 5)));
+//
+//      fdb.insertEntry(
+//          new FlowerRequest(
+//              LocalDateTime.of(2020, 2, 2, 2, 2),
+//              "Trajan",
+//              FormStatus.submitted,
+//              "No changes made",
+//              "null",
+//              "null",
+//              2.00,
+//              items1));
+//      fdb.insertEntry(
+//          new FlowerRequest(
+//              LocalDateTime.of(2021, 2, 2, 2, 2),
+//              "Jon",
+//              FormStatus.submitted,
+//              "No changes made",
+//              "null",
+//              "null",
+//              2.00,
+//              items2));
+//      fdb.insertEntry(
+//          new FlowerRequest(
+//              LocalDateTime.of(2022, 2, 2, 2, 2),
+//              "Charlie",
+//              FormStatus.submitted,
+//              "No changes made",
+//              "null",
+//              "null",
+//              2.00,
+//              items3));
+//
+//      fdb.updateEntry(
+//          new FlowerRequest(
+//              LocalDateTime.of(2021, 2, 2, 2, 2),
+//              "Jon",
+//              FormStatus.submitted,
+//              "Changed one word lol",
+//              "null",
+//              "null",
+//              2.00,
+//              items2));
+//
+//      fdb.undoChange(TableEntryType.FLOWER_REQUEST);
+//      fdb.undoChange(TableEntryType.FLOWER_REQUEST);
+//
+//      fdb.updateEntry(
+//          new FlowerRequest(
+//              LocalDateTime.of(2020, 2, 2, 2, 2),
+//              "Trajan",
+//              FormStatus.submitted,
+//              "Uhhhhhhhh notes",
+//              "null",
+//              "null",
+//              2.00,
+//              items1));
+//
+//      fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.FLOWER_REQUEST);
+//
+//      // fdb.exportCSV("D:\\", TableEntryType.FLOWER_REQUEST);
+//    }
     //
     //        // Test ConferenceRequestDAO
     //        if (false) {

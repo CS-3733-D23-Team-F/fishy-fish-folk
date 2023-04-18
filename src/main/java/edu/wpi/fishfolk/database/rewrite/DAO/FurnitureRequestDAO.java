@@ -9,7 +9,6 @@ import edu.wpi.fishfolk.database.rewrite.ServiceType;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.FurnitureRequest;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.FurnitureItem;
-
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -119,7 +118,7 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
                 FormStatus.valueOf(results.getString(headers.get(2))),
                 results.getString(headers.get(3)),
                 new FurnitureItem(results.getString(headers.get(4))),
-                    ServiceType.valueOf(results.getString(headers.get(5))),
+                ServiceType.valueOf(results.getString(headers.get(5))),
                 results.getString(headers.get(6)),
                 results.getTimestamp(headers.get(7)).toLocalDateTime());
         tableMap.put(furnitureRequest.getFurnitureRequestID(), furnitureRequest);
