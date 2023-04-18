@@ -19,7 +19,6 @@
 <?import javafx.scene.text.Font?>
 <?import net.kurobako.gesturefx.GesturePane?>
 
-
 <StackPane alignment="TOP_LEFT" minHeight="1080.0" minWidth="1720.0" prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorController">
    <children>
       <GesturePane fx:id="pane" hbarPolicy="NEVER" vbarPolicy="NEVER" StackPane.alignment="TOP_LEFT">
@@ -313,7 +312,7 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </Label>
-            <MFXTextField fx:id="shortNameText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
+            <MFXTextField fx:id="shortnameText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
                <textFill>
                   <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                </textFill>
@@ -329,7 +328,7 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </Label>
-            <MFXTextField fx:id="longNameText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
+            <MFXTextField fx:id="longnameText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
                <textFill>
                   <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                </textFill>

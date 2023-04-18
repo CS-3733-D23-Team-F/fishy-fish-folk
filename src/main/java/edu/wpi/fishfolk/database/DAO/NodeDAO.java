@@ -516,7 +516,6 @@ public class NodeDAO implements IDAO<Node> {
     }
   }
 
-
   /**
    * Gets the next free id but does not reserve it.
    *

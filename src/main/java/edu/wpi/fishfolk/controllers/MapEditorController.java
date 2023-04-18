@@ -44,8 +44,7 @@ public class MapEditorController extends AbsController {
   @FXML MFXTextField longnameText;
   @FXML MFXTextField shortnameText;
   @FXML MFXTextField typeText;
-  @FXML MFXButton nextLocation;
-  @FXML MFXButton prevLocation;
+
   @FXML MFXButton addEdge;
   @FXML MFXButton delEdge;
   @FXML MFXButton importCSV;
@@ -166,26 +165,6 @@ public class MapEditorController extends AbsController {
                 deleteNode(currentEditingNode);
               }
             });
-
-    nextLocation.setOnMouseClicked(
-        event -> {
-          if (state == EDITOR_STATE.EDITING) {
-            if (currentEditingLocationIdx < currentEditingLocations.size() - 1) {
-              currentEditingLocationIdx++;
-            }
-            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
-          }
-        });
-
-    prevLocation.setOnMouseClicked(
-        event -> {
-          if (state == EDITOR_STATE.EDITING) {
-            if (currentEditingLocationIdx > 0) {
-              currentEditingLocationIdx--;
-            }
-            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
-          }
-        });
   }
 
   private void switchFloor(String floor) {
@@ -220,14 +199,6 @@ public class MapEditorController extends AbsController {
           currentEditingLocationIdx = 0;
 
           fillNodeFields(node);
-
-          if (currentEditingLocations.size() > 1) {
-            nextLocation.setVisible(true);
-            prevLocation.setVisible(true);
-          } else {
-            nextLocation.setVisible(false);
-            prevLocation.setVisible(false);
-          }
 
           if (currentEditingLocations.size() > 0) {
             fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
