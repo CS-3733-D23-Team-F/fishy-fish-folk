@@ -43,6 +43,9 @@ public class NewFoodOrderController extends AbsController {
     super();
   }
 
+  /**
+   * Prepare buttons, cart, items, room selector, and load the appetizers tab
+   */
   @FXML
   private void initialize() {
     loadMenu();
@@ -61,9 +64,12 @@ public class NewFoodOrderController extends AbsController {
     drinksTab.setOnAction(event -> tab(3));
     dessertsTab.setOnAction(event -> tab(4));
     tabButtons = new MFXButton[] {appsTab, sidesTab, mainsTab, drinksTab, dessertsTab};
-    tab(4);
+    tab(0);
   }
 
+  /**
+   * Load food items into Respoective menu tabs
+   */
   private void loadMenu() {
     menuTabs = new List[5];
     for (int i = 0; i < 5; i++) {
@@ -102,19 +108,31 @@ public class NewFoodOrderController extends AbsController {
     }
   }
 
+  /**
+   * Load room list into Room Selector
+   */
   private void loadRooms() {
     // todo write function once exists on DB side
   }
 
+  /**
+   * remove all items from the cart
+   */
   private void clear() {
     cart = new NewFoodCart();
   }
 
+  /**
+   * Clear the cart, and Return Home
+   */
   private void cancel() {
     cart = null;
     Navigation.navigate(Screen.HOME); // todo discuss changing this to service request
   }
 
+  /**
+   * Load cart items into viewable format, and put the cart on screen
+   */
   private void openCart() {
     loadCart();
     notesField.setWrapText(true);
@@ -122,15 +140,25 @@ public class NewFoodOrderController extends AbsController {
     cartViewPane.setVisible(true);
   }
 
+  /**
+   * Hide the cart
+   */
   private void closeCart() {
     cartViewPane.setDisable(true);
     cartViewPane.setVisible(false);
   }
 
+  /**
+   * Confirm the order, and add it to the Database
+   */
   private void submit() {
     // todo send orders to DB on submission
   }
 
+  /**
+   * Loads a tab to the on-screen menu
+   * @param target the page to load - 0 is apps, 1 is sides, 2 is mains, 3 is drinks, 4 is desserts
+   */
   private void tab(int target) {
     List<NewFoodMenuItem> items = menuTabs[target];
     int numRows = (items.size() + 1) / 2;
@@ -236,6 +264,9 @@ public class NewFoodOrderController extends AbsController {
     }
   }
 
+  /**
+   * prepares the visual cart with the items that have been added
+   */
   private void loadCart() {
     List<NewFoodCart.quantityItem> items = cart.getItems();
     VBox itemsBox = new VBox();
