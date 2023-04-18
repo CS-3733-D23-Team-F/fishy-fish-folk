@@ -18,7 +18,6 @@ public enum Screen {
 
   LOGIN("views/Login.fxml"),
 
-
   TEMPLATE("views/Template.fxml");
 
   private final String filename;

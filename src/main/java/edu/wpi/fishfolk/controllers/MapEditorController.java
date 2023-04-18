@@ -321,7 +321,7 @@ public class MapEditorController extends AbsController {
             // update node in database with updated x & y
             dbConnection.updateEntry(node);
 
-            //redraw edges associated with this node
+            // redraw edges associated with this node
 
           }
         });
