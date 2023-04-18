@@ -51,9 +51,41 @@
     -fx-image: url("../images/wayfindingH.png");
 }
 
+.navButtons > #flowerIcon{
+    -fx-image: url("../images/flower.png");
+}
+
+.navButtons:hover > #flowerIcon{
+    -fx-image: url("../images/flowerH.png");
+}
+.navButtons > #furnitureIcon{
+     -fx-image: url("../images/furniture.png");
+ }
+
+.navButtons:hover > #furnitureIcon{
+    -fx-image: url("../images/furnitureH.png");
+}
+
+.navButtons > #serviceIcon{
+    -fx-image: url("../images/box.png");
+}
+
+.navButtons:hover > #serviceIcon{
+    -fx-image: url("../images/boxH.png");
+}
+
+.navButtons > #conferenceIcon{
+    -fx-image: url("../images/conference.png");
+}
+
+.navButtons:hover > #conferenceIcon{
+    -fx-image: url("../images/conferenceH.png");
+}
 
 .sideNav:hover{
     -fx-background-color: #0e4675;
+    -fx-border-color: transparent transparent transparent #F0BF4C;
+    -fx-border-width: 4px;
 }
 
 .sideNav{
@@ -70,9 +102,15 @@
 
 
 Line{
-    -fx-stroke-width: 2;
+    -fx-stroke-width: 4;
     -fx-stroke-line-cap: round;
-    -fx-stroke: #028A0F;
+    -fx-stroke: #0CD4FC;
 }
 
+Micronode:hover{
+    -fx-border-color: yellow;
+}
 
+.floorDisplay{
+    -fx-font-weight: bold;
+}

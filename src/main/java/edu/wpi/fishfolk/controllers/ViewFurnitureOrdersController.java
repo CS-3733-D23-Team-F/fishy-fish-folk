@@ -6,7 +6,7 @@ import static edu.wpi.fishfolk.ui.FormStatus.filled;
 import edu.wpi.fishfolk.database.Table;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import edu.wpi.fishfolk.ui.SupplyOrder;
+import edu.wpi.fishfolk.ui.FurnitureOrder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +18,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class ViewSupplyOrdersController extends AbsController {
+public class ViewFurnitureOrdersController extends AbsController {
   @FXML Text itemsText;
   @FXML AnchorPane itemsTextContainer;
-  @FXML Text deliveryRoomText, linkText, statusText;
+  @FXML Text deliveryRoomText, deliveryTimeText, statusText;
   @FXML TextField assigneeText;
   @FXML MFXButton prevOrderButton, nextOrderButton;
   @FXML MFXButton cancelButton, filledButton, removeButton;
@@ -35,29 +35,30 @@ public class ViewSupplyOrdersController extends AbsController {
 
   @FXML MFXButton officeNav;
 
-  @FXML MFXButton sideBar;
+  @FXML MFXButton sideBar, viewFurniture, furnitureNav;
 
   @FXML MFXButton exitButton;
 
   @FXML MFXButton sideBarClose;
   @FXML AnchorPane slider;
   @FXML MFXButton viewFood;
-  @FXML MFXButton viewSupply, viewFurniture, furnitureNav;
+  @FXML MFXButton viewSupply;
   @FXML MFXButton homeButton;
 
   int currentOrderNumber;
-  List<SupplyOrder> supplyOrders;
+  List<FurnitureOrder> furnitureOrders;
 
-  Table supplyOrderTable;
+  Table furnitureOrderTable;
 
-  public ViewSupplyOrdersController() {
+  public ViewFurnitureOrdersController() {
     super();
-    supplyOrderTable = new Table(dbConnection.conn, "supplyrequest");
-    supplyOrderTable.init(false);
-    supplyOrderTable.addHeaders(
-        SupplyRequestController.headers,
+    furnitureOrderTable = new Table(dbConnection.conn, "furnitureorder");
+    furnitureOrderTable.init(false);
+    furnitureOrderTable.addHeaders(
+        FurnitureOrderController.headers,
         new ArrayList<>(
-            List.of("String", "String", "String", "String", "String", "String", "String")));
+            List.of(
+                "String", "String", "String", "String", "String", "String", "String", "String")));
   }
 
   @FXML
@@ -120,7 +121,7 @@ public class ViewSupplyOrdersController extends AbsController {
     nextOrderButton.setOnAction(event -> nextOrder());
     prevOrderButton.setDisable(true);
     loadOrders();
-    if (supplyOrders.size() < 2) nextOrderButton.setDisable(true);
+    if (furnitureOrders.size() < 2) nextOrderButton.setDisable(true);
     assigneeText.setOnKeyReleased(event -> updateAssignee());
     cancelButton.setOnAction(event -> cancelOrder());
     filledButton.setOnAction(event -> fillOrder());
@@ -129,10 +130,10 @@ public class ViewSupplyOrdersController extends AbsController {
   }
 
   private void updateAssignee() {
-    SupplyOrder currentOrder = supplyOrders.get(currentOrderNumber);
+    FurnitureOrder currentOrder = furnitureOrders.get(currentOrderNumber);
     currentOrder.assignee = assigneeText.getText();
     // updateDisplay();
-    supplyOrderTable.update("id", currentOrder.formID, "assignee", currentOrder.assignee);
+    furnitureOrderTable.update("id", currentOrder.formID, "assignee", currentOrder.assignee);
   }
 
   private void prevOrder() {
@@ -145,51 +146,53 @@ public class ViewSupplyOrdersController extends AbsController {
   private void nextOrder() {
     currentOrderNumber++;
     prevOrderButton.setDisable(false);
-    if (currentOrderNumber == supplyOrders.size() - 1) nextOrderButton.setDisable(true);
+    if (currentOrderNumber == furnitureOrders.size() - 1) nextOrderButton.setDisable(true);
     updateDisplay();
   }
 
   private void loadOrders() throws InterruptedException {
-    supplyOrders = new ArrayList<SupplyOrder>();
+    furnitureOrders = new ArrayList<FurnitureOrder>();
 
-    ArrayList<String[]> tableOrders = supplyOrderTable.getAll();
-    for (String[] orderArr : tableOrders) {
-
-      SupplyOrder order = new SupplyOrder();
-      order.construct(new ArrayList<>(List.of(orderArr)));
-      supplyOrders.add(order);
+    ArrayList<String[]> tableOrders = furnitureOrderTable.getAll();
+    for (String[] tableEntry : tableOrders) {
+      FurnitureOrder order = new FurnitureOrder();
+      ArrayList<String> entry = new ArrayList<String>();
+      entry.addAll(List.of(tableEntry));
+      order.construct(entry);
+      furnitureOrders.add(order);
+      System.out.println(order.deconstruct());
     }
   }
 
   private void cancelOrder() {
-    SupplyOrder currentOrder = supplyOrders.get(currentOrderNumber);
+    FurnitureOrder currentOrder = furnitureOrders.get(currentOrderNumber);
     currentOrder.formStatus = cancelled;
-    supplyOrderTable.update("id", currentOrder.formID, "status", "Cancelled");
+    furnitureOrderTable.update("id", currentOrder.formID, "status", "Cancelled");
     cancelButton.setDisable(true);
     filledButton.setDisable(true);
     updateDisplay();
   }
 
   private void fillOrder() {
-    SupplyOrder currentOrder = supplyOrders.get(currentOrderNumber);
+    FurnitureOrder currentOrder = furnitureOrders.get(currentOrderNumber);
     currentOrder.formStatus = filled;
-    supplyOrderTable.update("id", currentOrder.formID, "status", "Filled");
+    furnitureOrderTable.update("id", currentOrder.formID, "status", "Filled");
     cancelButton.setDisable(true);
     filledButton.setDisable(true);
     updateDisplay();
   }
 
   private void removeOrder() {
-    SupplyOrder currentOrder = supplyOrders.get(currentOrderNumber);
-    supplyOrderTable.remove("id", currentOrder.formID);
-    supplyOrders.remove(currentOrderNumber);
+    FurnitureOrder currentOrder = furnitureOrders.get(currentOrderNumber);
+    furnitureOrderTable.remove("id", currentOrder.formID);
+    furnitureOrders.remove(currentOrderNumber);
     if (currentOrderNumber != 0) {
       currentOrderNumber--;
       if (currentOrderNumber == 0) {
         prevOrderButton.setDisable(true);
       }
     } else {
-      if (supplyOrders.size() == 0 || supplyOrders.size() == 1) {
+      if (furnitureOrders.size() == 0 || furnitureOrders.size() == 1) {
         nextOrderButton.setDisable(true);
       }
     }
@@ -197,6 +200,7 @@ public class ViewSupplyOrdersController extends AbsController {
   }
 
   String addLineBreaks(String input) {
+    if (input == null) return "";
     if (input.equals("")) return "";
     String[] words = input.split(" ");
     String output = words[0];
@@ -211,18 +215,23 @@ public class ViewSupplyOrdersController extends AbsController {
   }
 
   private void updateDisplay() {
-    if (supplyOrders.size() > 0) {
-      deliveryRoomText.setText(supplyOrders.get(currentOrderNumber).roomNum);
-      linkText.setText(supplyOrders.get(currentOrderNumber).link);
+    if (furnitureOrders.size() > 0) {
+      deliveryRoomText.setText(furnitureOrders.get(currentOrderNumber).roomNum);
+      // linkText.setText(furnitureOrders.get(currentOrderNumber).link);
+      // String itemsTextContent =
+      // supplyOrders.get(currentOrderNumber).listItemsToString().replace("-_-", "\n");
       String itemsTextContent =
-          supplyOrders.get(currentOrderNumber).listItemsToString().replace("-_-", "\n");
-      itemsTextContent +=
-          "\n\nNotes:\n" + addLineBreaks(supplyOrders.get(currentOrderNumber).notes);
+          furnitureOrders.get(currentOrderNumber).furnitureItem.furnitureName
+              + "\n\nService Type: \n"
+              + furnitureOrders.get(currentOrderNumber).serviceType
+              + "\n\nNotes:\n"
+              + addLineBreaks(furnitureOrders.get(currentOrderNumber).notes);
       itemsText.setText(itemsTextContent);
+      deliveryTimeText.setText(furnitureOrders.get(currentOrderNumber).deliveryDate);
       int numLines = itemsTextContent.split("\n").length + 1;
       itemsTextContainer.setPrefHeight(60 * numLines);
-      assigneeText.setText(supplyOrders.get(currentOrderNumber).assignee);
-      switch (supplyOrders.get(currentOrderNumber).formStatus) {
+      assigneeText.setText(furnitureOrders.get(currentOrderNumber).assignee);
+      switch (furnitureOrders.get(currentOrderNumber).formStatus) {
         case filled:
           {
             statusText.setText("Filled");
@@ -240,7 +249,7 @@ public class ViewSupplyOrdersController extends AbsController {
           }
       }
       viewingNumberText.setText(
-          "Viewing order #" + (currentOrderNumber + 1) + " out of " + supplyOrders.size());
+          "Viewing order #" + (currentOrderNumber + 1) + " out of " + furnitureOrders.size());
       if (statusText.getText().equals("Submitted")) {
         cancelButton.setDisable(false);
         filledButton.setDisable(false);
@@ -255,8 +264,8 @@ public class ViewSupplyOrdersController extends AbsController {
       itemsText.setText("");
       itemsTextContainer.setPrefHeight(0);
       deliveryRoomText.setText("");
-      linkText.setText("");
       assigneeText.setText("");
+      deliveryTimeText.setText("");
       statusText.setText("");
       viewingNumberText.setText("No orders to view");
       cancelButton.setDisable(true);

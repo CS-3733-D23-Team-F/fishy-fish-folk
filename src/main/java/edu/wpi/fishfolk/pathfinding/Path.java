@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.pathfinding;
 
+import edu.wpi.fishfolk.database.MicroNode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -23,10 +24,14 @@ public class Path {
   }
 
   public void addFirst(int nid, Point2D p) {
-    // this runs in O(n) time so maybe try batching in groups of 10 or 20 node/point pairs
+    // TODO this runs in O(n) time so maybe try batching in groups of 10 or 20 node/point pairs
     nodes.add(0, nid);
     points.add(0, p);
     numNodes++;
+  }
+
+  public void addFirst(MicroNode unode) {
+    addFirst(unode.nid, unode.point);
   }
 
   public int removeLast() {

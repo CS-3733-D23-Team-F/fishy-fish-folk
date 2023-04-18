@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXRadioButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -16,8 +21,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.ViewFoodOrdersController">
-    <children>
+<VBox minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FurnitureOrderController">
+   <children>
       <HBox maxHeight="84.8" minHeight="84.8" VBox.vgrow="ALWAYS">
          <children>
             <AnchorPane maxHeight="84.8" minHeight="84.8" prefHeight="84.8" style="-fx-background-color: #012D5A;" HBox.hgrow="ALWAYS">
@@ -70,94 +75,94 @@
       </HBox>
       <StackPane minHeight="635.2" minWidth="1280.0" VBox.vgrow="ALWAYS">
          <children>
-                <HBox minWidth="120.0" />
-                <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0">
+            <HBox minWidth="120.0" />
+            <VBox maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0">
                <children>
-                  <ScrollPane hbarPolicy="NEVER" layoutY="136.0" prefHeight="448.0" prefWidth="520.0">
-                    <content>
-                      <AnchorPane fx:id="itemsTextContainer" minHeight="0.0" minWidth="0.0" prefHeight="64.0" prefWidth="520.0">
+                  <AnchorPane maxHeight="635.2" maxWidth="1040.0" minHeight="635.2" minWidth="1040.0">
+                     <children>
+                        <HBox prefHeight="80.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <Text fx:id="itemsText" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
-                                 <font>
-                                    <Font size="48.0" />
-                                 </font>
-                              </Text>
+                              <AnchorPane HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <MFXButton fx:id="cancelButton" graphicTextGap="0.0" rippleColor="#012d5a" text="CANCEL" textFill="#012d5a" AnchorPane.bottomAnchor="10.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="30.0" />
+                                       </font>
+                                    </MFXButton>
+                                    <MFXButton fx:id="clearButton" graphicTextGap="0.0" rippleColor="#012d5a" text="  CLEAR " textFill="#012d5a" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="160.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="30.0" />
+                                       </font>
+                                    </MFXButton>
+                                    <MFXButton fx:id="furnitureSubmitButton" graphicTextGap="0.0" rippleColor="#012d5a" text="SUBMIT" textFill="#012d5a" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="30.0" />
+                                       </font>
+                                    </MFXButton>
+                                 </children>
+                              </AnchorPane>
                            </children>
-                        </AnchorPane>
-                    </content>
-                  </ScrollPane>
-                  <Text layoutX="564.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deliver to:" wrappingWidth="327.3890380859375">
-                     <font>
-                        <Font size="30.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="deliveryRoomText" layoutX="620.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room 8675309" wrappingWidth="327.3890380859375">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Text>
-                  <Text layoutX="564.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="At Delivery Time:" wrappingWidth="327.3890380859375">
-                     <font>
-                        <Font size="30.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="deliveryTimeText" layoutX="620.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="88:88AM, Mon, 31/77" wrappingWidth="382.589111328125">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Text>
-                  <Text layoutX="564.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to:" wrappingWidth="327.3890380859375">
-                     <font>
-                        <Font size="30.0" />
-                     </font>
-                  </Text>
-                  <Text layoutX="564.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Status:" wrappingWidth="327.3890380859375">
-                     <font>
-                        <Font size="30.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="statusText" layoutX="620.0" layoutY="531.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submitted" wrappingWidth="327.3890380859375">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="viewingNumberText" layoutX="229.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Viewing order #311 of 117" textAlignment="CENTER" wrappingWidth="580.75">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Text>
-                  <MFXButton fx:id="nextOrderButton" layoutX="802.0" layoutY="42.0" text="Next">
-                     <font>
-                        <Font size="30.0" />
-                     </font>
-                  </MFXButton>
-                  <MFXButton fx:id="prevOrderButton" layoutX="99.0" layoutY="42.0" text="Previous">
-                     <font>
-                        <Font size="30.0" />
-                     </font>
-                  </MFXButton>
-                  <TextField fx:id="assigneeText" layoutX="602.0" layoutY="381.0">
-                   <font>
-                       <Font size="20.0" />
-                   </font>
-                  </TextField>
-                  <MFXButton fx:id="cancelButton" layoutX="789.0" layoutY="467.0" text="Cancel">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </MFXButton>
-                  <MFXButton fx:id="removeButton" layoutX="873.0" layoutY="467.0" text="Remove">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </MFXButton>
-                  <MFXButton fx:id="filledButton" layoutX="789.0" layoutY="507.0" prefHeight="31.0" prefWidth="161.0" text="Mark as Filled">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </MFXButton>
+                        </HBox>
+                        <MFXTextField fx:id="notesTextField" prefHeight="83.0" prefWidth="1040.0" promptText="ADDITIONAL NOTES" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <font>
+                              <Font name="Open Sans Regular" size="26.0" />
+                           </font>
+                        </MFXTextField>
+                        <MFXComboBox fx:id="roomSelector" layoutY="370.0" prefHeight="85.0" prefWidth="700.0" />
+                        <ScrollPane layoutY="96.0" prefHeight="265.0" prefWidth="1040.0">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="438.0" prefWidth="460.0">
+                                 <children>
+                                    <MFXRadioButton fx:id="radioButton6" layoutX="20.0" layoutY="320.0" text="X-Ray Machine">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="30.0" />
+                                       </font>
+                                    </MFXRadioButton>
+                                    <MFXRadioButton fx:id="radioButton1" layoutX="20.0" layoutY="20.0" text="Bed">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="30.0" />
+                                       </font>
+                                    </MFXRadioButton>
+                                    <MFXRadioButton fx:id="radioButton2" layoutX="20.0" layoutY="80.0" text="Chair">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="30.0" />
+                                       </font>
+                                    </MFXRadioButton>
+                                    <MFXRadioButton fx:id="radioButton3" layoutX="20.0" layoutY="140.0" text="Desk">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="30.0" />
+                                       </font>
+                                    </MFXRadioButton>
+                                    <MFXRadioButton fx:id="radioButton4" layoutX="20.0" layoutY="200.0" text="File Cabinet">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="30.0" />
+                                       </font>
+                                    </MFXRadioButton>
+                                    <MFXRadioButton fx:id="radioButton5" layoutX="20.0" layoutY="260.0" text="Clock">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="30.0" />
+                                       </font>
+                                    </MFXRadioButton>
+                                    <MFXRadioButton fx:id="radioButton7" layoutX="20.0" layoutY="380.0" text="Trash Can">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="30.0" />
+                                       </font>
+                                    </MFXRadioButton>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+                        <Text layoutX="60.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of Furniture Request:">
+                           <font>
+                              <Font name="Open Sans Regular" size="30.0" />
+                           </font>
+                        </Text>
+                        <ChoiceBox fx:id="requestTypePicker" layoutX="460.0" layoutY="20.0" minHeight="60.0" prefWidth="540.0" />
+                        <MFXDatePicker fx:id="deliveryDate" layoutX="710.0" layoutY="370.0" minHeight="85.0" minWidth="330.0" />
+                     </children>
+                  </AnchorPane>
                </children>
-                </AnchorPane>
+            </VBox>
             <AnchorPane fx:id="menuWrap" disable="true" minWidth="70.0" visible="false">
                <children>
                   <AnchorPane fx:id="slider" maxWidth="400.0" minWidth="400.0" style="-fx-background-color: #054982;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-400.0" AnchorPane.topAnchor="0.0">
@@ -266,5 +271,5 @@
             </AnchorPane>
          </children>
       </StackPane>
-    </children>
+   </children>
 </VBox>

@@ -22,7 +22,9 @@ public abstract class AbsController {
 
   public AbsController() {
 
-    dbConnection = new Fdb();
+    if (dbConnection == null) {
+      dbConnection = new Fdb();
+    }
 
     mapImgURLs = new HashMap<>();
 
@@ -39,6 +41,6 @@ public abstract class AbsController {
       images.put(floor, new Image(Fapp.class.getResourceAsStream(mapImgURLs.get(floor))));
     }
 
-    dbConnection = new Fdb();
+    // dbConnection = new Fdb();
   }
 }
