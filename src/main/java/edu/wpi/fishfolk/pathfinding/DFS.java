@@ -54,7 +54,7 @@ public class DFS extends Pathfinder {
               || graph.getNodeFromIdx(searched).getNodeID() == start) {
 
             int next = graph.getNodeFromIdx(searched).getNodeID();
-            previous[graph.id2idx(next)] = cur;
+            previous[graph.id2idx(next)] = graph.id2idx(cur);
             stack.addLast(next);
             foundNew = true;
           }
@@ -69,6 +69,6 @@ public class DFS extends Pathfinder {
       }
     }
 
-    return backtrack(cur, start, previous);
+    return backtrack(graph.id2idx(end), start, previous);
   }
 }

@@ -36,6 +36,7 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXFilterComboBox<String> startSelector;
   @FXML MFXFilterComboBox<String> endSelector;
+  @FXML MFXFilterComboBox<String> methodSelector;
   @FXML MFXButton clearBtn;
 
   @FXML Group pathGroup;
@@ -86,6 +87,9 @@ public class PathfindingController extends AbsController {
         });
 
     // buttons to other pages
+    methodSelector.getItems().add("A*");
+    methodSelector.getItems().add("BFS");
+    methodSelector.getItems().add("DFS");
     slideUp.setOnMouseClicked(
         event -> {
           TranslateTransition slide = new TranslateTransition();
@@ -161,13 +165,20 @@ public class PathfindingController extends AbsController {
           end = dbConnection.getNodeIDFromLocation(endSelector.getValue(), today);
           System.out.println("end node: " + end);
           pathfinder = PathfindSingleton.PATHFINDER;
-          pathfinder.setPathMethod(new AStar(graph));
+          if (methodSelector.getValue() == null || methodSelector.getValue().equals("A*")) {
+            pathfinder.setPathMethod(new AStar(graph));
+          } else if (methodSelector.getValue().equals("BFS")) {
+            pathfinder.setPathMethod(new BFS(graph));
+          } else if (methodSelector.getValue().equals("DFS")) {
+            pathfinder.setPathMethod(new DFS(graph));
+          }
+
           paths = pathfinder.getPathMethod().pathfind(start, end, true);
 
           System.out.println(paths);
 
           textDirections = new LinkedList<>();
-          populateTextDirections(paths);
+          // populateTextDirections(paths);
 
           // index 0 in floors in this path - not allFloors
           currentFloor = 0;

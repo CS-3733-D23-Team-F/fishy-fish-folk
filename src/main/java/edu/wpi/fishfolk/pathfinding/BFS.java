@@ -43,7 +43,7 @@ public class BFS extends Pathfinder {
                 || graph.getNodeFromIdx(other).getNodeID() == start) {
 
               int next = graph.getNodeFromIdx(other).getNodeID();
-              previous[graph.id2idx(next)] = cur;
+              previous[graph.id2idx(next)] = graph.id2idx(cur);
               queue.addLast(next);
             }
           }
@@ -52,7 +52,7 @@ public class BFS extends Pathfinder {
         }
       }
     }
-
-    return backtrack(cur, start, previous);
+    System.out.println(graph.id2idx(end));
+    return backtrack(graph.id2idx(end), start, previous);
   }
 }
