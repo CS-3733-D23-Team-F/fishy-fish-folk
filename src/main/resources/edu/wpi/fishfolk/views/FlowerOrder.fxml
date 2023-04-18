@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FlowerOrderController">
+            <children>
+      <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="45.0">
+         <children>
+            <HBox HBox.hgrow="ALWAYS" />
+            <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER">
+                     <children>
+                              <MFXButton fx:id="springTab" minHeight="50.0" minWidth="150.0" style="-fx-background-color: #f0Bf4c; -fx-border-width: 2; -fx-border-color: #000000;" text="Spring Collection" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXButton>
+                              <MFXButton fx:id="exoticTab" minHeight="50.0" minWidth="150.0" style="-fx-background-color: #012d5a; -fx-border-width: 2; -fx-border-color: #000000;" text="Exotic Collection" textFill="WHITE">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                              </MFXButton>
+                              <MFXButton fx:id="saleTab" minHeight="50.0" minWidth="150.0" style="-fx-background-color: #012d5a; -fx-border-width: 2; -fx-border-color: #000000;" text="On Sale" textFill="WHITE">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXButton>
+                              <MFXButton fx:id="favoriteTab" minHeight="50.0" minWidth="150.0" style="-fx-background-color: #012d5a; -fx-border-width: 2; -fx-border-color: #000000;" text="Customer Favorites" textFill="WHITE">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="80.0" />
+                     </VBox.margin>
+                  </HBox>
+                        <ScrollPane fx:id="itemWindow" fitToWidth="true" hbarPolicy="NEVER" minHeight="500.0" minWidth="650.0" style="-fx-background-color: ffffff;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                          <content>
+                            <AnchorPane fx:id="itemPane" minHeight="500.0" minWidth="650.0" style="-fx-background-color: ffffff;" />
+                          </content>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                        </ScrollPane>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER" minHeight="550.0" minWidth="350.0" style="-fx-background-color: #d9d9d9;" VBox.vgrow="ALWAYS">
+                     <children>
+                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minHeight="350.0" minWidth="400.0" style="-fx-background-color: d9d9d9;">
+                          <content>
+                            <AnchorPane fx:id="orderPane" minHeight="350.0" minWidth="350.0" />
+                          </content>
+                        </ScrollPane>
+                        <MFXFilterComboBox fx:id="locationPicker" minHeight="35.0" minWidth="390.0" promptText="Order Location">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </MFXFilterComboBox>
+                        <MFXTextField fx:id="nameBox" alignment="TOP_LEFT" minHeight="35.0" minWidth="390.0" promptText="Recipiant Name">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </MFXTextField>
+                        <MFXTextField fx:id="dateBox" alignment="TOP_LEFT" minHeight="35.0" minWidth="390.0" promptText="Date and Time of Delivery">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </MFXTextField>
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER">
+                     <children>
+                                  <MFXButton fx:id="ClearButton" minHeight="50.0" minWidth="150.0" style="-fx-background-color: #012d5a;" text="Clear All" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                      <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                      </font>
+                           <HBox.margin>
+                              <Insets right="100.0" />
+                           </HBox.margin>
+                                  </MFXButton>
+                              <MFXButton fx:id="SubmitButton" minHeight="50.0" minWidth="150.0" style="-fx-background-color: #f0Bf4c;" text="Submit Order" textFill="#012d5a" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
+            <HBox HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+            </children>
+</AnchorPane>

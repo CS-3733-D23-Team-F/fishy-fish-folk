@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
+import edu.wpi.fishfolk.database.rewrite.IHasSubtable;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.SupplyRequest;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.SupplyItem;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SupplyRequestDAO implements IDAO<SupplyRequest> {
+public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<SupplyItem> {
 
   private final Connection dbConnection;
 
@@ -38,6 +39,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
     this.dataEditQueue = new DataEditQueue<>();
 
     init(false);
+    initSubtable(false);
     populateLocalTable();
   }
 
@@ -108,7 +110,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
                 results.getString(headers.get(3)),
                 results.getString(headers.get(4)),
                 results.getString(headers.get(5)),
-                getSupplyItems(results.getInt(headers.get(6))));
+                getSubtableItems(results.getInt(headers.get(6))));
         tableMap.put(supplyRequest.getSupplyRequestID(), supplyRequest);
       }
 
@@ -362,7 +364,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
 
             // Execute the query
             preparedInsert.executeUpdate();
-            setSupplyItems(
+            setSubtableItems(
                 dataEdit.getNewEntry().getSupplyRequestID(), dataEdit.getNewEntry().getSupplies());
 
             break;
@@ -382,7 +384,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
 
             // Execute the query
             preparedUpdate.executeUpdate();
-            setSupplyItems(
+            setSubtableItems(
                 dataEdit.getNewEntry().getSupplyRequestID(), dataEdit.getNewEntry().getSupplies());
 
             break;
@@ -394,7 +396,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
                 1, Timestamp.valueOf(dataEdit.getNewEntry().getSupplyRequestID()));
 
             // Execute the query
-            deleteAllSupplyItems(dataEdit.getNewEntry().getSupplyRequestID());
+            deleteAllSubtableItems(dataEdit.getNewEntry().getSupplyRequestID());
             preparedRemove.executeUpdate();
             break;
         }
@@ -421,163 +423,6 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
 
     // On success
     return true;
-  }
-
-  private int getSupplyItemsTableID(LocalDateTime supplyRequestID) {
-    try {
-      Statement statement = dbConnection.createStatement();
-      String query =
-          "SELECT supplies FROM "
-              + dbConnection.getSchema()
-              + "."
-              + tableName
-              + " WHERE id = '"
-              + Timestamp.valueOf(supplyRequestID)
-              + "';";
-      statement.execute(query);
-      ResultSet results = statement.getResultSet();
-      results.next();
-      return results.getInt("supplies");
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-      return -1;
-    }
-  }
-
-  private List<SupplyItem> getSupplyItems(int id) {
-
-    try {
-      Statement statement = dbConnection.createStatement();
-      String query =
-          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-              + dbConnection.getSchema()
-              + "' AND tablename = '"
-              + tableName
-              + "supplyitems"
-              + "');";
-      statement.execute(query);
-      ResultSet results = statement.getResultSet();
-      results.next();
-
-      if (!results.getBoolean("exists")) {
-        query =
-            "CREATE TABLE "
-                + tableName
-                + "supplyitems"
-                + " ("
-                + "itemkey INT,"
-                + "itemname VARCHAR(64)"
-                + ");";
-        statement.executeUpdate(query);
-      }
-
-      ArrayList<SupplyItem> allSupplyItems = new ArrayList<>();
-
-      query =
-          "SELECT * FROM "
-              + dbConnection.getSchema()
-              + "."
-              + tableName
-              + "supplyitems "
-              + "WHERE itemkey = '"
-              + id
-              + "';";
-
-      statement.execute(query);
-      results = statement.getResultSet();
-
-      while (results.next()) {
-        allSupplyItems.add(new SupplyItem(results.getString("itemname"), 0));
-      }
-
-      return allSupplyItems;
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-      return null;
-    }
-  }
-
-  private void setSupplyItems(LocalDateTime supplyRequestID, List<SupplyItem> items) {
-    try {
-
-      Statement exists = dbConnection.createStatement();
-      String query =
-          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-              + dbConnection.getSchema()
-              + "' AND tablename = '"
-              + tableName
-              + "supplyitems"
-              + "');";
-      exists.execute(query);
-      ResultSet results = exists.getResultSet();
-      results.next();
-
-      if (!results.getBoolean("exists")) {
-        query =
-            "CREATE TABLE "
-                + tableName
-                + "supplyitems"
-                + " ("
-                + "itemkey INT,"
-                + "itemname VARCHAR(64)"
-                + ");";
-        exists.executeUpdate(query);
-      }
-
-      String deleteAll =
-          "DELETE FROM "
-              + dbConnection.getSchema()
-              + "."
-              + tableName
-              + "supplyitems"
-              + " WHERE itemkey = ?;";
-
-      String insert =
-          "INSERT INTO "
-              + dbConnection.getSchema()
-              + "."
-              + this.tableName
-              + "supplyitems"
-              + " VALUES (?, ?);";
-
-      PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
-      PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
-
-      preparedDeleteAll.setInt(1, getSupplyItemsTableID(supplyRequestID));
-      preparedDeleteAll.executeUpdate();
-
-      for (SupplyItem item : items) {
-        preparedInsert.setInt(1, getSupplyItemsTableID(supplyRequestID));
-        preparedInsert.setString(2, item.supplyName);
-        preparedInsert.executeUpdate();
-      }
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
-  }
-
-  private void deleteAllSupplyItems(LocalDateTime supplyRequestID) {
-    try {
-
-      String deleteAll =
-          "DELETE FROM "
-              + dbConnection.getSchema()
-              + "."
-              + tableName
-              + "supplyitems"
-              + " WHERE itemkey = ?;";
-
-      PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
-
-      preparedDeleteAll.setInt(1, getSupplyItemsTableID(supplyRequestID));
-      preparedDeleteAll.executeUpdate();
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
   }
 
   @Override
@@ -626,7 +471,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
                 parts[3],
                 parts[4],
                 parts[5],
-                getSupplyItems(Integer.parseInt(parts[6])));
+                getSubtableItems(Integer.parseInt(parts[6])));
 
         tableMap.put(sr.getSupplyRequestID(), sr);
 
@@ -677,7 +522,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
                 + ","
                 + sr.getRoomNumber()
                 + ","
-                + getSupplyItemsTableID(sr.getSupplyRequestID()));
+                + getSubtableItemsID(sr.getSupplyRequestID()));
       }
 
       out.close();
@@ -686,6 +531,172 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return false;
+    }
+  }
+
+  @Override
+  public void initSubtable(boolean drop) {
+
+    try {
+
+      // STEP 1: Check if the subtable exists
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "supplyitems"
+              + "');";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+
+      // STEP 2: If instructed to drop the table, drop it
+      if (drop) {
+        query = "DROP TABLE " + dbConnection.getSchema() + "." + tableName + "supplyitems" + ";";
+        statement.execute(query);
+      }
+
+      // STEP 3: If it does not exist OR the table was dropped, make it exist
+      if (!results.getBoolean("exists") || drop) {
+        query =
+            "CREATE TABLE "
+                + tableName
+                + "supplyitems"
+                + " ("
+                + "itemkey INT,"
+                + "itemname VARCHAR(64)"
+                + ");";
+        statement.executeUpdate(query);
+      }
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public int getSubtableItemsID(LocalDateTime requestID) {
+
+    try {
+
+      // Setup query to read ID stored in tied column of main table
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT supplies FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE id = '"
+              + Timestamp.valueOf(requestID)
+              + "';";
+
+      // Run that shit
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      // Return the stored ID
+      results.next();
+      return results.getInt("supplies");
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      // Possible TODO: Check for ID = -1
+      return -1;
+    }
+  }
+
+  @Override
+  public List<SupplyItem> getSubtableItems(int subtableID) {
+
+    try {
+
+      // Create empty list so store all items
+      ArrayList<SupplyItem> allSupplyItems = new ArrayList<>();
+
+      // Query the subtable to return only items with the specified subtableID
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT * FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "supplyitems "
+              + "WHERE itemkey = '"
+              + subtableID
+              + "';";
+
+      // Run the query
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      // For each result, create a new item and put it in the list
+      while (results.next()) {
+        allSupplyItems.add(new SupplyItem(results.getString("itemname"), 0));
+      }
+
+      // Return the list
+      return allSupplyItems;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
+  }
+
+  @Override
+  public void setSubtableItems(LocalDateTime requestID, List<SupplyItem> items) {
+
+    try {
+
+      // Remove all food items in the subtable with a matching subtableID
+      deleteAllSubtableItems(requestID);
+
+      // Query to insert one new of subtable entries
+      String insert =
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + "supplyitems"
+              + " VALUES (?, ?);";
+
+      PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
+
+      // Run the query for each item to insert
+      for (SupplyItem item : items) {
+        preparedInsert.setInt(1, getSubtableItemsID(requestID));
+        preparedInsert.setString(2, item.supplyName);
+        preparedInsert.executeUpdate();
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void deleteAllSubtableItems(LocalDateTime requestID) {
+
+    try {
+
+      // Query to delete items with matching subtableID
+      String deleteAll =
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "supplyitems"
+              + " WHERE itemkey = ?;";
+
+      PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
+
+      // Setup the statement with subtableID and run it
+      preparedDeleteAll.setInt(1, getSubtableItemsID(requestID));
+      preparedDeleteAll.executeUpdate();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
     }
   }
 }

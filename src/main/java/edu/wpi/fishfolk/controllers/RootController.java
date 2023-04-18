@@ -13,6 +13,7 @@ public class RootController {
   @FXML MFXButton signageNav;
   @FXML MFXButton mealNav;
   @FXML MFXButton supplyNav;
+  @FXML MFXButton flowerNav;
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
   @FXML AnchorPane serviceBar;
@@ -28,8 +29,9 @@ public class RootController {
 
   @FXML
   public void initialize() {
-    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
-    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
+    flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
+    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
+    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
     supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
