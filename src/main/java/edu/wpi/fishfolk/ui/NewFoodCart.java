@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.Getter;
 
 public class NewFoodCart {
-  @Getter List<quantityItem> items;
-  @Getter float totalPrice;
+  @Getter private List<quantityItem> items;
+  @Getter private float totalPrice;
 
   /** Creates an empty cart */
   public NewFoodCart() {
@@ -42,11 +42,12 @@ public class NewFoodCart {
     for (quantityItem qi : items) {
       if (qi.item == item) {
         qi.quantity++;
+        totalPrice += item.getPrice();
         return;
       }
     }
     items.add(new quantityItem(item));
-    totalPrice += item.price;
+    totalPrice += item.getPrice();
   }
 
   /**
@@ -59,7 +60,7 @@ public class NewFoodCart {
     for (quantityItem qi : items) {
       if (qi.item == item) {
         qi.quantity--;
-        totalPrice -= item.price;
+        totalPrice -= item.getPrice();
         if (qi.quantity == 0) items.remove(qi);
         return true;
       }
@@ -75,7 +76,7 @@ public class NewFoodCart {
   public List<NewFoodItem> getSubmittableItems() {
     List<NewFoodItem> returnable = new ArrayList<NewFoodItem>();
     for (quantityItem qi : items) {
-      returnable.add(new NewFoodItem(qi.item.name, qi.quantity));
+      returnable.add(new NewFoodItem(qi.item.getName(), qi.quantity));
     }
     return returnable;
   }

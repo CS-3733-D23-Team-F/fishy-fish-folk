@@ -3,11 +3,11 @@ package edu.wpi.fishfolk.ui;
 import lombok.Getter;
 
 public class NewFoodMenuItem {
-  @Getter String description;
-  @Getter String name;
-  @Getter float price;
-  @Getter String imageLoc;
-  @Getter FoodCategory cat;
+  @Getter private String description;
+  @Getter private String name;
+  @Getter private float price;
+  @Getter private String imageLoc;
+  @Getter private FoodCategory cat;
 
   /**
    * Creates an item to be listed on the food menu
