@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXTableView?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Rectangle?>
@@ -40,7 +41,7 @@
       </font>
    </Text>
    <Rectangle fx:id="rejectButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="307.0" layoutY="735.0" stroke="TRANSPARENT" strokeType="INSIDE" width="242.0" />
-   <Text disable="true" fill="WHITE" layoutX="385.0" layoutY="776.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REJECT">
+   <Text disable="true" fill="WHITE" layoutX="374.0" layoutY="776.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REMOVE">
       <font>
          <Font name="Open Sans Bold" size="26.0" />
       </font>
@@ -51,7 +52,12 @@
          <content>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                     <MFXTableView fx:id="foodTable" prefHeight="575.0" prefWidth="1190.0" />
+                     <TableView fx:id="foodTable" prefHeight="570.0" prefWidth="1186.0">
+                       <columns>
+                         <TableColumn prefWidth="75.0" text="C1" />
+                         <TableColumn prefWidth="75.0" text="C2" />
+                       </columns>
+                     </TableView>
                   </children>
                </AnchorPane>
          </content>
@@ -60,7 +66,12 @@
          <content>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                     <MFXTableView fx:id="supplyTable" prefHeight="575.0" prefWidth="1190.0" />
+                     <TableView fx:id="supplyTable" prefHeight="570.0" prefWidth="1186.0">
+                        <columns>
+                           <TableColumn prefWidth="75.0" text="C1" />
+                           <TableColumn prefWidth="75.0" text="C2" />
+                        </columns>
+                     </TableView>
                   </children></AnchorPane>
          </content>
        </Tab>
@@ -68,7 +79,12 @@
            <content>
              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                     <MFXTableView fx:id="furnitureTable" prefHeight="575.0" prefWidth="1190.0" />
+                     <TableView fx:id="furnitureTable" prefHeight="570.0" prefWidth="1186.0">
+                        <columns>
+                           <TableColumn prefWidth="75.0" text="C1" />
+                           <TableColumn prefWidth="75.0" text="C2" />
+                        </columns>
+                     </TableView>
                   </children></AnchorPane>
            </content>
          </Tab>
@@ -76,7 +92,12 @@
            <content>
              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                     <MFXTableView fx:id="flowerTable" prefHeight="575.0" prefWidth="1190.0" />
+                     <TableView fx:id="flowerTable" prefHeight="570.0" prefWidth="1186.0">
+                        <columns>
+                           <TableColumn prefWidth="75.0" text="C1" />
+                           <TableColumn prefWidth="75.0" text="C2" />
+                        </columns>
+                     </TableView>
                   </children></AnchorPane>
            </content>
          </Tab>
