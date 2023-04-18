@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.ViewMasterOrderController">
+   <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="600.0" layoutX="1256.0" layoutY="50.0" stroke="TRANSPARENT" strokeType="INSIDE" width="25.0" />
+   <MFXTextField fx:id="notesTextField" layoutX="564.0" layoutY="665.0" prefHeight="60.0" prefWidth="672.0" promptText="ASSIGNEE">
+      <font>
+         <Font name="Open Sans Regular" size="15.0" />
+      </font>
+      <textFill>
+         <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
+      </textFill>
+   </MFXTextField>
+   <Rectangle fx:id="assigneeText" arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="63.0" layoutX="563.0" layoutY="663.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="676.0" />
+   <Rectangle fx:id="submitButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="53.0" layoutY="663.0" stroke="TRANSPARENT" strokeType="INSIDE" width="242.0" />
+   <Text disable="true" fill="WHITE" layoutX="74.0" layoutY="704.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SET SUBMITTED">
+      <font>
+         <Font name="Open Sans Bold" size="26.0" />
+      </font>
+   </Text>
+   <Rectangle fx:id="cancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="307.0" layoutY="663.0" stroke="TRANSPARENT" strokeType="INSIDE" width="242.0" />
+   <Text disable="true" fill="WHITE" layoutX="328.0" layoutY="704.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SET CANCELLED">
+      <font>
+         <Font name="Open Sans Bold" size="26.0" />
+      </font>
+   </Text>
+   <Rectangle fx:id="fillButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="53.0" layoutY="735.0" stroke="TRANSPARENT" strokeType="INSIDE" width="242.0" />
+   <Text disable="true" fill="WHITE" layoutX="106.0" layoutY="776.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SET FILLED">
+      <font>
+         <Font name="Open Sans Bold" size="26.0" />
+      </font>
+   </Text>
+   <Rectangle fx:id="rejectButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="307.0" layoutY="735.0" stroke="TRANSPARENT" strokeType="INSIDE" width="242.0" />
+   <Text disable="true" fill="WHITE" layoutX="385.0" layoutY="776.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REJECT">
+      <font>
+         <Font name="Open Sans Bold" size="26.0" />
+      </font>
+   </Text>
+   <TabPane layoutX="50.0" layoutY="50.0" prefHeight="600.0" prefWidth="1186.0" tabClosingPolicy="UNAVAILABLE">
+     <tabs>
+       <Tab text="Food Orders">
+         <content>
+           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <MFXTableView fx:id="foodTable" prefHeight="575.0" prefWidth="1190.0" />
+                  </children>
+               </AnchorPane>
+         </content>
+       </Tab>
+       <Tab text="Supply Orders">
+         <content>
+           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <MFXTableView fx:id="supplyTable" prefHeight="575.0" prefWidth="1190.0" />
+                  </children></AnchorPane>
+         </content>
+       </Tab>
+         <Tab text="Furniture Orders">
+           <content>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <MFXTableView fx:id="furnitureTable" prefHeight="575.0" prefWidth="1190.0" />
+                  </children></AnchorPane>
+           </content>
+         </Tab>
+         <Tab text="Flower Orders">
+           <content>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <MFXTableView fx:id="flowerTable" prefHeight="575.0" prefWidth="1190.0" />
+                  </children></AnchorPane>
+           </content>
+         </Tab>
+     </tabs>
+   </TabPane>
+
+</AnchorPane>
