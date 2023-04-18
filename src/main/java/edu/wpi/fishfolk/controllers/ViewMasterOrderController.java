@@ -126,21 +126,22 @@ public class ViewMasterOrderController extends AbsController {
     furniturefurniture.setCellValueFactory(
         new PropertyValueFactory<FurnitureOrderObservable, String>("Furniture"));
 
-    flowerid.setCellValueFactory(new PropertyValueFactory<FlowerOrderObservable, String>("ID"));
+    flowerid.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));
     flowerassignee.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("Assignee"));
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerassignee"));
     flowertotalprice.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("Total Price"));
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowertotalprice"));
     flowerstatus.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("Form Status"));
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerstatus"));
     flowerdeliveryroom.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("Delivery Room"));
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliveryroom"));
     flowerdeliverytime.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("Delivery Time"));
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliverytime"));
     flowerrecipientname.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("Recipient Name"));
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerrecipientname"));
     floweritems.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("Items"));
+        new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
 
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());

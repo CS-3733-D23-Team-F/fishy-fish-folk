@@ -12,4 +12,8 @@ public class FlowerItem {
     this.amount = amount;
     this.fullCost = price * amount;
   }
+
+  public String toString() {
+    return String.format("%dx $%.2d %s", amount, fullCost / amount, itemName);
+  }
 }
