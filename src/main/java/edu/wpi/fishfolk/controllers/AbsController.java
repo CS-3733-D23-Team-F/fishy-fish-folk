@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 
 public abstract class AbsController {
 
-  static Fdb dbConnection;
+  protected static Fdb dbConnection;
 
   protected static final ArrayList<String> allFloors =
       new ArrayList<>(List.of("L2", "L1", "1", "2", "3"));

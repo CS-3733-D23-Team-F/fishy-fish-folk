@@ -23,7 +23,7 @@
    <children>
       <GesturePane fx:id="pane" hbarPolicy="NEVER" vbarPolicy="NEVER" StackPane.alignment="TOP_LEFT">
          <Group fx:id="drawGroup">
-            <ImageView fx:id="mapImg" layoutX="27.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="mapImg" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../map/00_thelowerlevel1.png" />
                </image>
@@ -40,7 +40,7 @@
             <Insets />
          </StackPane.margin>
       </GesturePane>
-      <VBox alignment="TOP_CENTER" StackPane.alignment="TOP_CENTER">
+      <VBox alignment="TOP_CENTER" maxHeight="190.0" StackPane.alignment="TOP_CENTER">
          <children>
             <HBox fx:id="buttonPane" alignment="CENTER_LEFT" maxHeight="115.0" minHeight="115.0" style="-fx-background-color: #F1F1F1;">
                <effect>
@@ -82,7 +82,7 @@
                   <Line endX="-100.0" endY="115.29289245605469" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5" HBox.hgrow="ALWAYS" />
                   <VBox alignment="CENTER">
                      <children>
-                        <MFXToggleButton fx:id="toggleAll" contentDisplay="TOP" contentDisposition="BOTTOM" gap="4.0" text="Toggle All Edges" textFill="#012d5a">
+                        <MFXToggleButton fx:id="toggleAll" contentDisplay="TOP" contentDisposition="BOTTOM" gap="4.0" text="View All Edges" textFill="#012d5a">
                            <font>
                               <Font name="Open Sans Bold" size="15.0" />
                            </font>
@@ -90,7 +90,7 @@
                               <Insets bottom="-10.0" />
                            </VBox.margin>
                         </MFXToggleButton>
-                        <MFXToggleButton fx:id="toggleSelected" contentDisplay="TOP" contentDisposition="BOTTOM" gap="4.0" prefWidth="175.0" text="Toggle Selected Edge" textFill="#012d5a">
+                        <MFXToggleButton fx:id="toggleSelected" contentDisplay="TOP" contentDisposition="BOTTOM" gap="4.0" prefWidth="175.0" text="View Edges" textFill="#012d5a">
                            <font>
                               <Font name="Open Sans Bold" size="15.0" />
                            </font>

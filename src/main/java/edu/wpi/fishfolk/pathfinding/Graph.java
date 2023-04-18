@@ -174,6 +174,8 @@ public class Graph {
       ArrayList<Integer> nids = elevLet2ids.get(letter);
       int n = nids.size();
 
+      System.out.println("elev shaft" + letter + " has " + n + " nodes");
+
       // connect up associated ids:
       for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {

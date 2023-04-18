@@ -1,17 +1,17 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.TableEntry.Edge;
 import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.database.TableEntry.Node;
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.mapeditor.BuildingChecker;
+import edu.wpi.fishfolk.mapeditor.EdgeLine;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.MFXToggleButton;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.*;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -21,7 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import net.kurobako.gesturefx.GesturePane;
@@ -35,10 +35,12 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
 
+  @FXML HBox buttonPane;
+  @FXML VBox nodePane;
+
   @FXML MFXTextField xText;
   @FXML MFXTextField yText;
   @FXML MFXTextField buildingText;
-  @FXML MFXTextField floorText;
   @FXML MFXButton addNode;
   @FXML MFXButton delNode;
   @FXML MFXTextField longnameText;
@@ -47,12 +49,11 @@ public class MapEditorController extends AbsController {
 
   @FXML MFXButton addEdge;
   @FXML MFXButton delEdge;
-  @FXML MFXButton importCSV;
-  @FXML MFXButton exportCSV;
-  @FXML HBox buttonPane;
-  @FXML VBox nodePane;
   @FXML MFXToggleButton toggleAll;
   @FXML MFXToggleButton toggleSelected;
+
+  @FXML MFXButton importCSV;
+  @FXML MFXButton exportCSV;
 
   FileChooser fileChooser;
   DirectoryChooser dirChooser;
@@ -62,18 +63,16 @@ public class MapEditorController extends AbsController {
   private List<Location> currentEditingLocations;
   private int currentEditingLocationIdx;
 
-  private Group nodesGroup;
+  private Group nodesGroup, edgesGroup;
+  private HashSet<Edge> edgeSet;
+  private Edge currentEditingEdge;
 
   private int currentFloor = 2;
-  private List<Node> nodes;
 
   private BuildingChecker buildingChecker;
 
-  private LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
-
   public MapEditorController() {
     super();
-    // System.out.println("constructed pathfinding controller");
   }
 
   @FXML
@@ -86,7 +85,14 @@ public class MapEditorController extends AbsController {
     floorSelector.getItems().addAll(floorsReverse);
 
     nodesGroup = new Group();
+    edgesGroup = new Group();
     drawGroup.getChildren().add(nodesGroup);
+    drawGroup.getChildren().add(edgesGroup);
+
+    edgeSet = new HashSet<>();
+
+    toggleAll.setSelected(true);
+    toggleSelected.setSelected(false);
 
     switchFloor(allFloors.get(currentFloor));
 
@@ -114,46 +120,118 @@ public class MapEditorController extends AbsController {
         });
 
     state = EDITOR_STATE.IDLE;
+    currentEditingNode = -1;
     currentEditingLocationIdx = 0;
+    currentEditingEdge = null;
 
     buildingChecker = new BuildingChecker();
 
     pane.centreOn(new Point2D(1700, 1100));
     pane.zoomTo(0.4, new Point2D(2500, 1600));
 
-    // prints mouse location to screen when clicked on map. Used to calculate building boundaries
+    fileChooser = new FileChooser();
+    dirChooser = new DirectoryChooser();
+
+    // buttons and state switching
+
     mapImg.setOnMouseClicked(
         event -> {
-          if (state == EDITOR_STATE.ADDING) {
+          if (state == EDITOR_STATE.ADDING_NODE) {
             // System.out.println("adding at " + event.getX() + ", " + event.getY());
             insertNode(event.getX(), event.getY());
             delNode.setDisable(false);
             state = EDITOR_STATE.IDLE;
 
-          } else if (state == EDITOR_STATE.EDITING) {
+          } else if (state == EDITOR_STATE.EDITING_NODE) {
             state = EDITOR_STATE.IDLE;
             currentEditingNode = -1;
+            resetNodes();
             clearNodeFields();
             clearLocationFields();
           }
         });
 
-    fileChooser = new FileChooser();
-    dirChooser = new DirectoryChooser();
-
     addNode.setOnMouseClicked(
         event -> {
           // go to adding state no matter the previous state
-          state = EDITOR_STATE.ADDING;
+          state = EDITOR_STATE.ADDING_NODE;
           // disable deleting when adding
           delNode.setDisable(true);
         });
 
     delNode.setOnMouseClicked(
         event -> {
-          if (state == EDITOR_STATE.EDITING) {
+          if (state == EDITOR_STATE.EDITING_NODE) {
 
             deleteNode(currentEditingNode);
+          }
+        });
+
+    addEdge.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING_NODE) {
+            state = EDITOR_STATE.ADDING_EDGE;
+          }
+          delEdge.setDisable(true);
+        });
+
+    delEdge.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING_EDGE) {
+            removeEdge(currentEditingEdge);
+            currentEditingNode = -1;
+            currentEditingEdge = null;
+            state = EDITOR_STATE.IDLE;
+          }
+        });
+
+    toggleAll.setOnAction(
+        event -> {
+          edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(toggleAll.isSelected()));
+        });
+
+    toggleSelected.setOnAction(
+        event -> {
+          if (toggleSelected.isSelected() && state == EDITOR_STATE.EDITING_NODE) {
+
+            // highlight neighbor nodes
+            dbConnection
+                .getNeighborIDs(currentEditingNode)
+                .forEach(
+                    nid -> {
+                      nodesGroup
+                          .getChildren()
+                          .forEach(
+                              fxnode -> {
+                                NodeCircle nodeCircle = (NodeCircle) fxnode;
+                                if (nodeCircle.getNodeID() == nid) {
+                                  nodeCircle.highlight();
+                                }
+                              });
+                    });
+
+            // show edges
+            edgesGroup
+                .getChildren()
+                .forEach(
+                    fxnode -> {
+                      EdgeLine edgeLine = (EdgeLine) fxnode;
+                      if (edgeLine.containsNode(currentEditingNode)) {
+                        fxnode.setVisible(true);
+                      } else {
+                        fxnode.setVisible(false);
+                      }
+                    });
+
+          } else if (!toggleSelected.isSelected()) {
+            nodesGroup
+                .getChildren()
+                .forEach(
+                    fxnode -> {
+                      NodeCircle nodeCircle = (NodeCircle) fxnode;
+                      nodeCircle.reset();
+                    });
+            edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(false));
           }
         });
 
@@ -161,7 +239,7 @@ public class MapEditorController extends AbsController {
         .getScene()
         .setOnKeyPressed(
             event -> {
-              if (event.getCode() == KeyCode.DELETE && state == EDITOR_STATE.EDITING) {
+              if (event.getCode() == KeyCode.DELETE && state == EDITOR_STATE.EDITING_NODE) {
                 deleteNode(currentEditingNode);
               }
             });
@@ -172,28 +250,31 @@ public class MapEditorController extends AbsController {
     mapImg.setImage(images.get(floor));
 
     nodesGroup.getChildren().clear();
+    dbConnection.getNodesOnFloor(floor).forEach(this::drawNode);
 
-    nodes = dbConnection.getNodesOnFloor(floor);
-
-    // System.out.println(unodes.size());
-
-    nodes.forEach(this::drawNode);
+    edgesGroup.getChildren().clear();
+    dbConnection.getEdgesOnFloor(floor).forEach(edge -> drawEdge(edge, toggleAll.isSelected()));
   }
 
-  // this also does some initialization now
   private void drawNode(Node node) {
 
     Point2D p = node.getPoint();
-    NodeCircle c = new NodeCircle(node.getNodeID(), p.getX(), p.getY(), 4);
-    c.setStrokeWidth(5);
-    c.setFill(Color.rgb(12, 212, 252));
-    c.setStroke(Color.rgb(12, 212, 252)); // #208036
+    NodeCircle c = new NodeCircle(node.getNodeID(), p.getX(), p.getY(), 6);
+    c.setStrokeWidth(3);
+    c.reset();
 
     c.setOnMousePressed(
         event -> {
-          state = EDITOR_STATE.EDITING;
+          if (state == EDITOR_STATE.ADDING_EDGE) {
+            insertEdge(currentEditingNode, node.getNodeID());
+            delEdge.setDisable(false);
+          }
+
+          state = EDITOR_STATE.EDITING_NODE;
 
           currentEditingNode = node.getNodeID();
+
+          c.highlight();
 
           currentEditingLocations = dbConnection.getLocations(node.getNodeID(), today);
           currentEditingLocationIdx = 0;
@@ -209,7 +290,7 @@ public class MapEditorController extends AbsController {
 
     c.setOnMouseDragged(
         event -> {
-          if (state == EDITOR_STATE.EDITING) {
+          if (state == EDITOR_STATE.EDITING_NODE) {
             c.setCenterX(event.getX());
             c.setCenterY(event.getY());
             pane.setGestureEnabled(false);
@@ -218,9 +299,9 @@ public class MapEditorController extends AbsController {
 
     c.setOnMouseReleased(
         event -> {
-          if (state == EDITOR_STATE.EDITING) {
-
-            pane.setGestureEnabled(true);
+          // enable gesture pane outside if in case the state changed while dragging
+          pane.setGestureEnabled(true);
+          if (state == EDITOR_STATE.EDITING_NODE) {
 
             c.setCenterX(event.getX());
             c.setCenterY(event.getY());
@@ -230,14 +311,65 @@ public class MapEditorController extends AbsController {
                 buildingChecker.getBuilding(node.getPoint(), allFloors.get(currentFloor)));
 
             fillNodeFields(node);
-            fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+
+            if (currentEditingLocations.size() > 0) {
+              fillLocationFields(currentEditingLocations.get(currentEditingLocationIdx));
+            } else {
+              clearLocationFields();
+            }
 
             // update node in database with updated x & y
             dbConnection.updateEntry(node);
+
+            //redraw edges associated with this node
+
           }
         });
 
     nodesGroup.getChildren().add(c);
+  }
+
+  private boolean drawEdge(Edge edge, boolean visibility) {
+
+    if (edgeSet.contains(edge)) {
+      return false;
+    }
+
+    edgeSet.add(edge);
+
+    Point2D p1 =
+        ((Node) dbConnection.getEntry(edge.getStartNode(), TableEntryType.NODE)).getPoint();
+    Point2D p2 = ((Node) dbConnection.getEntry(edge.getEndNode(), TableEntryType.NODE)).getPoint();
+
+    EdgeLine line =
+        new EdgeLine(
+            edge.getStartNode(), edge.getEndNode(), p1.getX(), p1.getY(), p2.getX(), p2.getY());
+
+    line.getStrokeDashArray().addAll(5.0, 7.5);
+    line.setStrokeWidth(1.5);
+    line.setStrokeLineCap(StrokeLineCap.ROUND);
+    line.reset();
+
+    line.setOnMousePressed(
+        event -> {
+          currentEditingEdge = edge;
+          line.highlight();
+          state = EDITOR_STATE.EDITING_EDGE;
+        });
+
+    line.setVisible(visibility);
+
+    edgesGroup.getChildren().add(line);
+    return true;
+  }
+
+  private void resetNodes() {
+    nodesGroup
+        .getChildren()
+        .forEach(
+            fxnode -> {
+              ((NodeCircle) fxnode).reset();
+            });
   }
 
   /**
@@ -249,14 +381,12 @@ public class MapEditorController extends AbsController {
 
     xText.setText(Double.toString(node.getX()));
     yText.setText(Double.toString(node.getY()));
-    floorText.setText(node.getFloor());
     buildingText.setText(node.getBuilding());
   }
 
   private void clearNodeFields() {
     xText.setText("");
     yText.setText("");
-    floorText.setText("");
     buildingText.setText("");
   }
 
@@ -306,10 +436,29 @@ public class MapEditorController extends AbsController {
     drawNode(node);
     dbConnection.insertEntry(node);
   }
+
+  private void insertEdge(int start, int end) {
+    Edge newEdge = new Edge(start, end);
+    dbConnection.insertEntry(newEdge);
+    drawEdge(newEdge, true);
+  }
+
+  private void removeEdge(Edge edge) {
+    edgeSet.remove(edge);
+
+    Iterator<javafx.scene.Node> itr = edgesGroup.getChildren().iterator();
+    while (itr.hasNext()) {
+      if (((EdgeLine) itr.next()).matches(edge)) itr.remove();
+    }
+
+    dbConnection.removeEntry(edge, TableEntryType.EDGE);
+  }
 }
 
 enum EDITOR_STATE {
   IDLE,
-  ADDING,
-  EDITING;
+  ADDING_NODE,
+  EDITING_NODE,
+  ADDING_EDGE,
+  EDITING_EDGE;
 }

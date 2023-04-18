@@ -529,4 +529,38 @@ public class Fdb {
   public int getNumNodes() {
     return nodeTable.getNumNodes();
   }
+
+  /**
+   * Get the IDs of the nodes that share an edge with the given node.
+   *
+   * @param nodeID
+   * @return
+   */
+  public List<Integer> getNeighborIDs(int nodeID) {
+
+    LinkedList<Integer> neighbors = new LinkedList<>();
+
+    edgeTable
+        .getAllEntries()
+        .forEach(
+            edge -> {
+              if (edge.getStartNode() == nodeID) neighbors.add(edge.getEndNode());
+              if (edge.getEndNode() == nodeID) neighbors.add(edge.getStartNode());
+            });
+
+    return neighbors;
+  }
+
+  public List<Edge> getEdgesOnFloor(String floor) {
+    return edgeTable.getAllEntries().stream()
+        .filter(
+            edge -> {
+              Node start = nodeTable.getEntry(edge.getStartNode());
+              Node end = nodeTable.getEntry(edge.getEndNode());
+              if (start != null && end != null) {
+                return start.getFloor().equals(floor) && end.getFloor().equals(floor);
+              } else return false;
+            })
+        .toList();
+  }
 }

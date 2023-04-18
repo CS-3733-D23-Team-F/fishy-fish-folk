@@ -15,7 +15,9 @@ public class Node {
   @Getter @Setter private String floor;
   @Getter @Setter private String building;
   @Getter @Setter private EntryStatus status;
+
   private HashSet<Location> locations;
+  private HashSet<Integer> neighbors;
 
   /**
    * Table entry type: Node
@@ -53,6 +55,18 @@ public class Node {
 
   public List<Location> getLocations() {
     return locations.stream().toList();
+  }
+
+  public boolean addEdge(int other) {
+    return neighbors.add(other);
+  }
+
+  public boolean removeEdge(int other) {
+    return neighbors.remove(other);
+  }
+
+  public List<Integer> getNeighbors() {
+    return neighbors.stream().toList();
   }
 
   public boolean containsType(NodeType type) {
