@@ -1,14 +1,15 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.rewrite.Fdb;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.FoodRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import edu.wpi.fishfolk.ui.FoodMenuLoader;
-import edu.wpi.fishfolk.ui.NewFoodCart;
-import edu.wpi.fishfolk.ui.NewFoodItem;
-import edu.wpi.fishfolk.ui.NewFoodMenuItem;
+import edu.wpi.fishfolk.ui.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import org.controlsfx.control.PopOver;
 
 public class NewFoodOrderController extends AbsController {
   @FXML MFXButton appsTab, sidesTab, mainsTab, drinksTab, dessertsTab; // tab buttons
@@ -38,12 +40,16 @@ public class NewFoodOrderController extends AbsController {
   @FXML ScrollPane menuItemsPane, cartItemsPane;
   @FXML AnchorPane cartViewPane;
   @FXML HBox cartWrap, blur;
-  List<NewFoodMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
-  NewFoodCart cart;
+  Font oSans26, oSans20, oSans26bold;
+
+  private List<NewFoodMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
+  private NewFoodCart cart;
   MFXButton[] tabButtons;
+  Fdb fdb;
 
   public NewFoodOrderController() {
     super();
+    fdb = new Fdb();
   }
 
   /** Prepare buttons, cart, items, room selector, and load the appetizers tab */
@@ -65,6 +71,9 @@ public class NewFoodOrderController extends AbsController {
     drinksTab.setOnAction(event -> tab(3));
     dessertsTab.setOnAction(event -> tab(4));
     tabButtons = new MFXButton[] {appsTab, sidesTab, mainsTab, drinksTab, dessertsTab};
+    oSans20 = new Font("Open Sans Regular", 20);
+    oSans26 = new Font("Open Sans Regular", 26);
+    oSans26bold = new Font("Open Sans Bold", 26);
     tab(0);
   }
 
@@ -79,36 +88,37 @@ public class NewFoodOrderController extends AbsController {
     for (NewFoodMenuItem item : allItems) {
       switch (item.getCat()) {
         case app:
-          {
-            menuTabs[0].add(item);
-            break;
-          }
+        {
+          menuTabs[0].add(item);
+          break;
+        }
         case side:
-          {
-            menuTabs[1].add(item);
-            break;
-          }
+        {
+          menuTabs[1].add(item);
+          break;
+        }
         case main:
-          {
-            menuTabs[2].add(item);
-            break;
-          }
+        {
+          menuTabs[2].add(item);
+          break;
+        }
         case drink:
-          {
-            menuTabs[3].add(item);
-            break;
-          }
+        {
+          menuTabs[3].add(item);
+          break;
+        }
         case dessert:
-          {
-            menuTabs[4].add(item);
-            break;
-          }
+        {
+          menuTabs[4].add(item);
+          break;
+        }
       }
     }
   }
 
   /** Load room list into Room Selector */
   private void loadRooms() {
+    roomSelector.getItems().add("The only room");
     // todo write function once exists on DB side
   }
 
@@ -145,23 +155,42 @@ public class NewFoodOrderController extends AbsController {
 
   /** Confirm the order, and add it to the Database */
   private void submit() {
+    String notes = notesField.getText();
+    LocalTime time = parseTime();
+    String room = roomSelector.getValue();
+    String recipient = recipientField.getText();
     if (cart.getTotalPrice() == 0) {
       itemsError();
       return;
     }
-    LocalTime time = parseTime();
-    if (time == null) {
-      timeError();
-      return;
-    }
-    String notes = notesField.getText();
-    String room = roomSelector.getValue();
     if (room == null) {
       roomError();
       return;
     }
+    if (time == null) {
+      timeError();
+      return;
+    }
+    if (recipient.equals("")) {
+      recipientError();
+      return;
+    }
     List<NewFoodItem> items = cart.getSubmittableItems();
-    // todo send orders to DB on submission
+    LocalDateTime deliveryTime = LocalDateTime.of(LocalDate.now(), time);
+    if (deliveryTime.isBefore(LocalDateTime.now())) {
+      deliveryTime.plusDays(1);
+    }
+    FoodRequest thisOrder =
+            new FoodRequest(
+                    "",
+                    FormStatus.submitted,
+                    notes,
+                    cart.getTotalPrice(),
+                    room,
+                    deliveryTime,
+                    recipientField.getText(),
+                    items);
+    fdb.insertEntry(thisOrder);
   }
 
   /**
@@ -173,7 +202,7 @@ public class NewFoodOrderController extends AbsController {
     String timeSel = timeSelector.getText();
     int pos = timeSel.indexOf(":");
     int h = -1, m = -1;
-    if (pos != 0) {
+    if (pos != -1) {
       h = Integer.parseInt(timeSel.substring(0, pos));
       if (timeSel.length() - pos >= 3) {
         m = Integer.parseInt(timeSel.substring(pos + 1, pos + 3));
@@ -191,17 +220,44 @@ public class NewFoodOrderController extends AbsController {
         h = 0;
       }
     }
+    if (h > 23 || m >= 60) {
+      return null;
+    }
     return LocalTime.of(h, m);
   }
 
   /** Informs the user they have not input a valid time */
-  private void timeError() {}
+  private void timeError() {
+    submissionError("Please enter a valid time.");
+  }
 
   /** informs the user they have not selected a room */
-  private void roomError() {}
+  private void roomError() {
+    submissionError("Please select a room.");
+  }
 
   /** informs the user they have not selected any items */
-  private void itemsError() {}
+  private void itemsError() {
+    submissionError("Please select at least one item.");
+  }
+
+  /** informs the user they have not specified the recipient of the order */
+  private void recipientError() {
+    submissionError("Please enter a recipient.");
+  }
+
+  /**
+   * pops up an error if the submission is invalid
+   *
+   * @param error the error message to display
+   */
+  private void submissionError(String error) {
+    PopOver popup = new PopOver();
+    Text popText = new Text(error);
+    popText.setFont(oSans26);
+    popup.setContentNode(popText);
+    popup.show(submitButton);
+  }
 
   /**
    * Loads a tab to the on-screen menu
@@ -214,7 +270,7 @@ public class NewFoodOrderController extends AbsController {
     System.out.printf("%d items, %d rows\n", items.size(), numRows);
     VBox itemRows = new VBox();
     itemRows.setSpacing(25);
-    itemRows.setPrefHeight(Math.max(0, (275 * numRows) - 35));
+    itemRows.setPrefHeight(Math.max(0, (275 * numRows) - 25));
     itemRows.setPrefWidth(1195);
     for (int i = 0; i < numRows; i++) {
       HBox itemRow = new HBox();
@@ -256,7 +312,7 @@ public class NewFoodOrderController extends AbsController {
           itemName.setStrokeType(StrokeType.OUTSIDE);
           itemName.setStrokeWidth(0);
           itemName.setWrappingWidth(345);
-          itemName.setFont(new Font("Open Sans Bold", 26));
+          itemName.setFont(oSans26bold);
           itemName.setTextAlignment(TextAlignment.LEFT);
           itemPane.getChildren().add(itemName);
           Text itemPrice = new Text();
@@ -266,7 +322,7 @@ public class NewFoodOrderController extends AbsController {
           itemPrice.setStrokeType(StrokeType.OUTSIDE);
           itemPrice.setStrokeWidth(0);
           itemPrice.setWrappingWidth(345);
-          itemPrice.setFont(new Font("Open Sans Regular", 26));
+          itemPrice.setFont(oSans26);
           itemPrice.setTextAlignment(TextAlignment.RIGHT);
           itemPane.getChildren().add(itemPrice);
           Text itemDescription = new Text();
@@ -276,11 +332,11 @@ public class NewFoodOrderController extends AbsController {
           itemDescription.setStrokeType(StrokeType.OUTSIDE);
           itemDescription.setStrokeWidth(0);
           itemDescription.setWrappingWidth(345);
-          itemDescription.setFont(new Font("Open Sans Regular", 20));
+          itemDescription.setFont(oSans20);
           itemDescription.setTextAlignment(TextAlignment.LEFT);
           itemPane.getChildren().add(itemDescription);
           MFXButton addItemButton = new MFXButton();
-          addItemButton.setFont(new Font("Open Sans Regular", 20));
+          addItemButton.setFont(oSans20);
           addItemButton.setText("Add to Order");
           addItemButton.setLayoutX(225);
           addItemButton.setLayoutY(177);
@@ -311,6 +367,7 @@ public class NewFoodOrderController extends AbsController {
         tabButtons[i].setDisable(false);
       }
     }
+    menuItemsPane.setVvalue(0);
   }
 
   /** prepares the visual cart with the items that have been added */
@@ -341,7 +398,7 @@ public class NewFoodOrderController extends AbsController {
       itemName.setStrokeType(StrokeType.OUTSIDE);
       itemName.setStrokeWidth(0);
       itemName.setWrappingWidth(300);
-      itemName.setFont(new Font("Open Sans Bold", 26));
+      itemName.setFont(oSans26bold);
       itemName.setTextAlignment(TextAlignment.LEFT);
       itemPane.getChildren().add(itemName);
       Text unitPrice = new Text();
@@ -351,7 +408,7 @@ public class NewFoodOrderController extends AbsController {
       unitPrice.setStrokeType(StrokeType.OUTSIDE);
       unitPrice.setStrokeWidth(0);
       unitPrice.setWrappingWidth(100);
-      unitPrice.setFont(new Font("Open Sans Regular", 26));
+      unitPrice.setFont(oSans26);
       unitPrice.setTextAlignment(TextAlignment.LEFT);
       itemPane.getChildren().add(unitPrice);
       Text quantityText = new Text();
@@ -361,7 +418,7 @@ public class NewFoodOrderController extends AbsController {
       quantityText.setStrokeType(StrokeType.OUTSIDE);
       quantityText.setStrokeWidth(0);
       quantityText.setWrappingWidth(100);
-      quantityText.setFont(new Font("Open Sans Regular", 26));
+      quantityText.setFont(oSans26);
       quantityText.setTextAlignment(TextAlignment.CENTER);
       itemPane.getChildren().add(quantityText);
       Text totalPrice = new Text();
@@ -371,7 +428,7 @@ public class NewFoodOrderController extends AbsController {
       totalPrice.setStrokeType(StrokeType.OUTSIDE);
       totalPrice.setStrokeWidth(0);
       totalPrice.setWrappingWidth(100);
-      totalPrice.setFont(new Font("Open Sans Regular", 26));
+      totalPrice.setFont(oSans26);
       totalPrice.setTextAlignment(TextAlignment.LEFT);
       itemPane.getChildren().add(totalPrice);
       MFXButton minusButton = new MFXButton();
@@ -383,10 +440,10 @@ public class NewFoodOrderController extends AbsController {
       minusButton.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 14;");
       final NewFoodMenuItem currentItem = item.getItem();
       minusButton.setOnAction(
-          event -> {
-            cart.remove(currentItem);
-            loadCart();
-          });
+              event -> {
+                cart.remove(currentItem);
+                loadCart();
+              });
       itemPane.getChildren().add(minusButton);
       MFXButton plusButton = new MFXButton();
       plusButton.setLayoutX(616);
@@ -396,10 +453,10 @@ public class NewFoodOrderController extends AbsController {
       plusButton.setMinWidth(28);
       plusButton.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 14;");
       plusButton.setOnAction(
-          event -> {
-            cart.add(currentItem);
-            loadCart();
-          });
+              event -> {
+                cart.add(currentItem);
+                loadCart();
+              });
       itemPane.getChildren().add(plusButton);
       MFXButton removeButton = new MFXButton();
       removeButton.setText("Remove from Order");
@@ -407,14 +464,14 @@ public class NewFoodOrderController extends AbsController {
       removeButton.setLayoutY(38);
       removeButton.setPrefHeight(55);
       removeButton.setPrefWidth(309);
-      removeButton.setFont(new Font("Open Sans Regular", 26));
+      removeButton.setFont(oSans26);
       removeButton.setStyle("-fx-background-color: #900000;");
       removeButton.setTextFill(Paint.valueOf("WHITE"));
       removeButton.setOnAction(
-          event -> {
-            cart.removeAll(currentItem);
-            loadCart();
-          });
+              event -> {
+                cart.removeAll(currentItem);
+                loadCart();
+              });
       itemPane.getChildren().add(removeButton);
       itemsBox.getChildren().add(itemPane);
     }
