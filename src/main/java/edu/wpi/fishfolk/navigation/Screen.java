@@ -8,13 +8,17 @@ public enum Screen {
   FOOD_ORDER_REQUEST("views/FoodOrder.fxml"),
   SUPPLIES_REQUEST("views/SupplyRequest.fxml"),
   FURNITURE_REQUEST("views/FurnitureOrder.fxml"),
-  MAP_EDITOR("views/MapEditor.fxml"),
   VIEW_FOOD_ORDERS("views/ViewFoodOrders.fxml"),
   VIEW_SUPPLY_ORDERS("views/ViewSupplyOrders.fxml"),
   VIEW_FURNITURE_ORDERS("views/ViewFurnitureOrders.fxml"),
   PATHFINDING("views/Pathfinding.fxml"),
+
+  MAP_EDITOR("views/MapEditor.fxml"),
+  MOVE_EDITOR("views/MoveEditor.fxml"),
+
   LOGIN("views/Login.fxml"),
-  OLD_MAP_EDITOR("views/OldMapEditor.fxml"),
+
+
   TEMPLATE("views/Template.fxml");
 
   private final String filename;

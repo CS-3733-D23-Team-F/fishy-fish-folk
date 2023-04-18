@@ -50,7 +50,7 @@ public class Fapp extends Application {
     primaryStage.setMaximized(true);
     primaryStage.show();
 
-    Navigation.navigate(Screen.MAP_EDITOR);
+    Navigation.navigate(Screen.MOVE_EDITOR);
   }
 
   @Override
