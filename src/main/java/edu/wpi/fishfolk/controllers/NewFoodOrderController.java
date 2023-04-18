@@ -37,6 +37,7 @@ public class NewFoodOrderController extends AbsController {
   @FXML TextArea notesField;
   @FXML ScrollPane menuItemsPane, cartItemsPane;
   @FXML AnchorPane cartViewPane;
+  @FXML HBox cartWrap, blur;
   List<NewFoodMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
   NewFoodCart cart;
   MFXButton[] tabButtons;
@@ -128,12 +129,18 @@ public class NewFoodOrderController extends AbsController {
     notesField.setWrapText(true);
     cartViewPane.setDisable(false);
     cartViewPane.setVisible(true);
+    cartWrap.setDisable(false);
+    blur.setDisable(false);
+    blur.setVisible(true);
   }
 
   /** Hide the cart */
   private void closeCart() {
     cartViewPane.setDisable(true);
     cartViewPane.setVisible(false);
+    cartWrap.setDisable(true);
+    blur.setDisable(true);
+    blur.setVisible(false);
   }
 
   /** Confirm the order, and add it to the Database */
