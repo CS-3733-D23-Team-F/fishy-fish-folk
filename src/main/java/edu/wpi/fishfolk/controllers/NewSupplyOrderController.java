@@ -1,8 +1,10 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.database.Table;
+import edu.wpi.fishfolk.database.rewrite.TableEntry.SupplyRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.SupplyItem;
 import edu.wpi.fishfolk.ui.SupplyOrder;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
@@ -39,17 +41,9 @@ public class NewSupplyOrderController extends AbsController {
       rectangle7;
   @FXML MFXTextField linkTextField, notesTextField;
 
-  /*
   public NewSupplyOrderController() {
     super();
-    supplyRequestTable = new Table(dbConnection.conn, "supplyrequest");
-    supplyRequestTable.init(false);
-    supplyRequestTable.addHeaders(
-        SupplyRequestController.headers,
-        new ArrayList<>(
-            List.of("String", "String", "String", "String", "String", "String", "String")));
   }
-   */
 
   @FXML
   public void initialize() {
@@ -73,7 +67,8 @@ public class NewSupplyOrderController extends AbsController {
   }
 
   void loadRooms() {
-    roomSelector.getItems().addAll(dbConnection.getDestLongnames());
+    // roomSelector.getItems().addAll(dbConnection.getDestLongnames());
+    roomSelector.getItems().add("A room");
   }
 
   private void addToOrder(int supplyNum) {
@@ -122,27 +117,35 @@ public class NewSupplyOrderController extends AbsController {
 
   private void submit() {
     if (rectangle1.isSelected()) addToOrder(0);
-    else addToOrder(7);
+    // else addToOrder(7);
     if (rectangle2.isSelected()) addToOrder(1);
-    else addToOrder(7);
+    // else addToOrder(7);
     if (rectangle3.isSelected()) addToOrder(2);
-    else addToOrder(7);
+    // else addToOrder(7);
     if (rectangle4.isSelected()) addToOrder(3);
-    else addToOrder(7);
+    // else addToOrder(7);
     if (rectangle5.isSelected()) addToOrder(4);
-    else addToOrder(7);
+    // else addToOrder(7);
     if (rectangle6.isSelected()) addToOrder(5);
-    else addToOrder(7);
+    // else addToOrder(7);
     if (rectangle7.isSelected()) addToOrder(6);
-    else addToOrder(7);
+    // else addToOrder(7);
     currentSupplyOrder.roomNum = roomSelector.getValue();
     currentSupplyOrder.link = linkTextField.getText();
     currentSupplyOrder.notes = notesTextField.getText();
     if (submittable()) {
-      System.out.println(currentSupplyOrder.toString());
+      // System.out.println(currentSupplyOrder.toString());
       System.out.println(currentSupplyOrder.listItemsToString());
       currentSupplyOrder.setSubmitted();
-      // supplyRequestTable.insert(currentSupplyOrder);
+      SupplyRequest request =
+          new SupplyRequest(
+              "",
+              FormStatus.submitted,
+              notesTextField.getText(),
+              linkTextField.getText(),
+              roomSelector.getValue(),
+              currentSupplyOrder.supplies);
+      dbConnection.insertEntry(request);
       Navigation.navigate(Screen.HOME);
     }
   }

@@ -714,7 +714,9 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
                 + ","
                 + fr.getDeliveryTime()
                 + ","
-                + fr.getRecipientName());
+                + fr.getRecipientName()
+                + ","
+                + getFoodItemsTableID(fr.getFoodRequestID()));
       }
 
       out.close();

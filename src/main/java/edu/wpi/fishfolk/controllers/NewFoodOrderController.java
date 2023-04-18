@@ -1,7 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
-import edu.wpi.fishfolk.database.rewrite.Fdb;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.FoodRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
@@ -39,17 +38,14 @@ public class NewFoodOrderController extends AbsController {
   @FXML TextArea notesField;
   @FXML ScrollPane menuItemsPane, cartItemsPane;
   @FXML AnchorPane cartViewPane;
-  @FXML HBox cartWrap, blur;
   Font oSans26, oSans20, oSans26bold;
 
   private List<NewFoodMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
   private NewFoodCart cart;
   MFXButton[] tabButtons;
-  Fdb fdb;
 
   public NewFoodOrderController() {
     super();
-    fdb = new Fdb();
   }
 
   /** Prepare buttons, cart, items, room selector, and load the appetizers tab */
@@ -77,7 +73,7 @@ public class NewFoodOrderController extends AbsController {
     tab(0);
   }
 
-  /** Load food items into Respective menu tabs */
+  /** Load food items into Respoective menu tabs */
   private void loadMenu() {
     menuTabs = new List[5];
     for (int i = 0; i < 5; i++) {
@@ -88,37 +84,37 @@ public class NewFoodOrderController extends AbsController {
     for (NewFoodMenuItem item : allItems) {
       switch (item.getCat()) {
         case app:
-        {
-          menuTabs[0].add(item);
-          break;
-        }
+          {
+            menuTabs[0].add(item);
+            break;
+          }
         case side:
-        {
-          menuTabs[1].add(item);
-          break;
-        }
+          {
+            menuTabs[1].add(item);
+            break;
+          }
         case main:
-        {
-          menuTabs[2].add(item);
-          break;
-        }
+          {
+            menuTabs[2].add(item);
+            break;
+          }
         case drink:
-        {
-          menuTabs[3].add(item);
-          break;
-        }
+          {
+            menuTabs[3].add(item);
+            break;
+          }
         case dessert:
-        {
-          menuTabs[4].add(item);
-          break;
-        }
+          {
+            menuTabs[4].add(item);
+            break;
+          }
       }
     }
   }
 
   /** Load room list into Room Selector */
   private void loadRooms() {
-    roomSelector.getItems().add("The only room");
+    // roomSelector.getItems().addAll(dbConnection.getDestLongnames());
     // todo write function once exists on DB side
   }
 
@@ -139,18 +135,12 @@ public class NewFoodOrderController extends AbsController {
     notesField.setWrapText(true);
     cartViewPane.setDisable(false);
     cartViewPane.setVisible(true);
-    cartWrap.setDisable(false);
-    blur.setDisable(false);
-    blur.setVisible(true);
   }
 
   /** Hide the cart */
   private void closeCart() {
     cartViewPane.setDisable(true);
     cartViewPane.setVisible(false);
-    cartWrap.setDisable(true);
-    blur.setDisable(true);
-    blur.setVisible(false);
   }
 
   /** Confirm the order, and add it to the Database */
@@ -181,16 +171,16 @@ public class NewFoodOrderController extends AbsController {
       deliveryTime.plusDays(1);
     }
     FoodRequest thisOrder =
-            new FoodRequest(
-                    "",
-                    FormStatus.submitted,
-                    notes,
-                    cart.getTotalPrice(),
-                    room,
-                    deliveryTime,
-                    recipientField.getText(),
-                    items);
-    fdb.insertEntry(thisOrder);
+        new FoodRequest(
+            "",
+            FormStatus.submitted,
+            notes,
+            cart.getTotalPrice(),
+            room,
+            deliveryTime,
+            recipientField.getText(),
+            items);
+    dbConnection.insertEntry(thisOrder);
   }
 
   /**
@@ -367,7 +357,6 @@ public class NewFoodOrderController extends AbsController {
         tabButtons[i].setDisable(false);
       }
     }
-    menuItemsPane.setVvalue(0);
   }
 
   /** prepares the visual cart with the items that have been added */
@@ -440,10 +429,10 @@ public class NewFoodOrderController extends AbsController {
       minusButton.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 14;");
       final NewFoodMenuItem currentItem = item.getItem();
       minusButton.setOnAction(
-              event -> {
-                cart.remove(currentItem);
-                loadCart();
-              });
+          event -> {
+            cart.remove(currentItem);
+            loadCart();
+          });
       itemPane.getChildren().add(minusButton);
       MFXButton plusButton = new MFXButton();
       plusButton.setLayoutX(616);
@@ -453,10 +442,10 @@ public class NewFoodOrderController extends AbsController {
       plusButton.setMinWidth(28);
       plusButton.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 14;");
       plusButton.setOnAction(
-              event -> {
-                cart.add(currentItem);
-                loadCart();
-              });
+          event -> {
+            cart.add(currentItem);
+            loadCart();
+          });
       itemPane.getChildren().add(plusButton);
       MFXButton removeButton = new MFXButton();
       removeButton.setText("Remove from Order");
@@ -468,10 +457,10 @@ public class NewFoodOrderController extends AbsController {
       removeButton.setStyle("-fx-background-color: #900000;");
       removeButton.setTextFill(Paint.valueOf("WHITE"));
       removeButton.setOnAction(
-              event -> {
-                cart.removeAll(currentItem);
-                loadCart();
-              });
+          event -> {
+            cart.removeAll(currentItem);
+            loadCart();
+          });
       itemPane.getChildren().add(removeButton);
       itemsBox.getChildren().add(itemPane);
     }

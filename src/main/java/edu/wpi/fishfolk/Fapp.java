@@ -47,10 +47,10 @@ public class Fapp extends Application {
 
     // primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
     primaryStage.setScene(scene);
-    primaryStage.setFullScreen(true);
+    primaryStage.setMaximized(true);
     primaryStage.show();
 
-    Navigation.navigate(Screen.NEW_FOOD_ORDER);
+    Navigation.navigate(Screen.VIEW_MASTER_ORDER);
   }
 
   @Override
