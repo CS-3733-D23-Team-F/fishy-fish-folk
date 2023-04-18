@@ -663,7 +663,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
         allFlowerItems.add(
             new FlowerItem(
                 results.getString("itemname"),
-                results.getInt("itemcost"),
+                results.getInt("fullcost"),
                 results.getInt("itemamount")));
       }
 
