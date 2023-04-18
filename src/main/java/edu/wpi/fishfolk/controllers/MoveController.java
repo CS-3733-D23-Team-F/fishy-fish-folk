@@ -13,12 +13,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 public class MoveController extends AbsController {
 
   @FXML TableView<ObservableMove> movetable;
-  @FXML TableColumn<ObservableMove, Integer> nodeid;
-  @FXML TableColumn<ObservableMove, String> movelongname, date;
+  @FXML TableColumn<ObservableMove, String> nodeid, movelongname, date;
 
   @FXML TableView<ObservableLocation> locationtable;
   @FXML TableColumn<ObservableLocation, String> locationlongname, shortname, type;
@@ -42,6 +42,14 @@ public class MoveController extends AbsController {
     shortname.setCellValueFactory(new PropertyValueFactory<>("shortname"));
     type.setCellValueFactory(new PropertyValueFactory<>("type"));
 
+    // make each cell editable
+    nodeid.setCellFactory(TextFieldTableCell.forTableColumn());
+    movelongname.setCellFactory(TextFieldTableCell.forTableColumn());
+    date.setCellFactory(TextFieldTableCell.forTableColumn());
+    locationlongname.setCellFactory(TextFieldTableCell.forTableColumn());
+    shortname.setCellFactory(TextFieldTableCell.forTableColumn());
+    type.setCellFactory(TextFieldTableCell.forTableColumn());
+
     observableMoves =
         FXCollections.observableArrayList(
             dbConnection.getAllEntries(TableEntryType.MOVE).stream()
@@ -55,6 +63,8 @@ public class MoveController extends AbsController {
                 .map(elt -> new ObservableLocation((Location) elt))
                 .toList()));
 
+    nodeid.setOnEditCommit(this::editNodeID);
+
     submitmove.setOnMouseClicked(
         event -> {
           Move newMove =
@@ -63,9 +73,25 @@ public class MoveController extends AbsController {
                   movelongnametext.getText(),
                   ObservableMove.parseDate(datetext.getText()));
 
+          // for some reason .add doesnt work, just use .addAll(... elements)
           observableMoves.addAll(new ObservableMove(newMove));
 
-          dbConnection.insertEntry(newMove);
+          System.out.println(newMove + " " + dbConnection.insertEntry(newMove));
         });
+  }
+
+  private void editNodeID(TableColumn.CellEditEvent<ObservableMove, String> event) {
+
+    String newnodeID = event.getNewValue();
+    String oldlongname = movelongname.getCellObservableValue(event.getRowValue()).getValue();
+    String olddate = date.getCellObservableValue(event.getRowValue()).getValue();
+
+    observableMoves.removeIf(obsmove -> obsmove.matches(oldlongname, olddate));
+
+    Move newMove =
+        new Move(Integer.parseInt(newnodeID), oldlongname, ObservableMove.parseDate(olddate));
+    observableMoves.addAll(new ObservableMove(newMove));
+
+    System.out.println(newMove + " " + dbConnection.updateEntry(newMove));
   }
 }

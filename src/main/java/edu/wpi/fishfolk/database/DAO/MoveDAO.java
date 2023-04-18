@@ -289,7 +289,7 @@ public class MoveDAO implements IDAO<Move> {
               + " = ?, "
               + headers.get(2)
               + " = ? WHERE "
-              + headers.get(0) // longname matches
+              + headers.get(1) // longname matches
               + " = ? AND "
               + headers.get(2) // and date matches
               + " = ?;";
@@ -300,7 +300,7 @@ public class MoveDAO implements IDAO<Move> {
               + "."
               + this.tableName
               + " WHERE "
-              + headers.get(0) // longname matches
+              + headers.get(1) // longname matches
               + " = ? AND "
               + headers.get(2) // and date matches
               + " = ?;";
