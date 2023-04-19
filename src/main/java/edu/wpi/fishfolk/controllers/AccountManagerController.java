@@ -1,9 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.database.rewrite.DAO.Observables.UserAccountObservable;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.PermissionLevel;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.TableEntryType;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.UserAccount;
+import edu.wpi.fishfolk.database.DAO.Observables.UserAccountObservable;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;

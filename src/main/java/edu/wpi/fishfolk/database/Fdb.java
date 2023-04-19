@@ -1,146 +1,72 @@
 package edu.wpi.fishfolk.database;
 
-import edu.wpi.fishfolk.database.edit.DataEdit;
-import java.sql.*;
-import java.time.LocalDate;
-import java.util.*;
+import edu.wpi.fishfolk.database.DAO.*;
+import edu.wpi.fishfolk.database.TableEntry.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
-/** @author Christian */
 public class Fdb {
 
-  public Table micronodeTable;
-  public Table locationTable;
-  public Table moveTable;
-  public Table edgeTable;
+  private final Connection dbConnection;
 
-  public Connection conn;
+  // Hospital Map Tables
+  private final NodeDAO nodeTable;
+  private final LocationDAO locationTable;
+  private final MoveDAO moveTable;
+  private final EdgeDAO edgeTable;
 
-  private HashSet<String> freeIDs;
+  // Service Request Tables
+  private final FoodRequestDAO foodRequestTable;
+  private final SupplyRequestDAO supplyRequestTable;
+  private final FurnitureRequestDAO furnitureRequestTable;
+  private final FlowerRequestDAO flowerRequestTable;
+  private final ConferenceRequestDAO conferenceRequestTable;
 
+  // Login & User Accounts Tables
+  private final UserAccountDAO userAccountTable;
+
+  // TODO use map from tabletype -> dao table object to simplify delegation
+
+  /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb() {
 
-    // this.conn = connect("teamfdb", "teamf", "teamf60");
+    this.dbConnection = connect("teamfdb", "teamf", "teamf60");
 
-    initialize();
+    // Hospital Map Tables
+    this.nodeTable = new NodeDAO(dbConnection);
+    this.locationTable = new LocationDAO(dbConnection);
+    this.moveTable = new MoveDAO(dbConnection);
+    this.edgeTable = new EdgeDAO(dbConnection);
 
-    int maxID = 4000;
+    // Service Request Tables
+    this.foodRequestTable = new FoodRequestDAO(dbConnection);
+    this.supplyRequestTable = new SupplyRequestDAO(dbConnection);
+    this.furnitureRequestTable = new FurnitureRequestDAO(dbConnection);
+    this.flowerRequestTable = new FlowerRequestDAO(dbConnection);
+    this.conferenceRequestTable = new ConferenceRequestDAO(dbConnection);
 
-    freeIDs = new HashSet<>((maxID - 100) / 5 * 4 / 3 + 1); // about 780 to start
+    // Login & User Accounts Tables
+    this.userAccountTable = new UserAccountDAO(dbConnection);
 
-    // add all ids from 100 -> 3000 counting by 5
-    for (int i = 100; i <= maxID; i += 5) {
-      freeIDs.add(Integer.toString(i));
-    }
+    Runtime.getRuntime()
+        .addShutdownHook(
+            new Thread(
+                () -> {
+                  System.out.println("[Fdb]: Shutdown received...");
+                  nodeTable.updateDatabase(true);
+                  locationTable.updateDatabase(true);
+                  foodRequestTable.updateDatabase(true);
+                  supplyRequestTable.updateDatabase(true);
+                  furnitureRequestTable.updateDatabase(true);
+                  flowerRequestTable.updateDatabase(true);
+                  conferenceRequestTable.updateDatabase(true);
+                  userAccountTable.updateDatabase(true);
 
-    // remove the ids already in the database
-    micronodeTable
-        .getColumn("id")
-        .forEach(
-            id -> {
-              freeIDs.remove(id);
-            });
-
-    System.out.println("num ids left " + freeIDs.size());
-  }
-
-  public boolean processEdit(DataEdit edit) {
-
-    // handle ids
-    switch (edit.type) {
-      case INSERT:
-        // edit.id = getNextID();
-        break;
-
-      case REMOVE:
-        freeID(edit.id);
-        break;
-    }
-
-    switch (edit.table) {
-      case MICRONODE:
-        return micronodeTable.update(edit);
-
-      case LOCATION:
-        return locationTable.update(edit);
-
-      case MOVE:
-        return moveTable.update(edit);
-
-      case EDGE:
-        return edgeTable.update(edit);
-    }
-
-    return false;
-  }
-
-  public String getNextID() {
-    Iterator<String> itr = freeIDs.iterator();
-    String id = itr.next();
-    itr.remove();
-    return id;
-  }
-
-  public void freeID(String id) {
-    freeIDs.add(id);
-  }
-
-  /**
-   * Initialize the class by connecting to the database and establishing objects for both the node
-   * and edge tables. TODO: Database name, user, password and table names are hardcoded -> Make them
-   * configurable
-   */
-  public void initialize() {
-
-    try {
-
-      // STEP 1: Connect to PostgreSQL database
-
-      conn = connect("teamfdb", "teamf", "teamf60");
-      conn.setSchema("iter1db");
-      System.out.println("[Fdb.initialize]: Current schema: " + conn.getSchema() + ".");
-
-      // STEP 2: Establish table objects
-
-      micronodeTable = new Table(conn, "micronode");
-      micronodeTable.init(false);
-      micronodeTable.setHeaders(
-          new ArrayList<>(List.of("id", "x", "y", "floor", "building")),
-          new ArrayList<>(List.of("int", "double", "double", "String2", "String16")));
-
-      locationTable = new Table(conn, "location");
-      locationTable.init(false);
-      locationTable.setHeaders(
-          new ArrayList<>(List.of("longname", "shortname", "type")),
-          new ArrayList<>(List.of("String64", "String64", "String4")));
-
-      moveTable = new Table(conn, "move");
-      moveTable.init(false);
-      moveTable.setHeaders(
-          new ArrayList<>(List.of("id", "longname", "date")),
-          new ArrayList<>(List.of("int", "String64", "String16")));
-
-      edgeTable = new Table(conn, "edge");
-      edgeTable.init(false);
-      edgeTable.setHeaders(
-          new ArrayList<>(List.of("node1", "node2")),
-          new ArrayList<>(List.of("String8", "String8")));
-
-      Runtime.getRuntime()
-          .addShutdownHook(
-              new Thread(
-                  () -> {
-                    try {
-                      Thread.sleep(200);
-                      disconnect();
-                    } catch (InterruptedException e) {
-                      Thread.currentThread().interrupt();
-                      e.printStackTrace();
-                    }
-                  }));
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
+                  disconnect();
+                }));
   }
 
   /**
@@ -152,26 +78,27 @@ public class Fdb {
    * @return Database connection object (null if no connection is made)
    */
   private Connection connect(String dbName, String dbUser, String dbPass) {
-    Connection db = null;
     String dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
     try {
       Class.forName("org.postgresql.Driver");
-      db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
+      Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
       if (db != null) {
         System.out.println("[Fdb.connect]: Connection established.");
+        db.setSchema("iter2db");
       } else {
         System.out.println("[Fdb.connect]: Connection failed.");
       }
+      return db;
     } catch (ClassNotFoundException | SQLException e) {
       System.out.println(e.getMessage());
     }
-    return db;
+    return null;
   }
 
   /** Disconnect from PostgreSQL database. */
   public void disconnect() {
     try {
-      conn.close();
+      dbConnection.close();
       System.out.println("[Fdb.disconnect]: Connection closed.");
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -179,83 +106,322 @@ public class Fdb {
   }
 
   /**
-   * Check if table exists within database.
+   * Insert an entry into the PostgreSQL database.
    *
-   * @param db Database connection
-   * @param tbName Table name
-   * @return True if table exists in database
+   * @param entry Entry to insert
+   * @return True on successful insertion, false otherwise
    */
-  private boolean tableExists(Connection db, String tbName) {
-    Statement statement;
-    try {
-      statement = db.createStatement();
-      String query =
-          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-              + db.getSchema()
-              + "' AND tablename = '"
-              + tbName
-              + "');";
-      statement.execute(query);
-      ResultSet results = statement.getResultSet();
-      results.next();
-      return results.getBoolean("exists");
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-      return false;
+  public boolean insertEntry(Object entry) {
+
+    if (entry instanceof Node) {
+      return nodeTable.insertEntry((Node) entry);
+
+    } else if (entry instanceof Location) {
+      return locationTable.insertEntry((Location) entry);
+
+    } else if (entry instanceof Move) {
+      return moveTable.insertEntry((Move) entry);
+
+    } else if (entry instanceof Edge) {
+      return edgeTable.insertEntry((Edge) entry);
+
+    } else if (entry instanceof FoodRequest) {
+      return foodRequestTable.insertEntry((FoodRequest) entry);
+
+    } else if (entry instanceof SupplyRequest) {
+      return supplyRequestTable.insertEntry((SupplyRequest) entry);
+
+    } else if (entry instanceof FurnitureRequest) {
+      return furnitureRequestTable.insertEntry((FurnitureRequest) entry);
+
+    } else if (entry instanceof FlowerRequest) {
+      return flowerRequestTable.insertEntry((FlowerRequest) entry);
+
+    } else if (entry instanceof ConferenceRequest) {
+      return conferenceRequestTable.insertEntry((ConferenceRequest) entry);
+
+    } else if (entry instanceof UserAccount) {
+      return userAccountTable.insertEntry((UserAccount) entry);
+    }
+
+    return false;
+  }
+
+  /**
+   * Update an entry in the PostgreSQL database.
+   *
+   * @param entry Entry to update
+   * @return True on successful update, false otherwise
+   */
+  public boolean updateEntry(Object entry) {
+
+    if (entry instanceof Node) {
+      return nodeTable.updateEntry((Node) entry);
+
+    } else if (entry instanceof Location) {
+      return locationTable.updateEntry((Location) entry);
+
+    } else if (entry instanceof Move) {
+      return moveTable.updateEntry((Move) entry);
+
+    } else if (entry instanceof Edge) {
+      return edgeTable.updateEntry((Edge) entry);
+
+    } else if (entry instanceof FoodRequest) {
+      return foodRequestTable.updateEntry((FoodRequest) entry);
+
+    } else if (entry instanceof SupplyRequest) {
+      return supplyRequestTable.updateEntry((SupplyRequest) entry);
+
+    } else if (entry instanceof FurnitureRequest) {
+      return furnitureRequestTable.updateEntry((FurnitureRequest) entry);
+
+    } else if (entry instanceof FlowerRequest) {
+      return flowerRequestTable.updateEntry((FlowerRequest) entry);
+
+    } else if (entry instanceof ConferenceRequest) {
+      return conferenceRequestTable.updateEntry((ConferenceRequest) entry);
+
+    } else if (entry instanceof UserAccount) {
+      return userAccountTable.updateEntry((UserAccount) entry);
+    }
+
+    return false;
+  }
+
+  /**
+   * Remove an entry from the PostgreSQL database.
+   *
+   * @param identifier The entry's unique identifier (i.e. ID number)
+   * @param tableEntryType The intended entry's table entry type
+   * @return True on successful removal, false otherwise
+   */
+  public boolean removeEntry(Object identifier, TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.removeEntry(identifier);
+      case LOCATION:
+        return locationTable.removeEntry(identifier);
+      case MOVE:
+        return moveTable.removeEntry(identifier);
+      case EDGE:
+        return edgeTable.removeEntry(identifier);
+      case FOOD_REQUEST:
+        return foodRequestTable.removeEntry(identifier);
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.removeEntry(identifier);
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.removeEntry(identifier);
+      case FLOWER_REQUEST:
+        return flowerRequestTable.removeEntry(identifier);
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.removeEntry(identifier);
+      case USER_ACCOUNT:
+        return userAccountTable.removeEntry(identifier);
+    }
+
+    return false;
+  }
+
+  /**
+   * Returns an entry from a local table that matches the unique identifier specified.
+   *
+   * @param identifier The intended entry's table entry type
+   * @param tableEntryType The intended entry's table entry type
+   * @return The intended table entry, null on error
+   */
+  public Object getEntry(Object identifier, TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.getEntry(identifier);
+      case LOCATION:
+        return locationTable.getEntry(identifier);
+      case MOVE:
+        return moveTable.getEntry(identifier);
+      case EDGE:
+        return edgeTable.getEntry(identifier);
+      case FOOD_REQUEST:
+        return foodRequestTable.getEntry(identifier);
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.getEntry(identifier);
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.getEntry(identifier);
+      case FLOWER_REQUEST:
+        return flowerRequestTable.getEntry(identifier);
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.getEntry(identifier);
+      case USER_ACCOUNT:
+        return userAccountTable.getEntry(identifier);
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns all entries in a local table in a list.
+   *
+   * @param tableEntryType The intended table's table entry type
+   * @return The intended table entries as a list, null on error
+   */
+  public ArrayList<?> getAllEntries(TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.getAllEntries();
+      case LOCATION:
+        return locationTable.getAllEntries();
+      case MOVE:
+        return moveTable.getAllEntries();
+      case EDGE:
+        return edgeTable.getAllEntries();
+      case FOOD_REQUEST:
+        return foodRequestTable.getAllEntries();
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.getAllEntries();
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.getAllEntries();
+      case FLOWER_REQUEST:
+        return flowerRequestTable.getAllEntries();
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.getAllEntries();
+      case USER_ACCOUNT:
+        return userAccountTable.getAllEntries();
+    }
+
+    return null;
+  }
+
+  /**
+   * Reverts the most recent change made to a local table. The reverted change will not occur in a
+   * PostgreSQL database.
+   *
+   * @param tableEntryType Type of table to revert a change to
+   */
+  public void undoChange(TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case NODE:
+        nodeTable.undoChange();
+        break;
+      case LOCATION:
+        locationTable.undoChange();
+        break;
+      case MOVE:
+        moveTable.undoChange();
+        break;
+      case EDGE:
+        edgeTable.undoChange();
+        break;
+      case FOOD_REQUEST:
+        foodRequestTable.undoChange();
+        break;
+      case SUPPLY_REQUEST:
+        supplyRequestTable.undoChange();
+        break;
+      case FURNITURE_REQUEST:
+        furnitureRequestTable.undoChange();
+        break;
+      case FLOWER_REQUEST:
+        flowerRequestTable.undoChange();
+        break;
+      case CONFERENCE_REQUEST:
+        conferenceRequestTable.undoChange();
+        break;
+      case USER_ACCOUNT:
+        userAccountTable.undoChange();
+        break;
     }
   }
 
-  public int getMostRecentUNode(String longname) {
-    ArrayList<String[]> results =
-        moveTable.executeQuery("SELECT id, date", "WHERE longname = '" + longname + "';");
+  // TODO: ALL commas need to be removed/refactored from text fields before exporting
+  /**
+   * Import a CSV file into a table
+   *
+   * @param tableEntryType The type of table to import into
+   * @param filepath
+   * @param backup
+   * @return true on success, false otherwise
+   */
+  public boolean importCSV(String filepath, boolean backup, TableEntryType tableEntryType) {
 
-    results.forEach(
-        res -> {
-          res[1] = Move.sanitizeDate(res[1]);
-          System.out.println(Arrays.toString(res));
-        });
+    System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(filepath).toMatchResult().group());
 
-    // sort results based on date
-    results.sort(Comparator.comparing(result -> LocalDate.parse(result[1], Move.format)));
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.importCSV(filepath, backup);
 
-    // extract id from last result
-    return Integer.parseInt(results.get(results.size() - 1)[0]);
-  }
+      case LOCATION:
+        return locationTable.importCSV(filepath, backup);
 
-  public ArrayList<String[]> getMostRecentLocations(String id) {
+      case MOVE:
+        return moveTable.importCSV(filepath, backup);
 
-    ArrayList<String[]> moves =
-        moveTable.executeQuery("SELECT longname, date", "WHERE id = '" + id + "'");
+      case EDGE:
+        return edgeTable.importCSV(filepath, backup);
 
-    moves.forEach(
-        move -> {
-          move[1] = Move.sanitizeDate(move[1]);
-        });
+      case FOOD_REQUEST:
+        return foodRequestTable.importCSV(filepath, backup);
 
-    // sort results based on date
-    moves.sort(Comparator.comparing(move -> LocalDate.parse(move[1], Move.format)));
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.importCSV(filepath, backup);
 
-    ArrayList<String[]> locations = new ArrayList<>();
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.importCSV(filepath, backup);
 
-    for (String[] move : moves) {
-      locations.add(locationTable.get("longname", move[0]).toArray(new String[3]));
+      case FLOWER_REQUEST:
+        return flowerRequestTable.importCSV(filepath, backup);
+
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.importCSV(filepath, backup);
+
+      case USER_ACCOUNT:
+        return userAccountTable.importCSV(filepath, backup);
     }
-
-    return locations;
+    return false;
   }
 
-  public List<String> getDestLongnames() {
+  /**
+   * Export a table to a CSV file
+   *
+   * @param directory The directory to export the file into
+   * @param tableEntryType The type of table to export
+   * @return true on success, false otherwise
+   */
+  public boolean exportCSV(String directory, TableEntryType tableEntryType) {
 
-    return locationTable
-        .executeQuery("SELECT longname", "WHERE type != 'HALL' ORDER BY longname ASC").stream()
-        .map(elt -> elt[0])
-        .toList();
-  }
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.exportCSV(directory);
 
-  public void loadTablesFromCSV() {
-    micronodeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/MicroNode.csv", false);
-    locationTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Location.csv", false);
-    moveTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
-    edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
+      case LOCATION:
+        return locationTable.exportCSV(directory);
+
+      case MOVE:
+        return moveTable.exportCSV(directory);
+
+      case EDGE:
+        return edgeTable.exportCSV(directory);
+
+      case FOOD_REQUEST:
+        return foodRequestTable.exportCSV(directory);
+
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.exportCSV(directory);
+
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.exportCSV(directory);
+
+      case FLOWER_REQUEST:
+        return flowerRequestTable.exportCSV(directory);
+
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.exportCSV(directory);
+
+      case USER_ACCOUNT:
+        return userAccountTable.exportCSV(directory);
+    }
+    return false;
   }
 }

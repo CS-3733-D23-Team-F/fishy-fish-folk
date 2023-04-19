@@ -1,7 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.database.Table;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.SupplyRequest;
+import edu.wpi.fishfolk.database.TableEntry.SupplyRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FormStatus;
@@ -10,7 +9,6 @@ import edu.wpi.fishfolk.ui.SupplyOrder;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.fxml.FXML;
@@ -23,7 +21,6 @@ public class NewSupplyOrderController extends AbsController {
   };
   public static ArrayList<String> headers = new ArrayList<String>(Arrays.asList(headersArray));
 
-  Table supplyRequestTable;
   SupplyOrder currentSupplyOrder = new SupplyOrder();
   @FXML MFXFilterComboBox<String> roomSelector;
   ArrayList<SupplyItem> supplyOptions;
