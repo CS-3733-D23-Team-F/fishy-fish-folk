@@ -1,7 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
-import edu.wpi.fishfolk.database.Fdb;
+import edu.wpi.fishfolk.database.rewrite.Fdb;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.UserAccount;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,5 +50,7 @@ public abstract class AbsController {
     for (String floor : mapImgURLs.keySet()) {
       images.put(floor, new Image(Fapp.class.getResourceAsStream(mapImgURLs.get(floor))));
     }
+
+    // dbConnection = new Fdb();
   }
 }

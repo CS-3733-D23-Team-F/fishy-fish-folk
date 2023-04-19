@@ -5,7 +5,9 @@ import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
+import edu.wpi.fishfolk.database.rewrite.IHasSubtable;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.FlowerRequest;
+import edu.wpi.fishfolk.ui.FlowerItem;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.io.*;
 import java.sql.*;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FlowerRequestDAO implements IDAO<FlowerRequest> {
+public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<FlowerItem> {
 
   private final Connection dbConnection;
 
@@ -37,14 +39,16 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 "assignee",
                 "status",
                 "notes",
-                "items",
-                "payer",
+                "recipientname",
                 "deliveryLocation",
-                "totalPrice"));
+                "deliverytime",
+                "totalPrice",
+                "items"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
 
     init(false);
+    initSubtable(false);
     populateLocalTable();
   }
 
@@ -80,10 +84,11 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 + "assignee VARCHAR(64),"
                 + "status VARCHAR(12),"
                 + "notes VARCHAR(256),"
-                + "items INT," // TODO: SUBTABLE in the future
-                + "payer INT," // TODO: Likely another subtable
+                + "recipientname VARCHAR(64),"
                 + "deliverylocation VARCHAR(64),"
-                + "totalprice REAL"
+                + "deliverytime TIMESTAMP,"
+                + "totalprice REAL,"
+                + "items SERIAL" // TODO: SUBTABLE in the future
                 + ");";
         statement.executeUpdate(query);
       }
@@ -115,10 +120,11 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 results.getString(headers.get(1)),
                 FormStatus.valueOf(results.getString(headers.get(2))),
                 results.getString(headers.get(3)),
-                null,
-                null,
-                results.getString(headers.get(6)),
-                results.getDouble(headers.get(7)));
+                results.getString(headers.get(4)),
+                results.getString(headers.get(5)),
+                results.getTimestamp(headers.get(6)).toLocalDateTime(),
+                results.getDouble(headers.get(7)),
+                getSubtableItems(results.getInt(headers.get(8))));
         tableMap.put(flowerRequest.getFlowerRequestID(), flowerRequest);
       }
 
@@ -367,13 +373,16 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
             preparedInsert.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedInsert.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedInsert.setString(4, dataEdit.getNewEntry().getNotes());
-            preparedInsert.setInt(5, 0); // TODO: Subtables
-            preparedInsert.setInt(6, 0);
-            preparedInsert.setString(7, dataEdit.getNewEntry().getDeliveryLocation());
+            preparedInsert.setString(5, dataEdit.getNewEntry().getRecipientName());
+            preparedInsert.setString(6, dataEdit.getNewEntry().getDeliveryLocation());
+            preparedInsert.setTimestamp(
+                7, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryTime()));
             preparedInsert.setDouble(8, dataEdit.getNewEntry().getTotalPrice());
 
             // Execute the query
             preparedInsert.executeUpdate();
+            setSubtableItems(
+                dataEdit.getNewEntry().getFlowerRequestID(), dataEdit.getNewEntry().getItems());
 
             break;
 
@@ -385,15 +394,19 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
             preparedUpdate.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedUpdate.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedUpdate.setString(4, dataEdit.getNewEntry().getNotes());
-            preparedUpdate.setInt(5, 0); // TODO: Subtables
-            preparedUpdate.setInt(6, 0);
-            preparedUpdate.setString(7, dataEdit.getNewEntry().getDeliveryLocation());
+            preparedUpdate.setString(5, dataEdit.getNewEntry().getRecipientName());
+            preparedUpdate.setString(6, dataEdit.getNewEntry().getDeliveryLocation());
+            preparedUpdate.setTimestamp(
+                7, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryTime()));
             preparedUpdate.setDouble(8, dataEdit.getNewEntry().getTotalPrice());
             preparedUpdate.setTimestamp(
                 9, Timestamp.valueOf(dataEdit.getNewEntry().getFlowerRequestID()));
 
             // Execute the query
             preparedUpdate.executeUpdate();
+            setSubtableItems(
+                dataEdit.getNewEntry().getFlowerRequestID(), dataEdit.getNewEntry().getItems());
+
             break;
 
           case REMOVE:
@@ -403,6 +416,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 1, Timestamp.valueOf(dataEdit.getNewEntry().getFlowerRequestID()));
 
             // Execute the query
+            deleteAllSubtableItems(dataEdit.getNewEntry().getFlowerRequestID());
             preparedRemove.executeUpdate();
             break;
         }
@@ -475,10 +489,11 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 parts[1],
                 FormStatus.valueOf(parts[2]),
                 parts[3],
-                null,
-                null,
-                parts[6],
-                Double.parseDouble(parts[7]));
+                parts[4],
+                parts[5],
+                LocalDateTime.parse(parts[6]),
+                Double.parseDouble(parts[7]),
+                getSubtableItems(Integer.parseInt(parts[8])));
 
         tableMap.put(fr.getFlowerRequestID(), fr);
 
@@ -486,9 +501,9 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
         insertPS.setString(2, fr.getAssignee());
         insertPS.setString(3, fr.getFormStatus().toString());
         insertPS.setString(4, fr.getNotes());
-        insertPS.setInt(5, 0); // TODO: Subtables
-        insertPS.setInt(6, 0);
-        insertPS.setString(7, fr.getDeliveryLocation());
+        insertPS.setString(5, fr.getRecipientName());
+        insertPS.setString(6, fr.getDeliveryLocation());
+        insertPS.setTimestamp(7, Timestamp.valueOf(fr.getDeliveryTime()));
         insertPS.setDouble(8, fr.getTotalPrice());
 
         insertPS.executeUpdate();
@@ -527,13 +542,13 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
                 + ","
                 + fr.getNotes()
                 + ","
-                + fr.getItems()
-                + ","
-                + fr.getPayer()
+                + fr.getRecipientName()
                 + ","
                 + fr.getDeliveryLocation()
                 + ","
-                + fr.getTotalPrice());
+                + fr.getTotalPrice()
+                + ","
+                + getSubtableItemsID(fr.getFlowerRequestID()));
       }
 
       out.close();
@@ -542,6 +557,180 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest> {
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return false;
+    }
+  }
+
+  @Override
+  public void initSubtable(boolean drop) {
+
+    try {
+
+      // STEP 1: Check if the subtable exists
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "floweritems"
+              + "');";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+
+      // STEP 2: If instructed to drop the table, drop it
+      if (drop) {
+        query = "DROP TABLE " + dbConnection.getSchema() + "." + tableName + "floweritems" + ";";
+        statement.execute(query);
+      }
+
+      // STEP 3: If it does not exist OR the table was dropped, make it exist
+      if (!results.getBoolean("exists") || drop) {
+        query =
+            "CREATE TABLE "
+                + tableName
+                + "floweritems"
+                + " ("
+                + "itemkey INT,"
+                + "itemname VARCHAR(64),"
+                + "fullcost REAL,"
+                + "itemamount INT"
+                + ");";
+        statement.executeUpdate(query);
+      }
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public int getSubtableItemsID(LocalDateTime requestID) {
+
+    try {
+
+      // Setup query to read ID stored in tied column of main table
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT items FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE id = '"
+              + Timestamp.valueOf(requestID)
+              + "';";
+
+      // Run that shit
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      // Return the stored ID
+      results.next();
+      return results.getInt("items");
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      // Possible TODO: Check for ID = -1
+      return -1;
+    }
+  }
+
+  @Override
+  public List<FlowerItem> getSubtableItems(int subtableID) {
+
+    try {
+
+      // Create empty list so store all items
+      ArrayList<FlowerItem> allFlowerItems = new ArrayList<>();
+
+      // Query the subtable to return only items with the specified subtableID
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT * FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "floweritems "
+              + "WHERE itemkey = '"
+              + subtableID
+              + "';";
+
+      // Run the query
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      // For each result, create a new food item and put it in the list
+      while (results.next()) {
+        allFlowerItems.add(
+            new FlowerItem(
+                results.getString("itemname"),
+                results.getInt("fullcost"),
+                results.getInt("itemamount")));
+      }
+
+      // Return the list
+      return allFlowerItems;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
+  }
+
+  @Override
+  public void setSubtableItems(LocalDateTime requestID, List<FlowerItem> items) {
+
+    try {
+
+      // Remove all food items in the subtable with a matching subtableID
+      deleteAllSubtableItems(requestID);
+
+      // Query to insert one new of subtable entries
+      String insert =
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + "floweritems"
+              + " VALUES (?, ?, ?, ?);";
+
+      PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
+
+      // Run the query for each item to insert
+      for (FlowerItem item : items) {
+        preparedInsert.setInt(1, getSubtableItemsID(requestID));
+        preparedInsert.setString(2, item.itemName);
+        preparedInsert.setDouble(3, item.fullCost);
+        preparedInsert.setInt(4, item.amount);
+        preparedInsert.executeUpdate();
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void deleteAllSubtableItems(LocalDateTime requestID) {
+
+    try {
+
+      // Query to delete items with matching subtableID
+      String deleteAll =
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "floweritems"
+              + " WHERE itemkey = ?;";
+
+      PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
+
+      // Setup the statement with subtableID and run it
+      preparedDeleteAll.setInt(1, getSubtableItemsID(requestID));
+      preparedDeleteAll.executeUpdate();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
     }
   }
 }
