@@ -1,6 +1,6 @@
 package edu.wpi.fishfolk;
 
-import static edu.wpi.fishfolk.database.TableEntry.PermissionLevel.GUEST;
+import static edu.wpi.fishfolk.util.PermissionLevel.GUEST;
 
 import edu.wpi.fishfolk.controllers.RootController;
 import edu.wpi.fishfolk.database.TableEntry.UserAccount;

@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk.controllers;
 
-
 import javafx.fxml.FXML;
 
 public class HomeController {

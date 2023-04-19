@@ -5,11 +5,8 @@ import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
-
-
 import edu.wpi.fishfolk.database.TableEntry.UserAccount;
 import edu.wpi.fishfolk.util.PermissionLevel;
-
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;

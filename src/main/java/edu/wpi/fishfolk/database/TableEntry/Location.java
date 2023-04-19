@@ -2,7 +2,6 @@ package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.util.NodeType;
-
 import lombok.Getter;
 import lombok.Setter;
 

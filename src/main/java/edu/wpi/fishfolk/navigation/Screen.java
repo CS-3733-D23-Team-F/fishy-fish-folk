@@ -22,7 +22,6 @@ public enum Screen {
 
   ACCOUNT_MANAGER("views/AccountManager.fxml"),
 
-
   TEMPLATE("views/Template.fxml");
 
   private final String filename;

@@ -1,11 +1,9 @@
 package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.database.EntryStatus;
-
 import edu.wpi.fishfolk.util.NodeType;
 import java.util.HashSet;
 import java.util.List;
-
 import javafx.geometry.Point2D;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +15,6 @@ public class Node {
   @Getter @Setter private String floor;
   @Getter @Setter private String building;
   @Getter @Setter private EntryStatus status;
-
 
   private HashSet<Location> locations;
   private HashSet<Integer> neighbors;
@@ -84,5 +81,4 @@ public class Node {
         .map(loc -> loc.getLongName().substring(8, 10)) // extract elevator letter
         .toList();
   }
-
 }

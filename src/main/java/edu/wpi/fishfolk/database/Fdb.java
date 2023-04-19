@@ -5,12 +5,9 @@ import edu.wpi.fishfolk.database.TableEntry.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import java.util.ArrayList;
-
 import java.time.LocalDate;
 import java.util.*;
-
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class Fdb {
@@ -56,7 +53,7 @@ public class Fdb {
     // Login & User Accounts Tables
     this.userAccountTable = new UserAccountDAO(dbConnection);
 
-    //importLocalCSV();
+    // importLocalCSV();
 
     Runtime.getRuntime()
         .addShutdownHook(
@@ -437,7 +434,6 @@ public class Fdb {
     locationTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Location.csv", false);
     moveTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
     edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
-
   }
 
   /**

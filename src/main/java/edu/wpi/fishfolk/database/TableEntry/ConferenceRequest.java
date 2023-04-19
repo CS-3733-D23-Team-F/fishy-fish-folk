@@ -3,7 +3,6 @@ package edu.wpi.fishfolk.database.TableEntry;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.time.LocalDateTime;
-
 import lombok.Getter;
 import lombok.Setter;
 
