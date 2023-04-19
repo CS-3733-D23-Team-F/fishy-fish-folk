@@ -33,12 +33,21 @@ public class LoginController extends AbsController {
     slider.setTranslateX(-400);
   }
 
+  /**
+   * Check on every key press if the key was Enter. If it was, attempt to log in.
+   *
+   * @param keyEvent the key event to check.
+   */
   private void attemptLoginOnEnterPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode().getCode() == 10) {
       attemptLogin();
     }
   }
 
+  /**
+   * Checks if the username and password provided by the user match an account in the database. If
+   * it does, stores the currently logged in account to AbsController.
+   */
   private void attemptLogin() {
     String loginID = loginIDField.getText();
     String password = loginPassField.getText();
@@ -71,10 +80,7 @@ public class LoginController extends AbsController {
     }
   }
 
-  /**
-   * Checks if the username and password provided by the user match an account in the database. If
-   * it does, stores the currently logged in account to AbsController.
-   */
+  /** Event handler to attempt login when the login button is pressed. */
   public final EventHandler<MouseEvent> loginHandler =
       event -> {
         attemptLogin();
