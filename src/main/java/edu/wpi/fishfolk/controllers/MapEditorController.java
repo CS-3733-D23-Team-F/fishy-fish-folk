@@ -103,14 +103,14 @@ public class MapEditorController extends AbsController {
         event -> {
           currentFloor = allFloors.indexOf(floorSelector.getValue());
           switchFloor(allFloors.get(currentFloor));
-          floorSelector.setText("Floor " + allFloors.get(currentFloor));
+          floorSelector.setText(allFloors.get(currentFloor));
         });
     nextButton.setOnMouseClicked(
         event -> {
           if (currentFloor < allFloors.size() - 1) {
             currentFloor++;
             switchFloor(allFloors.get(currentFloor));
-            floorSelector.setText("Floor " + allFloors.get(currentFloor));
+            floorSelector.setText(allFloors.get(currentFloor));
           }
         });
     backButton.setOnMouseClicked(
@@ -118,7 +118,7 @@ public class MapEditorController extends AbsController {
           if (currentFloor > 0) {
             currentFloor--;
             switchFloor(allFloors.get(currentFloor));
-            floorSelector.setText("Floor " + allFloors.get(currentFloor));
+            floorSelector.setText(allFloors.get(currentFloor));
           }
         });
 
@@ -272,18 +272,16 @@ public class MapEditorController extends AbsController {
           initialize();
         });
 
-
-
-      exportCSV.setOnAction(
-              event -> {
-                  dirChooser.setTitle("Select Export Directory");
-                  String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-                  dbConnection.exportCSV(exportPath, TableEntryType.NODE);
-                  dbConnection.exportCSV(exportPath, TableEntryType.LOCATION);
-                  dbConnection.exportCSV(exportPath, TableEntryType.MOVE);
-                  dbConnection.exportCSV(exportPath, TableEntryType.EDGE);
-                  //fileChooser.setInitialDirectory(new File(exportPath));
-              });
+    exportCSV.setOnAction(
+        event -> {
+          dirChooser.setTitle("Select Export Directory");
+          String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+          dbConnection.exportCSV(exportPath, TableEntryType.NODE);
+          dbConnection.exportCSV(exportPath, TableEntryType.LOCATION);
+          dbConnection.exportCSV(exportPath, TableEntryType.MOVE);
+          dbConnection.exportCSV(exportPath, TableEntryType.EDGE);
+          // fileChooser.setInitialDirectory(new File(exportPath));
+        });
   }
 
   private void switchFloor(String floor) {

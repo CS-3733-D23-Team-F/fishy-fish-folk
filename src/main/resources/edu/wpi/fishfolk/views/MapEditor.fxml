@@ -197,7 +197,7 @@
                         <Insets top="-3.0" />
                      </padding>
                   </MFXButton>
-                  <Label graphicTextGap="0.0" text="Viewing: " textFill="#454343" HBox.hgrow="ALWAYS">
+                  <Label graphicTextGap="0.0" text="Viewing Floor: " textFill="#454343" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="Open Sans Regular" size="15.0" />
                      </font>
