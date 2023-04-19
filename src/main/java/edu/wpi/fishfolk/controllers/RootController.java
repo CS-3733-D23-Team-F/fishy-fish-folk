@@ -20,12 +20,15 @@ public class RootController {
   @FXML AnchorPane serviceBar;
   @FXML MFXButton serviceNav;
   @FXML MFXButton exitButton;
+  @FXML MFXButton switchAccountButton;
+  @FXML MFXButton accountManagerNav;
   @FXML MFXButton homeButton;
   @FXML MFXButton closeServiceNav;
   @FXML AnchorPane slider;
   // @FXML Text directionInstructions;
   @FXML MFXButton viewOrders;
   @FXML MFXButton furnitureNav;
+  @FXML MFXButton moveEditorNav;
 
   @FXML
   public void initialize() {
@@ -40,12 +43,19 @@ public class RootController {
     supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
 
+    accountManagerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    switchAccountButton.setOnMouseClicked(
+        event -> {
+          SharedResources.logout();
+          Navigation.navigate(Screen.LOGIN);
+        });
 
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     exitButton.setOnMouseClicked(event -> System.exit(0));
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
     closeServiceNav.setVisible(false);
     closeServiceNav.setDisable(true);
@@ -100,12 +110,18 @@ public class RootController {
     mealNav.setDisable(false);
     furnitureNav.setDisable(false);
     supplyNav.setDisable(false);
+    serviceNav.setDisable(false);
 
     signageNav.setDisable(false);
+    accountManagerNav.setDisable(false);
+    pathfindingNav.setDisable(false);
+
+    moveEditorNav.setDisable(false);
     mapEditorNav.setDisable(false);
 
     switch (SharedResources.getCurrentUser().getLevel()) {
       case GUEST:
+        serviceNav.setDisable(true);
         flowerNav.setDisable(true);
         furnitureNav.setDisable(true);
         supplyNav.setDisable(true);
@@ -113,6 +129,8 @@ public class RootController {
         viewOrders.setDisable(true);
       case STAFF:
         mapEditorNav.setDisable(true);
+        accountManagerNav.setDisable(true);
+        moveEditorNav.setDisable(true);
       case ADMIN:
       case ROOT:
         break;
