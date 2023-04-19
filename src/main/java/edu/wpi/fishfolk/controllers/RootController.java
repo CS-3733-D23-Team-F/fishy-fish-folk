@@ -34,18 +34,17 @@ public class RootController {
 
     SharedResources.setRootController(this);
 
-    flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
     viewOrders.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+
+    flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
     supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
-    exitButton.setOnMouseClicked(event -> System.exit(0));
+
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
-    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     closeServiceNav.setVisible(false);
@@ -95,12 +94,14 @@ public class RootController {
   }
 
   public void updatePermissionsAccess() {
+    viewOrders.setDisable(false);
+
     flowerNav.setDisable(false);
+    mealNav.setDisable(false);
     furnitureNav.setDisable(false);
     supplyNav.setDisable(false);
-    mealNav.setDisable(false);
-    viewFood.setDisable(false);
-    viewSupply.setDisable(false);
+
+    signageNav.setDisable(false);
     mapEditorNav.setDisable(false);
 
     switch (SharedResources.getCurrentUser().getLevel()) {
@@ -109,8 +110,7 @@ public class RootController {
         furnitureNav.setDisable(true);
         supplyNav.setDisable(true);
         mealNav.setDisable(true);
-        viewFood.setDisable(true);
-        viewSupply.setDisable(true);
+        viewOrders.setDisable(true);
       case STAFF:
         mapEditorNav.setDisable(true);
       case ADMIN:
