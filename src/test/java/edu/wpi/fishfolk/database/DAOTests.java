@@ -223,7 +223,7 @@ public class DAOTests {
             FormStatus.submitted,
             "These sure are notes",
             new FurnitureItem("couch"),
-            ServiceType.CLEANING,
+            ServiceType.cleaning,
             "OH 106",
             LocalDateTime.of(1500, 2, 2, 2, 2)));
     fdb.insertEntry(
@@ -233,7 +233,7 @@ public class DAOTests {
             FormStatus.submitted,
             "LETTERS",
             new FurnitureItem("couch"),
-            ServiceType.CLEANING,
+            ServiceType.cleaning,
             "OH 106",
             LocalDateTime.of(1500, 2, 2, 2, 2)));
     fdb.insertEntry(
@@ -243,7 +243,7 @@ public class DAOTests {
             FormStatus.submitted,
             "numbers??",
             new FurnitureItem("couch"),
-            ServiceType.CLEANING,
+            ServiceType.cleaning,
             "OH 106",
             LocalDateTime.of(1500, 2, 2, 2, 2)));
 
@@ -254,7 +254,7 @@ public class DAOTests {
             FormStatus.submitted,
             "LETTERS",
             new FurnitureItem("couch"),
-            ServiceType.CLEANING,
+            ServiceType.cleaning,
             "OH 106",
             LocalDateTime.of(1500, 2, 2, 2, 2)));
 
@@ -268,7 +268,7 @@ public class DAOTests {
             FormStatus.submitted,
             "These AREN'T notes",
             new FurnitureItem("couch"),
-            ServiceType.CLEANING,
+            ServiceType.cleaning,
             "OH 106",
             LocalDateTime.of(1500, 2, 2, 2, 2)));
 

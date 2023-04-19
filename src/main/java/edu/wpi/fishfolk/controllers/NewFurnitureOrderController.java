@@ -172,12 +172,12 @@ public class NewFurnitureOrderController extends AbsController {
 
   public void setServiceTypeToRadios() {
     if (serviceradioButton1.isSelected())
-      currentFurnitureOrder.serviceType = ServiceType.REPLACEMENT;
-    if (serviceradioButton2.isSelected()) currentFurnitureOrder.serviceType = ServiceType.CLEANING;
-    if (serviceradioButton3.isSelected()) currentFurnitureOrder.serviceType = ServiceType.DELIVERY;
+      currentFurnitureOrder.serviceType = ServiceType.replacement;
+    if (serviceradioButton2.isSelected()) currentFurnitureOrder.serviceType = ServiceType.cleaning;
+    if (serviceradioButton3.isSelected()) currentFurnitureOrder.serviceType = ServiceType.delivery;
     if (serviceradioButton4.isSelected())
-      currentFurnitureOrder.serviceType = ServiceType.MAINTENANCE;
-    if (serviceradioButton5.isSelected()) currentFurnitureOrder.serviceType = ServiceType.REMOVAL;
+      currentFurnitureOrder.serviceType = ServiceType.maintenance;
+    if (serviceradioButton5.isSelected()) currentFurnitureOrder.serviceType = ServiceType.removal;
   }
 
   // submit() creates the final currentFurnitureOrder and uses its fields to send data to the
