@@ -1,7 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.database.Table;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.FurnitureRequest;
+import edu.wpi.fishfolk.database.TableEntry.FurnitureRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FormStatus;
@@ -36,7 +35,6 @@ public class NewFurnitureOrderController extends AbsController {
 
   FurnitureOrder currentFurnitureOrder = new FurnitureOrder();
   ArrayList<FurnitureItem> furnitureOptions = new ArrayList<>();
-  Table furnitureOrderTable;
 
   // initialize() sets the preliminary fields for the page and defines the functionality of the
   // relevant items

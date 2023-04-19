@@ -1,10 +1,9 @@
 package edu.wpi.fishfolk.ui;
 
-import edu.wpi.fishfolk.database.TableEntry;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class SupplyOrder extends TableEntry {
+public class SupplyOrder {
   public LinkedList<SupplyItem> supplies;
   public String link;
   public String roomNum;

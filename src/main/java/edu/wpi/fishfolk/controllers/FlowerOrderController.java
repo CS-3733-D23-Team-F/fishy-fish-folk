@@ -1,7 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.FlowerRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FlowerItem;
