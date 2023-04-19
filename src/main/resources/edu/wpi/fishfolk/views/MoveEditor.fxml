@@ -56,9 +56,14 @@
                            <Insets top="5.0" />
                         </HBox.margin>
                      </MFXButton>
+                     <MFXButton fx:id="deletemove" layoutX="10.0" layoutY="15.0" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Delete">
+                        <HBox.margin>
+                           <Insets left="120.0" top="5.0" />
+                        </HBox.margin>
+                     </MFXButton>
                      <MFXButton fx:id="submitmove" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Submit">
                         <HBox.margin>
-                           <Insets left="240.0" top="5.0" />
+                           <Insets left="120.0" top="5.0" />
                         </HBox.margin></MFXButton>
                   </children>
                </HBox>
@@ -103,9 +108,14 @@
                            <Insets top="5.0" />
                         </HBox.margin>
                      </MFXButton>
+                     <MFXButton fx:id="deletelocation" layoutX="10.0" layoutY="15.0" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Delete">
+                        <HBox.margin>
+                           <Insets left="160.0" top="5.0" />
+                        </HBox.margin>
+                     </MFXButton>
                      <MFXButton fx:id="submitlocation" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Submit">
                         <HBox.margin>
-                           <Insets left="320.0" top="5.0" />
+                           <Insets left="160.0" top="5.0" />
                         </HBox.margin>
                      </MFXButton>
                   </children>
