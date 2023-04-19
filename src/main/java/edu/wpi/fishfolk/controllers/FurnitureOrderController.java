@@ -269,7 +269,7 @@ public class FurnitureOrderController extends AbsController {
   // submit() creates the final currentFurnitureOrder and uses its fields to send data to the
   // furnitureorder table
   void submit() {
-    currentFurnitureOrder.setServiceType("" + requestTypePicker.getValue());
+    // currentFurnitureOrder.setServiceType("" + requestTypePicker.getValue());
     if (radioButton1.isSelected()) currentFurnitureOrder.addFurniture(furnitureOptions.get(0));
     if (radioButton2.isSelected()) currentFurnitureOrder.addFurniture(furnitureOptions.get(1));
     if (radioButton3.isSelected()) currentFurnitureOrder.addFurniture(furnitureOptions.get(2));
