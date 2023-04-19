@@ -122,12 +122,12 @@
          <Font name="Open Sans Light" size="26.0" />
       </font>
    </MFXDatePicker>
-   <Text layoutX="65.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of Service: ">
+   <Text fill="#012d5a" layoutX="50.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of Service: ">
       <font>
          <Font name="Open Sans SemiBold" size="26.0" />
       </font>
    </Text>
-   <Text layoutX="643.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Furniture:">
+   <Text fill="#012d5a" layoutX="616.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Furniture:">
       <font>
          <Font name="Open Sans SemiBold" size="26.0" />
       </font>
