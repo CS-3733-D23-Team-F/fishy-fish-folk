@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -29,21 +30,21 @@ public class RootController {
 
   @FXML
   public void initialize() {
+    updatePermissionsAccess();
+
+    SharedResources.setRootController(this);
+
     flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
+    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
+
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
+
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
-    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
-    supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
-    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
-    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
-    exitButton.setOnMouseClicked(event -> System.exit(0));
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
-    // mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FOOD_ORDER_REQUEST));
-    // officeNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     closeServiceNav.setVisible(false);
@@ -90,5 +91,30 @@ public class RootController {
                 serviceBar.setDisable(true);
               });
         });
+  }
+
+  public void updatePermissionsAccess() {
+    flowerNav.setDisable(false);
+    furnitureNav.setDisable(false);
+    supplyNav.setDisable(false);
+    mealNav.setDisable(false);
+    viewFood.setDisable(false);
+    viewSupply.setDisable(false);
+    mapEditorNav.setDisable(false);
+
+    switch (SharedResources.getCurrentUser().getLevel()) {
+      case GUEST:
+        flowerNav.setDisable(true);
+        furnitureNav.setDisable(true);
+        supplyNav.setDisable(true);
+        mealNav.setDisable(true);
+        viewFood.setDisable(true);
+        viewSupply.setDisable(true);
+      case STAFF:
+        mapEditorNav.setDisable(true);
+      case ADMIN:
+      case ROOT:
+        break;
+    }
   }
 }
