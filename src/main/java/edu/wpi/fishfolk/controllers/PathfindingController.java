@@ -127,7 +127,7 @@ public class PathfindingController extends AbsController {
           javafx.geometry.Bounds bounds = pane.getTargetViewport();
           pane.animate(Duration.millis(200))
               .interpolateWith(Interpolator.EASE_BOTH)
-              .zoomBy(zoom + 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
+              .zoomBy(+0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
         });
 
     zoomOut.setOnMouseClicked(
@@ -135,7 +135,7 @@ public class PathfindingController extends AbsController {
           javafx.geometry.Bounds bounds = pane.getTargetViewport();
           pane.animate(Duration.millis(200))
               .interpolateWith(Interpolator.EASE_BOTH)
-              .zoomBy(zoom - 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
+              .zoomBy(-0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
         });
 
     List<String> nodeNames = dbConnection.getDestLongnames();
