@@ -226,7 +226,7 @@ public class PathfindingController extends AbsController {
       // skip paths of length 1 (going through elevator node)
       // except for first and last path
       if (path.numNodes > 1 || i == 0 || i == paths.size() - 1) {
-        // group to store this floor's path
+        // group to sore this floor's path
         Group g = new Group();
 
         double pathLength = path.pathLength();
