@@ -1,10 +1,12 @@
 package edu.wpi.fishfolk.controllers;
 
+import static edu.wpi.fishfolk.database.TableEntry.TableEntryType.LOCATION;
+import static edu.wpi.fishfolk.database.TableEntry.TableEntryType.MOVE;
+
 import edu.wpi.fishfolk.database.DAO.Observables.ObservableLocation;
 import edu.wpi.fishfolk.database.DAO.Observables.ObservableMove;
 import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.database.TableEntry.Move;
-import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.pathfinding.NodeType;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -26,6 +28,7 @@ public class MoveController extends AbsController {
   @FXML MFXTextField nodetext, movelongnametext, datetext;
   @FXML MFXTextField locationlongnametext, shortnametext, typetext;
   @FXML MFXButton submitmove, submitlocation;
+  @FXML MFXButton deletemove, deletelocation;
   @FXML MFXButton clearMove, clearLocation;
 
   private ObservableList<ObservableMove> observableMoves;
@@ -56,7 +59,7 @@ public class MoveController extends AbsController {
 
     observableMoves =
         FXCollections.observableArrayList(
-            dbConnection.getAllEntries(TableEntryType.MOVE).stream()
+            dbConnection.getAllEntries(MOVE).stream()
                 .map(elt -> new ObservableMove((Move) elt))
                 .toList());
 
@@ -64,7 +67,7 @@ public class MoveController extends AbsController {
 
     observableLocations =
         FXCollections.observableArrayList(
-            dbConnection.getAllEntries(TableEntryType.LOCATION).stream()
+            dbConnection.getAllEntries(LOCATION).stream()
                 .map(elt -> new ObservableLocation((Location) elt))
                 .toList());
 
@@ -103,6 +106,33 @@ public class MoveController extends AbsController {
           observableLocations.addAll(new ObservableLocation(newLocation));
 
           dbConnection.insertEntry(newLocation);
+        });
+
+    deletemove.setOnMouseClicked(
+        event -> {
+          Move newMove =
+              new Move(
+                  Integer.parseInt(nodetext.getText()),
+                  movelongnametext.getText(),
+                  ObservableMove.parseDate(datetext.getText()));
+
+          // for some reason .remove doesnt work, just use .removeAll(... elements)
+          observableMoves.removeAll(new ObservableMove(newMove));
+
+          System.out.println(newMove + " " + dbConnection.removeEntry(newMove, MOVE));
+        });
+
+    deletelocation.setOnMouseClicked(
+        event -> {
+          Location newLocation =
+              new Location(
+                  locationlongnametext.getText(),
+                  shortnametext.getText(),
+                  NodeType.valueOf(typetext.getText()));
+
+          observableLocations.removeAll(new ObservableLocation(newLocation));
+
+          dbConnection.removeEntry(newLocation, LOCATION);
         });
 
     clearMove.setOnMouseClicked(event -> MoveClear());
@@ -144,7 +174,7 @@ public class MoveController extends AbsController {
     String olddate = date.getCellObservableValue(event.getRowValue()).getValue();
 
     observableMoves.removeIf(obsmove -> obsmove.matches(oldlongname, olddate));
-    dbConnection.removeEntry(oldlongname + ObservableMove.parseDate(olddate), TableEntryType.MOVE);
+    dbConnection.removeEntry(oldlongname + ObservableMove.parseDate(olddate), MOVE);
 
     Move newMove =
         new Move(Integer.parseInt(oldnodeID), newlongname, ObservableMove.parseDate(olddate));
@@ -161,7 +191,7 @@ public class MoveController extends AbsController {
     String newdate = event.getNewValue();
 
     observableMoves.removeIf(obsmove -> obsmove.matches(oldlongname, olddate));
-    dbConnection.removeEntry(oldlongname + ObservableMove.parseDate(olddate), TableEntryType.MOVE);
+    dbConnection.removeEntry(oldlongname + ObservableMove.parseDate(olddate), MOVE);
 
     Move newMove =
         new Move(Integer.parseInt(oldnodeID), oldlongname, ObservableMove.parseDate(newdate));
@@ -178,7 +208,7 @@ public class MoveController extends AbsController {
     String oldtype = type.getCellObservableValue(event.getRowValue()).getValue();
 
     observableLocations.removeIf(obsloc -> obsloc.getLongname().equals(oldlongname));
-    dbConnection.removeEntry(oldlongname, TableEntryType.LOCATION);
+    dbConnection.removeEntry(oldlongname, LOCATION);
 
     Location newLocation = new Location(newlongname, oldshortname, NodeType.valueOf(oldtype));
     observableLocations.addAll(new ObservableLocation(newLocation));
@@ -194,7 +224,7 @@ public class MoveController extends AbsController {
     String oldtype = type.getCellObservableValue(event.getRowValue()).getValue();
 
     observableLocations.removeIf(obsloc -> obsloc.getLongname().equals(oldlongname));
-    dbConnection.removeEntry(oldlongname, TableEntryType.LOCATION);
+    dbConnection.removeEntry(oldlongname, LOCATION);
 
     Location newLocation = new Location(oldlongname, newshortname, NodeType.valueOf(oldtype));
     observableLocations.addAll(new ObservableLocation(newLocation));
@@ -210,7 +240,7 @@ public class MoveController extends AbsController {
     String newtype = event.getNewValue();
 
     observableLocations.removeIf(obsloc -> obsloc.getLongname().equals(oldlongname));
-    dbConnection.removeEntry(oldlongname, TableEntryType.LOCATION);
+    dbConnection.removeEntry(oldlongname, LOCATION);
 
     Location newLocation = new Location(oldlongname, oldshortname, NodeType.valueOf(newtype));
     observableLocations.addAll(new ObservableLocation(newLocation));
