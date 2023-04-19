@@ -179,7 +179,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" maxWidth="330.0" minWidth="300.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <ImageView fitHeight="70.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                        <ImageView fitHeight="102.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                            <image>
                               <Image url="@../images/walk.png" />
                            </image>
@@ -191,10 +191,17 @@
                            <children>
                               <Text fill="#454343" strokeType="OUTSIDE" strokeWidth="0.0" text="Estimated Time: " HBox.hgrow="ALWAYS">
                                  <font>
-                                    <Font name="Open Sans Regular" size="24.0" />
+                                    <Font name="Open Sans Regular" size="20.0" />
                                  </font>
                               </Text>
-                              <MFXTextField fx:id="estimatedtime" />
+                              <MFXTextField fx:id="estimatedtime" minHeight="40.0" minWidth="120.0" promptText="5 minutes">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="20.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="10.0" top="2.0" />
+                                 </padding>
+                              </MFXTextField>
                            </children>
                         </HBox>
                      </children>

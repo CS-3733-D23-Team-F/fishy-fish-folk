@@ -389,12 +389,12 @@ public class PathfindingController extends AbsController {
 
     // calculated that 1537 pixels = 484 feet = 147.5 m
     // 3.175 pixels per foot, 10.42 pixels per meter
-    // 1.2 m/s walking speed = 72m/min
+    // 1 m/s walking speed = 60m/min
 
     // add lengths of each path in list of paths
     double totalLength = paths.stream().map(Path::pathLength).reduce(0.0, Double::sum);
     System.out.println("path length pixels " + totalLength);
-    int minutes = (int) Math.ceil(totalLength * (147.5 / 1537) / 72);
+    int minutes = (int) Math.ceil(totalLength * (147.5 / 1537) / 60);
 
     estimatedtime.setText(minutes + " minutes");
 
@@ -459,12 +459,16 @@ public class PathfindingController extends AbsController {
         }
         floorDirections.add(new TextDirection(Direction.START, "End at " + endSelector.getValue()));
       }
-      System.out.println(
-          "floor dir: "
-              + floorDirections.get(i).getDirection()
-              + " dist "
-              + floorDirections.get(i).getDistance());
-      textDirections.add(floorDirections);
+
+      if (!floorDirections.isEmpty()) {
+
+        System.out.println(
+            "floor dir: "
+                + floorDirections.get(i).getDirection()
+                + " dist "
+                + floorDirections.get(i).getDistance());
+        textDirections.add(floorDirections);
+      }
     }
   }
 
