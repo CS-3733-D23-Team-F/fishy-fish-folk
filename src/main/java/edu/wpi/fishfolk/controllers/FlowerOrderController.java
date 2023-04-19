@@ -117,7 +117,7 @@ public class FlowerOrderController extends AbsController {
           clearAll();
         });
 
-    //locationPicker.getItems().add("Room1");
+    // locationPicker.getItems().add("Room1");
     locationPicker.getItems().addAll(dbConnection.getDestLongnames());
   }
 
