@@ -33,7 +33,7 @@ public class NewFurnitureOrderController extends AbsController {
   @FXML MFXComboBox<String> roomSelector;
   @FXML MFXDatePicker deliveryDate;
   @FXML MFXTextField notesTextField;
-  @FXML Rectangle cancelButton, clearButton, furnituresubmitButton;
+  @FXML MFXButton cancelButton, clearButton, furnituresubmitButton;
 
   FurnitureOrder currentFurnitureOrder = new FurnitureOrder();
   ArrayList<FurnitureItem> furnitureOptions = new ArrayList<>();

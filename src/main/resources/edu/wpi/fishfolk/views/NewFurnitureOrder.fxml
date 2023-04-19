@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
@@ -61,24 +62,6 @@
             <Color red="0.5333333611488342" green="0.5333333611488342" blue="0.5333333611488342" opacity="0.8700000047683716" />
         </textFill>
     </MFXFilterComboBox>
-    <Rectangle fx:id="cancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="50.0" layoutY="785.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
-    <Text disable="true" fill="WHITE" layoutX="96.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CANCEL">
-        <font>
-            <Font name="Open Sans Bold" size="26.0" />
-        </font>
-    </Text>
-    <Rectangle fx:id="clearButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="416.0" layoutY="784.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
-    <Text disable="true" fill="WHITE" layoutX="472.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CLEAR">
-        <font>
-            <Font name="Open Sans Bold" size="26.0" />
-        </font>
-    </Text>
-    <Rectangle fx:id="furnituresubmitButton" arcHeight="20.0" arcWidth="20.0" fill="#f0bf4c" height="63.0" layoutX="1049.0" layoutY="784.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
-    <Text disable="true" fill="WHITE" layoutX="1093.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SUBMIT">
-        <font>
-            <Font name="Open Sans Bold" size="26.0" />
-        </font>
-    </Text>
    <ScrollPane hbarPolicy="NEVER" layoutX="616.0" layoutY="50.0" prefHeight="500.0" prefWidth="620.0" style="-fx-border-color: #012d5a; -fx-border-width: 3; -fx-border-radius: 5;" vbarPolicy="NEVER">
       <content>
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="620.0">
@@ -132,5 +115,20 @@
          <Font name="Open Sans SemiBold" size="26.0" />
       </font>
    </Text>
+   <MFXButton fx:id="clearButton" layoutX="416.0" layoutY="784.0" prefHeight="63.0" prefWidth="187.0" style="-fx-border-radius: 5; -fx-background-color: #012d5a;" text="CLEAR" textFill="WHITE">
+      <font>
+         <Font name="Open Sans Bold" size="26.0" />
+      </font>
+   </MFXButton>
+   <MFXButton fx:id="cancelButton" layoutX="50.0" layoutY="785.0" prefHeight="63.0" prefWidth="187.0" style="-fx-border-radius: 5; -fx-background-color: #012d5a;" text="CANCEL" textFill="WHITE">
+      <font>
+         <Font name="Open Sans Bold" size="26.0" />
+      </font>
+   </MFXButton>
+   <MFXButton fx:id="furnituresubmitButton" layoutX="1049.0" layoutY="784.0" prefHeight="63.0" prefWidth="187.0" style="-fx-border-radius: 5; -fx-background-color: #f0bf4c;" text="SUBMIT" textFill="WHITE">
+      <font>
+         <Font name="Open Sans Bold" size="26.0" />
+      </font>
+   </MFXButton>
 
 </AnchorPane>
