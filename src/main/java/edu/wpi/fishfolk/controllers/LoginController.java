@@ -42,9 +42,7 @@ public class LoginController extends AbsController {
 
   edu.wpi.fishfolk.database.rewrite.Fdb dbConnection = new Fdb();
 
-    /**
-     * Initialize state and set event handlers.
-     */
+  /** Initialize state and set event handlers. */
   @FXML
   private void initialize() {
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
@@ -100,10 +98,10 @@ public class LoginController extends AbsController {
         });
   }
 
-    /**
-     * Checks if the username and password provided by the user match an account in the database.
-     * If it does, stores the currently logged in account to AbsController.
-     */
+  /**
+   * Checks if the username and password provided by the user match an account in the database. If
+   * it does, stores the currently logged in account to AbsController.
+   */
   public final EventHandler<MouseEvent> loginHandler =
       event -> {
         String loginID = loginIDField.getText();
