@@ -107,9 +107,10 @@ public class Path {
     // split path into segments: three points determine a segment
     // to avoid overlaps, dont add the start->mid portion except for the first
 
-    LinkedList<PathSegment> segments = new LinkedList<>();
+    LinkedList<PathSection> segments = new LinkedList<>();
 
     // keep track of middle index in each set of 3
+
     for (int midx = 1; midx <= numNodes - 2; midx++) {
 
       Point2D start = points.get(midx - 1);
@@ -117,40 +118,39 @@ public class Path {
       Point2D end = points.get(midx + 1);
 
       double angle = mid.angle(start, end);
-
       if (Math.abs(angle - 180) < 0.1) { // one straight segment start->end
 
         if (midx == 1) {
-          segments.add(new PathSegment(start, end));
+          segments.add(new PathSection(start, end));
         } else {
-          segments.add(new PathSegment(mid, end));
+          segments.add(new PathSection(mid, end));
         }
 
       } else {
 
         if (midx == 1) {
-          segments.add(new PathSegment(start, mid));
+          segments.add(new PathSection(start, mid));
         }
 
         if (mid.subtract(start).crossProduct(end.subtract(mid)).getZ() > 0) {
           // cross product > 0 means right turn
-          segments.add(new PathSegment(mid, Direction.RIGHT));
+          segments.add(new PathSection(mid, Direction.RIGHT));
         } else {
 
-          segments.add(new PathSegment(mid, Direction.LEFT));
+          segments.add(new PathSection(mid, Direction.LEFT));
         }
-        segments.add(new PathSegment(mid, end)); // turning segments only account for the turn
+        segments.add(new PathSection(mid, end)); // turning segments only account for the turn
       }
     }
 
     // now that the path has been split into segments, combine consecutive straight segments
 
-    Iterator<PathSegment> itr = segments.iterator();
-    PathSegment prev = itr.next(); // first segment
+    Iterator<PathSection> itr = segments.iterator();
+    PathSection prev = itr.next(); // first segment
 
     // combine  consecutive straight segments
     while (itr.hasNext()) {
-      PathSegment cur = itr.next();
+      PathSection cur = itr.next();
 
       // two straights in a row
       if (prev.getDirection() == Direction.STRAIGHT && cur.getDirection() == Direction.STRAIGHT) {
@@ -162,7 +162,7 @@ public class Path {
         prev = cur;
       }
     }
-
+    System.out.println("Directions: " + segments.size());
     return segments.stream().map(TextDirection::new).toList();
   }
 

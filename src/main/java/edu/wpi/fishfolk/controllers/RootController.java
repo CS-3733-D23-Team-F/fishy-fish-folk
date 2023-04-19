@@ -27,6 +27,7 @@ public class RootController {
   // @FXML Text directionInstructions;
   @FXML MFXButton viewOrders;
   @FXML MFXButton furnitureNav;
+  @FXML MFXButton moveEditorNav;
 
   @FXML
   public void initialize() {
@@ -52,6 +53,7 @@ public class RootController {
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     exitButton.setOnMouseClicked(event -> System.exit(0));
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
     closeServiceNav.setVisible(false);
     closeServiceNav.setDisable(true);

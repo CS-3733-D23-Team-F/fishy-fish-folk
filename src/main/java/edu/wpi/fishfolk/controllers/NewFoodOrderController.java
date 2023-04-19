@@ -115,8 +115,8 @@ public class NewFoodOrderController extends AbsController {
 
   /** Load room list into Room Selector */
   private void loadRooms() {
-    // roomSelector.getItems().addAll(dbConnection.getDestLongnames());
-    roomSelector.getItems().add("A room");
+    roomSelector.getItems().addAll(dbConnection.getDestLongnames());
+    // roomSelector.getItems().add("A room");
   }
 
   /** remove all items from the cart */

@@ -125,7 +125,8 @@ public class NewFurnitureOrderController extends AbsController {
 
   // loadRoomChoice() fills the possible options in the Room Numver choicebox
   public void loadRoomChoice() {
-    roomSelector.getItems().add("Placeholder");
+    roomSelector.getItems().addAll(dbConnection.getDestLongnames());
+    // roomSelector.getItems().add("Placeholder");
   }
 
   // deselectRadios() will deselect all of the given buttons.
