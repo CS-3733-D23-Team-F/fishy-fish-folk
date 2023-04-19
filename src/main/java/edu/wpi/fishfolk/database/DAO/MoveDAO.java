@@ -205,6 +205,7 @@ public class MoveDAO implements IDAO<Move> {
       return null;
     }
 
+    // remember that moveID is the longame concatenated with the move date
     String moveID = (String) identifier;
 
     // Check if local table contains identifier
@@ -288,7 +289,7 @@ public class MoveDAO implements IDAO<Move> {
               + " = ?, "
               + headers.get(2)
               + " = ? WHERE "
-              + headers.get(0) // longname matches
+              + headers.get(1) // longname matches
               + " = ? AND "
               + headers.get(2) // and date matches
               + " = ?;";
@@ -299,7 +300,7 @@ public class MoveDAO implements IDAO<Move> {
               + "."
               + this.tableName
               + " WHERE "
-              + headers.get(0) // longname matches
+              + headers.get(1) // longname matches
               + " = ? AND "
               + headers.get(2) // and date matches
               + " = ?;";

@@ -59,4 +59,9 @@ public class Move {
   public Date getSQLDate() {
     return Date.valueOf(date);
   }
+
+  @Override
+  public String toString() {
+    return longName + " moving to " + nodeID + " on " + date;
+  }
 }

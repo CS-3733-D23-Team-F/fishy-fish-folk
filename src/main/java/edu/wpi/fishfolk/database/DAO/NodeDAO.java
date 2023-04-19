@@ -10,11 +10,9 @@ import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javafx.geometry.Point2D;
+import lombok.Getter;
 
 public class NodeDAO implements IDAO<Node> {
 
@@ -26,13 +24,17 @@ public class NodeDAO implements IDAO<Node> {
   private final HashMap<Integer, Node> tableMap;
   private final DataEditQueue<Node> dataEditQueue;
 
+  private final HashSet<Integer> freeIDs;
+  @Getter private int numNodes;
+
   /** DAO for Node table in PostgreSQL database. */
   public NodeDAO(Connection dbConnection) {
     this.dbConnection = dbConnection;
     this.tableName = "node";
     this.headers = new ArrayList<>(List.of("id", "x", "y", "floor", "building"));
-    this.tableMap = new HashMap<>();
+    this.tableMap = new HashMap<>(800); // a little more than (3000-100)/5 * 4/3 = 730
     this.dataEditQueue = new DataEditQueue<>();
+    freeIDs = new HashSet<>(800);
 
     init(false);
     populateLocalTable();
@@ -40,6 +42,10 @@ public class NodeDAO implements IDAO<Node> {
 
   @Override
   public void init(boolean drop) {
+
+    for (int i = 100; i < 4000; i += 5) {
+      freeIDs.add(i);
+    }
 
     try {
       Statement statement = dbConnection.createStatement();
@@ -101,6 +107,7 @@ public class NodeDAO implements IDAO<Node> {
                 results.getString(4),
                 results.getString(5));
         tableMap.put(node.getNodeID(), node);
+        numNodes++;
       }
 
     } catch (SQLException | NumberFormatException e) {
@@ -113,6 +120,10 @@ public class NodeDAO implements IDAO<Node> {
 
     // Mark entry Node status as NEW
     entry.setStatus(EntryStatus.NEW);
+
+    // record that ID is taken
+    freeIDs.remove(entry.getNodeID());
+    numNodes++;
 
     // Push an INSERT to the data edit stack, update the db if the batch limit has been reached
     if (dataEditQueue.add(new DataEdit<>(entry, DataEditType.INSERT), true)) {
@@ -173,6 +184,10 @@ public class NodeDAO implements IDAO<Node> {
           "[NodeDAO.removeEntry]: Identifier " + nodeID + " does not exist in local table.");
       return false;
     }
+
+    // free up id
+    freeIDs.add(nodeID);
+    numNodes--;
 
     // Get entry from local table
     Node entry = tableMap.get(nodeID);
@@ -441,6 +456,10 @@ public class NodeDAO implements IDAO<Node> {
                 parts[3],
                 parts[4]);
 
+        // record that id is taken
+        freeIDs.remove(n.getNodeID());
+
+        // store node in local table
         tableMap.put(n.getNodeID(), n);
 
         insertPS.setInt(1, n.getNodeID());
@@ -495,5 +514,14 @@ public class NodeDAO implements IDAO<Node> {
       System.out.println(e.getMessage());
       return false;
     }
+  }
+
+  /**
+   * Gets the next free id but does not reserve it.
+   *
+   * @return
+   */
+  public int getNextID() {
+    return freeIDs.iterator().next();
   }
 }

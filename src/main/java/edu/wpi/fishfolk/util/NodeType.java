@@ -1,4 +1,4 @@
-package edu.wpi.fishfolk.pathfinding;
+package edu.wpi.fishfolk.util;
 
 public enum NodeType {
   CONF,
@@ -13,5 +13,6 @@ public enum NodeType {
   STAI,
   INFO,
   BATH,
-  DEFAULT;
+  DEFAULT,
+  BINGUS;
 }

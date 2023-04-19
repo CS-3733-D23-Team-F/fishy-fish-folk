@@ -10,6 +10,8 @@ public class Edge {
   @Getter @Setter int endNode;
   @Getter @Setter private EntryStatus status;
 
+  @Getter String edgeID;
+
   /**
    * Table entry type: Edge
    *
@@ -19,6 +21,7 @@ public class Edge {
   public Edge(int startNode, int endNode) {
     this.startNode = startNode;
     this.endNode = endNode;
+    edgeID = startNode + "<->" + endNode;
   }
 
   @Override
@@ -32,7 +35,13 @@ public class Edge {
     } else return false;
   }
 
+  @Override
+  public int hashCode() {
+    return edgeID.hashCode();
+  }
+
+  @Override
   public String toString() {
-    return startNode + "<->" + endNode;
+    return edgeID;
   }
 }

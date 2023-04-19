@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.pathfinding;
 
+import edu.wpi.fishfolk.util.NodeType;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -51,9 +52,9 @@ public class DFS extends Pathfinder {
           // ignore stair condition at start
           if (stairs
               || !graph.getNodeFromIdx(searched).containsType(NodeType.STAI)
-              || graph.getNodeFromIdx(searched).nid == start) {
+              || graph.getNodeFromIdx(searched).getNodeID() == start) {
 
-            int next = graph.getNodeFromIdx(searched).nid;
+            int next = graph.getNodeFromIdx(searched).getNodeID();
             previous[graph.id2idx(next)] = cur;
             stack.addLast(next);
             foundNew = true;

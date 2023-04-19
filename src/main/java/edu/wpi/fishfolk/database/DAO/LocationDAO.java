@@ -6,7 +6,7 @@ import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
 import edu.wpi.fishfolk.database.TableEntry.Location;
-import edu.wpi.fishfolk.pathfinding.NodeType;
+import edu.wpi.fishfolk.util.NodeType;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
