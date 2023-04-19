@@ -109,29 +109,24 @@ public class LoginController extends AbsController {
         String loginID = loginIDField.getText();
         int passhash =
             loginPassField.getText().hashCode(); // literally never store the original password
-        System.out.print("LoginID: ");
-        System.out.println(loginID);
-        System.out.print("Passhash: ");
-        System.out.println(passhash);
+//        System.out.print("LoginID: ");
+//        System.out.println(loginID);
+//        System.out.print("Passhash: ");
+//        System.out.println(passhash);
 
         List<UserAccount> userAccounts =
             (List<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
-        System.out.println(userAccounts);
         UserAccount foundAccount = null;
         for (int i = 0; i < userAccounts.size(); i++) {
           UserAccount a = userAccounts.get(i);
           if (a.getUsername().equals(loginID)) {
             foundAccount = a;
-            System.out.println("Found matching account!");
-            System.out.print("Actual password hash: ");
-            System.out.println(foundAccount.getPassword());
             break;
           }
         }
 
         if (foundAccount == null) {
-          System.out.println("No matching account was found.");
-          errorBox.setText("Incorrect username or password!");
+          errorBox.setText("Account not found.");
           errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
         } else {
           if (foundAccount.getPassword().equals(String.valueOf(passhash))) {
@@ -140,7 +135,7 @@ public class LoginController extends AbsController {
             errorBox.setText("Logged in successfully!");
             errorBox.setStyle("-fx-alignment: center; -fx-background-color:  green;");
           } else {
-            errorBox.setText("Incorrect username or password!");
+            errorBox.setText("Incorrect password!");
             errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
           }
         }
