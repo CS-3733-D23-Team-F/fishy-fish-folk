@@ -4,6 +4,7 @@ import edu.wpi.fishfolk.database.DAO.Observables.FlowerOrderObservable;
 import edu.wpi.fishfolk.database.DAO.Observables.FoodOrderObservable;
 import edu.wpi.fishfolk.database.DAO.Observables.FurnitureOrderObservable;
 import edu.wpi.fishfolk.database.DAO.Observables.SupplyOrderObservable;
+import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.ui.FormStatus;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
