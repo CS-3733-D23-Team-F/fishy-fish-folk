@@ -3,148 +3,192 @@ package edu.wpi.fishfolk.controllers;
 import edu.wpi.fishfolk.database.Table;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import edu.wpi.fishfolk.ui.SupplyItem;
-import edu.wpi.fishfolk.ui.SupplyOrder;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
-import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import edu.wpi.fishfolk.ui.FormStatus;
+import edu.wpi.fishfolk.ui.FurnitureItem;
+import edu.wpi.fishfolk.ui.FurnitureOrder;
+import edu.wpi.fishfolk.ui.ServiceType;
+import io.github.palexdev.materialfx.controls.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javafx.fxml.FXML;
 import javafx.scene.shape.Rectangle;
 
 public class NewFurnitureOrderController extends AbsController {
 
-  private static String[] headersArray = {
-    "id", "items", "link", "roomNum", "notes", "status", "assignee"
-  };
-  public static ArrayList<String> headers = new ArrayList<String>(Arrays.asList(headersArray));
-
-  Table supplyRequestTable;
-  SupplyOrder currentSupplyOrder = new SupplyOrder();
-  @FXML MFXFilterComboBox<String> roomSelector;
-  ArrayList<SupplyItem> supplyOptions;
-  @FXML Rectangle cancelButton;
-  @FXML Rectangle supplySubmitButton;
-  @FXML Rectangle clearButton;
-  // @FXML MFXCheckbox check1, check2, check3, check4, check5, check6, check7;
+  // @FXML ChoiceBox<String> requestTypePicker;
   @FXML
-  MFXRectangleToggleNode rectangle1,
-      rectangle2,
-      rectangle3,
-      rectangle4,
-      rectangle5,
-      rectangle6,
-      rectangle7;
-  @FXML MFXTextField linkTextField, notesTextField;
-
-  /*
-  public NewSupplyOrderController() {
-    super();
-    supplyRequestTable = new Table(dbConnection.conn, "supplyrequest");
-    supplyRequestTable.init(false);
-    supplyRequestTable.addHeaders(
-        SupplyRequestController.headers,
-        new ArrayList<>(
-            List.of("String", "String", "String", "String", "String", "String", "String")));
-  }
-   */
-
+  MFXRectangleToggleNode radioButton1,
+      radioButton2,
+      radioButton3,
+      radioButton4,
+      radioButton5,
+      radioButton6;
   @FXML
+  MFXRectangleToggleNode serviceradioButton1,
+      serviceradioButton2,
+      serviceradioButton3,
+      serviceradioButton4,
+      serviceradioButton5;
+  @FXML MFXComboBox<String> roomSelector;
+  @FXML MFXDatePicker deliveryDate;
+  @FXML MFXTextField notesTextField;
+  @FXML Rectangle cancelButton, clearButton, furnituresubmitButton;
+
+  FurnitureOrder currentFurnitureOrder = new FurnitureOrder();
+  ArrayList<FurnitureItem> furnitureOptions = new ArrayList<>();
+  Table furnitureOrderTable;
+
+  // initialize() sets the preliminary fields for the page and defines the functionality of the
+  // relevant items
+  // ex. radioButton functionality, drop-down menus, etc.
   public void initialize() {
     loadOptions();
+    loadRoomChoice();
     cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
-    supplySubmitButton.setOnMouseClicked(event -> submit());
+    furnituresubmitButton.setOnMouseClicked(event -> submit());
     clearButton.setOnMouseClicked(event -> clearAllFields());
-    loadRooms();
+    radioButton1.setOnMouseClicked(
+        event ->
+            deselectRadios(radioButton2, radioButton3, radioButton4, radioButton5, radioButton6));
+    radioButton2.setOnMouseClicked(
+        event ->
+            deselectRadios(radioButton1, radioButton3, radioButton4, radioButton5, radioButton6));
+    radioButton3.setOnMouseClicked(
+        event ->
+            deselectRadios(radioButton1, radioButton2, radioButton4, radioButton5, radioButton6));
+    radioButton4.setOnMouseClicked(
+        event ->
+            deselectRadios(radioButton1, radioButton2, radioButton3, radioButton5, radioButton6));
+    radioButton5.setOnMouseClicked(
+        event ->
+            deselectRadios(radioButton1, radioButton2, radioButton3, radioButton4, radioButton6));
+    radioButton6.setOnMouseClicked(
+        event ->
+            deselectRadios(radioButton1, radioButton2, radioButton3, radioButton4, radioButton5));
+
+    serviceradioButton1.setOnMouseClicked(
+        event ->
+            deselectServiceRadios(
+                serviceradioButton2,
+                serviceradioButton3,
+                serviceradioButton4,
+                serviceradioButton5));
+    serviceradioButton2.setOnMouseClicked(
+        event ->
+            deselectServiceRadios(
+                serviceradioButton1,
+                serviceradioButton3,
+                serviceradioButton4,
+                serviceradioButton5));
+    serviceradioButton3.setOnMouseClicked(
+        event ->
+            deselectServiceRadios(
+                serviceradioButton1,
+                serviceradioButton2,
+                serviceradioButton4,
+                serviceradioButton5));
+    serviceradioButton4.setOnMouseClicked(
+        event ->
+            deselectServiceRadios(
+                serviceradioButton1,
+                serviceradioButton2,
+                serviceradioButton3,
+                serviceradioButton5));
+    serviceradioButton5.setOnMouseClicked(
+        event ->
+            deselectServiceRadios(
+                serviceradioButton1,
+                serviceradioButton2,
+                serviceradioButton3,
+                serviceradioButton4));
   }
 
-  void loadOptions() {
-    supplyOptions = new ArrayList<SupplyItem>();
-    supplyOptions.add(SupplyItem.supply1);
-    supplyOptions.add(SupplyItem.supply2);
-    supplyOptions.add(SupplyItem.supply3);
-    supplyOptions.add(SupplyItem.supply4);
-    supplyOptions.add(SupplyItem.supply5);
-    supplyOptions.add(SupplyItem.supply6);
-    supplyOptions.add(SupplyItem.supply7);
-    supplyOptions.add(SupplyItem.supply8);
+  // loadOptions() fills furnitureOptions list with possible furniture items to select
+  public void loadOptions() {
+    furnitureOptions.add(FurnitureItem.bed);
+    furnitureOptions.add(FurnitureItem.chair);
+    furnitureOptions.add(FurnitureItem.desk);
+    furnitureOptions.add(FurnitureItem.fileCabinet);
+    furnitureOptions.add(FurnitureItem.clock);
+    furnitureOptions.add(FurnitureItem.xRay);
+    furnitureOptions.add(FurnitureItem.trashCan);
   }
 
-  void loadRooms() {
-    roomSelector.getItems().addAll(dbConnection.getDestLongnames());
+  public void clearAllFields() {
+    deselectRadios(radioButton1, radioButton2, radioButton3, radioButton4, radioButton5);
+    radioButton6.setSelected(false);
+    deselectServiceRadios(
+        serviceradioButton1, serviceradioButton2, serviceradioButton3, serviceradioButton4);
+    serviceradioButton5.setSelected(false);
   }
 
-  private void addToOrder(int supplyNum) {
-    SupplyItem supply = supplyOptions.get(supplyNum);
-    currentSupplyOrder.addSupply(supply);
+  // loadRoomChoice() fills the possible options in the Room Numver choicebox
+  public void loadRoomChoice() {
+    roomSelector.getItems().add("Placeholder");
   }
 
-  // private void addTextFields() {}
-
-  private void clearAllFields() {
-    clearChecks();
-    clearTextFields();
+  // deselectRadios() will deselect all of the given buttons.
+  // This will be used to make sure only one button can be pressed at a time on the form
+  public void deselectRadios(
+      MFXRectangleToggleNode offButton1,
+      MFXRectangleToggleNode offButton2,
+      MFXRectangleToggleNode offButton3,
+      MFXRectangleToggleNode offButton4,
+      MFXRectangleToggleNode offButton5) {
+    offButton1.setSelected(false);
+    offButton2.setSelected(false);
+    offButton3.setSelected(false);
+    offButton4.setSelected(false);
+    offButton5.setSelected(false);
   }
 
-  private void clearTextFields() {
-    linkTextField.clear();
-    notesTextField.clear();
-    roomSelector.setText(null);
+  public void deselectServiceRadios(
+      MFXRectangleToggleNode offButton1,
+      MFXRectangleToggleNode offButton2,
+      MFXRectangleToggleNode offButton3,
+      MFXRectangleToggleNode offButton4) {
+    offButton1.setSelected(false);
+    offButton2.setSelected(false);
+    offButton3.setSelected(false);
+    offButton4.setSelected(false);
   }
 
-  private void clearChecks() {
-    rectangle1.setSelected(false);
-    rectangle2.setSelected(false);
-    rectangle3.setSelected(false);
-    rectangle4.setSelected(false);
-    rectangle4.setSelected(false);
-    rectangle5.setSelected(false);
-    rectangle6.setSelected(false);
+  // getDate() returns the date. idk what the date function looked like as a string i was curious
+  public String getDate() {
+    return "" + deliveryDate.getCurrentDate();
   }
 
-  private boolean submittable() {
-    if (rectangle1.isSelected()
-        || rectangle2.isSelected()
-        || rectangle3.isSelected()
-        || rectangle4.isSelected()
-        || rectangle5.isSelected()
-        || rectangle6.isSelected()
-        || rectangle7.isSelected()
-        || (!(currentSupplyOrder.link == ""))) {
-      System.out.println("Sufficient fields filled");
-      return true;
-    } else {
-      System.out.println("Sufficient fields not filled");
-      return false;
-    }
+  // setItemToRadios() checks the status of all of the buttons and sets the item in the current
+  // order to the equivalent item
+  public void setItemToRadios() {
+    if (radioButton1.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(0);
+    if (radioButton2.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(1);
+    if (radioButton3.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(2);
+    if (radioButton4.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(3);
+    if (radioButton5.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(4);
+    if (radioButton6.isSelected()) currentFurnitureOrder.furnitureItem = furnitureOptions.get(5);
   }
 
-  private void submit() {
-    if (rectangle1.isSelected()) addToOrder(0);
-    else addToOrder(7);
-    if (rectangle2.isSelected()) addToOrder(1);
-    else addToOrder(7);
-    if (rectangle3.isSelected()) addToOrder(2);
-    else addToOrder(7);
-    if (rectangle4.isSelected()) addToOrder(3);
-    else addToOrder(7);
-    if (rectangle5.isSelected()) addToOrder(4);
-    else addToOrder(7);
-    if (rectangle6.isSelected()) addToOrder(5);
-    else addToOrder(7);
-    if (rectangle7.isSelected()) addToOrder(6);
-    else addToOrder(7);
-    currentSupplyOrder.roomNum = roomSelector.getValue();
-    currentSupplyOrder.link = linkTextField.getText();
-    currentSupplyOrder.notes = notesTextField.getText();
-    if (submittable()) {
-      System.out.println(currentSupplyOrder.toString());
-      System.out.println(currentSupplyOrder.listItemsToString());
-      currentSupplyOrder.setSubmitted();
-      // supplyRequestTable.insert(currentSupplyOrder);
-      Navigation.navigate(Screen.HOME);
-    }
+  public void setServiceTypeToRadios() {
+    if (serviceradioButton1.isSelected())
+      currentFurnitureOrder.serviceType = ServiceType.replacement;
+    if (serviceradioButton2.isSelected()) currentFurnitureOrder.serviceType = ServiceType.cleaning;
+    if (serviceradioButton3.isSelected()) currentFurnitureOrder.serviceType = ServiceType.delivery;
+    if (serviceradioButton4.isSelected()) currentFurnitureOrder.serviceType = ServiceType.maintenance;
+    if (serviceradioButton5.isSelected()) currentFurnitureOrder.serviceType = ServiceType.removal;
+  }
+
+  // submit() creates the final currentFurnitureOrder and uses its fields to send data to the
+  // furnitureorder table
+  void submit() {
+    setServiceTypeToRadios();
+    setItemToRadios();
+    currentFurnitureOrder.setRoomNum("" + roomSelector.getValue());
+    currentFurnitureOrder.addNotes(notesTextField.getText());
+    currentFurnitureOrder.addDate(getDate());
+    currentFurnitureOrder.setStatus(FormStatus.submitted);
+    // furnitureOrderTable.insert(currentFurnitureOrder);
+    dbConnection.insertEntry
+    Navigation.navigate(Screen.HOME);
   }
 }
