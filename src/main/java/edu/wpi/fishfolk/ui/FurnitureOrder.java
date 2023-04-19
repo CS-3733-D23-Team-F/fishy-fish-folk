@@ -54,48 +54,4 @@ public class FurnitureOrder {
   public void setStatus(FormStatus status) {
     this.formStatus = status;
   }
-
-  // construct() converts the values from a given furnitureorder table row into a FurnitureOrder
-  public boolean construct(ArrayList<String> data) {
-    formID = data.get(0);
-    if (data.get(1).equals("replacement")) serviceType = ServiceType.replacement;
-    if (data.get(1).equals("cleaning")) serviceType = ServiceType.cleaning;
-    if (data.get(1).equals("delivery")) serviceType = ServiceType.delivery;
-    if (data.get(1).equals("maintenance")) serviceType = ServiceType.maintenance;
-    if (data.get(1).equals("removal")) serviceType = ServiceType.removal;
-
-    if (data.get(2).equals(FurnitureItem.bed.furnitureName)) furnitureItem = FurnitureItem.bed;
-    if (data.get(2).equals(FurnitureItem.chair.furnitureName)) furnitureItem = FurnitureItem.chair;
-    if (data.get(2).equals(FurnitureItem.desk.furnitureName)) furnitureItem = FurnitureItem.desk;
-    if (data.get(2).equals(FurnitureItem.fileCabinet.furnitureName))
-      furnitureItem = FurnitureItem.fileCabinet;
-    if (data.get(2).equals(FurnitureItem.clock.furnitureName)) furnitureItem = FurnitureItem.clock;
-    if (data.get(2).equals(FurnitureItem.xRay.furnitureName)) furnitureItem = FurnitureItem.xRay;
-    if (data.get(2).equals(FurnitureItem.trashCan.furnitureName))
-      furnitureItem = FurnitureItem.trashCan;
-    roomNum = data.get(3);
-    deliveryDate = data.get(4);
-    notes = data.get(5);
-    if (data.get(6).equals("notSubmitted")) setStatus(FormStatus.notSubmitted);
-    if (data.get(6).equals("submitted")) setStatus(FormStatus.submitted);
-    if (data.get(6).equals("cancelled")) setStatus(FormStatus.cancelled);
-    if (data.get(6).equals("filled")) setStatus(FormStatus.filled);
-    assignee = data.get(7);
-    return true;
-  }
-
-  // deconstruct() converts the currentFurnitureOrder into an ArrayList<String> for the
-  // furnitureorder table format
-  public ArrayList<String> deconstruct() {
-    ArrayList<String> deconstruction = new ArrayList<String>();
-    deconstruction.add(formID);
-    deconstruction.add("" + serviceType);
-    deconstruction.add(furnitureItem.furnitureName);
-    deconstruction.add(roomNum);
-    deconstruction.add(deliveryDate);
-    deconstruction.add(notes);
-    deconstruction.add("" + formStatus);
-    deconstruction.add(assignee);
-    return deconstruction;
-  }
 }
