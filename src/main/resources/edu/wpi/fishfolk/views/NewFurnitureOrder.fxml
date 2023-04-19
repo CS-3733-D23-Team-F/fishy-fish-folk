@@ -115,17 +115,17 @@
          <Font name="Open Sans SemiBold" size="26.0" />
       </font>
    </Text>
-   <MFXButton fx:id="clearButton" layoutX="416.0" layoutY="784.0" prefHeight="63.0" prefWidth="187.0" style="-fx-border-radius: 5; -fx-background-color: #012d5a;" text="CLEAR" textFill="WHITE">
+   <MFXButton fx:id="clearButton" layoutX="416.0" layoutY="784.0" prefHeight="63.0" prefWidth="187.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CLEAR" textFill="WHITE">
       <font>
          <Font name="Open Sans Bold" size="26.0" />
       </font>
    </MFXButton>
-   <MFXButton fx:id="cancelButton" layoutX="50.0" layoutY="785.0" prefHeight="63.0" prefWidth="187.0" style="-fx-border-radius: 5; -fx-background-color: #012d5a;" text="CANCEL" textFill="WHITE">
+   <MFXButton fx:id="cancelButton" layoutX="50.0" layoutY="785.0" prefHeight="63.0" prefWidth="187.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CANCEL" textFill="WHITE">
       <font>
          <Font name="Open Sans Bold" size="26.0" />
       </font>
    </MFXButton>
-   <MFXButton fx:id="furnituresubmitButton" layoutX="1049.0" layoutY="784.0" prefHeight="63.0" prefWidth="187.0" style="-fx-border-radius: 5; -fx-background-color: #f0bf4c;" text="SUBMIT" textFill="WHITE">
+   <MFXButton fx:id="furnituresubmitButton" layoutX="1049.0" layoutY="784.0" prefHeight="63.0" prefWidth="187.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #f0bf4c;" text="SUBMIT" textFill="WHITE">
       <font>
          <Font name="Open Sans Bold" size="26.0" />
       </font>
