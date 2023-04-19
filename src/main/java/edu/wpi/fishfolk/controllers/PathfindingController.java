@@ -36,6 +36,7 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXFilterComboBox<String> startSelector;
   @FXML MFXFilterComboBox<String> endSelector;
+  @FXML MFXFilterComboBox<String> methodSelector;
   @FXML MFXButton clearBtn;
 
   @FXML Group pathGroup;
@@ -51,7 +52,7 @@ public class PathfindingController extends AbsController {
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
 
-  Pathfinder pathfinder;
+  PathfindSingleton pathfinder;
 
   int start, end;
   Graph graph;
@@ -86,6 +87,9 @@ public class PathfindingController extends AbsController {
         });
 
     // buttons to other pages
+    methodSelector.getItems().add("A*");
+    methodSelector.getItems().add("BFS");
+    methodSelector.getItems().add("DFS");
     slideUp.setOnMouseClicked(
         event -> {
           TranslateTransition slide = new TranslateTransition();
@@ -142,6 +146,7 @@ public class PathfindingController extends AbsController {
 
     startSelector.setOnAction(
         event -> {
+          pathAnimations.clear();
           pathGroup.getChildren().clear();
           pathGroup.getChildren().add(mapImg);
           // clear list of floors
@@ -156,15 +161,24 @@ public class PathfindingController extends AbsController {
 
     endSelector.setOnAction(
         event -> {
+          grid.getChildren().clear();
           end = dbConnection.getNodeIDFromLocation(endSelector.getValue(), today);
           System.out.println("end node: " + end);
-          pathfinder = new AStar(graph);
-          paths = pathfinder.pathfind(start, end, true);
+          pathfinder = PathfindSingleton.PATHFINDER;
+          if (methodSelector.getValue() == null || methodSelector.getValue().equals("A*")) {
+            pathfinder.setPathMethod(new AStar(graph));
+          } else if (methodSelector.getValue().equals("BFS")) {
+            pathfinder.setPathMethod(new BFS(graph));
+          } else if (methodSelector.getValue().equals("DFS")) {
+            pathfinder.setPathMethod(new DFS(graph));
+          }
+
+          paths = pathfinder.getPathMethod().pathfind(start, end, true);
 
           System.out.println(paths);
 
           textDirections = new LinkedList<>();
-          populateTextDirections(paths);
+          // populateTextDirections(paths);
 
           // index 0 in floors in this path - not allFloors
           currentFloor = 0;
@@ -196,13 +210,11 @@ public class PathfindingController extends AbsController {
   }
 
   private void drawPaths(ArrayList<Path> paths) {
-
     for (int i = 0; i < paths.size(); i++) {
       Path path = paths.get(i);
       // skip paths of length 1 (going through elevator node)
       // except for first and last path
       if (path.numNodes > 1 || i == 0 || i == paths.size() - 1) {
-
         // group to store this floor's path
         Group g = new Group();
 
@@ -233,7 +245,6 @@ public class PathfindingController extends AbsController {
         }
 
         pathAnimations.add(parallelTransition);
-
         // add buttons to start and end of paths on each floor
         if (i == 0) {
           Point2D p1 = path.points.get(0);
@@ -286,7 +297,6 @@ public class PathfindingController extends AbsController {
                       direction(path.getFloor(), paths.get(i + 1).getFloor()),
                       true));
         }
-
         pathGroup.getChildren().add(g);
         g.setVisible(false);
 
@@ -313,8 +323,10 @@ public class PathfindingController extends AbsController {
         event -> {
           if (forwards) {
             nextFloor();
+            grid.getChildren().clear();
           } else {
             prevFloor();
+            grid.getChildren().clear();
           }
           displayFloor();
         });
@@ -354,13 +366,12 @@ public class PathfindingController extends AbsController {
         .get(currentFloor + 1)
         .setVisible(true); // offset by 1 because first child is gesture pane
     pathAnimations.get(currentFloor).play();
-
     // draw text instructions
     int col = 0;
     int row = 1;
 
     try {
-      for (int i = 0; i < textDirections.size(); i++) {
+      for (int i = 0; i < textDirections.get(currentFloor).size(); i++) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(Fapp.class.getResource("views/TextInstruction.fxml"));
 
@@ -376,8 +387,8 @@ public class PathfindingController extends AbsController {
           row++;
         }
 
-        col++;
-        grid.add(anchorPane, col, row);
+        // col++;
+        grid.add(anchorPane, col++, row);
 
         grid.setMinWidth(Region.USE_COMPUTED_SIZE);
         grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
@@ -396,7 +407,7 @@ public class PathfindingController extends AbsController {
 
   private void populateTextDirections(ArrayList<Path> paths) {
     int lastFloorIdx = paths.size() - 1;
-
+    System.out.println("path size: " + lastFloorIdx);
     for (int i = 0; i <= lastFloorIdx; i++) {
       List<TextDirection> floorDirections = new LinkedList<>(paths.get(i).getDirections());
 
@@ -417,7 +428,11 @@ public class PathfindingController extends AbsController {
         }
         floorDirections.add(new TextDirection(Direction.START, "End at " + endSelector.getValue()));
       }
-
+      System.out.println(
+          "floor dir: "
+              + floorDirections.get(i).getDirection()
+              + " dist "
+              + floorDirections.get(i).getDistance());
       textDirections.add(floorDirections);
     }
   }
@@ -439,6 +454,7 @@ public class PathfindingController extends AbsController {
         text = "Take the stairs down to " + second;
         break;
     }
+    System.out.println(text);
     return new TextDirection(direction, text);
   }
 
