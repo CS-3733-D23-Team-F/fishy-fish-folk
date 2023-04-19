@@ -246,7 +246,7 @@ public class PathfindingController extends AbsController {
 
         pathAnimations.add(parallelTransition);
         // add buttons to start and end of paths on each floor
-        if (i == 0) {
+        if (i == 0 && (!(paths.size() == 1))) {
           Point2D p1 = path.points.get(0);
           NodeCircle start = new NodeCircle(-1, p1.getX(), p1.getY(), 12);
           start.setFill(Color.rgb(1, 45, 90));
@@ -261,7 +261,7 @@ public class PathfindingController extends AbsController {
                       direction(path.getFloor(), paths.get(1).getFloor()),
                       true));
 
-        } else if (i == paths.size() - 1) { // last path segment
+        } else if (i == paths.size() - 1 && (!(paths.size() == 1))) { // last path segment
           Point2D p1 = path.points.get(0);
           g.getChildren()
               .add(
@@ -276,7 +276,8 @@ public class PathfindingController extends AbsController {
           end.setFill(Color.rgb(1, 45, 90));
           g.getChildren().add(end);
 
-        } else { // middle path segment. draw a regular path button at each endpoint
+        } else if (!(paths.size()
+            == 1)) { // middle path segment. draw a regular path button at each endpoint
           Point2D p1 = path.points.get(0);
           g.getChildren()
               .add(
