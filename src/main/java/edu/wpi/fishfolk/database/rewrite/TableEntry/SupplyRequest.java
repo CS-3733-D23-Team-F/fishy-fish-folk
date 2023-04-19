@@ -4,7 +4,7 @@ import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.SupplyItem;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,9 +17,9 @@ public class SupplyRequest {
   @Getter @Setter private String notes;
 
   // Specific
-  @Getter @Setter private ArrayList<SupplyItem> supplies;
   @Getter @Setter private String link;
   @Getter @Setter private String roomNumber;
+  @Getter @Setter private List<SupplyItem> supplies;
 
   // For DAO
   @Getter @Setter private EntryStatus status;
@@ -31,25 +31,52 @@ public class SupplyRequest {
    * @param assignee Assignee of request
    * @param formStatus Status of request
    * @param notes Additional notes of request
-   * @param supplies Supply items of request
    * @param link Link to supply items if out of stock
    * @param roomNumber Room number of request
+   * @param supplies Supply items of request
    */
   public SupplyRequest(
       LocalDateTime supplyRequestID,
       String assignee,
       FormStatus formStatus,
       String notes,
-      ArrayList<SupplyItem> supplies,
       String link,
-      String roomNumber) {
+      String roomNumber,
+      List<SupplyItem> supplies) {
     this.supplyRequestID = supplyRequestID;
     this.assignee = assignee;
     this.formStatus = formStatus;
     this.notes = notes;
-    this.supplies = supplies;
     this.link = link;
     this.roomNumber = roomNumber;
+    this.supplies = supplies;
+    this.status = EntryStatus.OLD;
+  }
+
+  /**
+   * Table entry type: Supply Request; This one sets the LocalDateTime to now.
+   *
+   * @param assignee Assignee of request
+   * @param formStatus Status of request
+   * @param notes Additional notes of request
+   * @param link Link to supply items if out of stock
+   * @param roomNumber Room number of request
+   * @param supplies Supply items of request
+   */
+  public SupplyRequest(
+      String assignee,
+      FormStatus formStatus,
+      String notes,
+      String link,
+      String roomNumber,
+      List<SupplyItem> supplies) {
+    this.supplyRequestID = LocalDateTime.now();
+    this.assignee = assignee;
+    this.formStatus = formStatus;
+    this.notes = notes;
+    this.link = link;
+    this.roomNumber = roomNumber;
+    this.supplies = supplies;
     this.status = EntryStatus.OLD;
   }
 }
