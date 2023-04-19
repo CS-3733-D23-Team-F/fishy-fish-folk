@@ -7,7 +7,8 @@ public class SharedResources {
   private static UserAccount currentAccount = null;
 
   /**
-   * Attempt to log into an account. If the user is already logged in, only log them out if the attempt is successful.
+   * Attempt to log into an account. If the user is already logged in, only log them out if the
+   * attempt is successful.
    *
    * @param acct the account to log into.
    * @param password the password used to log in.

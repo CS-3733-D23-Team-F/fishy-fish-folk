@@ -1,7 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.SharedResources;
-import edu.wpi.fishfolk.database.rewrite.Fdb;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.UserAccount;
 import edu.wpi.fishfolk.navigation.Navigation;
@@ -40,8 +39,6 @@ public class LoginController extends AbsController {
   @FXML MFXTextField loginIDField;
   @FXML MFXPasswordField loginPassField;
   @FXML Label errorBox;
-
-  edu.wpi.fishfolk.database.rewrite.Fdb dbConnection = new Fdb();
 
   /** Initialize state and set event handlers. */
   @FXML
