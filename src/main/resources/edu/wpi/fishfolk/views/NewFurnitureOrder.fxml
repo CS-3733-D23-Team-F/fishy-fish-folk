@@ -117,7 +117,7 @@
          </AnchorPane>
       </content>
    </ScrollPane>
-   <MFXDatePicker fx:id="deliveryDate" layoutX="616.0" layoutY="675.0" prefHeight="86.0" prefWidth="620.0" promptText="DELIVERY DATE" style="-fx-border-width: 3; -fx-border-radius: 5; -fx-border-color: #012d5a;">
+   <MFXDatePicker fx:id="deliveryDate" layoutX="616.0" layoutY="675.0" popupOffsetX="45.0" popupOffsetY="-4150.0" prefHeight="86.0" prefWidth="620.0" promptText="DELIVERY DATE" style="-fx-border-width: 3; -fx-border-radius: 5; -fx-border-color: #012d5a;">
       <font>
          <Font name="Open Sans Light" size="26.0" />
       </font>
