@@ -82,7 +82,7 @@ public class MoveController extends AbsController {
           // for some reason .add doesnt work, just use .addAll(... elements)
           observableMoves.addAll(new ObservableMove(newMove));
 
-          dbConnection.insertEntry(newMove);
+          System.out.println(newMove + " " + dbConnection.insertEntry(newMove));
         });
 
     /*submitlocation.setOnMouseClicked(
@@ -126,7 +126,7 @@ public class MoveController extends AbsController {
         new Move(Integer.parseInt(newnodeID), oldlongname, ObservableMove.parseDate(olddate));
     observableMoves.addAll(new ObservableMove(newMove));
 
-    dbConnection.updateEntry(newMove);
+    System.out.println(newMove + " " + dbConnection.updateEntry(newMove));
   }
 
   private void editMoveLongname(TableColumn.CellEditEvent<ObservableMove, String> event) {
