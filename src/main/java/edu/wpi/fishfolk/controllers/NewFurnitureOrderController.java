@@ -121,6 +121,9 @@ public class NewFurnitureOrderController extends AbsController {
     deselectServiceRadios(
         serviceradioButton1, serviceradioButton2, serviceradioButton3, serviceradioButton4);
     serviceradioButton5.setSelected(false);
+    notesTextField.setText("");
+    roomSelector.setValue(null);
+    deliveryDate.setValue(null);
   }
 
   // loadRoomChoice() fills the possible options in the Room Numver choicebox

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -50,21 +49,17 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
-                     <MFXTextField fx:id="foodassigneeTextField" layoutX="656.0" layoutY="588.0" prefHeight="60.0" prefWidth="310.0" promptText="ASSIGNEE">
-                        <font>
-                           <Font name="Open Sans Regular" size="15.0" />
-                        </font>
-                        <textFill>
-                           <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
-                        </textFill>
-                     </MFXTextField>
-                     <Rectangle fx:id="assigneeText" arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="63.0" layoutX="656.0" layoutY="586.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="310.0" />
                      <Rectangle fx:id="foodassignButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="981.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
                      <Text disable="true" fill="WHITE" layoutX="1036.0" layoutY="627.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ASSIGN">
                         <font>
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
+                     <MFXFilterComboBox fx:id="foodAssignSelector" alignment="TOP_LEFT" layoutX="755.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </MFXFilterComboBox>
                   </children>
                </AnchorPane>
          </content>
@@ -90,15 +85,6 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
-                     <MFXTextField fx:id="supplyassigneeTextField" layoutX="656.0" layoutY="588.0" prefHeight="60.0" prefWidth="310.0" promptText="ASSIGNEE">
-                        <font>
-                           <Font name="Open Sans Regular" size="15.0" />
-                        </font>
-                        <textFill>
-                           <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
-                        </textFill>
-                     </MFXTextField>
-                     <Rectangle fx:id="assigneeText1" arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="63.0" layoutX="656.0" layoutY="586.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="310.0" />
                      <Rectangle fx:id="supplyremoveButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="437.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
                      <Rectangle fx:id="supplycancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="220.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
                      <Rectangle fx:id="supplyfillButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
@@ -117,6 +103,11 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
+                     <MFXFilterComboBox fx:id="supplyAssignSelector" alignment="TOP_LEFT" layoutX="755.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </MFXFilterComboBox>
                   </children></AnchorPane>
          </content>
        </Tab>
@@ -142,15 +133,6 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
-                     <MFXTextField fx:id="furnitureassigneeTextField" layoutX="656.0" layoutY="588.0" prefHeight="60.0" prefWidth="310.0" promptText="ASSIGNEE">
-                        <font>
-                           <Font name="Open Sans Regular" size="15.0" />
-                        </font>
-                        <textFill>
-                           <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
-                        </textFill>
-                     </MFXTextField>
-                     <Rectangle fx:id="assigneeText2" arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="63.0" layoutX="656.0" layoutY="586.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="310.0" />
                      <Rectangle fx:id="furnitureremoveButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="437.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
                      <Rectangle fx:id="furniturecancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="220.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
                      <Rectangle fx:id="furniturefillButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
@@ -169,6 +151,11 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
+                     <MFXFilterComboBox fx:id="furnitureAssignSelector" alignment="TOP_LEFT" layoutX="755.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </MFXFilterComboBox>
                   </children></AnchorPane>
            </content>
          </Tab>
@@ -194,15 +181,6 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
-                     <MFXTextField fx:id="flowerassigneeTextField" layoutX="656.0" layoutY="588.0" prefHeight="60.0" prefWidth="310.0" promptText="ASSIGNEE">
-                        <font>
-                           <Font name="Open Sans Regular" size="15.0" />
-                        </font>
-                        <textFill>
-                           <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
-                        </textFill>
-                     </MFXTextField>
-                     <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="63.0" layoutX="656.0" layoutY="586.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="310.0" />
                      <Rectangle fx:id="flowerremoveButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="437.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
                      <Rectangle fx:id="flowercancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="220.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
                      <Rectangle fx:id="flowerfillButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
@@ -221,6 +199,11 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
+                     <MFXFilterComboBox fx:id="flowerAssignSelector" alignment="TOP_LEFT" layoutX="755.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </MFXFilterComboBox>
                   </children></AnchorPane>
            </content>
          </Tab>

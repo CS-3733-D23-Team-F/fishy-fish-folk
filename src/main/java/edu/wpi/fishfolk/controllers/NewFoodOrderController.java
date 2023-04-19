@@ -189,6 +189,7 @@ public class NewFoodOrderController extends AbsController {
             recipientField.getText(),
             items);
     dbConnection.insertEntry(thisOrder);
+    Navigation.navigate(Screen.HOME);
   }
 
   /**
