@@ -1,7 +1,7 @@
 // package edu.wpi.fishfolk.database;
 //
 // import edu.wpi.fishfolk.pathfinding.Node;
-// import edu.wpi.fishfolk.pathfinding.NodeType;
+// import edu.wpi.fishfolk.util.NodeType;
 // import java.sql.SQLException;
 // import java.util.ArrayList;
 // import java.util.Arrays;

@@ -7,7 +7,7 @@ import edu.wpi.fishfolk.database.DAO.Observables.ObservableLocation;
 import edu.wpi.fishfolk.database.DAO.Observables.ObservableMove;
 import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.database.TableEntry.Move;
-import edu.wpi.fishfolk.pathfinding.NodeType;
+import edu.wpi.fishfolk.util.NodeType;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
@@ -110,42 +110,36 @@ public class MoveController extends AbsController {
 
     deletemove.setOnMouseClicked(
         event -> {
-          Move newMove =
-              new Move(
-                  Integer.parseInt(nodetext.getText()),
-                  movelongnametext.getText(),
-                  ObservableMove.parseDate(datetext.getText()));
+          int row = movetable.getSelectionModel().getSelectedIndex();
+          String longname = movelongname.getCellObservableValue(row).getValue();
+          String _date = date.getCellObservableValue(row).getValue();
 
-          // for some reason .remove doesnt work, just use .removeAll(... elements)
-          observableMoves.removeAll(new ObservableMove(newMove));
-
-          System.out.println(newMove + " " + dbConnection.removeEntry(newMove, MOVE));
+          observableMoves.removeIf(obsmove -> obsmove.matches(longname, _date));
+          dbConnection.removeEntry(longname + _date, MOVE);
+          clearMoveFields();
         });
 
     deletelocation.setOnMouseClicked(
         event -> {
-          Location newLocation =
-              new Location(
-                  locationlongnametext.getText(),
-                  shortnametext.getText(),
-                  NodeType.valueOf(typetext.getText()));
+          int row = locationtable.getSelectionModel().getSelectedIndex();
+          String longname = locationlongname.getCellObservableValue(row).getValue();
 
-          observableLocations.removeAll(new ObservableLocation(newLocation));
-
-          dbConnection.removeEntry(newLocation, LOCATION);
+          observableLocations.removeIf(obsloc -> obsloc.getLongname().equals(longname));
+          dbConnection.removeEntry(longname, LOCATION);
+          clearLocationFields();
         });
 
-    clearMove.setOnMouseClicked(event -> MoveClear());
-    clearLocation.setOnMouseClicked(event -> LocationClear());
+    clearMove.setOnMouseClicked(event -> clearMoveFields());
+    clearLocation.setOnMouseClicked(event -> clearLocationFields());
   }
 
-  private void MoveClear() {
+  private void clearMoveFields() {
     nodetext.setText("");
     movelongnametext.setText("");
     datetext.setText("");
   }
 
-  private void LocationClear() {
+  private void clearLocationFields() {
     locationlongnametext.setText("");
     shortnametext.setText("");
     typetext.setText("");

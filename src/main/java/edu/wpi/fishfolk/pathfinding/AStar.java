@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.pathfinding;
 
 import edu.wpi.fishfolk.database.TableEntry.Node;
+import edu.wpi.fishfolk.util.NodeType;
 import java.util.ArrayList;
 
 public class AStar extends Pathfinder {

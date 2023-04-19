@@ -1,7 +1,7 @@
 package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.database.EntryStatus;
-import edu.wpi.fishfolk.pathfinding.NodeType;
+import edu.wpi.fishfolk.util.NodeType;
 import java.util.HashSet;
 import java.util.List;
 import javafx.geometry.Point2D;

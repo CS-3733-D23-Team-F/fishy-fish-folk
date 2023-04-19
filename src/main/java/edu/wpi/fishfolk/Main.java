@@ -2,8 +2,8 @@ package edu.wpi.fishfolk;
 
 import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.database.TableEntry.*;
-import edu.wpi.fishfolk.pathfinding.NodeType;
 import edu.wpi.fishfolk.ui.FormStatus;
+import edu.wpi.fishfolk.util.NodeType;
 import java.time.LocalDateTime;
 import javafx.geometry.Point2D;
 

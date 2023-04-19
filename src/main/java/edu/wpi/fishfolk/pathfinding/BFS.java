@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.pathfinding;
 
+import edu.wpi.fishfolk.util.NodeType;
 import java.util.ArrayList;
 import java.util.LinkedList;
 

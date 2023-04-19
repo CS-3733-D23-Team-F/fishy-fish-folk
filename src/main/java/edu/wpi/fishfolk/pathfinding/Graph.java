@@ -3,6 +3,7 @@ package edu.wpi.fishfolk.pathfinding;
 import edu.wpi.fishfolk.controllers.AbsController;
 import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.util.NodeType;
 import java.util.*;
 import javafx.geometry.Point2D;
 import lombok.Getter;
