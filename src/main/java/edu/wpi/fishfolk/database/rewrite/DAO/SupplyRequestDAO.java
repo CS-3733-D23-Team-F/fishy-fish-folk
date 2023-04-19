@@ -5,8 +5,10 @@ import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
+import edu.wpi.fishfolk.database.rewrite.IHasSubtable;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.SupplyRequest;
 import edu.wpi.fishfolk.ui.FormStatus;
+import edu.wpi.fishfolk.ui.SupplyItem;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SupplyRequestDAO implements IDAO<SupplyRequest> {
+public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<SupplyItem> {
 
   private final Connection dbConnection;
 
@@ -32,11 +34,12 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
     this.tableName = "supplyrequest";
     this.headers =
         new ArrayList<>(
-            List.of("id", "assignee", "status", "notes", "supplies", "link", "roomnumber"));
+            List.of("id", "assignee", "status", "notes", "link", "roomnumber", "supplies"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
 
     init(false);
+    initSubtable(false);
     populateLocalTable();
   }
 
@@ -73,9 +76,9 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
                 + "assignee VARCHAR(64),"
                 + "status VARCHAR(12),"
                 + "notes VARCHAR(256),"
-                + "supplies INT," // TODO: Sub-table for items
                 + "link VARCHAR(512),"
-                + "roomnumber VARCHAR(64)"
+                + "roomnumber VARCHAR(64),"
+                + "supplies SERIAL"
                 + ");";
         statement.executeUpdate(query);
       }
@@ -105,9 +108,9 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
                 results.getString(headers.get(1)),
                 FormStatus.valueOf(results.getString(headers.get(2))),
                 results.getString(headers.get(3)),
-                null,
+                results.getString(headers.get(4)),
                 results.getString(headers.get(5)),
-                results.getString(headers.get(6)));
+                getSubtableItems(results.getInt(headers.get(6))));
         tableMap.put(supplyRequest.getSupplyRequestID(), supplyRequest);
       }
 
@@ -293,7 +296,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?);";
 
       String update =
           "UPDATE "
@@ -312,8 +315,6 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
               + headers.get(4)
               + " = ?, "
               + headers.get(5)
-              + " = ?, "
-              + headers.get(6)
               + " = ? WHERE "
               + headers.get(0)
               + " = ?;";
@@ -358,12 +359,13 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
             preparedInsert.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedInsert.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedInsert.setString(4, dataEdit.getNewEntry().getNotes());
-            preparedInsert.setInt(5, 0); // TODO: Yup
-            preparedInsert.setString(6, dataEdit.getNewEntry().getLink());
-            preparedInsert.setString(7, dataEdit.getNewEntry().getRoomNumber());
+            preparedInsert.setString(5, dataEdit.getNewEntry().getLink());
+            preparedInsert.setString(6, dataEdit.getNewEntry().getRoomNumber());
 
             // Execute the query
             preparedInsert.executeUpdate();
+            setSubtableItems(
+                dataEdit.getNewEntry().getSupplyRequestID(), dataEdit.getNewEntry().getSupplies());
 
             break;
 
@@ -375,14 +377,16 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
             preparedUpdate.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedUpdate.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedUpdate.setString(4, dataEdit.getNewEntry().getNotes());
-            preparedUpdate.setInt(5, 0); // TODO: Yup
-            preparedUpdate.setString(6, dataEdit.getNewEntry().getLink());
-            preparedUpdate.setString(7, dataEdit.getNewEntry().getRoomNumber());
+            preparedUpdate.setString(5, dataEdit.getNewEntry().getLink());
+            preparedUpdate.setString(6, dataEdit.getNewEntry().getRoomNumber());
             preparedUpdate.setTimestamp(
-                8, Timestamp.valueOf(dataEdit.getNewEntry().getSupplyRequestID()));
+                7, Timestamp.valueOf(dataEdit.getNewEntry().getSupplyRequestID()));
 
             // Execute the query
             preparedUpdate.executeUpdate();
+            setSubtableItems(
+                dataEdit.getNewEntry().getSupplyRequestID(), dataEdit.getNewEntry().getSupplies());
+
             break;
 
           case REMOVE:
@@ -392,6 +396,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
                 1, Timestamp.valueOf(dataEdit.getNewEntry().getSupplyRequestID()));
 
             // Execute the query
+            deleteAllSubtableItems(dataEdit.getNewEntry().getSupplyRequestID());
             preparedRemove.executeUpdate();
             break;
         }
@@ -450,7 +455,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
@@ -464,9 +469,9 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
                 parts[1],
                 FormStatus.valueOf(parts[2]),
                 parts[3],
-                null,
+                parts[4],
                 parts[5],
-                parts[6]);
+                getSubtableItems(Integer.parseInt(parts[6])));
 
         tableMap.put(sr.getSupplyRequestID(), sr);
 
@@ -474,9 +479,8 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
         insertPS.setString(2, sr.getAssignee());
         insertPS.setString(3, sr.getFormStatus().toString());
         insertPS.setString(4, sr.getNotes());
-        insertPS.setInt(5, 0);
-        insertPS.setString(6, sr.getLink());
-        insertPS.setString(8, sr.getRoomNumber());
+        insertPS.setString(5, sr.getLink());
+        insertPS.setString(6, sr.getRoomNumber());
 
         insertPS.executeUpdate();
       }
@@ -514,11 +518,11 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
                 + ","
                 + sr.getNotes()
                 + ","
-                + sr.getSupplies()
-                + ","
                 + sr.getLink()
                 + ","
-                + sr.getRoomNumber());
+                + sr.getRoomNumber()
+                + ","
+                + getSubtableItemsID(sr.getSupplyRequestID()));
       }
 
       out.close();
@@ -527,6 +531,172 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest> {
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return false;
+    }
+  }
+
+  @Override
+  public void initSubtable(boolean drop) {
+
+    try {
+
+      // STEP 1: Check if the subtable exists
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "supplyitems"
+              + "');";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+
+      // STEP 2: If instructed to drop the table, drop it
+      if (drop) {
+        query = "DROP TABLE " + dbConnection.getSchema() + "." + tableName + "supplyitems" + ";";
+        statement.execute(query);
+      }
+
+      // STEP 3: If it does not exist OR the table was dropped, make it exist
+      if (!results.getBoolean("exists") || drop) {
+        query =
+            "CREATE TABLE "
+                + tableName
+                + "supplyitems"
+                + " ("
+                + "itemkey INT,"
+                + "itemname VARCHAR(64)"
+                + ");";
+        statement.executeUpdate(query);
+      }
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public int getSubtableItemsID(LocalDateTime requestID) {
+
+    try {
+
+      // Setup query to read ID stored in tied column of main table
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT supplies FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE id = '"
+              + Timestamp.valueOf(requestID)
+              + "';";
+
+      // Run that shit
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      // Return the stored ID
+      results.next();
+      return results.getInt("supplies");
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      // Possible TODO: Check for ID = -1
+      return -1;
+    }
+  }
+
+  @Override
+  public List<SupplyItem> getSubtableItems(int subtableID) {
+
+    try {
+
+      // Create empty list so store all items
+      ArrayList<SupplyItem> allSupplyItems = new ArrayList<>();
+
+      // Query the subtable to return only items with the specified subtableID
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT * FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "supplyitems "
+              + "WHERE itemkey = '"
+              + subtableID
+              + "';";
+
+      // Run the query
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      // For each result, create a new item and put it in the list
+      while (results.next()) {
+        allSupplyItems.add(new SupplyItem(results.getString("itemname"), 0));
+      }
+
+      // Return the list
+      return allSupplyItems;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
+  }
+
+  @Override
+  public void setSubtableItems(LocalDateTime requestID, List<SupplyItem> items) {
+
+    try {
+
+      // Remove all food items in the subtable with a matching subtableID
+      deleteAllSubtableItems(requestID);
+
+      // Query to insert one new of subtable entries
+      String insert =
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + "supplyitems"
+              + " VALUES (?, ?);";
+
+      PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
+
+      // Run the query for each item to insert
+      for (SupplyItem item : items) {
+        preparedInsert.setInt(1, getSubtableItemsID(requestID));
+        preparedInsert.setString(2, item.supplyName);
+        preparedInsert.executeUpdate();
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void deleteAllSubtableItems(LocalDateTime requestID) {
+
+    try {
+
+      // Query to delete items with matching subtableID
+      String deleteAll =
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "supplyitems"
+              + " WHERE itemkey = ?;";
+
+      PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(deleteAll);
+
+      // Setup the statement with subtableID and run it
+      preparedDeleteAll.setInt(1, getSubtableItemsID(requestID));
+      preparedDeleteAll.executeUpdate();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
     }
   }
 }

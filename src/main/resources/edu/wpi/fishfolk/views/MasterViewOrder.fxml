@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.ViewMasterOrderController">
+   <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="600.0" layoutX="1256.0" layoutY="50.0" stroke="TRANSPARENT" strokeType="INSIDE" width="25.0" />
+   <TabPane fx:id="tabPane" layoutX="50.0" layoutY="50.0" prefHeight="729.0" prefWidth="1186.0" tabClosingPolicy="UNAVAILABLE">
+     <tabs>
+       <Tab text="Food Orders">
+         <content>
+           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <TableView fx:id="foodTable" prefHeight="570.0" prefWidth="1186.0">
+                       <columns>
+                         <TableColumn fx:id="foodid" prefWidth="75.0" text="ID" />
+                         <TableColumn fx:id="foodassignee" prefWidth="75.0" text="Assignee" />
+                           <TableColumn fx:id="foodtotalprice" prefWidth="75.0" text="Total Price" />
+                           <TableColumn fx:id="foodstatus" prefWidth="75.0" text="Form Status" />
+                           <TableColumn fx:id="fooddeliveryroom" prefWidth="96.4000244140625" text="Delivery Room" />
+                           <TableColumn fx:id="fooddeliverytime" prefWidth="90.00003051757812" text="Delivery Time" />
+                           <TableColumn fx:id="foodrecipientname" prefWidth="103.20001220703125" text="Recipient Name" />
+                           <TableColumn fx:id="foodnotes" prefWidth="59.199951171875" text="Notes" />
+                           <TableColumn fx:id="fooditems" prefWidth="67.99993896484375" text="Items" />
+                       </columns>
+                     </TableView>
+                     <Rectangle fx:id="foodfillButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Text disable="true" fill="WHITE" layoutX="76.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FILL">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Rectangle fx:id="foodcancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="220.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Text disable="true" fill="WHITE" layoutX="272.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CANCEL">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Rectangle fx:id="foodremoveButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="437.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Text disable="true" fill="WHITE" layoutX="485.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REMOVE">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Rectangle fx:id="foodassignButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="981.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Text disable="true" fill="WHITE" layoutX="1036.0" layoutY="627.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ASSIGN">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <MFXFilterComboBox fx:id="foodAssignSelector" alignment="TOP_LEFT" layoutX="658.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" prefHeight="63.0" prefWidth="306.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </MFXFilterComboBox>
+                  </children>
+               </AnchorPane>
+         </content>
+       </Tab>
+       <Tab text="Supply Orders">
+         <content>
+           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <TableView fx:id="supplyTable" prefHeight="570.0" prefWidth="1186.0">
+                        <columns>
+                           <TableColumn fx:id="supplyid" prefWidth="75.0" text="ID" />
+                           <TableColumn fx:id="supplyassignee" prefWidth="75.0" text="Assignee" />
+                           <TableColumn fx:id="supplystatus" prefWidth="75.0" text="Form Status" />
+                           <TableColumn fx:id="supplydeliveryroom" prefWidth="108.7999267578125" text="Delivery Room" />
+                           <TableColumn fx:id="supplylink" prefWidth="59.20001220703125" text="Link" />
+                           <TableColumn fx:id="supplynotes" prefWidth="58.0" text="Notes" />
+                           <TableColumn fx:id="supplysupplies" prefWidth="75.0" text="Supplies" />
+                        </columns>
+                     </TableView>
+                     <Rectangle fx:id="supplyassignButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="981.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Text disable="true" fill="WHITE" layoutX="1036.0" layoutY="627.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ASSIGN">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Rectangle fx:id="supplyremoveButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="437.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Rectangle fx:id="supplycancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="220.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Rectangle fx:id="supplyfillButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Text disable="true" fill="WHITE" layoutX="76.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FILL">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Text disable="true" fill="WHITE" layoutX="272.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CANCEL">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Text disable="true" fill="WHITE" layoutX="485.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REMOVE">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <MFXFilterComboBox fx:id="supplyAssignSelector" alignment="TOP_LEFT" layoutX="658.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" prefWidth="306.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </MFXFilterComboBox>
+                  </children></AnchorPane>
+         </content>
+       </Tab>
+         <Tab text="Furniture Orders">
+           <content>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <TableView fx:id="furnitureTable" prefHeight="570.0" prefWidth="1186.0">
+                        <columns>
+                           <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
+                           <TableColumn fx:id="furnitureassignee" prefWidth="75.0" text="Assignee" />
+                           <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
+                           <TableColumn fx:id="furnituredeliveryroom" prefWidth="98.7999267578125" text="Delivery Room" />
+                           <TableColumn fx:id="furnituredeliverydate" prefWidth="94.0" text="Delivery Date" />
+                           <TableColumn fx:id="furniturenotes" prefWidth="67.99996948242188" text="Notes" />
+                           <TableColumn fx:id="furnitureservicetype" prefWidth="89.20001220703125" text="Service Type" />
+                           <TableColumn fx:id="furniturefurniture" prefWidth="78.4000244140625" text="Furniture" />
+                        </columns>
+                     </TableView>
+                     <Rectangle fx:id="furnitureassignButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="981.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Text disable="true" fill="WHITE" layoutX="1036.0" layoutY="627.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ASSIGN">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Rectangle fx:id="furnitureremoveButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="437.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Rectangle fx:id="furniturecancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="220.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Rectangle fx:id="furniturefillButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Text disable="true" fill="WHITE" layoutX="76.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FILL">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Text disable="true" fill="WHITE" layoutX="272.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CANCEL">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Text disable="true" fill="WHITE" layoutX="485.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REMOVE">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <MFXFilterComboBox fx:id="furnitureAssignSelector" alignment="TOP_LEFT" layoutX="658.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" prefWidth="306.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </MFXFilterComboBox>
+                  </children></AnchorPane>
+           </content>
+         </Tab>
+         <Tab text="Flower Orders">
+           <content>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <TableView fx:id="flowerTable" prefHeight="570.0" prefWidth="1186.0">
+                        <columns>
+                           <TableColumn fx:id="flowerid" prefWidth="75.0" text="ID" />
+                           <TableColumn fx:id="flowerassignee" prefWidth="75.0" text="Assignee" />
+                           <TableColumn fx:id="flowertotalprice" prefWidth="75.0" text="Total Price" />
+                           <TableColumn fx:id="flowerstatus" prefWidth="75.0" text="Form Status" />
+                           <TableColumn fx:id="flowerdeliveryroom" prefWidth="102.4000244140625" text="Delivery Room" />
+                           <TableColumn fx:id="flowerdeliverytime" prefWidth="91.19998168945312" text="Delivery Time" />
+                           <TableColumn fx:id="flowerrecipientname" prefWidth="108.4000244140625" text="Recipient Name" />
+                           <TableColumn fx:id="floweritems" minWidth="2.00006103515625" prefWidth="66.0" text="Items" />
+                        </columns>
+                     </TableView>
+                     <Rectangle fx:id="flowerassignButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="981.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Text disable="true" fill="WHITE" layoutX="1036.0" layoutY="627.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ASSIGN">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Rectangle fx:id="flowerremoveButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="437.0" layoutY="586.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Rectangle fx:id="flowercancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="220.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Rectangle fx:id="flowerfillButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutY="587.0" stroke="TRANSPARENT" strokeType="INSIDE" width="205.0" />
+                     <Text disable="true" fill="WHITE" layoutX="76.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FILL">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Text disable="true" fill="WHITE" layoutX="272.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CANCEL">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <Text disable="true" fill="WHITE" layoutX="485.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REMOVE">
+                        <font>
+                           <Font name="Open Sans Bold" size="26.0" />
+                        </font>
+                     </Text>
+                     <MFXFilterComboBox fx:id="flowerAssignSelector" alignment="TOP_LEFT" layoutX="658.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" prefWidth="306.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </MFXFilterComboBox>
+                  </children></AnchorPane>
+           </content>
+         </Tab>
+     </tabs>
+   </TabPane>
+
+</AnchorPane>

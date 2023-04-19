@@ -5,8 +5,10 @@ import edu.wpi.fishfolk.database.rewrite.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.rewrite.DataEditQueue;
 import edu.wpi.fishfolk.database.rewrite.EntryStatus;
 import edu.wpi.fishfolk.database.rewrite.IDAO;
+import edu.wpi.fishfolk.database.rewrite.IHasSubtable;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.FoodRequest;
 import edu.wpi.fishfolk.ui.FormStatus;
+import edu.wpi.fishfolk.ui.NewFoodItem;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -16,14 +18,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FoodRequestDAO implements IDAO<FoodRequest> {
+public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodItem> {
 
   private final Connection dbConnection;
 
   private final String tableName;
   private final ArrayList<String> headers;
 
-  private final HashMap<Integer, FoodRequest> tableMap;
+  private final HashMap<LocalDateTime, FoodRequest> tableMap;
   private final DataEditQueue<FoodRequest> dataEditQueue;
 
   /** DAO for Food Request table in PostgreSQL database. */
@@ -40,11 +42,13 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
                 "totalprice",
                 "deliveryroom",
                 "deliverytime",
-                "recipientname"));
+                "recipientname",
+                "fooditems"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
 
     init(false);
+    initSubtable(false);
     populateLocalTable();
   }
 
@@ -78,16 +82,16 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
             "CREATE TABLE "
                 + tableName
                 + " ("
-                + "id INT PRIMARY KEY,"
+                + "id TIMESTAMP PRIMARY KEY,"
                 + "assignee VARCHAR(64),"
                 + "status VARCHAR(12),"
                 + "notes VARCHAR(256),"
                 + "totalprice REAL,"
                 + "deliveryroom VARCHAR(64),"
                 + "deliverytime TIMESTAMP,"
-                + "recipientname VARCHAR(64)"
+                + "recipientname VARCHAR(64),"
+                + "fooditems SERIAL"
                 + ");";
-        // TODO: Sub-table for items
         statement.executeUpdate(query);
       }
 
@@ -114,14 +118,15 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
       while (results.next()) {
         FoodRequest foodRequest =
             new FoodRequest(
-                results.getInt(headers.get(0)),
+                results.getTimestamp(headers.get(0)).toLocalDateTime(),
                 results.getString(headers.get(1)),
                 FormStatus.valueOf(results.getString(headers.get(2))),
                 results.getString(headers.get(3)),
                 results.getFloat(headers.get(4)),
                 results.getString(headers.get(5)),
                 results.getTimestamp(headers.get(6)).toLocalDateTime(),
-                results.getString(headers.get(7)));
+                results.getString(headers.get(7)),
+                getSubtableItems(results.getInt(headers.get(8))));
         tableMap.put(foodRequest.getFoodRequestID(), foodRequest);
       }
 
@@ -181,13 +186,13 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
   public boolean removeEntry(Object identifier) {
 
     // Check if input identifier is correct type
-    if (!(identifier instanceof Integer)) {
+    if (!(identifier instanceof LocalDateTime)) {
       System.out.println(
           "[FoodRequestDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
       return false;
     }
 
-    Integer foodRequestID = (Integer) identifier;
+    LocalDateTime foodRequestID = (LocalDateTime) identifier;
 
     // Check if local table contains identifier
     if (!tableMap.containsKey(foodRequestID)) {
@@ -225,13 +230,13 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
   public FoodRequest getEntry(Object identifier) {
 
     // Check if input identifier is correct type
-    if (!(identifier instanceof Integer)) {
+    if (!(identifier instanceof LocalDateTime)) {
       System.out.println(
           "[FoodRequestDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
       return null;
     }
 
-    Integer foodRequestID = (Integer) identifier;
+    LocalDateTime foodRequestID = (LocalDateTime) identifier;
 
     // Check if local table contains identifier
     if (!tableMap.containsKey(foodRequestID)) {
@@ -251,7 +256,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
     ArrayList<FoodRequest> allFoodRequests = new ArrayList<>();
 
     // Add all FoodRequests in local table to a list
-    for (int foodRequestID : tableMap.keySet()) {
+    for (LocalDateTime foodRequestID : tableMap.keySet()) {
       allFoodRequests.add(tableMap.get(foodRequestID));
     }
 
@@ -369,7 +374,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
           case INSERT:
 
             // Put the new FoodRequest's data into the prepared query
-            preparedInsert.setInt(1, dataEdit.getNewEntry().getFoodRequestID());
+            preparedInsert.setTimestamp(
+                1, Timestamp.valueOf(dataEdit.getNewEntry().getFoodRequestID()));
             preparedInsert.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedInsert.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedInsert.setString(4, dataEdit.getNewEntry().getNotes());
@@ -381,13 +387,16 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
             // Execute the query
             preparedInsert.executeUpdate();
+            setSubtableItems(
+                dataEdit.getNewEntry().getFoodRequestID(), dataEdit.getNewEntry().getFoodItems());
 
             break;
 
           case UPDATE:
 
             // Put the new FoodRequest's data into the prepared query
-            preparedUpdate.setInt(1, dataEdit.getNewEntry().getFoodRequestID());
+            preparedUpdate.setTimestamp(
+                1, Timestamp.valueOf(dataEdit.getNewEntry().getFoodRequestID()));
             preparedUpdate.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedUpdate.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedUpdate.setString(4, dataEdit.getNewEntry().getNotes());
@@ -396,18 +405,23 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
             preparedUpdate.setTimestamp(
                 7, Timestamp.valueOf(dataEdit.getNewEntry().getDeliveryTime()));
             preparedUpdate.setString(8, dataEdit.getNewEntry().getRecipientName());
-            preparedUpdate.setInt(9, dataEdit.getNewEntry().getFoodRequestID());
+            preparedUpdate.setTimestamp(
+                9, Timestamp.valueOf(dataEdit.getNewEntry().getFoodRequestID()));
 
             // Execute the query
             preparedUpdate.executeUpdate();
+            setSubtableItems(
+                dataEdit.getNewEntry().getFoodRequestID(), dataEdit.getNewEntry().getFoodItems());
             break;
 
           case REMOVE:
 
             // Put the new FoodRequest's data into the prepared query
-            preparedRemove.setInt(1, dataEdit.getNewEntry().getFoodRequestID());
+            preparedRemove.setTimestamp(
+                1, Timestamp.valueOf(dataEdit.getNewEntry().getFoodRequestID()));
 
             // Execute the query
+            deleteAllSubtableItems(dataEdit.getNewEntry().getFoodRequestID());
             preparedRemove.executeUpdate();
             break;
         }
@@ -477,18 +491,19 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
         FoodRequest fr =
             new FoodRequest(
-                Integer.parseInt(parts[0]),
+                LocalDateTime.parse(parts[0]),
                 parts[1],
                 FormStatus.valueOf(parts[2]),
                 parts[3],
                 Float.parseFloat(parts[4]),
                 parts[5],
                 LocalDateTime.parse(parts[6]),
-                parts[7]);
+                parts[7],
+                getSubtableItems(Integer.parseInt(parts[8])));
 
         tableMap.put(fr.getFoodRequestID(), fr);
 
-        insertPS.setInt(1, fr.getFoodRequestID());
+        insertPS.setTimestamp(1, Timestamp.valueOf(fr.getFoodRequestID()));
         insertPS.setString(2, fr.getAssignee());
         insertPS.setString(3, fr.getFormStatus().toString());
         insertPS.setString(4, fr.getNotes());
@@ -522,7 +537,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
 
       out.println(String.join(",", headers));
 
-      for (Map.Entry<Integer, FoodRequest> entry : tableMap.entrySet()) {
+      for (Map.Entry<LocalDateTime, FoodRequest> entry : tableMap.entrySet()) {
         FoodRequest fr = entry.getValue();
         out.println(
             fr.getFoodRequestID()
@@ -539,7 +554,9 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
                 + ","
                 + fr.getDeliveryTime()
                 + ","
-                + fr.getRecipientName());
+                + fr.getRecipientName()
+                + ","
+                + getSubtableItemsID(fr.getFoodRequestID()));
       }
 
       out.close();
@@ -548,6 +565,175 @@ public class FoodRequestDAO implements IDAO<FoodRequest> {
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return false;
+    }
+  }
+
+  @Override
+  public void initSubtable(boolean drop) {
+
+    try {
+
+      // STEP 1: Check if the subtable exists
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "fooditems"
+              + "');";
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+      results.next();
+
+      // STEP 2: If instructed to drop the table, drop it
+      if (drop) {
+        query = "DROP TABLE " + dbConnection.getSchema() + "." + tableName + "fooditems" + ";";
+        statement.execute(query);
+      }
+
+      // STEP 3: If it does not exist OR the table was dropped, make it exist
+      if (!results.getBoolean("exists") || drop) {
+        query =
+            "CREATE TABLE "
+                + tableName
+                + "fooditems"
+                + " ("
+                + "itemkey INT,"
+                + "itemname VARCHAR(64),"
+                + "itemquantity INT"
+                + ");";
+        statement.executeUpdate(query);
+      }
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public int getSubtableItemsID(LocalDateTime requestID) {
+
+    try {
+
+      // Setup query to read ID stored in tied column of main table
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT fooditems FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE id = '"
+              + Timestamp.valueOf(requestID)
+              + "';";
+
+      // Run that shit
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      // Return the stored ID
+      results.next();
+      return results.getInt("fooditems");
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      // Possible TODO: Check for ID = -1
+      return -1;
+    }
+  }
+
+  @Override
+  public List<NewFoodItem> getSubtableItems(int subtableID) {
+
+    try {
+
+      // Create empty list so store all items
+      ArrayList<NewFoodItem> allFoodItems = new ArrayList<>();
+
+      // Query the subtable to return only items with the specified subtableID
+      Statement statement = dbConnection.createStatement();
+      String query =
+          "SELECT * FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "fooditems "
+              + "WHERE itemkey = '"
+              + subtableID
+              + "';";
+
+      // Run the query
+      statement.execute(query);
+      ResultSet results = statement.getResultSet();
+
+      // For each result, create a new food item and put it in the list
+      while (results.next()) {
+        allFoodItems.add(
+            new NewFoodItem(results.getString("itemname"), results.getInt("itemquantity")));
+      }
+
+      // Return the list
+      return allFoodItems;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
+  }
+
+  @Override
+  public void setSubtableItems(LocalDateTime requestID, List<NewFoodItem> items) {
+
+    try {
+
+      // Remove all food items in the subtable with a matching subtableID
+      deleteAllSubtableItems(requestID);
+
+      // Query to insert one new of subtable entries
+      String insert =
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + "fooditems"
+              + " VALUES (?, ?, ?);";
+
+      PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
+
+      // Run the query for each item to insert
+      for (NewFoodItem item : items) {
+        preparedInsert.setInt(1, getSubtableItemsID(requestID));
+        preparedInsert.setString(2, item.getName());
+        preparedInsert.setInt(3, item.getQuantity());
+        preparedInsert.executeUpdate();
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void deleteAllSubtableItems(LocalDateTime requestID) {
+
+    try {
+
+      // Query to delete items with matching subtableID
+      String query =
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "fooditems"
+              + " WHERE itemkey = ?;";
+
+      PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(query);
+
+      // Setup the statement with subtableID and run it
+      preparedDeleteAll.setInt(1, getSubtableItemsID(requestID));
+      preparedDeleteAll.executeUpdate();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
     }
   }
 }

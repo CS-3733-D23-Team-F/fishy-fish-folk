@@ -79,6 +79,26 @@ public class SupplyOrder extends TableEntry {
     return string;
   }
 
+  public String quickToString() {
+    String string =
+        supplies.get(0)
+            + ", "
+            + supplies.get(1)
+            + ", "
+            + supplies.get(2)
+            + ", "
+            + supplies.get(3)
+            + ", "
+            + supplies.get(4)
+            + ", "
+            + supplies.get(5)
+            + ", "
+            + supplies.get(6)
+            + ", "
+            + supplies.get(7);
+    return string;
+  }
+
   // listItemsToString() takes supplies from a SupplyOrder (LinkedList<FoodItems>) and turns them
   // into a string
   public String listItemsToString() {
