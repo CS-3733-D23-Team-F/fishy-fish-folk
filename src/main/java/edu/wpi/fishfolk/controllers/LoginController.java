@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.rewrite.Fdb;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.UserAccount;
@@ -42,9 +43,7 @@ public class LoginController extends AbsController {
 
   edu.wpi.fishfolk.database.rewrite.Fdb dbConnection = new Fdb();
 
-    /**
-     * Initialize state and set event handlers.
-     */
+  /** Initialize state and set event handlers. */
   @FXML
   private void initialize() {
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
@@ -100,22 +99,22 @@ public class LoginController extends AbsController {
         });
   }
 
-    /**
-     * Checks if the username and password provided by the user match an account in the database.
-     * If it does, stores the currently logged in account to AbsController.
-     */
+  /**
+   * Checks if the username and password provided by the user match an account in the database. If
+   * it does, stores the currently logged in account to AbsController.
+   */
   public final EventHandler<MouseEvent> loginHandler =
       event -> {
         String loginID = loginIDField.getText();
-        int passhash =
-            loginPassField.getText().hashCode(); // literally never store the original password
-//        System.out.print("LoginID: ");
-//        System.out.println(loginID);
-//        System.out.print("Passhash: ");
-//        System.out.println(passhash);
+        String password = loginPassField.getText();
+        //        System.out.print("LoginID: ");
+        //        System.out.println(loginID);
+        //        System.out.print("Passhash: ");
+        //        System.out.println(passhash);
 
         List<UserAccount> userAccounts =
             (List<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
+
         UserAccount foundAccount = null;
         for (int i = 0; i < userAccounts.size(); i++) {
           UserAccount a = userAccounts.get(i);
@@ -129,13 +128,12 @@ public class LoginController extends AbsController {
           errorBox.setText("Account not found.");
           errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
         } else {
-          if (foundAccount.getPassword().equals(String.valueOf(passhash))) {
-            // valid account
-            currUser = foundAccount;
+          if (SharedResources.login(foundAccount, password)) {
+            // valid account. We're already logged in if we get here!
             errorBox.setText("Logged in successfully!");
             errorBox.setStyle("-fx-alignment: center; -fx-background-color:  green;");
           } else {
-            errorBox.setText("Incorrect password!");
+            errorBox.setText("Incorrect password.");
             errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
           }
         }
