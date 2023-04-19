@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Group?>
@@ -193,11 +194,7 @@
                                     <Font name="Open Sans Regular" size="24.0" />
                                  </font>
                               </Text>
-                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="0 minutes">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="24.0" />
-                                 </font>
-                              </Text>
+                              <MFXTextField fx:id="estimatedtime" />
                            </children>
                         </HBox>
                      </children>

@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.pathfinding.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -51,6 +52,7 @@ public class PathfindingController extends AbsController {
 
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
+  @FXML MFXTextField estimatedtime;
 
   PathfindSingleton pathfinder;
 
@@ -178,7 +180,7 @@ public class PathfindingController extends AbsController {
           System.out.println(paths);
 
           textDirections = new LinkedList<>();
-          // populateTextDirections(paths);
+          populateTextDirections(paths);
 
           // index 0 in floors in this path - not allFloors
           currentFloor = 0;
@@ -374,7 +376,18 @@ public class PathfindingController extends AbsController {
         .get(currentFloor + 1)
         .setVisible(true); // offset by 1 because first child is gesture pane
     pathAnimations.get(currentFloor).play();
-    // draw text instructions
+
+    // calculated that 1537 pixels = 484 feet = 147.5 m
+    // 3.175 pixels per foot, 10.42 pixels per meter
+    // 1.2 m/s walking speed = 72m/min
+
+    // add lengths of each path in list of paths
+    double totalLength = paths.stream().map(Path::pathLength).reduce(0.0, Double::sum);
+    System.out.println("path length pixels " + totalLength);
+    int minutes = (int) Math.ceil(totalLength * (147.5 / 1537) / 72);
+
+    estimatedtime.setText(minutes + " minutes");
+
     int col = 0;
     int row = 1;
 
