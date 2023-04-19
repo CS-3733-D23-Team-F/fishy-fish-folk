@@ -6,6 +6,7 @@ import edu.wpi.fishfolk.pathfinding.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.controls.MFXToggleButton;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,6 +55,8 @@ public class PathfindingController extends AbsController {
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
   @FXML MFXTextField estimatedtime;
+
+  @FXML MFXToggleButton noStairs;
 
   PathfindSingleton pathfinder;
 
@@ -176,7 +179,7 @@ public class PathfindingController extends AbsController {
             pathfinder.setPathMethod(new DFS(graph));
           }
 
-          paths = pathfinder.getPathMethod().pathfind(start, end, true);
+          paths = pathfinder.getPathMethod().pathfind(start, end, !noStairs.isSelected());
 
           System.out.println(paths);
 
