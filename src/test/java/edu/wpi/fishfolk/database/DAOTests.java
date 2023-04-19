@@ -1,8 +1,8 @@
 package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.database.TableEntry.*;
-import edu.wpi.fishfolk.pathfinding.NodeType;
 import edu.wpi.fishfolk.ui.*;
+import edu.wpi.fishfolk.util.NodeType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

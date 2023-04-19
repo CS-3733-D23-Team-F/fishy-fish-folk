@@ -9,7 +9,7 @@ class TextDirectionTest {
 
   @Test
   public void testPathsegmentConstrctor() {
-    PathSegment ps = new PathSegment(new Point2D(0, 0), new Point2D(10, 20));
+    PathSection ps = new PathSection(new Point2D(0, 0), new Point2D(10, 20));
     TextDirection td = new TextDirection(ps);
   }
 }

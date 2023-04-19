@@ -24,20 +24,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
@@ -220,9 +218,11 @@ public class PathfindingController extends AbsController {
 
     generateqr.setOnMouseClicked(
         event -> {
-          Popup popup = new Popup();
-          popup.setX(Fapp.getPrimaryStage().getWidth() / 2);
-          popup.setY(Fapp.getPrimaryStage().getHeight() / 2);
+          Stage popup = new Stage();
+
+          // Popup popup = new Popup();
+          popup.setX(Fapp.getPrimaryStage().getWidth() * 0.4);
+          popup.setY(Fapp.getPrimaryStage().getHeight() * 0.4);
 
           QRCodeWriter qrCodeWriter = new QRCodeWriter();
 
@@ -241,28 +241,41 @@ public class PathfindingController extends AbsController {
           Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
           hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
           BitMatrix bitMatrix;
-          int size = 400;
+          int size = 500;
           try {
             bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, size, size, hintMap);
           } catch (WriterException e) {
             throw new RuntimeException(e);
           }
 
-          WritableImage img = new WritableImage(size, size);
+          WritableImage img = new WritableImage(size * 2, size * 2);
           PixelWriter writer = img.getPixelWriter();
           Color dark = Color.rgb(1, 45, 90);
+          Color white = Color.WHITE;
 
           for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-              if (bitMatrix.get(i, j)) writer.setColor(i, j, dark);
+              if (bitMatrix.get(i, j)) {
+                writer.setColor(2 * i, 2 * j, dark);
+                writer.setColor(2 * i + 1, 2 * j, dark);
+                writer.setColor(2 * i, 2 * j + 1, dark);
+                writer.setColor(2 * i + 1, 2 * j + 1, dark);
+              } else {
+                writer.setColor(2 * i, 2 * j, white);
+                writer.setColor(2 * i + 1, 2 * j, white);
+                writer.setColor(2 * i, 2 * j + 1, white);
+                writer.setColor(2 * i + 1, 2 * j + 1, white);
+              }
             }
           }
 
           ImageView imgView = new ImageView(img);
 
-          popup.getContent().add(imgView);
+          StackPane root = new StackPane();
+          root.getChildren().add(imgView);
 
-          popup.show(Fapp.getPrimaryStage());
+          popup.setScene(new Scene(root, size * 2 + 50, size * 2 + 50));
+          popup.show();
         });
 
     currentFloor = 0;
