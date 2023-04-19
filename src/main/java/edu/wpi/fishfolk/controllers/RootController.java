@@ -41,6 +41,7 @@ public class RootController {
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
     closeServiceNav.setVisible(false);
     closeServiceNav.setDisable(true);
