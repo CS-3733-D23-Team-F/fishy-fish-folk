@@ -8,7 +8,7 @@ import lombok.Setter;
 
 public class SharedResources {
   /** Stores the currently logged in user. */
-  private static UserAccount currentAccount = new UserAccount("guest", "", "", GUEST);
+  private static UserAccount currentAccount = new UserAccount("extremely_guest", "", "", GUEST);
 
   @Setter private static RootController rootController;
 
