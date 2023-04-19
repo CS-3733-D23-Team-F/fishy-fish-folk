@@ -3,6 +3,10 @@ package edu.wpi.fishfolk.controllers;
 import edu.wpi.fishfolk.database.DAO.Observables.UserAccountObservable;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.wpi.fishfolk.database.TableEntry.PermissionLevel;
+import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
+import edu.wpi.fishfolk.database.TableEntry.UserAccount;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
