@@ -1,6 +1,8 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.SharedResources;
+import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
+import edu.wpi.fishfolk.database.TableEntry.UserAccount;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
