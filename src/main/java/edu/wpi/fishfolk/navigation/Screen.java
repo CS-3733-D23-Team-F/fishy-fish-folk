@@ -18,7 +18,8 @@ public enum Screen {
   LOGIN("views/Login.fxml"),
   OLD_MAP_EDITOR("views/OldMapEditor.fxml"),
   NEW_FOOD_ORDER("views/NewFoodOrder.fxml"),
-  TEMPLATE("views/Template.fxml");
+  TEMPLATE("views/Template.fxml"),
+  ACCOUNT_MANAGER("views/AccountManager.fxml");
 
   private final String filename;
 
