@@ -17,16 +17,19 @@
             <VBox maxWidth="200.0" minWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <MFXButton fx:id="homeButton" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Home" textFill="WHITE">
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
                      <font>
                         <Font name="Open Sans Bold" size="16.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" />
+                     </padding>
                      <graphic>
-                        <ImageView fitHeight="62.0" fitWidth="73.0" preserveRatio="true">
+                        <ImageView fitHeight="51.0" fitWidth="68.0" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../../Desktop/brighamlogo.png" />
+                              <Image url="@../images/brighamlogo.png" />
                            </image>
                         </ImageView>
                      </graphic>
