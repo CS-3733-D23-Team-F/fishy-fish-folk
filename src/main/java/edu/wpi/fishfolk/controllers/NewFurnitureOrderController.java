@@ -12,7 +12,6 @@ import io.github.palexdev.materialfx.controls.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
-import javafx.scene.shape.Rectangle;
 
 public class NewFurnitureOrderController extends AbsController {
 
