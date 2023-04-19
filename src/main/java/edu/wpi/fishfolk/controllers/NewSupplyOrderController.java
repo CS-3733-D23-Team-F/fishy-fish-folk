@@ -86,7 +86,7 @@ public class NewSupplyOrderController extends AbsController {
   private void clearTextFields() {
     linkTextField.clear();
     notesTextField.clear();
-    roomSelector.setText(null);
+    roomSelector.setText("");
   }
 
   private void clearChecks() {

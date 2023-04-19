@@ -12,7 +12,6 @@ import io.github.palexdev.materialfx.controls.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
-import javafx.scene.shape.Rectangle;
 
 public class NewFurnitureOrderController extends AbsController {
 
@@ -33,7 +32,7 @@ public class NewFurnitureOrderController extends AbsController {
   @FXML MFXComboBox<String> roomSelector;
   @FXML MFXDatePicker deliveryDate;
   @FXML MFXTextField notesTextField;
-  @FXML Rectangle cancelButton, clearButton, furnituresubmitButton;
+  @FXML MFXButton cancelButton, clearButton, furnituresubmitButton;
 
   FurnitureOrder currentFurnitureOrder = new FurnitureOrder();
   ArrayList<FurnitureItem> furnitureOptions = new ArrayList<>();
