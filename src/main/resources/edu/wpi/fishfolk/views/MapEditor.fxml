@@ -248,7 +248,17 @@
             <DropShadow height="6.0" offsetX="1.0" offsetY="1.0" radius="2.5" width="6.0" />
          </effect>
          <children>
-            <HBox>
+            <Label alignment="TOP_LEFT" layoutX="40.0" layoutY="102.0" text="Node ID:" textFill="#012d5a">
+               <font>
+                  <Font name="Open Sans Bold" size="15.0" />
+               </font>
+            </Label>
+            <MFXTextField fx:id="nodeidText" layoutX="40.0" layoutY="128.0" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" style="-fx-border-color: #012d5a;">
+               <textFill>
+                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+               </textFill>
+            </MFXTextField>
+            <HBox fx:id="nodeidtext">
                <children>
                   <Label alignment="TOP_LEFT" text="X:" textFill="#012d5a">
                      <font>

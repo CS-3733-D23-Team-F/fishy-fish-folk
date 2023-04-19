@@ -40,6 +40,7 @@ public class MapEditorController extends AbsController {
   @FXML HBox buttonPane;
   @FXML VBox nodePane;
 
+  @FXML MFXTextField nodeidText;
   @FXML MFXTextField xText;
   @FXML MFXTextField yText;
   @FXML MFXTextField buildingText;
@@ -271,6 +272,8 @@ public class MapEditorController extends AbsController {
           initialize();
         });
 
+
+
       exportCSV.setOnAction(
               event -> {
                   dirChooser.setTitle("Select Export Directory");
@@ -417,12 +420,14 @@ public class MapEditorController extends AbsController {
    */
   private void fillNodeFields(Node node) {
 
+    nodeidText.setText(Integer.toString(node.getNodeID()));
     xText.setText(Double.toString(node.getX()));
     yText.setText(Double.toString(node.getY()));
     buildingText.setText(node.getBuilding());
   }
 
   private void clearNodeFields() {
+    nodeidText.setText("");
     xText.setText("");
     yText.setText("");
     buildingText.setText("");
