@@ -10,25 +10,31 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 public class RootController {
-  @FXML MFXButton signageNav;
+
   @FXML MFXButton mealNav;
-  // @FXML MFXButton supplyNav;
+  @FXML MFXButton supplyNav;
+  @FXML MFXButton flowerNav;
+  @FXML MFXButton furnitureNav;
+  @FXML MFXButton conferenceNav;
+
+  @FXML MFXButton viewFood;
+  @FXML MFXButton viewSupply;
+
+  @FXML MFXButton signageNav;
+  @FXML MFXButton mapEditorNav;
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton moveEditorNav;
-  @FXML MFXButton mapEditorNav;
   @FXML AnchorPane serviceBar;
-  @FXML MFXButton serviceNav;
 
+  @FXML MFXButton serviceNav;
+  @FXML MFXButton closeServiceNav;
   @FXML MFXButton exitButton;
 
-  @FXML MFXButton closeServiceNav;
   @FXML AnchorPane slider;
-  // @FXML Text directionInstructions;
-  @FXML MFXButton viewFood;
-  @FXML MFXButton viewSupply, furnitureNav;
 
   @FXML
   public void initialize() {
+
     viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_FOOD_ORDERS));
     viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_SUPPLY_ORDERS));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));

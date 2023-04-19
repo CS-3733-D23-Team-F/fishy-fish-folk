@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.database.DAO.Observables.ObservableMove;
 import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.database.TableEntry.Move;
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
+import edu.wpi.fishfolk.pathfinding.NodeType;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
@@ -28,6 +29,7 @@ public class MoveController extends AbsController {
   @FXML MFXButton clearMove, clearLocation;
 
   private ObservableList<ObservableMove> observableMoves;
+  private ObservableList<ObservableLocation> observableLocations;
 
   public MoveController() {
     super();
@@ -57,19 +59,24 @@ public class MoveController extends AbsController {
             dbConnection.getAllEntries(TableEntryType.MOVE).stream()
                 .map(elt -> new ObservableMove((Move) elt))
                 .toList());
+
     movetable.setItems(observableMoves);
 
-    locationtable.setItems(
-        FXCollections.observableList(
+    observableLocations =
+        FXCollections.observableArrayList(
             dbConnection.getAllEntries(TableEntryType.LOCATION).stream()
                 .map(elt -> new ObservableLocation((Location) elt))
-                .toList()));
+                .toList());
+
+    locationtable.setItems(observableLocations);
 
     nodeid.setOnEditCommit(this::editNodeID);
     movelongname.setOnEditCommit(this::editMoveLongname);
     date.setOnEditCommit(this::editDate);
 
-    // TODO write edit methods for move date and all location
+    locationlongname.setOnEditCommit(this::editLocationLongname);
+    shortname.setOnEditCommit(this::editShortname);
+    type.setOnEditCommit(this::editType);
 
     submitmove.setOnMouseClicked(
         event -> {
@@ -85,18 +92,18 @@ public class MoveController extends AbsController {
           System.out.println(newMove + " " + dbConnection.insertEntry(newMove));
         });
 
-    /*submitlocation.setOnMouseClicked(
-    event -> {
-      Move newMove =
-              new Move(
-                      Integer.parseInt(nodetext.getText()),
-                      movelongnametext.getText(),
-                      ObservableMove.parseDate(datetext.getText()));
+    submitlocation.setOnMouseClicked(
+        event -> {
+          Location newLocation =
+              new Location(
+                  locationlongnametext.getText(),
+                  shortnametext.getText(),
+                  NodeType.valueOf(typetext.getText()));
 
-      observableMoves.addAll(new ObservableMove(newMove));
+          observableLocations.addAll(new ObservableLocation(newLocation));
 
-      dbConnection.insertEntry(newMove);
-    });*/
+          dbConnection.insertEntry(newLocation);
+        });
 
     clearMove.setOnMouseClicked(event -> MoveClear());
     clearLocation.setOnMouseClicked(event -> LocationClear());
@@ -161,5 +168,53 @@ public class MoveController extends AbsController {
     observableMoves.addAll(new ObservableMove(newMove));
 
     dbConnection.insertEntry(newMove);
+  }
+
+  private void editLocationLongname(TableColumn.CellEditEvent<ObservableLocation, String> event) {
+
+    String oldlongname = event.getOldValue();
+    String newlongname = event.getNewValue();
+    String oldshortname = shortname.getCellObservableValue(event.getRowValue()).getValue();
+    String oldtype = type.getCellObservableValue(event.getRowValue()).getValue();
+
+    observableLocations.removeIf(obsloc -> obsloc.getLongname().equals(oldlongname));
+    dbConnection.removeEntry(oldlongname, TableEntryType.LOCATION);
+
+    Location newLocation = new Location(newlongname, oldshortname, NodeType.valueOf(oldtype));
+    observableLocations.addAll(new ObservableLocation(newLocation));
+
+    dbConnection.insertEntry(newLocation);
+  }
+
+  private void editShortname(TableColumn.CellEditEvent<ObservableLocation, String> event) {
+
+    String oldlongname = locationlongname.getCellObservableValue(event.getRowValue()).getValue();
+    // String oldshortname = event.getOldValue();
+    String newshortname = event.getNewValue();
+    String oldtype = type.getCellObservableValue(event.getRowValue()).getValue();
+
+    observableLocations.removeIf(obsloc -> obsloc.getLongname().equals(oldlongname));
+    dbConnection.removeEntry(oldlongname, TableEntryType.LOCATION);
+
+    Location newLocation = new Location(oldlongname, newshortname, NodeType.valueOf(oldtype));
+    observableLocations.addAll(new ObservableLocation(newLocation));
+
+    dbConnection.insertEntry(newLocation);
+  }
+
+  private void editType(TableColumn.CellEditEvent<ObservableLocation, String> event) {
+
+    String oldlongname = locationlongname.getCellObservableValue(event.getRowValue()).getValue();
+    String oldshortname = shortname.getCellObservableValue(event.getRowValue()).getValue();
+    // String oldtype = event.getOldValue();
+    String newtype = event.getNewValue();
+
+    observableLocations.removeIf(obsloc -> obsloc.getLongname().equals(oldlongname));
+    dbConnection.removeEntry(oldlongname, TableEntryType.LOCATION);
+
+    Location newLocation = new Location(oldlongname, oldshortname, NodeType.valueOf(newtype));
+    observableLocations.addAll(new ObservableLocation(newLocation));
+
+    dbConnection.insertEntry(newLocation);
   }
 }
