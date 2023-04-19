@@ -65,7 +65,7 @@ public class NewSupplyOrderController extends AbsController {
 
   void loadRooms() {
     roomSelector.getItems().addAll(dbConnection.getDestLongnames());
-    //roomSelector.getItems().add("A room");
+    // roomSelector.getItems().add("A room");
   }
 
   private void addToOrder(int supplyNum) {
