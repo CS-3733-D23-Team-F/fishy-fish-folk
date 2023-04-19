@@ -190,12 +190,14 @@ public class PathfindingController extends AbsController {
           currentFloor = 0;
 
           drawPaths(paths);
-          pane.animate(Duration.millis(200))
-              .interpolateWith(Interpolator.EASE_BOTH)
-              .centreOn(paths.get(0).centerToPath(7));
+          if (paths.size() > 0) {
+            pane.animate(Duration.millis(200))
+                .interpolateWith(Interpolator.EASE_BOTH)
+                .centreOn(paths.get(0).centerToPath(7));
 
-          displayFloor();
-          endSelector.setDisable(true);
+            displayFloor();
+            endSelector.setDisable(true);
+          }
         });
 
     clearBtn.setOnMouseClicked(
@@ -206,6 +208,9 @@ public class PathfindingController extends AbsController {
 
           // clear list of floors
           floors.clear();
+
+          startSelector.clear();
+          endSelector.clear();
         });
 
     currentFloor = 0;
