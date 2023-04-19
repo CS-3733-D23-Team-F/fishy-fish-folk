@@ -25,6 +25,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -127,7 +128,7 @@ public class PathfindingController extends AbsController {
           javafx.geometry.Bounds bounds = pane.getTargetViewport();
           pane.animate(Duration.millis(200))
               .interpolateWith(Interpolator.EASE_BOTH)
-              .zoomBy(zoom + 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
+              .zoomBy(+0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
         });
 
     zoomOut.setOnMouseClicked(
@@ -135,7 +136,7 @@ public class PathfindingController extends AbsController {
           javafx.geometry.Bounds bounds = pane.getTargetViewport();
           pane.animate(Duration.millis(200))
               .interpolateWith(Interpolator.EASE_BOTH)
-              .zoomBy(zoom - 0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
+              .zoomBy(-0.2, new Point2D(bounds.getCenterX(), bounds.getCenterY()));
         });
 
     List<String> nodeNames = dbConnection.getDestLongnames();
@@ -318,9 +319,18 @@ public class PathfindingController extends AbsController {
   private javafx.scene.Node generatePathButtons(double x, double y, boolean up, boolean forwards) {
 
     // TODO set arrow up or down based on parameter
-    NodeCircle nc = new NodeCircle(-1, x, y, 8);
-    nc.setFill(Color.rgb(4, 100, 180));
-    nc.setOnMouseClicked(
+
+    Polygon triangle = new Polygon();
+
+    if (up) {
+      triangle.getPoints().addAll(x - 15, y + 15, x + 15, y + 15, x, y - 15);
+      triangle.setFill(Color.rgb(0, 100, 0));
+    } else {
+      triangle.getPoints().addAll(x - 15, y - 15, x + 15, y - 15, x, y + 15);
+      triangle.setFill(Color.rgb(100, 0, 0));
+    }
+
+    triangle.setOnMouseClicked(
         event -> {
           if (forwards) {
             nextFloor();
@@ -331,7 +341,7 @@ public class PathfindingController extends AbsController {
           }
           displayFloor();
         });
-    return nc;
+    return triangle;
   }
 
   private void nextFloor() {
