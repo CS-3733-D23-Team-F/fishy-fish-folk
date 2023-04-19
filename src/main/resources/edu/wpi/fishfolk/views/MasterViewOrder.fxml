@@ -55,7 +55,7 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
-                     <MFXFilterComboBox fx:id="foodAssignSelector" alignment="TOP_LEFT" layoutX="755.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                     <MFXFilterComboBox fx:id="foodAssignSelector" alignment="TOP_LEFT" layoutX="658.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" prefHeight="63.0" prefWidth="306.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
                         <font>
                            <Font size="18.0" />
                         </font>
@@ -103,7 +103,7 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
-                     <MFXFilterComboBox fx:id="supplyAssignSelector" alignment="TOP_LEFT" layoutX="755.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                     <MFXFilterComboBox fx:id="supplyAssignSelector" alignment="TOP_LEFT" layoutX="658.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" prefWidth="306.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
                         <font>
                            <Font size="18.0" />
                         </font>
@@ -151,7 +151,7 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
-                     <MFXFilterComboBox fx:id="furnitureAssignSelector" alignment="TOP_LEFT" layoutX="755.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                     <MFXFilterComboBox fx:id="furnitureAssignSelector" alignment="TOP_LEFT" layoutX="658.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" prefWidth="306.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
                         <font>
                            <Font size="18.0" />
                         </font>
@@ -199,7 +199,7 @@
                            <Font name="Open Sans Bold" size="26.0" />
                         </font>
                      </Text>
-                     <MFXFilterComboBox fx:id="flowerAssignSelector" alignment="TOP_LEFT" layoutX="755.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
+                     <MFXFilterComboBox fx:id="flowerAssignSelector" alignment="TOP_LEFT" layoutX="658.0" layoutY="586.0" minHeight="63.0" minWidth="205.0" popupOffsetY="-800.0" prefWidth="306.0" style="-fx-border-color: #012d5a;" text="Assignee Name">
                         <font>
                            <Font size="18.0" />
                         </font>
