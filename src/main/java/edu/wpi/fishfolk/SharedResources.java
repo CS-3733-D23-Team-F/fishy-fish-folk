@@ -40,5 +40,6 @@ public class SharedResources {
   /** Log out of the currently logged in account. If not logged in, do nothing. */
   public static void logout() {
     currentAccount = new UserAccount("guest", "", "", GUEST);
+    rootController.updatePermissionsAccess();
   }
 }

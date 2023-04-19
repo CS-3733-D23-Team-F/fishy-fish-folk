@@ -20,6 +20,7 @@ public class RootController {
   @FXML AnchorPane serviceBar;
   @FXML MFXButton serviceNav;
   @FXML MFXButton exitButton;
+  @FXML MFXButton switchAccountButton;
   @FXML MFXButton homeButton;
   @FXML MFXButton closeServiceNav;
   @FXML AnchorPane slider;
@@ -42,6 +43,11 @@ public class RootController {
 
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    switchAccountButton.setOnMouseClicked(
+        event -> {
+          SharedResources.logout();
+          Navigation.navigate(Screen.LOGIN);
+        });
 
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     exitButton.setOnMouseClicked(event -> System.exit(0));
