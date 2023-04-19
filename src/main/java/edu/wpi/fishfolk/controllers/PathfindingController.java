@@ -1,5 +1,11 @@
 package edu.wpi.fishfolk.controllers;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.pathfinding.*;
@@ -7,19 +13,21 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -29,6 +37,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
@@ -54,6 +63,7 @@ public class PathfindingController extends AbsController {
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
   @FXML MFXTextField estimatedtime;
+  @FXML MFXButton generateqr;
 
   PathfindSingleton pathfinder;
 
@@ -201,8 +211,58 @@ public class PathfindingController extends AbsController {
           pathGroup.getChildren().clear();
           pathGroup.getChildren().add(mapImg);
 
+          startSelector.clearSelection();
+          endSelector.clearSelection();
+
           // clear list of floors
           floors.clear();
+        });
+
+    generateqr.setOnMouseClicked(
+        event -> {
+          Popup popup = new Popup();
+          popup.setX(Fapp.getPrimaryStage().getWidth() / 2);
+          popup.setY(Fapp.getPrimaryStage().getHeight() / 2);
+
+          QRCodeWriter qrCodeWriter = new QRCodeWriter();
+
+          String text =
+              textDirections.stream()
+                  .reduce(
+                      new LinkedList<>(),
+                      (lstAccum, lst) -> {
+                        lstAccum.addAll(lst);
+                        return lstAccum;
+                      })
+                  .stream()
+                  .map(TextDirection::toString)
+                  .collect(Collectors.joining());
+
+          Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
+          hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+          BitMatrix bitMatrix;
+          int size = 400;
+          try {
+            bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, size, size, hintMap);
+          } catch (WriterException e) {
+            throw new RuntimeException(e);
+          }
+
+          WritableImage img = new WritableImage(size, size);
+          PixelWriter writer = img.getPixelWriter();
+          Color dark = Color.rgb(1, 45, 90);
+
+          for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+              if (bitMatrix.get(i, j)) writer.setColor(i, j, dark);
+            }
+          }
+
+          ImageView imgView = new ImageView(img);
+
+          popup.getContent().add(imgView);
+
+          popup.show(Fapp.getPrimaryStage());
         });
 
     currentFloor = 0;

@@ -31,4 +31,8 @@ public class TextDirection {
         break;
     }
   }
+
+  public String toString() {
+    return text + distance + "\n";
+  }
 }
