@@ -192,6 +192,21 @@
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
+                              <MFXButton fx:id="accountManagerNav" alignment="BOTTOM_LEFT" buttonType="RAISED" layoutY="279.0" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Account Manager" textFill="WHITE" AnchorPane.topAnchor="280.0">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="16.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/conference.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </MFXButton>
                            </children>
                         </AnchorPane>
                         <MFXButton fx:id="serviceNav" alignment="BOTTOM_LEFT" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Service Request" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -223,6 +238,14 @@
                                  </image>
                               </ImageView>
                            </graphic>
+                        </MFXButton>
+                        <MFXButton fx:id="switchAccountButton" layoutY="564.0" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Switch Account" textFill="WHITE" AnchorPane.bottomAnchor="70.0">
+                           <font>
+                              <Font name="Open Sans Bold" size="16.0" />
+                           </font>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
                         </MFXButton>
                         <MFXButton fx:id="exitButton" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Exit Application" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
