@@ -6,6 +6,7 @@ import edu.wpi.fishfolk.database.rewrite.DAO.Observables.FurnitureOrderObservabl
 import edu.wpi.fishfolk.database.rewrite.DAO.Observables.SupplyOrderObservable;
 import edu.wpi.fishfolk.database.rewrite.TableEntry.*;
 import edu.wpi.fishfolk.ui.FormStatus;
+import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
@@ -68,6 +69,14 @@ public class ViewMasterOrderController extends AbsController {
   @FXML MFXTextField supplyassigneeTextField;
   @FXML MFXTextField furnitureassigneeTextField;
   @FXML MFXTextField flowerassigneeTextField;
+
+  @FXML MFXFilterComboBox<String> foodAssignSelector;
+
+  @FXML MFXFilterComboBox<String> supplyAssignSelector;
+
+  @FXML MFXFilterComboBox<String> furnitureAssignSelector;
+
+  @FXML MFXFilterComboBox<String> flowerAssignSelector;
 
   @FXML TabPane tabPane;
 
@@ -167,6 +176,16 @@ public class ViewMasterOrderController extends AbsController {
     flowercancelButton.setOnMouseClicked(event -> flowerSetStatus(FormStatus.cancelled));
     flowerassignButton.setOnMouseClicked(event -> flowerAssign());
     flowerremoveButton.setOnMouseClicked(event -> flowerRemove());
+
+    ArrayList<UserAccount> users =
+        (ArrayList<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
+
+    for (int user = 0; user < users.size(); user++) {
+      foodAssignSelector.getItems().add(users.get(user).getUsername());
+      supplyAssignSelector.getItems().add(users.get(user).getUsername());
+      furnitureAssignSelector.getItems().add(users.get(user).getUsername());
+      flowerAssignSelector.getItems().add(users.get(user).getUsername());
+    }
   }
 
   public ObservableList<FoodOrderObservable> getFoodOrderRows() {
@@ -310,12 +329,11 @@ public class ViewMasterOrderController extends AbsController {
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
     FoodRequest dbRequest =
         (FoodRequest) dbConnection.getEntry(food.id, TableEntryType.FOOD_REQUEST);
-    String assignee = foodassigneeTextField.getText();
+    String assignee = foodAssignSelector.getValue();
     dbRequest.setAssignee(assignee);
     food.foodassignee = assignee;
     dbConnection.updateEntry(dbRequest);
     foodTable.refresh();
-    foodassigneeTextField.setText("");
   }
 
   private void supplyAssign() {
@@ -323,12 +341,11 @@ public class ViewMasterOrderController extends AbsController {
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
     SupplyRequest dbRequest =
         (SupplyRequest) dbConnection.getEntry(supply.id, TableEntryType.SUPPLY_REQUEST);
-    String assignee = supplyassigneeTextField.getText();
+    String assignee = supplyAssignSelector.getValue();
     dbRequest.setAssignee(assignee);
     supply.supplyassignee = assignee;
     dbConnection.updateEntry(dbRequest);
     supplyTable.refresh();
-    supplyassigneeTextField.setText("");
   }
 
   private void furnitureAssign() {
@@ -336,12 +353,11 @@ public class ViewMasterOrderController extends AbsController {
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
     FurnitureRequest dbRequest =
         (FurnitureRequest) dbConnection.getEntry(furniture.id, TableEntryType.FURNITURE_REQUEST);
-    String assignee = furnitureassigneeTextField.getText();
+    String assignee = furnitureAssignSelector.getValue();
     dbRequest.setAssignee(assignee);
     furniture.furnitureassignee = assignee;
     dbConnection.updateEntry(dbRequest);
     furnitureTable.refresh();
-    furnitureassigneeTextField.setText("");
   }
 
   private void flowerAssign() {
@@ -349,7 +365,7 @@ public class ViewMasterOrderController extends AbsController {
         (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
     FlowerRequest dbRequest =
         (FlowerRequest) dbConnection.getEntry(flower.id, TableEntryType.FLOWER_REQUEST);
-    String assignee = flowerassigneeTextField.getText();
+    String assignee = flowerAssignSelector.getValue();
     dbRequest.setAssignee(assignee);
     flower.flowerassignee = assignee;
     dbConnection.updateEntry(dbRequest);

@@ -54,6 +54,4 @@ public class FurnitureOrder {
   public void setStatus(FormStatus status) {
     this.formStatus = status;
   }
-
-  // construct() converts the values from a given furnitureorder table row into a FurnitureOrder
 }

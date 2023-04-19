@@ -25,8 +25,8 @@ public class RootController {
   @FXML MFXButton closeServiceNav;
   @FXML AnchorPane slider;
   // @FXML Text directionInstructions;
-  @FXML MFXButton viewFood;
-  @FXML MFXButton viewSupply, furnitureNav;
+  @FXML MFXButton viewOrders;
+  @FXML MFXButton furnitureNav;
 
   @FXML
   public void initialize() {
@@ -35,16 +35,17 @@ public class RootController {
     SharedResources.setRootController(this);
 
     flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
-    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
-    supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
-    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
-
-    viewFood.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
-    viewSupply.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
-
+    viewOrders.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
-    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
+    supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
+    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    exitButton.setOnMouseClicked(event -> System.exit(0));
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     closeServiceNav.setVisible(false);
@@ -58,10 +59,10 @@ public class RootController {
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(slider);
 
-          slide.setToY(490);
+          slide.setToY(420);
           slide.play();
 
-          slider.setTranslateY(490);
+          slider.setTranslateY(420);
           slide.setOnFinished(
               (ActionEvent e) -> {
                 serviceNav.setVisible(false);

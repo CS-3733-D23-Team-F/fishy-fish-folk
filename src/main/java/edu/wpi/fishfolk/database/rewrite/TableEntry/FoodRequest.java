@@ -22,7 +22,6 @@ public class FoodRequest {
   @Getter @Setter private LocalDateTime deliveryTime;
   @Getter @Setter private String recipientName;
   @Getter @Setter private List<NewFoodItem> foodItems;
-  // TODO: Subtable to include this entry
 
   // For DAO
   @Getter @Setter private EntryStatus status;

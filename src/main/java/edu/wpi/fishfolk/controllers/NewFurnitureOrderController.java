@@ -12,7 +12,6 @@ import io.github.palexdev.materialfx.controls.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
-import javafx.scene.shape.Rectangle;
 
 public class NewFurnitureOrderController extends AbsController {
 
@@ -33,7 +32,7 @@ public class NewFurnitureOrderController extends AbsController {
   @FXML MFXComboBox<String> roomSelector;
   @FXML MFXDatePicker deliveryDate;
   @FXML MFXTextField notesTextField;
-  @FXML Rectangle cancelButton, clearButton, furnituresubmitButton;
+  @FXML MFXButton cancelButton, clearButton, furnituresubmitButton;
 
   FurnitureOrder currentFurnitureOrder = new FurnitureOrder();
   ArrayList<FurnitureItem> furnitureOptions = new ArrayList<>();
@@ -121,6 +120,9 @@ public class NewFurnitureOrderController extends AbsController {
     deselectServiceRadios(
         serviceradioButton1, serviceradioButton2, serviceradioButton3, serviceradioButton4);
     serviceradioButton5.setSelected(false);
+    notesTextField.setText("");
+    roomSelector.setValue(null);
+    deliveryDate.setValue(null);
   }
 
   // loadRoomChoice() fills the possible options in the Room Numver choicebox
@@ -156,7 +158,7 @@ public class NewFurnitureOrderController extends AbsController {
 
   // getDate() returns the date. idk what the date function looked like as a string i was curious
   public LocalDateTime getDate() {
-    return deliveryDate.getCurrentDate().atStartOfDay();
+    return deliveryDate.getValue().atStartOfDay();
   }
 
   // setItemToRadios() checks the status of all of the buttons and sets the item in the current
