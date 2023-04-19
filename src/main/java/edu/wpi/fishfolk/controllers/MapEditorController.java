@@ -247,6 +247,40 @@ public class MapEditorController extends AbsController {
                 deleteNode(currentEditingNode);
               }
             });
+
+    importCSV.setOnAction(
+        event -> {
+          fileChooser.setTitle("Select the Node CSV file");
+          String nodePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Location CSV file");
+          String locationPath =
+              fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Move CSV file");
+          String movePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Edge CSV file");
+          String edgePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          dbConnection.importCSV(nodePath, false, TableEntryType.NODE);
+          dbConnection.importCSV(locationPath, false, TableEntryType.LOCATION);
+          dbConnection.importCSV(movePath, false, TableEntryType.MOVE);
+          dbConnection.importCSV(edgePath, false, TableEntryType.EDGE);
+
+          initialize();
+        });
+
+      exportCSV.setOnAction(
+              event -> {
+                  dirChooser.setTitle("Select Export Directory");
+                  String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+                  dbConnection.exportCSV(exportPath, TableEntryType.NODE);
+                  dbConnection.exportCSV(exportPath, TableEntryType.LOCATION);
+                  dbConnection.exportCSV(exportPath, TableEntryType.MOVE);
+                  dbConnection.exportCSV(exportPath, TableEntryType.EDGE);
+                  //fileChooser.setInitialDirectory(new File(exportPath));
+              });
   }
 
   private void switchFloor(String floor) {
