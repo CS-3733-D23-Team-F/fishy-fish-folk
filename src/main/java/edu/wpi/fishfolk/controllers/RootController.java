@@ -18,9 +18,8 @@ public class RootController {
   @FXML MFXButton mapEditorNav;
   @FXML AnchorPane serviceBar;
   @FXML MFXButton serviceNav;
-
   @FXML MFXButton exitButton;
-
+  @FXML MFXButton homeButton;
   @FXML MFXButton closeServiceNav;
   @FXML AnchorPane slider;
   // @FXML Text directionInstructions;

@@ -16,6 +16,14 @@
          <children>
             <VBox maxWidth="200.0" minWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
+                  <MFXButton fx:id="homeButton" alignment="BOTTOM_LEFT" buttonType="RAISED" maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" styleClass="sideNav" text="Home" textFill="WHITE">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <font>
+                        <Font name="Open Sans Bold" size="16.0" />
+                     </font>
+                  </MFXButton>
                   <AnchorPane VBox.vgrow="ALWAYS">
                      <children>
                         <AnchorPane fx:id="serviceBar" disable="true" style="-fx-background-color: #0464b4;" visible="false">
