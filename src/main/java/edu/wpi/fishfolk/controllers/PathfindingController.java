@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.pathfinding.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,6 +53,7 @@ public class PathfindingController extends AbsController {
 
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
+  @FXML MFXTextField estimatedtime;
 
   PathfindSingleton pathfinder;
 
@@ -179,7 +181,7 @@ public class PathfindingController extends AbsController {
           System.out.println(paths);
 
           textDirections = new LinkedList<>();
-          // populateTextDirections(paths);
+          populateTextDirections(paths);
 
           // index 0 in floors in this path - not allFloors
           currentFloor = 0;
@@ -247,38 +249,45 @@ public class PathfindingController extends AbsController {
 
         pathAnimations.add(parallelTransition);
         // add buttons to start and end of paths on each floor
-        if (i == 0 && (!(paths.size() == 1))) {
+
+        if (i == 0) {
           Point2D p1 = path.points.get(0);
           NodeCircle start = new NodeCircle(-1, p1.getX(), p1.getY(), 12);
           start.setFill(Color.rgb(1, 45, 90));
           g.getChildren().add(start);
 
-          Point2D p2 = path.points.get(path.numNodes - 1);
-          g.getChildren()
-              .add(
-                  generatePathButtons(
-                      p2.getX(),
-                      p2.getY(),
-                      direction(path.getFloor(), paths.get(1).getFloor()),
-                      true));
+          if (paths.size() > 1) {
 
-        } else if (i == paths.size() - 1 && (!(paths.size() == 1))) { // last path segment
-          Point2D p1 = path.points.get(0);
-          g.getChildren()
-              .add(
-                  generatePathButtons(
-                      p1.getX(),
-                      p1.getY(),
-                      direction(path.getFloor(), paths.get(paths.size() - 2).getFloor()),
-                      false));
+            Point2D p2 = path.points.get(path.numNodes - 1);
+            g.getChildren()
+                .add(
+                    generatePathButtons(
+                        p2.getX(),
+                        p2.getY(),
+                        direction(path.getFloor(), paths.get(1).getFloor()),
+                        true));
+          }
+
+        } else if (i == paths.size() - 1) { // last path segment
+
+          if (paths.size() > 1) {
+
+            Point2D p1 = path.points.get(0);
+            g.getChildren()
+                .add(
+                    generatePathButtons(
+                        p1.getX(),
+                        p1.getY(),
+                        direction(path.getFloor(), paths.get(paths.size() - 2).getFloor()),
+                        false));
+          }
 
           Point2D p2 = path.points.get(path.numNodes - 1);
           NodeCircle end = new NodeCircle(-1, p2.getX(), p2.getY(), 12);
           end.setFill(Color.rgb(1, 45, 90));
           g.getChildren().add(end);
 
-        } else if (!(paths.size()
-            == 1)) { // middle path segment. draw a regular path button at each endpoint
+        } else { // middle path segment. draw a regular path button at each endpoint
           Point2D p1 = path.points.get(0);
           g.getChildren()
               .add(
@@ -377,7 +386,18 @@ public class PathfindingController extends AbsController {
         .get(currentFloor + 1)
         .setVisible(true); // offset by 1 because first child is gesture pane
     pathAnimations.get(currentFloor).play();
-    // draw text instructions
+
+    // calculated that 1537 pixels = 484 feet = 147.5 m
+    // 3.175 pixels per foot, 10.42 pixels per meter
+    // 1.2 m/s walking speed = 72m/min
+
+    // add lengths of each path in list of paths
+    double totalLength = paths.stream().map(Path::pathLength).reduce(0.0, Double::sum);
+    System.out.println("path length pixels " + totalLength);
+    int minutes = (int) Math.ceil(totalLength * (147.5 / 1537) / 72);
+
+    estimatedtime.setText(minutes + " minutes");
+
     int col = 0;
     int row = 1;
 
