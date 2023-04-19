@@ -3,39 +3,28 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MoveController">
-   <ImageView fitHeight="1080.0" fitWidth="1720.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../images/hospitalImg.png" />
-      </image>
-      <viewport>
-         <Rectangle2D height="1080.0" minX="200.0" minY="310.0" width="1720.0" />
-      </viewport>
-   </ImageView>
-   <HBox prefHeight="949.0" prefWidth="1720.0" AnchorPane.topAnchor="60.0">
+<AnchorPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MoveController">
+   <HBox minHeight="680.0" minWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
       <children>
-         <VBox minWidth="80.0" prefHeight="967.0" prefWidth="173.0" />
-         <VBox prefHeight="931.0" prefWidth="482.0" style="-fx-background-color: #f1f1f1;">
+         <VBox minWidth="40.0" HBox.hgrow="ALWAYS" />
+         <VBox style="-fx-background-color: #f1f1f1;">
             <children>
-               <TableView fx:id="movetable" editable="true" prefHeight="500.0" tableMenuButtonVisible="true">
+               <TableView fx:id="movetable" editable="true" minHeight="580.0" minWidth="360.0" tableMenuButtonVisible="true">
                   <columns>
-                     <TableColumn fx:id="nodeid" prefWidth="99.0" text="Node ID" />
-                     <TableColumn fx:id="movelongname" prefWidth="232.0" text="Long Name" />
-                     <TableColumn fx:id="date" prefWidth="122.0" text="Date" />
+                     <TableColumn fx:id="nodeid" prefWidth="75.0" text="Node ID" />
+                     <TableColumn fx:id="movelongname" prefWidth="200.0" text="Long Name" />
+                     <TableColumn fx:id="date" prefWidth="70.0" text="Date" />
                   </columns>
                </TableView>
-               <HBox alignment="CENTER" prefHeight="38.0" prefWidth="482.0" style="-fx-background-color: #012D5A;">
+               <HBox alignment="CENTER_LEFT" style="-fx-background-color: #012D5A;">
                   <children>
                      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a new Move:">
                         <font>
@@ -43,48 +32,49 @@
                         </font>
                      </Text>
                   </children>
+                  <VBox.margin>
+                     <Insets />
+                  </VBox.margin>
+                  <padding>
+                     <Insets left="10.0" />
+                  </padding>
                </HBox>
                <HBox VBox.vgrow="NEVER">
                   <children>
-                     <VBox prefHeight="30.0" prefWidth="20.0" />
-                     <MFXTextField fx:id="nodetext" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="74.0" promptText="Node ID" />
-                     <MFXTextField fx:id="movelongnametext" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="248.0" promptText="Long name" />
-                     <MFXTextField fx:id="datetext" layoutX="85.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="91.0" promptText="Date" />
-                     <VBox prefHeight="36.0" prefWidth="36.0" />
+                     <MFXTextField fx:id="nodetext" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="75.0" promptText="Node ID" />
+                     <MFXTextField fx:id="movelongnametext" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" promptText="Long name" />
+                     <MFXTextField fx:id="datetext" layoutX="85.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="85.0" promptText="Date" />
                   </children>
                   <VBox.margin>
                      <Insets />
                   </VBox.margin>
                </HBox>
-               <HBox prefHeight="61.0" prefWidth="483.0" style="-fx-background-color: #f1f1f1;">
+               <HBox style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
                   <children>
-                     <VBox prefHeight="60.0" prefWidth="260.0" />
-                     <MFXButton fx:id="submitmove" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Submit">
-                        <HBox.margin>
-                           <Insets top="5.0" />
-                        </HBox.margin></MFXButton>
-                     <VBox prefHeight="76.0" prefWidth="37.0" />
-                     <MFXButton fx:id="clearMove" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Clear">
+                     <MFXButton fx:id="clearMove" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Clear">
                         <HBox.margin>
                            <Insets top="5.0" />
                         </HBox.margin>
                      </MFXButton>
-                     <VBox layoutX="367.0" layoutY="10.0" prefHeight="76.0" prefWidth="37.0" />
+                     <MFXButton fx:id="submitmove" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Submit">
+                        <HBox.margin>
+                           <Insets left="240.0" top="5.0" />
+                        </HBox.margin></MFXButton>
                   </children>
                </HBox>
             </children>
          </VBox>
-         <VBox minWidth="120.0" prefHeight="900.0" prefWidth="193.0" />
-         <VBox prefHeight="900.0" prefWidth="469.0" style="-fx-background-color: #f1f1f1;">
+         <VBox minWidth="80.0" HBox.hgrow="ALWAYS" />
+         <VBox minHeight="500.0" style="-fx-background-color: #f1f1f1;">
             <children>
-               <TableView fx:id="locationtable" editable="true" prefHeight="820.0" prefWidth="412.0" tableMenuButtonVisible="true">
+               <TableView fx:id="locationtable" editable="true" minHeight="580.0" minWidth="430.0" tableMenuButtonVisible="true">
                   <columns>
-                     <TableColumn fx:id="locationlongname" prefWidth="203.0" text="Long Name" />
-                     <TableColumn fx:id="shortname" prefWidth="144.0" text="Short Name" />
-                     <TableColumn fx:id="type" prefWidth="93.0" text="Type" />
+                     <TableColumn fx:id="locationlongname" prefWidth="200.0" text="Long Name" />
+                     <TableColumn fx:id="shortname" prefWidth="125.0" text="Short Name" />
+                     <TableColumn fx:id="type" prefWidth="90.0" text="Type" />
                   </columns>
                </TableView>
-               <HBox alignment="CENTER" prefHeight="38.0" prefWidth="482.0" style="-fx-background-color: #012D5A;">
+               <HBox alignment="CENTER_LEFT" style="-fx-background-color: #012D5A;">
                   <children>
                      <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a new Location:">
                         <font>
@@ -92,37 +82,37 @@
                         </font>
                      </Text>
                   </children>
+                  <padding>
+                     <Insets left="10.0" />
+                  </padding>
                </HBox>
                <HBox>
                   <children>
-                     <VBox prefHeight="30.0" prefWidth="20.0" />
-                     <MFXTextField fx:id="locationlongnametext" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="182.0" promptText="Long Name" />
-                     <MFXTextField fx:id="shortnametext" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="129.0" promptText="Short name" />
-                     <MFXTextField fx:id="typetext" layoutX="85.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" promptText="Type" />
+                     <MFXTextField fx:id="locationlongnametext" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" promptText="Long Name" />
+                     <MFXTextField fx:id="shortnametext" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="125.0" promptText="Short name" />
+                     <MFXTextField fx:id="typetext" layoutX="85.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="105.0" promptText="Type" />
                   </children>
                   <VBox.margin>
                      <Insets />
                   </VBox.margin>
                </HBox>
-               <HBox prefHeight="59.0" prefWidth="452.0">
+               <HBox>
                   <children>
-                     <VBox prefHeight="59.0" prefWidth="233.0" />
-                     <MFXButton fx:id="submitlocation" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Submit">
+                     <MFXButton fx:id="clearLocation" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Clear">
                         <HBox.margin>
                            <Insets top="5.0" />
                         </HBox.margin>
                      </MFXButton>
-                     <VBox prefHeight="76.0" prefWidth="37.0" />
-                     <MFXButton fx:id="clearLocation" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Clear">
+                     <MFXButton fx:id="submitlocation" style="-fx-background-color: #012D5A; -fx-text-fill: #f1f1f1;" text="Submit">
                         <HBox.margin>
-                           <Insets top="5.0" />
+                           <Insets left="320.0" top="5.0" />
                         </HBox.margin>
                      </MFXButton>
                   </children>
                </HBox>
             </children>
          </VBox>
-         <VBox minWidth="80.0" prefHeight="967.0" prefWidth="473.0" />
+         <VBox minWidth="40.0" HBox.hgrow="ALWAYS" />
       </children>
    </HBox>
 
