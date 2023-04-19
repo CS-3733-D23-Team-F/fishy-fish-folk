@@ -37,27 +37,27 @@ public class FurnitureOrderObservable {
     this.furnituredeliveryroom = order.getRoomNumber();
     this.furnituredeliverydate = "" + order.getDeliveryDate();
     switch (order.getServiceType()) {
-      case removal:
+      case REMOVAL:
         {
           this.furnitureservicetype = "Removal";
           break;
         }
-      case cleaning:
+      case CLEANING:
         {
           this.furnitureservicetype = "Cleaning";
           break;
         }
-      case delivery:
+      case DELIVERY:
         {
           this.furnitureservicetype = "Delivery";
           break;
         }
-      case maintenance:
+      case MAINTENANCE:
         {
           this.furnitureservicetype = "Maintenence";
           break;
         }
-      case replacement:
+      case REPLACEMENT:
         {
           this.furnitureservicetype = "Replacement";
           break;

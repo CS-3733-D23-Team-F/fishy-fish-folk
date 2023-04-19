@@ -9,7 +9,6 @@ import edu.wpi.fishfolk.ui.FurnitureItem;
 import edu.wpi.fishfolk.ui.FurnitureOrder;
 import edu.wpi.fishfolk.ui.ServiceType;
 import io.github.palexdev.materialfx.controls.*;
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
@@ -173,12 +172,12 @@ public class NewFurnitureOrderController extends AbsController {
 
   public void setServiceTypeToRadios() {
     if (serviceradioButton1.isSelected())
-      currentFurnitureOrder.serviceType = ServiceType.replacement;
-    if (serviceradioButton2.isSelected()) currentFurnitureOrder.serviceType = ServiceType.cleaning;
-    if (serviceradioButton3.isSelected()) currentFurnitureOrder.serviceType = ServiceType.delivery;
+      currentFurnitureOrder.serviceType = ServiceType.REPLACEMENT;
+    if (serviceradioButton2.isSelected()) currentFurnitureOrder.serviceType = ServiceType.CLEANING;
+    if (serviceradioButton3.isSelected()) currentFurnitureOrder.serviceType = ServiceType.DELIVERY;
     if (serviceradioButton4.isSelected())
-      currentFurnitureOrder.serviceType = ServiceType.maintenance;
-    if (serviceradioButton5.isSelected()) currentFurnitureOrder.serviceType = ServiceType.removal;
+      currentFurnitureOrder.serviceType = ServiceType.MAINTENANCE;
+    if (serviceradioButton5.isSelected()) currentFurnitureOrder.serviceType = ServiceType.REMOVAL;
   }
 
   // submit() creates the final currentFurnitureOrder and uses its fields to send data to the
