@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -28,18 +29,21 @@ public class RootController {
 
   @FXML
   public void initialize() {
-    flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
+    updatePermissionsAccess();
+
+    SharedResources.setRootController(this);
+
     viewOrders.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+
+    flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
     supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
-    exitButton.setOnMouseClicked(event -> System.exit(0));
+
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
-    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
     exitButton.setOnMouseClicked(event -> System.exit(0));
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
 
@@ -87,5 +91,31 @@ public class RootController {
                 serviceBar.setDisable(true);
               });
         });
+  }
+
+  public void updatePermissionsAccess() {
+    viewOrders.setDisable(false);
+
+    flowerNav.setDisable(false);
+    mealNav.setDisable(false);
+    furnitureNav.setDisable(false);
+    supplyNav.setDisable(false);
+
+    signageNav.setDisable(false);
+    mapEditorNav.setDisable(false);
+
+    switch (SharedResources.getCurrentUser().getLevel()) {
+      case GUEST:
+        flowerNav.setDisable(true);
+        furnitureNav.setDisable(true);
+        supplyNav.setDisable(true);
+        mealNav.setDisable(true);
+        viewOrders.setDisable(true);
+      case STAFF:
+        mapEditorNav.setDisable(true);
+      case ADMIN:
+      case ROOT:
+        break;
+    }
   }
 }

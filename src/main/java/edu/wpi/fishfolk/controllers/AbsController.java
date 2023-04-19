@@ -2,7 +2,6 @@ package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.database.rewrite.Fdb;
-import edu.wpi.fishfolk.database.rewrite.TableEntry.UserAccount;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,13 +10,6 @@ import javafx.scene.image.Image;
 public abstract class AbsController {
 
   static Fdb dbConnection;
-
-  /**
-   * Stores the UserAccount instance of the currently logged in user. If there is no user currently
-   * logged in, this variable is null. If there is a user currently logged in, this is their
-   * corresponding UserAccount.
-   */
-  static UserAccount currUser;
 
   protected final ArrayList<String> allFloors = new ArrayList<>(List.of("L2", "L1", "1", "2", "3"));
 
@@ -33,8 +25,6 @@ public abstract class AbsController {
     if (dbConnection == null) {
       dbConnection = new Fdb();
     }
-
-    currUser = null;
 
     mapImgURLs = new HashMap<>();
 
