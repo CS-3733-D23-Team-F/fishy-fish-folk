@@ -63,6 +63,7 @@ public class Fdb {
                   furnitureRequestTable.updateDatabase(true);
                   flowerRequestTable.updateDatabase(true);
                   conferenceRequestTable.updateDatabase(true);
+                  userAccountTable.updateDatabase(true);
 
                   disconnect();
                 }));
