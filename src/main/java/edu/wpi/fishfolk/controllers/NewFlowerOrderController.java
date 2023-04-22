@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.TableEntry.FlowerRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.*;
@@ -165,20 +166,19 @@ public class NewFlowerOrderController extends AbsController {
     if (deliveryTime.isBefore(LocalDateTime.now())) {
       deliveryTime.plusDays(1);
     }
-    /*
-    FoodRequest thisOrder =
-            new FoodRequest(
-                    "",
-                    FormStatus.submitted,
-                    notes,
-                    cart.getTotalPrice(),
-                    room,
-                    deliveryTime,
-                    recipientField.getText(),
-                    items);
+
+    FlowerRequest thisOrder =
+        new FlowerRequest(
+            "",
+            FormStatus.submitted,
+            notes,
+            recipientField.getText(),
+            room,
+            deliveryTime,
+            cart.getTotalPrice(),
+            items);
     dbConnection.insertEntry(thisOrder);
 
-     */
     Navigation.navigate(Screen.HOME);
   }
 
