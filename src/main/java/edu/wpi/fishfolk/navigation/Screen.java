@@ -22,7 +22,8 @@ public enum Screen {
 
   ACCOUNT_MANAGER("views/AccountManager.fxml"),
 
-  TEMPLATE("views/Template.fxml");
+  TEMPLATE("views/Template.fxml"),
+  CONFERENCE("views/NewConference.fxml");
 
   private final String filename;
 

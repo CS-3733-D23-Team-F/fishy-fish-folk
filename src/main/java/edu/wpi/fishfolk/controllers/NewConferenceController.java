@@ -1,5 +1,3 @@
 package edu.wpi.fishfolk.controllers;
 
-public class NewConferenceController extends AbsController{
-
-}
+public class NewConferenceController extends AbsController {}
