@@ -227,16 +227,17 @@ public class PathfindingController extends AbsController {
           QRCodeWriter qrCodeWriter = new QRCodeWriter();
 
           String text =
-              textDirections.stream()
-                  .reduce(
-                      new LinkedList<>(),
-                      (lstAccum, lst) -> {
-                        lstAccum.addAll(lst);
-                        return lstAccum;
-                      })
-                  .stream()
-                  .map(TextDirection::toString)
-                  .collect(Collectors.joining());
+              "TEXT: "
+                  + textDirections.stream()
+                      .reduce(
+                          new LinkedList<>(),
+                          (lstAccum, lst) -> {
+                            lstAccum.addAll(lst);
+                            return lstAccum;
+                          })
+                      .stream()
+                      .map(TextDirection::toString)
+                      .collect(Collectors.joining());
 
           Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
           hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
