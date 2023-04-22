@@ -6,16 +6,16 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.fxml.FXML;
 
 public class NewConferenceController extends AbsController {
-    @FXML MFXButton confClearButton;
-    @FXML MFXButton confCancelButton;
-    @FXML MFXButton confSubmitButton;
+  @FXML MFXButton confClearButton;
+  @FXML MFXButton confCancelButton;
+  @FXML MFXButton confSubmitButton;
 
-    public NewConferenceController(){
-        super();
-    }
+  public NewConferenceController() {
+    super();
+  }
 
-    @FXML public void init(){
-        confCancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
-    }
-
+  @FXML
+  public void initialize() {
+    confCancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+  }
 }

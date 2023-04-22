@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<HBox minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<HBox minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewConferenceController">
    <children>
       <VBox>
          <children>
