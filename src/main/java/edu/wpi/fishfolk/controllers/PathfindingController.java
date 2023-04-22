@@ -1,5 +1,11 @@
 package edu.wpi.fishfolk.controllers;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.pathfinding.*;
@@ -8,28 +14,29 @@ import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.MFXToggleButton;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
@@ -55,6 +62,7 @@ public class PathfindingController extends AbsController {
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
   @FXML MFXTextField estimatedtime;
+  @FXML MFXButton generateqr;
 
   @FXML MFXToggleButton noStairs;
 
@@ -206,11 +214,77 @@ public class PathfindingController extends AbsController {
           pathGroup.getChildren().clear();
           pathGroup.getChildren().add(mapImg);
 
+          startSelector.clearSelection();
+          endSelector.clearSelection();
+
           // clear list of floors
           floors.clear();
 
           startSelector.clear();
           endSelector.clear();
+        });
+
+    generateqr.setOnMouseClicked(
+        event -> {
+          Stage popup = new Stage();
+
+          // Popup popup = new Popup();
+          popup.setX(Fapp.getPrimaryStage().getWidth() * 0.4);
+          popup.setY(Fapp.getPrimaryStage().getHeight() * 0.4);
+
+          QRCodeWriter qrCodeWriter = new QRCodeWriter();
+
+          String text =
+              "TEXT: "
+                  + textDirections.stream()
+                      .reduce(
+                          new LinkedList<>(),
+                          (lstAccum, lst) -> {
+                            lstAccum.addAll(lst);
+                            return lstAccum;
+                          })
+                      .stream()
+                      .map(TextDirection::toString)
+                      .collect(Collectors.joining());
+
+          Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
+          hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+          BitMatrix bitMatrix;
+          int size = 500;
+          try {
+            bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, size, size, hintMap);
+          } catch (WriterException e) {
+            throw new RuntimeException(e);
+          }
+
+          WritableImage img = new WritableImage(size * 2, size * 2);
+          PixelWriter writer = img.getPixelWriter();
+          Color dark = Color.rgb(1, 45, 90);
+          Color white = Color.WHITE;
+
+          for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+              if (bitMatrix.get(i, j)) {
+                writer.setColor(2 * i, 2 * j, dark);
+                writer.setColor(2 * i + 1, 2 * j, dark);
+                writer.setColor(2 * i, 2 * j + 1, dark);
+                writer.setColor(2 * i + 1, 2 * j + 1, dark);
+              } else {
+                writer.setColor(2 * i, 2 * j, white);
+                writer.setColor(2 * i + 1, 2 * j, white);
+                writer.setColor(2 * i, 2 * j + 1, white);
+                writer.setColor(2 * i + 1, 2 * j + 1, white);
+              }
+            }
+          }
+
+          ImageView imgView = new ImageView(img);
+
+          StackPane root = new StackPane();
+          root.getChildren().add(imgView);
+
+          popup.setScene(new Scene(root, size * 2 + 50, size * 2 + 50));
+          popup.show();
         });
 
     currentFloor = 0;

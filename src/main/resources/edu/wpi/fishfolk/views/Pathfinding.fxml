@@ -177,7 +177,7 @@
                               <Image url="@../images/walk.png" />
                            </image>
                            <VBox.margin>
-                              <Insets top="50.0" />
+                              <Insets />
                            </VBox.margin>
                         </ImageView>
                         <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
@@ -192,11 +192,25 @@
                                     <Font name="Open Sans Regular" size="20.0" />
                                  </font>
                                  <padding>
-                                    <Insets left="10.0" top="2.0" />
+                                    <Insets bottom="5.0" left="10.0" />
                                  </padding>
                               </MFXTextField>
                            </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
                         </HBox>
+                        <MFXButton fx:id="generateqr" buttonType="RAISED" contentDisplay="CENTER" depthLevel="LEVEL3" graphicTextGap="0.0" minHeight="37.0" minWidth="100.0" style="-fx-background-color: #012D5A; -fx-border-radius: 10;" text="Generate QR Code" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </MFXButton>
                      </children>
                      <HBox.margin>
                         <Insets right="10.0" />
