@@ -22,7 +22,11 @@
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton />
+                  <MFXButton fx:id="confSubmitButton" minHeight="50.0" minWidth="100.0" style="-fx-background-color: #f0bf4c; -fx-border-radius: 5;" text="SUBMIT" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                  </MFXButton>
                </children>
             </HBox>
          </children>
