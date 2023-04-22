@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.FlowerOrderObservable;
 import edu.wpi.fishfolk.database.DAO.Observables.FoodOrderObservable;
 import edu.wpi.fishfolk.database.DAO.Observables.FurnitureOrderObservable;
@@ -181,11 +182,45 @@ public class ViewMasterOrderController extends AbsController {
         (ArrayList<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
 
     for (int user = 0; user < users.size(); user++) {
-      foodAssignSelector.getItems().add(users.get(user).getUsername());
-      supplyAssignSelector.getItems().add(users.get(user).getUsername());
-      furnitureAssignSelector.getItems().add(users.get(user).getUsername());
-      flowerAssignSelector.getItems().add(users.get(user).getUsername());
+      UserAccount User = users.get(user);
+      foodAssignSelector.getItems().add(User.getUsername());
+      supplyAssignSelector.getItems().add(User.getUsername());
+      furnitureAssignSelector.getItems().add(User.getUsername());
+      flowerAssignSelector.getItems().add(User.getUsername());
+      if (User.getUsername().equals(SharedResources.getCurrentUser().getUsername())) {
+        foodAssignSelector.getSelectionModel().selectIndex(user);
+        flowerAssignSelector.getSelectionModel().selectIndex(user);
+        furnitureAssignSelector.getSelectionModel().selectIndex(user);
+        supplyAssignSelector.getSelectionModel().selectIndex(user);
+        foodAssignSelector.setText(SharedResources.getCurrentUser().getUsername());
+        flowerAssignSelector.setText(SharedResources.getCurrentUser().getUsername());
+        furnitureAssignSelector.setText(SharedResources.getCurrentUser().getUsername());
+        supplyAssignSelector.setText(SharedResources.getCurrentUser().getUsername());
+      }
     }
+    foodAssignSelector.setOnAction(event -> setAssigns(foodAssignSelector.getValue()));
+    flowerAssignSelector.setOnAction(event -> setAssigns(flowerAssignSelector.getValue()));
+    supplyAssignSelector.setOnAction(event -> setAssigns(supplyAssignSelector.getValue()));
+    furnitureAssignSelector.setOnAction(event -> setAssigns(furnitureAssignSelector.getValue()));
+  }
+
+  private void setAssigns(String assignee) {
+    foodAssignSelector
+        .getSelectionModel()
+        .selectIndex(foodAssignSelector.getItems().indexOf(assignee));
+    foodAssignSelector.setText(assignee);
+    supplyAssignSelector
+        .getSelectionModel()
+        .selectIndex(supplyAssignSelector.getItems().indexOf(assignee));
+    supplyAssignSelector.setText(assignee);
+    furnitureAssignSelector
+        .getSelectionModel()
+        .selectIndex(furnitureAssignSelector.getItems().indexOf(assignee));
+    furnitureAssignSelector.setText(assignee);
+    flowerAssignSelector
+        .getSelectionModel()
+        .selectIndex(flowerAssignSelector.getItems().indexOf(assignee));
+    flowerAssignSelector.setText(assignee);
   }
 
   public ObservableList<FoodOrderObservable> getFoodOrderRows() {
