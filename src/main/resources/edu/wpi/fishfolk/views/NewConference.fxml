@@ -17,7 +17,11 @@
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton />
+                  <MFXButton fx:id="confClearButon" minHeight="50.0" minWidth="100.0" style="-fx-background-color: #012d5a; -fx-border-radius: 5;" text="CLEAR" textFill="WHITE">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                  </MFXButton>
                   <MFXButton />
                </children>
             </HBox>
