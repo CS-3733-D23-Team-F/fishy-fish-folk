@@ -14,11 +14,21 @@ public class NodeCircle extends Circle {
   }
 
   public void reset() {
-    this.setStroke(Color.rgb(60, 190, 246)); // #208036
-    this.setFill(Color.rgb(60, 190, 246));
+    this.setStrokeWidth(2);
+    this.setStroke(Color.rgb(42, 99, 156)); // #2B639C
+    this.setFill(Color.rgb(42, 99, 156));
   }
 
   public void highlight() {
-    this.setStroke(Color.rgb(102, 102, 255));
+    this.setStrokeWidth(4);
+    this.setStroke(Color.rgb(240, 192, 76)); // #F0BF4C
+  }
+
+  public void resetIf(int nodeID) {
+    if (nodeID == this.nodeID) reset();
+  }
+
+  public void highlightIf(int nodeID) {
+    if (nodeID == this.nodeID) highlight();
   }
 }

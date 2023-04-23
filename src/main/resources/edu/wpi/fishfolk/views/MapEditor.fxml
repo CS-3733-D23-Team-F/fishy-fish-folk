@@ -243,7 +243,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox fx:id="nodePane" maxHeight="450.0" maxWidth="250.0" minHeight="450.0" minWidth="250.0" style="-fx-background-color: #F1F1F1;" StackPane.alignment="CENTER_RIGHT">
+      <VBox fx:id="sidePane" maxHeight="450.0" maxWidth="250.0" minHeight="450.0" minWidth="250.0" style="-fx-background-color: #F1F1F1;" StackPane.alignment="CENTER_RIGHT">
          <effect>
             <DropShadow height="6.0" offsetX="1.0" offsetY="1.0" radius="2.5" width="6.0" />
          </effect>
@@ -309,7 +309,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Label>
-            <MFXTextField fx:id="buildingText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
+            <MFXTextField fx:id="buildingText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="220.0" style="-fx-border-color: #012d5a;">
                <textFill>
                   <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                </textFill>
@@ -322,54 +322,7 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </Line>
-            <Label alignment="TOP_LEFT" text="Short Name:" textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Bold" size="15.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Label>
-            <MFXTextField fx:id="shortnameText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
-               <textFill>
-                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-               </textFill>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </MFXTextField>
-            <Label alignment="TOP_LEFT" text="Long Name: " textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Bold" size="15.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Label>
-            <MFXTextField fx:id="longnameText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
-               <textFill>
-                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-               </textFill>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </MFXTextField>
-            <Label alignment="TOP_LEFT" text="Type:" textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Bold" size="15.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Label>
-            <MFXTextField fx:id="typeText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
-               <textFill>
-                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-               </textFill>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </MFXTextField>
+            <VBox fx:id="locationsVbox" prefHeight="200.0" prefWidth="100.0" />
          </children>
          <StackPane.margin>
             <Insets />

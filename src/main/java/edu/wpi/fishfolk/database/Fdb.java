@@ -53,7 +53,7 @@ public class Fdb {
     // Login & User Accounts Tables
     this.userAccountTable = new UserAccountDAO(dbConnection);
 
-    // importLocalCSV();
+    //importLocalCSV();
 
     Runtime.getRuntime()
         .addShutdownHook(
