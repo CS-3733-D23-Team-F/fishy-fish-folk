@@ -34,7 +34,7 @@
                <children>
                   <ImageView fx:id="mapImg" pickOnBounds="true" AnchorPane.leftAnchor="-459.0" AnchorPane.topAnchor="-145.0">
                      <image>
-                        <Image url="@../map/00_thelowerlevel1.png" />
+                        <Image url="@../map/clean/00_thelowerlevel1.png" />
                      </image>
                      <viewport>
                         <Rectangle2D />

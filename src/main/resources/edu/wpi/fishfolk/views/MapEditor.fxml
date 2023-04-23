@@ -25,7 +25,7 @@
          <Group fx:id="drawGroup">
             <ImageView fx:id="mapImg" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../map/00_thelowerlevel1.png" />
+                  <Image url="@../map/clean/00_thelowerlevel1.png" />
                </image>
                <viewport>
                   <Rectangle2D />
