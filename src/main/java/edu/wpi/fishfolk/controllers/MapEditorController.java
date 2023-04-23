@@ -10,10 +10,7 @@ import edu.wpi.fishfolk.mapeditor.EdgeLine;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
-import io.github.palexdev.materialfx.controls.MFXToggleButton;
+import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -63,6 +60,7 @@ public class MapEditorController extends AbsController {
   private EDITOR_STATE state = EDITOR_STATE.IDLE;
 
   private Group nodesGroup, edgesGroup;
+  @FXML MFXScrollPane locationscrollpane;
   @FXML VBox locationsVbox;
   private HashSet<Edge> edgeSet = new HashSet<>();
 
@@ -487,8 +485,8 @@ public class MapEditorController extends AbsController {
   private void fillNodeFields(Node node) {
 
     nodeidText.setText(Integer.toString(node.getNodeID()));
-    xText.setText(Double.toString(node.getX()));
-    yText.setText(Double.toString(node.getY()));
+    xText.setText(String.format("%.1f", node.getX()));
+    yText.setText(String.format("%.1f", node.getY()));
     buildingText.setText(node.getBuilding());
   }
 
@@ -506,7 +504,14 @@ public class MapEditorController extends AbsController {
    */
   private void fillLocationFields(List<Location> locations) {
 
-    locationsVbox.getChildren().clear();
+    if (locations.isEmpty()) {
+      clearLocationFields();
+
+    } else {
+      locationscrollpane.setVisible(true);
+      locationscrollpane.setDisable(false);
+      locationscrollpane.setMaxHeight(300);
+    }
 
     try {
 
@@ -531,6 +536,10 @@ public class MapEditorController extends AbsController {
   }
 
   private void clearLocationFields() {
+
+    locationscrollpane.setVisible(false);
+    locationscrollpane.setDisable(true);
+    locationscrollpane.setMaxHeight(0);
 
     locationsVbox.getChildren().clear();
   }

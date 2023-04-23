@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import io.github.palexdev.materialfx.controls.MFXToggleButton?>
 <?import javafx.geometry.Insets?>
@@ -243,92 +244,133 @@
             </HBox>
          </children>
       </VBox>
-      <VBox fx:id="sidePane" maxHeight="450.0" maxWidth="250.0" minHeight="450.0" minWidth="250.0" style="-fx-background-color: #F1F1F1;" StackPane.alignment="CENTER_RIGHT">
+      <VBox fx:id="sidePane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #F1F1F1;" StackPane.alignment="TOP_RIGHT">
          <effect>
             <DropShadow height="6.0" offsetX="1.0" offsetY="1.0" radius="2.5" width="6.0" />
          </effect>
          <children>
-            <Label alignment="TOP_LEFT" layoutX="40.0" layoutY="102.0" text="Node ID:" textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Bold" size="15.0" />
-               </font>
-            </Label>
-            <MFXTextField fx:id="nodeidText" layoutX="40.0" layoutY="128.0" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" style="-fx-border-color: #012d5a;">
-               <textFill>
-                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-               </textFill>
-            </MFXTextField>
-            <HBox fx:id="nodeidtext">
+            <VBox maxHeight="-Infinity" prefWidth="220.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Label alignment="TOP_LEFT" text="X:" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <HBox.margin>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="220.0">
+                     <VBox.margin>
                         <Insets />
-                     </HBox.margin>
-                  </Label>
-                  <Label alignment="TOP_LEFT" text="Y:" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="100.0" />
-                     </HBox.margin>
-                  </Label>
+                     </VBox.margin>
+                     <children>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                           <children>
+                              <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="15.0" text="X:" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <MFXTextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="65.0" style="-fx-border-color: #012d5a;" fx:id="xText">
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                              </MFXTextField>
+                           </children>
+                        </VBox>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                           <children>
+                              <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="15.0" text="Y:" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <MFXTextField fx:id="yText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="65.0" style="-fx-border-color: #012d5a;">
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                              </MFXTextField>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="220.0">
+                     <children>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                           <children>
+                              <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="70.0" text="Building:" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <MFXTextField fx:id="buildingText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="85.0" style="-fx-border-color: #012d5a;">
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </MFXTextField>
+                           </children>
+                        </VBox>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                           <children>
+                              <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="65.0" text="Node ID:" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <MFXTextField fx:id="nodeidText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="45.0" style="-fx-border-color: #012d5a;">
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                              </MFXTextField>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Line endX="100.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Line>
                </children>
+            </VBox>
+            <MFXScrollPane fx:id="locationscrollpane" hbarPolicy="NEVER" maxHeight="0.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefHeight="0.0" prefWidth="220.0" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox fx:id="locationsVbox" minHeight="0.0" minWidth="220.0" />
+               </content>
                <VBox.margin>
-                  <Insets top="15.0" />
+                  <Insets />
                </VBox.margin>
-            </HBox>
-            <HBox>
+            </MFXScrollPane>
+            <VBox>
                <children>
-                  <MFXTextField maxHeight="30.0" maxWidth="70.0" minHeight="30.0" minWidth="70.0" style="-fx-border-color: #012d5a;" fx:id="xText">
-                     <textFill>
-                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-                     </textFill>
-                  </MFXTextField>
-                  <MFXTextField fx:id="yText" maxHeight="30.0" maxWidth="70.0" minHeight="30.0" minWidth="70.0" style="-fx-border-color: #012d5a;">
-                     <textFill>
-                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-                     </textFill>
-                     <HBox.margin>
-                        <Insets left="45.0" />
-                     </HBox.margin>
-                  </MFXTextField>
+                  <MFXTextField promptText="move placeholder" />
                </children>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </HBox>
-            <Label alignment="TOP_LEFT" text="Building:" textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Bold" size="15.0" />
-               </font>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-            </Label>
-            <MFXTextField fx:id="buildingText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="220.0" style="-fx-border-color: #012d5a;">
-               <textFill>
-                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-               </textFill>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </MFXTextField>
-            <Line endX="100.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.3">
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Line>
-            <VBox fx:id="locationsVbox" prefHeight="200.0" prefWidth="100.0" />
+            </VBox>
          </children>
          <StackPane.margin>
-            <Insets />
+            <Insets top="130.0" />
          </StackPane.margin>
          <padding>
-            <Insets left="30.0" top="10.0" />
+            <Insets left="20.0" top="10.0" />
          </padding>
       </VBox>
    </children>
