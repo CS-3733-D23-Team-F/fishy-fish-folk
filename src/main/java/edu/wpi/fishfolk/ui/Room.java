@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.ui;
 
+@Deprecated
 public class Room {
   public int roomNumber;
 

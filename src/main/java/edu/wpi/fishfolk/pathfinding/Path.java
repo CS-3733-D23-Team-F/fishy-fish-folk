@@ -1,8 +1,10 @@
 package edu.wpi.fishfolk.pathfinding;
 
+import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +14,8 @@ public class Path {
   public ArrayList<Integer> nodes;
   public ArrayList<Point2D> points;
 
-  @Getter @Setter public String floor;
+  @Getter @Setter private String floor;
+  @Getter @Setter private Direction toNextPath;
 
   public int numNodes;
 
@@ -23,10 +26,14 @@ public class Path {
   }
 
   public void addFirst(int nid, Point2D p) {
-    // this runs in O(n) time so maybe try batching in groups of 10 or 20 node/point pairs
+    // TODO this runs in O(n) time so maybe try batching in groups of 10 or 20 node/point pairs
     nodes.add(0, nid);
     points.add(0, p);
     numNodes++;
+  }
+
+  public void addFirst(Node unode) {
+    addFirst(unode.getNodeID(), unode.getPoint());
   }
 
   public int removeLast() {
@@ -49,14 +56,61 @@ public class Path {
     return length;
   }
 
-  public String getDirections() {
+  /**
+   * Return an array of Point2D evenly spaced along the path.
+   *
+   * @param count
+   * @return
+   */
+  public Point2D[] interpolate(int count) {
+
+    Point2D[] interPoints = new Point2D[count + 1];
+    double[] segmentLengths = new double[numNodes - 1];
+    double totalLength = 0;
+
+    for (int i = 0; i < numNodes - 1; i++) {
+      segmentLengths[i] = points.get(i).distance(points.get(i + 1));
+      totalLength += segmentLengths[i];
+    }
+
+    final double dist = totalLength / count;
+
+    // place points dist apart along a segment until a point goes off the end of the segment
+    // place the next one along the next segment taking into account how much dist was used on the
+    // previous segment
+    // see https://www.desmos.com/calculator/xtue9yffxh
+
+    int nextIdx = 1; // index of the path point in front
+    Point2D prev = points.get(0), next = points.get(nextIdx);
+    double currSegment = prev.distance(next);
+    double remainder = currSegment;
+
+    for (int i = 0; i < count; i++) {
+      interPoints[i] = prev.interpolate(next, 1 - (remainder / currSegment));
+      remainder -= dist;
+
+      // went over this segment, move on to the next one
+      if (remainder < 0 && nextIdx < numNodes - 1) {
+        prev = next;
+        nextIdx++;
+        next = points.get(nextIdx);
+        currSegment = prev.distance(next);
+        remainder = currSegment + remainder;
+      }
+    }
+    interPoints[count] = next;
+    return interPoints;
+  }
+
+  public List<TextDirection> getDirections() {
 
     // split path into segments: three points determine a segment
     // to avoid overlaps, dont add the start->mid portion except for the first
 
-    LinkedList<PathSegment> segments = new LinkedList<>();
+    LinkedList<PathSection> segments = new LinkedList<>();
 
     // keep track of middle index in each set of 3
+
     for (int midx = 1; midx <= numNodes - 2; midx++) {
 
       Point2D start = points.get(midx - 1);
@@ -64,77 +118,56 @@ public class Path {
       Point2D end = points.get(midx + 1);
 
       double angle = mid.angle(start, end);
-
       if (Math.abs(angle - 180) < 0.1) { // one straight segment start->end
 
         if (midx == 1) {
-          segments.add(new PathSegment(start, end));
+          segments.add(new PathSection(start, end));
         } else {
-          segments.add(new PathSegment(mid, end));
+          segments.add(new PathSection(mid, end));
         }
 
       } else {
 
         if (midx == 1) {
-          segments.add(new PathSegment(start, mid));
+          segments.add(new PathSection(start, mid));
         }
 
         if (mid.subtract(start).crossProduct(end.subtract(mid)).getZ() > 0) {
           // cross product > 0 means right turn
-          segments.add(new PathSegment(mid, PathSegmentType.RIGHT));
+          segments.add(new PathSection(mid, Direction.RIGHT));
         } else {
 
-          segments.add(new PathSegment(mid, PathSegmentType.LEFT));
+          segments.add(new PathSection(mid, Direction.LEFT));
         }
-        segments.add(new PathSegment(mid, end)); // turning segments only account for the turn
+        segments.add(new PathSection(mid, end)); // turning segments only account for the turn
       }
     }
 
     // now that the path has been split into segments, combine consecutive straight segments
 
-    Iterator<PathSegment> itr = segments.iterator();
-    PathSegment prev = itr.next(); // first segment
+    Iterator<PathSection> itr = segments.iterator();
+    PathSection prev = itr.next(); // first segment
 
     // combine  consecutive straight segments
     while (itr.hasNext()) {
-      PathSegment cur = itr.next();
+      PathSection cur = itr.next();
 
-      if (prev.type == PathSegmentType.STRAIGHT
-          && cur.type == PathSegmentType.STRAIGHT) { // two straights in a row
-        prev.end = cur.end; // extend prev to cover current
+      // two straights in a row
+      if (prev.getDirection() == Direction.STRAIGHT && cur.getDirection() == Direction.STRAIGHT) {
+
+        prev.setEnd(cur.getEnd()); // extend prev to cover current
         itr.remove(); // removes current
 
       } else {
         prev = cur;
       }
     }
-
-    // create directions from condensed segments
-    String directions = "start at " + nodes.get(0) + "\n";
-
-    for (PathSegment segment : segments) {
-
-      switch (segment.type) {
-        case STRAIGHT:
-          String dist = String.format("%.1f", segment.end.distance(segment.start));
-          directions += "straight for " + dist + "\n";
-          break;
-        case RIGHT:
-          directions += "turn right \n";
-          break;
-        case LEFT:
-          directions += "turn left \n";
-          break;
-      }
-    }
-
-    directions += "end at " + nodes.get(numNodes - 1) + "\n";
-    System.out.println(segments.size() + " steps");
-    return directions;
+    System.out.println("Directions: " + segments.size());
+    return segments.stream().map(TextDirection::new).toList();
   }
 
   public String toString() {
-    return floor + ": " + nodes.toString();
+    return floor + ": " + nodes.toString() + " " + toNextPath;
   }
 
   @Override
@@ -186,40 +219,6 @@ public class Path {
       }
     }
 
-    System.out.println(minX + "");
-    System.out.println(maxX + "");
-    System.out.println(minY + "");
-    System.out.println(maxY + "");
-
-    Point2D point = new Point2D((maxX + minX) / 2.0, (maxY + minY) / 2.0);
-
-    return point;
+    return new Point2D((maxX + minX) / 2.0, (maxY + minY) / 2.0);
   }
-}
-
-class PathSegment {
-
-  PathSegmentType type;
-
-  Point2D start, mid, end;
-
-  public PathSegment(Point2D start, Point2D end) {
-
-    this.type = PathSegmentType.STRAIGHT;
-
-    this.start = start;
-    this.end = end;
-  }
-
-  public PathSegment(Point2D mid, PathSegmentType dir) {
-
-    this.mid = mid;
-    this.type = dir;
-  }
-}
-
-enum PathSegmentType {
-  STRAIGHT,
-  LEFT,
-  RIGHT
 }

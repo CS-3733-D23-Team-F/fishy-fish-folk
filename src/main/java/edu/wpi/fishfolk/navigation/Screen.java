@@ -5,17 +5,25 @@ public enum Screen {
   HOME("views/Home.fxml"),
   SERVICE_REQUEST("views/ServiceRequest.fxml"),
   SIGNAGE("views/Signage.fxml"),
-  FOOD_ORDER_REQUEST("views/FoodOrder.fxml"),
-  SUPPLIES_REQUEST("views/SupplyRequest.fxml"),
-  FURNITURE_REQUEST("views/FurnitureOrder.fxml"),
-  MAP_EDITOR("views/MapEditor.fxml"),
-  VIEW_FOOD_ORDERS("views/ViewFoodOrders.fxml"),
-  VIEW_SUPPLY_ORDERS("views/ViewSupplyOrders.fxml"),
-  VIEW_FURNITURE_ORDERS("views/ViewFurnitureOrders.fxml"),
+
+  NEW_FOOD_ORDER("views/NewFoodOrder.fxml"),
+  SUPPLIES_REQUEST("views/NewSupplyOrder.fxml"),
+  FURNITURE_REQUEST("views/NewFurnitureOrder.fxml"),
+  FLOWER_REQUEST("views/FlowerOrder.fxml"),
+
+  VIEW_MASTER_ORDER("views/MasterViewOrder.fxml"),
+
   PATHFINDING("views/Pathfinding.fxml"),
 
-  OLD_MAP_EDITOR("views/OldMapEditor.fxml"),
+  MAP_EDITOR("views/MapEditor.fxml"),
+  MOVE_EDITOR("views/MoveEditor.fxml"),
+
+  LOGIN("views/Login.fxml"),
+
+  ACCOUNT_MANAGER("views/AccountManager.fxml"),
+
   TEMPLATE("views/Template.fxml");
+
   private final String filename;
 
   Screen(String filename) {

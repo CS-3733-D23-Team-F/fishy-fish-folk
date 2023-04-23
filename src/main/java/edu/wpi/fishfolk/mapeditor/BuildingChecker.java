@@ -908,7 +908,7 @@ public class BuildingChecker {
     for (ArrayList<BuildingRegion> building : buildings) {
       boolean inThisBuilding = false;
 
-      // all floors in building. TODO only check the building regions corresponding to this floor
+      // all floors in building. Only check the building regions corresponding to this floor
       for (BuildingRegion buildingFloor : building) {
         boolean onThisFloor = buildingFloor.isWithinRegion(p, floor);
         inThisBuilding |= onThisFloor;

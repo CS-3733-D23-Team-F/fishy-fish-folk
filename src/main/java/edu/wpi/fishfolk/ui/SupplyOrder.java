@@ -1,10 +1,9 @@
 package edu.wpi.fishfolk.ui;
 
-import edu.wpi.fishfolk.database.TableEntry;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class SupplyOrder extends TableEntry {
+public class SupplyOrder {
   public LinkedList<SupplyItem> supplies;
   public String link;
   public String roomNum;
@@ -76,6 +75,26 @@ public class SupplyOrder extends TableEntry {
             + "\n"
             + "ID Number: "
             + formID;
+    return string;
+  }
+
+  public String quickToString() {
+    String string =
+        supplies.get(0)
+            + ", "
+            + supplies.get(1)
+            + ", "
+            + supplies.get(2)
+            + ", "
+            + supplies.get(3)
+            + ", "
+            + supplies.get(4)
+            + ", "
+            + supplies.get(5)
+            + ", "
+            + supplies.get(6)
+            + ", "
+            + supplies.get(7);
     return string;
   }
 
