@@ -62,6 +62,7 @@ public class MapEditorController extends AbsController {
   private Group nodesGroup, edgesGroup;
   @FXML MFXScrollPane locationscrollpane;
   @FXML VBox locationsVbox;
+
   private HashSet<Edge> edgeSet = new HashSet<>();
 
   // lists preserve order for easy access to first and last
