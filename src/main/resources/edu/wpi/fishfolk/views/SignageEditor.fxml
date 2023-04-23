@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -13,7 +15,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1080.0" VBox.vgrow="ALWAYS">
          <children>
-            <MFXTextField fx:id="presetText" minHeight="57.0" minWidth="400.0" promptText="PRESET NAME" style="-fx-border-color: #000000; -fx-border-width: 2;">
+            <MFXTextField fx:id="presetText" minHeight="57.0" minWidth="350.0" promptText="PRESET NAME" style="-fx-border-color: #000000; -fx-border-width: 2;">
                <HBox.margin>
                   <Insets top="50.0" />
                </HBox.margin>
@@ -21,11 +23,23 @@
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
             </MFXTextField>
+            <MFXDatePicker fx:id="datePicker" alignment="BOTTOM_LEFT" minHeight="57.0" minWidth="350.0" promptText="IMPLEMENTATION DATE" style="-fx-border-width: 2; -fx-border-color: #000000;">
+               <HBox.margin>
+                  <Insets left="100.0" top="50.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXDatePicker>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="10.0" layoutY="378.0" minHeight="100.0">
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="378.0" minHeight="100.0" prefHeight="100.0" prefWidth="1092.0">
          <children>
-            <MFXComboBox fx:id="arrowl0" minHeight="57.0" minWidth="50.0" style="-fx-border-color: #000000; -fx-border-width: 2;" />
+            <ImageView fx:id="iconl0" fitHeight="150.0" fitWidth="200.0" layoutX="877.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
             <MFXFilterComboBox fx:id="rooml0" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-color: #000000; -fx-border-width: 2;">
                <HBox.margin>
                   <Insets right="100.0" />
@@ -39,12 +53,20 @@
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
             </MFXFilterComboBox>
-            <MFXComboBox fx:id="arrowr0" minHeight="57.0" minWidth="50.0" style="-fx-border-width: 2; -fx-border-color: #000000;" />
+            <ImageView fx:id="iconr0" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="10.0" layoutY="630.0" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="630.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
          <children>
-            <MFXComboBox fx:id="arrowl1" minHeight="57.0" minWidth="50.0" style="-fx-border-color: #000000; -fx-border-width: 2;" />
+            <ImageView fx:id="iconl1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
             <MFXFilterComboBox fx:id="rooml1" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-color: #000000; -fx-border-width: 2;">
                <HBox.margin>
                   <Insets right="100.0" />
@@ -58,12 +80,20 @@
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
             </MFXFilterComboBox>
-            <MFXComboBox fx:id="arrowr1" minHeight="57.0" minWidth="50.0" style="-fx-border-width: 2; -fx-border-color: #000000;" />
+            <ImageView fx:id="iconr1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="10.0" layoutY="630.0" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="630.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
          <children>
-            <MFXComboBox fx:id="arrowl2" minHeight="57.0" minWidth="50.0" style="-fx-border-color: #000000; -fx-border-width: 2;" />
+            <ImageView fx:id="iconl2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
             <MFXFilterComboBox fx:id="rooml2" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-color: #000000; -fx-border-width: 2;">
                <HBox.margin>
                   <Insets right="100.0" />
@@ -77,12 +107,20 @@
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
             </MFXFilterComboBox>
-            <MFXComboBox fx:id="arrowr2" minHeight="57.0" minWidth="50.0" style="-fx-border-width: 2; -fx-border-color: #000000;" />
+            <ImageView fx:id="iconr2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="10.0" layoutY="530.0" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="530.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
          <children>
-            <MFXComboBox fx:id="arrowl3" minHeight="57.0" minWidth="50.0" style="-fx-border-color: #000000; -fx-border-width: 2;" />
+            <ImageView fx:id="iconl3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
             <MFXFilterComboBox fx:id="rooml3" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-color: #000000; -fx-border-width: 2;">
                <HBox.margin>
                   <Insets right="100.0" />
@@ -96,12 +134,16 @@
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
             </MFXFilterComboBox>
-            <MFXComboBox fx:id="arrowr3" minHeight="57.0" minWidth="50.0" style="-fx-border-width: 2; -fx-border-color: #000000;" />
+            <ImageView fx:id="iconr3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <MFXButton minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
+            <MFXButton fx:id="cancelButton" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
                <font>
                   <Font name="Open Sans Bold" size="26.0" />
                </font>
@@ -109,12 +151,12 @@
                   <Insets right="65.0" />
                </HBox.margin>
             </MFXButton>
-            <MFXButton layoutX="518.0" layoutY="72.0" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CLEAR" textFill="WHITE">
+            <MFXButton fx:id="clearButton" layoutX="518.0" layoutY="72.0" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CLEAR" textFill="WHITE">
                <font>
                   <Font name="Open Sans Bold" size="26.0" />
                </font>
             </MFXButton>
-            <MFXButton layoutX="550.0" layoutY="72.0" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
+            <MFXButton fx:id="submitButton" layoutX="550.0" layoutY="72.0" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #F0BF4C; -fx-background-radius: 5;" text="SUBMIT" textFill="WHITE">
                <font>
                   <Font name="Open Sans Bold" size="26.0" />
                </font>
