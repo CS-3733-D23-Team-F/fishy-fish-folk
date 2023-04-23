@@ -50,7 +50,7 @@ public class Fapp extends Application {
     primaryStage.setMaximized(true);
     primaryStage.show();
 
-    Navigation.navigate(Screen.LOGIN);
+    Navigation.navigate(Screen.SIGNAGE_EDITOR);
   }
 
   @Override

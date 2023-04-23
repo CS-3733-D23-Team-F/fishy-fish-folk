@@ -16,6 +16,7 @@ public enum Screen {
   PATHFINDING("views/Pathfinding.fxml"),
 
   MAP_EDITOR("views/MapEditor.fxml"),
+  SIGNAGE_EDITOR("views/SignageEditor.fxml"),
   MOVE_EDITOR("views/MoveEditor.fxml"),
 
   LOGIN("views/Login.fxml"),
