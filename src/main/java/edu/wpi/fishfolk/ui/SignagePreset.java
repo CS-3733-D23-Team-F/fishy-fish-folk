@@ -58,4 +58,36 @@ public class SignagePreset {
   public void setDate(LocalDate date) {
     this.implementationDate = date;
   }
+
+  public void setRooml0(String room) {
+    this.rooml0 = room;
+  }
+
+  public void setRooml1(String room) {
+    this.rooml1 = room;
+  }
+
+  public void setRooml2(String room) {
+    this.rooml2 = room;
+  }
+
+  public void setRooml3(String room) {
+    this.rooml3 = room;
+  }
+
+  public void setRoomr0(String room) {
+    this.roomr0 = room;
+  }
+
+  public void setRoomr1(String room) {
+    this.roomr1 = room;
+  }
+
+  public void setRoomr2(String room) {
+    this.roomr2 = room;
+  }
+
+  public void setRoomr3(String room) {
+    this.roomr3 = room;
+  }
 }

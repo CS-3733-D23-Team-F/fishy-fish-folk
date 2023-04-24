@@ -59,12 +59,14 @@ public class SignageEditorController extends AbsController {
 
     cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     clearButton.setOnMouseClicked(event -> clearAll());
+    // clearButton.setOnMouseClicked(event -> fullDisable(iconl0));
     submitButton.setOnMouseClicked(event -> submit());
   }
 
   private void fullDisable(ImageView icon) {
     icon.setDisable(true);
     icon.setOpacity(0.5);
+    icon.setRotate(0);
   }
 
   private void fullEnable(ImageView icon) {
@@ -91,6 +93,16 @@ public class SignageEditorController extends AbsController {
   }
 
   private void clearAll() {
+    rooml0.setValue(null);
+    rooml1.setValue(null);
+    rooml2.setValue(null);
+    rooml3.setValue(null);
+
+    roomr0.setValue(null);
+    roomr1.setValue(null);
+    roomr2.setValue(null);
+    roomr3.setValue(null);
+
     fullDisable(iconl0);
     fullDisable(iconl1);
     fullDisable(iconl2);
@@ -101,20 +113,24 @@ public class SignageEditorController extends AbsController {
     fullDisable(iconr2);
     fullDisable(iconr3);
 
-    rooml0.setValue(null);
-    rooml1.setValue(null);
-    rooml2.setValue(null);
-    rooml3.setValue(null);
-
-    roomr0.setValue(null);
-    roomr1.setValue(null);
-    roomr2.setValue(null);
-    roomr3.setValue(null);
+    presetText.setText("");
+    datePicker.setValue(null);
   }
 
   private void submit() {
     currentPreset.setName(presetText.getText());
     currentPreset.setDate(datePicker.getValue());
+
+    currentPreset.setRooml0(rooml0.getValue());
+    currentPreset.setRooml1(rooml1.getValue());
+    currentPreset.setRooml2(rooml2.getValue());
+    currentPreset.setRooml3(rooml3.getValue());
+
+    currentPreset.setRoomr0(roomr0.getValue());
+    currentPreset.setRoomr1(roomr1.getValue());
+    currentPreset.setRoomr2(roomr2.getValue());
+    currentPreset.setRoomr3(roomr3.getValue());
+
     Navigation.navigate(Screen.HOME);
   }
 }
