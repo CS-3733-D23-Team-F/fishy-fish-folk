@@ -11,21 +11,30 @@
 
 <VBox alignment="CENTER" minHeight="720.0" minWidth="1280.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.LoginController">
    <children>
-      <MFXTextField fx:id="loginIDField" prefHeight="53.0" prefWidth="245.0" promptText="User ID" />
-      <AnchorPane fx:id="menuWrap" minWidth="70.0" />
-      <MFXPasswordField fx:id="loginPassField" prefHeight="50.0" prefWidth="246.0" promptText="Password/PIN" />
-      <MFXButton fx:id="loginBtn" prefHeight="106.0" prefWidth="188.0" text="Log In">
+      <MFXTextField fx:id="loginIDField" prefHeight="53.0" prefWidth="245.0" promptText="User ID">
          <font>
-            <Font size="21.0" />
-         </font>
-         <VBox.margin>
-            <Insets top="30.0" />
-         </VBox.margin>
-      </MFXButton>
+            <Font name="Open Sans Regular" size="16.0" />
+         </font></MFXTextField>
+      <AnchorPane fx:id="menuWrap" minWidth="70.0" />
+      <MFXPasswordField fx:id="loginPassField" prefHeight="50.0" prefWidth="246.0" promptText="Password/PIN">
+         <font>
+            <Font name="Open Sans Regular" size="16.0" />
+         </font></MFXPasswordField>
       <Label fx:id="errorBox" style="-fx-alignment: center; -fx-background-color: F4F4F4;" textAlignment="CENTER">
          <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
+         <font>
+            <Font name="Open Sans Regular" size="16.0" />
+         </font>
       </Label>
+      <MFXButton fx:id="loginBtn" prefHeight="106.0" prefWidth="188.0" text="Log In">
+         <font>
+            <Font name="Open Sans Regular" size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </MFXButton>
    </children>
 </VBox>
