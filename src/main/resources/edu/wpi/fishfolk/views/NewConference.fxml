@@ -1,31 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
 
 <HBox minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewConferenceController">
    <children>
       <VBox>
          <children>
+            <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Conference Room:">
+               <font>
+                  <Font name="Open Sans Bold" size="26.0" />
+               </font>
+            </Text>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ScrollPane hbarPolicy="NEVER" minHeight="520.0" minWidth="831.0" style="-fx-background-radius: 5; -fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
+                    <content>
+                      <AnchorPane minHeight="500.0" minWidth="500.0" />
+                    </content>
+                  </ScrollPane>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" />
+                              <SearchableComboBox />
+                              <SearchableComboBox />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
+                              <SearchableComboBox />
+                              <SearchableComboBox />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Attendees:" />
+                              <MFXTextField />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Recurring Meeting?" />
+                              <SearchableComboBox />
+                           </children>
+                        </HBox>
+                     </children></VBox>
+               </children>
+            </HBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Notes:" />
+            <MFXTextField minHeight="179.0" minWidth="1594.0" />
             <HBox>
                <children>
-                  <MFXButton fx:id="confCancelButton" minHeight="50.0" minWidth="100.0" style="-fx-background-color: #012d5a; -fx-border-radius: 5;" text="CANCEL" textFill="WHITE">
+                  <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-border-radius: 5;" text="CANCEL" textFill="WHITE">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </MFXButton>
+                  <MFXButton fx:id="confClearButon" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-border-radius: 5;" text="CLEAR" textFill="WHITE">
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="confClearButon" minHeight="50.0" minWidth="100.0" style="-fx-background-color: #012d5a; -fx-border-radius: 5;" text="CLEAR" textFill="WHITE">
+                  <MFXButton fx:id="confSubmitButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #f0bf4c; -fx-border-radius: 5;" text="SUBMIT" textFill="#012d5a">
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
-                  </MFXButton>
-                  <MFXButton fx:id="confSubmitButton" minHeight="50.0" minWidth="100.0" style="-fx-background-color: #f0bf4c; -fx-border-radius: 5;" text="SUBMIT" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
+                     <HBox.margin>
+                        <Insets left="200.0" />
+                     </HBox.margin>
                   </MFXButton>
                </children>
             </HBox>
