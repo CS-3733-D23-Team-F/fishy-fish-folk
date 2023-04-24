@@ -378,25 +378,34 @@ public class MapEditorController extends AbsController {
 
             // TODO: update all selected nodes
 
-            double x = event.getX();
-            double y = event.getY();
             // only move node if dragged more than 5 pixels
-            if (Math.pow((nodeCircle.getCenterX() - x), 2)
-                    + Math.pow((nodeCircle.getCenterY() - y), 2)
-                > 25) {
+            double dist =
+                Math.sqrt(
+                    Math.pow((nodeCircle.getCenterX() - nodeCircle.getPrevX()), 2)
+                        + Math.pow((nodeCircle.getCenterY() - nodeCircle.getPrevY()), 2));
+            if (dist > 25) {
 
               nodeCircle.setCenterX(event.getX());
+              nodeCircle.setPrevX(event.getX());
+
               nodeCircle.setCenterY(event.getY());
+              nodeCircle.setPrevY((event.getY()));
+
+              System.out.println("moved " + dist);
 
               node.setPoint(new Point2D(event.getX(), event.getY()));
               node.setBuilding(
                   buildingChecker.getBuilding(node.getPoint(), allFloors.get(currentFloor)));
 
               fillNodeFields(node);
-            }
 
-            // update node in database with updated x & y
-            dbConnection.updateEntry(node);
+              // update node in database with updated x & y
+              dbConnection.updateEntry(node);
+
+            } else {
+              nodeCircle.setCenterX(nodeCircle.getPrevX());
+              nodeCircle.setCenterY(nodeCircle.getPrevY());
+            }
           }
         });
 
@@ -551,12 +560,6 @@ public class MapEditorController extends AbsController {
 
         locationsVbox.getChildren().add(entry);
       }
-
-      System.out.println(
-          "scroll height"
-              + locationScrollpane.getHeight()
-              + " vbox height "
-              + locationsVbox.getHeight());
 
     } catch (IOException e) {
       e.printStackTrace();
