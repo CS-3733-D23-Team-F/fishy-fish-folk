@@ -88,7 +88,7 @@
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></Text>
-                              <MFXFilterComboBox fx:id="RecurringDrop" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012D5A;">
+                              <MFXFilterComboBox fx:id="recurringDrop" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012D5A;">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -129,11 +129,8 @@
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
                   </MFXButton>
-                  <MFXButton fx:id="confClearButon" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CLEAR" textFill="WHITE">
+                  <MFXButton fx:id="confClearButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CLEAR" textFill="WHITE">
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
