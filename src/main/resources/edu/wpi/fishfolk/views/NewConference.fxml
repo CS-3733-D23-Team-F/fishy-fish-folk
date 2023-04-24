@@ -38,11 +38,11 @@
                                  <HBox.margin>
                                     <Insets right="80.0" />
                                  </HBox.margin></Text>
-                              <MFXFilterComboBox minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="TIME">
+                              <MFXFilterComboBox fx:id="startTimeDrop" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="TIME">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font></MFXFilterComboBox>
-                              <MFXFilterComboBox minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="AM/PM">
+                              <MFXFilterComboBox fx:id="startAMPMDrop" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="AM/PM">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font></MFXFilterComboBox>
@@ -57,11 +57,11 @@
                                  <HBox.margin>
                                     <Insets right="95.0" />
                                  </HBox.margin></Text>
-                              <MFXFilterComboBox minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="TIME">
+                              <MFXFilterComboBox fx:id="endTimeDrop" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="TIME">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font></MFXFilterComboBox>
-                              <MFXFilterComboBox minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="AM/PM">
+                              <MFXFilterComboBox fx:id="endAMPMDrop" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="AM/PM">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font></MFXFilterComboBox>
@@ -73,7 +73,7 @@
                                  <font>
                                     <Font name="Open Sans Bold" size="26.0" />
                                  </font></Text>
-                              <MFXTextField minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="153.0" style="-fx-border-color: #012D5A;">
+                              <MFXTextField fx:id="numAttnBox" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="153.0" style="-fx-border-color: #012D5A;">
                                  <font>
                                     <Font name="Open Sans Regular" size="26.0" />
                                  </font></MFXTextField>
@@ -88,7 +88,7 @@
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></Text>
-                              <MFXFilterComboBox minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012D5A;">
+                              <MFXFilterComboBox fx:id="RecurringDrop" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012D5A;">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -98,7 +98,7 @@
                               <Insets />
                            </VBox.margin>
                         </HBox>
-                        <MFXTextField minHeight="50.0" minWidth="257.0" prefHeight="50.0" prefWidth="350.0" style="-fx-border-color: #012D5A;" text="NAME">
+                        <MFXTextField fx:id="nameBox" minHeight="50.0" minWidth="257.0" prefHeight="50.0" prefWidth="350.0" style="-fx-border-color: #012D5A;" text="NAME">
                            <VBox.margin>
                               <Insets left="275.0" top="30.0" />
                            </VBox.margin>
@@ -116,7 +116,7 @@
                   <Font name="Open Sans Bold" size="26.0" />
                </font>
             </Text>
-            <MFXTextField alignment="TOP_LEFT" minHeight="176.0" minWidth="1211.0" prefHeight="176.0" prefWidth="1211.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;" textLimit="800">
+            <MFXTextField fx:id="notesBox" alignment="TOP_LEFT" minHeight="176.0" minWidth="1211.0" prefHeight="176.0" prefWidth="1211.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;" textLimit="800">
                <VBox.margin>
                   <Insets bottom="50.0" />
                </VBox.margin>
