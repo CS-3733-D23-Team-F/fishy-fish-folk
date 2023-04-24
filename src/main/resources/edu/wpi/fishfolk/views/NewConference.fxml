@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewConferenceController">
+<HBox minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #FFFFFF; -fx-region-background: #f0bf4c;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewConferenceController">
    <children>
       <VBox>
          <children>
@@ -24,7 +25,14 @@
                <children>
                   <ScrollPane hbarPolicy="NEVER" minHeight="311.0" minWidth="472.0" prefHeight="311.0" prefWidth="563.0" style="-fx-background-radius: 5; -fx-background-color: #FFFFFF; -fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
                     <content>
-                      <AnchorPane style="-fx-background-color: #FFFFFF;" />
+                      <AnchorPane style="-fx-background-color: #FFFFFF;">
+                           <children>
+                              <MFXRectangleToggleNode alignment="CENTER_LEFT" layoutX="-1.0" layoutY="-1.0" minHeight="30.0" minWidth="563.0" style="-fx-border-radius: 0;" text="MEDICAL RECORDS CONFERENCE ROOM FLOOR L1" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                           </children></AnchorPane>
                     </content>
                   </ScrollPane>
                   <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
@@ -84,7 +92,7 @@
                               </MFXFilterComboBox>
                            </children>
                         </HBox>
-                        <MFXTextField fx:id="numAttnBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
+                        <MFXTextField fx:id="numAttnBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
                            <font>
                               <Font name="Open Sans Regular" size="26.0" />
                            </font>
