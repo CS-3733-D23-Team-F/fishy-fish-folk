@@ -9,6 +9,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -29,6 +30,8 @@ public class LoginController extends AbsController {
     loginIDField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
     errorBox.setText("");
     errorBox.setVisible(false);
+
+    Platform.runLater(() -> loginIDField.requestFocus());
   }
 
   /**
