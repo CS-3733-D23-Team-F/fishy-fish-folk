@@ -16,6 +16,12 @@ public class NewConferenceController extends AbsController {
 
   @FXML
   public void initialize() {
+
     confCancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    confClearButton.setOnMouseClicked(event -> clearFields());
+  }
+
+  public void clearFields(){
+
   }
 }
