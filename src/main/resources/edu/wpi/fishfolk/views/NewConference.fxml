@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
@@ -9,9 +10,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import org.controlsfx.control.SearchableComboBox?>
 
-<HBox minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewConferenceController">
+<HBox minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewConferenceController">
    <children>
       <VBox>
          <children>
@@ -20,54 +20,60 @@
                   <Font name="Open Sans Bold" size="26.0" />
                </font>
             </Text>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="100.0">
                <children>
-                  <ScrollPane hbarPolicy="NEVER" minHeight="520.0" minWidth="831.0" style="-fx-background-radius: 5; -fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
+                  <ScrollPane hbarPolicy="NEVER" minHeight="520.0" minWidth="831.0" style="-fx-background-radius: 5; -fx-background-color: #FFFFFF; -fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
                     <content>
-                      <AnchorPane />
+                      <AnchorPane style="-fx-background-color: #FFFFFF;" />
                     </content>
                   </ScrollPane>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="466.0" prefWidth="707.0">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:">
                                  <font>
                                     <Font name="Open Sans Bold" size="26.0" />
                                  </font></Text>
-                              <SearchableComboBox maxHeight="50.0" minHeight="25.0" minWidth="200.0" promptText="TIME" />
-                              <SearchableComboBox maxHeight="50.0" minHeight="25.0" minWidth="200.0" promptText="AM/PM" />
+                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="TIME" />
+                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="AM/PM" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:">
                                  <font>
                                     <Font name="Open Sans Bold" size="26.0" />
                                  </font></Text>
-                              <SearchableComboBox maxHeight="50.0" minHeight="50.0" minWidth="200.0" promptText="TIME" />
-                              <SearchableComboBox maxHeight="50.0" minHeight="50.0" minWidth="200.0" promptText="AM/PM" />
+                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="TIME" />
+                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="AM/PM" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Attendees:">
                                  <font>
                                     <Font name="Open Sans Bold" size="26.0" />
                                  </font></Text>
-                              <MFXTextField minHeight="50.0" minWidth="200.0" />
+                              <MFXTextField minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A;">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font></MFXTextField>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Recurring Meeting?">
                                  <font>
                                     <Font name="Open Sans Bold" size="26.0" />
                                  </font></Text>
-                              <SearchableComboBox maxHeight="50.0" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" />
+                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A;" />
                            </children>
                         </HBox>
-                        <MFXTextField minHeight="50.0" minWidth="434.0" text="NAME" />
+                        <MFXTextField minHeight="50.0" minWidth="434.0" style="-fx-border-color: #012D5A;" text="NAME">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin></MFXTextField>
                      </children></VBox>
                </children>
             </HBox>
@@ -76,7 +82,13 @@
                   <Font name="Open Sans Bold" size="26.0" />
                </font>
             </Text>
-            <MFXTextField alignment="TOP_LEFT" minHeight="179.0" minWidth="1594.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;" textLimit="800" />
+            <MFXTextField alignment="TOP_LEFT" minHeight="179.0" minWidth="1594.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;" textLimit="800">
+               <VBox.margin>
+                  <Insets bottom="50.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Open Sans Regular" size="26.0" />
+               </font></MFXTextField>
             <HBox>
                <children>
                   <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
@@ -105,4 +117,7 @@
          </children>
       </VBox>
    </children>
+   <padding>
+      <Insets left="100.0" right="100.0" />
+   </padding>
 </HBox>
