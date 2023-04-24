@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXPaginatedTableView?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
-<?import io.github.palexdev.materialfx.controls.MFXTableView?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
@@ -28,18 +29,19 @@
                         </Label>
                      </children>
                   </HBox>
-                  <MFXScrollPane minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
-                     <content>
-                        <GridPane>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
-                     </content>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </MFXScrollPane>
+                  <StackPane alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                     <children>
+                        <MFXScrollPane fx:id="scroll" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;">
+                           <content>
+                              <GridPane fx:id="grid">
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </content>
+                        </MFXScrollPane>
+                     </children>
+                  </StackPane>
                </children>
                <HBox.margin>
                   <Insets bottom="50.0" left="50.0" top="50.0" />
@@ -49,7 +51,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                        <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" VBox.vgrow="ALWAYS">
                            <children>
                               <Label text="Unassigned Tasks" textFill="WHITE">
                                  <font>
@@ -58,11 +60,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <MFXTableView minHeight="300.0" minWidth="700.0" VBox.vgrow="ALWAYS">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </MFXTableView>
+                        <MFXPaginatedTableView fx:id="paginated" minHeight="300.0" minWidth="700.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                   <HBox VBox.vgrow="ALWAYS">
@@ -80,12 +78,19 @@
                               </HBox>
                               <VBox alignment="TOP_CENTER" minWidth="450.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <MFXScrollPane style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 0.5;" VBox.vgrow="ALWAYS">
+                                    <MFXScrollPane style="-fx-border-radius: 5; -fx-border-width: 0.5;" VBox.vgrow="ALWAYS">
                                        <VBox.margin>
                                           <Insets left="10.0" right="10.0" top="10.0" />
                                        </VBox.margin>
+                                       <content>
+                                          <GridPane fx:id="alertGrid">
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                          </GridPane>
+                                       </content>
                                     </MFXScrollPane>
-                                    <MFXTextField minHeight="35.0" minWidth="460.0" VBox.vgrow="ALWAYS">
+                                    <MFXTextField minHeight="35.0" minWidth="460.0" style="-fx-background-color: #F1F1F1;" VBox.vgrow="ALWAYS">
                                        <VBox.margin>
                                           <Insets bottom="10.0" top="15.0" />
                                        </VBox.margin>

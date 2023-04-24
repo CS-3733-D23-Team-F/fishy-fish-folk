@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="50.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AlertsController">
+   <children>
+      <HBox alignment="CENTER_LEFT" style="-fx-background-color: #F1F1F1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="moveStart" text="A" textFill="#012d5a">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin>
+            </Label>
+            <Label text="will be moved to " textFill="#012d5a">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="moveEnd" text="B" textFill="#012d5a">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </Label>
+            <Label text="on" textFill="#012d5a">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="alertDate" text="01/01/2023" textFill="#012d5a">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <MFXButton fx:id="close" contentDisplay="GRAPHIC_ONLY" style="-fx-background-color: #F1F1F1;" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="13.0">
+         <graphic>
+            <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/close.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </MFXButton>
+   </children>
+</AnchorPane>

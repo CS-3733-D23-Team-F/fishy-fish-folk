@@ -1,24 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.FutureMovesController">
    <children>
       <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" style="-fx-background-color: #F1F1F1; -fx-background-radius: 10;" HBox.hgrow="ALWAYS">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" VBox.vgrow="ALWAYS" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                  <Text fx:id="moveInfo" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="A -&gt; B" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Open Sans Regular" size="24.0" />
+                     </font>
+                  </Text>
+                  <HBox alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Text fx:id="moveDate" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="01/01/2024">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
-                  </Text>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" fillWidth="false" minWidth="75.0" style="-fx-background-color: #ffffff;">
+               <children>
+                  <HBox fx:id="notification" fillHeight="false" style="-fx-border-color: #012D5A; -fx-border-radius: 5;">
+                     <children>
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/megaphone.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>
