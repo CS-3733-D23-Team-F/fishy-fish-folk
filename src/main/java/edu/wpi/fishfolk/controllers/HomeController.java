@@ -3,21 +3,20 @@ package edu.wpi.fishfolk.controllers;
 import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 
 import edu.wpi.fishfolk.Fapp;
-import edu.wpi.fishfolk.database.DAO.Observables.FoodOrderObservable;
-import edu.wpi.fishfolk.database.TableEntry.FoodRequest;
-import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
-import io.github.palexdev.materialfx.controls.MFXPaginatedTableView;
-import io.github.palexdev.materialfx.controls.MFXTableColumn;
-import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
-import io.github.palexdev.materialfx.filter.StringFilter;
+import edu.wpi.fishfolk.database.DAO.Observables.*;
+import edu.wpi.fishfolk.database.TableEntry.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ChoiceBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -27,11 +26,54 @@ public class HomeController {
   // @FXML MFXButton navigateButton;
   @FXML GridPane grid;
   @FXML GridPane alertGrid;
-  @FXML MFXPaginatedTableView paginated;
+  // @FXML MFXPaginatedTableView paginated;
+  @FXML TableView foodTable, supplyTable, furnitureTable, flowerTable;
+  @FXML
+  TableColumn foodid,
+      foodassignee,
+      foodtotalprice,
+      foodstatus,
+      fooddeliveryroom,
+      fooddeliverytime,
+      foodrecipientname,
+      foodnotes,
+      fooditems;
+  @FXML
+  TableColumn supplyid,
+      supplyassignee,
+      supplystatus,
+      supplydeliveryroom,
+      supplylink,
+      supplynotes,
+      supplysupplies;
+  @FXML
+  TableColumn furnitureid,
+      furnitureassignee,
+      furniturestatus,
+      furnituredeliveryroom,
+      furnituredeliverydate,
+      furniturenotes,
+      furnitureservicetype,
+      furniturefurniture;
+  @FXML
+  TableColumn flowerid,
+      flowerassignee,
+      flowertotalprice,
+      flowerstatus,
+      flowerdeliveryroom,
+      flowerdeliverytime,
+      flowerrecipientname,
+      floweritems;
 
   @FXML
   public void initialize() {
     // navigateButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SERVICE_REQUEST));
+    setTable();
+    setAlert();
+    setFutureMoves();
+  }
+
+  public void setFutureMoves() {
     int col = 0;
     int row = 1;
     try {
@@ -67,6 +109,9 @@ public class HomeController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void setAlert() {
     int colA = 0;
     int rowA = 1;
     try {
@@ -102,43 +147,171 @@ public class HomeController {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    setupPaginated();
   }
 
+  public List<String> getAssignees() {
+    return dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT).stream()
+        .map(obj -> ((UserAccount) obj).getUsername())
+        .toList();
+  }
+
+  public void setTable() {
+    foodid.setCellValueFactory(new PropertyValueFactory<FoodOrderObservable, String>("foodid"));
+    foodassignee.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodassignee"));
+    foodtotalprice.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodtotalprice"));
+    foodstatus.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodstatus"));
+    fooddeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("fooddeliveryroom"));
+    fooddeliverytime.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("fooddeliverytime"));
+    foodrecipientname.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodrecipientname"));
+    foodnotes.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodnotes"));
+    fooditems.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("fooditems"));
+
+    foodassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(getAssignees().toArray()));
+    supplyassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(getAssignees().toArray()));
+    furnitureassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(getAssignees().toArray()));
+    flowerassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(getAssignees().toArray()));
+
+    supplyid.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplyid"));
+    supplyassignee.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplyassignee"));
+    supplystatus.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplystatus"));
+    supplydeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplydeliveryroom"));
+    supplylink.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplylink"));
+    supplynotes.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplynotes"));
+    supplysupplies.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplysupplies"));
+
+    furnitureid.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureid"));
+    furnitureassignee.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureassignee"));
+    furniturestatus.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturestatus"));
+    furnituredeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnituredeliveryroom"));
+    furnituredeliverydate.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnituredeliverydate"));
+    furniturenotes.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturenotes"));
+    furnitureservicetype.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureservicetype"));
+    furniturefurniture.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturefurniture"));
+
+    flowerid.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));
+    flowerassignee.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerassignee"));
+    flowertotalprice.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowertotalprice"));
+    flowerstatus.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerstatus"));
+    flowerdeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliveryroom"));
+    flowerdeliverytime.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliverytime"));
+    flowerrecipientname.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerrecipientname"));
+    floweritems.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
+
+    foodTable.setEditable(true);
+    furnitureTable.setEditable(true);
+    supplyTable.setEditable(true);
+    flowerTable.setEditable(true);
+
+    foodTable.setItems(getFoodOrderRows());
+    supplyTable.setItems(getSupplyOrderRows());
+    furnitureTable.setItems(getFurnitureOrderRows());
+    flowerTable.setItems(getFlowerOrderRows());
+  }
+
+  public ObservableList<FoodOrderObservable> getFoodOrderRows() {
+    ArrayList<FoodRequest> foodList =
+        (ArrayList<FoodRequest>) dbConnection.getAllEntries(TableEntryType.FOOD_REQUEST);
+    ObservableList<FoodOrderObservable> returnable = FXCollections.observableArrayList();
+    for (FoodRequest request : foodList) {
+      returnable.add(new FoodOrderObservable(request));
+    }
+    return returnable;
+  }
+
+  public ObservableList<SupplyOrderObservable> getSupplyOrderRows() {
+    ArrayList<SupplyRequest> supplyList =
+        (ArrayList<SupplyRequest>) dbConnection.getAllEntries(TableEntryType.SUPPLY_REQUEST);
+    ObservableList<SupplyOrderObservable> returnable = FXCollections.observableArrayList();
+    for (SupplyRequest request : supplyList) {
+      returnable.add(new SupplyOrderObservable(request));
+    }
+    return returnable;
+  }
+
+  public ObservableList<FurnitureOrderObservable> getFurnitureOrderRows() {
+    ArrayList<FurnitureRequest> furnitureList =
+        (ArrayList<FurnitureRequest>) dbConnection.getAllEntries(TableEntryType.FURNITURE_REQUEST);
+    ObservableList<FurnitureOrderObservable> returnable = FXCollections.observableArrayList();
+    for (FurnitureRequest request : furnitureList) {
+      returnable.add(new FurnitureOrderObservable(request));
+    }
+    return returnable;
+  }
+
+  public ObservableList<FlowerOrderObservable> getFlowerOrderRows() {
+    ArrayList<FlowerRequest> flowerList =
+        (ArrayList<FlowerRequest>) dbConnection.getAllEntries(TableEntryType.FLOWER_REQUEST);
+    ObservableList<FlowerOrderObservable> returnable = FXCollections.observableArrayList();
+    for (FlowerRequest request : flowerList) {
+      returnable.add(new FlowerOrderObservable(request));
+    }
+    return returnable;
+  }
+
+  /*
   private void setupPaginated() {
 
     MFXTableColumn<FoodOrderObservable> foodId =
-        new MFXTableColumn<>(
-            "Food ID", false, Comparator.comparing(FoodOrderObservable::getFoodid));
+        new MFXTableColumn<>("Food ID", true, Comparator.comparing(FoodOrderObservable::getFoodid));
     MFXTableColumn<FoodOrderObservable> foodTotalPrice =
         new MFXTableColumn<>(
-            "Food Total Price",
-            false,
-            Comparator.comparing(FoodOrderObservable::getFoodtotalprice));
+            "Food Total Price", true, Comparator.comparing(FoodOrderObservable::getFoodtotalprice));
     MFXTableColumn<FoodOrderObservable> foodStatus =
         new MFXTableColumn<>(
-            "Food Status", false, Comparator.comparing(FoodOrderObservable::getFoodstatus));
+            "Food Status", true, Comparator.comparing(FoodOrderObservable::getFoodstatus));
     MFXTableColumn<FoodOrderObservable> foodDeliveryRoom =
         new MFXTableColumn<>(
             "Food Delivery Room",
-            false,
+            true,
             Comparator.comparing(FoodOrderObservable::getFooddeliveryroom));
     MFXTableColumn<FoodOrderObservable> foodDeliveryTime =
         new MFXTableColumn<>(
             "Food Delivery Time",
-            false,
+            true,
             Comparator.comparing(FoodOrderObservable::getFooddeliverytime));
     MFXTableColumn<FoodOrderObservable> foodRecipientName =
         new MFXTableColumn<>(
             "Food Recipient Name",
-            false,
+            true,
             Comparator.comparing(FoodOrderObservable::getFoodrecipientname));
     MFXTableColumn<FoodOrderObservable> foodNotes =
         new MFXTableColumn<>(
-            "Food Notes", false, Comparator.comparing(FoodOrderObservable::getFoodnotes));
+            "Food Notes", true, Comparator.comparing(FoodOrderObservable::getFoodnotes));
     MFXTableColumn<FoodOrderObservable> foodItems =
         new MFXTableColumn<>(
-            "Food Items", false, Comparator.comparing(FoodOrderObservable::getFooditems));
+            "Food Items", true, Comparator.comparing(FoodOrderObservable::getFooditems));
+    TableColumn<FoodOrderObservable, String> foodAssignee;
 
     foodId.setRowCellFactory(device -> new MFXTableRowCell<>(FoodOrderObservable::getFoodid));
     foodTotalPrice.setRowCellFactory(
@@ -153,6 +326,9 @@ public class HomeController {
         device -> new MFXTableRowCell<>(FoodOrderObservable::getFoodrecipientname));
     foodNotes.setRowCellFactory(device -> new MFXTableRowCell<>(FoodOrderObservable::getFoodnotes));
     foodItems.setRowCellFactory(device -> new MFXTableRowCell<>(FoodOrderObservable::getFooditems));
+    foodAssignee.setCellValueFactory(
+            ChoiceBoxTableCell.forTableColumn(FoodOrderObservable::getFoodassignee));
+
 
     paginated
         .getTableColumns()
@@ -164,7 +340,8 @@ public class HomeController {
             foodDeliveryTime,
             foodRecipientName,
             foodNotes,
-            foodItems);
+            foodItems,
+            foodAssignee);
     paginated
         .getFilters()
         .addAll(
@@ -175,7 +352,8 @@ public class HomeController {
             new StringFilter<>("Food Delivery Time", FoodOrderObservable::getFooddeliverytime),
             new StringFilter<>("Food Recipient Name", FoodOrderObservable::getFoodrecipientname),
             new StringFilter<>("Food Notes", FoodOrderObservable::getFoodnotes),
-            new StringFilter<>("Food Items", FoodOrderObservable::getFooditems));
+            new StringFilter<>("Food Items", FoodOrderObservable::getFooditems),
+            new StringFilter<>("Food Items", FoodOrderObservable::getFoodassignee));
     ArrayList<FoodRequest> foodList =
         (ArrayList<FoodRequest>) dbConnection.getAllEntries(TableEntryType.FOOD_REQUEST);
     ObservableList<FoodOrderObservable> returnable = FXCollections.observableArrayList();
@@ -184,4 +362,6 @@ public class HomeController {
     }
     paginated.setItems(returnable);
   }
+
+   */
 }
