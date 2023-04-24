@@ -30,7 +30,7 @@ import javafx.scene.text.TextAlignment;
 import org.controlsfx.control.PopOver;
 
 public class NewFlowerOrderController extends AbsController {
-  @FXML MFXButton springTab, exoticTab, sympathyTab; // tab buttons
+  @FXML MFXButton springTab, gratitudeTab, sympathyTab; // tab buttons
   @FXML MFXButton clearButton, cancelButton, checkoutButton; // main page buttons
   @FXML MFXButton submitButton, backButton; // cart view buttons
   @FXML MFXFilterComboBox<String> roomSelector;
@@ -63,9 +63,9 @@ public class NewFlowerOrderController extends AbsController {
     submitButton.setOnAction(event -> submit());
     backButton.setOnAction(event -> closeCart());
     springTab.setOnAction(event -> tab(0));
-    exoticTab.setOnAction(event -> tab(1));
+    gratitudeTab.setOnAction(event -> tab(1));
     sympathyTab.setOnAction(event -> tab(2));
-    tabButtons = new MFXButton[] {springTab, exoticTab, sympathyTab};
+    tabButtons = new MFXButton[] {springTab, gratitudeTab, sympathyTab};
     oSans20 = new Font("Open Sans Regular", 20);
     oSans26 = new Font("Open Sans Regular", 26);
     oSans26bold = new Font("Open Sans Bold", 26);
@@ -87,7 +87,7 @@ public class NewFlowerOrderController extends AbsController {
             menuTabs[0].add(item);
             break;
           }
-        case exotic:
+        case gratitude:
           {
             menuTabs[1].add(item);
             break;

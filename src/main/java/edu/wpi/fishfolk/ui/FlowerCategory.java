@@ -2,6 +2,6 @@ package edu.wpi.fishfolk.ui;
 
 public enum FlowerCategory {
   spring,
-  exotic,
+  gratitude,
   sympathy;
 }

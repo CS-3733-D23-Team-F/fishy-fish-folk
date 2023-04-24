@@ -29,7 +29,7 @@
                                         <Font name="Open Sans Regular" size="26.0" />
                                     </font>
                                 </MFXButton>
-                                <MFXButton fx:id="exoticTab" minWidth="390.0" style="-fx-background-color: #012d5a;" text="Exotic Collection" textFill="WHITE">
+                                <MFXButton fx:id="gratitudeTab" minWidth="390.0" style="-fx-background-color: #012d5a;" text="Gratitude Collection" textFill="WHITE">
                                     <font>
                                         <Font name="Open Sans Regular" size="26.0" />
                                     </font>
