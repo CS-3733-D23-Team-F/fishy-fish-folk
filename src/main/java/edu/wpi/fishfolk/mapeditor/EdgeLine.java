@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.mapeditor;
 
 import edu.wpi.fishfolk.database.TableEntry.Edge;
+import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.util.List;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -9,13 +10,13 @@ import lombok.Getter;
 
 public class EdgeLine extends Line {
 
-  @Getter private int startNode, endNode;
+  @Getter private int startNodeID, endNodeID;
 
-  public EdgeLine(int startNode, int endNode, double x1, double y1, double x2, double y2) {
+  public EdgeLine(int startNodeID, int endNodeID, double x1, double y1, double x2, double y2) {
     super(x1, y1, x2, y2);
 
-    this.startNode = startNode;
-    this.endNode = endNode;
+    this.startNodeID = startNodeID;
+    this.endNodeID = endNodeID;
 
     this.getStrokeDashArray().addAll(7.5, 5.0);
     this.setStrokeWidth(2.5);
@@ -23,13 +24,28 @@ public class EdgeLine extends Line {
   }
 
   public boolean containsNode(int nodeID) {
-    return startNode == nodeID || endNode == nodeID;
+    return startNodeID == nodeID || endNodeID == nodeID;
   }
 
   public boolean containsNodes(List<Integer> nodeIDs) {
 
     for (int nodeID : nodeIDs) {
-      if (nodeID == startNode || nodeID == endNode) return true;
+      if (nodeID == startNodeID || nodeID == endNodeID) return true;
+    }
+    return false;
+  }
+
+  public boolean updateEndpoint(Node node) {
+
+    if (node.getNodeID() == startNodeID) {
+      this.setStartX(node.getX());
+      this.setStartY(node.getY());
+      return true;
+
+    } else if (node.getNodeID() == endNodeID) {
+      this.setEndX(node.getX());
+      this.setEndY(node.getY());
+      return false;
     }
     return false;
   }

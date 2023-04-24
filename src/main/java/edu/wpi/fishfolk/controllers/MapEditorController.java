@@ -90,7 +90,8 @@ public class MapEditorController extends AbsController {
     drawGroup.getChildren().add(nodesGroup);
     drawGroup.getChildren().add(edgesGroup);
 
-    toggleAll.setSelected(true);
+    toggleAll.setSelected(false);
+    toggleSelected.setDisable(true);
     toggleSelected.setSelected(false);
 
     switchFloor(allFloors.get(currentFloor));
@@ -211,12 +212,24 @@ public class MapEditorController extends AbsController {
 
     toggleAll.setOnAction(
         event -> {
-          edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(toggleAll.isSelected()));
+          if (toggleAll.isSelected()) {
+
+            edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(true));
+            toggleSelected.setSelected(false);
+            toggleSelected.setDisable(true);
+
+          } else {
+            edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(false));
+            toggleSelected.setDisable(false);
+          }
         });
 
     toggleSelected.setOnAction(
         event -> {
           if (toggleSelected.isSelected() && state == EDITOR_STATE.EDITING_NODE) {
+
+            toggleAll.setSelected(false);
+            toggleAll.setDisable(true);
 
             // show edges that connect to at least one of the selected nodes
             edgesGroup
@@ -228,6 +241,9 @@ public class MapEditorController extends AbsController {
                     });
 
           } else if (!toggleSelected.isSelected()) {
+
+            toggleAll.setDisable(false);
+
             // hide all edges
             edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(false));
           }
@@ -237,6 +253,7 @@ public class MapEditorController extends AbsController {
         .getScene()
         .setOnKeyPressed(
             event -> {
+              System.out.println("key pressed: " + event.getCode());
               if (event.getCode() == KeyCode.DELETE) {
 
                 removeSelectedNodes();
@@ -248,6 +265,15 @@ public class MapEditorController extends AbsController {
 
               } else if (event.getCode() == KeyCode.CONTROL) {
                 controlPressed = true;
+
+              } else if (event.getCode() == KeyCode.A) {
+                moveSelectedNodes(2, MOVE_DIRECTION.LEFT);
+              } else if (event.getCode() == KeyCode.W) {
+                moveSelectedNodes(2, MOVE_DIRECTION.UP);
+              } else if (event.getCode() == KeyCode.D) {
+                moveSelectedNodes(2, MOVE_DIRECTION.RIGHT);
+              } else if (event.getCode() == KeyCode.S) {
+                moveSelectedNodes(2, MOVE_DIRECTION.DOWN);
               }
             });
 
@@ -321,6 +347,7 @@ public class MapEditorController extends AbsController {
     deselectAllNodes();
 
     edgesGroup.getChildren().clear();
+    edgeSet.clear();
     dbConnection.getEdgesOnFloor(floor).forEach(edge -> drawEdge(edge, toggleAll.isSelected()));
     deselectAllEdges();
   }
@@ -344,6 +371,9 @@ public class MapEditorController extends AbsController {
 
           if (!controlPressed) deselectAllNodes();
           selectNode(node.getNodeID());
+
+          // can only view selected edges if a node is selected
+          toggleSelected.setDisable(false);
 
           // at least one node selected so visible and disabled if > 1 nodes selected
           newLocationVbox.setVisible(true);
@@ -391,13 +421,22 @@ public class MapEditorController extends AbsController {
               nodeCircle.setCenterY(event.getY());
               nodeCircle.setPrevY((event.getY()));
 
-              System.out.println("moved " + dist);
-
               node.setPoint(new Point2D(event.getX(), event.getY()));
               node.setBuilding(
                   buildingChecker.getBuilding(node.getPoint(), allFloors.get(currentFloor)));
 
               fillNodeFields(node);
+
+              // update edgelines containing this node
+              edgesGroup
+                  .getChildren()
+                  .forEach(
+                      fxnode -> {
+                        EdgeLine edgeLine = (EdgeLine) fxnode;
+                        if (edgeLine.containsNode(node.getNodeID())) {
+                          edgeLine.updateEndpoint(node);
+                        }
+                      });
 
               // update node in database with updated x & y
               dbConnection.updateEntry(node);
@@ -508,6 +547,152 @@ public class MapEditorController extends AbsController {
             });
   }
 
+  private void insertNode(double x, double y) {
+
+    int id = dbConnection.getNextNodeID();
+
+    String floor = allFloors.get(currentFloor);
+    Node node =
+        new Node(
+            id, new Point2D(x, y), floor, buildingChecker.getBuilding(new Point2D(x, y), floor));
+
+    drawNode(node);
+    dbConnection.insertEntry(node);
+  }
+
+  private void removeNode(int nodeID) {
+
+    Iterator<javafx.scene.Node> itr = nodesGroup.getChildren().iterator();
+    while (itr.hasNext()) {
+
+      NodeCircle curr = (NodeCircle) itr.next();
+
+      if (curr.getNodeID() == nodeID) {
+        itr.remove();
+        System.out.println("removed node" + nodeID);
+      }
+    }
+
+    // remove from database
+    dbConnection.removeEntry(nodeID, TableEntryType.NODE);
+    // must be Integer to remove object since int removes that index
+    selectedNodes.remove(Integer.valueOf(nodeID));
+  }
+
+  private void removeSelectedNodes() {
+
+    Iterator<Integer> selectedItr = selectedNodes.iterator();
+    while (selectedItr.hasNext()) {
+      int nodeID = selectedItr.next();
+
+      // remove corresponding nodecircle from group
+      Iterator<javafx.scene.Node> groupItr = nodesGroup.getChildren().iterator();
+      while (groupItr.hasNext()) {
+        NodeCircle curr = (NodeCircle) groupItr.next();
+
+        if (curr.getNodeID() == nodeID) {
+          groupItr.remove();
+        }
+      }
+
+      // remove edges containing this node
+      Iterator<Edge> edgeItr = edgeSet.iterator();
+      while (edgeItr.hasNext()) {
+        Edge curr = edgeItr.next();
+        if (curr.containsNode(nodeID)) {
+          dbConnection.removeEntry(curr, TableEntryType.EDGE);
+          edgeItr.remove();
+        }
+      }
+
+      Iterator<javafx.scene.Node> edgeGroupItr = edgesGroup.getChildren().iterator();
+      while (edgeGroupItr.hasNext()) {
+        EdgeLine curr = (EdgeLine) edgeGroupItr.next();
+
+        if (curr.containsNode(nodeID)) {
+          edgeGroupItr.remove();
+        }
+      }
+
+      // remove from database
+      dbConnection.removeEntry(nodeID, TableEntryType.NODE);
+
+      // remove from selected nodes
+      selectedItr.remove();
+    }
+  }
+
+  private void insertEdge(int start, int end) {
+    Edge newEdge = new Edge(start, end);
+    dbConnection.insertEntry(newEdge);
+    drawEdge(newEdge, true);
+  }
+
+  private void removeEdge(Edge edge) {
+    edgeSet.remove(edge);
+
+    edgesGroup.getChildren().removeIf(node -> ((EdgeLine) node).matches(edge));
+
+    dbConnection.removeEntry(edge, TableEntryType.EDGE);
+  }
+
+  private void removeSelectedEdges() {
+    Iterator<Edge> selectedItr = selectedEdges.iterator();
+    while (selectedItr.hasNext()) {
+      Edge edge = selectedItr.next();
+
+      // remove corresponding edgeline from group
+      Iterator<javafx.scene.Node> groupItr = edgesGroup.getChildren().iterator();
+      while (groupItr.hasNext()) {
+        EdgeLine curr = (EdgeLine) groupItr.next();
+
+        if (curr.matches(edge)) {
+          groupItr.remove();
+        }
+      }
+
+      // remove from database
+      dbConnection.removeEntry(edge, TableEntryType.EDGE);
+
+      // remove from selected edges
+      selectedItr.remove();
+    }
+  }
+
+  private void moveSelectedNodes(double dist, MOVE_DIRECTION dir) {
+
+    nodesGroup
+        .getChildren()
+        .forEach(
+            fxnode -> {
+              NodeCircle nodeCircle = (NodeCircle) fxnode;
+              if (selectedNodes.contains(nodeCircle.getNodeID())) {
+
+                switch (dir) {
+                  case LEFT:
+                    nodeCircle.setCenterX(nodeCircle.getCenterX() - dist);
+                    nodeCircle.setPrevX(nodeCircle.getCenterX());
+                    break;
+
+                  case UP:
+                    nodeCircle.setCenterY(nodeCircle.getCenterY() - dist);
+                    nodeCircle.setPrevY(nodeCircle.getCenterY());
+                    break;
+
+                  case RIGHT:
+                    nodeCircle.setCenterX(nodeCircle.getCenterX() + dist);
+                    nodeCircle.setPrevX(nodeCircle.getCenterX());
+                    break;
+
+                  case DOWN:
+                    nodeCircle.setCenterY(nodeCircle.getCenterY() + dist);
+                    nodeCircle.setPrevY(nodeCircle.getCenterY());
+                    break;
+                }
+              }
+            });
+  }
+
   /**
    * Fill in text fields for Nodes.
    *
@@ -574,99 +759,6 @@ public class MapEditorController extends AbsController {
 
     locationsVbox.getChildren().clear();
   }
-
-  private void insertNode(double x, double y) {
-
-    int id = dbConnection.getNextNodeID();
-
-    String floor = allFloors.get(currentFloor);
-    Node node =
-        new Node(
-            id, new Point2D(x, y), floor, buildingChecker.getBuilding(new Point2D(x, y), floor));
-
-    drawNode(node);
-    dbConnection.insertEntry(node);
-  }
-
-  private void removeNode(int nodeID) {
-
-    Iterator<javafx.scene.Node> itr = nodesGroup.getChildren().iterator();
-    while (itr.hasNext()) {
-
-      NodeCircle curr = (NodeCircle) itr.next();
-
-      if (curr.getNodeID() == nodeID) {
-        itr.remove();
-        System.out.println("removed node" + nodeID);
-      }
-    }
-
-    // remove from database
-    dbConnection.removeEntry(nodeID, TableEntryType.NODE);
-    // must be Integer to remove object since int removes that index
-    selectedNodes.remove(Integer.valueOf(nodeID));
-  }
-
-  private void removeSelectedNodes() {
-
-    Iterator<Integer> selectedItr = selectedNodes.iterator();
-    while (selectedItr.hasNext()) {
-      int nodeID = selectedItr.next();
-
-      // remove corresponding nodecircle from group
-      Iterator<javafx.scene.Node> groupItr = nodesGroup.getChildren().iterator();
-      while (groupItr.hasNext()) {
-        NodeCircle curr = (NodeCircle) groupItr.next();
-
-        if (curr.getNodeID() == nodeID) {
-          groupItr.remove();
-        }
-      }
-
-      // remove from database
-      dbConnection.removeEntry(nodeID, TableEntryType.NODE);
-
-      // remove from selected nodes
-      selectedItr.remove();
-    }
-  }
-
-  private void insertEdge(int start, int end) {
-    Edge newEdge = new Edge(start, end);
-    dbConnection.insertEntry(newEdge);
-    drawEdge(newEdge, true);
-  }
-
-  private void removeEdge(Edge edge) {
-    edgeSet.remove(edge);
-
-    edgesGroup.getChildren().removeIf(node -> ((EdgeLine) node).matches(edge));
-
-    dbConnection.removeEntry(edge, TableEntryType.EDGE);
-  }
-
-  private void removeSelectedEdges() {
-    Iterator<Edge> selectedItr = selectedEdges.iterator();
-    while (selectedItr.hasNext()) {
-      Edge edge = selectedItr.next();
-
-      // remove corresponding edgeline from group
-      Iterator<javafx.scene.Node> groupItr = edgesGroup.getChildren().iterator();
-      while (groupItr.hasNext()) {
-        EdgeLine curr = (EdgeLine) groupItr.next();
-
-        if (curr.matches(edge)) {
-          groupItr.remove();
-        }
-      }
-
-      // remove from database
-      dbConnection.removeEntry(edge, TableEntryType.EDGE);
-
-      // remove from selected edges
-      selectedItr.remove();
-    }
-  }
 }
 
 enum EDITOR_STATE {
@@ -677,4 +769,11 @@ enum EDITOR_STATE {
 
   ADDING_EDGE,
   EDITING_EDGE;
+}
+
+enum MOVE_DIRECTION {
+  LEFT,
+  UP,
+  RIGHT,
+  DOWN;
 }
