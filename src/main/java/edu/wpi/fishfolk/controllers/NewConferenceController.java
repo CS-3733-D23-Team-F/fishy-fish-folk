@@ -20,7 +20,6 @@ public class NewConferenceController extends AbsController {
   @FXML MFXTextField notesBox;
   @FXML MFXTextField nameBox;
 
-
   public NewConferenceController() {
     super();
   }
@@ -32,5 +31,14 @@ public class NewConferenceController extends AbsController {
     confClearButton.setOnMouseClicked(event -> clearFields());
   }
 
-  public void clearFields() {}
+  public void clearFields() {
+    startTimeDrop.setValue(null);
+    startAMPMDrop.setValue(null);
+    endAMPMDrop.setValue(null);
+    endTimeDrop.setValue(null);
+    recurringDrop.setValue(null);
+    numAttnBox.clear();
+    notesBox.clear();
+    nameBox.clear();
+  }
 }
