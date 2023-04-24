@@ -11,7 +11,6 @@ import edu.wpi.fishfolk.util.NodeType;
 import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -143,10 +142,11 @@ public class MapEditorController extends AbsController {
 
             deselectAllNodes();
             clearNodeFields();
-            currentLocations.clear();
-
-            deselectAllEdges();
             clearLocationFields();
+
+            toggleSelected.setDisable(true);
+            deselectAllEdges();
+            edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(toggleAll.isSelected()));
 
           } else if (state == EDITOR_STATE.EDITING_EDGE) {
 
@@ -339,7 +339,7 @@ public class MapEditorController extends AbsController {
 
     mapImg.setImage(images.get(floor));
 
-    // TODO one thread does nodes the other edges
+    // optional TODO one thread does nodes, one thread does edges
 
     nodesGroup.getChildren().clear();
     dbConnection.getNodesOnFloor(floor).forEach(this::drawNode);
@@ -382,7 +382,7 @@ public class MapEditorController extends AbsController {
           currentLocations.addAll(dbConnection.getLocations(node.getNodeID(), today));
 
           fillNodeFields(node);
-          fillLocationFields(currentLocations);
+          fillLocationFields();
         });
 
     nodeCircle.setOnMouseDragged(
@@ -395,8 +395,7 @@ public class MapEditorController extends AbsController {
             nodeCircle.setCenterX(event.getX());
             nodeCircle.setCenterY(event.getY());
 
-            // TODO redraw edges associated with this node
-
+            // TODO redraw edges connected to this node during drag
           }
         });
 
@@ -713,14 +712,10 @@ public class MapEditorController extends AbsController {
     buildingText.setText("");
   }
 
-  /**
-   * Display given locations in info pane on UI.
-   *
-   * @param locations List of locations to display
-   */
-  private void fillLocationFields(List<Location> locations) {
+  /** Display current locations in info pane on UI. */
+  private void fillLocationFields() {
 
-    if (locations.isEmpty()) {
+    if (currentLocations.isEmpty()) {
       clearLocationFields();
 
     } else {
@@ -731,7 +726,7 @@ public class MapEditorController extends AbsController {
 
     try {
 
-      for (Location location : locations) {
+      for (Location location : currentLocations) {
 
         System.out.println(location.toString());
 
@@ -752,6 +747,8 @@ public class MapEditorController extends AbsController {
   }
 
   private void clearLocationFields() {
+
+    currentLocations.clear();
 
     locationScrollpane.setVisible(false);
     locationScrollpane.setDisable(true);
