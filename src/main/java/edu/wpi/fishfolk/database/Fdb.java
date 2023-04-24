@@ -35,7 +35,7 @@ public class Fdb {
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb() {
 
-    this.dbConnection = connect("teamfdb", "teamf", "teamf60");
+    this.dbConnection = connect("teamfdb", "teamf", "bingus7223");
 
     // Hospital Map Tables
     this.nodeTable = new NodeDAO(dbConnection);
@@ -81,7 +81,7 @@ public class Fdb {
    * @return Database connection object (null if no connection is made)
    */
   private Connection connect(String dbName, String dbUser, String dbPass) {
-    String dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
+    String dbServer = "jdbc:postgresql://postgres.thesamrooney.com:5432/";
     try {
       Class.forName("org.postgresql.Driver");
       Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
