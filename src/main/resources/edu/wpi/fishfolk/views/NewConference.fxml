@@ -29,27 +29,45 @@
                   </ScrollPane>
                   <VBox prefHeight="466.0" prefWidth="707.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
                            <children>
                               <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:">
                                  <font>
                                     <Font name="Open Sans Bold" size="26.0" />
-                                 </font></Text>
-                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="TIME" />
-                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="AM/PM" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="80.0" />
+                                 </HBox.margin></Text>
+                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="TIME">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font></MFXFilterComboBox>
+                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="AM/PM">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font></MFXFilterComboBox>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
                            <children>
                               <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:">
                                  <font>
                                     <Font name="Open Sans Bold" size="26.0" />
-                                 </font></Text>
-                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="TIME" />
-                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="AM/PM" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="95.0" />
+                                 </HBox.margin></Text>
+                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="TIME">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font></MFXFilterComboBox>
+                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012d5a;" text="AM/PM">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font></MFXFilterComboBox>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="235.0">
                            <children>
                               <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Attendees:">
                                  <font>
@@ -61,21 +79,37 @@
                                  </font></MFXTextField>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="270.0">
                            <children>
                               <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Recurring Meeting?">
                                  <font>
                                     <Font name="Open Sans Bold" size="26.0" />
-                                 </font></Text>
-                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A;" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></Text>
+                              <MFXFilterComboBox minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A;">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </MFXFilterComboBox>
                            </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </HBox>
                         <MFXTextField minHeight="50.0" minWidth="434.0" style="-fx-border-color: #012D5A;" text="NAME">
                            <VBox.margin>
                               <Insets top="30.0" />
-                           </VBox.margin></MFXTextField>
+                           </VBox.margin>
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font></MFXTextField>
                      </children></VBox>
                </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
             </HBox>
             <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Notes:">
                <font>
