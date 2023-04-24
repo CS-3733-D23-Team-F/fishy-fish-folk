@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -27,7 +28,7 @@
                     <content>
                       <AnchorPane style="-fx-background-color: #FFFFFF;">
                            <children>
-                              <MFXRectangleToggleNode alignment="CENTER_LEFT" layoutX="-1.0" layoutY="-1.0" minHeight="30.0" minWidth="563.0" style="-fx-border-radius: 0;" text="MEDICAL RECORDS CONFERENCE ROOM FLOOR L1" textFill="#012d5a">
+                              <MFXRectangleToggleNode fx:id="rec1" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="-1.0" minHeight="30.0" minWidth="563.0" style="-fx-border-radius: 0;" text="MEDICAL RECORDS CONFERENCE ROOM FLOOR L1" textFill="#012d5a">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font>
@@ -66,12 +67,12 @@
                      <children>
                         <HBox>
                            <children>
-                              <MFXFilterComboBox fx:id="startTimeDrop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="TIME">
+                              <MFXFilterComboBox fx:id="startTimeDrop" floatingText="TIME" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font>
                               </MFXFilterComboBox>
-                              <MFXFilterComboBox fx:id="startAMPMDrop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="AM/PM">
+                              <MFXFilterComboBox fx:id="startAMPMDrop" floatingText="AM/PM" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font>
@@ -80,31 +81,37 @@
                         </HBox>
                         <HBox>
                            <children>
-                              <MFXFilterComboBox fx:id="endTimeDrop" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="TIME">
+                              <MFXFilterComboBox fx:id="endTimeDrop" floatingText="TIME" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font>
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
                               </MFXFilterComboBox>
-                              <MFXFilterComboBox fx:id="endAMPMDrop" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;" text="AM/PM">
+                              <MFXFilterComboBox fx:id="endAMPMDrop" floatingText="AM/PM" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font>
                               </MFXFilterComboBox>
                            </children>
                         </HBox>
-                        <MFXTextField fx:id="numAttnBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
+                        <MFXTextField fx:id="numAttnBox" alignment="CENTER_RIGHT" floatMode="DISABLED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
                            <font>
                               <Font name="Open Sans Regular" size="26.0" />
                            </font>
                         </MFXTextField>
-                        <MFXFilterComboBox fx:id="recurringDrop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012D5A;" />
-                        <MFXTextField fx:id="nameBox" minHeight="50.0" minWidth="257.0" prefHeight="50.0" prefWidth="350.0" promptText="NAME" style="-fx-border-color: #012D5A;">
+                        <MFXFilterComboBox fx:id="recurringDrop" floatMode="DISABLED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012D5A;" />
+                        <MFXTextField fx:id="nameBox" floatingText="NAME" minHeight="50.0" minWidth="257.0" prefHeight="50.0" prefWidth="350.0" style="-fx-border-color: #012D5A;">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                            <font>
                               <Font name="Open Sans Regular" size="15.0" />
-                           </font></MFXTextField>
+                           </font>
+                           <textFill>
+                              <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                           </textFill></MFXTextField>
                      </children>
                   </VBox>
                </children>
