@@ -37,8 +37,9 @@ public class NewFlowerOrderController extends AbsController {
   @FXML TextField recipientField, timeSelector;
   @FXML TextArea notesField;
   @FXML ScrollPane menuItemsPane, cartItemsPane;
-  @FXML AnchorPane cartViewPane;
-  @FXML HBox cartWrap, blur;
+  @FXML AnchorPane cartViewPane, confirmPane;
+  @FXML HBox cartWrap, blur, confirmBlur, confirmBox;
+  @FXML MFXButton okButton;
   Font oSans26, oSans20, oSans26bold;
 
   private List<FlowerMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
@@ -62,6 +63,7 @@ public class NewFlowerOrderController extends AbsController {
     checkoutButton.setOnAction(event -> openCart());
     submitButton.setOnAction(event -> submit());
     backButton.setOnAction(event -> closeCart());
+    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
     springTab.setOnAction(event -> tab(0));
     gratitudeTab.setOnAction(event -> tab(1));
     sympathyTab.setOnAction(event -> tab(2));
@@ -178,8 +180,14 @@ public class NewFlowerOrderController extends AbsController {
             cart.getTotalPrice(),
             items);
     dbConnection.insertEntry(thisOrder);
-
-    Navigation.navigate(Screen.HOME);
+    blur.setDisable(true);
+    blur.setVisible(false);
+    confirmBlur.setDisable(false);
+    confirmBlur.setVisible(true);
+    confirmBox.setDisable(false);
+    confirmBox.setVisible(true);
+    confirmPane.setVisible(true);
+    confirmPane.setDisable(false);
   }
 
   /**

@@ -56,7 +56,8 @@ public class ViewMasterOrderController extends AbsController {
       flowerdeliveryroom,
       flowerdeliverytime,
       flowerrecipientname,
-      floweritems;
+      floweritems,
+      flowernotes;
   @FXML
   MFXButton foodFillButton,
       foodCancelButton,
@@ -163,6 +164,8 @@ public class ViewMasterOrderController extends AbsController {
         new PropertyValueFactory<FlowerOrderObservable, String>("flowerrecipientname"));
     floweritems.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
+    flowernotes.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowernotes"));
 
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());

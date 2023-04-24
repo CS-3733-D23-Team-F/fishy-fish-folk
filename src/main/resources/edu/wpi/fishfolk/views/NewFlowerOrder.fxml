@@ -213,6 +213,36 @@
                         <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
+            <HBox fx:id="confirmBlur" alignment="CENTER" disable="true" minHeight="880.0" minWidth="1300.0" opacity="0.76" style="-fx-background-color: #000000;" visible="false" />
+            <HBox fx:id="confirmBox" alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <AnchorPane fx:id="confirmPane" disable="true" style="-fx-border-color: #012d5a; -fx-border-radius: 3; -fx-background-color: WHITE; -fx-background-radius: 8; -fx-border-width: 2;" visible="false">
+                           <children>
+                              <VBox alignment="CENTER" spacing="15.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Order Confirmed">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="26.0" />
+                                       </font>
+                                    </Text>
+                                    <MFXButton fx:id="okButton" style="-fx-background-color: #f0bf4c;" text="OK">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="20.0" />
+                                       </font>
+                                    </MFXButton>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
             </children>
         </StackPane>
     </children>
