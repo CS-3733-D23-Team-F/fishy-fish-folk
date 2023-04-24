@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
@@ -7,9 +8,9 @@
 
 <HBox alignment="CENTER" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AccountManagerController">
    <children>
-      <VBox alignment="CENTER">
+      <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
          <children>
-                        <TableView fx:id="userAccountsTable">
+                        <TableView fx:id="userAccountsTable" VBox.vgrow="ALWAYS">
                           <columns>
                             <TableColumn fx:id="colUserID" prefWidth="135.0" text="User ID" />
                               <TableColumn fx:id="colPermissions" prefWidth="120.0" text="Permissions" />
@@ -20,4 +21,7 @@
          </children>
       </VBox>
    </children>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
 </HBox>

@@ -26,7 +26,7 @@ public class LoginController extends AbsController {
   private void initialize() {
     loginBtn.setOnMouseClicked(loginHandler);
     loginPassField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
-    loginIDField.setOnKeyReleased(this::clearError);
+    loginIDField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
     errorBox.setText("");
     errorBox.setVisible(false);
   }
@@ -40,16 +40,12 @@ public class LoginController extends AbsController {
     if (keyEvent.getCode().getCode() == 10) {
       attemptLogin();
     } else {
-      clearError(keyEvent);
+      clearError();
     }
   }
 
-  /**
-   * Clear the error box after a new input
-   *
-   * @param keyEvent unused, necessary for caller
-   */
-  private void clearError(KeyEvent keyEvent) {
+  /** Clear the error box after a new input */
+  private void clearError() {
     errorBox.setText("");
     errorBox.setVisible(false);
   }
