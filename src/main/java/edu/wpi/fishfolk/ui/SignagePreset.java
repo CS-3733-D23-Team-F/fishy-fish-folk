@@ -11,20 +11,20 @@ public class SignagePreset {
   String rooml2;
   String rooml3;
 
-  int directionl0;
-  int directionl1;
-  int directionl2;
-  int directionl3;
+  double directionl0;
+  double directionl1;
+  double directionl2;
+  double directionl3;
 
   String roomr0;
   String roomr1;
   String roomr2;
   String roomr3;
 
-  int directionr0;
-  int directionr1;
-  int directionr2;
-  int directionr3;
+  double directionr0;
+  double directionr1;
+  double directionr2;
+  double directionr3;
 
   public SignagePreset() {
     this.presetName = presetName;
@@ -89,5 +89,37 @@ public class SignagePreset {
 
   public void setRoomr3(String room) {
     this.roomr3 = room;
+  }
+
+  public void setDirectionl0(double degrees) {
+    this.directionl0 = degrees;
+  }
+
+  public void setDirectionl1(double degrees) {
+    this.directionl1 = degrees;
+  }
+
+  public void setDirectionl2(double degrees) {
+    this.directionl2 = degrees;
+  }
+
+  public void setDirectionl3(double degrees) {
+    this.directionl3 = degrees;
+  }
+
+  public void setDirectionr0(double degrees) {
+    this.directionr0 = degrees;
+  }
+
+  public void setDirectionr1(double degrees) {
+    this.directionr1 = degrees;
+  }
+
+  public void setDirectionr2(double degrees) {
+    this.directionr2 = degrees;
+  }
+
+  public void setDirectionr3(double degrees) {
+    this.directionr3 = degrees;
   }
 }
