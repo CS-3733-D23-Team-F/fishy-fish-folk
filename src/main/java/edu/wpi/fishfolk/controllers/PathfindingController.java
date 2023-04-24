@@ -104,6 +104,8 @@ public class PathfindingController extends AbsController {
     methodSelector.getItems().add("A*");
     methodSelector.getItems().add("BFS");
     methodSelector.getItems().add("DFS");
+    methodSelector.getItems().add("Dijkstra's");
+
     slideUp.setOnMouseClicked(
         event -> {
           TranslateTransition slide = new TranslateTransition();
@@ -185,6 +187,8 @@ public class PathfindingController extends AbsController {
             pathfinder.setPathMethod(new BFS(graph));
           } else if (methodSelector.getValue().equals("DFS")) {
             pathfinder.setPathMethod(new DFS(graph));
+          } else if (methodSelector.getValue().equals("Dijkstra's")) {
+            pathfinder.setPathMethod(new Dijkstras(graph));
           }
 
           paths = pathfinder.getPathMethod().pathfind(start, end, !noStairs.isSelected());
