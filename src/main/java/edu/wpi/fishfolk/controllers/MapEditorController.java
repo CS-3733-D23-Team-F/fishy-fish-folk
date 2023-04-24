@@ -1,15 +1,13 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
-import edu.wpi.fishfolk.database.TableEntry.Edge;
-import edu.wpi.fishfolk.database.TableEntry.Location;
-import edu.wpi.fishfolk.database.TableEntry.Node;
-import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
+import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.mapeditor.BuildingChecker;
 import edu.wpi.fishfolk.mapeditor.EdgeLine;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.util.NodeType;
 import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
 import java.util.*;
@@ -38,30 +36,27 @@ public class MapEditorController extends AbsController {
   @FXML HBox buttonPane;
   @FXML VBox sidePane;
 
-  @FXML MFXTextField nodeidText;
-  @FXML MFXTextField xText;
-  @FXML MFXTextField yText;
-  @FXML MFXTextField buildingText;
-  @FXML MFXButton addNode;
-  @FXML MFXButton delNode;
-
   @FXML MFXButton moveEditorNav;
-  @FXML MFXButton addEdge;
-  @FXML MFXButton delEdge;
-  @FXML MFXToggleButton toggleAll;
-  @FXML MFXToggleButton toggleSelected;
 
-  @FXML MFXButton importCSV;
-  @FXML MFXButton exportCSV;
+  @FXML MFXTextField nodeidText, xText, yText, buildingText;
+  @FXML MFXButton addNode, delNode;
+  @FXML MFXButton addEdge, delEdge;
+  @FXML MFXToggleButton toggleAll, toggleSelected;
+  @FXML MFXButton importCSV, exportCSV;
+
+  @FXML MFXScrollPane locationScrollpane;
+  @FXML VBox locationsVbox;
+
+  @FXML VBox newLocationVbox;
+  @FXML MFXTextField newLocationLongname, newLocationShortname;
+  @FXML MFXComboBox<String> newLocationType;
+  @FXML MFXDatePicker newLocationDate;
+  @FXML MFXButton newLocationSubmit;
 
   FileChooser fileChooser = new FileChooser();
   DirectoryChooser dirChooser = new DirectoryChooser();
 
-  private EDITOR_STATE state = EDITOR_STATE.IDLE;
-
   private Group nodesGroup, edgesGroup;
-  @FXML MFXScrollPane locationscrollpane;
-  @FXML VBox locationsVbox;
 
   private HashSet<Edge> edgeSet = new HashSet<>();
 
@@ -71,10 +66,10 @@ public class MapEditorController extends AbsController {
 
   private LinkedList<Location> currentLocations = new LinkedList<>();
 
-  private int currentFloor = 2;
-
   private BuildingChecker buildingChecker = new BuildingChecker();
 
+  private EDITOR_STATE state = EDITOR_STATE.IDLE;
+  private int currentFloor = 2;
   private boolean controlPressed = false;
 
   public MapEditorController() {
@@ -99,6 +94,8 @@ public class MapEditorController extends AbsController {
     toggleSelected.setSelected(false);
 
     switchFloor(allFloors.get(currentFloor));
+
+    newLocationVbox.managedProperty().bind(newLocationVbox.visibleProperty());
 
     floorSelector.setOnAction(
         event -> {
@@ -296,6 +293,20 @@ public class MapEditorController extends AbsController {
           dbConnection.exportCSV(exportPath, TableEntryType.EDGE);
           // fileChooser.setInitialDirectory(new File(exportPath));
         });
+
+    newLocationSubmit.setOnAction(
+        event -> {
+          Location newLocation =
+              new Location(
+                  newLocationLongname.getText(),
+                  newLocationShortname.getText(),
+                  NodeType.valueOf(newLocationType.getValue()));
+          dbConnection.insertEntry(newLocation);
+
+          Move move =
+              new Move(selectedNodes.get(0), newLocation.getLongName(), newLocationDate.getValue());
+          dbConnection.insertEntry(move);
+        });
   }
 
   private void switchFloor(String floor) {
@@ -325,6 +336,7 @@ public class MapEditorController extends AbsController {
         event -> {
           if (state == EDITOR_STATE.ADDING_EDGE) {
             insertEdge(selectedNodes.getLast(), node.getNodeID());
+            insertEdge(selectedNodes.getLast(), node.getNodeID());
             delEdge.setDisable(false);
           }
 
@@ -332,6 +344,10 @@ public class MapEditorController extends AbsController {
 
           if (!controlPressed) deselectAllNodes();
           selectNode(node.getNodeID());
+
+          // at least one node selected so visible and disabled if > 1 nodes selected
+          newLocationVbox.setVisible(true);
+          newLocationVbox.setDisable(selectedNodes.size() > 1);
 
           currentLocations.addAll(dbConnection.getLocations(node.getNodeID(), today));
 
@@ -439,6 +455,11 @@ public class MapEditorController extends AbsController {
   }
 
   private void deselectAllNodes() {
+
+    // only allow adding locations to nodes if some are selected
+    newLocationVbox.setVisible(false);
+    newLocationVbox.setDisable(true);
+
     selectedNodes.clear();
     nodesGroup
         .getChildren()
@@ -509,9 +530,9 @@ public class MapEditorController extends AbsController {
       clearLocationFields();
 
     } else {
-      locationscrollpane.setVisible(true);
-      locationscrollpane.setDisable(false);
-      locationscrollpane.setMaxHeight(300);
+      locationScrollpane.setVisible(true);
+      locationScrollpane.setDisable(false);
+      locationScrollpane.setMaxHeight(300);
     }
 
     try {
@@ -531,6 +552,12 @@ public class MapEditorController extends AbsController {
         locationsVbox.getChildren().add(entry);
       }
 
+      System.out.println(
+          "scroll height"
+              + locationScrollpane.getHeight()
+              + " vbox height "
+              + locationsVbox.getHeight());
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -538,9 +565,9 @@ public class MapEditorController extends AbsController {
 
   private void clearLocationFields() {
 
-    locationscrollpane.setVisible(false);
-    locationscrollpane.setDisable(true);
-    locationscrollpane.setMaxHeight(0);
+    locationScrollpane.setVisible(false);
+    locationScrollpane.setDisable(true);
+    locationScrollpane.setMaxHeight(0);
 
     locationsVbox.getChildren().clear();
   }
