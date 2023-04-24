@@ -24,45 +24,62 @@
                <children>
                   <ScrollPane hbarPolicy="NEVER" minHeight="520.0" minWidth="831.0" style="-fx-background-radius: 5; -fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
                     <content>
-                      <AnchorPane minHeight="500.0" minWidth="500.0" />
+                      <AnchorPane />
                     </content>
                   </ScrollPane>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" />
-                              <SearchableComboBox />
-                              <SearchableComboBox />
+                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="26.0" />
+                                 </font></Text>
+                              <SearchableComboBox maxHeight="50.0" minHeight="25.0" minWidth="200.0" promptText="TIME" />
+                              <SearchableComboBox maxHeight="50.0" minHeight="25.0" minWidth="200.0" promptText="AM/PM" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
-                              <SearchableComboBox />
-                              <SearchableComboBox />
+                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="26.0" />
+                                 </font></Text>
+                              <SearchableComboBox maxHeight="50.0" minHeight="50.0" minWidth="200.0" promptText="TIME" />
+                              <SearchableComboBox maxHeight="50.0" minHeight="50.0" minWidth="200.0" promptText="AM/PM" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Attendees:" />
-                              <MFXTextField />
+                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Attendees:">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="26.0" />
+                                 </font></Text>
+                              <MFXTextField minHeight="50.0" minWidth="200.0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Recurring Meeting?" />
-                              <SearchableComboBox />
+                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Recurring Meeting?">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="26.0" />
+                                 </font></Text>
+                              <SearchableComboBox maxHeight="50.0" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" />
                            </children>
                         </HBox>
+                        <MFXTextField minHeight="50.0" minWidth="434.0" text="NAME" />
                      </children></VBox>
                </children>
             </HBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Notes:" />
-            <MFXTextField minHeight="179.0" minWidth="1594.0" />
+            <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Notes:">
+               <font>
+                  <Font name="Open Sans Bold" size="26.0" />
+               </font>
+            </Text>
+            <MFXTextField alignment="TOP_LEFT" minHeight="179.0" minWidth="1594.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;" textLimit="800" />
             <HBox>
                <children>
-                  <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-border-radius: 5;" text="CANCEL" textFill="WHITE">
+                  <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
@@ -70,12 +87,12 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </MFXButton>
-                  <MFXButton fx:id="confClearButon" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-border-radius: 5;" text="CLEAR" textFill="WHITE">
+                  <MFXButton fx:id="confClearButon" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CLEAR" textFill="WHITE">
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="confSubmitButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #f0bf4c; -fx-border-radius: 5;" text="SUBMIT" textFill="#012d5a">
+                  <MFXButton fx:id="confSubmitButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #f0bf4c; -fx-background-radius: 5;" text="SUBMIT" textFill="#012d5a">
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
