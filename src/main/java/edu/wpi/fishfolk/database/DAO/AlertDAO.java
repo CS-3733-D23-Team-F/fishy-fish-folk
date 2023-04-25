@@ -28,7 +28,7 @@ public class AlertDAO implements IDAO<Alert> {
   /** DAO for Alert table in PostgreSQL database. */
   public AlertDAO(Connection dbConnection) {
     this.dbConnection = dbConnection;
-    this.tableName = "edge";
+    this.tableName = "alert";
     this.headers = new ArrayList<>(List.of("timestamp", "longname", "date", "text", "type"));
 
     init(false);
@@ -66,8 +66,8 @@ public class AlertDAO implements IDAO<Alert> {
                 + tableName
                 + " (timestamp TIMESTAMP PRIMARY KEY," // compatible with LocalDataTime
                 + " longname VARCHAR(64)," // same as in location table
-                + " date DATE" // same as in move table
-                + " text VARCHAR(256)"
+                + " date DATE," // same as in move table
+                + " text VARCHAR(256),"
                 + " type VARCHAR(8));";
         statement.executeUpdate(query);
       }

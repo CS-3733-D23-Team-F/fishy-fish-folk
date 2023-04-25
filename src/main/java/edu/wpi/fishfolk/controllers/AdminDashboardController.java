@@ -7,6 +7,8 @@ import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -97,15 +99,22 @@ public class AdminDashboardController {
                 AnchorPane anchorPane2 = fxmlLoader2.load();
 
                 AlertsController alerts = fxmlLoader2.getController();
+
+                String longname = futureMoves.longname;
+                LocalDate date = LocalDate.parse(futureMoves.sDate);
+                Alert alert = new Alert(LocalDateTime.now(), longname, date, "will be moved");
+                alerts.setData(futureMoves.longname, futureMoves.sDate);
+
                 alerts.closeAlert.setOnMouseClicked(
                     event1 -> {
+                      dbConnection.removeEntry(alert.getTimestamp(), TableEntryType.ALERT);
                       alertGrid.getChildren().remove(anchorPane2);
                       return;
                     });
 
-                alerts.setData(futureMoves.longname, futureMoves.sDate);
-
                 anchorPane2.setPrefWidth(alertGrid.getWidth());
+
+                dbConnection.insertEntry(alert);
                 alertGrid.add(anchorPane2, 1, rowA);
                 rowA += 1;
 
@@ -149,13 +158,18 @@ public class AdminDashboardController {
             AnchorPane anchorPane2 = fxmlLoader2.load();
 
             AlertsController alerts = fxmlLoader2.getController();
+            Alert alert = new Alert(LocalDateTime.now(), addAlert.getText());
+            alerts.setData(addAlert.getText());
+
             alerts.closeAlert.setOnMouseClicked(
                 event1 -> {
                   alertGrid.getChildren().remove(anchorPane2);
-                  return;
+                  dbConnection.removeEntry(alert.getTimestamp(), TableEntryType.ALERT);
                 });
-            alerts.setData(addAlert.getText());
+
             anchorPane2.setPrefWidth(alertGrid.getWidth());
+
+            dbConnection.insertEntry(alert);
             alertGrid.add(anchorPane2, 1, rowA);
             rowA += 1;
 

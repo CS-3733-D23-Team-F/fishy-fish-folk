@@ -161,7 +161,7 @@ public class Fdb {
     } else if (entry instanceof SignagePreset) {
       return signagePresetTable.insertEntry((SignagePreset) entry);
 
-    } else if(entry instanceof Alert){
+    } else if (entry instanceof Alert) {
       return alertTable.insertEntry((Alert) entry);
     }
 
@@ -209,7 +209,7 @@ public class Fdb {
     } else if (entry instanceof SignagePreset) {
       return signagePresetTable.updateEntry((SignagePreset) entry);
 
-    } else if(entry instanceof Alert){
+    } else if (entry instanceof Alert) {
       return alertTable.updateEntry((Alert) entry);
     }
 
