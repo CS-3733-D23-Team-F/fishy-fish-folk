@@ -11,12 +11,17 @@ import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 
 public class NewConferenceController extends AbsController {
   @FXML MFXButton confClearButton, confCancelButton, confSubmitButton;
   @FXML MFXFilterComboBox startTimeDrop, endTimeDrop, startAMPMDrop, endAMPMDrop, recurringDrop;
   @FXML MFXTextField numAttnBox, nameBox, notesBox;
   @FXML MFXRectangleToggleNode rec1, rec2, rec3, rec4, rec5, rec6, rec7;
+  Font oSans26;
 
   ArrayList<String> AMPM = new ArrayList<>();
   ArrayList<String> times = new ArrayList<>();
@@ -120,17 +125,25 @@ public class NewConferenceController extends AbsController {
           if (!(recurringDrop.getText().isEmpty())) {
             System.out.println("The user has made it through.");
           } else {
-            System.out.println("You must choose your setting for recurring.");
+            submissionError("You must choose your setting for recurring.", recurringDrop);
           }
         } else {
-          System.out.println("You must put in the number of attendees.");
+          submissionError("You must put in the number of attendees.", numAttnBox);
         }
       } else {
-        System.out.println("You must put in a time.");
+        submissionError("You must put in a time.", startTimeDrop);
       }
     } else {
-      System.out.println("You must select a room.");
+      submissionError("You must select a room.", rec1);
     }
+  }
+
+  private void submissionError(String error, Node node) {
+    PopOver popup = new PopOver();
+    Text popText = new Text(error);
+    popText.setFont(oSans26);
+    popup.setContentNode(popText);
+    popup.show(node);
   }
 
   /**
