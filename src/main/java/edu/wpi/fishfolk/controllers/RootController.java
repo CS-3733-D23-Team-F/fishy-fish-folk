@@ -54,7 +54,7 @@ public class RootController {
 
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_SIGNAGE));
     exitButton.setOnMouseClicked(event -> System.exit(0));
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
     closeServiceNav.setVisible(false);
