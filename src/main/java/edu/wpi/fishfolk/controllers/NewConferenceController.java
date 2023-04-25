@@ -123,7 +123,7 @@ public class NewConferenceController extends AbsController {
           && !(endAMPMDrop.getText().isEmpty())) {
         if (!(numAttnBox.getText().isEmpty())) {
           if (!(recurringDrop.getText().isEmpty())) {
-            System.out.println("The user has made it through.");
+            submit();
           } else {
             submissionError("You must choose your setting for recurring.", recurringDrop);
           }
@@ -173,21 +173,36 @@ public class NewConferenceController extends AbsController {
   }
 
   private void submit() {
-    ConferenceRequest res = new ConferenceRequest();
-    if (rec1.isSelected()) res.setRoomName("BTM Conference Center");
-    if (rec2.isSelected()) res.setRoomName("Duncan Reid Conference Room");
-    if (rec3.isSelected()) res.setRoomName("Anesthesia Conf Floor L1");
-    if (rec4.isSelected()) res.setRoomName("Medical Records Conference Room Floor L1");
-    if (rec5.isSelected()) res.setRoomName("Abrams Conference Room");
-    if (rec6.isSelected()) res.setRoomName("Carrie M. Hall Conference Center Floor 2");
-    if (rec7.isSelected()) res.setRoomName("Shapiro Board Room MapNode 20 Floor 1");
-    res.setNotes(notesBox.getText());
-    res.setUsername(SharedResources.getCurrentUser().getUsername());
-    res.setNumAttendees(Integer.parseInt(numAttnBox.getText()));
-    res.setRecurringOption(Recurring.valueOf(recurringDrop.getText()));
-    res.setStartTime(startTimeDrop.getText() + " " + startAMPMDrop.getText());
-    res.setEndTime(endTimeDrop.getText() + " " + endAMPMDrop.getText());
+    String dummyVariable = "";
+    if (rec1.isSelected()) dummyVariable = "BTM Conference Center";
+    if (rec2.isSelected()) dummyVariable = "Duncan Reid Conference Room";
+    if (rec3.isSelected()) dummyVariable = "Anesthesia Conf Floor L1";
+    if (rec4.isSelected()) dummyVariable = "Medical Records Conference Room Floor L1";
+    if (rec5.isSelected()) dummyVariable = "Abrams Conference Room";
+    if (rec6.isSelected()) dummyVariable = "Carrie M. Hall Conference Center Floor 2";
+    if (rec7.isSelected()) dummyVariable = "Shapiro Board Room MapNode 20 Floor 1";
+    /**
+     * res.setNotes(notesBox.getText());
+     * res.setUsername(SharedResources.getCurrentUser().getUsername());
+     * res.setNumAttendees(Integer.parseInt(numAttnBox.getText()));
+     * res.setRecurringOption(Recurring.valueOf(recurringDrop.getText()));
+     * res.setStartTime(startTimeDrop.getText() + " " + startAMPMDrop.getText());
+     * res.setEndTime(endTimeDrop.getText() + " " + endAMPMDrop.getText()); *
+     */
+    ConferenceRequest res =
+        new ConferenceRequest(
+            notesBox.getText(),
+            SharedResources.getCurrentUser().getUsername(),
+            startTimeDrop.getText() + " " + startAMPMDrop.getText(),
+            endTimeDrop.getText() + " " + endAMPMDrop.getText(),
+            Recurring.valueOf(recurringDrop.getText()),
+            Integer.parseInt(numAttnBox.getText()),
+            dummyVariable);
     dbConnection.insertEntry(res);
     Navigation.navigate(Screen.HOME);
+    /**
+     * String notes, String username, String startTime, String endTime, Recurring recurringOption,
+     * int numAttendees, String roomName
+     */
   }
 }
