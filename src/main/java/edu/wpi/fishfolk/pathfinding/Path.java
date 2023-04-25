@@ -145,31 +145,25 @@ public class Path {
 
     // now that the path has been split into segments, combine consecutive straight segments
 
-    System.out.println("segment length " + segments.size());
     Iterator<PathSection> itr = segments.iterator();
+    PathSection prev = itr.next(); // first segment
 
-    if (itr.hasNext()) {
+    // combine  consecutive straight segments
+    while (itr.hasNext()) {
+      PathSection cur = itr.next();
 
-      PathSection prev = itr.next(); // first segment
+      // two straights in a row
+      if (prev.getDirection() == Direction.STRAIGHT && cur.getDirection() == Direction.STRAIGHT) {
 
-      // combine  consecutive straight segments
-      while (itr.hasNext()) {
-        PathSection cur = itr.next();
+        prev.setEnd(cur.getEnd()); // extend prev to cover current
+        itr.remove(); // removes current
 
-        // two straights in a row
-        if (prev.getDirection() == Direction.STRAIGHT && cur.getDirection() == Direction.STRAIGHT) {
-
-          prev.setEnd(cur.getEnd()); // extend prev to cover current
-          itr.remove(); // removes current
-
-        } else {
-          prev = cur;
-        }
+      } else {
+        prev = cur;
       }
-      System.out.println("Directions: " + segments.size());
-      return segments.stream().map(TextDirection::new).toList();
     }
-    return new LinkedList<TextDirection>();
+    System.out.println("Directions: " + segments.size());
+    return segments.stream().map(TextDirection::new).toList();
   }
 
   public String toString() {

@@ -25,6 +25,6 @@ public class PathSection {
 
   public String formatDistance() {
     double distance = start.distance(end);
-    return " " + String.format("%.1f", distance);
+    return String.format("%.1f", distance);
   }
 }

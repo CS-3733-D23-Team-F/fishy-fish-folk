@@ -14,7 +14,6 @@ public class FlowerOrderObservable {
   @Getter @Setter public String flowerdeliverytime;
   @Getter @Setter public String flowerrecipientname;
   @Getter @Setter public String floweritems;
-  @Getter @Setter public String flowernotes;
   @Getter @Setter public LocalDateTime id;
 
   public FlowerOrderObservable(FlowerRequest order) {
@@ -45,6 +44,6 @@ public class FlowerOrderObservable {
     }
     String items = String.join(", ", itemStrings);
     this.floweritems = items;
-    this.flowernotes = order.getNotes();
+    // this.flowernotes = order.getNotes(); can't find notes in Max's original field list
   }
 }

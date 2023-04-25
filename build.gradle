@@ -63,11 +63,6 @@ dependencies {
             'net.java.dev.jna:jna:5.12.1',
             'org.hibernate:hibernate-c3p0:6.1.6.Final',
             'com.jfoenix:jfoenix:9.0.10',
-
-            'com.google.zxing:zxing-parent:3.5.1',
-            'com.google.zxing:core:3.5.1'
-
-            //'com.journeyapps:zxing-android-embedded:4.1.0',
     )
 
     String javaFxVersion = "19"

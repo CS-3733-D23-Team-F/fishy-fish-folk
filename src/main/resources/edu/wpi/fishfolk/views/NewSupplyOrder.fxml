@@ -15,37 +15,37 @@
      <content>
        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="1192.0">
             <children>
-               <MFXRectangleToggleNode fx:id="rectangle1" layoutX="-8.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="PENCIL                                                                                                                            " wrapText="true">
+               <MFXRectangleToggleNode fx:id="rectangle1" layoutX="-8.0" prefHeight="100.0" prefWidth="1200.0" text="PENCIL                                                                                                                            " wrapText="true">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle2" layoutX="-8.0" layoutY="100.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="PEN                                                                                                                                  ">
+               <MFXRectangleToggleNode fx:id="rectangle2" layoutX="-8.0" layoutY="100.0" prefHeight="100.0" prefWidth="1200.0" text="PEN                                                                                                                                  ">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle3" layoutX="-8.0" layoutY="200.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="ERASER                                                                                                                            ">
+               <MFXRectangleToggleNode fx:id="rectangle3" layoutX="-8.0" layoutY="200.0" prefHeight="100.0" prefWidth="1200.0" text="ERASER                                                                                                                            ">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle4" layoutX="-8.0" layoutY="300.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="MARKER                                                                                                                           ">
+               <MFXRectangleToggleNode fx:id="rectangle4" layoutX="-8.0" layoutY="300.0" prefHeight="100.0" prefWidth="1200.0" text="MARKER                                                                                                                           ">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle5" layoutX="-8.0" layoutY="400.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="NOTEPAD                                                                                                                         ">
+               <MFXRectangleToggleNode fx:id="rectangle5" layoutX="-8.0" layoutY="400.0" prefHeight="100.0" prefWidth="1200.0" text="NOTEPAD                                                                                                                         ">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle6" layoutX="-8.0" layoutY="500.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="CLIPBOARD                                                                                                                      ">
+               <MFXRectangleToggleNode fx:id="rectangle6" layoutX="-8.0" layoutY="500.0" prefHeight="100.0" prefWidth="1200.0" text="CLIPBOARD                                                                                                                      ">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>
                </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle7" layoutX="-9.0" layoutY="600.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="APPLE                                                                                                                               ">
+               <MFXRectangleToggleNode fx:id="rectangle7" layoutX="-9.0" layoutY="600.0" prefHeight="100.0" prefWidth="1200.0" text="APPLE                                                                                                                               ">
                   <font>
                      <Font name="Open Sans Regular" size="30.0" />
                   </font>

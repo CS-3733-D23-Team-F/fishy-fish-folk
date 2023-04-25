@@ -63,10 +63,8 @@ public abstract class Pathfinder implements IPathfinding {
       endIdx = lastVisited[endIdx];
     }
     // add start node to beginning of first path
-    if (paths.size() > 0) {
-      paths.get(numpaths - 1).setToNextPath(Direction.END);
-      paths.get(0).addFirst(graph.getNodeFromID(start));
-    }
+    paths.get(numpaths - 1).setToNextPath(Direction.END);
+    paths.get(0).addFirst(graph.getNodeFromID(start));
 
     return paths;
   }

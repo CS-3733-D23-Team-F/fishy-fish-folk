@@ -660,7 +660,6 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
 
       // For each result, create a new food item and put it in the list
       while (results.next()) {
-
         allFlowerItems.add(
             new FlowerItem(
                 results.getString("itemname"),
@@ -698,11 +697,10 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
 
       // Run the query for each item to insert
       for (FlowerItem item : items) {
-
         preparedInsert.setInt(1, getSubtableItemsID(requestID));
-        preparedInsert.setString(2, item.getName());
-        preparedInsert.setDouble(3, item.getPrice());
-        preparedInsert.setInt(4, item.getQuantity());
+        preparedInsert.setString(2, item.itemName);
+        preparedInsert.setDouble(3, item.fullCost);
+        preparedInsert.setInt(4, item.amount);
         preparedInsert.executeUpdate();
       }
 
