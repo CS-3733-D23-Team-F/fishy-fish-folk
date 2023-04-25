@@ -38,7 +38,10 @@ public class NewFoodOrderController extends AbsController {
   @FXML TextArea notesField;
   @FXML ScrollPane menuItemsPane, cartItemsPane;
   @FXML AnchorPane cartViewPane;
-  @FXML HBox cartWrap, blur;
+  @FXML HBox cartWrap, blur, confirmBlur;
+  @FXML HBox confirmBox;
+  @FXML AnchorPane confirmPane;
+  @FXML MFXButton okButton;
   Font oSans26, oSans20, oSans26bold;
 
   private List<NewFoodMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
@@ -67,6 +70,7 @@ public class NewFoodOrderController extends AbsController {
     mainsTab.setOnAction(event -> tab(2));
     drinksTab.setOnAction(event -> tab(3));
     dessertsTab.setOnAction(event -> tab(4));
+    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
     tabButtons = new MFXButton[] {appsTab, sidesTab, mainsTab, drinksTab, dessertsTab};
     oSans20 = new Font("Open Sans Regular", 20);
     oSans26 = new Font("Open Sans Regular", 26);
@@ -189,7 +193,14 @@ public class NewFoodOrderController extends AbsController {
             recipientField.getText(),
             items);
     dbConnection.insertEntry(thisOrder);
-    Navigation.navigate(Screen.HOME);
+    blur.setDisable(true);
+    blur.setVisible(false);
+    confirmBlur.setDisable(false);
+    confirmBlur.setVisible(true);
+    confirmBox.setDisable(false);
+    confirmBox.setVisible(true);
+    confirmPane.setVisible(true);
+    confirmPane.setDisable(false);
   }
 
   /**

@@ -526,6 +526,15 @@ public class Fdb {
         .toList();
   }
 
+  public List<String> getDestShortnames() {
+
+    return locationTable.getAllEntries().stream()
+        .filter(Location::isDestination)
+        .map(Location::getShortName)
+        .sorted()
+        .toList();
+  }
+
   public int getNextNodeID() {
     return nodeTable.getNextID();
   }

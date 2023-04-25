@@ -14,10 +14,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 
 public class LoginController extends AbsController {
-  @FXML AnchorPane slider;
   @FXML MFXButton loginBtn;
   @FXML MFXTextField loginIDField;
   @FXML MFXPasswordField loginPassField;
@@ -28,9 +26,9 @@ public class LoginController extends AbsController {
   private void initialize() {
     loginBtn.setOnMouseClicked(loginHandler);
     loginPassField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
+    loginIDField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
     errorBox.setText("");
-
-    slider.setTranslateX(-400);
+    errorBox.setVisible(false);
   }
 
   /**
@@ -41,7 +39,15 @@ public class LoginController extends AbsController {
   private void attemptLoginOnEnterPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode().getCode() == 10) {
       attemptLogin();
+    } else {
+      clearError();
     }
+  }
+
+  /** Clear the error box after a new input */
+  private void clearError() {
+    errorBox.setText("");
+    errorBox.setVisible(false);
   }
 
   /**
@@ -66,6 +72,7 @@ public class LoginController extends AbsController {
 
     if (foundAccount == null) {
       errorBox.setText("Account not found.");
+      errorBox.setVisible(true);
       errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
     } else {
       if (SharedResources.login(foundAccount, password)) {
@@ -75,6 +82,7 @@ public class LoginController extends AbsController {
         Navigation.navigate(Screen.HOME);
       } else {
         errorBox.setText("Incorrect password.");
+        errorBox.setVisible(true);
         errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
       }
     }
