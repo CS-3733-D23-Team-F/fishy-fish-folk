@@ -73,7 +73,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
                 + tableName
                 + " (presetname VARCHAR(256),"
                 + "startdate DATE,"
-                + "signs SERIAL,"
+                + "signs SERIAL"
                 + ");";
         statement.executeUpdate(query);
       }
@@ -550,13 +550,13 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
               + "."
               + this.tableName
               + "signs"
-              + " VALUES (?, ?, ?);";
+              + " VALUES (?, ?, ?, ?);";
 
       PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
 
       // Run the query for each item to insert
       for (int i = 0; i < 8; i++) {
-        if (signs[i] != null) {
+        if (signs[i].getLabel() != null) {
           preparedInsert.setInt(1, getSubtableItemsID(requestID));
           preparedInsert.setString(2, signs[i].getLabel());
           preparedInsert.setDouble(3, signs[i].getDirection());
