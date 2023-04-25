@@ -36,9 +36,11 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton moveEditorNav;
   @FXML MFXButton importCSV, exportCSV;
   @FXML MFXButton addNode, delNode;
+  @FXML MFXRadioButton radioAllEdge, radioSelectedEdge, radioNoEdge;
   @FXML MFXButton addEdge, delEdge;
-  @FXML MFXToggleButton toggleAll, toggleSelected;
   @FXML MFXButton linearAlign, snapGrid;
+  @FXML MFXToggleButton toggleLocations;
+
   @FXML MFXTextField nodeidText, xText, yText, buildingText;
 
   @FXML MFXScrollPane locationScrollpane;
@@ -53,7 +55,7 @@ public class MapEditorController extends AbsController {
   FileChooser fileChooser = new FileChooser();
   DirectoryChooser dirChooser = new DirectoryChooser();
 
-  private Group nodesGroup, edgesGroup;
+  private Group nodeGroup, edgeGroup, locationGroup;
 
   private HashSet<Edge> edgeSet = new HashSet<>();
 
@@ -82,14 +84,13 @@ public class MapEditorController extends AbsController {
 
     floorSelector.getItems().addAll(floorsReverse);
 
-    nodesGroup = new Group();
-    edgesGroup = new Group();
-    drawGroup.getChildren().add(nodesGroup);
-    drawGroup.getChildren().add(edgesGroup);
+    nodeGroup = new Group();
+    edgeGroup = new Group();
+    drawGroup.getChildren().add(nodeGroup);
+    drawGroup.getChildren().add(edgeGroup);
 
-    toggleAll.setSelected(false);
-    toggleSelected.setDisable(true);
-    toggleSelected.setSelected(false);
+    // other buttons in radio group are deselected by default
+    radioNoEdge.setSelected(true);
 
     switchFloor(allFloors.get(currentFloor));
 
@@ -134,28 +135,20 @@ public class MapEditorController extends AbsController {
             // TODO decide if previous or new node is selected - currently only previous
             state = EDITOR_STATE.EDITING_NODE;
 
-          } else if (state == EDITOR_STATE.EDITING_NODE) {
+          } else if (state == EDITOR_STATE.EDITING_NODE || state == EDITOR_STATE.EDITING_EDGE) {
 
             state = EDITOR_STATE.IDLE;
 
+            // clear node stuff
             deselectAllNodes();
             clearNodeFields();
             clearLocationFields();
 
-            toggleSelected.setSelected(false);
-            toggleSelected.setDisable(true);
+            radioSelectedEdge.setDisable(true);
+
+            // clear & hide edge stuff
             deselectAllEdges();
-            edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(toggleAll.isSelected()));
-
-          } else if (state == EDITOR_STATE.EDITING_EDGE) {
-
-            state = EDITOR_STATE.IDLE;
-
-            deselectAllNodes();
-            deselectAllEdges();
-
-            clearNodeFields();
-            clearLocationFields();
+            edgeGroup.getChildren().forEach(fxnode -> fxnode.setVisible(radioAllEdge.isSelected()));
           }
         });
 
@@ -209,29 +202,23 @@ public class MapEditorController extends AbsController {
           }
         });
 
-    toggleAll.setOnAction(
+    radioAllEdge.setOnAction(
         event -> {
-          if (toggleAll.isSelected()) {
+          if (radioAllEdge.isSelected()) {
 
-            edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(true));
-            toggleSelected.setSelected(false);
-            toggleSelected.setDisable(true);
+            edgeGroup.getChildren().forEach(fxnode -> fxnode.setVisible(true));
 
           } else {
-            edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(false));
-            toggleSelected.setDisable(false);
+            edgeGroup.getChildren().forEach(fxnode -> fxnode.setVisible(false));
           }
         });
 
-    toggleSelected.setOnAction(
+    radioSelectedEdge.setOnAction(
         event -> {
-          if (toggleSelected.isSelected()) { // && state == EDITOR_STATE.EDITING_NODE) {
-
-            toggleAll.setSelected(false);
-            toggleAll.setDisable(true);
+          if (radioSelectedEdge.isSelected()) { // && state == EDITOR_STATE.EDITING_NODE) {
 
             // show edges that connect to at least one of the selected nodes
-            edgesGroup
+            edgeGroup
                 .getChildren()
                 .forEach(
                     fxnode -> {
@@ -239,12 +226,18 @@ public class MapEditorController extends AbsController {
                       fxnode.setVisible(edgeLine.containsNodes(selectedNodes));
                     });
 
-          } else if (!toggleSelected.isSelected()) {
-
-            toggleAll.setDisable(false);
+          } else {
 
             // hide all edges
-            edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(false));
+            edgeGroup.getChildren().forEach(fxnode -> fxnode.setVisible(false));
+          }
+        });
+
+    radioNoEdge.setOnAction(
+        event -> {
+          if (radioNoEdge.isSelected()) {
+            // hide all edges
+            edgeGroup.getChildren().forEach(fxnode -> fxnode.setVisible(false));
           }
         });
 
@@ -289,7 +282,7 @@ public class MapEditorController extends AbsController {
                   || event.getCode() == KeyCode.S) {
 
                 // for each drawn node, if its selected update it in the db
-                nodesGroup
+                nodeGroup
                     .getChildren()
                     .forEach(
                         fxnode -> {
@@ -306,7 +299,7 @@ public class MapEditorController extends AbsController {
                         });
 
                 // update edgelines containing the moved nodes
-                edgesGroup
+                edgeGroup
                     .getChildren()
                     .forEach(
                         fxnode -> {
@@ -409,7 +402,7 @@ public class MapEditorController extends AbsController {
             nodes.forEach(
                 node -> {
                   // draw NodeCircle at updated node points
-                  nodesGroup
+                  nodeGroup
                       .getChildren()
                       .forEach(
                           fxnode -> {
@@ -426,6 +419,36 @@ public class MapEditorController extends AbsController {
                   dbConnection.updateEntry(node);
                 });
           }
+        });
+
+    snapGrid.setOnAction(
+        event -> {
+          List<Node> nodes = new LinkedList<>();
+
+          selectedNodes.forEach(
+              nodeID -> nodes.add((Node) dbConnection.getEntry(nodeID, TableEntryType.NODE)));
+
+          nodes.forEach(
+              node -> {
+                node.snapToGrid(2.5);
+
+                // draw NodeCircle at updated node points
+                nodeGroup
+                    .getChildren()
+                    .forEach(
+                        fxnode -> {
+                          NodeCircle nodeCircle = (NodeCircle) fxnode;
+                          if (nodeCircle.getNodeID() == node.getNodeID()) {
+                            nodeCircle.setCenterX(node.getX());
+                            nodeCircle.setPrevX(node.getX());
+                            nodeCircle.setCenterY(node.getY());
+                            nodeCircle.setPrevY(node.getY());
+                          }
+                        });
+
+                // update db
+                dbConnection.updateEntry(node);
+              });
         });
 
     newLocationSubmit.setOnAction(
@@ -449,14 +472,16 @@ public class MapEditorController extends AbsController {
 
     // optional TODO one thread does nodes, one thread does edges
 
-    nodesGroup.getChildren().clear();
+    nodeGroup.getChildren().clear();
     dbConnection.getNodesOnFloor(floor).forEach(this::drawNode);
     currentLocations.clear();
     deselectAllNodes();
 
-    edgesGroup.getChildren().clear();
+    radioSelectedEdge.setDisable(true);
+
+    edgeGroup.getChildren().clear();
     edgeSet.clear();
-    dbConnection.getEdgesOnFloor(floor).forEach(edge -> drawEdge(edge, toggleAll.isSelected()));
+    dbConnection.getEdgesOnFloor(floor).forEach(edge -> drawEdge(edge, radioAllEdge.isSelected()));
     deselectAllEdges();
   }
 
@@ -480,8 +505,7 @@ public class MapEditorController extends AbsController {
           if (!controlPressed) deselectAllNodes();
           selectNode(node.getNodeID());
 
-          // can only view selected edges if a node is selected
-          toggleSelected.setDisable(false);
+          radioSelectedEdge.setDisable(false);
 
           // at least one node selected so visible and disabled if > 1 nodes selected
           newLocationVbox.setVisible(true);
@@ -535,7 +559,7 @@ public class MapEditorController extends AbsController {
               fillNodeFields(node);
 
               // update edgelines containing this node
-              edgesGroup
+              edgeGroup
                   .getChildren()
                   .forEach(
                       fxnode -> {
@@ -555,7 +579,7 @@ public class MapEditorController extends AbsController {
           }
         });
 
-    nodesGroup.getChildren().add(nodeCircle);
+    nodeGroup.getChildren().add(nodeCircle);
   }
 
   private boolean drawEdge(Edge edge, boolean visibility) {
@@ -585,13 +609,17 @@ public class MapEditorController extends AbsController {
 
     line.setVisible(visibility);
 
-    edgesGroup.getChildren().add(line);
+    edgeGroup.getChildren().add(line);
     return true;
+  }
+
+  private void drawLocations(boolean visibility){
+
   }
 
   private void selectNode(int nodeID) {
     selectedNodes.add(nodeID);
-    nodesGroup
+    nodeGroup
         .getChildren()
         .forEach(
             fxnode -> {
@@ -601,7 +629,7 @@ public class MapEditorController extends AbsController {
 
   private void deselectNode(int nodeID) {
     selectedNodes.remove(Integer.valueOf(nodeID));
-    nodesGroup
+    nodeGroup
         .getChildren()
         .forEach(
             fxnode -> {
@@ -616,7 +644,7 @@ public class MapEditorController extends AbsController {
     newLocationVbox.setDisable(true);
 
     selectedNodes.clear();
-    nodesGroup
+    nodeGroup
         .getChildren()
         .forEach(
             fxnode -> {
@@ -626,7 +654,7 @@ public class MapEditorController extends AbsController {
 
   private void selectEdge(Edge edge) {
     selectedEdges.add(edge);
-    edgesGroup
+    edgeGroup
         .getChildren()
         .forEach(
             fxnode -> {
@@ -636,7 +664,7 @@ public class MapEditorController extends AbsController {
 
   private void deselectEdge(Edge edge) {
     selectedEdges.remove(edge);
-    edgesGroup
+    edgeGroup
         .getChildren()
         .forEach(
             fxnode -> {
@@ -646,7 +674,7 @@ public class MapEditorController extends AbsController {
 
   private void deselectAllEdges() {
     selectedEdges.clear();
-    edgesGroup
+    edgeGroup
         .getChildren()
         .forEach(
             fxnode -> {
@@ -669,7 +697,7 @@ public class MapEditorController extends AbsController {
 
   private void removeNode(int nodeID) {
 
-    Iterator<javafx.scene.Node> itr = nodesGroup.getChildren().iterator();
+    Iterator<javafx.scene.Node> itr = nodeGroup.getChildren().iterator();
     while (itr.hasNext()) {
 
       NodeCircle curr = (NodeCircle) itr.next();
@@ -693,7 +721,7 @@ public class MapEditorController extends AbsController {
       int nodeID = selectedItr.next();
 
       // remove corresponding nodecircle from group
-      Iterator<javafx.scene.Node> groupItr = nodesGroup.getChildren().iterator();
+      Iterator<javafx.scene.Node> groupItr = nodeGroup.getChildren().iterator();
       while (groupItr.hasNext()) {
         NodeCircle curr = (NodeCircle) groupItr.next();
 
@@ -712,7 +740,7 @@ public class MapEditorController extends AbsController {
         }
       }
 
-      Iterator<javafx.scene.Node> edgeGroupItr = edgesGroup.getChildren().iterator();
+      Iterator<javafx.scene.Node> edgeGroupItr = edgeGroup.getChildren().iterator();
       while (edgeGroupItr.hasNext()) {
         EdgeLine curr = (EdgeLine) edgeGroupItr.next();
 
@@ -741,7 +769,7 @@ public class MapEditorController extends AbsController {
   private void removeEdge(Edge edge) {
     edgeSet.remove(edge);
 
-    edgesGroup.getChildren().removeIf(node -> ((EdgeLine) node).matches(edge));
+    edgeGroup.getChildren().removeIf(node -> ((EdgeLine) node).matches(edge));
 
     dbConnection.removeEntry(edge, TableEntryType.EDGE);
   }
@@ -752,7 +780,7 @@ public class MapEditorController extends AbsController {
       Edge edge = selectedItr.next();
 
       // remove corresponding edgeline from group
-      Iterator<javafx.scene.Node> groupItr = edgesGroup.getChildren().iterator();
+      Iterator<javafx.scene.Node> groupItr = edgeGroup.getChildren().iterator();
       while (groupItr.hasNext()) {
         EdgeLine curr = (EdgeLine) groupItr.next();
 
@@ -771,7 +799,7 @@ public class MapEditorController extends AbsController {
 
   private void moveSelectedNodes(double dist, MOVE_DIRECTION dir) {
 
-    nodesGroup
+    nodeGroup
         .getChildren()
         .forEach(
             fxnode -> {

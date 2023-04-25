@@ -100,8 +100,9 @@
     -fx-border-color: blue;
 }
 
-Micronode:hover{
-    -fx-border-color: yellow;
+.radio-button:selected .radio .dot {
+    -fx-background-color: #012a5d;
+    -fx-background-insets: 0;
 }
 
 .floorDisplay{
