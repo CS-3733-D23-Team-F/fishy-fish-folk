@@ -1,11 +1,13 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
+import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
+import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.pathfinding.*;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import edu.wpi.fishfolk.util.PermissionLevel;
+import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,7 +43,7 @@ public class PathfindingController extends AbsController {
   @FXML MFXFilterComboBox<String> methodSelector;
   @FXML MFXButton clearBtn;
 
-  @FXML Group pathGroup;
+  @FXML Group drawGroup;
   @FXML ImageView mapImg;
 
   @FXML MFXButton zoomOut;
@@ -51,15 +53,39 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton slideDown;
   @FXML VBox textInstruct;
 
+  @FXML VBox settingBox;
+  @FXML ImageView settingButton;
+
+  @FXML MFXButton closeSettings;
+
+  @FXML VBox adminBox;
+
+  @FXML MFXButton closeAdmin;
+
+  @FXML MFXDatePicker pathDate;
+
+  @FXML MFXTextField pathMessage;
+
+  @FXML MFXButton submitSetting;
+
+  @FXML Text pathText;
+
+  @FXML HBox pathTextBox;
+
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
   @FXML MFXTextField estimatedtime;
+  @FXML MFXButton generateqr;
 
-  PathfindSingleton pathfinder;
+  @FXML MFXToggleButton noStairs;
+  @FXML MFXToggleButton showLocations;
+
+  private PathfindSingleton pathfinder;
 
   int start, end;
   Graph graph;
   ArrayList<Path> paths;
+  Group locationGroup = new Group();
 
   ArrayList<String> floors;
   int currentFloor;
@@ -89,10 +115,48 @@ public class PathfindingController extends AbsController {
           }
         });
 
-    // buttons to other pages
-    methodSelector.getItems().add("A*");
-    methodSelector.getItems().add("BFS");
-    methodSelector.getItems().add("DFS");
+    methodSelector.getItems().addAll("A*", "BFS", "DFS", "Dijkstra's");
+    drawGroup.getChildren().add(locationGroup);
+
+    if (pathText.getText().equals("")) {
+      pathTextBox.setVisible(false);
+    }
+
+    settingButton.setOnMouseClicked(
+        event -> {
+          if (settingBox.isVisible() || adminBox.isVisible()) {
+            settingBox.setVisible(false);
+            settingBox.setDisable(true);
+            adminBox.setVisible(false);
+            adminBox.setDisable(true);
+          } else {
+            settingBox.setVisible(true);
+            settingBox.setDisable(false);
+            if (SharedResources.getCurrentUser().getLevel() == PermissionLevel.ADMIN
+                || SharedResources.getCurrentUser().getLevel() == PermissionLevel.ROOT) {
+              adminBox.setVisible(true);
+              adminBox.setDisable(false);
+            }
+          }
+        });
+
+    closeSettings.setOnMouseClicked(
+        event -> {
+          settingBox.setVisible(false);
+          settingBox.setDisable(true);
+        });
+
+    closeAdmin.setOnMouseClicked(
+        event -> {
+          adminBox.setVisible(false);
+          adminBox.setDisable(true);
+        });
+
+    submitSetting.setOnMouseClicked(
+        event -> {
+          submitSettings();
+        });
+
     slideUp.setOnMouseClicked(
         event -> {
           TranslateTransition slide = new TranslateTransition();
@@ -150,8 +214,8 @@ public class PathfindingController extends AbsController {
     startSelector.setOnAction(
         event -> {
           pathAnimations.clear();
-          pathGroup.getChildren().clear();
-          pathGroup.getChildren().add(mapImg);
+          drawGroup.getChildren().clear();
+          drawGroup.getChildren().add(mapImg);
           // clear list of floors
           floors.clear();
           start = dbConnection.getNodeIDFromLocation(startSelector.getValue(), today);
@@ -174,6 +238,8 @@ public class PathfindingController extends AbsController {
             pathfinder.setPathMethod(new BFS(graph));
           } else if (methodSelector.getValue().equals("DFS")) {
             pathfinder.setPathMethod(new DFS(graph));
+          } else if (methodSelector.getValue().equals("Dijkstra's")) {
+            pathfinder.setPathMethod(new Dijkstras(graph));
           }
 
           paths = pathfinder.getPathMethod().pathfind(start, end, true);
@@ -198,18 +264,106 @@ public class PathfindingController extends AbsController {
     clearBtn.setOnMouseClicked(
         event -> {
           // clear paths
-          pathGroup.getChildren().clear();
-          pathGroup.getChildren().add(mapImg);
+          drawGroup.getChildren().clear();
+          drawGroup.getChildren().add(mapImg);
 
           // clear list of floors
           floors.clear();
+          startSelector.clear();
+          endSelector.clear();
+        });
+
+    showLocations.setOnAction(
+        event -> {
+          locationGroup.setVisible(showLocations.isSelected());
+        });
+
+    generateqr.setOnMouseClicked(
+        event -> {
+          Stage popup = new Stage();
+
+          // Popup popup = new Popup();
+          popup.setX(Fapp.getPrimaryStage().getWidth() * 0.4);
+          popup.setY(Fapp.getPrimaryStage().getHeight() * 0.4);
+
+          QRCodeWriter qrCodeWriter = new QRCodeWriter();
+
+          String text =
+              "TEXT: "
+                  + textDirections.stream()
+                      .reduce(
+                          new LinkedList<>(),
+                          (lstAccum, lst) -> {
+                            lstAccum.addAll(lst);
+                            return lstAccum;
+                          })
+                      .stream()
+                      .map(TextDirection::toString)
+                      .collect(Collectors.joining());
+
+          Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
+          hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+          BitMatrix bitMatrix;
+          int size = 500;
+          try {
+            bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, size, size, hintMap);
+          } catch (WriterException e) {
+            throw new RuntimeException(e);
+          }
+
+          WritableImage img = new WritableImage(size * 2, size * 2);
+          PixelWriter writer = img.getPixelWriter();
+          Color dark = Color.rgb(1, 45, 90);
+          Color white = Color.WHITE;
+
+          for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+              if (bitMatrix.get(i, j)) {
+                writer.setColor(2 * i, 2 * j, dark);
+                writer.setColor(2 * i + 1, 2 * j, dark);
+                writer.setColor(2 * i, 2 * j + 1, dark);
+                writer.setColor(2 * i + 1, 2 * j + 1, dark);
+              } else {
+                writer.setColor(2 * i, 2 * j, white);
+                writer.setColor(2 * i + 1, 2 * j, white);
+                writer.setColor(2 * i, 2 * j + 1, white);
+                writer.setColor(2 * i + 1, 2 * j + 1, white);
+              }
+            }
+          }
+
+          ImageView imgView = new ImageView(img);
+
+          StackPane root = new StackPane();
+          root.getChildren().add(imgView);
+
+          popup.setScene(new Scene(root, size * 2 + 50, size * 2 + 50));
+          popup.show();
+        });
+
+    pane.setOnMouseClicked(
+        event -> {
+          settingBox.setVisible(false);
+          settingBox.setDisable(true);
+          adminBox.setVisible(false);
+          adminBox.setDisable(true);
+        });
+    pane.setOnDragDetected(
+        event -> {
+          settingBox.setVisible(false);
+          settingBox.setDisable(true);
+          adminBox.setVisible(false);
+          adminBox.setDisable(true);
         });
 
     currentFloor = 0;
     floors = new ArrayList<>();
     pathAnimations = new ArrayList<>();
 
-    graph = new Graph(dbConnection);
+    // hardcoded default first floor
+    drawLocations("L1", showLocations.isSelected());
+
+    graph = new Graph(dbConnection, AbsController.today);
   }
 
   private void drawPaths(ArrayList<Path> paths) {
@@ -308,12 +462,41 @@ public class PathfindingController extends AbsController {
                       direction(path.getFloor(), paths.get(i + 1).getFloor()),
                       true));
         }
-        pathGroup.getChildren().add(g);
+        drawGroup.getChildren().add(g);
         g.setVisible(false);
 
         floors.add(path.getFloor());
       }
     }
+  }
+
+  private void drawLocations(String floor, boolean visibility) {
+
+    // copied directly from mapeditor function
+    dbConnection
+        .getNodesOnFloor(floor)
+        .forEach(
+            node -> {
+              List<String> shortnames =
+                  dbConnection.getLocations(node.getNodeID(), today).stream()
+                      .filter(Location::isDestination)
+                      .map(Location::getShortName)
+                      .toList();
+
+              if (!shortnames.isEmpty()) {
+                String label = String.join(", ", shortnames);
+                locationGroup
+                    .getChildren()
+                    .add(
+                        new NodeText(
+                            node.getNodeID(),
+                            node.getX() - label.length() * 5,
+                            node.getY() - 10,
+                            label));
+              }
+            });
+
+    locationGroup.setVisible(visibility);
   }
 
   /**
@@ -326,8 +509,6 @@ public class PathfindingController extends AbsController {
    * @return a JavaFX Node object to draw
    */
   private javafx.scene.Node generatePathButtons(double x, double y, boolean up, boolean forwards) {
-
-    // TODO set arrow up or down based on parameter
 
     Polygon triangle = new Polygon();
 
@@ -371,17 +552,20 @@ public class PathfindingController extends AbsController {
     mapImg.setImage(images.get(floors.get(currentFloor)));
     floorDisplay.setText("Floor " + floors.get(currentFloor));
 
-    Iterator<javafx.scene.Node> itr = pathGroup.getChildren().iterator();
+    Iterator<javafx.scene.Node> itr = drawGroup.getChildren().iterator();
     itr.next(); // skip first child which is the imageview
     while (itr.hasNext()) {
       itr.next().setVisible(false);
     }
 
+    locationGroup.getChildren().clear();
+    drawLocations(floors.get(currentFloor), showLocations.isSelected());
+
     // stop all animations
     pathAnimations.forEach(ParallelTransition::stop);
 
     // show and start animation for current floor
-    pathGroup
+    drawGroup
         .getChildren()
         .get(currentFloor + 1)
         .setVisible(true); // offset by 1 because first child is gesture pane
@@ -498,5 +682,22 @@ public class PathfindingController extends AbsController {
    */
   public static boolean direction(String currFloor, String nextFloor) {
     return allFloors.indexOf(currFloor) < allFloors.indexOf(nextFloor);
+  }
+
+  /** Submits the Admin settings */
+  private void submitSettings() {
+    if (!(pathDate.getValue() == null)) {
+      graph = new Graph(dbConnection, pathDate.getValue());
+    }
+    if (!(pathMessage.getText().equals(""))) {
+      pathTextBox.setVisible(true);
+      pathText.setText(pathMessage.getText());
+    } else {
+      pathTextBox.setVisible(false);
+    }
+    adminBox.setVisible(false);
+    adminBox.setDisable(true);
+    settingBox.setVisible(false);
+    settingBox.setDisable(true);
   }
 }

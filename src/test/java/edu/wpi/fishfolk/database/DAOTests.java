@@ -358,24 +358,59 @@ public class DAOTests {
 
     fdb.insertEntry(
         new ConferenceRequest(
-            LocalDateTime.of(2020, 2, 2, 2, 2), "Nobody", FormStatus.submitted, "Yep"));
+            LocalDateTime.of(2020, 2, 2, 2, 2),
+            "Nobody",
+            "start",
+            "start",
+            "end",
+            Recurring.DAILY,
+            5,
+            "roomname"));
     fdb.insertEntry(
         new ConferenceRequest(
-            LocalDateTime.of(2021, 2, 2, 2, 2), "Somebody?", FormStatus.submitted, "Yep"));
+            LocalDateTime.of(2021, 2, 2, 2, 2),
+            "Jon",
+            "start",
+            "start",
+            "end",
+            Recurring.DAILY,
+            5,
+            "roomname"));
     fdb.insertEntry(
         new ConferenceRequest(
-            LocalDateTime.of(2022, 2, 2, 2, 2), "Secret person", FormStatus.submitted, "Yep"));
+            LocalDateTime.of(2022, 2, 2, 2, 2),
+            "Qui",
+            "start",
+            "start",
+            "end",
+            Recurring.DAILY,
+            5,
+            "roomname"));
 
     fdb.updateEntry(
         new ConferenceRequest(
-            LocalDateTime.of(2021, 2, 2, 2, 2), "Somebody?", FormStatus.submitted, "CHANGE"));
+            LocalDateTime.of(2021, 2, 2, 2, 2),
+            "NEW PERSON",
+            "start",
+            "start",
+            "end",
+            Recurring.DAILY,
+            5,
+            "roomname"));
 
     fdb.undoChange(TableEntryType.CONFERENCE_REQUEST);
     fdb.undoChange(TableEntryType.CONFERENCE_REQUEST);
 
     fdb.updateEntry(
         new ConferenceRequest(
-            LocalDateTime.of(2020, 2, 2, 2, 2), "Nobody", FormStatus.submitted, "ANOTHER CHANGE"));
+            LocalDateTime.of(2020, 2, 2, 2, 2),
+            "ANOTHER NEW PERSON",
+            "start",
+            "start",
+            "end",
+            Recurring.DAILY,
+            5,
+            "roomname"));
 
     fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.CONFERENCE_REQUEST);
 

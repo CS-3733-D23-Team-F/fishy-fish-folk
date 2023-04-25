@@ -1,140 +1,415 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewSupplyOrderController">
-   <ScrollPane hbarPolicy="NEVER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="1200.0">
-     <content>
-       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="1192.0">
-            <children>
-               <MFXRectangleToggleNode fx:id="rectangle1" layoutX="-8.0" prefHeight="100.0" prefWidth="1200.0" text="PENCIL                                                                                                                            " wrapText="true">
-                  <font>
-                     <Font name="Open Sans Regular" size="30.0" />
-                  </font>
-               </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle2" layoutX="-8.0" layoutY="100.0" prefHeight="100.0" prefWidth="1200.0" text="PEN                                                                                                                                  ">
-                  <font>
-                     <Font name="Open Sans Regular" size="30.0" />
-                  </font>
-               </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle3" layoutX="-8.0" layoutY="200.0" prefHeight="100.0" prefWidth="1200.0" text="ERASER                                                                                                                            ">
-                  <font>
-                     <Font name="Open Sans Regular" size="30.0" />
-                  </font>
-               </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle4" layoutX="-8.0" layoutY="300.0" prefHeight="100.0" prefWidth="1200.0" text="MARKER                                                                                                                           ">
-                  <font>
-                     <Font name="Open Sans Regular" size="30.0" />
-                  </font>
-               </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle5" layoutX="-8.0" layoutY="400.0" prefHeight="100.0" prefWidth="1200.0" text="NOTEPAD                                                                                                                         ">
-                  <font>
-                     <Font name="Open Sans Regular" size="30.0" />
-                  </font>
-               </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle6" layoutX="-8.0" layoutY="500.0" prefHeight="100.0" prefWidth="1200.0" text="CLIPBOARD                                                                                                                      ">
-                  <font>
-                     <Font name="Open Sans Regular" size="30.0" />
-                  </font>
-               </MFXRectangleToggleNode>
-               <MFXRectangleToggleNode fx:id="rectangle7" layoutX="-9.0" layoutY="600.0" prefHeight="100.0" prefWidth="1200.0" text="APPLE                                                                                                                               ">
-                  <font>
-                     <Font name="Open Sans Regular" size="30.0" />
-                  </font>
-               </MFXRectangleToggleNode>
-               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One package of ten #2 pencils">
-                  <font>
-                     <Font name="Open Sans Regular" size="26.0" />
-                  </font>
-               </Text>
-               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One package of five black ballpoint pens">
-                  <font>
-                     <Font name="Open Sans Regular" size="26.0" />
-                  </font>
-               </Text>
-               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pink rectangle">
-                  <font>
-                     <Font name="Open Sans Regular" size="26.0" />
-                  </font>
-               </Text>
-               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One black dry-erase marker">
-                  <font>
-                     <Font name="Open Sans Regular" size="26.0" />
-                  </font>
-               </Text>
-               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One black leatherbound notebad">
-                  <font>
-                     <Font name="Open Sans Regular" size="26.0" />
-                  </font>
-               </Text>
-               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="560.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One board to clip things to">
-                  <font>
-                     <Font name="Open Sans Regular" size="26.0" />
-                  </font>
-               </Text>
-               <Text disable="true" fill="#888888" layoutX="400.0" layoutY="660.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To keep the doctors away">
-                  <font>
-                     <Font name="Open Sans Regular" size="26.0" />
-                  </font>
-               </Text>
-            </children></AnchorPane>
-     </content>
-   </ScrollPane>
-   <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="501.0" layoutX="1256.0" layoutY="50.0" stroke="TRANSPARENT" strokeType="INSIDE" width="25.0" />
-   <Rectangle accessibleText="Text" arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="518.0" layoutX="1237.0" layoutY="37.0" stroke="TRANSPARENT" strokeType="INSIDE" width="17.0" />
-   <MFXTextField fx:id="linkTextField" layoutX="50.0" layoutY="570.0" prefHeight="86.0" prefWidth="1186.0" promptText="LINK IF NOT LISTED">
-      <font>
-         <Font name="Open Sans Regular" size="26.0" />
-      </font>
-      <textFill>
-         <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
-      </textFill>
-   </MFXTextField>
-   <MFXTextField fx:id="notesTextField" layoutX="616.0" layoutY="675.0" prefHeight="86.0" prefWidth="620.0" promptText="ADDITIONAL NOTES">
-      <font>
-         <Font name="Open Sans Regular" size="26.0" />
-      </font>
-      <textFill>
-         <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
-      </textFill>
-   </MFXTextField>
-   <MFXFilterComboBox fx:id="roomSelector" layoutX="50.0" layoutY="675.0" prefHeight="86.0" prefWidth="551.0" promptText="ROOM">
-      <font>
-         <Font name="Open Sans Regular" size="26.0" />
-      </font>
-      <textFill>
-         <Color red="0.5299999713897705" green="0.5299999713897705" blue="0.5299999713897705" opacity="0.8700000047683716" />
-      </textFill>
-   </MFXFilterComboBox>
-   <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="86.0" layoutX="47.0" layoutY="569.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="1192.0" />
-   <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="86.0" layoutX="613.0" layoutY="675.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="626.0" />
-   <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="86.0" layoutX="47.0" layoutY="675.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="556.0" />
-   <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="505.0" layoutX="48.0" layoutY="48.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="1190.0" />
-   <Rectangle fx:id="cancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="50.0" layoutY="785.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
-   <Text disable="true" fill="WHITE" layoutX="96.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CANCEL">
-      <font>
-         <Font name="Open Sans Bold" size="26.0" />
-      </font>
-   </Text>
-   <Rectangle fx:id="clearButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="416.0" layoutY="784.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
-   <Text disable="true" fill="WHITE" layoutX="472.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CLEAR">
-      <font>
-         <Font name="Open Sans Bold" size="26.0" />
-      </font>
-   </Text>
-   <Rectangle fx:id="supplySubmitButton" arcHeight="20.0" arcWidth="20.0" fill="#f0bf4c" height="63.0" layoutX="1049.0" layoutY="784.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
-   <Text disable="true" fill="WHITE" layoutX="1093.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SUBMIT">
-      <font>
-         <Font name="Open Sans Bold" size="26.0" />
-      </font>
-   </Text>
+<!--
 
-</AnchorPane>
+        <?xml version="1.0" encoding="UTF-8"?>
+
+        <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+        <?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
+        <?import io.github.palexdev.materialfx.controls.MFXTextField?>
+        <?import javafx.scene.control.ScrollPane?>
+        <?import javafx.scene.layout.AnchorPane?>
+        <?import javafx.scene.paint.Color?>
+        <?import javafx.scene.shape.Rectangle?>
+        <?import javafx.scene.text.Font?>
+        <?import javafx.scene.text.Text?>
+
+        <AnchorPane prefHeight="1080.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewSupplyOrderController">
+           <ScrollPane hbarPolicy="NEVER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="1200.0">
+             <content>
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="1192.0">
+                    <children>
+                       <MFXRectangleToggleNode fx:id="rectangle1" layoutX="-8.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="PENCIL                                                                                                                            " wrapText="true">
+                          <font>
+                             <Font name="Open Sans Regular" size="30.0" />
+                          </font>
+                       </MFXRectangleToggleNode>
+                       <MFXRectangleToggleNode fx:id="rectangle2" layoutX="-8.0" layoutY="100.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="PEN                                                                                                                                  ">
+                          <font>
+                             <Font name="Open Sans Regular" size="30.0" />
+                          </font>
+                       </MFXRectangleToggleNode>
+                       <MFXRectangleToggleNode fx:id="rectangle3" layoutX="-8.0" layoutY="200.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="ERASER                                                                                                                            ">
+                          <font>
+                             <Font name="Open Sans Regular" size="30.0" />
+                          </font>
+                       </MFXRectangleToggleNode>
+                       <MFXRectangleToggleNode fx:id="rectangle4" layoutX="-8.0" layoutY="300.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="MARKER                                                                                                                           ">
+                          <font>
+                             <Font name="Open Sans Regular" size="30.0" />
+                          </font>
+                       </MFXRectangleToggleNode>
+                       <MFXRectangleToggleNode fx:id="rectangle5" layoutX="-8.0" layoutY="400.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="NOTEPAD                                                                                                                         ">
+                          <font>
+                             <Font name="Open Sans Regular" size="30.0" />
+                          </font>
+                       </MFXRectangleToggleNode>
+                       <MFXRectangleToggleNode fx:id="rectangle6" layoutX="-8.0" layoutY="500.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="CLIPBOARD                                                                                                                      ">
+                          <font>
+                             <Font name="Open Sans Regular" size="30.0" />
+                          </font>
+                       </MFXRectangleToggleNode>
+                       <MFXRectangleToggleNode fx:id="rectangle7" layoutX="-9.0" layoutY="600.0" prefHeight="100.0" prefWidth="1200.0" styleClass="rectToggle" text="APPLE                                                                                                                               ">
+                          <font>
+                             <Font name="Open Sans Regular" size="30.0" />
+                          </font>
+                       </MFXRectangleToggleNode>
+                       <Text disable="true" fill="#888888" layoutX="400.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One package of ten #2 pencils">
+                          <font>
+                             <Font name="Open Sans Regular" size="26.0" />
+                          </font>
+                       </Text>
+                       <Text disable="true" fill="#888888" layoutX="400.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One package of five black ballpoint pens">
+                          <font>
+                             <Font name="Open Sans Regular" size="26.0" />
+                          </font>
+                       </Text>
+                       <Text disable="true" fill="#888888" layoutX="400.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pink rectangle">
+                          <font>
+                             <Font name="Open Sans Regular" size="26.0" />
+                          </font>
+                       </Text>
+                       <Text disable="true" fill="#888888" layoutX="400.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One black dry-erase marker">
+                          <font>
+                             <Font name="Open Sans Regular" size="26.0" />
+                          </font>
+                       </Text>
+                       <Text disable="true" fill="#888888" layoutX="400.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One black leatherbound notebad">
+                          <font>
+                             <Font name="Open Sans Regular" size="26.0" />
+                          </font>
+                       </Text>
+                       <Text disable="true" fill="#888888" layoutX="400.0" layoutY="560.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One board to clip things to">
+                          <font>
+                             <Font name="Open Sans Regular" size="26.0" />
+                          </font>
+                       </Text>
+                       <Text disable="true" fill="#888888" layoutX="400.0" layoutY="660.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To keep the doctors away">
+                          <font>
+                             <Font name="Open Sans Regular" size="26.0" />
+                          </font>
+                       </Text>
+                    </children></AnchorPane>
+             </content>
+           </ScrollPane>
+           <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="501.0" layoutX="1256.0" layoutY="50.0" stroke="TRANSPARENT" strokeType="INSIDE" width="25.0" />
+           <Rectangle accessibleText="Text" arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="518.0" layoutX="1237.0" layoutY="37.0" stroke="TRANSPARENT" strokeType="INSIDE" width="17.0" />
+           <MFXTextField fx:id="linkTextField" layoutX="50.0" layoutY="570.0" prefHeight="86.0" prefWidth="1186.0" promptText="LINK IF NOT LISTED">
+              <font>
+                 <Font name="Open Sans Regular" size="26.0" />
+              </font>
+              <textFill>
+                 <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
+              </textFill>
+           </MFXTextField>
+           <MFXTextField fx:id="notesTextField" layoutX="616.0" layoutY="675.0" prefHeight="86.0" prefWidth="620.0" promptText="ADDITIONAL NOTES">
+              <font>
+                 <Font name="Open Sans Regular" size="26.0" />
+              </font>
+              <textFill>
+                 <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
+              </textFill>
+           </MFXTextField>
+           <MFXFilterComboBox fx:id="roomSelector" layoutX="50.0" layoutY="675.0" prefHeight="86.0" prefWidth="551.0" promptText="ROOM">
+              <font>
+                 <Font name="Open Sans Regular" size="26.0" />
+              </font>
+              <textFill>
+                 <Color red="0.5299999713897705" green="0.5299999713897705" blue="0.5299999713897705" opacity="0.8700000047683716" />
+              </textFill>
+           </MFXFilterComboBox>
+           <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="86.0" layoutX="47.0" layoutY="569.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="1192.0" />
+           <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="86.0" layoutX="613.0" layoutY="675.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="626.0" />
+           <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="86.0" layoutX="47.0" layoutY="675.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="556.0" />
+           <Rectangle arcHeight="20.0" arcWidth="20.0" disable="true" fill="#1f93ff00" height="505.0" layoutX="48.0" layoutY="48.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="1190.0" />
+           <Rectangle fx:id="cancelButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="50.0" layoutY="785.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
+           <Text disable="true" fill="WHITE" layoutX="96.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CANCEL">
+              <font>
+                 <Font name="Open Sans Bold" size="26.0" />
+              </font>
+           </Text>
+           <Rectangle fx:id="clearButton" arcHeight="20.0" arcWidth="20.0" fill="#012d5a" height="63.0" layoutX="416.0" layoutY="784.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
+           <Text disable="true" fill="WHITE" layoutX="472.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CLEAR">
+              <font>
+                 <Font name="Open Sans Bold" size="26.0" />
+              </font>
+           </Text>
+           <Rectangle fx:id="supplySubmitButton" arcHeight="20.0" arcWidth="20.0" fill="#f0bf4c" height="63.0" layoutX="1049.0" layoutY="784.0" stroke="TRANSPARENT" strokeType="INSIDE" width="187.0" />
+           <Text disable="true" fill="WHITE" layoutX="1093.0" layoutY="826.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SUBMIT">
+              <font>
+                 <Font name="Open Sans Bold" size="26.0" />
+              </font>
+           </Text>
+
+        </AnchorPane>
+
+        -->
+
+<StackPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewSupplyOrderController">
+   <children>
+      <VBox alignment="CENTER" spacing="20.0">
+         <HBox alignment="CENTER" maxWidth="1020.0" spacing="20.0">
+            <children>
+               <ScrollPane hbarPolicy="NEVER" maxHeight="700.0" minHeight="300.0" minWidth="1020.0" VBox.vgrow="ALWAYS">
+                  <content>
+                     <VBox>
+                        <children>
+                           <MFXRectangleToggleNode fx:id="rectangle1" minHeight="100.0" minWidth="1020.0" styleClass="rectToggle" text="PENCIL                                                                                                                            " wrapText="true">
+                              <font>
+                                 <Font name="Open Sans Regular" size="30.0" />
+                              </font>
+                              <graphic>
+                                 <HBox alignment="CENTER">
+                                    <children>
+                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PENCIL" wrappingWidth="300.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="30.0" />
+                                          </font>
+                                       </Text>
+                                       <Text disable="true" fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="One package of ten #2 pencils" wrappingWidth="660.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="26.0" />
+                                          </font>
+                                       </Text>
+                                    </children>
+                                    <padding>
+                                       <Insets left="30.0" right="30.0" />
+                                    </padding>
+                                 </HBox>
+                              </graphic>
+                           </MFXRectangleToggleNode>
+                           <MFXRectangleToggleNode fx:id="rectangle2" layoutX="-8.0" layoutY="100.0" minHeight="100.0" minWidth="1020.0" styleClass="rectToggle" text="PEN                                                                                                                                  ">
+                              <font>
+                                 <Font name="Open Sans Regular" size="30.0" />
+                              </font>
+                              <graphic>
+                                 <HBox alignment="CENTER">
+                                    <children>
+                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PEN" wrappingWidth="300.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="30.0" />
+                                          </font>
+                                       </Text>
+                                       <Text disable="true" fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="One package of five black ballpoint pens" wrappingWidth="660.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="26.0" />
+                                          </font>
+                                       </Text>
+                                    </children>
+                                 </HBox>
+                              </graphic>
+                           </MFXRectangleToggleNode>
+                           <MFXRectangleToggleNode fx:id="rectangle3" layoutX="-8.0" layoutY="200.0" minHeight="100.0" minWidth="1020.0" styleClass="rectToggle" text="ERASER                                                                                                                            ">
+                              <font>
+                                 <Font name="Open Sans Regular" size="30.0" />
+                              </font>
+                              <graphic>
+                                 <HBox alignment="CENTER">
+                                    <children>
+                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ERASER" wrappingWidth="300.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="30.0" />
+                                          </font>
+                                       </Text>
+                                       <Text disable="true" fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Pink rectangle" wrappingWidth="660.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="26.0" />
+                                          </font>
+                                       </Text>
+                                    </children>
+                                 </HBox>
+                              </graphic>
+                           </MFXRectangleToggleNode>
+                           <MFXRectangleToggleNode fx:id="rectangle4" layoutX="-8.0" layoutY="300.0" minHeight="100.0" minWidth="1020.0" styleClass="rectToggle" text="MARKER                                                                                                                           ">
+                              <font>
+                                 <Font name="Open Sans Regular" size="30.0" />
+                              </font>
+                              <graphic>
+                                 <HBox alignment="CENTER">
+                                    <children>
+                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MARKER" wrappingWidth="300.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="30.0" />
+                                          </font>
+                                       </Text>
+                                       <Text disable="true" fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="One black dry-erase marker" wrappingWidth="660.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="26.0" />
+                                          </font>
+                                       </Text>
+                                    </children>
+                                 </HBox>
+                              </graphic>
+                           </MFXRectangleToggleNode>
+                           <MFXRectangleToggleNode fx:id="rectangle5" layoutX="-8.0" layoutY="400.0" minHeight="100.0" minWidth="1020.0" styleClass="rectToggle" text="NOTEPAD                                                                                                                         ">
+                              <font>
+                                 <Font name="Open Sans Regular" size="30.0" />
+                              </font>
+                              <graphic>
+                                 <HBox alignment="CENTER">
+                                    <children>
+                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="NOTEPAD" wrappingWidth="300.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="30.0" />
+                                          </font>
+                                       </Text>
+                                       <Text disable="true" fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="One black leatherbound notebad" wrappingWidth="660.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="26.0" />
+                                          </font>
+                                       </Text>
+                                    </children>
+                                 </HBox>
+                              </graphic>
+                           </MFXRectangleToggleNode>
+                           <MFXRectangleToggleNode fx:id="rectangle6" layoutX="-8.0" layoutY="500.0" minHeight="100.0" minWidth="1020.0" styleClass="rectToggle" text="CLIPBOARD                                                                                                                      ">
+                              <font>
+                                 <Font name="Open Sans Regular" size="30.0" />
+                              </font>
+                              <graphic>
+                                 <HBox alignment="CENTER">
+                                    <children>
+                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CLIPBOARD" wrappingWidth="300.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="30.0" />
+                                          </font>
+                                       </Text>
+                                       <Text disable="true" fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="One board to clip things to" wrappingWidth="660.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="26.0" />
+                                          </font>
+                                       </Text>
+                                    </children>
+                                 </HBox>
+                              </graphic>
+                           </MFXRectangleToggleNode>
+                           <MFXRectangleToggleNode fx:id="rectangle7" layoutX="-9.0" layoutY="600.0" minHeight="100.0" minWidth="1020.0" styleClass="rectToggle" text="APPLE                                                                                                                               ">
+                              <font>
+                                 <Font name="Open Sans Regular" size="30.0" />
+                              </font>
+                              <graphic>
+                                 <HBox alignment="CENTER">
+                                    <children>
+                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="APPLE" wrappingWidth="300.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="30.0" />
+                                          </font>
+                                       </Text>
+                                       <Text disable="true" fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="To keep the doctors away" wrappingWidth="660.0">
+                                          <font>
+                                             <Font name="Open Sans Regular" size="26.0" />
+                                          </font>
+                                       </Text>
+                                    </children>
+                                 </HBox>
+                              </graphic>
+                           </MFXRectangleToggleNode>
+                        </children>
+                     </VBox>
+                  </content>
+               </ScrollPane>
+            </children>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+         </HBox>
+         <MFXTextField fx:id="linkTextField" floatMode="DISABLED" minHeight="86.0" minWidth="1020.0" promptText="LINK IF NOT IN STOCK" style="-fx-border-color: #012d5a; -fx-border-width: 3;">
+            <font>
+               <Font name="Open Sans Regular" size="26.0" />
+            </font>
+            <textFill>
+               <Color red="0.5315789580345154" green="0.5315789580345154" blue="0.5315789580345154" opacity="0.8700000047683716" />
+            </textFill>
+         </MFXTextField>
+         <HBox alignment="CENTER" spacing="20.0">
+            <children>
+               <MFXFilterComboBox fx:id="roomSelector" floatMode="ABOVE" minHeight="86.0" minWidth="500.0" popupOffsetY="-500.0" promptText="ROOM" style="-fx-border-color: #012d5a; -fx-border-width: 3;" HBox.hgrow="ALWAYS">
+                  <font>
+                     <Font name="Open Sans Regular" size="26.0" />
+                  </font>
+                  <textFill>
+                     <Color red="0.5333333611488342" green="0.5333333611488342" blue="0.5333333611488342" opacity="0.8700000047683716" />
+                  </textFill>
+               </MFXFilterComboBox>
+               <MFXTextField fx:id="notesTextField" minHeight="86.0" minWidth="500.0" promptText="ADDITIONAL NOTES" style="-fx-border-width: 3; -fx-border-radius: 5; -fx-border-color: #012d5a;" HBox.hgrow="ALWAYS">
+                  <font>
+                     <Font name="Open Sans Light" size="26.0" />
+                  </font>
+               </MFXTextField>
+            </children>
+         </HBox>
+         <HBox alignment="CENTER" maxWidth="1020.0">
+            <children>
+               <MFXButton fx:id="clearButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CLEAR" textFill="WHITE">
+                  <font>
+                     <Font name="Open Sans Bold" size="26.0" />
+                  </font>
+               </MFXButton>
+               <VBox HBox.hgrow="ALWAYS" />
+               <MFXButton fx:id="cancelButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CANCEL" textFill="WHITE">
+                  <font>
+                     <Font name="Open Sans Bold" size="26.0" />
+                  </font>
+               </MFXButton>
+               <VBox HBox.hgrow="ALWAYS" />
+               <VBox HBox.hgrow="ALWAYS" />
+               <MFXButton fx:id="supplySubmitButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #f0bf4c;" text="SUBMIT" textFill="#012d5a">
+                  <font>
+                     <Font name="Open Sans Bold" size="26.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
+               </MFXButton>
+            </children>
+         </HBox>
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+         </padding>
+
+      </VBox>
+      <HBox fx:id="confirmBlur" alignment="CENTER" disable="true" minHeight="720.0" minWidth="1080.0" opacity="0.76" style="-fx-background-color: #000000;" visible="false" />
+      <HBox fx:id="confirmBox" alignment="CENTER" disable="true" minHeight="720.0" minWidth="1080.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <AnchorPane fx:id="confirmPane" disable="true" style="-fx-border-color: #012d5a; -fx-border-radius: 3; -fx-background-color: WHITE; -fx-background-radius: 8; -fx-border-width: 2;" visible="false">
+                     <children>
+                        <VBox alignment="CENTER" spacing="15.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Order Confirmed">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </Text>
+                              <MFXButton fx:id="okButton" style="-fx-background-color: #f0bf4c;" text="OK">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="20.0" />
+                                 </font>
+                              </MFXButton>
+                           </children>
+                           <padding>
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                           </padding></VBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</StackPane>

@@ -24,13 +24,22 @@ public class Edge {
     edgeID = startNode + "<->" + endNode;
   }
 
+  public Edge reverse() {
+    return new Edge(endNode, startNode);
+  }
+
+  public boolean containsNode(int nodeID) {
+    return startNode == nodeID || endNode == nodeID;
+  }
+
   @Override
   public boolean equals(Object other) {
 
     if (other instanceof Edge) {
 
       Edge otherEdge = (Edge) other;
-      return startNode == otherEdge.startNode && endNode == otherEdge.endNode;
+      return (startNode == otherEdge.startNode && endNode == otherEdge.endNode)
+          || (startNode == otherEdge.endNode && endNode == otherEdge.startNode);
 
     } else return false;
   }
