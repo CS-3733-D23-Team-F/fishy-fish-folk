@@ -88,8 +88,18 @@
     -fx-border-width: 4px;
 }
 
+
+.service:hover{
+    -fx-background-color: #F9E4B3;
+}
+
 .sideNav{
     -fx-background-color: transparent;
+}
+
+.navIcon{
+    -fx-border-color: #F9E4B3;
+    -fx-border-width: 0 0.5 0.5 0;
 }
 
 .orderBtn:hover{
