@@ -5,22 +5,13 @@ import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
-import edu.wpi.fishfolk.database.IHasSubtable;
-import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
 import edu.wpi.fishfolk.database.TableEntry.SignagePreset;
-import edu.wpi.fishfolk.ui.FormStatus;
-import edu.wpi.fishfolk.ui.NewFoodItem;
 import edu.wpi.fishfolk.ui.Sign;
-import org.hibernate.internal.build.AllowSysOut;
-
 import java.io.*;
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SignagePresetDAO implements IDAO<SignagePreset> {
 
@@ -41,10 +32,10 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
     this.dataEditQueue = new DataEditQueue<>();
 
     /*
-                    + "room VARCHAR(256),"
-                + "direction DOUBLE,"
-                + "arrindex INT
-     */
+                   + "room VARCHAR(256),"
+               + "direction DOUBLE,"
+               + "arrindex INT
+    */
 
     init(false);
     initSubtable(false);
@@ -108,11 +99,11 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       // For each in the results, create a new SignagePreset object and put it in the local table
       while (results.next()) {
 
-        SignagePreset signagePreset = new SignagePreset(
-          results.getString(headers.get(0)),
-          results.getDate(headers.get(1)).toLocalDate(),
-          getSubtableItems(results.getInt(headers.get(2)))
-        );
+        SignagePreset signagePreset =
+            new SignagePreset(
+                results.getString(headers.get(0)),
+                results.getDate(headers.get(1)).toLocalDate(),
+                getSubtableItems(results.getInt(headers.get(2))));
 
         tableMap.put(signagePreset.getName(), signagePreset);
       }
@@ -153,8 +144,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
     // Push an UPDATE to the data edit stack, update the db if the batch limit has been reached
     if (dataEditQueue.add(
-        new DataEdit<>(tableMap.get(entry.getName()), entry, DataEditType.UPDATE),
-        true)) {
+        new DataEdit<>(tableMap.get(entry.getName()), entry, DataEditType.UPDATE), true)) {
 
       // Reset edit count
       dataEditQueue.setEditCount(0);
@@ -294,11 +284,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
       // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
       String insert =
-          "INSERT INTO "
-              + dbConnection.getSchema()
-              + "."
-              + this.tableName
-              + " VALUES (?, ?);";
+          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?);";
 
       String update =
           "UPDATE "
@@ -428,12 +414,12 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       // STEP 1: Check if the subtable exists
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
-                      + dbConnection.getSchema()
-                      + "' AND tablename = '"
-                      + tableName
-                      + "signs"
-                      + "');";
+          "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"
+              + dbConnection.getSchema()
+              + "' AND tablename = '"
+              + tableName
+              + "signs"
+              + "');";
       statement.execute(query);
       ResultSet results = statement.getResultSet();
       results.next();
@@ -447,15 +433,15 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       // STEP 3: If it does not exist OR the table was dropped, make it exist
       if (!results.getBoolean("exists") || drop) {
         query =
-                "CREATE TABLE "
-                        + tableName
-                        + "signs"
-                        + " ("
-                        + "signkey INT,"
-                        + "signroom VARCHAR(256),"
-                        + "signdirection REAL," +
-                        "signindex INT"
-                        + ");";
+            "CREATE TABLE "
+                + tableName
+                + "signs"
+                + " ("
+                + "signkey INT,"
+                + "signroom VARCHAR(256),"
+                + "signdirection REAL,"
+                + "signindex INT"
+                + ");";
         statement.executeUpdate(query);
       }
     } catch (SQLException e) {
@@ -476,13 +462,13 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       // Setup query to read ID stored in tied column of main table
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT signs FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + tableName
-                      + " WHERE presetname = '"
-                      + requestID
-                      + "';";
+          "SELECT signs FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + " WHERE presetname = '"
+              + requestID
+              + "';";
 
       // Run that shit
       statement.execute(query);
@@ -515,14 +501,14 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       // Query the subtable to return only items with the specified subtableID
       Statement statement = dbConnection.createStatement();
       String query =
-              "SELECT * FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + tableName
-                      + "signs "
-                      + "WHERE signkey = '"
-                      + subtableID
-                      + "';";
+          "SELECT * FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "signs "
+              + "WHERE signkey = '"
+              + subtableID
+              + "';";
 
       // Run the query
       statement.execute(query);
@@ -531,7 +517,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       // For each result, create a new food item and put it in the list
       while (results.next()) {
         int index = results.getInt("signindex");
-        presetArray[index] = new Sign(results.getString("signroom"), results.getDouble("signdirection"));
+        presetArray[index] =
+            new Sign(results.getString("signroom"), results.getDouble("signdirection"));
       }
 
       // Return the list
@@ -558,12 +545,12 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
       // Query to insert one new of subtable entries
       String insert =
-              "INSERT INTO "
-                      + dbConnection.getSchema()
-                      + "."
-                      + this.tableName
-                      + "signs"
-                      + " VALUES (?, ?, ?);";
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + "signs"
+              + " VALUES (?, ?, ?);";
 
       PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
 
@@ -594,12 +581,12 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
       // Query to delete items with matching subtableID
       String query =
-              "DELETE FROM "
-                      + dbConnection.getSchema()
-                      + "."
-                      + tableName
-                      + "signs"
-                      + " WHERE signkey = ?;";
+          "DELETE FROM "
+              + dbConnection.getSchema()
+              + "."
+              + tableName
+              + "signs"
+              + " WHERE signkey = ?;";
 
       PreparedStatement preparedDeleteAll = dbConnection.prepareStatement(query);
 

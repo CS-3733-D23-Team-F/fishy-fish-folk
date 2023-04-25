@@ -1,9 +1,8 @@
 package edu.wpi.fishfolk.controllers;
 
-import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
-
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.ui.Sign;
 import edu.wpi.fishfolk.ui.SignagePreset;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -11,18 +10,29 @@ import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
-import javax.swing.*;
 
 public class SignageEditorController extends AbsController {
   @FXML MFXTextField presetText; // name for the signage preset
   @FXML MFXDatePicker datePicker; // picks the date of preset implementation
-  @FXML MFXFilterComboBox<String> rooml0, rooml1, rooml2, rooml3; // room selectors on left side (0-3 is top-bottom)
-  @FXML MFXFilterComboBox<String> roomr0, roomr1, roomr2, roomr3; // room selectors on right side (0-3 is top-bottom)
-  @FXML ImageView iconl0, iconl1, iconl2, iconl3; // direction arrows for left side (0-3 is top-bottom)
-  @FXML ImageView iconr0, iconr1, iconr2, iconr3; // direction arrows for right side (0-3 is top-bottom)
-  @FXML MFXButton cancelButton, clearButton, submitButton; // cancel form, clear fields, and submit form
+  @FXML
+  MFXFilterComboBox<String> rooml0,
+      rooml1,
+      rooml2,
+      rooml3; // room selectors on left side (0-3 is top-bottom)
+  @FXML
+  MFXFilterComboBox<String> roomr0,
+      roomr1,
+      roomr2,
+      roomr3; // room selectors on right side (0-3 is top-bottom)
+  @FXML
+  ImageView iconl0, iconl1, iconl2, iconl3; // direction arrows for left side (0-3 is top-bottom)
+  @FXML
+  ImageView iconr0, iconr1, iconr2, iconr3; // direction arrows for right side (0-3 is top-bottom)
+  @FXML
+  MFXButton cancelButton, clearButton, submitButton; // cancel form, clear fields, and submit form
 
-  SignagePreset currentPreset = new SignagePreset(); // SignagePreset object stores all eight room selectors and sign orientations
+  SignagePreset currentPreset =
+      new SignagePreset(); // SignagePreset object stores room selectors and sign orientations
 
   public void initialize() {
     loadRooms(); // read documentation for loadRooms()
@@ -57,26 +67,27 @@ public class SignageEditorController extends AbsController {
     iconr2.setOnMouseClicked(event -> multiRotate(iconr2));
     iconr3.setOnMouseClicked(event -> multiRotate(iconr3));
 
-    cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME)); // cancel button just returns home
-    clearButton.setOnMouseClicked(event -> clearAll()); // clear button clears and resets all objects on the form
-    submitButton.setOnMouseClicked(event -> submit()); // submit button does submit(), read documentation for submit()
+    cancelButton.setOnMouseClicked(
+        event -> Navigation.navigate(Screen.HOME)); // cancel button just returns home
+    clearButton.setOnMouseClicked(
+        event -> clearAll()); // clear button clears and resets all objects on the form
+    submitButton.setOnMouseClicked(
+        event -> submit()); // submit button does submit(), read documentation for submit()
   }
 
-
-  // fullDisable() resets the direction arrows by disabling them, lowering their opacity, and resets their orientation
+  // fullDisable() resets the direction arrows by disabling them, lowering their opacity, and resets
+  // their orientation
   private void fullDisable(ImageView icon) {
     icon.setDisable(true);
     icon.setOpacity(0.5);
     icon.setRotate(0);
   }
 
-
   // fullEnable() enables the button and triggers full opacity for the arrow to signify usability
   private void fullEnable(ImageView icon) {
     icon.setDisable(false);
     icon.setOpacity(1);
   }
-
 
   // loadRooms() fills the room selectors with the names of the rooms from the database
   private void loadRooms() {
@@ -90,13 +101,12 @@ public class SignageEditorController extends AbsController {
     roomr3.getItems().addAll(dbConnection.getDestLongnames());
   }
 
-
-  // multiRotate() sets the orientation of the direction arrow to its previous orientation + 90 degrees, resets at 360
+  // multiRotate() sets the orientation of the direction arrow to its previous orientation + 90
+  // degrees, resets at 360
   private void multiRotate(ImageView icon) {
     icon.setRotate(icon.getRotate() + 90);
     if (icon.getRotate() == 360) icon.setRotate(0);
   }
-
 
   // clearAll() sets room selectors to default null values and disables all direction arrows
   private void clearAll() {
@@ -122,29 +132,30 @@ public class SignageEditorController extends AbsController {
     datePicker.setValue(null); // rests date picker with null value
   }
 
-
-  // submit() fills the created SignagePreset object with the fields of the form for database storage, then navigates to HOME page
+  // submit() fills the created SignagePreset object with the fields of the form for database
+  // storage, then navigates to HOME page
   private void submit() {
     currentPreset.setName(presetText.getText()); // preset name
     currentPreset.setDate(datePicker.getValue()); // preset implementation date
 
-    currentPreset.setRooml0(rooml0.getValue()); // room names if selected for all eight choice boxes
-    currentPreset.setRooml1(rooml1.getValue());
-    currentPreset.setRooml2(rooml2.getValue());
-    currentPreset.setRooml3(rooml3.getValue());
-    currentPreset.setRoomr0(roomr0.getValue());
-    currentPreset.setRoomr1(roomr1.getValue());
-    currentPreset.setRoomr2(roomr2.getValue());
-    currentPreset.setRoomr3(roomr3.getValue());
+    // assigns choice box and direction arrow direction to new Sign object and adds to
+    // currentPreset's list of Signs
+    currentPreset.addSign(new Sign(rooml0.getValue(), iconl0.getRotate()), 0);
+    currentPreset.addSign(new Sign(rooml1.getValue(), iconl1.getRotate()), 1);
+    currentPreset.addSign(new Sign(rooml2.getValue(), iconl2.getRotate()), 2);
+    currentPreset.addSign(new Sign(rooml3.getValue(), iconl3.getRotate()), 3);
 
-    currentPreset.setDirectionl0((iconl0.getRotate())); // orientations of all eight direction arrows if applicable
-    currentPreset.setDirectionl1((iconl1.getRotate()));
-    currentPreset.setDirectionl2((iconl2.getRotate()));
-    currentPreset.setDirectionl3((iconl3.getRotate()));
-    currentPreset.setDirectionr0((iconl0.getRotate()));
-    currentPreset.setDirectionr1((iconl1.getRotate()));
-    currentPreset.setDirectionr2((iconl2.getRotate()));
-    currentPreset.setDirectionr3((iconl3.getRotate()));
+    currentPreset.addSign(new Sign(roomr0.getValue(), iconr0.getRotate()), 4);
+    currentPreset.addSign(new Sign(roomr1.getValue(), iconr1.getRotate()), 5);
+    currentPreset.addSign(new Sign(roomr2.getValue(), iconr2.getRotate()), 6);
+    currentPreset.addSign(new Sign(roomr3.getValue(), iconr3.getRotate()), 7);
+
+    edu.wpi.fishfolk.database.TableEntry.SignagePreset preset =
+        new edu.wpi.fishfolk.database.TableEntry.SignagePreset(
+            currentPreset.getPresetName(),
+            currentPreset.getImplementationDate(),
+            currentPreset.signs);
+    dbConnection.insertEntry(preset);
 
     Navigation.navigate(Screen.HOME); // go homes
   }

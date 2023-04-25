@@ -362,6 +362,7 @@ public class Fdb {
 
   /**
    * Pushes ALL staged changes to a PostgreSQL database table.
+   *
    * @param tableEntryType Type of table to push all changes to
    * @return True on success, false otherwise
    */
