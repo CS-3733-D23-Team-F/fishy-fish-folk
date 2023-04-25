@@ -80,6 +80,7 @@ public class Fdb {
                   conferenceRequestTable.updateDatabase(true);
                   userAccountTable.updateDatabase(true);
                   signagePresetTable.updateDatabase(true);
+                  alertTable.updateDatabase(true);
                   disconnect();
                 }));
   }

@@ -9,6 +9,7 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -85,49 +86,25 @@ public class AdminDashboardController {
     int row = 1;
     try {
       for (Move move : moves) {
+
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
         AnchorPane anchorPane = fxmlLoader.load();
         FutureMovesController futureMoves = fxmlLoader.getController();
+
         futureMoves.setData(move.getLongName(), "" + move.getDate());
+
         futureMoves.notify.setOnMouseClicked(
             event -> {
-              try {
-                FXMLLoader fxmlLoader2 = new FXMLLoader();
-                fxmlLoader2.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
+              String longname = futureMoves.longname;
+              LocalDate date = LocalDate.parse(futureMoves.sDate);
+              Alert alert =
+                  new Alert(
+                      LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), longname, date, "");
 
-                AnchorPane anchorPane2 = fxmlLoader2.load();
-
-                AlertsController alerts = fxmlLoader2.getController();
-
-                String longname = futureMoves.longname;
-                LocalDate date = LocalDate.parse(futureMoves.sDate);
-                Alert alert = new Alert(LocalDateTime.now(), longname, date, "will be moved");
-                alerts.setData(futureMoves.longname, futureMoves.sDate);
-
-                alerts.closeAlert.setOnMouseClicked(
-                    event1 -> {
-                      dbConnection.removeEntry(alert.getTimestamp(), TableEntryType.ALERT);
-                      alertGrid.getChildren().remove(anchorPane2);
-                      return;
-                    });
-
-                anchorPane2.setPrefWidth(alertGrid.getWidth());
-
-                dbConnection.insertEntry(alert);
-                alertGrid.add(anchorPane2, 1, rowA);
-                rowA += 1;
-
-                alertGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-                alertGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                alertGrid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-                GridPane.setMargin(anchorPane2, new Insets(10));
-
-              } catch (IOException e) {
-                e.printStackTrace();
-              }
+              addAlert(alert);
             });
+
         if (col == 1) {
           col = 0;
           row++;
@@ -149,46 +126,55 @@ public class AdminDashboardController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+
     addAlert.setOnAction(
-        event3 -> {
-          try {
-            FXMLLoader fxmlLoader2 = new FXMLLoader();
-            fxmlLoader2.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
-
-            AnchorPane anchorPane2 = fxmlLoader2.load();
-
-            AlertsController alerts = fxmlLoader2.getController();
-            Alert alert = new Alert(LocalDateTime.now(), addAlert.getText());
-            alerts.setData(addAlert.getText());
-
-            alerts.closeAlert.setOnMouseClicked(
-                event1 -> {
-                  alertGrid.getChildren().remove(anchorPane2);
-                  dbConnection.removeEntry(alert.getTimestamp(), TableEntryType.ALERT);
-                });
-
-            anchorPane2.setPrefWidth(alertGrid.getWidth());
-
-            dbConnection.insertEntry(alert);
-            alertGrid.add(anchorPane2, 1, rowA);
-            rowA += 1;
-
-            alertGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-            alertGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-            alertGrid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-            GridPane.setMargin(anchorPane2, new Insets(10));
-
-            addAlert.clear();
-            return;
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
+        event -> {
+          Alert alert =
+              new Alert(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), addAlert.getText());
+          addAlert(alert);
         });
+
     supplyassignee.setOnEditCommit(this::onSetSupplyEdit);
     foodassignee.setOnEditCommit(this::onSetFoodEdit);
     flowerassignee.setOnEditCommit(this::onSetFlowerEdit);
     furnitureassignee.setOnEditCommit(this::onSetFurnitureEdit);
+  }
+
+  public void addAlert(Alert alert) {
+    try {
+      FXMLLoader fxmlLoader = new FXMLLoader();
+      fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
+
+      AnchorPane anchorPane = fxmlLoader.load();
+
+      AlertsController alertsController = fxmlLoader.getController();
+      alertsController.setData(alert);
+
+      alertsController.closeAlert.setOnMouseClicked(
+          event -> {
+            alertGrid.getChildren().remove(anchorPane);
+            dbConnection.removeEntry(alert.getTimestamp(), TableEntryType.ALERT);
+          });
+
+      anchorPane.setPrefWidth(alertGrid.getWidth());
+
+      dbConnection.insertEntry(alert);
+      alertGrid.add(anchorPane, 1, rowA);
+      rowA += 1;
+
+      alertGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
+      alertGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+      alertGrid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+      GridPane.setMargin(anchorPane, new Insets(10));
+
+      addAlert.clear();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void onSetSupplyEdit(TableColumn.CellEditEvent<SupplyOrderObservable, String> t) {

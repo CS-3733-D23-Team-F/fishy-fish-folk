@@ -11,6 +11,7 @@ import java.io.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,8 @@ public class AlertDAO implements IDAO<Alert> {
 
   private final HashMap<LocalDateTime, Alert> alerts = new HashMap<>();
   private final DataEditQueue<Alert> dataEditQueue = new DataEditQueue<>();
+
+  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
   /** DAO for Alert table in PostgreSQL database. */
   public AlertDAO(Connection dbConnection) {
@@ -94,7 +97,7 @@ public class AlertDAO implements IDAO<Alert> {
       while (results.next()) {
 
         Alert alert = null;
-        LocalDateTime timestamp = LocalDateTime.parse(results.getString(1));
+        LocalDateTime timestamp = LocalDateTime.parse(results.getString(1), formatter);
 
         switch (AlertType.valueOf(results.getString("type"))) {
           case MOVE:
