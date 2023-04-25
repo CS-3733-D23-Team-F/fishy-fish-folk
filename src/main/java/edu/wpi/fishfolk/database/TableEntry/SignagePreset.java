@@ -1,7 +1,6 @@
 package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.ui.Sign;
-import edu.wpi.fishfolk.ui.SignDirection;
 import lombok.Getter;
 import lombok.Setter;
 
