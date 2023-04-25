@@ -4,8 +4,9 @@ import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class RootController {
@@ -26,13 +27,14 @@ public class RootController {
   // @FXML Text directionInstructions;
   @FXML MFXButton viewOrders;
   @FXML MFXButton furnitureNav;
+  @FXML StackPane sidebar;
 
   // @FXML MFXButton moveEditorNav;
-  @FXML AnchorPane sideBar;
+  // @FXML AnchorPane sideBar;
 
   @FXML
-  public void initialize() {
-    serviceBar.toFront();
+  public void initialize() throws IOException {
+
     updatePermissionsAccess();
 
     SharedResources.setRootController(this);
@@ -61,11 +63,32 @@ public class RootController {
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     // moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
-    serviceNav.setOnMouseClicked(
+    serviceNav.setOnMouseEntered(
         event -> {
+          serviceNav.setStyle(
+              "-fx-background-color: #0e4675;\n"
+                  + "    -fx-border-color: transparent transparent transparent #F0BF4C;\n"
+                  + "    -fx-border-width: 4px;");
           serviceBar.setVisible(true);
           serviceBar.setDisable(false);
+          serviceBar.setOnMouseEntered(
+              event1 -> {
+                serviceBar.setVisible(true);
+                serviceBar.setDisable(false);
+              });
+          serviceBar.setOnMouseExited(
+              event1 -> {
+                serviceBar.setVisible(false);
+                serviceBar.setDisable(true);
+                serviceNav.setStyle(null);
+              });
         });
+    serviceNav.setOnMouseExited(
+        event -> {
+          serviceBar.setVisible(false);
+          serviceBar.setDisable(true);
+        });
+
     /*
        serviceNav.setOnMouseExited(
            event -> {

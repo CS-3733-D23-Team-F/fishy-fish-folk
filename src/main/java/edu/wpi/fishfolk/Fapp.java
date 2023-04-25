@@ -29,27 +29,23 @@ public class Fapp extends Application {
   public void start(Stage primaryStage) throws IOException {
     /* primaryStage is generally only used if one of your components require the stage to display */
     Fapp.primaryStage = primaryStage;
+    primaryStage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
 
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Root.fxml"));
     final BorderPane root = loader.load();
 
-    primaryStage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
     Fapp.rootPane = root;
-
     final Scene scene = new Scene(root);
-
-    // primaryStage.setFullScreen(true);
-    // primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
-    // scene.getStylesheets().add("" + Fapp.class.getResource("Styles/style.css"));
     scene.getStylesheets().add(Fapp.class.getResource("Styles/style.css").toExternalForm());
 
-    // scene.getStylesheets().add("../resources/edu/wpi/fishfolk/Styles/style.css");
-
-    // primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
     primaryStage.setScene(scene);
     primaryStage.setMaximized(true);
     primaryStage.show();
+
     Navigation.navigate(Screen.LOGIN);
+
+    // root.setLeft(roots.getServiceBar());
+
   }
 
   @Override

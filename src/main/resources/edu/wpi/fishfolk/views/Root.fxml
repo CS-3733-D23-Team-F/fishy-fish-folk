@@ -8,11 +8,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.RootController">
+<BorderPane fx:id="rootPane" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.RootController">
    <top>
       <AnchorPane minHeight="50.0" minWidth="1080.0" BorderPane.alignment="CENTER">
          <children>
@@ -32,30 +33,24 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
-                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/NavigationBar/002-copyright.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets right="15.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/NavigationBar/001-information.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets right="15.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/NavigationBar/001-email.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets right="15.0" />
-                           </HBox.margin>
-                        </ImageView>
+                        <MFXButton fx:id="aboutButton" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" depthLevel="LEVEL1" style="-fx-background-color: transparent;">
+                           <graphic>
+                              <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/NavigationBar/001-information.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MFXButton>
+                        <MFXButton fx:id="creditButton" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" depthLevel="LEVEL1" style="-fx-background-color: transparent;">
+                           <graphic>
+                              <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/NavigationBar/002-copyright.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MFXButton>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/FFF.png" />
@@ -72,7 +67,8 @@
       </AnchorPane>
    </top>
    <left>
-      <StackPane alignment="BOTTOM_CENTER" BorderPane.alignment="CENTER">
+      <Pane fx:id="leftPane" />
+      <StackPane fx:id="sidebar" alignment="BOTTOM_CENTER" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane maxWidth="100.0" minWidth="100.0" style="-fx-background-color: #012D5A;" StackPane.alignment="CENTER">
                <children>
@@ -155,6 +151,61 @@
                                     </ImageView>
                                  </graphic>
                               </MFXButton>
+                              <VBox fx:id="serviceBar" disable="true" maxHeight="360.0" maxWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: #ffffff;" visible="false">
+                                 <children>
+                                    <MFXButton fx:id="viewOrders" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="View Orders" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="15.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </MFXButton>
+                                    <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Meal Order" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="15.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="supplyNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Supplies Order" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="15.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="flowerNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Flower Delivery" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="15.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="furnitureNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Furniture Delivery" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="15.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="conferenceNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Conference Request" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="15.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </MFXButton>
+                                 </children>
+                              </VBox>
                            </children>
                         </HBox>
                      </children>
@@ -182,68 +233,4 @@
          </children>
       </StackPane>
    </left>
-   <center>
-      <StackPane BorderPane.alignment="CENTER">
-         <children>
-            <VBox fx:id="serviceBar" maxHeight="360.0" maxWidth="200.0" style="-fx-background-color: #ffffff;" StackPane.alignment="TOP_LEFT">
-               <children>
-                  <MFXButton fx:id="viewOrders" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="View Orders" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </MFXButton>
-                  <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Meal Order" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </MFXButton>
-                  <MFXButton fx:id="supplyNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Supplies Order" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </MFXButton>
-                  <MFXButton fx:id="flowerNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Flower Delivery" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </MFXButton>
-                  <MFXButton fx:id="furnitureNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Furniture Delivery" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </MFXButton>
-                  <MFXButton fx:id="conferenceNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Conference Request" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </MFXButton>
-               </children>
-               <StackPane.margin>
-                  <Insets top="280.0" />
-               </StackPane.margin>
-            </VBox>
-         </children>
-      </StackPane>
-   </center>
 </BorderPane>
