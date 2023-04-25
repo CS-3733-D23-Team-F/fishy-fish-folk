@@ -18,7 +18,6 @@ import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import net.kurobako.gesturefx.GesturePane;
@@ -375,6 +374,9 @@ public class MapEditorController extends AbsController {
             ybar += node.getY();
           }
 
+          xbar /= nodes.size();
+          ybar /= nodes.size();
+
           double numerator = 0, denominator = 0;
           for (Node node : nodes) {
             numerator += (node.getX() - xbar) * (node.getY() - ybar);
@@ -394,15 +396,13 @@ public class MapEditorController extends AbsController {
             double b = ybar - m * xbar;
 
             // through origin with same slope as line
-            Point2D line = new Point2D(100, 100 * m);
-            drawGroup.getChildren().add(new Line(0, b, line.getX(), line.getY()));
-            System.out.println("y = " + m + "x" + " + " + b + " line:" + line);
+            Point2D line = new Point2D(500, 500 * m);
+
             double line2 = line.dotProduct(line);
             nodes.forEach(
                 node -> {
                   Point2D v = node.getPoint().subtract(0, b);
                   Point2D proj = line.multiply(v.dotProduct(line) / line2);
-                  System.out.println(node.getPoint() + " -> " + proj.add(0, b));
                   node.setPoint(proj.add(0, b));
                 });
 
