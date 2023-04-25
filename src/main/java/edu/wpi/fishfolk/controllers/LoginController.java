@@ -82,7 +82,21 @@ public class LoginController extends AbsController {
         // valid account. We're already logged in if we get here!
         errorBox.setText("Logged in successfully!");
         errorBox.setStyle("-fx-alignment: center; -fx-background-color:  green;");
-        Navigation.navigate(Screen.HOME);
+        System.out.println("perm: " + SharedResources.getCurrentUser().getLevel());
+        switch (SharedResources.getCurrentUser().getLevel()) {
+          case GUEST:
+            Navigation.navigate(Screen.SIGNAGE);
+            break;
+          case STAFF:
+            Navigation.navigate(Screen.STAFF_DASHBOARD);
+            break;
+          case ADMIN:
+            Navigation.navigate(Screen.HOME);
+            break;
+          case ROOT:
+            Navigation.navigate(Screen.HOME);
+            break;
+        }
       } else {
         errorBox.setText("Incorrect password.");
         errorBox.setVisible(true);

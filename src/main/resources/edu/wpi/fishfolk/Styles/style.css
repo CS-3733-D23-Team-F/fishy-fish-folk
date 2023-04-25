@@ -100,8 +100,9 @@
     -fx-border-color: blue;
 }
 
-Micronode:hover{
-    -fx-border-color: yellow;
+.radio-button:selected .radio .dot {
+    -fx-background-color: #012D5A;
+    -fx-background-insets: 0;
 }
 
 .floorDisplay{
@@ -123,11 +124,19 @@ Micronode:hover{
     -fx-max-height: 0;
 }
 
-.loginField{
-    -fx-border-color: #012D5A;
-    -fx-border-width: 0 0 0.5 0;
-    -fx-border-radius: 0;
-    -fx-prompt-text-fill: #012D5A;
+.table-view .column-header-background .label {
+    -fx-text-fill: white;
+    -fx-background-color: #012D5A;
+    -fx-background-radius: 5;
 }
 
+.tab-pane .tab .tab-label{
+    -fx-stroke: transparent;
+    -fx-text-fill: #012D5A;
 
+}
+
+.choice-box{
+    -fx-border-color: #012D5A;
+    -fx-border-radius: 5;
+}

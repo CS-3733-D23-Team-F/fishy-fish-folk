@@ -1,17 +1,16 @@
 package edu.wpi.fishfolk.mapeditor;
 
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import lombok.Getter;
 
 public class NodeText extends Text {
 
-  String NodeTextID;
+  @Getter private int nodeID;
 
-  public String getNodeTextID() {
-    return NodeTextID;
-  }
-
-  public NodeText(String nodeId, double x, double y, String text) {
+  public NodeText(int nodeID, double x, double y, String text) {
     super(x, y, text);
-    this.NodeTextID = nodeId;
+    this.setFont(Font.font("Open Sans", 20));
+    this.nodeID = nodeID;
   }
 }

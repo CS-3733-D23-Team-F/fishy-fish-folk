@@ -1,9 +1,9 @@
 package edu.wpi.fishfolk.pathfinding;
 
-import edu.wpi.fishfolk.controllers.AbsController;
 import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.util.NodeType;
+import java.time.LocalDate;
 import java.util.*;
 import javafx.geometry.Point2D;
 import lombok.Getter;
@@ -25,9 +25,12 @@ public class Graph {
 
   private Fdb dbConnection;
 
-  public Graph(Fdb dbConnection) {
+  private LocalDate date;
+
+  public Graph(Fdb dbConnection, LocalDate date) {
 
     this.dbConnection = dbConnection;
+    this.date = date;
 
     this.size = dbConnection.getNumNodes();
 
@@ -52,9 +55,7 @@ public class Graph {
                 elt -> {
                   Node node = (Node) elt;
 
-                  dbConnection
-                      .getLocations(node.getNodeID(), AbsController.today)
-                      .forEach(node::addLocation);
+                  dbConnection.getLocations(node.getNodeID(), date).forEach(node::addLocation);
 
                   id2idx.put(node.getNodeID(), nodeCount[0]);
                   nodeCount[0]++;
