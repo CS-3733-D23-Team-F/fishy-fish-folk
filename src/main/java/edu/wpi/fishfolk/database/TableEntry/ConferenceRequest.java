@@ -41,4 +41,24 @@ public class ConferenceRequest {
     this.roomName = roomName;
     this.status = EntryStatus.OLD;
   }
+
+  public ConferenceRequest(
+      LocalDateTime conferenceRequestID,
+      String notes,
+      String username,
+      String startTime,
+      String endTime,
+      Recurring recurringOption,
+      int numAttendees,
+      String roomName) {
+    this.conferenceRequestID = conferenceRequestID;
+    this.notes = notes;
+    this.username = username;
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.recurringOption = recurringOption;
+    this.numAttendees = numAttendees;
+    this.roomName = roomName;
+    this.status = EntryStatus.OLD;
+  }
 }
