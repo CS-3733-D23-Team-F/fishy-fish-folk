@@ -15,7 +15,7 @@ public interface IHasSubtable<T> {
   /**
    * Queries the table to determine the key used in the main table column tied to the subtable.
    *
-   * @param requestID The LocalDateTime ID of the food order
+   * @param requestID The LocalDateTime ID of the item
    * @return The ID for this food order's items in the subtable
    */
   int getSubtableItemsID(LocalDateTime requestID);
