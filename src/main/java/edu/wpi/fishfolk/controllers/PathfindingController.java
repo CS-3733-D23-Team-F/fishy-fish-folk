@@ -7,8 +7,10 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.pathfinding.*;
+import edu.wpi.fishfolk.util.PermissionLevel;
 import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
 import java.util.*;
@@ -122,13 +124,6 @@ public class PathfindingController extends AbsController {
     methodSelector.getItems().add("DFS");
     methodSelector.getItems().add("Dijkstra's");
 
-    /*
-    if (!SharedResources.getCurrentUser().getLevel().equals(PermissionLevel.ADMIN)) {
-      settingButton.setVisible(false);
-      settingButton.setDisable(true);
-    }
-     */
-
     if (pathText.getText().equals("")) {
       pathTextBox.setVisible(false);
     }
@@ -143,8 +138,11 @@ public class PathfindingController extends AbsController {
           } else {
             settingBox.setVisible(true);
             settingBox.setDisable(false);
-            adminBox.setVisible(true);
-            adminBox.setDisable(false);
+            if (SharedResources.getCurrentUser().getLevel() == PermissionLevel.ADMIN
+                || SharedResources.getCurrentUser().getLevel() == PermissionLevel.ROOT) {
+              adminBox.setVisible(true);
+              adminBox.setDisable(false);
+            }
           }
         });
 
