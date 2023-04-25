@@ -26,11 +26,13 @@ public class RootController {
   // @FXML Text directionInstructions;
   @FXML MFXButton viewOrders;
   @FXML MFXButton furnitureNav;
+
   // @FXML MFXButton moveEditorNav;
   @FXML AnchorPane sideBar;
 
   @FXML
   public void initialize() {
+    serviceBar.toFront();
     updatePermissionsAccess();
 
     SharedResources.setRootController(this);
