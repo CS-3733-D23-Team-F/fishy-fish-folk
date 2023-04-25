@@ -468,7 +468,7 @@
                   <HBox alignment="CENTER_LEFT">
                      <children>
                         <MFXDatePicker fx:id="newLocationDate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
-                        <MFXButton fx:id="newLocationSubmit" alignment="CENTER_RIGHT" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: #012d5a;" text="Add to node" textFill="WHITE">
+                        <MFXButton fx:id="newLocationSubmit" alignment="CENTER_RIGHT" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: #F0BF4C;" text="Add to node" textFill="#012d5a">
                            <font>
                               <Font name="Open Sans Bold" size="12.0" />
                            </font>
