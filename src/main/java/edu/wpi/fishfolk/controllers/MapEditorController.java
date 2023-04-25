@@ -17,7 +17,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -27,21 +26,20 @@ public class MapEditorController extends AbsController {
 
   @FXML MFXComboBox<String> floorSelector;
   @FXML ImageView mapImg;
-  @FXML GesturePane pane;
+  @FXML GesturePane gesturePane;
   @FXML public Group drawGroup;
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
 
-  @FXML HBox buttonPane;
-  @FXML VBox sidePane;
+  // @FXML HBox buttonPane;
 
   @FXML MFXButton moveEditorNav;
-
-  @FXML MFXTextField nodeidText, xText, yText, buildingText;
+  @FXML MFXButton importCSV, exportCSV;
   @FXML MFXButton addNode, delNode;
   @FXML MFXButton addEdge, delEdge;
   @FXML MFXToggleButton toggleAll, toggleSelected;
-  @FXML MFXButton importCSV, exportCSV;
+  @FXML MFXButton linearAlign, snapGrid;
+  @FXML MFXTextField nodeidText, xText, yText, buildingText;
 
   @FXML MFXScrollPane locationScrollpane;
   @FXML VBox locationsVbox;
@@ -122,8 +120,8 @@ public class MapEditorController extends AbsController {
 
     moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
-    pane.centreOn(new Point2D(1700, 1100));
-    pane.zoomTo(0.4, new Point2D(2500, 1600));
+    gesturePane.centreOn(new Point2D(1700, 1100));
+    gesturePane.zoomTo(0.4, new Point2D(2500, 1600));
 
     // buttons and state switching
 
@@ -144,6 +142,7 @@ public class MapEditorController extends AbsController {
             clearNodeFields();
             clearLocationFields();
 
+            toggleSelected.setSelected(false);
             toggleSelected.setDisable(true);
             deselectAllEdges();
             edgesGroup.getChildren().forEach(fxnode -> fxnode.setVisible(toggleAll.isSelected()));
@@ -226,7 +225,7 @@ public class MapEditorController extends AbsController {
 
     toggleSelected.setOnAction(
         event -> {
-          if (toggleSelected.isSelected() && state == EDITOR_STATE.EDITING_NODE) {
+          if (toggleSelected.isSelected()) { // && state == EDITOR_STATE.EDITING_NODE) {
 
             toggleAll.setSelected(false);
             toggleAll.setDisable(true);
@@ -260,7 +259,7 @@ public class MapEditorController extends AbsController {
                 removeSelectedEdges();
 
                 // in case a node is deleted while dragging (gestures are disabled when dragging)
-                pane.setGestureEnabled(true);
+                gesturePane.setGestureEnabled(true);
                 state = EDITOR_STATE.IDLE;
 
               } else if (event.getCode() == KeyCode.CONTROL) {
@@ -283,6 +282,43 @@ public class MapEditorController extends AbsController {
             event -> {
               if (event.getCode() == KeyCode.CONTROL) {
                 controlPressed = false;
+
+              } else if (event.getCode() == KeyCode.A
+                  || event.getCode() == KeyCode.W
+                  || event.getCode() == KeyCode.D
+                  || event.getCode() == KeyCode.S) {
+
+                // for each drawn node, if its selected update it in the db
+                nodesGroup
+                    .getChildren()
+                    .forEach(
+                        fxnode -> {
+                          NodeCircle nodeCircle = (NodeCircle) fxnode;
+                          if (selectedNodes.contains(nodeCircle.getNodeID())) {
+                            Node newNode =
+                                (Node)
+                                    dbConnection.getEntry(
+                                        nodeCircle.getNodeID(), TableEntryType.NODE);
+                            newNode.setPoint(
+                                new Point2D(nodeCircle.getCenterX(), nodeCircle.getCenterY()));
+                            dbConnection.updateEntry(newNode);
+                          }
+                        });
+
+                // update edgelines containing the moved nodes
+                edgesGroup
+                    .getChildren()
+                    .forEach(
+                        fxnode -> {
+                          EdgeLine edgeLine = (EdgeLine) fxnode;
+                          selectedNodes.forEach(
+                              nodeID -> {
+                                if (edgeLine.containsNode(nodeID)) {
+                                  edgeLine.updateEndpoint(
+                                      (Node) dbConnection.getEntry(nodeID, TableEntryType.NODE));
+                                }
+                              });
+                        });
               }
             });
 
@@ -318,6 +354,75 @@ public class MapEditorController extends AbsController {
           dbConnection.exportCSV(exportPath, TableEntryType.MOVE);
           dbConnection.exportCSV(exportPath, TableEntryType.EDGE);
           // fileChooser.setInitialDirectory(new File(exportPath));
+        });
+
+    linearAlign.setOnAction(
+        event -> {
+          // find the line of best fit through the selected points
+          // project each point to the line
+          // https://online.stat.psu.edu/stat501/lesson/1/1.2
+
+          double xbar = 0, ybar = 0;
+
+          List<Node> nodes = new LinkedList<>();
+
+          selectedNodes.forEach(
+              nodeID -> nodes.add((Node) dbConnection.getEntry(nodeID, TableEntryType.NODE)));
+
+          for (Node node : nodes) {
+            xbar += node.getX();
+            ybar += node.getY();
+          }
+
+          double numerator = 0, denominator = 0;
+          for (Node node : nodes) {
+            numerator += (node.getX() - xbar) * (node.getY() - ybar);
+            denominator += Math.pow(node.getX() - xbar, 2);
+          }
+
+          // if the line of best fit is essentially vertical, align each point to that line
+          if (Math.abs(denominator) < 1) {
+
+            double x = (nodes.get(0).getX() + nodes.get(nodes.size() - 1).getX()) / 2;
+            nodes.forEach(node -> node.setPoint(new Point2D(x, node.getY())));
+
+          } else {
+
+            // equation of line in y = mx + b form
+            double m = numerator / denominator;
+            double b = ybar - m * xbar;
+
+            // vector from (0,0) to (100, y(100)) representing the line
+            Point2D line = new Point2D(100, b + 100 * m);
+            double line2 = line.dotProduct(line);
+            nodes.forEach(
+                node -> {
+                  Point2D v = node.getPoint();
+                  Point2D proj = line.multiply(v.dotProduct(line) / line2);
+                  node.setPoint(proj);
+                });
+
+            nodes.forEach(
+                node -> {
+
+                  // draw NodeCircle at updated node points
+                  nodesGroup
+                      .getChildren()
+                      .forEach(
+                          fxnode -> {
+                            NodeCircle nodeCircle = (NodeCircle) fxnode;
+                            if (nodeCircle.getNodeID() == node.getNodeID()) {
+                              nodeCircle.setCenterX(node.getX());
+                              nodeCircle.setPrevX(node.getX());
+                              nodeCircle.setCenterY(node.getY());
+                              nodeCircle.setPrevY(node.getY());
+                            }
+                          });
+
+                  // update db
+                  dbConnection.updateEntry(node);
+                });
+          }
         });
 
     newLocationSubmit.setOnAction(
@@ -390,7 +495,7 @@ public class MapEditorController extends AbsController {
           if (state == EDITOR_STATE.EDITING_NODE) {
 
             // TODO drag all selected nodes the same amount
-            pane.setGestureEnabled(false);
+            gesturePane.setGestureEnabled(false);
 
             nodeCircle.setCenterX(event.getX());
             nodeCircle.setCenterY(event.getY());
@@ -402,7 +507,7 @@ public class MapEditorController extends AbsController {
     nodeCircle.setOnMouseReleased(
         event -> {
           // enable gesture pane outside if in case the state changed while dragging
-          pane.setGestureEnabled(true);
+          gesturePane.setGestureEnabled(true);
           if (state == EDITOR_STATE.EDITING_NODE) {
 
             // TODO: update all selected nodes
@@ -691,6 +796,8 @@ public class MapEditorController extends AbsController {
               }
             });
   }
+
+  private void updateEdges() {}
 
   /**
    * Fill in text fields for Nodes.
