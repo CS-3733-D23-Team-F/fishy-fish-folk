@@ -11,6 +11,8 @@ import io.github.palexdev.materialfx.controls.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.controlsfx.control.PopOver;
@@ -35,6 +37,10 @@ public class NewFurnitureOrderController extends AbsController {
   @FXML MFXDatePicker deliveryDate;
   @FXML MFXTextField notesTextField;
   @FXML MFXButton cancelButton, clearButton, furnituresubmitButton;
+  @FXML HBox confirmBlur;
+  @FXML HBox confirmBox;
+  @FXML AnchorPane confirmPane;
+  @FXML MFXButton okButton;
 
   FurnitureOrder currentFurnitureOrder = new FurnitureOrder();
   ArrayList<FurnitureItem> furnitureOptions = new ArrayList<>();
@@ -45,6 +51,7 @@ public class NewFurnitureOrderController extends AbsController {
   public void initialize() {
     loadOptions();
     loadRoomChoice();
+    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
     cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     furnituresubmitButton.setOnMouseClicked(event -> submit());
     clearButton.setOnMouseClicked(event -> clearAllFields());
@@ -215,6 +222,11 @@ public class NewFurnitureOrderController extends AbsController {
             currentFurnitureOrder.roomNum,
             currentFurnitureOrder.deliveryDate);
     dbConnection.insertEntry(request);
-    Navigation.navigate(Screen.HOME);
+    confirmBlur.setDisable(false);
+    confirmBlur.setVisible(true);
+    confirmBox.setDisable(false);
+    confirmBox.setVisible(true);
+    confirmPane.setVisible(true);
+    confirmPane.setDisable(false);
   }
 }
