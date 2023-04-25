@@ -17,6 +17,7 @@ public enum Screen {
 
   MAP_EDITOR("views/MapEditor.fxml"),
   SIGNAGE_EDITOR("views/SignageEditor.fxml"),
+  NEW_SIGNAGE("views/NewSignage.fxml"),
   MOVE_EDITOR("views/MoveEditor.fxml"),
 
   LOGIN("views/Login.fxml"),

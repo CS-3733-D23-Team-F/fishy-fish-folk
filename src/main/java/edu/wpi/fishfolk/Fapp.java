@@ -52,7 +52,7 @@ public class Fapp extends Application {
     // primaryStage.setFullScreen(true);
     primaryStage.show();
 
-    Navigation.navigate(Screen.SIGNAGE_EDITOR);
+    Navigation.navigate(Screen.NEW_SIGNAGE);
   }
 
   @Override
