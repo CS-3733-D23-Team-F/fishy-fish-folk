@@ -9,11 +9,14 @@ import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 
 public class NewConferenceController extends AbsController {
   @FXML MFXButton confClearButton, confCancelButton, confSubmitButton;
   @FXML MFXFilterComboBox startTimeDrop, endTimeDrop, startAMPMDrop, endAMPMDrop, recurringDrop;
-  @FXML MFXTextField numAttnBox, notesBox, nameBox;
+  @FXML MFXTextField numAttnBox, nameBox;
+  @FXML
+  TextArea notesBox;
   @FXML MFXRectangleToggleNode rec1;
 
   ArrayList<String> AMPM = new ArrayList<>();
@@ -38,7 +41,7 @@ public class NewConferenceController extends AbsController {
     endTimeDrop.setValue(null);
     recurringDrop.setValue(null);
     numAttnBox.clear();
-    notesBox.clear();
+    notesBox.setText(null);
     nameBox.clear();
   }
 

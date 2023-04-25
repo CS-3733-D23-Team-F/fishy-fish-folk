@@ -6,6 +6,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -124,13 +125,14 @@
                   <Font name="Open Sans Bold" size="26.0" />
                </font>
             </Text>
-            <MFXTextField fx:id="notesBox" alignment="TOP_LEFT" minHeight="176.0" minWidth="1211.0" prefHeight="176.0" prefWidth="1211.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;" textLimit="800">
+            <TextArea fx:id="notesBox" prefHeight="176.0" prefWidth="1211.0" style="-fx-background-color: #ffffff; -fx-border-color: #012d5a; -fx-border-radius: 5;">
+               <font>
+                  <Font name="Open Sans Regular" size="26.0" />
+               </font>
                <VBox.margin>
                   <Insets bottom="50.0" />
                </VBox.margin>
-               <font>
-                  <Font name="Open Sans Regular" size="26.0" />
-               </font></MFXTextField>
+            </TextArea>
             <HBox spacing="20.0">
                <children>
                   <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
