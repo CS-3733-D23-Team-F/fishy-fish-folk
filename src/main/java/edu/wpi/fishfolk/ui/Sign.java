@@ -5,15 +5,11 @@ import lombok.Setter;
 
 public class Sign {
 
-    @Getter
-    @Setter
-    SignDirection direction;
-    @Getter
-    @Setter
-    String label;
+    @Getter @Setter private String label;
+    @Getter @Setter private SignDirection direction;
 
-    Sign(SignDirection direction, String label) {
-        this.direction = direction;
+    public Sign(String label, SignDirection direction) {
         this.label = label;
+        this.direction = direction;
     }
 }
