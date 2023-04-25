@@ -2,6 +2,7 @@ package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.ui.FormStatus;
+import edu.wpi.fishfolk.ui.Recurring;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +14,20 @@ public class ConferenceRequest {
   @Getter @Setter private FormStatus formStatus;
   @Getter @Setter private String notes;
 
-  // Specific
-  // TODO: Additional fields
+  @Getter @Setter public String name;
+  @Getter @Setter public String startTime;
+  @Getter @Setter public String endTime;
+  @Getter @Setter public Recurring recurringOption;
+  @Getter @Setter public int numAttendees;
+  @Getter @Setter public String roomName;
+
+  public ConferenceRequest() {
+    // Formula for creating the ID.
+    this.conferenceRequestID = LocalDateTime.now();
+    // FormStatus is unnecessary so I set it to NULL.
+    this.formStatus = null;
+    this.assignee = null;
+  }
 
   // For DAO
   @Getter @Setter private EntryStatus status;

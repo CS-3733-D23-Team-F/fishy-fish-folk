@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.SharedResources;
+import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.Recurring;
@@ -30,10 +31,21 @@ public class NewConferenceController extends AbsController {
     addDropdownOptions();
     confCancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     confClearButton.setOnMouseClicked(event -> clearFields());
-    confSubmitButton.setOnMouseClicked(event -> attemptLogin());
+    confSubmitButton.setOnMouseClicked(event -> attemptSubmit());
+
+    rec1.setOnMouseClicked(event -> deselect(rec2, rec3, rec4, rec5, rec6, rec7));
+    rec2.setOnMouseClicked(event -> deselect(rec1, rec3, rec4, rec5, rec6, rec7));
+    rec3.setOnMouseClicked(event -> deselect(rec2, rec1, rec4, rec5, rec6, rec7));
+    rec4.setOnMouseClicked(event -> deselect(rec2, rec3, rec1, rec5, rec6, rec7));
+    rec5.setOnMouseClicked(event -> deselect(rec2, rec3, rec4, rec1, rec6, rec7));
+    rec6.setOnMouseClicked(event -> deselect(rec2, rec3, rec4, rec5, rec1, rec7));
+    rec7.setOnMouseClicked(event -> deselect(rec2, rec3, rec4, rec5, rec6, rec1));
+
+    // Sets the name box to the name of the current user on default.
     nameBox.setText(SharedResources.getCurrentUser().getUsername());
   }
 
+  /** Clears all fields and boxes, activated when you hit the clear button. */
   public void clearFields() {
     rec1.setSelected(false);
     rec2.setSelected(false);
@@ -49,7 +61,6 @@ public class NewConferenceController extends AbsController {
     recurringDrop.setValue(null);
     numAttnBox.clear();
     notesBox.clear();
-    nameBox.setText(SharedResources.getCurrentUser().getUsername());
   }
 
   /** Initializing the dropdowns so they have all the required options. */
@@ -92,7 +103,8 @@ public class NewConferenceController extends AbsController {
     recurringDrop.getItems().addAll(recurring);
   }
 
-  public void attemptLogin() {
+  /** Attempts to submit the form, but if it Doesn't pass the tests it sends errors to the users. */
+  public void attemptSubmit() {
     if (rec1.isSelected()
         || rec2.isSelected()
         || rec3.isSelected()
@@ -104,5 +116,50 @@ public class NewConferenceController extends AbsController {
     } else {
       System.out.println("Sufficient fields not filled");
     }
+  }
+
+  /**
+   * Deselects all other options once a togglebox is selected
+   *
+   * @param rec1
+   * @param rec2
+   * @param rec3
+   * @param rec4
+   * @param rec5
+   * @param rec6
+   */
+  public void deselect(
+      MFXRectangleToggleNode rec1,
+      MFXRectangleToggleNode rec2,
+      MFXRectangleToggleNode rec3,
+      MFXRectangleToggleNode rec4,
+      MFXRectangleToggleNode rec5,
+      MFXRectangleToggleNode rec6) {
+    rec1.setSelected(false);
+    rec2.setSelected(false);
+    rec3.setSelected(false);
+    rec4.setSelected(false);
+    rec5.setSelected(false);
+    rec6.setSelected(false);
+    rec7.setSelected(false);
+  }
+
+  private void submit() {
+    ConferenceRequest res = new ConferenceRequest();
+    if (rec1.isSelected()) res.setRoomName("BTM Conference Center");
+    if (rec2.isSelected()) res.setRoomName("Duncan Reid Conference Room");
+    if (rec3.isSelected()) res.setRoomName("Anesthesia Conf Floor L1");
+    if (rec4.isSelected()) res.setRoomName("Medical Records Conference Room Floor L1");
+    if (rec5.isSelected()) res.setRoomName("Abrams Conference Room");
+    if (rec6.isSelected()) res.setRoomName("Carrie M. Hall Conference Center Floor 2");
+    if (rec7.isSelected()) res.setRoomName("Shapiro Board Room MapNode 20 Floor 1");
+    res.setNotes(notesBox.getText());
+    res.setName(SharedResources.getCurrentUser().getUsername());
+    res.setNumAttendees(Integer.parseInt(numAttnBox.getText()));
+    res.setRecurringOption(Recurring.valueOf(recurringDrop.getText()));
+    res.setStartTime(startTimeDrop.getText()+" "+startAMPMDrop.getText());
+    res.setEndTime(endTimeDrop.getText()+" "+endAMPMDrop.getText());
+    dbConnection.insertEntry(res);
+    Navigation.navigate(Screen.HOME);
   }
 }

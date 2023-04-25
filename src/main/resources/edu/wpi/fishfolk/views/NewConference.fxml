@@ -132,7 +132,7 @@
                            </font>
                         </MFXTextField>
                         <MFXFilterComboBox fx:id="recurringDrop" floatMode="DISABLED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012D5A;" />
-                        <MFXTextField fx:id="nameBox" floatingText="NAME" minHeight="50.0" minWidth="257.0" prefHeight="50.0" prefWidth="350.0" style="-fx-border-color: #012D5A;">
+                        <MFXTextField fx:id="nameBox" allowEdit="false" floatingText="NAME" minHeight="50.0" minWidth="257.0" prefHeight="50.0" prefWidth="350.0" style="-fx-border-color: #012D5A;">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -158,6 +158,9 @@
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
+               <font>
+                  <Font name="Open Sans Regular" size="26.0" />
+               </font>
             </MFXTextField>
             <HBox spacing="20.0">
                <children>
