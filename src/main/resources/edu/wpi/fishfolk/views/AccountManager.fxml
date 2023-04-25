@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AccountManagerController">
+<HBox alignment="CENTER" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AccountManagerController">
    <children>
-      <ScrollPane layoutX="86.0" layoutY="55.0" prefHeight="609.0" prefWidth="906.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="591.0" prefWidth="922.0">
-               <children>
-                  <TableView fx:id="userAccountsTable" prefHeight="599.0" prefWidth="908.0">
-                    <columns>
-                      <TableColumn fx:id="colUserID" prefWidth="134.93330842256546" text="User ID" />
-                        <TableColumn fx:id="colPermissions" prefWidth="119.2000732421875" text="Permissions" />
-                        <TableColumn fx:id="colEmail" prefWidth="289.8664855957031" text="Email" />
-                        <TableColumn fx:id="colPassword" prefWidth="184.79986572265625" text="Password" />
-                    </columns>
-                  </TableView>
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
+      <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+         <children>
+                        <TableView fx:id="userAccountsTable" VBox.vgrow="ALWAYS">
+                          <columns>
+                            <TableColumn fx:id="colUserID" prefWidth="135.0" text="User ID" />
+                              <TableColumn fx:id="colPermissions" prefWidth="120.0" text="Permissions" />
+                              <TableColumn fx:id="colEmail" prefWidth="300.0" text="Email" />
+                              <TableColumn fx:id="colPassword" prefWidth="185.0" text="Password" />
+                          </columns>
+                        </TableView>
+         </children>
+      </VBox>
    </children>
-</AnchorPane>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+</HBox>

@@ -2,12 +2,16 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXRadioButton?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import io.github.palexdev.materialfx.controls.MFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,7 +25,7 @@
 
 <StackPane alignment="TOP_LEFT" minHeight="720.0" minWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorController">
    <children>
-      <GesturePane fx:id="pane" hbarPolicy="NEVER" vbarPolicy="NEVER" StackPane.alignment="TOP_LEFT">
+      <GesturePane fx:id="gesturePane" hbarPolicy="NEVER" vbarPolicy="NEVER" StackPane.alignment="TOP_LEFT">
          <Group fx:id="drawGroup">
             <ImageView fx:id="mapImg" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -40,342 +44,481 @@
             <Insets />
          </StackPane.margin>
       </GesturePane>
-      <VBox alignment="TOP_CENTER" maxHeight="190.0" StackPane.alignment="TOP_CENTER">
+      <HBox fx:id="buttonPane" maxHeight="110.0" style="-fx-background-color: #F1F1F1;">
+         <effect>
+            <DropShadow height="6.0" offsetY="1.0" radius="2.5" width="6.0" />
+         </effect>
          <children>
-            <HBox fx:id="buttonPane" alignment="CENTER_LEFT" maxHeight="115.0" minHeight="115.0" style="-fx-background-color: #F1F1F1;">
-               <effect>
-                  <DropShadow height="6.0" offsetY="1.0" radius="2.5" width="6.0" />
-               </effect>
+            <VBox>
                <children>
-                  <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                     <children>
-                        <MFXButton fx:id="moveEditorNav" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" graphicTextGap="10.0" minWidth="120.0" text="Move Editor" textFill="#012d5a">
-                           <font>
-                              <Font name="Open Sans Bold" size="15.0" />
-                           </font>
-                        </MFXButton>
-                     </children>
-                  </HBox>
-                  <VBox alignment="CENTER" maxWidth="280.0" minWidth="280.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <MFXButton fx:id="addNode" buttonType="RAISED" graphicTextGap="10.0" maxHeight="45.0" maxWidth="180.0" minHeight="45.0" minWidth="180.0" text="Add Node" textFill="#012d5a" VBox.vgrow="ALWAYS">
-                           <font>
-                              <Font name="Open Sans Bold" size="15.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/001-location.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </MFXButton>
-                        <MFXButton fx:id="delNode" buttonType="RAISED" graphicTextGap="10.0" maxHeight="45.0" maxWidth="180.0" minHeight="45.0" minWidth="180.0" text="Delete Node" textFill="#012d5a">
-                           <font>
-                              <Font name="Open Sans Bold" size="15.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/002-location-1.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </MFXButton>
-                     </children>
-                  </VBox>
-                  <Line endX="-100.0" endY="115.29289245605469" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5" HBox.hgrow="ALWAYS" />
-                  <VBox alignment="CENTER">
-                     <children>
-                        <MFXToggleButton fx:id="toggleAll" contentDisplay="TOP" contentDisposition="BOTTOM" gap="4.0" text="View All Edges" textFill="#012d5a">
-                           <font>
-                              <Font name="Open Sans Bold" size="15.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets bottom="-10.0" />
-                           </VBox.margin>
-                        </MFXToggleButton>
-                        <MFXToggleButton fx:id="toggleSelected" contentDisplay="TOP" contentDisposition="BOTTOM" gap="4.0" prefWidth="175.0" text="View Edges" textFill="#012d5a">
-                           <font>
-                              <Font name="Open Sans Bold" size="15.0" />
-                           </font>
-                        </MFXToggleButton>
-                     </children>
-                     <HBox.margin>
-                        <Insets left="50.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox alignment="CENTER">
-                     <children>
-                        <MFXButton fx:id="addEdge" buttonType="RAISED" graphicTextGap="10.0" maxHeight="45.0" maxWidth="180.0" minHeight="45.0" minWidth="180.0" text="Add Edge" textFill="#012d5a">
-                           <font>
-                              <Font name="Open Sans Bold" size="15.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="45.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/add_edge.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </MFXButton>
-                        <MFXButton fx:id="delEdge" buttonType="RAISED" graphicTextGap="10.0" maxHeight="45.0" maxWidth="180.0" minHeight="45.0" minWidth="180.0" text="Delete Edge" textFill="#012d5a">
-                           <font>
-                              <Font name="Open Sans Bold" size="15.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="60.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/delete_edge.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </MFXButton>
-                     </children>
-                     <HBox.margin>
-                        <Insets left="15.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <Line endX="-100.0" endY="115.29289245605469" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5">
-                     <HBox.margin>
-                        <Insets left="50.0" />
-                     </HBox.margin>
-                  </Line>
-                  <VBox alignment="CENTER">
-                     <children>
-                        <MFXButton fx:id="importCSV" buttonType="RAISED" graphicTextGap="10.0" maxHeight="45.0" maxWidth="180.0" minHeight="45.0" minWidth="180.0" text="Import CSV" textFill="#012d5a">
-                           <font>
-                              <Font name="Open Sans Bold" size="15.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/001-import.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </MFXButton>
-                        <MFXButton fx:id="exportCSV" buttonType="RAISED" graphicTextGap="10.0" maxHeight="45.0" maxWidth="180.0" minHeight="45.0" minWidth="180.0" text="Export CSV" textFill="#012d5a">
-                           <font>
-                              <Font name="Open Sans Bold" size="15.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/002-export.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </MFXButton>
-                     </children>
-                     <HBox.margin>
-                        <Insets left="50.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <HBox HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" fillHeight="false" maxHeight="60.0" maxWidth="400.0" minHeight="60.0" minWidth="400.0" style="-fx-background-radius: 15; -fx-background-color: #F1F1F1;">
-               <children>
-                  <MFXButton fx:id="backButton" buttonType="RAISED" ellipsisString="" graphicTextGap="0.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" style="-fx-text-fill: #012D5A; -fx-border-color: #012D5A; -fx-border-radius: 5;" text="&lt;" textFill="WHITE" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="Open Sans Regular" size="23.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="15.0" />
-                     </HBox.margin>
-                     <padding>
-                        <Insets top="-3.0" />
-                     </padding>
-                  </MFXButton>
-                  <Label graphicTextGap="0.0" text="Viewing Floor: " textFill="#454343" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="Open Sans Regular" size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <MFXComboBox fx:id="floorSelector" alignment="CENTER" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" style="-fx-border-color: #012D5A;" text="Floor 1" HBox.hgrow="ALWAYS">
+                  <MFXButton fx:id="moveEditorNav" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="105.0" text="Move Editor" textFill="#012d5a">
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
-                     <opaqueInsets>
+                     <VBox.margin>
                         <Insets />
-                     </opaqueInsets>
-                     <effect>
-                        <DropShadow height="6.34" offsetY="1.0" radius="2.67" width="6.34" />
-                     </effect>
-                     <textFill>
-                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-                     </textFill>
-                  </MFXComboBox>
-                  <MFXButton fx:id="nextButton" buttonType="RAISED" ellipsisString="" graphicTextGap="0.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" text="&gt;" textAlignment="CENTER" textFill="#012d5a" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="Open Sans Regular" size="24.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="15.0" />
-                     </HBox.margin>
-                     <padding>
-                        <Insets top="-2.0" />
-                     </padding>
+                     </VBox.margin>
                   </MFXButton>
                </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox>
+               <children>
+                  <MFXButton fx:id="importCSV" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" text="Import CSV" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/001-import.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </MFXButton>
+                  <MFXButton fx:id="exportCSV" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" text="Export CSV" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/002-export.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </MFXButton>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
+            <Line endX="-100.0" endY="110.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Line>
+            <VBox HBox.hgrow="NEVER">
+               <children>
+                  <MFXButton fx:id="addNode" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="150.0" text="Add Node" textFill="#012d5a" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/001-location.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </MFXButton>
+                  <MFXButton fx:id="delNode" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="150.0" text="Delete Node" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/002-location-1.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </MFXButton>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
+            <Line endX="-100.0" endY="110.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Line>
+            <VBox>
+               <children>
+                  <Label alignment="TOP_LEFT" text="View edges:" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <MFXRadioButton fx:id="radioAllEdge" text="All" textFill="#012d5a">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="edgeToggle" />
+                     </toggleGroup>
+                  </MFXRadioButton>
+                  <MFXRadioButton fx:id="radioSelectedEdge" text="Selected Node" textFill="#012d5a" toggleGroup="$edgeToggle">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Open Sans Regular" size="12.0" />
+                     </font>
+                  </MFXRadioButton>
+                  <MFXRadioButton fx:id="radioNoEdge" text="None" textFill="#012d5a" toggleGroup="$edgeToggle">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </MFXRadioButton>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox>
+               <children>
+                  <MFXButton fx:id="addEdge" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="160.0" text="Add Edge" textFill="#012d5a" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/add_edge.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </MFXButton>
+                  <MFXButton fx:id="delEdge" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="160.0" text="Delete Edge" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/delete_edge.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </MFXButton>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox>
+               <children>
+                  <MFXButton fx:id="linearAlign" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="145.0" text="Linear Align" textFill="#012a5d">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/align-line.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="Open Sans Regular" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </MFXButton>
+                  <MFXButton fx:id="snapGrid" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="145.0" text="Snap to Grid" textFill="#012a5d">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/snap-grid.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="Open Sans Regular" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </MFXButton>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
+            <Line endX="-100.0" endY="110.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Line>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <MFXToggleButton fx:id="toggleLocations" contentDisplay="TOP" gap="4.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="135.0" text="Locations" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </MFXToggleButton>
+               </children>
+            </VBox>
+            <HBox HBox.hgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" fillHeight="false" maxHeight="60.0" maxWidth="400.0" minHeight="60.0" minWidth="400.0" style="-fx-background-radius: 15; -fx-background-color: #F1F1F1;" StackPane.alignment="TOP_CENTER">
+         <children>
+            <MFXButton fx:id="backButton" buttonType="RAISED" ellipsisString="" graphicTextGap="0.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" style="-fx-text-fill: #012D5A; -fx-border-color: #012D5A; -fx-border-radius: 5;" text="&lt;" textFill="WHITE" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="Open Sans Regular" size="23.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets top="-3.0" />
+               </padding>
+            </MFXButton>
+            <Label graphicTextGap="0.0" text="Viewing Floor: " textFill="#454343" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Label>
+            <MFXComboBox fx:id="floorSelector" alignment="CENTER" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" style="-fx-border-color: #012D5A;" text="Floor 1" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="Open Sans Bold" size="15.0" />
+               </font>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <effect>
-                  <DropShadow height="9.28" offsetY="1.0" radius="4.14" width="9.28" />
+                  <DropShadow height="6.34" offsetY="1.0" radius="2.67" width="6.34" />
                </effect>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </HBox>
+               <textFill>
+                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+               </textFill>
+            </MFXComboBox>
+            <MFXButton fx:id="nextButton" buttonType="RAISED" ellipsisString="" graphicTextGap="0.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" text="&gt;" textAlignment="CENTER" textFill="#012d5a" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="Open Sans Regular" size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets top="-2.0" />
+               </padding>
+            </MFXButton>
          </children>
-      </VBox>
-      <VBox fx:id="nodePane" maxHeight="450.0" maxWidth="250.0" minHeight="450.0" minWidth="250.0" style="-fx-background-color: #F1F1F1;" StackPane.alignment="CENTER_RIGHT">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <effect>
+            <DropShadow height="9.28" offsetY="1.0" radius="4.14" width="9.28" />
+         </effect>
+         <StackPane.margin>
+            <Insets top="130.0" />
+         </StackPane.margin>
+      </HBox>
+      <VBox fx:id="sidePane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #F1F1F1;" StackPane.alignment="TOP_RIGHT">
          <effect>
             <DropShadow height="6.0" offsetX="1.0" offsetY="1.0" radius="2.5" width="6.0" />
          </effect>
          <children>
-            <Label alignment="TOP_LEFT" layoutX="40.0" layoutY="102.0" text="Node ID:" textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Bold" size="15.0" />
-               </font>
-            </Label>
-            <MFXTextField fx:id="nodeidText" layoutX="40.0" layoutY="128.0" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" style="-fx-border-color: #012d5a;">
-               <textFill>
-                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-               </textFill>
-            </MFXTextField>
-            <HBox fx:id="nodeidtext">
+            <VBox maxHeight="-Infinity" prefWidth="220.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Label alignment="TOP_LEFT" text="X:" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <HBox.margin>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="220.0">
+                     <VBox.margin>
                         <Insets />
-                     </HBox.margin>
-                  </Label>
-                  <Label alignment="TOP_LEFT" text="Y:" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="100.0" />
-                     </HBox.margin>
-                  </Label>
+                     </VBox.margin>
+                     <children>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                           <children>
+                              <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="15.0" text="X:" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <MFXTextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="65.0" style="-fx-border-color: #012d5a;" fx:id="xText">
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                              </MFXTextField>
+                           </children>
+                        </VBox>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                           <children>
+                              <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="15.0" text="Y:" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <MFXTextField fx:id="yText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="65.0" style="-fx-border-color: #012d5a;">
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                              </MFXTextField>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="220.0">
+                     <children>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                           <children>
+                              <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="70.0" text="Building:" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <MFXTextField fx:id="buildingText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="85.0" style="-fx-border-color: #012d5a;">
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </MFXTextField>
+                           </children>
+                        </VBox>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                           <children>
+                              <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="65.0" text="Node ID:" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <MFXTextField fx:id="nodeidText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="45.0" style="-fx-border-color: #012d5a;">
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                              </MFXTextField>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Line endX="100.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.75">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Line>
                </children>
+            </VBox>
+            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" maxHeight="0.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefWidth="220.0" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox fx:id="locationsVbox" minHeight="0.0" minWidth="220.0" />
+               </content>
                <VBox.margin>
-                  <Insets top="15.0" />
+                  <Insets />
                </VBox.margin>
-            </HBox>
-            <HBox>
+            </MFXScrollPane>
+            <VBox fx:id="newLocationVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="0.0" prefWidth="220.0">
                <children>
-                  <MFXTextField maxHeight="30.0" maxWidth="70.0" minHeight="30.0" minWidth="70.0" style="-fx-border-color: #012d5a;" fx:id="xText">
+                  <Label alignment="TOP_LEFT" text="Add a new location to this node:" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <MFXTextField fx:id="newLocationLongname" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="220.0" promptText="Enter long name">
                      <textFill>
                         <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                      </textFill>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
                   </MFXTextField>
-                  <MFXTextField fx:id="yText" maxHeight="30.0" maxWidth="70.0" minHeight="30.0" minWidth="70.0" style="-fx-border-color: #012d5a;">
-                     <textFill>
-                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-                     </textFill>
-                     <HBox.margin>
-                        <Insets left="45.0" />
-                     </HBox.margin>
-                  </MFXTextField>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0">
+                     <children>
+                        <MFXTextField fx:id="newLocationShortname" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" promptText="Enter short name">
+                           <textFill>
+                              <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                           </textFill>
+                        </MFXTextField>
+                        <MFXComboBox fx:id="newLocationType" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" measureUnitGap="0.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="90.0" text="Type">
+                           <font>
+                              <Font name="Open Sans Regular" size="12.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <textFill>
+                              <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                           </textFill>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </MFXComboBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <MFXDatePicker fx:id="newLocationDate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
+                        <MFXButton fx:id="newLocationSubmit" alignment="CENTER_RIGHT" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: #F0BF4C;" text="Add to node" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Bold" size="12.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
                </children>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </HBox>
-            <Label alignment="TOP_LEFT" text="Building:" textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Bold" size="15.0" />
-               </font>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-            </Label>
-            <MFXTextField fx:id="buildingText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
-               <textFill>
-                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-               </textFill>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </MFXTextField>
-            <Line endX="100.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.3">
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Line>
-            <Label alignment="TOP_LEFT" text="Short Name:" textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Bold" size="15.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Label>
-            <MFXTextField fx:id="shortnameText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
-               <textFill>
-                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-               </textFill>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </MFXTextField>
-            <Label alignment="TOP_LEFT" text="Long Name: " textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Bold" size="15.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Label>
-            <MFXTextField fx:id="longnameText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
-               <textFill>
-                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-               </textFill>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </MFXTextField>
-            <Label alignment="TOP_LEFT" text="Type:" textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Bold" size="15.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Label>
-            <MFXTextField fx:id="typeText" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" style="-fx-border-color: #012d5a;">
-               <textFill>
-                  <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-               </textFill>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </MFXTextField>
+            </VBox>
          </children>
          <StackPane.margin>
-            <Insets />
+            <Insets top="130.0" />
          </StackPane.margin>
          <padding>
-            <Insets left="30.0" top="10.0" />
+            <Insets bottom="10.0" left="20.0" top="10.0" />
          </padding>
       </VBox>
    </children>

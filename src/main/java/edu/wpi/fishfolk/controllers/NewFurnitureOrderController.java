@@ -11,6 +11,11 @@ import io.github.palexdev.materialfx.controls.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 
 public class NewFurnitureOrderController extends AbsController {
 
@@ -32,6 +37,10 @@ public class NewFurnitureOrderController extends AbsController {
   @FXML MFXDatePicker deliveryDate;
   @FXML MFXTextField notesTextField;
   @FXML MFXButton cancelButton, clearButton, furnituresubmitButton;
+  @FXML HBox confirmBlur;
+  @FXML HBox confirmBox;
+  @FXML AnchorPane confirmPane;
+  @FXML MFXButton okButton;
 
   FurnitureOrder currentFurnitureOrder = new FurnitureOrder();
   ArrayList<FurnitureItem> furnitureOptions = new ArrayList<>();
@@ -42,6 +51,7 @@ public class NewFurnitureOrderController extends AbsController {
   public void initialize() {
     loadOptions();
     loadRoomChoice();
+    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
     cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     furnituresubmitButton.setOnMouseClicked(event -> submit());
     clearButton.setOnMouseClicked(event -> clearAllFields());
@@ -108,7 +118,6 @@ public class NewFurnitureOrderController extends AbsController {
     furnitureOptions.add(FurnitureItem.desk);
     furnitureOptions.add(FurnitureItem.fileCabinet);
     furnitureOptions.add(FurnitureItem.clock);
-    furnitureOptions.add(FurnitureItem.xRay);
     furnitureOptions.add(FurnitureItem.trashCan);
   }
 
@@ -118,6 +127,8 @@ public class NewFurnitureOrderController extends AbsController {
     deselectServiceRadios(
         serviceradioButton1, serviceradioButton2, serviceradioButton3, serviceradioButton4);
     serviceradioButton5.setSelected(false);
+    currentFurnitureOrder.serviceType = null;
+    currentFurnitureOrder.furnitureItem = null;
     notesTextField.setText("");
     roomSelector.setValue(null);
     deliveryDate.setValue(null);
@@ -186,7 +197,18 @@ public class NewFurnitureOrderController extends AbsController {
   void submit() {
     setServiceTypeToRadios();
     setItemToRadios();
-    currentFurnitureOrder.setRoomNum("" + roomSelector.getValue());
+    if (currentFurnitureOrder.furnitureItem == null
+        || currentFurnitureOrder.serviceType == null
+        || roomSelector.getValue() == null
+        || deliveryDate.getValue() == null) {
+      PopOver error = new PopOver();
+      Text errorText = new Text("One or more required fields have not been filled");
+      errorText.setFont(new Font("Open Sans", 26));
+      error.setContentNode(errorText);
+      error.show(furnituresubmitButton);
+      return;
+    }
+    currentFurnitureOrder.setRoomNum(roomSelector.getValue());
     currentFurnitureOrder.addNotes(notesTextField.getText());
     currentFurnitureOrder.addDate(getDate());
     currentFurnitureOrder.setStatus(FormStatus.submitted);
@@ -200,6 +222,11 @@ public class NewFurnitureOrderController extends AbsController {
             currentFurnitureOrder.roomNum,
             currentFurnitureOrder.deliveryDate);
     dbConnection.insertEntry(request);
-    Navigation.navigate(Screen.HOME);
+    confirmBlur.setDisable(false);
+    confirmBlur.setVisible(true);
+    confirmBox.setDisable(false);
+    confirmBox.setVisible(true);
+    confirmPane.setVisible(true);
+    confirmPane.setDisable(false);
   }
 }

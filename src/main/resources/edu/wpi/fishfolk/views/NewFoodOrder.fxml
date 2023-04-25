@@ -228,16 +228,16 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <AnchorPane fx:id="confirmPane" disable="true" style="-fx-border-color: #012d5a; -fx-border-radius: 3; -fx-background-color: WHITE;" visible="false">
+                        <AnchorPane fx:id="confirmPane" disable="true" style="-fx-border-color: #012d5a; -fx-border-radius: 3; -fx-background-color: WHITE; -fx-background-radius: 8; -fx-border-width: 2;" visible="false">
                            <children>
-                              <VBox alignment="CENTER">
+                              <VBox alignment="CENTER" spacing="15.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Order Confirmed">
                                        <font>
                                           <Font name="Open Sans Regular" size="26.0" />
                                        </font>
                                     </Text>
-                                    <MFXButton fx:id="okButton" style="-fx-background-color: #00ff00;" text="OK">
+                                    <MFXButton fx:id="okButton" style="-fx-background-color: #f0bf4c;" text="OK">
                                        <font>
                                           <Font name="Open Sans Regular" size="20.0" />
                                        </font>
