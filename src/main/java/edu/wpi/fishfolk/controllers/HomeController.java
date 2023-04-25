@@ -65,29 +65,28 @@ public class HomeController {
       flowerrecipientname,
       floweritems;
 
+  private int rowA = 1;
+
   @FXML
   public void initialize() {
     // navigateButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SERVICE_REQUEST));
+    ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
-    setAlert();
-    setFutureMoves();
-  }
+    setFutureMoves(moves);
 
-  public void setFutureMoves() {
     int col = 0;
     int row = 1;
     try {
-      for (int i = 0; i < 15; i++) {
-
+      for (Move move : moves) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
-
         AnchorPane anchorPane = fxmlLoader.load();
-
         FutureMovesController futureMoves = fxmlLoader.getController();
-
-        futureMoves.setData("Bingus", "01/04/2023");
-
+        futureMoves.setData(move.getLongName(), "" + move.getDate());
+        futureMoves.notify.setOnMouseClicked(
+            event -> {
+              setAlert(futureMoves.longname, futureMoves.sDate);
+            });
         if (col == 1) {
           col = 0;
           row++;
@@ -111,39 +110,29 @@ public class HomeController {
     }
   }
 
-  public void setAlert() {
-    int colA = 0;
-    int rowA = 1;
+  public void setFutureMoves(ArrayList<Move> moves) {}
+
+  public void setAlert(String longname, String date) {
     try {
-      for (int i = 0; i < 15; i++) {
+      FXMLLoader fxmlLoader = new FXMLLoader();
+      fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
 
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
+      AnchorPane anchorPane = fxmlLoader.load();
 
-        AnchorPane anchorPane = fxmlLoader.load();
+      AlertsController alerts = fxmlLoader.getController();
 
-        AlertsController alerts = fxmlLoader.getController();
+      alerts.setData(longname, date);
 
-        alerts.setData("Bingus", "01/04/2023");
+      anchorPane.setPrefWidth(alertGrid.getWidth());
+      alertGrid.add(anchorPane, 1, rowA);
+      rowA += 1;
 
-        if (colA == 1) {
-          colA = 0;
-          rowA++;
-        }
+      alertGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
+      alertGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+      alertGrid.setMaxHeight(Region.USE_COMPUTED_SIZE);
 
-        // col++;
-        alertGrid.add(anchorPane, colA++, rowA);
+      GridPane.setMargin(anchorPane, new Insets(10));
 
-        alertGrid.setMinWidth(Region.USE_COMPUTED_SIZE);
-        alertGrid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        alertGrid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-        alertGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-        alertGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        alertGrid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-        GridPane.setMargin(anchorPane, new Insets(10));
-      }
     } catch (IOException e) {
       e.printStackTrace();
     }

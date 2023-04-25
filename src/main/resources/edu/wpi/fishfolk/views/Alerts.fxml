@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="50.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AlertsController">
+<AnchorPane maxWidth="1.7976931348623157E308" minHeight="50.0" minWidth="440.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AlertsController">
    <children>
-      <HBox alignment="CENTER_LEFT" style="-fx-background-color: #F1F1F1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" style="-fx-background-color: #F1F1F1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="moveStart" text="A" textFill="#012d5a">
+            <Label fx:id="moveStart" text="A" textFill="#012d5a" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
@@ -21,7 +21,15 @@
                   <Insets left="15.0" />
                </HBox.margin>
             </Label>
-            <Label text="will be moved to " textFill="#012d5a">
+            <Label text="will be moved " textFill="#012d5a" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label text="on" textFill="#012d5a" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
@@ -29,20 +37,7 @@
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="moveEnd" text="B" textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Regular" size="15.0" />
-               </font>
-            </Label>
-            <Label text="on" textFill="#012d5a">
-               <font>
-                  <Font name="Open Sans Regular" size="15.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-            </Label>
-            <Label fx:id="alertDate" text="01/01/2023" textFill="#012d5a">
+            <Label fx:id="alertDate" text="01/01/2023" textFill="#012d5a" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
