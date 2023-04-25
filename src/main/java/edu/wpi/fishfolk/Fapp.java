@@ -48,8 +48,8 @@ public class Fapp extends Application {
     // primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
     primaryStage.setScene(scene);
     // primaryStage.setMaximized(true);
-    primaryStage.setHeight(1080);
-    primaryStage.setWidth(1920);
+    // primaryStage.setHeight(1080);
+    // primaryStage.setWidth(1920);
     primaryStage.show();
 
     Navigation.navigate(Screen.LOGIN);

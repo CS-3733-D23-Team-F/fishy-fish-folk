@@ -38,7 +38,7 @@
                         <children>
                            <MFXButton fx:id="foodFillButton" style="-fx-background-color: #012d5a;" text="Mark Filled" textFill="WHITE">
                            <font>
-                              <Font name="Open Sans Bold" size="26.0" />
+                              <Font size="26.0" />
                            </font></MFXButton>
                            <MFXButton fx:id="foodCancelButton" layoutX="1397.0" layoutY="10.0" style="-fx-background-color: #012d5a;" text="Cancel" textFill="WHITE">
                            <font>
