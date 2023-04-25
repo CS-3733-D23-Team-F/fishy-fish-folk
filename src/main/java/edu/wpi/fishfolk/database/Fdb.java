@@ -30,6 +30,9 @@ public class Fdb {
   // Login & User Accounts Tables
   private final UserAccountDAO userAccountTable;
 
+  // Signage Tables
+  private final SignagePresetDAO signagePresetTable;
+
   // TODO use map from tabletype -> dao table object to simplify delegation
 
   /** Singleton facade for managing all PostgreSQL database communication. */
@@ -53,6 +56,9 @@ public class Fdb {
     // Login & User Accounts Tables
     this.userAccountTable = new UserAccountDAO(dbConnection);
 
+    // Signage Tables
+    this.signagePresetTable = new SignagePresetDAO(dbConnection);
+
     // importLocalCSV();
 
     Runtime.getRuntime()
@@ -68,6 +74,7 @@ public class Fdb {
                   flowerRequestTable.updateDatabase(true);
                   conferenceRequestTable.updateDatabase(true);
                   userAccountTable.updateDatabase(true);
+                  signagePresetTable.updateDatabase(true);
                   disconnect();
                 }));
   }
@@ -145,6 +152,9 @@ public class Fdb {
 
     } else if (entry instanceof UserAccount) {
       return userAccountTable.insertEntry((UserAccount) entry);
+
+    } else if (entry instanceof SignagePreset) {
+      return signagePresetTable.insertEntry((SignagePreset) entry);
     }
 
     return false;
@@ -187,6 +197,9 @@ public class Fdb {
 
     } else if (entry instanceof UserAccount) {
       return userAccountTable.updateEntry((UserAccount) entry);
+
+    } else if (entry instanceof SignagePreset) {
+      return signagePresetTable.updateEntry((SignagePreset) entry);
     }
 
     return false;
@@ -222,6 +235,8 @@ public class Fdb {
         return conferenceRequestTable.removeEntry(identifier);
       case USER_ACCOUNT:
         return userAccountTable.removeEntry(identifier);
+      case SIGNAGE_PRESET:
+        return signagePresetTable.removeEntry(identifier);
     }
 
     return false;
@@ -257,6 +272,8 @@ public class Fdb {
         return conferenceRequestTable.getEntry(identifier);
       case USER_ACCOUNT:
         return userAccountTable.getEntry(identifier);
+      case SIGNAGE_PRESET:
+        return signagePresetTable.getEntry(identifier);
     }
 
     return null;
@@ -291,6 +308,8 @@ public class Fdb {
         return conferenceRequestTable.getAllEntries();
       case USER_ACCOUNT:
         return userAccountTable.getAllEntries();
+      case SIGNAGE_PRESET:
+        return signagePresetTable.getAllEntries();
     }
 
     return null;
@@ -335,6 +354,9 @@ public class Fdb {
       case USER_ACCOUNT:
         userAccountTable.undoChange();
         break;
+      case SIGNAGE_PRESET:
+        signagePresetTable.undoChange();
+        break;
     }
   }
 
@@ -366,6 +388,8 @@ public class Fdb {
         return conferenceRequestTable.updateDatabase(true);
       case USER_ACCOUNT:
         return userAccountTable.updateDatabase(true);
+      case SIGNAGE_PRESET:
+        return signagePresetTable.updateDatabase(true);
     }
 
     return false;
@@ -414,6 +438,9 @@ public class Fdb {
 
       case USER_ACCOUNT:
         return userAccountTable.importCSV(filepath, backup);
+
+      case SIGNAGE_PRESET:
+        return signagePresetTable.importCSV(filepath, backup);
     }
     return false;
   }
@@ -457,6 +484,9 @@ public class Fdb {
 
       case USER_ACCOUNT:
         return userAccountTable.exportCSV(directory);
+
+      case SIGNAGE_PRESET:
+        return signagePresetTable.exportCSV(directory);
     }
     return false;
   }
