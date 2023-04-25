@@ -45,6 +45,7 @@ public class NewConferenceController extends AbsController {
     rec5.setOnMouseClicked(event -> deselect(rec2, rec3, rec4, rec1, rec6, rec7));
     rec6.setOnMouseClicked(event -> deselect(rec2, rec3, rec4, rec5, rec1, rec7));
     rec7.setOnMouseClicked(event -> deselect(rec2, rec3, rec4, rec5, rec6, rec1));
+    numAttnBox.setOnKeyReleased(event -> checkNumBox());
 
     // Sets the name box to the name of the current user on default.
     nameBox.setText(SharedResources.getCurrentUser().getUsername());
@@ -108,6 +109,17 @@ public class NewConferenceController extends AbsController {
     recurringDrop.getItems().addAll(recurring);
   }
 
+  public void checkNumBox() {
+    try {
+      int stwing = Integer.parseInt(numAttnBox.getText());
+      if (stwing > 20) {
+        numAttnBox.clear();
+      }
+    } catch (Exception e) {
+      numAttnBox.clear();
+    }
+  }
+
   /** Attempts to submit the form, but if it Doesn't pass the tests it sends errors to the users. */
   public void attemptSubmit() {
     if (rec1.isSelected()
@@ -138,6 +150,12 @@ public class NewConferenceController extends AbsController {
     }
   }
 
+  /**
+   * Creates an error popup for the given values.
+   *
+   * @param error the error message you want to present.
+   * @param node the area it will pop up next to.
+   */
   private void submissionError(String error, Node node) {
     PopOver popup = new PopOver();
     Text popText = new Text(error);
@@ -172,23 +190,30 @@ public class NewConferenceController extends AbsController {
     rec7.setSelected(false);
   }
 
+  /** imputs all values from the reservation into the database table. */
   private void submit() {
     String dummyVariable = "";
-    if (rec1.isSelected()) dummyVariable = "BTM Conference Center";
-    if (rec2.isSelected()) dummyVariable = "Duncan Reid Conference Room";
-    if (rec3.isSelected()) dummyVariable = "Anesthesia Conf Floor L1";
-    if (rec4.isSelected()) dummyVariable = "Medical Records Conference Room Floor L1";
-    if (rec5.isSelected()) dummyVariable = "Abrams Conference Room";
-    if (rec6.isSelected()) dummyVariable = "Carrie M. Hall Conference Center Floor 2";
-    if (rec7.isSelected()) dummyVariable = "Shapiro Board Room MapNode 20 Floor 1";
-    /**
-     * res.setNotes(notesBox.getText());
-     * res.setUsername(SharedResources.getCurrentUser().getUsername());
-     * res.setNumAttendees(Integer.parseInt(numAttnBox.getText()));
-     * res.setRecurringOption(Recurring.valueOf(recurringDrop.getText()));
-     * res.setStartTime(startTimeDrop.getText() + " " + startAMPMDrop.getText());
-     * res.setEndTime(endTimeDrop.getText() + " " + endAMPMDrop.getText()); *
-     */
+    if (rec1.isSelected()) {
+      dummyVariable = "BTM Conference Center";
+    }
+    if (rec2.isSelected()) {
+      dummyVariable = "Duncan Reid Conference Room";
+    }
+    if (rec3.isSelected()) {
+      dummyVariable = "Anesthesia Conf Floor L1";
+    }
+    if (rec4.isSelected()) {
+      dummyVariable = "Medical Records Conference Room Floor L1";
+    }
+    if (rec5.isSelected()) {
+      dummyVariable = "Abrams Conference Room";
+    }
+    if (rec6.isSelected()) {
+      dummyVariable = "Carrie M. Hall Conference Center Floor 2";
+    }
+    if (rec7.isSelected()) {
+      dummyVariable = "Shapiro Board Room MapNode 20 Floor 1";
+    }
     ConferenceRequest res =
         new ConferenceRequest(
             notesBox.getText(),

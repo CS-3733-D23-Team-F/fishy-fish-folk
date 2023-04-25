@@ -126,13 +126,16 @@
                               </MFXFilterComboBox>
                            </children>
                         </HBox>
-                        <MFXTextField fx:id="numAttnBox" alignment="CENTER_RIGHT" floatMode="DISABLED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
+                        <MFXTextField fx:id="numAttnBox" alignment="CENTER_RIGHT" floatingText="&lt;= 20 PEOPLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
                            <font>
-                              <Font name="Open Sans Regular" size="26.0" />
+                              <Font name="Open Sans Regular" size="15.0" />
                            </font>
+                           <textFill>
+                              <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                           </textFill>
                         </MFXTextField>
                         <MFXFilterComboBox fx:id="recurringDrop" floatMode="DISABLED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012D5A;" />
-                        <MFXTextField fx:id="nameBox" allowEdit="false" floatingText="NAME" minHeight="50.0" minWidth="257.0" prefHeight="50.0" prefWidth="350.0" style="-fx-border-color: #012D5A;">
+                        <MFXTextField fx:id="nameBox" allowEdit="false" floatingText="NAME" minHeight="50.0" minWidth="257.0" mouseTransparent="true" prefHeight="50.0" prefWidth="350.0" style="-fx-border-color: #012D5A;">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -164,17 +167,17 @@
             </MFXTextField>
             <HBox spacing="20.0">
                <children>
-                  <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
+                  <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="215.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="confClearButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CLEAR" textFill="WHITE">
+                  <MFXButton fx:id="confClearButton" minHeight="55.0" minWidth="215.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CLEAR" textFill="WHITE">
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="confSubmitButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #f0bf4c; -fx-background-radius: 5;" text="SUBMIT" textFill="#012d5a">
+                  <MFXButton fx:id="confSubmitButton" minHeight="55.0" minWidth="215.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" style="-fx-background-color: #f0bf4c; -fx-background-radius: 5;" text="SUBMIT" textFill="#012d5a">
                      <font>
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
