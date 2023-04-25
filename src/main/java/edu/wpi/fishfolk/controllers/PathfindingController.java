@@ -9,10 +9,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.pathfinding.*;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
-import io.github.palexdev.materialfx.controls.MFXToggleButton;
+import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -60,14 +57,23 @@ public class PathfindingController extends AbsController {
   @FXML VBox textInstruct;
 
   @FXML VBox settingBox;
-  @FXML MFXButton settingButton;
+  @FXML ImageView settingButton;
 
   @FXML MFXButton closeSettings;
 
   @FXML VBox adminBox;
-  @FXML MFXButton adminButton;
 
   @FXML MFXButton closeAdmin;
+
+  @FXML MFXDatePicker pathDate;
+
+  @FXML MFXTextField pathMessage;
+
+  @FXML MFXButton submitSetting;
+
+  @FXML Text pathText;
+
+  @FXML HBox pathTextBox;
 
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
@@ -123,12 +129,23 @@ public class PathfindingController extends AbsController {
     }
      */
 
+    if (pathText.getText().equals("")) {
+      pathTextBox.setVisible(false);
+    }
+
     settingButton.setOnMouseClicked(
         event -> {
-          settingBox.setVisible(true);
-          settingBox.setDisable(false);
-          adminBox.setVisible(false);
-          adminBox.setDisable(true);
+          if (settingBox.isVisible() || adminBox.isVisible()) {
+            settingBox.setVisible(false);
+            settingBox.setDisable(true);
+            adminBox.setVisible(false);
+            adminBox.setDisable(true);
+          } else {
+            settingBox.setVisible(true);
+            settingBox.setDisable(false);
+            adminBox.setVisible(true);
+            adminBox.setDisable(false);
+          }
         });
 
     closeSettings.setOnMouseClicked(
@@ -137,18 +154,15 @@ public class PathfindingController extends AbsController {
           settingBox.setDisable(true);
         });
 
-    adminButton.setOnMouseClicked(
-        event -> {
-          adminBox.setVisible(true);
-          adminBox.setDisable(false);
-          settingBox.setVisible(false);
-          settingBox.setDisable(true);
-        });
-
     closeAdmin.setOnMouseClicked(
         event -> {
           adminBox.setVisible(false);
           adminBox.setDisable(true);
+        });
+
+    submitSetting.setOnMouseClicked(
+        event -> {
+          submitSettings();
         });
 
     slideUp.setOnMouseClicked(
@@ -336,11 +350,26 @@ public class PathfindingController extends AbsController {
           popup.show();
         });
 
+    pane.setOnMouseClicked(
+        event -> {
+          settingBox.setVisible(false);
+          settingBox.setDisable(true);
+          adminBox.setVisible(false);
+          adminBox.setDisable(true);
+        });
+    pane.setOnDragDetected(
+        event -> {
+          settingBox.setVisible(false);
+          settingBox.setDisable(true);
+          adminBox.setVisible(false);
+          adminBox.setDisable(true);
+        });
+
     currentFloor = 0;
     floors = new ArrayList<>();
     pathAnimations = new ArrayList<>();
 
-    graph = new Graph(dbConnection);
+    graph = new Graph(dbConnection, AbsController.today);
   }
 
   private void drawPaths(ArrayList<Path> paths) {
@@ -633,5 +662,22 @@ public class PathfindingController extends AbsController {
    */
   public static boolean direction(String currFloor, String nextFloor) {
     return allFloors.indexOf(currFloor) < allFloors.indexOf(nextFloor);
+  }
+
+  /** Submits the Admin settings */
+  private void submitSettings() {
+    if (!(pathDate.getValue() == null)) {
+      graph = new Graph(dbConnection, pathDate.getValue());
+    }
+    if (!(pathMessage.getText().equals(""))) {
+      pathTextBox.setVisible(true);
+      pathText.setText(pathMessage.getText());
+    } else {
+      pathTextBox.setVisible(false);
+    }
+    adminBox.setVisible(false);
+    adminBox.setDisable(true);
+    settingBox.setVisible(false);
+    settingBox.setDisable(true);
   }
 }
