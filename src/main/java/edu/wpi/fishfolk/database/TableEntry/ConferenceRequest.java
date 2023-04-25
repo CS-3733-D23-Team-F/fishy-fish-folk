@@ -25,8 +25,8 @@ public class ConferenceRequest {
     // Formula for creating the ID.
     this.conferenceRequestID = LocalDateTime.now();
     // FormStatus is unnecessary so I set it to NULL.
-    this.formStatus = null;
-    this.assignee = null;
+    this.formStatus = FormStatus.submitted;
+    this.assignee = "jjpantojas";
   }
 
   // For DAO

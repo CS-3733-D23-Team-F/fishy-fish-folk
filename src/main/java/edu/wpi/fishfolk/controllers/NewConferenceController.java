@@ -113,6 +113,7 @@ public class NewConferenceController extends AbsController {
         || rec6.isSelected()
         || rec7.isSelected()) {
       System.out.println("Sufficient fields filled");
+      submit();
     } else {
       System.out.println("Sufficient fields not filled");
     }
@@ -157,8 +158,8 @@ public class NewConferenceController extends AbsController {
     res.setName(SharedResources.getCurrentUser().getUsername());
     res.setNumAttendees(Integer.parseInt(numAttnBox.getText()));
     res.setRecurringOption(Recurring.valueOf(recurringDrop.getText()));
-    res.setStartTime(startTimeDrop.getText()+" "+startAMPMDrop.getText());
-    res.setEndTime(endTimeDrop.getText()+" "+endAMPMDrop.getText());
+    res.setStartTime(startTimeDrop.getText() + " " + startAMPMDrop.getText());
+    res.setEndTime(endTimeDrop.getText() + " " + endAMPMDrop.getText());
     dbConnection.insertEntry(res);
     Navigation.navigate(Screen.HOME);
   }
