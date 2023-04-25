@@ -155,7 +155,7 @@ public class NewConferenceController extends AbsController {
     if (rec6.isSelected()) res.setRoomName("Carrie M. Hall Conference Center Floor 2");
     if (rec7.isSelected()) res.setRoomName("Shapiro Board Room MapNode 20 Floor 1");
     res.setNotes(notesBox.getText());
-    res.setName(SharedResources.getCurrentUser().getUsername());
+    res.setUsername(SharedResources.getCurrentUser().getUsername());
     res.setNumAttendees(Integer.parseInt(numAttnBox.getText()));
     res.setRecurringOption(Recurring.valueOf(recurringDrop.getText()));
     res.setStartTime(startTimeDrop.getText() + " " + startAMPMDrop.getText());
