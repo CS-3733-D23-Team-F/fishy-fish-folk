@@ -13,7 +13,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" style="-fx-background-color: #F1F1F1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="moveStart" text="A" textFill="#012d5a" HBox.hgrow="ALWAYS">
+            <Label fx:id="alert" text="Text" textFill="#012d5a" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
@@ -21,30 +21,9 @@
                   <Insets left="15.0" />
                </HBox.margin>
             </Label>
-            <Label text="will be moved " textFill="#012d5a" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font name="Open Sans Regular" size="15.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="5.0" />
-               </HBox.margin>
-            </Label>
-            <Label text="on" textFill="#012d5a" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font name="Open Sans Regular" size="15.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-            </Label>
-            <Label fx:id="alertDate" text="01/01/2023" textFill="#012d5a" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font name="Open Sans Regular" size="15.0" />
-               </font>
-            </Label>
          </children>
       </HBox>
-      <MFXButton fx:id="close" contentDisplay="GRAPHIC_ONLY" style="-fx-background-color: #F1F1F1;" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="13.0">
+      <MFXButton fx:id="closeAlert" contentDisplay="GRAPHIC_ONLY" style="-fx-background-color: #F1F1F1;" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="13.0">
          <graphic>
             <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                <image>

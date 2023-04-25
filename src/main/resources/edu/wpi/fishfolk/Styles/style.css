@@ -134,3 +134,8 @@ Micronode:hover{
     -fx-text-fill: #012D5A;
 
 }
+
+.choice-box{
+    -fx-border-color: #012D5A;
+    -fx-border-radius: 5;
+}

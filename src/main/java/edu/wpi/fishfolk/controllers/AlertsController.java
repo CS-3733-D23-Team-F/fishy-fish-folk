@@ -1,13 +1,18 @@
 package edu.wpi.fishfolk.controllers;
 
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 public class AlertsController {
-  @FXML Label moveStart, alertDate;
+  @FXML Label alert;
+  @FXML MFXButton closeAlert;
 
   public void setData(String longName, String date) {
-    moveStart.setText(longName);
-    alertDate.setText(date);
+    alert.setText(longName + "will be moved on " + date);
+  }
+
+  public void setData(String alerts) {
+    alert.setText(alerts);
   }
 }

@@ -21,6 +21,7 @@ public enum Screen {
   LOGIN("views/Login.fxml"),
 
   ACCOUNT_MANAGER("views/AccountManager.fxml"),
+  STAFF_DASHBOARD("views/StaffDashboard.fxml"),
 
   TEMPLATE("views/Template.fxml");
 
