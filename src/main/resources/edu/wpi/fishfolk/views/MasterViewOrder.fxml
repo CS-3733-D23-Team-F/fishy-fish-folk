@@ -27,12 +27,11 @@
                                  <TableColumn fx:id="fooddeliveryroom" prefWidth="200.0" text="Delivery Room" />
                                  <TableColumn fx:id="fooddeliverytime" prefWidth="120.0" text="Delivery Time" />
                                  <TableColumn fx:id="foodrecipientname" prefWidth="100.0" text="Recipient Name" />
-                                 <TableColumn fx:id="foodnotes" prefWidth="60.0" text="Notes" />
                                  <TableColumn fx:id="fooditems" prefWidth="100.0" text="Items" />
                                  <TableColumn fx:id="foodtotalprice" prefWidth="75.0" text="Total Price" />
+                                 <TableColumn fx:id="foodnotes" prefWidth="60.0" text="Notes" />
                              </columns>
                            </TableView>
-                        <VBox prefWidth="20.0" style="-fx-background-color: #012d5a; -fx-background-radius: 10;" />
                         </children>
                      </HBox>
                      <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
@@ -88,7 +87,6 @@
                             <TableColumn fx:id="supplysupplies" prefWidth="100.0" text="Supplies" />
                          </columns>
                       </TableView>
-                      <VBox prefWidth="20.0" style="-fx-background-color: #012d5a; -fx-background-radius: 10;" />
                    </children>
                 </HBox>
                 <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
@@ -145,7 +143,6 @@
                               <TableColumn fx:id="furniturefurniture" prefWidth="100.0" text="Furniture" />
                            </columns>
                         </TableView>
-                        <VBox prefWidth="20.0" style="-fx-background-color: #012d5a; -fx-background-radius: 10;" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
@@ -197,12 +194,12 @@
                               <TableColumn fx:id="flowerstatus" prefWidth="75.0" text="Status" />
                               <TableColumn fx:id="flowerdeliveryroom" prefWidth="200.0" text="Delivery Room" />
                               <TableColumn fx:id="flowerdeliverytime" prefWidth="120.0" text="Delivery Time" />
-                              <TableColumn fx:id="flowerrecipientname" prefWidth="108.4000244140625" text="Recipient Name" />
+                              <TableColumn fx:id="flowerrecipientname" prefWidth="100.0" text="Recipient Name" />
                               <TableColumn fx:id="floweritems" minWidth="2.00006103515625" prefWidth="100.0" text="Items" />
                               <TableColumn fx:id="flowertotalprice" prefWidth="75.0" text="Total Price" />
+                              <TableColumn fx:id="flowernotes" prefWidth="60.0" text="Notes" />
                            </columns>
                         </TableView>
-                        <VBox prefWidth="20.0" style="-fx-background-color: #012d5a; -fx-background-radius: 10;" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">

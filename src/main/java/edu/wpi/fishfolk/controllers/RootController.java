@@ -52,7 +52,7 @@ public class RootController {
           Navigation.navigate(Screen.LOGIN);
         });
 
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_SIGNAGE));
     exitButton.setOnMouseClicked(event -> System.exit(0));
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
@@ -127,10 +127,12 @@ public class RootController {
         supplyNav.setDisable(true);
         mealNav.setDisable(true);
         viewOrders.setDisable(true);
+
       case STAFF:
         mapEditorNav.setDisable(true);
         accountManagerNav.setDisable(true);
         moveEditorNav.setDisable(true);
+
       case ADMIN:
       case ROOT:
         break;
