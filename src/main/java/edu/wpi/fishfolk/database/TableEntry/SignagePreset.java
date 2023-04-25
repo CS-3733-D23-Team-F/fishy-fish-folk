@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.ui.Sign;
+import edu.wpi.fishfolk.ui.SignDirection;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,12 @@ public class SignagePreset {
     @Getter @Setter private LocalDate date;
     @Getter @Setter private ArrayList<Sign> signs;
 
+    /**
+     * Table entry type: Signage Preset
+     * @param name
+     * @param date
+     * @param signs
+     */
     public SignagePreset(String name, LocalDate date, ArrayList<Sign> signs) {
         this.name = name;
         this.date = date;
