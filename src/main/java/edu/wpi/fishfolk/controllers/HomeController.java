@@ -5,6 +5,7 @@ import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
@@ -29,6 +31,8 @@ public class HomeController {
   // @FXML MFXButton navigateButton;
   @FXML GridPane grid;
   @FXML GridPane alertGrid;
+  @FXML Label tableHeader;
+  @FXML MFXButton outstandingFilter, unassignedTasks;
   // @FXML MFXPaginatedTableView paginated;
   @FXML TableView<FoodOrderObservable> foodTable;
   @FXML TableView<FurnitureOrderObservable> furnitureTable;
@@ -78,6 +82,26 @@ public class HomeController {
   public void initialize() {
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
+
+    outstandingFilter.setOnMouseClicked(
+        event -> {
+          setOutstandingTable();
+          unassignedTasks.setVisible(true);
+          unassignedTasks.setDisable(false);
+          outstandingFilter.setDisable(true);
+          outstandingFilter.setVisible(false);
+          tableHeader.setText("Outstanding Services");
+        });
+
+    unassignedTasks.setOnMouseClicked(
+        event -> {
+          setTable();
+          unassignedTasks.setVisible(false);
+          unassignedTasks.setDisable(true);
+          outstandingFilter.setDisable(false);
+          outstandingFilter.setVisible(true);
+          tableHeader.setText("Unassigned Tasks");
+        });
 
     int col = 0;
     int row = 1;
@@ -185,7 +209,6 @@ public class HomeController {
     String value = t.getNewValue();
     entry.setAssignee(value);
     dbConnection.updateEntry(entry);
-
   }
 
   public void onSetFoodEdit(TableColumn.CellEditEvent<FoodOrderObservable, String> t) {
@@ -195,7 +218,6 @@ public class HomeController {
     String value = t.getNewValue();
     entry.setAssignee(value);
     dbConnection.updateEntry(entry);
-
   }
 
   public void onSetFurnitureEdit(TableColumn.CellEditEvent<FurnitureOrderObservable, String> t) {
@@ -206,7 +228,6 @@ public class HomeController {
     String value = t.getNewValue();
     entry.setAssignee(value);
     dbConnection.updateEntry(entry);
-
   }
 
   public void onSetFlowerEdit(TableColumn.CellEditEvent<FlowerOrderObservable, String> t) {
@@ -216,13 +237,96 @@ public class HomeController {
     String value = t.getNewValue();
     entry.setAssignee(value);
     dbConnection.updateEntry(entry);
-
   }
 
   public List<String> getAssignees() {
     return dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT).stream()
         .map(obj -> ((UserAccount) obj).getUsername())
         .toList();
+  }
+
+  public void setOutstandingTable() {
+    foodid.setCellValueFactory(new PropertyValueFactory<FoodOrderObservable, String>("foodid"));
+    foodassignee.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodassignee"));
+    foodtotalprice.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodtotalprice"));
+    foodstatus.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodstatus"));
+    fooddeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("fooddeliveryroom"));
+    fooddeliverytime.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("fooddeliverytime"));
+    foodrecipientname.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodrecipientname"));
+    foodnotes.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodnotes"));
+    fooditems.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("fooditems"));
+
+    supplyid.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplyid"));
+    supplyassignee.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplyassignee"));
+    supplystatus.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplystatus"));
+    supplydeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplydeliveryroom"));
+    supplylink.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplylink"));
+    supplynotes.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplynotes"));
+    supplysupplies.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplysupplies"));
+
+    furnitureid.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureid"));
+    furnitureassignee.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureassignee"));
+    furniturestatus.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturestatus"));
+    furnituredeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnituredeliveryroom"));
+    furnituredeliverydate.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnituredeliverydate"));
+    furniturenotes.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturenotes"));
+    furnitureservicetype.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureservicetype"));
+    furniturefurniture.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturefurniture"));
+
+    flowerid.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));
+    flowerassignee.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerassignee"));
+    flowertotalprice.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowertotalprice"));
+    flowerstatus.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerstatus"));
+    flowerdeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliveryroom"));
+    flowerdeliverytime.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliverytime"));
+    flowerrecipientname.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerrecipientname"));
+    floweritems.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
+
+    ObservableList<String> ol = FXCollections.observableList(getAssignees());
+    supplyassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    foodassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    furnitureassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    flowerassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    foodTable.setEditable(true);
+    furnitureTable.setEditable(true);
+    supplyTable.setEditable(true);
+    flowerTable.setEditable(true);
+
+    foodTable.setItems(getOutstandingFoodOrderRows());
+    supplyTable.setItems(getOutstandingSupplyOrderRows());
+    furnitureTable.setItems(getOutstandingFurnitureOrderRows());
+    flowerTable.setItems(getOutstandingFlowerOrderRows());
   }
 
   public void setTable() {
@@ -354,6 +458,55 @@ public class HomeController {
       returnable.add(new FlowerOrderObservable(request));
     }
     Predicate<FlowerOrderObservable> filter = p -> p.getFlowerassignee().isEmpty();
+    FilteredList<FlowerOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<FoodOrderObservable> getOutstandingFoodOrderRows() {
+    ArrayList<FoodRequest> foodList =
+        (ArrayList<FoodRequest>) dbConnection.getAllEntries(TableEntryType.FOOD_REQUEST);
+    ObservableList<FoodOrderObservable> returnable = FXCollections.observableArrayList();
+
+    for (FoodRequest request : foodList) {
+      returnable.add(new FoodOrderObservable(request));
+    }
+    Predicate<FoodOrderObservable> filter = p -> p.getFoodstatus().equals("Filled");
+    FilteredList<FoodOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<SupplyOrderObservable> getOutstandingSupplyOrderRows() {
+    ArrayList<SupplyRequest> supplyList =
+        (ArrayList<SupplyRequest>) dbConnection.getAllEntries(TableEntryType.SUPPLY_REQUEST);
+    ObservableList<SupplyOrderObservable> returnable = FXCollections.observableArrayList();
+    for (SupplyRequest request : supplyList) {
+      returnable.add(new SupplyOrderObservable(request));
+    }
+    Predicate<SupplyOrderObservable> filter = p -> p.getSupplystatus().equals("Filled");
+    FilteredList<SupplyOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<FurnitureOrderObservable> getOutstandingFurnitureOrderRows() {
+    ArrayList<FurnitureRequest> furnitureList =
+        (ArrayList<FurnitureRequest>) dbConnection.getAllEntries(TableEntryType.FURNITURE_REQUEST);
+    ObservableList<FurnitureOrderObservable> returnable = FXCollections.observableArrayList();
+    for (FurnitureRequest request : furnitureList) {
+      returnable.add(new FurnitureOrderObservable(request));
+    }
+    Predicate<FurnitureOrderObservable> filter = p -> p.getFurniturestatus().equals("Filled");
+    FilteredList<FurnitureOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<FlowerOrderObservable> getOutstandingFlowerOrderRows() {
+    ArrayList<FlowerRequest> flowerList =
+        (ArrayList<FlowerRequest>) dbConnection.getAllEntries(TableEntryType.FLOWER_REQUEST);
+    ObservableList<FlowerOrderObservable> returnable = FXCollections.observableArrayList();
+    for (FlowerRequest request : flowerList) {
+      returnable.add(new FlowerOrderObservable(request));
+    }
+    Predicate<FlowerOrderObservable> filter = p -> p.getFlowerstatus().equals("Filled");
     FilteredList<FlowerOrderObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
