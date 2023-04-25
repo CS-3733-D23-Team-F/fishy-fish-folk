@@ -16,13 +16,17 @@ public enum Screen {
   PATHFINDING("views/Pathfinding.fxml"),
 
   MAP_EDITOR("views/MapEditor.fxml"),
+  SIGNAGE_EDITOR("views/SignageEditor.fxml"),
+  NEW_SIGNAGE("views/NewSignage.fxml"),
   MOVE_EDITOR("views/MoveEditor.fxml"),
 
   LOGIN("views/Login.fxml"),
 
   ACCOUNT_MANAGER("views/AccountManager.fxml"),
+  STAFF_DASHBOARD("views/StaffDashboard.fxml"),
 
-  TEMPLATE("views/Template.fxml");
+  TEMPLATE("views/Template.fxml"),
+  CONFERENCE("views/NewConference.fxml");
 
   private final String filename;
 

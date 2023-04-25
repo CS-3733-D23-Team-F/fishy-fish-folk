@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="220.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorLocationController">
+   <children>
+      <HBox>
+         <children>
+            <VBox prefWidth="100.0">
+               <children>
+                  <Label alignment="TOP_LEFT" text="Short Name:" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <MFXTextField fx:id="shortnameText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" style="-fx-border-color: #012d5a;">
+                     <textFill>
+                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+               </children>
+            </VBox>
+            <VBox prefWidth="70.0">
+               <children>
+                  <Label alignment="TOP_LEFT" text="Type:" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <MFXTextField fx:id="typeText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-border-color: #012d5a;">
+                     <textFill>
+                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+               </children>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+      <Label alignment="TOP_LEFT" text="Long Name: " textFill="#012d5a">
+         <font>
+            <Font name="Open Sans Bold" size="15.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Label>
+      <MFXTextField fx:id="longnameText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: #012d5a;">
+         <textFill>
+            <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+         </textFill>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </MFXTextField>
+   </children>
+</VBox>
