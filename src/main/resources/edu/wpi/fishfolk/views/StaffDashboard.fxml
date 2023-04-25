@@ -17,7 +17,7 @@
 
 <VBox minHeight="670.0" minWidth="1080.0" style="-fx-background-color: #F4F4F4;" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.StaffDashboardController">
    <children>
-      <HBox style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
+      <HBox spacing="25.0" style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
          <children>
             <VBox>
                <children>
@@ -41,7 +41,7 @@
                   </MFXScrollPane>
                </children>
                <HBox.margin>
-                  <Insets bottom="50.0" left="50.0" top="50.0" />
+                  <Insets />
                </HBox.margin>
             </VBox>
             <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
@@ -230,10 +230,13 @@
                   </HBox>
                </children>
                <HBox.margin>
-                  <Insets bottom="50.0" left="25.0" right="50.0" top="50.0" />
+                  <Insets />
                </HBox.margin>
             </VBox>
          </children>
       </HBox>
    </children>
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </padding>
 </VBox>
