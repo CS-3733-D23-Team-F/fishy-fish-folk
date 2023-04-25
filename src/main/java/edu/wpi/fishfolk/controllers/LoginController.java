@@ -9,15 +9,14 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 
 public class LoginController extends AbsController {
-  @FXML AnchorPane slider;
   @FXML MFXButton loginBtn;
   @FXML MFXTextField loginIDField;
   @FXML MFXPasswordField loginPassField;
@@ -28,9 +27,11 @@ public class LoginController extends AbsController {
   private void initialize() {
     loginBtn.setOnMouseClicked(loginHandler);
     loginPassField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
+    loginIDField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
     errorBox.setText("");
+    errorBox.setVisible(false);
 
-    slider.setTranslateX(-400);
+    Platform.runLater(() -> loginIDField.requestFocus());
   }
 
   /**
@@ -41,7 +42,15 @@ public class LoginController extends AbsController {
   private void attemptLoginOnEnterPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode().getCode() == 10) {
       attemptLogin();
+    } else {
+      clearError();
     }
+  }
+
+  /** Clear the error box after a new input */
+  private void clearError() {
+    errorBox.setText("");
+    errorBox.setVisible(false);
   }
 
   /**
@@ -66,15 +75,31 @@ public class LoginController extends AbsController {
 
     if (foundAccount == null) {
       errorBox.setText("Account not found.");
+      errorBox.setVisible(true);
       errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
     } else {
       if (SharedResources.login(foundAccount, password)) {
         // valid account. We're already logged in if we get here!
         errorBox.setText("Logged in successfully!");
         errorBox.setStyle("-fx-alignment: center; -fx-background-color:  green;");
-        Navigation.navigate(Screen.HOME);
+        System.out.println("perm: " + SharedResources.getCurrentUser().getLevel());
+        switch (SharedResources.getCurrentUser().getLevel()) {
+          case GUEST:
+            Navigation.navigate(Screen.SIGNAGE);
+            break;
+          case STAFF:
+            Navigation.navigate(Screen.STAFF_DASHBOARD);
+            break;
+          case ADMIN:
+            Navigation.navigate(Screen.HOME);
+            break;
+          case ROOT:
+            Navigation.navigate(Screen.HOME);
+            break;
+        }
       } else {
         errorBox.setText("Incorrect password.");
+        errorBox.setVisible(true);
         errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
       }
     }

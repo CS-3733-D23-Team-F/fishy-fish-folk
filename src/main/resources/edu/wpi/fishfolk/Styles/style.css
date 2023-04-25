@@ -122,3 +122,20 @@ Micronode:hover{
     -fx-pref-height: 0;
     -fx-max-height: 0;
 }
+
+.table-view .column-header-background .label {
+    -fx-text-fill: white;
+    -fx-background-color: #012D5A;
+    -fx-background-radius: 5;
+}
+
+.tab-pane .tab .tab-label{
+    -fx-stroke: transparent;
+    -fx-text-fill: #012D5A;
+
+}
+
+.choice-box{
+    -fx-border-color: #012D5A;
+    -fx-border-radius: 5;
+}

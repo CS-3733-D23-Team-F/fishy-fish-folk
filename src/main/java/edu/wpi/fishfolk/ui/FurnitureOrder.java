@@ -8,27 +8,13 @@ public class FurnitureOrder {
   public String roomNum;
   public LocalDateTime deliveryDate;
   public String notes;
-  public String formID;
   public FormStatus formStatus;
   public String assignee;
 
   // sets some of the default parameters for a standard FurnitureOrder
   // including the notSubmitted formStatus and ID based on the system clock
   public FurnitureOrder() {
-    formID = "" + System.currentTimeMillis();
-    formID = formID.substring(formID.length() - 10);
     formStatus = FormStatus.notSubmitted;
-  }
-
-  // addFurniture() adds the furniture item to the given Furniture Order
-  public void addFurniture(FurnitureItem item) {
-    this.furnitureItem = item;
-  }
-
-  // setServiceType sets the service type for the given FurnitureOrder
-  // the generic service types are defined in loadServiceTypeChoice() in FurnitureOrderController
-  public void setServiceType(ServiceType type) {
-    this.serviceType = type;
   }
 
   // setRoomNum() sets the room number for the given FurnitureOrder

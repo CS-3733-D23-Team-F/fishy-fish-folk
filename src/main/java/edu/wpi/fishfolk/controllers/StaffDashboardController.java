@@ -3,8 +3,12 @@ package edu.wpi.fishfolk.controllers;
 import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.navigation.Navigation;
+import edu.wpi.fishfolk.navigation.Screen;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,9 +28,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
-public class HomeController {
+public class StaffDashboardController {
 
   // @FXML MFXButton navigateButton;
+  @FXML MFXButton toMapEditor, toMoveEditor, toSignageEditor;
   @FXML GridPane grid;
   @FXML GridPane alertGrid;
   // @FXML MFXPaginatedTableView paginated;
@@ -37,7 +42,7 @@ public class HomeController {
   @FXML MFXTextField addAlert;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
-      foodassignee,
+      foodCompletion,
       foodtotalprice,
       foodstatus,
       fooddeliveryroom,
@@ -47,7 +52,7 @@ public class HomeController {
       fooditems;
   @FXML
   TableColumn<SupplyOrderObservable, String> supplyid,
-      supplyassignee,
+      supplyCompletion,
       supplystatus,
       supplydeliveryroom,
       supplylink,
@@ -55,7 +60,7 @@ public class HomeController {
       supplysupplies;
   @FXML
   TableColumn<FurnitureOrderObservable, String> furnitureid,
-      furnitureassignee,
+      furnitureCompletion,
       furniturestatus,
       furnituredeliveryroom,
       furnituredeliverydate,
@@ -64,7 +69,7 @@ public class HomeController {
       furniturefurniture;
   @FXML
   TableColumn<FlowerOrderObservable, String> flowerid,
-      flowerassignee,
+      flowerCompletion,
       flowertotalprice,
       flowerstatus,
       flowerdeliveryroom,
@@ -78,7 +83,9 @@ public class HomeController {
   public void initialize() {
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
-
+    toMapEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
+    // toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.));
     int col = 0;
     int row = 1;
     try {
@@ -88,37 +95,8 @@ public class HomeController {
         AnchorPane anchorPane = fxmlLoader.load();
         FutureMovesController futureMoves = fxmlLoader.getController();
         futureMoves.setData(move.getLongName(), "" + move.getDate());
-        futureMoves.notify.setOnMouseClicked(
-            event -> {
-              try {
-                FXMLLoader fxmlLoader2 = new FXMLLoader();
-                fxmlLoader2.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
-
-                AnchorPane anchorPane2 = fxmlLoader2.load();
-
-                AlertsController alerts = fxmlLoader2.getController();
-                alerts.closeAlert.setOnMouseClicked(
-                    event1 -> {
-                      alertGrid.getChildren().remove(anchorPane2);
-                      return;
-                    });
-
-                alerts.setData(futureMoves.longname, futureMoves.sDate);
-
-                anchorPane2.setPrefWidth(alertGrid.getWidth());
-                alertGrid.add(anchorPane2, 1, rowA);
-                rowA += 1;
-
-                alertGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-                alertGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                alertGrid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-                GridPane.setMargin(anchorPane2, new Insets(10));
-
-              } catch (IOException e) {
-                e.printStackTrace();
-              }
-            });
+        futureMoves.notify.setDisable(true);
+        futureMoves.notify.setVisible(false);
         if (col == 1) {
           col = 0;
           row++;
@@ -140,84 +118,9 @@ public class HomeController {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    addAlert.setOnAction(
-        event3 -> {
-          try {
-            FXMLLoader fxmlLoader2 = new FXMLLoader();
-            fxmlLoader2.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
-
-            AnchorPane anchorPane2 = fxmlLoader2.load();
-
-            AlertsController alerts = fxmlLoader2.getController();
-            alerts.closeAlert.setOnMouseClicked(
-                event1 -> {
-                  alertGrid.getChildren().remove(anchorPane2);
-                  return;
-                });
-            alerts.setData(addAlert.getText());
-            anchorPane2.setPrefWidth(alertGrid.getWidth());
-            alertGrid.add(anchorPane2, 1, rowA);
-            rowA += 1;
-
-            alertGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-            alertGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-            alertGrid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-            GridPane.setMargin(anchorPane2, new Insets(10));
-
-            addAlert.clear();
-            return;
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
-    supplyassignee.setOnEditCommit(this::onSetSupplyEdit);
-    foodassignee.setOnEditCommit(this::onSetFoodEdit);
-    flowerassignee.setOnEditCommit(this::onSetFlowerEdit);
-    furnitureassignee.setOnEditCommit(this::onSetFurnitureEdit);
   }
 
-  public void onSetSupplyEdit(TableColumn.CellEditEvent<SupplyOrderObservable, String> t) {
-
-    SupplyOrderObservable row = t.getRowValue();
-    SupplyRequest entry =
-        (SupplyRequest) dbConnection.getEntry(row.id, TableEntryType.SUPPLY_REQUEST);
-    String value = t.getNewValue();
-    entry.setAssignee(value);
-    dbConnection.updateEntry(entry);
-
-  }
-
-  public void onSetFoodEdit(TableColumn.CellEditEvent<FoodOrderObservable, String> t) {
-
-    FoodOrderObservable row = t.getRowValue();
-    FoodRequest entry = (FoodRequest) dbConnection.getEntry(row.id, TableEntryType.FOOD_REQUEST);
-    String value = t.getNewValue();
-    entry.setAssignee(value);
-    dbConnection.updateEntry(entry);
-
-  }
-
-  public void onSetFurnitureEdit(TableColumn.CellEditEvent<FurnitureOrderObservable, String> t) {
-
-    FurnitureOrderObservable row = t.getRowValue();
-    FurnitureRequest entry =
-        (FurnitureRequest) dbConnection.getEntry(row.id, TableEntryType.FURNITURE_REQUEST);
-    String value = t.getNewValue();
-    entry.setAssignee(value);
-    dbConnection.updateEntry(entry);
-
-  }
-
-  public void onSetFlowerEdit(TableColumn.CellEditEvent<FlowerOrderObservable, String> t) {
-    FlowerOrderObservable row = t.getRowValue();
-    FlowerRequest entry =
-        (FlowerRequest) dbConnection.getEntry(row.id, TableEntryType.FLOWER_REQUEST);
-    String value = t.getNewValue();
-    entry.setAssignee(value);
-    dbConnection.updateEntry(entry);
-
-  }
+  public void setAlert(String alert) {}
 
   public List<String> getAssignees() {
     return dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT).stream()
@@ -227,8 +130,6 @@ public class HomeController {
 
   public void setTable() {
     foodid.setCellValueFactory(new PropertyValueFactory<FoodOrderObservable, String>("foodid"));
-    foodassignee.setCellValueFactory(
-        new PropertyValueFactory<FoodOrderObservable, String>("foodassignee"));
     foodtotalprice.setCellValueFactory(
         new PropertyValueFactory<FoodOrderObservable, String>("foodtotalprice"));
     foodstatus.setCellValueFactory(
@@ -244,10 +145,13 @@ public class HomeController {
     fooditems.setCellValueFactory(
         new PropertyValueFactory<FoodOrderObservable, String>("fooditems"));
 
+    foodCompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
+    supplyCompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
+    furnitureCompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
+    flowerCompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
+
     supplyid.setCellValueFactory(
         new PropertyValueFactory<SupplyOrderObservable, String>("supplyid"));
-    supplyassignee.setCellValueFactory(
-        new PropertyValueFactory<SupplyOrderObservable, String>("supplyassignee"));
     supplystatus.setCellValueFactory(
         new PropertyValueFactory<SupplyOrderObservable, String>("supplystatus"));
     supplydeliveryroom.setCellValueFactory(
@@ -261,8 +165,7 @@ public class HomeController {
 
     furnitureid.setCellValueFactory(
         new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureid"));
-    furnitureassignee.setCellValueFactory(
-        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureassignee"));
+
     furniturestatus.setCellValueFactory(
         new PropertyValueFactory<FurnitureOrderObservable, String>("furniturestatus"));
     furnituredeliveryroom.setCellValueFactory(
@@ -278,8 +181,6 @@ public class HomeController {
 
     flowerid.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));
-    flowerassignee.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerassignee"));
     flowertotalprice.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("flowertotalprice"));
     flowerstatus.setCellValueFactory(
@@ -293,11 +194,6 @@ public class HomeController {
     floweritems.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
 
-    ObservableList<String> ol = FXCollections.observableList(getAssignees());
-    supplyassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
-    foodassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
-    furnitureassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
-    flowerassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     foodTable.setEditable(true);
     furnitureTable.setEditable(true);
     supplyTable.setEditable(true);
@@ -307,6 +203,42 @@ public class HomeController {
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
     flowerTable.setItems(getFlowerOrderRows());
+
+    supplyCompletion.setOnEditCommit(this::onSetSupplyCompleted);
+    foodCompletion.setOnEditCommit(this::onSetFoodCompleted);
+    flowerCompletion.setOnEditCommit(this::onSetFlowerCompleted);
+    furnitureCompletion.setOnEditCommit(this::onSetFurnitureCompleted);
+  }
+
+  private void onSetSupplyCompleted(TableColumn.CellEditEvent<SupplyOrderObservable, String> t) {
+    System.out.println(t.getNewValue());
+    if (t.getNewValue().equals("Yes")) {
+      System.out.println(t.getNewValue());
+      SupplyOrderObservable row = t.getRowValue();
+      dbConnection.removeEntry(row.id, TableEntryType.SUPPLY_REQUEST);
+    }
+  }
+
+  private void onSetFoodCompleted(TableColumn.CellEditEvent<FoodOrderObservable, String> t) {
+    if (t.getNewValue().equals("Yes")) {
+      FoodOrderObservable row = t.getRowValue();
+      dbConnection.removeEntry(row.id, TableEntryType.FOOD_REQUEST);
+    }
+  }
+
+  private void onSetFurnitureCompleted(
+      TableColumn.CellEditEvent<FurnitureOrderObservable, String> t) {
+    if (t.getNewValue().equals("Yes")) {
+      FurnitureOrderObservable row = t.getRowValue();
+      dbConnection.removeEntry(row.id, TableEntryType.FURNITURE_REQUEST);
+    }
+  }
+
+  private void onSetFlowerCompleted(TableColumn.CellEditEvent<FlowerOrderObservable, String> t) {
+    if (t.getNewValue().equals("Yes")) {
+      FlowerOrderObservable row = t.getRowValue();
+      dbConnection.removeEntry(row.id, TableEntryType.FLOWER_REQUEST);
+    }
   }
 
   public ObservableList<FoodOrderObservable> getFoodOrderRows() {
@@ -317,7 +249,8 @@ public class HomeController {
     for (FoodRequest request : foodList) {
       returnable.add(new FoodOrderObservable(request));
     }
-    Predicate<FoodOrderObservable> filter = p -> p.getFoodassignee().isEmpty();
+    Predicate<FoodOrderObservable> filter =
+        p -> p.getFoodassignee().equals(SharedResources.getCurrentUser().getUsername());
     FilteredList<FoodOrderObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
@@ -329,7 +262,8 @@ public class HomeController {
     for (SupplyRequest request : supplyList) {
       returnable.add(new SupplyOrderObservable(request));
     }
-    Predicate<SupplyOrderObservable> filter = p -> p.getSupplyassignee().isEmpty();
+    Predicate<SupplyOrderObservable> filter =
+        p -> p.getSupplyassignee().equals(SharedResources.getCurrentUser().getUsername());
     FilteredList<SupplyOrderObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
@@ -341,7 +275,8 @@ public class HomeController {
     for (FurnitureRequest request : furnitureList) {
       returnable.add(new FurnitureOrderObservable(request));
     }
-    Predicate<FurnitureOrderObservable> filter = p -> p.getFurnitureassignee().isEmpty();
+    Predicate<FurnitureOrderObservable> filter =
+        p -> p.getFurnitureassignee().equals(SharedResources.getCurrentUser().getUsername());
     FilteredList<FurnitureOrderObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
@@ -353,7 +288,8 @@ public class HomeController {
     for (FlowerRequest request : flowerList) {
       returnable.add(new FlowerOrderObservable(request));
     }
-    Predicate<FlowerOrderObservable> filter = p -> p.getFlowerassignee().isEmpty();
+    Predicate<FlowerOrderObservable> filter =
+        p -> p.getFlowerassignee().equals(SharedResources.getCurrentUser().getUsername());
     FilteredList<FlowerOrderObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }

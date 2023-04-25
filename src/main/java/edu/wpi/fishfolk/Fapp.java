@@ -8,7 +8,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -46,13 +45,14 @@ public class Fapp extends Application {
 
     // scene.getStylesheets().add("../resources/edu/wpi/fishfolk/Styles/style.css");
 
-    primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
+    // primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
     primaryStage.setScene(scene);
-    primaryStage.setMaximized(true);
-    // primaryStage.setFullScreen(true);
+    // primaryStage.setMaximized(true);
+    primaryStage.setHeight(1080);
+    primaryStage.setWidth(1920);
     primaryStage.show();
 
-    Navigation.navigate(Screen.NEW_SIGNAGE);
+    Navigation.navigate(Screen.LOGIN);
   }
 
   @Override
