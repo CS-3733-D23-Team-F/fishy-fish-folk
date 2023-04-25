@@ -338,6 +338,39 @@ public class Fdb {
     }
   }
 
+  /**
+   * Pushes ALL staged changes to a PostgreSQL database table.
+   * @param tableEntryType Type of table to push all changes to
+   * @return True on success, false otherwise
+   */
+  public boolean updateDatabase(TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.updateDatabase(true);
+      case LOCATION:
+        return locationTable.updateDatabase(true);
+      case MOVE:
+        return moveTable.updateDatabase(true);
+      case EDGE:
+        return edgeTable.updateDatabase(true);
+      case FOOD_REQUEST:
+        return foodRequestTable.updateDatabase(true);
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.updateDatabase(true);
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.updateDatabase(true);
+      case FLOWER_REQUEST:
+        return flowerRequestTable.updateDatabase(true);
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.updateDatabase(true);
+      case USER_ACCOUNT:
+        return userAccountTable.updateDatabase(true);
+    }
+
+    return false;
+  }
+
   // TODO: ALL commas need to be removed/refactored from text fields before exporting
   /**
    * Import a CSV file into a table
