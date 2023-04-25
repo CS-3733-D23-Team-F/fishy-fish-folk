@@ -1,4 +1,4 @@
-package edu.wpi.fishfolk.database.TableEntry.signage;
+package edu.wpi.fishfolk.ui;
 
 public enum SignDirection {
     UP(0),

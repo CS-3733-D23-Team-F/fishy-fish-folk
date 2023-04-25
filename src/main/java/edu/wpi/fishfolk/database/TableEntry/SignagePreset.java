@@ -1,17 +1,17 @@
-package edu.wpi.fishfolk.database.TableEntry.signage;
+package edu.wpi.fishfolk.database.TableEntry;
 
+import edu.wpi.fishfolk.ui.Sign;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class SignagePreset {
 
-    @Getter @Setter String name;
-    @Getter @Setter LocalDate date;
-    @Getter @Setter ArrayList<Sign> signs;
+    @Getter @Setter private String name;
+    @Getter @Setter private LocalDate date;
+    @Getter @Setter private ArrayList<Sign> signs;
 
     public SignagePreset(String name, LocalDate date, ArrayList<Sign> signs) {
         this.name = name;
@@ -19,4 +19,3 @@ public class SignagePreset {
         this.signs = signs;
     }
 }
-
