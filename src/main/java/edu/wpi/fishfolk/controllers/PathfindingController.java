@@ -84,7 +84,7 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXToggleButton noStairs;
 
-  PathfindSingleton pathfinder;
+  private PathfindSingleton pathfinder;
 
   int start, end;
   Graph graph;
@@ -484,8 +484,6 @@ public class PathfindingController extends AbsController {
    * @return a JavaFX Node object to draw
    */
   private javafx.scene.Node generatePathButtons(double x, double y, boolean up, boolean forwards) {
-
-    // TODO set arrow up or down based on parameter
 
     Polygon triangle = new Polygon();
 
