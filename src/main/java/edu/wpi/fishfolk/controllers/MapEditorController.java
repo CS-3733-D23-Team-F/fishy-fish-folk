@@ -18,6 +18,7 @@ import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import net.kurobako.gesturefx.GesturePane;
@@ -392,19 +393,21 @@ public class MapEditorController extends AbsController {
             double m = numerator / denominator;
             double b = ybar - m * xbar;
 
-            // vector from (0,0) to (100, y(100)) representing the line
-            Point2D line = new Point2D(100, b + 100 * m);
+            // through origin with same slope as line
+            Point2D line = new Point2D(100, 100 * m);
+            drawGroup.getChildren().add(new Line(0, b, line.getX(), line.getY()));
+            System.out.println("y = " + m + "x" + " + " + b + " line:" + line);
             double line2 = line.dotProduct(line);
             nodes.forEach(
                 node -> {
-                  Point2D v = node.getPoint();
+                  Point2D v = node.getPoint().subtract(0, b);
                   Point2D proj = line.multiply(v.dotProduct(line) / line2);
-                  node.setPoint(proj);
+                  System.out.println(node.getPoint() + " -> " + proj.add(0, b));
+                  node.setPoint(proj.add(0, b));
                 });
 
             nodes.forEach(
                 node -> {
-
                   // draw NodeCircle at updated node points
                   nodesGroup
                       .getChildren()
@@ -724,6 +727,9 @@ public class MapEditorController extends AbsController {
       // remove from selected nodes
       selectedItr.remove();
     }
+
+    clearNodeFields();
+    clearLocationFields();
   }
 
   private void insertEdge(int start, int end) {
