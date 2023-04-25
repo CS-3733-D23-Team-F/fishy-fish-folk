@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
@@ -63,10 +64,10 @@
                         <Insets />
                      </VBox.margin>
                      <font>
-                        <Font name="Open Sans Regular" size="15.0" />
+                        <Font name="Open Sans Bold" size="15.0" />
                      </font>
                   </MFXButton>
-                  <VBox fx:id="adminBox" alignment="TOP_CENTER" disable="true" minHeight="300.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" visible="false">
+                  <VBox fx:id="adminBox" alignment="TOP_CENTER" disable="true" minHeight="320.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" visible="false">
                      <children>
                         <HBox alignment="CENTER" minHeight="50.0">
                            <children>
@@ -120,11 +121,35 @@
                                     <Insets left="15.0" top="10.0" />
                                  </VBox.margin>
                               </Text>
-                              <MFXTextField minHeight="135.0" minWidth="220.0">
+                              <MFXTextField floatMode="DISABLED" minHeight="36.0" minWidth="220.0" prefHeight="36.0" prefWidth="220.0">
                                  <VBox.margin>
                                     <Insets left="15.0" top="5.0" />
                                  </VBox.margin>
                               </MFXTextField>
+                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Date To Pathfind On:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="15.0" top="10.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <MFXDatePicker minWidth="220.0" prefHeight="220.0">
+                                 <VBox.margin>
+                                    <Insets left="15.0" top="5.0" />
+                                 </VBox.margin>
+                              </MFXDatePicker>
+                              <MFXButton fx:id="clearBtn1" buttonType="RAISED" contentDisplay="CENTER" depthLevel="LEVEL3" graphicTextGap="0.0" minHeight="37.0" minWidth="100.0" style="-fx-background-color: #F0BF4C; -fx-border-radius: 10;" text="Submit" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="15.0" />
+                                 </font>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                                 <VBox.margin>
+                                    <Insets left="75.0" top="10.0" />
+                                 </VBox.margin>
+                              </MFXButton>
                            </children>
                         </VBox>
                      </children>
@@ -223,7 +248,7 @@
                         <Font name="Open Sans Bold" size="15.0" />
                      </font>
                   </MFXButton>
-                  <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" minHeight="300.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" visible="false">
+                  <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="186.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" visible="false">
                      <children>
                         <HBox alignment="CENTER" minHeight="50.0">
                            <children>
@@ -237,7 +262,7 @@
                               </Text>
                               <MFXButton fx:id="closeSettings" style="-fx-background-color: #900000;" text="X" textFill="WHITE">
                                  <HBox.margin>
-                                    <Insets left="135.0" />
+                                    <Insets left="90.0" />
                                  </HBox.margin>
                                  <font>
                                     <Font size="15.0" />
@@ -245,12 +270,23 @@
                               </MFXButton>
                            </children>
                         </HBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="140.0" prefWidth="200.0">
                            <children>
-                              <MFXToggleButton fx:id="noStairs" contentDisplay="TOP" contentDisposition="BOTTOM" prefHeight="42.0" prefWidth="97.0" text="Disable Stairs" textFill="#012d5a">
+                              <MFXToggleButton fx:id="noStairs" contentDisplay="TOP" prefHeight="72.0" prefWidth="180.0" text="Disable Stairs" textFill="#012d5a">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
+                              </MFXToggleButton>
+                              <MFXToggleButton fx:id="noStairs1" contentDisplay="TOP" gap="10.0" prefHeight="42.0" prefWidth="199.0" text="Display Locations" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
                               </MFXToggleButton>
                            </children>
                         </VBox>
@@ -264,7 +300,7 @@
                   </VBox>
                </children>
                <HBox.margin>
-                  <Insets left="10.0" top="341.0" />
+                  <Insets left="10.0" top="228.0" />
                </HBox.margin>
             </VBox>
          </children>
