@@ -6,7 +6,6 @@
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -29,7 +28,37 @@
                     <content>
                       <AnchorPane style="-fx-background-color: #FFFFFF;">
                            <children>
-                              <MFXRectangleToggleNode fx:id="rec1" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="-1.0" minHeight="30.0" minWidth="563.0" style="-fx-border-radius: 0;" text="MEDICAL RECORDS CONFERENCE ROOM FLOOR L1" textFill="#012d5a">
+                              <MFXRectangleToggleNode fx:id="rec1" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="-1.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" text="BTM CONFERENCE CENTER" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="rec2" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="49.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" text="DUNCAN REID CONFERENCE ROOM" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="rec3" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="99.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" text="ANESTHESIA CONF FLOOR L1" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="rec4" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="149.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" text="MEDICAL RECORDS CONFERENCE ROOM FLOOR L1" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="rec5" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="199.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" text="ABRAMS CONFERENCE ROOM" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="rec6" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="249.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" text="CARRIE M. HALL CONFERENCE CENTER FLOOR 2" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="rec7" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="299.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" text="SHAPIRO BOARD ROOM MAPNODE 20 FLOOR 1" textFill="#012d5a">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font>
@@ -125,14 +154,11 @@
                   <Font name="Open Sans Bold" size="26.0" />
                </font>
             </Text>
-            <TextArea fx:id="notesBox" prefHeight="176.0" prefWidth="1211.0" style="-fx-background-color: #ffffff; -fx-border-color: #012d5a; -fx-border-radius: 5;">
-               <font>
-                  <Font name="Open Sans Regular" size="26.0" />
-               </font>
+            <MFXTextField fx:id="notesBox" minHeight="176.0" minWidth="1190.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;">
                <VBox.margin>
-                  <Insets bottom="50.0" />
+                  <Insets bottom="20.0" />
                </VBox.margin>
-            </TextArea>
+            </MFXTextField>
             <HBox spacing="20.0">
                <children>
                   <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="215.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
