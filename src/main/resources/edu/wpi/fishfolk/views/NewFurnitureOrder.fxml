@@ -39,7 +39,7 @@
    </HBox>
    <HBox alignment="CENTER" spacing="20.0">
       <children>
-          <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a; -fx-border-width: 3;" vbarPolicy="NEVER" HBox.hgrow="NEVER">
+          <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a; -fx-border-width: 3;" HBox.hgrow="NEVER">
               <content>
                   <VBox>
                       <children>
@@ -92,7 +92,7 @@
                </VBox>
               </content>
           </ScrollPane>
-         <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-color: #012d5a; -fx-border-width: 3; -fx-border-radius: 5;" vbarPolicy="NEVER" HBox.hgrow="NEVER">
+         <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-color: #012d5a; -fx-border-width: 3; -fx-border-radius: 5;" HBox.hgrow="NEVER">
             <content>
                <VBox minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="620.0">
                   <children>
