@@ -1,34 +1,42 @@
 package edu.wpi.fishfolk.controllers;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.pathfinding.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.controls.MFXToggleButton;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
@@ -54,6 +62,9 @@ public class PathfindingController extends AbsController {
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
   @FXML MFXTextField estimatedtime;
+  @FXML MFXButton generateqr;
+
+  @FXML MFXToggleButton noStairs;
 
   PathfindSingleton pathfinder;
 
@@ -176,7 +187,7 @@ public class PathfindingController extends AbsController {
             pathfinder.setPathMethod(new DFS(graph));
           }
 
-          paths = pathfinder.getPathMethod().pathfind(start, end, true);
+          paths = pathfinder.getPathMethod().pathfind(start, end, !noStairs.isSelected());
 
           System.out.println(paths);
 
@@ -187,12 +198,14 @@ public class PathfindingController extends AbsController {
           currentFloor = 0;
 
           drawPaths(paths);
-          pane.animate(Duration.millis(200))
-              .interpolateWith(Interpolator.EASE_BOTH)
-              .centreOn(paths.get(0).centerToPath(7));
+          if (paths.size() > 0) {
+            pane.animate(Duration.millis(200))
+                .interpolateWith(Interpolator.EASE_BOTH)
+                .centreOn(paths.get(0).centerToPath(7));
 
-          displayFloor();
-          endSelector.setDisable(true);
+            displayFloor();
+            endSelector.setDisable(true);
+          }
         });
 
     clearBtn.setOnMouseClicked(
@@ -201,8 +214,77 @@ public class PathfindingController extends AbsController {
           pathGroup.getChildren().clear();
           pathGroup.getChildren().add(mapImg);
 
+          startSelector.clearSelection();
+          endSelector.clearSelection();
+
           // clear list of floors
           floors.clear();
+
+          startSelector.clear();
+          endSelector.clear();
+        });
+
+    generateqr.setOnMouseClicked(
+        event -> {
+          Stage popup = new Stage();
+
+          // Popup popup = new Popup();
+          popup.setX(Fapp.getPrimaryStage().getWidth() * 0.4);
+          popup.setY(Fapp.getPrimaryStage().getHeight() * 0.4);
+
+          QRCodeWriter qrCodeWriter = new QRCodeWriter();
+
+          String text =
+              "TEXT: "
+                  + textDirections.stream()
+                      .reduce(
+                          new LinkedList<>(),
+                          (lstAccum, lst) -> {
+                            lstAccum.addAll(lst);
+                            return lstAccum;
+                          })
+                      .stream()
+                      .map(TextDirection::toString)
+                      .collect(Collectors.joining());
+
+          Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
+          hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+          BitMatrix bitMatrix;
+          int size = 500;
+          try {
+            bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, size, size, hintMap);
+          } catch (WriterException e) {
+            throw new RuntimeException(e);
+          }
+
+          WritableImage img = new WritableImage(size * 2, size * 2);
+          PixelWriter writer = img.getPixelWriter();
+          Color dark = Color.rgb(1, 45, 90);
+          Color white = Color.WHITE;
+
+          for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+              if (bitMatrix.get(i, j)) {
+                writer.setColor(2 * i, 2 * j, dark);
+                writer.setColor(2 * i + 1, 2 * j, dark);
+                writer.setColor(2 * i, 2 * j + 1, dark);
+                writer.setColor(2 * i + 1, 2 * j + 1, dark);
+              } else {
+                writer.setColor(2 * i, 2 * j, white);
+                writer.setColor(2 * i + 1, 2 * j, white);
+                writer.setColor(2 * i, 2 * j + 1, white);
+                writer.setColor(2 * i + 1, 2 * j + 1, white);
+              }
+            }
+          }
+
+          ImageView imgView = new ImageView(img);
+
+          StackPane root = new StackPane();
+          root.getChildren().add(imgView);
+
+          popup.setScene(new Scene(root, size * 2 + 50, size * 2 + 50));
+          popup.show();
         });
 
     currentFloor = 0;
@@ -218,7 +300,7 @@ public class PathfindingController extends AbsController {
       // skip paths of length 1 (going through elevator node)
       // except for first and last path
       if (path.numNodes > 1 || i == 0 || i == paths.size() - 1) {
-        // group to store this floor's path
+        // group to sore this floor's path
         Group g = new Group();
 
         double pathLength = path.pathLength();
@@ -389,12 +471,12 @@ public class PathfindingController extends AbsController {
 
     // calculated that 1537 pixels = 484 feet = 147.5 m
     // 3.175 pixels per foot, 10.42 pixels per meter
-    // 1.2 m/s walking speed = 72m/min
+    // 1 m/s walking speed = 60m/min
 
     // add lengths of each path in list of paths
     double totalLength = paths.stream().map(Path::pathLength).reduce(0.0, Double::sum);
     System.out.println("path length pixels " + totalLength);
-    int minutes = (int) Math.ceil(totalLength * (147.5 / 1537) / 72);
+    int minutes = (int) Math.ceil(totalLength * (147.5 / 1537) / 60);
 
     estimatedtime.setText(minutes + " minutes");
 
@@ -459,12 +541,16 @@ public class PathfindingController extends AbsController {
         }
         floorDirections.add(new TextDirection(Direction.START, "End at " + endSelector.getValue()));
       }
-      System.out.println(
-          "floor dir: "
-              + floorDirections.get(i).getDirection()
-              + " dist "
-              + floorDirections.get(i).getDistance());
-      textDirections.add(floorDirections);
+
+      if (!floorDirections.isEmpty()) {
+
+        System.out.println(
+            "floor dir: "
+                + floorDirections.get(i).getDirection()
+                + " dist "
+                + floorDirections.get(i).getDistance());
+        textDirections.add(floorDirections);
+      }
     }
   }
 

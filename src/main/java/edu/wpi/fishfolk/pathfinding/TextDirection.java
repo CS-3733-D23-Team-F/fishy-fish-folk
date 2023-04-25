@@ -31,4 +31,12 @@ public class TextDirection {
         break;
     }
   }
+
+  public String toString() {
+    String meters =
+        distance.length() == 0
+            ? ""
+            : (String.format("%.1f", Double.parseDouble(distance) / 10.42) + "m");
+    return text + " " + meters + "\n\n";
+  }
 }
