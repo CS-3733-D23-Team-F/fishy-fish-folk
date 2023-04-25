@@ -519,7 +519,9 @@ public class MapEditorController extends AbsController {
 
           state = EDITOR_STATE.EDITING_NODE;
 
-          if (!controlPressed) deselectAllNodes();
+          if (!controlPressed) {
+            deselectAllNodes();
+          }
           selectNode(node.getNodeID());
 
           radioSelectedEdge.setDisable(false);
@@ -683,6 +685,9 @@ public class MapEditorController extends AbsController {
     // only allow adding locations to nodes if some are selected
     newLocationVbox.setVisible(false);
     newLocationVbox.setDisable(true);
+
+    currentLocations.clear();
+    locationsVbox.getChildren().clear();
 
     selectedNodes.clear();
     nodeGroup
