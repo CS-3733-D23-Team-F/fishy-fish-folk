@@ -199,7 +199,7 @@
          </MFXButton>
          <VBox HBox.hgrow="ALWAYS" />
          <VBox HBox.hgrow="ALWAYS" />
-         <MFXButton fx:id="furnituresubmitButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #f0bf4c;" text="SUBMIT" textFill="WHITE">
+         <MFXButton fx:id="furnituresubmitButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #f0bf4c;" text="SUBMIT" textFill="#012d5a">
             <font>
                <Font name="Open Sans Bold" size="26.0" />
             </font>

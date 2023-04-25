@@ -11,6 +11,9 @@ import io.github.palexdev.materialfx.controls.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 
 public class NewFurnitureOrderController extends AbsController {
 
@@ -108,7 +111,6 @@ public class NewFurnitureOrderController extends AbsController {
     furnitureOptions.add(FurnitureItem.desk);
     furnitureOptions.add(FurnitureItem.fileCabinet);
     furnitureOptions.add(FurnitureItem.clock);
-    furnitureOptions.add(FurnitureItem.xRay);
     furnitureOptions.add(FurnitureItem.trashCan);
   }
 
@@ -118,6 +120,8 @@ public class NewFurnitureOrderController extends AbsController {
     deselectServiceRadios(
         serviceradioButton1, serviceradioButton2, serviceradioButton3, serviceradioButton4);
     serviceradioButton5.setSelected(false);
+    currentFurnitureOrder.serviceType = null;
+    currentFurnitureOrder.furnitureItem = null;
     notesTextField.setText("");
     roomSelector.setValue(null);
     deliveryDate.setValue(null);
@@ -186,7 +190,18 @@ public class NewFurnitureOrderController extends AbsController {
   void submit() {
     setServiceTypeToRadios();
     setItemToRadios();
-    currentFurnitureOrder.setRoomNum("" + roomSelector.getValue());
+    if (currentFurnitureOrder.furnitureItem == null
+        || currentFurnitureOrder.serviceType == null
+        || roomSelector.getValue() == null
+        || deliveryDate.getValue() == null) {
+      PopOver error = new PopOver();
+      Text errorText = new Text("One or more required fields have not been filled");
+      errorText.setFont(new Font("Open Sans", 26));
+      error.setContentNode(errorText);
+      error.show(furnituresubmitButton);
+      return;
+    }
+    currentFurnitureOrder.setRoomNum(roomSelector.getValue());
     currentFurnitureOrder.addNotes(notesTextField.getText());
     currentFurnitureOrder.addDate(getDate());
     currentFurnitureOrder.setStatus(FormStatus.submitted);
