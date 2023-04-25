@@ -24,7 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
-public class HomeController {
+public class AdminDashboardController {
 
   // @FXML MFXButton navigateButton;
   @FXML GridPane grid;
@@ -185,7 +185,6 @@ public class HomeController {
     String value = t.getNewValue();
     entry.setAssignee(value);
     dbConnection.updateEntry(entry);
-
   }
 
   public void onSetFoodEdit(TableColumn.CellEditEvent<FoodOrderObservable, String> t) {
@@ -195,7 +194,6 @@ public class HomeController {
     String value = t.getNewValue();
     entry.setAssignee(value);
     dbConnection.updateEntry(entry);
-
   }
 
   public void onSetFurnitureEdit(TableColumn.CellEditEvent<FurnitureOrderObservable, String> t) {
@@ -206,7 +204,6 @@ public class HomeController {
     String value = t.getNewValue();
     entry.setAssignee(value);
     dbConnection.updateEntry(entry);
-
   }
 
   public void onSetFlowerEdit(TableColumn.CellEditEvent<FlowerOrderObservable, String> t) {
@@ -216,7 +213,6 @@ public class HomeController {
     String value = t.getNewValue();
     entry.setAssignee(value);
     dbConnection.updateEntry(entry);
-
   }
 
   public List<String> getAssignees() {

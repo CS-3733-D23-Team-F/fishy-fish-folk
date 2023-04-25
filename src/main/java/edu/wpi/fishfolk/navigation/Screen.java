@@ -2,7 +2,7 @@ package edu.wpi.fishfolk.navigation;
 
 public enum Screen {
   ROOT("views/Root.fxml"),
-  HOME("views/Home.fxml"),
+  ADMIN_DASHBOARD("views/AdminDashboard.fxml"),
   SERVICE_REQUEST("views/ServiceRequest.fxml"),
   SIGNAGE("views/Signage.fxml"),
 
