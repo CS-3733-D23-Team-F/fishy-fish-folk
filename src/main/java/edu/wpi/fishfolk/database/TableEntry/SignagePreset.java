@@ -1,4 +1,4 @@
-package edu.wpi.fishfolk.database.TableEntry.signage;
+package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.ui.Sign;
 import lombok.Getter;
