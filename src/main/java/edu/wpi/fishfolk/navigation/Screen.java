@@ -25,7 +25,8 @@ public enum Screen {
   ACCOUNT_MANAGER("views/AccountManager.fxml"),
   STAFF_DASHBOARD("views/StaffDashboard.fxml"),
 
-  TEMPLATE("views/Template.fxml");
+  TEMPLATE("views/Template.fxml"),
+  CONFERENCE("views/NewConference.fxml");
 
   private final String filename;
 
