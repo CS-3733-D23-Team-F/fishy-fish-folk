@@ -59,6 +59,16 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton slideDown;
   @FXML VBox textInstruct;
 
+  @FXML VBox settingBox;
+  @FXML MFXButton settingButton;
+
+  @FXML MFXButton closeSettings;
+
+  @FXML VBox adminBox;
+  @FXML MFXButton adminButton;
+
+  @FXML MFXButton closeAdmin;
+
   @FXML ScrollPane scroll;
   @FXML GridPane grid;
   @FXML MFXTextField estimatedtime;
@@ -105,6 +115,41 @@ public class PathfindingController extends AbsController {
     methodSelector.getItems().add("BFS");
     methodSelector.getItems().add("DFS");
     methodSelector.getItems().add("Dijkstra's");
+
+    /*
+    if (!SharedResources.getCurrentUser().getLevel().equals(PermissionLevel.ADMIN)) {
+      settingButton.setVisible(false);
+      settingButton.setDisable(true);
+    }
+     */
+
+    settingButton.setOnMouseClicked(
+        event -> {
+          settingBox.setVisible(true);
+          settingBox.setDisable(false);
+          adminBox.setVisible(false);
+          adminBox.setDisable(true);
+        });
+
+    closeSettings.setOnMouseClicked(
+        event -> {
+          settingBox.setVisible(false);
+          settingBox.setDisable(true);
+        });
+
+    adminButton.setOnMouseClicked(
+        event -> {
+          adminBox.setVisible(true);
+          adminBox.setDisable(false);
+          settingBox.setVisible(false);
+          settingBox.setDisable(true);
+        });
+
+    closeAdmin.setOnMouseClicked(
+        event -> {
+          adminBox.setVisible(false);
+          adminBox.setDisable(true);
+        });
 
     slideUp.setOnMouseClicked(
         event -> {
