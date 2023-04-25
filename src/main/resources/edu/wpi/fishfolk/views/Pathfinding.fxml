@@ -31,7 +31,7 @@
             <DropShadow spread="0.08" />
          </effect>
          <content>
-            <Group fx:id="pathGroup">
+            <Group fx:id="drawGroup">
                <children>
                   <ImageView fx:id="mapImg" pickOnBounds="true" AnchorPane.leftAnchor="-459.0" AnchorPane.topAnchor="-145.0">
                      <image>
@@ -95,7 +95,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </MFXToggleButton>
-                                    <MFXToggleButton fx:id="noStairs1" contentDisplay="TOP" gap="10.0" prefHeight="42.0" prefWidth="199.0" text="Display Locations" textFill="#012d5a">
+                                    <MFXToggleButton fx:id="showLocations" contentDisplay="TOP" gap="10.0" prefHeight="42.0" prefWidth="199.0" text="Display Locations" textFill="#012d5a">
                                        <font>
                                           <Font size="15.0" />
                                        </font>

@@ -8,7 +8,9 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
+import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
+import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.pathfinding.*;
 import edu.wpi.fishfolk.util.PermissionLevel;
 import io.github.palexdev.materialfx.controls.*;
@@ -48,7 +50,7 @@ public class PathfindingController extends AbsController {
   @FXML MFXFilterComboBox<String> methodSelector;
   @FXML MFXButton clearBtn;
 
-  @FXML Group pathGroup;
+  @FXML Group drawGroup;
   @FXML ImageView mapImg;
 
   @FXML MFXButton zoomOut;
@@ -83,12 +85,14 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton generateqr;
 
   @FXML MFXToggleButton noStairs;
+  @FXML MFXToggleButton showLocations;
 
   private PathfindSingleton pathfinder;
 
   int start, end;
   Graph graph;
   ArrayList<Path> paths;
+  Group locationGroup = new Group();
 
   ArrayList<String> floors;
   int currentFloor;
@@ -118,11 +122,8 @@ public class PathfindingController extends AbsController {
           }
         });
 
-    // buttons to other pages
-    methodSelector.getItems().add("A*");
-    methodSelector.getItems().add("BFS");
-    methodSelector.getItems().add("DFS");
-    methodSelector.getItems().add("Dijkstra's");
+    methodSelector.getItems().addAll("A*", "BFS", "DFS", "Dijkstra's");
+    drawGroup.getChildren().add(locationGroup);
 
     if (pathText.getText().equals("")) {
       pathTextBox.setVisible(false);
@@ -220,8 +221,8 @@ public class PathfindingController extends AbsController {
     startSelector.setOnAction(
         event -> {
           pathAnimations.clear();
-          pathGroup.getChildren().clear();
-          pathGroup.getChildren().add(mapImg);
+          drawGroup.getChildren().clear();
+          drawGroup.getChildren().add(mapImg);
           // clear list of floors
           floors.clear();
           start = dbConnection.getNodeIDFromLocation(startSelector.getValue(), today);
@@ -272,8 +273,8 @@ public class PathfindingController extends AbsController {
     clearBtn.setOnMouseClicked(
         event -> {
           // clear paths
-          pathGroup.getChildren().clear();
-          pathGroup.getChildren().add(mapImg);
+          drawGroup.getChildren().clear();
+          drawGroup.getChildren().add(mapImg);
 
           startSelector.clearSelection();
           endSelector.clearSelection();
@@ -283,6 +284,11 @@ public class PathfindingController extends AbsController {
 
           startSelector.clear();
           endSelector.clear();
+        });
+
+    showLocations.setOnAction(
+        event -> {
+          locationGroup.setVisible(showLocations.isSelected());
         });
 
     generateqr.setOnMouseClicked(
@@ -366,6 +372,9 @@ public class PathfindingController extends AbsController {
     currentFloor = 0;
     floors = new ArrayList<>();
     pathAnimations = new ArrayList<>();
+
+    // hardcoded default first floor
+    drawLocations("L1", showLocations.isSelected());
 
     graph = new Graph(dbConnection, AbsController.today);
   }
@@ -466,12 +475,41 @@ public class PathfindingController extends AbsController {
                       direction(path.getFloor(), paths.get(i + 1).getFloor()),
                       true));
         }
-        pathGroup.getChildren().add(g);
+        drawGroup.getChildren().add(g);
         g.setVisible(false);
 
         floors.add(path.getFloor());
       }
     }
+  }
+
+  private void drawLocations(String floor, boolean visibility) {
+
+    // copied directly from mapeditor function
+    dbConnection
+        .getNodesOnFloor(floor)
+        .forEach(
+            node -> {
+              List<String> shortnames =
+                  dbConnection.getLocations(node.getNodeID(), today).stream()
+                      .filter(Location::isDestination)
+                      .map(Location::getShortName)
+                      .toList();
+
+              if (!shortnames.isEmpty()) {
+                String label = String.join(", ", shortnames);
+                locationGroup
+                    .getChildren()
+                    .add(
+                        new NodeText(
+                            node.getNodeID(),
+                            node.getX() - label.length() * 5,
+                            node.getY() - 10,
+                            label));
+              }
+            });
+
+    locationGroup.setVisible(visibility);
   }
 
   /**
@@ -527,17 +565,20 @@ public class PathfindingController extends AbsController {
     mapImg.setImage(images.get(floors.get(currentFloor)));
     floorDisplay.setText("Floor " + floors.get(currentFloor));
 
-    Iterator<javafx.scene.Node> itr = pathGroup.getChildren().iterator();
+    Iterator<javafx.scene.Node> itr = drawGroup.getChildren().iterator();
     itr.next(); // skip first child which is the imageview
     while (itr.hasNext()) {
       itr.next().setVisible(false);
     }
 
+    locationGroup.getChildren().clear();
+    drawLocations(floors.get(currentFloor), showLocations.isSelected());
+
     // stop all animations
     pathAnimations.forEach(ParallelTransition::stop);
 
     // show and start animation for current floor
-    pathGroup
+    drawGroup
         .getChildren()
         .get(currentFloor + 1)
         .setVisible(true); // offset by 1 because first child is gesture pane
