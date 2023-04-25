@@ -122,3 +122,12 @@ Micronode:hover{
     -fx-pref-height: 0;
     -fx-max-height: 0;
 }
+
+.loginField{
+    -fx-border-color: #012D5A;
+    -fx-border-width: 0 0 0.5 0;
+    -fx-border-radius: 0;
+    -fx-prompt-text-fill: #012D5A;
+}
+
+
