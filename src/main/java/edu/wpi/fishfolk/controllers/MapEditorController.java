@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.mapeditor.BuildingChecker;
 import edu.wpi.fishfolk.mapeditor.EdgeLine;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
+import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.util.NodeType;
@@ -86,14 +87,18 @@ public class MapEditorController extends AbsController {
 
     nodeGroup = new Group();
     edgeGroup = new Group();
-    drawGroup.getChildren().add(nodeGroup);
-    drawGroup.getChildren().add(edgeGroup);
+    locationGroup = new Group();
+    drawGroup.getChildren().addAll(nodeGroup, edgeGroup, locationGroup);
 
     // other buttons in radio group are deselected by default
     radioNoEdge.setSelected(true);
 
+    toggleLocations.setSelected(false);
+
+    // draw everything on current floor
     switchFloor(allFloors.get(currentFloor));
 
+    // ensure the vbox holding the new location & date fields is managed only when visible
     newLocationVbox.managedProperty().bind(newLocationVbox.visibleProperty());
 
     floorSelector.setOnAction(
@@ -239,6 +244,11 @@ public class MapEditorController extends AbsController {
             // hide all edges
             edgeGroup.getChildren().forEach(fxnode -> fxnode.setVisible(false));
           }
+        });
+
+    toggleLocations.setOnAction(
+        event -> {
+          locationGroup.setVisible(toggleLocations.isSelected());
         });
 
     Fapp.getPrimaryStage()
@@ -470,7 +480,11 @@ public class MapEditorController extends AbsController {
 
     mapImg.setImage(images.get(floor));
 
-    // optional TODO one thread does nodes, one thread does edges
+    /* TODO optional
+       one thread does nodes,
+       one thread does edges,
+       another thread does locations
+    */
 
     nodeGroup.getChildren().clear();
     dbConnection.getNodesOnFloor(floor).forEach(this::drawNode);
@@ -483,6 +497,9 @@ public class MapEditorController extends AbsController {
     edgeSet.clear();
     dbConnection.getEdgesOnFloor(floor).forEach(edge -> drawEdge(edge, radioAllEdge.isSelected()));
     deselectAllEdges();
+
+    locationGroup.getChildren().clear();
+    drawLocations(floor, toggleLocations.isSelected());
   }
 
   private void drawNode(Node node) {
@@ -613,8 +630,32 @@ public class MapEditorController extends AbsController {
     return true;
   }
 
-  private void drawLocations(boolean visibility){
+  private void drawLocations(String floor, boolean visibility) {
 
+    dbConnection
+        .getNodesOnFloor(floor)
+        .forEach(
+            node -> {
+              List<String> shortnames =
+                  dbConnection.getLocations(node.getNodeID(), today).stream()
+                      .filter(Location::isDestination)
+                      .map(Location::getShortName)
+                      .toList();
+
+              if (!shortnames.isEmpty()) {
+                String label = String.join(", ", shortnames);
+                locationGroup
+                    .getChildren()
+                    .add(
+                        new NodeText(
+                            node.getNodeID(),
+                            node.getX() - label.length() * 5,
+                            node.getY() - 10,
+                            label));
+              }
+            });
+
+    locationGroup.setVisible(visibility);
   }
 
   private void selectNode(int nodeID) {

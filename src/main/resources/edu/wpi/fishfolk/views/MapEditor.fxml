@@ -158,7 +158,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <MFXRadioButton fx:id="radioAllEdge" text="All">
+                  <MFXRadioButton fx:id="radioAllEdge" text="All" textFill="#012d5a">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
@@ -166,12 +166,15 @@
                         <ToggleGroup fx:id="edgeToggle" />
                      </toggleGroup>
                   </MFXRadioButton>
-                  <MFXRadioButton fx:id="radioSelectedEdge" text="Selected Node" toggleGroup="$edgeToggle">
+                  <MFXRadioButton fx:id="radioSelectedEdge" text="Selected Node" textFill="#012d5a" toggleGroup="$edgeToggle">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
+                     <font>
+                        <Font name="Open Sans Regular" size="12.0" />
+                     </font>
                   </MFXRadioButton>
-                  <MFXRadioButton fx:id="radioNoEdge" text="None" toggleGroup="$edgeToggle">
+                  <MFXRadioButton fx:id="radioNoEdge" text="None" textFill="#012d5a" toggleGroup="$edgeToggle">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>

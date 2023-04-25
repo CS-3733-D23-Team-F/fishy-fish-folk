@@ -526,13 +526,9 @@ public class Fdb {
         .toList();
   }
 
-  public List<String> getDestShortnames() {
+  public List<Location> getDestLocations() {
 
-    return locationTable.getAllEntries().stream()
-        .filter(Location::isDestination)
-        .map(Location::getShortName)
-        .sorted()
-        .toList();
+    return locationTable.getAllEntries().stream().filter(Location::isDestination).toList();
   }
 
   public int getNextNodeID() {
