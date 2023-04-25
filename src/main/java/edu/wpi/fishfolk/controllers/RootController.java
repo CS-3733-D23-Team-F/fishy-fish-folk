@@ -52,7 +52,7 @@ public class RootController {
           Navigation.navigate(Screen.LOGIN);
         });
 
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_SIGNAGE));
     exitButton.setOnMouseClicked(event -> System.exit(0));
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
