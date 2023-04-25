@@ -112,10 +112,24 @@ public class NewConferenceController extends AbsController {
         || rec5.isSelected()
         || rec6.isSelected()
         || rec7.isSelected()) {
-      System.out.println("Sufficient fields filled");
-      submit();
+      if (!(startTimeDrop.getText().isEmpty())
+          && !(startAMPMDrop.getText().isEmpty())
+          && !(endTimeDrop.getText().isEmpty())
+          && !(endAMPMDrop.getText().isEmpty())) {
+        if (!(numAttnBox.getText().isEmpty())) {
+          if (!(recurringDrop.getText().isEmpty())) {
+            System.out.println("The user has made it through.");
+          } else {
+            System.out.println("You must choose your setting for recurring.");
+          }
+        } else {
+          System.out.println("You must put in the number of attendees.");
+        }
+      } else {
+        System.out.println("You must put in a time.");
+      }
     } else {
-      System.out.println("Sufficient fields not filled");
+      System.out.println("You must select a room.");
     }
   }
 
