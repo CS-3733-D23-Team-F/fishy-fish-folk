@@ -161,11 +161,15 @@
                         <Insets bottom="20.0" />
                      </VBox.margin>
                   </HBox>
-                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Notes:">
-                     <font>
-                        <Font name="Open Sans Bold" size="26.0" />
-                     </font>
-                  </Text>
+                  <HBox>
+                     <children>
+                        <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Notes:">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
                   <MFXTextField fx:id="notesBox" minHeight="176.0" minWidth="1190.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;">
                      <VBox.margin>
                         <Insets bottom="20.0" />
