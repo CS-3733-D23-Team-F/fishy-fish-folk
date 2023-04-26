@@ -99,6 +99,7 @@ public class AdminDashboardController {
             event -> {
               String longname = futureMoves.longname;
               LocalDate date = LocalDate.parse(futureMoves.sDate);
+              //truncate example: https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
               Alert alert =
                   new Alert(
                       LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), longname, date, "");

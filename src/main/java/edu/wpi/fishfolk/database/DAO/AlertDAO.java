@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -225,6 +226,9 @@ public class AlertDAO implements IDAO<Alert> {
     for (LocalDateTime timestamp : alerts.keySet()) {
       allAlerts.add(alerts.get(timestamp));
     }
+
+    Collections.sort(
+        allAlerts, (alert1, alert2) -> alert1.getTimestamp().compareTo(alert2.getTimestamp()));
 
     return allAlerts;
   }
