@@ -91,10 +91,10 @@ public class LoginController extends AbsController {
             Navigation.navigate(Screen.STAFF_DASHBOARD);
             break;
           case ADMIN:
-            Navigation.navigate(Screen.HOME);
+            Navigation.navigate(Screen.ADMIN_DASHBOARD);
             break;
           case ROOT:
-            Navigation.navigate(Screen.HOME);
+            Navigation.navigate(Screen.ADMIN_DASHBOARD);
             break;
         }
       } else {

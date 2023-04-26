@@ -1,7 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.Sign;
 import edu.wpi.fishfolk.ui.SignagePreset;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -68,7 +68,7 @@ public class SignageEditorController extends AbsController {
     iconr3.setOnMouseClicked(event -> multiRotate(iconr3));
 
     cancelButton.setOnMouseClicked(
-        event -> Navigation.navigate(Screen.HOME)); // cancel button just returns home
+        event -> Navigation.navigate(SharedResources.getHome())); // cancel button just returns home
     clearButton.setOnMouseClicked(
         event -> clearAll()); // clear button clears and resets all objects on the form
     submitButton.setOnMouseClicked(
@@ -157,6 +157,6 @@ public class SignageEditorController extends AbsController {
             currentPreset.signs);
     dbConnection.insertEntry(preset);
 
-    Navigation.navigate(Screen.HOME); // go homes
+    Navigation.navigate(SharedResources.getHome()); // go homes
   }
 }
