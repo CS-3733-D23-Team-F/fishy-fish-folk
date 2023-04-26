@@ -14,9 +14,16 @@ import javafx.scene.text.Text;
 public class NewSignageController extends AbsController {
   @FXML Text textl0, textl1, textl2, textl3; // text for left room locations (0-3 is top-bottom)
   @FXML Text textr0, textr1, textr2, textr3; // text for right room locations (0-3 is top-bottom)
-
-  @FXML Text subtextl0, subtextl1, subtextl2, subtextl3; // text for left room locations (0-3 is top-bottom)
-  @FXML Text subtextr0, subtextr1, subtextr2, subtextr3; // text for right room locations (0-3 is top-bottom)
+  @FXML
+  Text subtextl0,
+      subtextl1,
+      subtextl2,
+      subtextl3; // text for left room locations (0-3 is top-bottom)
+  @FXML
+  Text subtextr0,
+      subtextr1,
+      subtextr2,
+      subtextr3; // text for right room locations (0-3 is top-bottom)
   @FXML
   ImageView iconl0, iconl1, iconl2, iconl3; // direction arrows for left side (0-3 is top-bottom)
   @FXML
