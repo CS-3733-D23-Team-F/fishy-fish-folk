@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.ui;
 
 public class SupplyItem {
+
   public String supplyName;
   public float supplyPrice;
 
