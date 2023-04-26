@@ -241,6 +241,21 @@
                         <Insets left="5.0" />
                      </padding>
                   </MFXButton>
+                  <MFXButton fx:id="AccManagerBtn" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="2.0" layoutY="610.0" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <font>
+                        <Font name="Open Sans Bold" size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="35.0">
+                           <image>
+                              <Image url="@../images/skills.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
                </children>
             </AnchorPane>
          </children>
