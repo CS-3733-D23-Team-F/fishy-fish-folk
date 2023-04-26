@@ -14,18 +14,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="670.0" minWidth="1180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewConferenceController">
    <children>
       <HBox style="-fx-background-color: #FFFFFF; -fx-region-background: #f0bf4c;" StackPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER">
                <children>
-                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Conference Room:">
-                     <font>
-                        <Font name="Open Sans Bold" size="26.0" />
-                     </font>
-                  </Text>
+                  <HBox>
+                     <children>
+                        <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Conference Room:">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                      <children>
                         <ScrollPane hbarPolicy="NEVER" minHeight="311.0" minWidth="472.0" prefHeight="311.0" prefWidth="563.0" style="-fx-background-radius: 5; -fx-background-color: #FFFFFF; -fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
