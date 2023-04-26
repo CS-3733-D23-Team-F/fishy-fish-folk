@@ -6,6 +6,9 @@ import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.geometry.NodeOrientation;
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -28,6 +31,8 @@ public class RootController {
   @FXML MFXButton viewOrders;
   @FXML MFXButton furnitureNav;
   @FXML StackPane sidebar;
+  @FXML HBox serviceBox;
+  @FXML VBox buttonsBox;
 
   // @FXML MFXButton moveEditorNav;
   // @FXML AnchorPane sideBar;
@@ -63,32 +68,7 @@ public class RootController {
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     // moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
-    serviceNav.setOnMouseEntered(
-        event -> {
-          serviceNav.setStyle(
-              "-fx-background-color: #0e4675;\n"
-                  + "    -fx-border-color: transparent transparent transparent #F0BF4C;\n"
-                  + "    -fx-border-width: 4px;");
-          serviceBar.setVisible(true);
-          serviceBar.setDisable(false);
-          serviceBar.setOnMouseEntered(
-              event1 -> {
-                serviceBar.setVisible(true);
-                serviceBar.setDisable(false);
-              });
-          serviceBar.setOnMouseExited(
-              event1 -> {
-                serviceBar.setVisible(false);
-                serviceBar.setDisable(true);
-                serviceNav.setStyle(null);
-              });
-        });
-    serviceNav.setOnMouseExited(
-        event -> {
-          serviceBar.setVisible(false);
-          serviceBar.setDisable(true);
-        });
-
+    setupServiceNavButton();
     /*
        serviceNav.setOnMouseExited(
            event -> {
@@ -96,6 +76,29 @@ public class RootController {
              serviceBar.setDisable(true);
            });
     */
+  }
+
+  public void setupServiceNavButton() {
+    serviceNav.setOnMouseClicked(
+        event -> {
+          serviceNav.setStyle(
+              "-fx-background-color: #0e4675;\n"
+                  + "    -fx-border-color: transparent transparent transparent #F0BF4C;\n"
+                  + "    -fx-border-width: 4px;");
+          serviceBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+          serviceBar.setVisible(true);
+          serviceBar.setDisable(false);
+          buttonsBox.setAlignment(Pos.TOP_LEFT);
+          serviceNav.setOnMouseClicked(
+              event2 -> {
+                serviceNav.setStyle(null);
+                serviceBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+                serviceBar.setVisible(false);
+                serviceBar.setDisable(true);
+                buttonsBox.setAlignment(Pos.TOP_RIGHT);
+                setupServiceNavButton();
+              });
+        });
   }
 
   public void updatePermissionsAccess() {

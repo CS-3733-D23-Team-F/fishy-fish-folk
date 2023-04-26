@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -67,12 +66,11 @@
       </AnchorPane>
    </top>
    <left>
-      <Pane fx:id="leftPane" />
       <StackPane fx:id="sidebar" alignment="BOTTOM_CENTER" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane maxWidth="100.0" minWidth="100.0" style="-fx-background-color: #012D5A;" StackPane.alignment="CENTER">
                <children>
-                  <VBox maxWidth="100.0" minHeight="670.0" minWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox fx:id="buttonsBox" alignment="TOP_RIGHT" maxWidth="100.0" minHeight="670.0" minWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <MFXButton fx:id="homeButton" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" VBox.vgrow="ALWAYS">
                            <font>
@@ -134,23 +132,8 @@
                               </ImageView>
                            </graphic>
                         </MFXButton>
-                        <HBox fillHeight="false" maxHeight="360.0" VBox.vgrow="ALWAYS">
+                        <HBox fx:id="serviceBox" fillHeight="false" maxHeight="360.0" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
                            <children>
-                              <MFXButton id="serviceNav" fx:id="serviceNav" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" depthLevel="LEVEL3" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="16.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                                 <graphic>
-                                    <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/NavigationBar/delivery.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </MFXButton>
                               <VBox fx:id="serviceBar" disable="true" maxHeight="360.0" maxWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: #ffffff;" visible="false">
                                  <children>
                                     <MFXButton fx:id="viewOrders" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="View Orders" textFill="#012d5a">
@@ -206,6 +189,21 @@
                                     </MFXButton>
                                  </children>
                               </VBox>
+                              <MFXButton id="serviceNav" fx:id="serviceNav" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" depthLevel="LEVEL3" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="16.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/NavigationBar/delivery.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </MFXButton>
                            </children>
                         </HBox>
                      </children>
