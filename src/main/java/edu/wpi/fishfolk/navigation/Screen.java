@@ -4,7 +4,7 @@ public enum Screen {
   ROOT("views/Root.fxml"),
   ADMIN_DASHBOARD("views/AdminDashboard.fxml"),
   SERVICE_REQUEST("views/ServiceRequest.fxml"),
-  SIGNAGE("views/Signage.fxml"),
+  SIGNAGE("views/NewSignage.fxml"),
 
   NEW_FOOD_ORDER("views/NewFoodOrder.fxml"),
   SUPPLIES_REQUEST("views/NewSupplyOrder.fxml"),
