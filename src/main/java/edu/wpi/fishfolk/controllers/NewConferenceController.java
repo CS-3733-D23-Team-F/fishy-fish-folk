@@ -138,11 +138,21 @@ public class NewConferenceController extends AbsController {
           && !(startAMPMDrop.getText().isEmpty())
           && !(endTimeDrop.getText().isEmpty())
           && !(endAMPMDrop.getText().isEmpty())) {
-        if (!(numAttnBox.getText().isEmpty()) && Integer.parseInt(numAttnBox.getText()) < 20) {
-          if (!(recurringDrop.getText().isEmpty())) {
-            submit();
+        if (!(numAttnBox.getText().isEmpty())) {
+          int numba = 75;
+          try {
+            numba = Integer.parseInt(numAttnBox.getText());
+          } catch (Exception e) {
+            submissionError("Nice Try Bernhardt.", numAttnBox);
+          }
+          if (numba < 21 && numba != 75) {
+            if (!(recurringDrop.getText().isEmpty())) {
+              submit();
+            } else {
+              submissionError("You must choose your setting for recurring.", recurringDrop);
+            }
           } else {
-            submissionError("You must choose your setting for recurring.", recurringDrop);
+            submissionError("nah wtf is you doing dude", numAttnBox);
           }
         } else {
           submissionError("You must put in the number of attendees.", numAttnBox);
@@ -172,12 +182,12 @@ public class NewConferenceController extends AbsController {
   /**
    * Deselects all other options once a togglebox is selected
    *
-   * @param rec1
-   * @param rec2
-   * @param rec3
-   * @param rec4
-   * @param rec5
-   * @param rec6
+   * @param rec1 rectangle 1
+   * @param rec2 rectangle 2
+   * @param rec3 rectangle 3
+   * @param rec4 rectangle 4
+   * @param rec5 rectangle 5
+   * @param rec6 rectangle 6
    */
   public void deselect(
       MFXRectangleToggleNode rec1,
