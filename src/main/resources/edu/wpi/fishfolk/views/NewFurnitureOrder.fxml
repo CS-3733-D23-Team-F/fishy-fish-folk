@@ -157,7 +157,7 @@
          </HBox>
     <MFXTextField fx:id="notesTextField" floatingText="ADDITIONAL NOTES" minHeight="86.0" minWidth="1020.0" style="-fx-border-color: #012d5a; -fx-border-width: 1;">
         <font>
-            <Font name="Open Sans Regular" size="26.0" />
+            <Font name="Open Sans Regular" size="15.0" />
         </font>
         <textFill>
             <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
@@ -167,7 +167,7 @@
       <children>
           <MFXFilterComboBox fx:id="roomSelector" floatingText="ROOM" minHeight="86.0" minWidth="500.0" popupOffsetY="-500.0" style="-fx-border-color: #012d5a; -fx-border-width: 1;" HBox.hgrow="ALWAYS">
               <font>
-                  <Font name="Open Sans Regular" size="26.0" />
+                  <Font name="Open Sans Regular" size="15.0" />
               </font>
               <textFill>
                   <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
@@ -175,7 +175,7 @@
           </MFXFilterComboBox>
          <MFXDatePicker fx:id="deliveryDate" floatMode="INLINE" floatingText="DELIVERY DATE" minHeight="86.0" minWidth="500.0" popupOffsetX="45.0" popupOffsetY="-4150.0" style="-fx-border-width: 1; -fx-border-radius: 5; -fx-border-color: #012d5a;" HBox.hgrow="ALWAYS">
             <font>
-               <Font name="Open Sans Light" size="26.0" />
+               <Font name="Open Sans Light" size="15.0" />
             </font>
                   <textFill>
                      <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
