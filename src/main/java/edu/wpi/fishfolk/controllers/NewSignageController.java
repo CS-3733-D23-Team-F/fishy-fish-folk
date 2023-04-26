@@ -58,6 +58,7 @@ public class NewSignageController extends AbsController {
 
     initTextList(); // loads all text boxes into ArrayList<Text> to call in for loops
     initIconsList(); // loads all arrow icons into ArrayList<ImageView> to call in for loops
+    initSubtextList();
 
     // sets all of the signs based on the relevant preset
     for (int i = 0; i < 8; i++) {
@@ -68,7 +69,7 @@ public class NewSignageController extends AbsController {
       } else {
         listTexts.get(i).setOpacity(1);
         listIcons.get(i).setOpacity(1);
-        listSubText.get(i).setOpacity(0); // CHANGE ONCE SUBTEXT IS ADDED TO DB
+        listSubText.get(i).setOpacity(1); // CHANGE ONCE SUBTEXT IS ADDED TO DB
         listTexts
             .get(i)
             .setText(
@@ -79,6 +80,7 @@ public class NewSignageController extends AbsController {
             .setRotate(
                 preset.getSigns()[i]
                     .getDirection()); // and same for the i'th direction for the arrow
+        listSubText.get(i).setText(preset.getSigns()[i].getSubtext());
       }
     }
     // spotless totally nuked the format of these functions huh
@@ -96,6 +98,7 @@ public class NewSignageController extends AbsController {
             if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
               identifier = presetSelect.getValue();
               initialize();
+              break;
             }
           }
         });

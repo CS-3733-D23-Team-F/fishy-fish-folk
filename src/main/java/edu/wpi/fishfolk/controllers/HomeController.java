@@ -5,6 +5,9 @@ import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.navigation.Navigation;
+import edu.wpi.fishfolk.navigation.Screen;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,6 +74,8 @@ public class HomeController {
       flowerdeliverytime,
       flowerrecipientname,
       floweritems;
+
+  @FXML MFXButton signageEditorButton;
 
   private int rowA = 1;
 
@@ -175,6 +180,8 @@ public class HomeController {
     foodassignee.setOnEditCommit(this::onSetFoodEdit);
     flowerassignee.setOnEditCommit(this::onSetFlowerEdit);
     furnitureassignee.setOnEditCommit(this::onSetFurnitureEdit);
+
+    signageEditorButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE_EDITOR));
   }
 
   public void onSetSupplyEdit(TableColumn.CellEditEvent<SupplyOrderObservable, String> t) {

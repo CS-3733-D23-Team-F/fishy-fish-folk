@@ -229,7 +229,7 @@
                                  </VBox.margin>
                               </MFXButton>
                               <VBox VBox.vgrow="ALWAYS" />
-                              <MFXButton buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Signage Editor" textFill="#012d5a">
+                              <MFXButton fx:id="signageEditorButton" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Signage Editor" textFill="#012d5a">
                                  <font>
                                     <Font name="Open Sans Bold" size="20.0" />
                                  </font>

@@ -560,7 +560,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
       // Run the query for each item to insert
       for (int i = 0; i < 8; i++) {
-        if (signs[i].getLabel() != null) {
+        if (signs[i] != null) {
           preparedInsert.setInt(1, getSubtableItemsID(requestID));
           preparedInsert.setString(2, signs[i].getLabel());
           preparedInsert.setDouble(3, signs[i].getDirection());
