@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.database.TableEntry.UserAccount;
@@ -23,6 +24,10 @@ public class LoginController extends AbsController {
   /** Initialize state and set event handlers. */
   @FXML
   private void initialize() {
+    Fapp.getRootPane().getLeft().setDisable(true);
+    Fapp.getRootPane().getLeft().setVisible(false);
+    Fapp.getRootPane().getTop().setDisable(true);
+    Fapp.getRootPane().getTop().setVisible(false);
     loginBtn.setOnMouseClicked(event -> attemptLogin());
     GuestLoginBtn.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     loginPassField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
