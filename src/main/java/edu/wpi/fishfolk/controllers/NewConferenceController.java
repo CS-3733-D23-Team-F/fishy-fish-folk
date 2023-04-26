@@ -187,7 +187,6 @@ public class NewConferenceController extends AbsController {
     rec4.setSelected(false);
     rec5.setSelected(false);
     rec6.setSelected(false);
-    rec7.setSelected(false);
   }
 
   /** imputs all values from the reservation into the database table. */
