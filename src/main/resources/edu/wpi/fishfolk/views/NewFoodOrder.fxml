@@ -23,7 +23,7 @@
          <children>
             <VBox alignment="CENTER" minHeight="788.0" minWidth="1200.0" StackPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER">
                      <children>
                         <MFXButton fx:id="appsTab" minWidth="234.0" style="-fx-background-color: #012d5a;" text="Appetizers" textFill="WHITE">
                            <font>
@@ -52,7 +52,7 @@
                         </MFXButton>
                      </children>
                      <VBox.margin>
-                        <Insets bottom="25.0" />
+                        <Insets bottom="25.0" top="15.0" />
                      </VBox.margin>
                   </HBox>
                   <HBox VBox.vgrow="ALWAYS">
@@ -104,7 +104,7 @@
                         <HBox HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER">
                      <children>
                         <MFXButton fx:id="cancelButton" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #012d5a;" text="Cancel" textFill="WHITE" HBox.hgrow="ALWAYS">
                            <font>
@@ -129,7 +129,7 @@
                          </MFXButton>
                      </children>
                      <VBox.margin>
-                        <Insets top="15.0" />
+                        <Insets bottom="15.0" top="15.0" />
                      </VBox.margin>
                   </HBox>
                </children>
