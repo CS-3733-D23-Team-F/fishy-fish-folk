@@ -117,8 +117,7 @@ public class NewConferenceController extends AbsController {
 
   public void checkNumBox() {
     try {
-      int stwing = Integer.parseInt(numAttnBox.getText());
-      if (stwing > 20) {
+      if (Integer.parseInt(numAttnBox.getText()) > 20) {
         numAttnBox.clear();
       }
     } catch (Exception e) {
@@ -139,7 +138,7 @@ public class NewConferenceController extends AbsController {
           && !(startAMPMDrop.getText().isEmpty())
           && !(endTimeDrop.getText().isEmpty())
           && !(endAMPMDrop.getText().isEmpty())) {
-        if (!(numAttnBox.getText().isEmpty())) {
+        if (!(numAttnBox.getText().isEmpty()) && Integer.parseInt(numAttnBox.getText()) < 20) {
           if (!(recurringDrop.getText().isEmpty())) {
             submit();
           } else {
