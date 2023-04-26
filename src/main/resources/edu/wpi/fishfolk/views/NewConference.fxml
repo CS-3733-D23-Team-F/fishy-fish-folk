@@ -134,7 +134,7 @@
                                     </MFXFilterComboBox>
                                  </children>
                               </HBox>
-                              <MFXTextField fx:id="numAttnBox" alignment="CENTER_RIGHT" floatingText="&lt;= 20 PEOPLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
+                              <MFXTextField fx:id="numAttnBox" alignment="CENTER_RIGHT" floatingText="2 - 20 PEOPLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font>

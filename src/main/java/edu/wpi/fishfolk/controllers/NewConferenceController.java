@@ -117,7 +117,7 @@ public class NewConferenceController extends AbsController {
 
   public void checkNumBox() {
     try {
-      if (Integer.parseInt(numAttnBox.getText()) > 20) {
+      if (Integer.parseInt(numAttnBox.getText()) > 20 || Integer.parseInt(numAttnBox.getText()) < 2) {
         numAttnBox.clear();
       }
     } catch (Exception e) {
@@ -145,7 +145,7 @@ public class NewConferenceController extends AbsController {
           } catch (Exception e) {
             submissionError("Nice Try Bernhardt.", numAttnBox);
           }
-          if (numba < 21 && numba != 75) {
+          if (numba < 21 && numba > 1 && numba != 75) {
             if (!(recurringDrop.getText().isEmpty())) {
               submit();
             } else {
