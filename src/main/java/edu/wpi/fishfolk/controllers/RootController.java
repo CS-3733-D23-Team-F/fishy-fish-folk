@@ -33,6 +33,7 @@ public class RootController {
   @FXML StackPane sidebar;
   @FXML HBox serviceBox;
   @FXML VBox buttonsBox;
+  @FXML MFXButton conferenceNav;
 
   // @FXML MFXButton moveEditorNav;
   // @FXML AnchorPane sideBar;
@@ -50,6 +51,7 @@ public class RootController {
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
     supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    conferenceNav.setOnMouseClicked(event -> Navigation.navigate(Screen.CONFERENCE));
 
     // accountManagerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
