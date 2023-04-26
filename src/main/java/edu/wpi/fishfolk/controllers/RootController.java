@@ -154,6 +154,22 @@ public class RootController {
         // accountManagerNav.setDisable(true);
         // moveEditorNav.setDisable(true);
       case ADMIN:
+        serviceNav.setDisable(false);
+        flowerNav.setDisable(false);
+        furnitureNav.setDisable(false);
+        supplyNav.setDisable(false);
+        mealNav.setDisable(false);
+        viewOrders.setDisable(false);
+        AccManagerBtn.setDisable(false);
+        serviceNav.setVisible(true);
+        flowerNav.setVisible(true);
+        furnitureNav.setVisible(true);
+        supplyNav.setVisible(true);
+        mealNav.setVisible(true);
+        viewOrders.setVisible(true);
+        AccManagerBtn.setVisible(true);
+        mapEditorNav.setDisable(false);
+        mapEditorNav.setVisible(true);
       case ROOT:
         break;
     }
