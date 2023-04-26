@@ -106,7 +106,7 @@ public class RootController {
   }
 
   public void accSwitch() {
-
+    SharedResources.logout();
     Navigation.navigate(Screen.LOGIN);
   }
 
