@@ -14,6 +14,9 @@ import javafx.scene.text.Text;
 public class NewSignageController extends AbsController {
   @FXML Text textl0, textl1, textl2, textl3; // text for left room locations (0-3 is top-bottom)
   @FXML Text textr0, textr1, textr2, textr3; // text for right room locations (0-3 is top-bottom)
+
+  @FXML Text subtextl0, subtextl1, subtextl2, subtextl3; // text for left room locations (0-3 is top-bottom)
+  @FXML Text subtextr0, subtextr1, subtextr2, subtextr3; // text for right room locations (0-3 is top-bottom)
   @FXML
   ImageView iconl0, iconl1, iconl2, iconl3; // direction arrows for left side (0-3 is top-bottom)
   @FXML
@@ -24,6 +27,7 @@ public class NewSignageController extends AbsController {
   String identifier = "TEST";
   ArrayList<Text> listTexts = new ArrayList<>();
   ArrayList<ImageView> listIcons = new ArrayList<>();
+  ArrayList<Text> listSubText = new ArrayList<>();
 
   public void initialize() {
 
@@ -38,7 +42,7 @@ public class NewSignageController extends AbsController {
         identifier = allPresets.get(i).getName();
     }
 
-    // IDK IF THIS WILL WORK
+    // sets identifier to presetSelect value only if a preset has been selected
     if (!(presetSelect.getValue() == null)) identifier = presetSelect.getValue();
 
     // loads relevant preset using previously defined identifier
@@ -53,9 +57,11 @@ public class NewSignageController extends AbsController {
       if (preset.getSigns()[i] == null) {
         listTexts.get(i).setOpacity(0); // if the i'th Sign in the current preset does not exist,
         listIcons.get(i).setOpacity(0); // make the i'th textbox and icon invisible
+        listSubText.get(i).setOpacity(0);
       } else {
         listTexts.get(i).setOpacity(1);
         listIcons.get(i).setOpacity(1);
+        listSubText.get(i).setOpacity(0); // CHANGE ONCE SUBTEXT IS ADDED TO DB
         listTexts
             .get(i)
             .setText(
@@ -68,6 +74,7 @@ public class NewSignageController extends AbsController {
                     .getDirection()); // and same for the i'th direction for the arrow
       }
     }
+    // spotless totally nuked the format of these functions huh
 
     // fills in presetSelect choice box with names of all SignagePresets
     presetSelect.getItems().clear();
@@ -87,6 +94,7 @@ public class NewSignageController extends AbsController {
         });
   }
 
+  // fills listTexts list for easier calling of text fields in for loops
   private void initTextList() {
     listTexts.add(textl0);
     listTexts.add(textl1);
@@ -98,6 +106,7 @@ public class NewSignageController extends AbsController {
     listTexts.add(textr3);
   }
 
+  // fills IconsList list for easier calling of direction arrows in for loops
   private void initIconsList() {
     listIcons.add(iconl0);
     listIcons.add(iconl1);
@@ -107,5 +116,16 @@ public class NewSignageController extends AbsController {
     listIcons.add(iconr1);
     listIcons.add(iconr2);
     listIcons.add(iconr3);
+  }
+
+  private void initSubtextList() {
+    listSubText.add(subtextl0);
+    listSubText.add(subtextl1);
+    listSubText.add(subtextl2);
+    listSubText.add(subtextl3);
+    listSubText.add(subtextr0);
+    listSubText.add(subtextr1);
+    listSubText.add(subtextr2);
+    listSubText.add(subtextr3);
   }
 }

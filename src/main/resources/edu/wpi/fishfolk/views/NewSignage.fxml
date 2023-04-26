@@ -49,6 +49,11 @@
                               <Font name="Open Sans Regular" size="30.0" />
                            </font>
                         </Text>
+                        <Text fx:id="subtextl0" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" minHeight="131.0" prefHeight="200.0" prefWidth="100.0">
@@ -56,6 +61,11 @@
                         <Text fx:id="textl1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                            <font>
                               <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextl1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
                            </font>
                         </Text>
                      </children>
@@ -67,6 +77,11 @@
                               <Font size="30.0" />
                            </font>
                         </Text>
+                        <Text fx:id="subtextl2" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" minHeight="131.0" prefHeight="200.0" prefWidth="100.0">
@@ -74,6 +89,11 @@
                         <Text fx:id="textl3" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                            <font>
                               <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextl3" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
                            </font>
                         </Text>
                      </children>
@@ -89,6 +109,11 @@
                               <Font name="Open Sans Regular" size="30.0" />
                            </font>
                         </Text>
+                        <Text fx:id="subtextr0" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_RIGHT" minHeight="131.0" prefHeight="200.0" prefWidth="100.0">
@@ -96,6 +121,11 @@
                         <Text fx:id="textr1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                            <font>
                               <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextr1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
                            </font>
                         </Text>
                      </children>
@@ -107,6 +137,11 @@
                               <Font size="30.0" />
                            </font>
                         </Text>
+                        <Text fx:id="subtextr2" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_RIGHT" minHeight="131.0" prefHeight="200.0" prefWidth="100.0">
@@ -114,6 +149,11 @@
                         <Text fx:id="textr3" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                            <font>
                               <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextr3" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
                            </font>
                         </Text>
                      </children>
