@@ -25,6 +25,7 @@ import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
 public class AdminDashboardController {
@@ -147,28 +148,24 @@ public class AdminDashboardController {
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
 
-      AnchorPane anchorPane = fxmlLoader.load();
+      HBox alertPane = fxmlLoader.load();
 
       AlertsController alertsController = fxmlLoader.getController();
       alertsController.setData(alert);
 
       alertsController.closeAlert.setOnMouseClicked(
           event -> {
-            alertGrid.getChildren().remove(anchorPane);
+            alertGrid.getChildren().remove(alertPane);
             dbConnection.removeEntry(alert.getTimestamp(), TableEntryType.ALERT);
           });
 
-      anchorPane.setPrefWidth(alertGrid.getWidth());
+      alertPane.setPrefWidth(alertGrid.getWidth());
 
       dbConnection.insertEntry(alert);
-      alertGrid.add(anchorPane, 1, rowA);
+      alertGrid.add(alertPane, 1, rowA);
       rowA += 1;
 
-      alertGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-      alertGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-      alertGrid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-      GridPane.setMargin(anchorPane, new Insets(10));
+      GridPane.setMargin(alertPane, new Insets(10));
 
       addAlert.clear();
 

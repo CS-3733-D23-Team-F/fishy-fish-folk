@@ -28,8 +28,8 @@ public class Alert {
 
   public Alert(LocalDateTime timestamp, String text) {
     this.timestamp = timestamp;
-    this.longName = "";
-    this.date = null;
+    this.longName = "no location";
+    this.date = LocalDate.now();
     this.text = text;
     this.type = AlertType.OTHER;
   }
