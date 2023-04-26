@@ -475,7 +475,7 @@ public class AdminDashboardController {
     for (FoodRequest request : foodList) {
       returnable.add(new FoodOrderObservable(request));
     }
-    Predicate<FoodOrderObservable> filter = p -> p.getFoodstatus().equals("Filled");
+    Predicate<FoodOrderObservable> filter = p -> p.getFoodstatus().equals("Submitted");
     FilteredList<FoodOrderObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
@@ -487,7 +487,7 @@ public class AdminDashboardController {
     for (SupplyRequest request : supplyList) {
       returnable.add(new SupplyOrderObservable(request));
     }
-    Predicate<SupplyOrderObservable> filter = p -> p.getSupplystatus().equals("Filled");
+    Predicate<SupplyOrderObservable> filter = p -> p.getSupplystatus().equals("Submitted");
     FilteredList<SupplyOrderObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
@@ -499,7 +499,7 @@ public class AdminDashboardController {
     for (FurnitureRequest request : furnitureList) {
       returnable.add(new FurnitureOrderObservable(request));
     }
-    Predicate<FurnitureOrderObservable> filter = p -> p.getFurniturestatus().equals("Filled");
+    Predicate<FurnitureOrderObservable> filter = p -> p.getFurniturestatus().equals("Submitted");
     FilteredList<FurnitureOrderObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
@@ -511,7 +511,7 @@ public class AdminDashboardController {
     for (FlowerRequest request : flowerList) {
       returnable.add(new FlowerOrderObservable(request));
     }
-    Predicate<FlowerOrderObservable> filter = p -> p.getFlowerstatus().equals("Filled");
+    Predicate<FlowerOrderObservable> filter = p -> p.getFlowerstatus().equals("Submitted");
     FilteredList<FlowerOrderObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
