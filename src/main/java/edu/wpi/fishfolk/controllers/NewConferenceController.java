@@ -12,6 +12,8 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.controlsfx.control.PopOver;
@@ -21,6 +23,10 @@ public class NewConferenceController extends AbsController {
   @FXML MFXFilterComboBox startTimeDrop, endTimeDrop, startAMPMDrop, endAMPMDrop, recurringDrop;
   @FXML MFXTextField numAttnBox, nameBox, notesBox;
   @FXML MFXRectangleToggleNode rec1, rec2, rec3, rec4, rec5, rec6, rec7;
+  @FXML HBox confirmBlur;
+  @FXML HBox confirmBox;
+  @FXML AnchorPane confirmPane;
+  @FXML MFXButton okButton;
   Font oSans26;
 
   ArrayList<String> AMPM = new ArrayList<>();
@@ -34,6 +40,7 @@ public class NewConferenceController extends AbsController {
   @FXML
   public void initialize() {
     addDropdownOptions();
+    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
     confCancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     confClearButton.setOnMouseClicked(event -> clearFields());
     confSubmitButton.setOnMouseClicked(event -> attemptSubmit());
@@ -224,8 +231,13 @@ public class NewConferenceController extends AbsController {
             Integer.parseInt(numAttnBox.getText()),
             dummyVariable);
     dbConnection.insertEntry(res);
-    Navigation.navigate(Screen.HOME);
-    /**
+    confirmBlur.setDisable(false);
+    confirmBlur.setVisible(true);
+    confirmBox.setDisable(false);
+    confirmBox.setVisible(true);
+    confirmPane.setVisible(true);
+    confirmPane.setDisable(false);
+    /*
      * String notes, String username, String startTime, String endTime, Recurring recurringOption,
      * int numAttendees, String roomName
      */
