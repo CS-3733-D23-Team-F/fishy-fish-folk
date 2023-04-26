@@ -24,7 +24,7 @@ public class LoginController extends AbsController {
   @FXML
   private void initialize() {
     loginBtn.setOnMouseClicked(event -> attemptLogin());
-    GuestLoginBtn.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    GuestLoginBtn.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     loginPassField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
     loginIDField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
     errorBox.setText("");
