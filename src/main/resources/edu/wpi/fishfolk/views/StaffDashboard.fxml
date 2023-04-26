@@ -216,11 +216,6 @@
                                  </VBox.margin>
                               </MFXButton>
                               <VBox VBox.vgrow="ALWAYS" />
-                              <MFXButton fx:id="toSignageEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Signage Editor" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="20.0" />
-                                 </font>
-                              </MFXButton>
                            </children>
                            <HBox.margin>
                               <Insets left="5.0" top="25.0" />
