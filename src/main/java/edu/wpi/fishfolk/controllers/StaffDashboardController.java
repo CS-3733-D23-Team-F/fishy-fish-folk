@@ -9,7 +9,6 @@ import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,7 @@ import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
 public class StaffDashboardController {
@@ -39,7 +39,6 @@ public class StaffDashboardController {
   @FXML TableView<FurnitureOrderObservable> furnitureTable;
   @FXML TableView<FlowerOrderObservable> flowerTable;
   @FXML TableView<SupplyOrderObservable> supplyTable;
-  @FXML MFXTextField addAlert;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodCompletion,
@@ -81,6 +80,7 @@ public class StaffDashboardController {
 
   @FXML
   public void initialize() {
+    // TODO fix this to load alerts in db and fix adding to alerts grid
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
     toMapEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
@@ -118,9 +118,36 @@ public class StaffDashboardController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
   }
 
-  public void setAlert(String alert) {}
+  public void addAlert(Alert alert) {
+    try {
+      FXMLLoader fxmlLoader = new FXMLLoader();
+      fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
+
+      HBox alertPane = fxmlLoader.load();
+
+      AlertsController alertsController = fxmlLoader.getController();
+      alertsController.setData(alert);
+
+      alertsController.closeAlert.setVisible(false);
+      alertsController.closeAlert.setDisable(true);
+
+      alertPane.setPrefWidth(alertGrid.getWidth());
+
+      //staff shouldnt be pushing alerts to the db
+      //dbConnection.insertEntry(alert);
+      alertGrid.add(alertPane, 1, rowA);
+      rowA += 1;
+
+      GridPane.setMargin(alertPane, new Insets(10));
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   public List<String> getAssignees() {
     return dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT).stream()

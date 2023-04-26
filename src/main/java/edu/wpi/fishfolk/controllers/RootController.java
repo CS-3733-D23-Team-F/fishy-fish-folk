@@ -70,8 +70,8 @@ public class RootController {
     switchAccsButton.setOnMouseClicked(event -> accSwitch());
     AccManagerBtn.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
     exitButton.setOnMouseClicked(event -> System.exit(0));
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
-    // moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
+
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
 
     setupServiceNavButton();
     /*

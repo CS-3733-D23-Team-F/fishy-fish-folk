@@ -1,8 +1,8 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.FurnitureRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.FurnitureItem;
 import edu.wpi.fishfolk.ui.FurnitureOrder;
@@ -51,8 +51,8 @@ public class NewFurnitureOrderController extends AbsController {
   public void initialize() {
     loadOptions();
     loadRoomChoice();
-    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
-    cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
+    cancelButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     furnituresubmitButton.setOnMouseClicked(event -> submit());
     clearButton.setOnMouseClicked(event -> clearAllFields());
     radioButton1.setOnMouseClicked(
