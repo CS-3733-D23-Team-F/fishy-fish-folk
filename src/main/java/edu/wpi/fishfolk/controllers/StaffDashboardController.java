@@ -6,9 +6,6 @@ import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
-import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +28,6 @@ import javafx.scene.layout.Region;
 public class StaffDashboardController {
 
   // @FXML MFXButton navigateButton;
-  @FXML MFXButton toMapEditor, toMoveEditor, toSignageEditor;
   @FXML GridPane grid;
   @FXML GridPane alertGrid;
   // @FXML MFXPaginatedTableView paginated;
@@ -83,8 +79,6 @@ public class StaffDashboardController {
     // TODO fix this to load alerts in db and fix adding to alerts grid
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
-    toMapEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
     // toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.));
     int col = 0;
     int row = 1;
