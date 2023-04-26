@@ -9,13 +9,11 @@ import edu.wpi.fishfolk.database.TableEntry.Alert;
 import edu.wpi.fishfolk.util.AlertType;
 import java.io.*;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class AlertDAO implements IDAO<Alert> {
 
@@ -407,5 +405,24 @@ public class AlertDAO implements IDAO<Alert> {
   @Override
   public boolean exportCSV(String directory) {
     return false;
+  }
+
+  public Alert getLatestAlert() {
+    Iterator<LocalDateTime> itr = alerts.keySet().iterator();
+
+    if (!itr.hasNext()) {
+      return null;
+    }
+
+    LocalDateTime last = itr.next();
+
+    while (itr.hasNext()) {
+      LocalDateTime curr = itr.next();
+      if (curr.isAfter(last)) {
+        last = curr;
+      }
+    }
+
+    return alerts.get(last);
   }
 }

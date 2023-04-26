@@ -665,4 +665,8 @@ public class Fdb {
             })
         .toList();
   }
+
+  public Alert getLatestAlert() {
+    return alertTable.getLatestAlert();
+  }
 }

@@ -75,8 +75,6 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXButton submitSetting;
 
-  @FXML Text pathText;
-
   @FXML HBox pathTextBox;
 
   @FXML ScrollPane scroll;
@@ -125,8 +123,22 @@ public class PathfindingController extends AbsController {
     methodSelector.getItems().addAll("A*", "BFS", "DFS", "Dijkstra's");
     drawGroup.getChildren().add(locationGroup);
 
-    if (pathText.getText().equals("")) {
-      pathTextBox.setVisible(false);
+    try {
+      FXMLLoader fxmlLoader = new FXMLLoader();
+      fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
+
+      HBox alertPane = fxmlLoader.load();
+
+      AlertsController alertsController = fxmlLoader.getController();
+      alertsController.setData(dbConnection.getLatestAlert());
+
+      alertsController.closeAlert.setDisable(true);
+      alertsController.closeAlert.setVisible(false);
+
+      pathTextBox.getChildren().clear();
+      pathTextBox.getChildren().add(alertPane);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
     }
 
     settingButton.setOnMouseClicked(
@@ -297,7 +309,6 @@ public class PathfindingController extends AbsController {
         event -> {
           Stage popup = new Stage();
 
-          // Popup popup = new Popup();
           popup.setX(Fapp.getPrimaryStage().getWidth() * 0.4);
           popup.setY(Fapp.getPrimaryStage().getHeight() * 0.4);
 
@@ -710,7 +721,6 @@ public class PathfindingController extends AbsController {
     }
     if (!(pathMessage.getText().equals(""))) {
       pathTextBox.setVisible(true);
-      pathText.setText(pathMessage.getText());
     } else {
       pathTextBox.setVisible(false);
     }
