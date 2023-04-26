@@ -117,7 +117,7 @@ public class NewConferenceController extends AbsController {
 
   public void checkNumBox() {
     try {
-      if (Integer.parseInt(numAttnBox.getText()) > 20 || Integer.parseInt(numAttnBox.getText()) < 2) {
+      if (Integer.parseInt(numAttnBox.getText()) > 20) {
         numAttnBox.clear();
       }
     } catch (Exception e) {
@@ -152,7 +152,7 @@ public class NewConferenceController extends AbsController {
               submissionError("You must choose your setting for recurring.", recurringDrop);
             }
           } else {
-            submissionError("nah wtf is you doing dude", numAttnBox);
+            submissionError("Invalid Input for number of attendees.", numAttnBox);
           }
         } else {
           submissionError("You must put in the number of attendees.", numAttnBox);
