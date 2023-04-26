@@ -20,6 +20,7 @@ public class RootController {
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
   @FXML MFXButton conferenceNav;
+  @FXML MFXButton switchAccsButton;
   @FXML VBox serviceBar;
   @FXML MFXButton serviceNav;
   @FXML MFXButton exitButton;
@@ -66,6 +67,7 @@ public class RootController {
 
     */
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    switchAccsButton.setOnMouseClicked(event -> accSwitch());
     exitButton.setOnMouseClicked(event -> System.exit(0));
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     // moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
@@ -101,6 +103,11 @@ public class RootController {
                 setupServiceNavButton();
               });
         });
+  }
+
+  public void accSwitch() {
+
+    Navigation.navigate(Screen.LOGIN);
   }
 
   public void updatePermissionsAccess() {

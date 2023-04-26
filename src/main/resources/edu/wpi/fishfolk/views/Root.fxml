@@ -208,6 +208,21 @@
                         </HBox>
                      </children>
                   </VBox>
+                  <MFXButton fx:id="switchAccsButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="-8.0" layoutY="600.0" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <font>
+                        <Font name="Open Sans Bold" size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="35.0">
+                           <image>
+                              <Image url="@../images/user.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
                   <MFXButton fx:id="exitButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <font>
                         <Font name="Open Sans Bold" size="16.0" />
