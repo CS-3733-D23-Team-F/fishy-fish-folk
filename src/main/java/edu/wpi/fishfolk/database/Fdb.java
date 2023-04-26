@@ -82,6 +82,7 @@ public class Fdb {
                   userAccountTable.updateDatabase(true);
                   signagePresetTable.updateDatabase(true);
                   alertTable.updateDatabase(true);
+
                   disconnect();
                 }));
   }
