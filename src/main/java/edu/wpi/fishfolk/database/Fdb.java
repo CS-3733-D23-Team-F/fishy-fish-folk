@@ -30,7 +30,12 @@ public class Fdb {
   // Login & User Accounts Tables
   private final UserAccountDAO userAccountTable;
 
-  // TODO use map from tabletype -> dao table object to simplify delegation
+  // Signage Tables
+  private final SignagePresetDAO signagePresetTable;
+
+  private final AlertDAO alertTable;
+
+  // TODO refactor use map from tabletype -> dao table object to simplify delegation
 
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb() {
@@ -53,6 +58,12 @@ public class Fdb {
     // Login & User Accounts Tables
     this.userAccountTable = new UserAccountDAO(dbConnection);
 
+    // Signage Tables
+    this.signagePresetTable = new SignagePresetDAO(dbConnection);
+
+    // Alert table
+    this.alertTable = new AlertDAO(dbConnection);
+
     // importLocalCSV();
 
     Runtime.getRuntime()
@@ -68,6 +79,8 @@ public class Fdb {
                   flowerRequestTable.updateDatabase(true);
                   conferenceRequestTable.updateDatabase(true);
                   userAccountTable.updateDatabase(true);
+                  signagePresetTable.updateDatabase(true);
+                  alertTable.updateDatabase(true);
                   disconnect();
                 }));
   }
@@ -145,6 +158,12 @@ public class Fdb {
 
     } else if (entry instanceof UserAccount) {
       return userAccountTable.insertEntry((UserAccount) entry);
+
+    } else if (entry instanceof SignagePreset) {
+      return signagePresetTable.insertEntry((SignagePreset) entry);
+
+    } else if (entry instanceof Alert) {
+      return alertTable.insertEntry((Alert) entry);
     }
 
     return false;
@@ -187,6 +206,12 @@ public class Fdb {
 
     } else if (entry instanceof UserAccount) {
       return userAccountTable.updateEntry((UserAccount) entry);
+
+    } else if (entry instanceof SignagePreset) {
+      return signagePresetTable.updateEntry((SignagePreset) entry);
+
+    } else if (entry instanceof Alert) {
+      return alertTable.updateEntry((Alert) entry);
     }
 
     return false;
@@ -222,6 +247,10 @@ public class Fdb {
         return conferenceRequestTable.removeEntry(identifier);
       case USER_ACCOUNT:
         return userAccountTable.removeEntry(identifier);
+      case SIGNAGE_PRESET:
+        return signagePresetTable.removeEntry(identifier);
+      case ALERT:
+        return alertTable.removeEntry(identifier);
     }
 
     return false;
@@ -257,6 +286,10 @@ public class Fdb {
         return conferenceRequestTable.getEntry(identifier);
       case USER_ACCOUNT:
         return userAccountTable.getEntry(identifier);
+      case SIGNAGE_PRESET:
+        return signagePresetTable.getEntry(identifier);
+      case ALERT:
+        return alertTable.getEntry(identifier);
     }
 
     return null;
@@ -291,6 +324,10 @@ public class Fdb {
         return conferenceRequestTable.getAllEntries();
       case USER_ACCOUNT:
         return userAccountTable.getAllEntries();
+      case SIGNAGE_PRESET:
+        return signagePresetTable.getAllEntries();
+      case ALERT:
+        return alertTable.getAllEntries();
     }
 
     return null;
@@ -335,7 +372,51 @@ public class Fdb {
       case USER_ACCOUNT:
         userAccountTable.undoChange();
         break;
+      case SIGNAGE_PRESET:
+        signagePresetTable.undoChange();
+        break;
+      case ALERT:
+        alertTable.undoChange();
+        break;
     }
+  }
+
+  /**
+   * Pushes ALL staged changes to a PostgreSQL database table.
+   *
+   * @param tableEntryType Type of table to push all changes to
+   * @return True on success, false otherwise
+   */
+  public boolean updateDatabase(TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case NODE:
+        return nodeTable.updateDatabase(true);
+      case LOCATION:
+        return locationTable.updateDatabase(true);
+      case MOVE:
+        return moveTable.updateDatabase(true);
+      case EDGE:
+        return edgeTable.updateDatabase(true);
+      case FOOD_REQUEST:
+        return foodRequestTable.updateDatabase(true);
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.updateDatabase(true);
+      case FURNITURE_REQUEST:
+        return furnitureRequestTable.updateDatabase(true);
+      case FLOWER_REQUEST:
+        return flowerRequestTable.updateDatabase(true);
+      case CONFERENCE_REQUEST:
+        return conferenceRequestTable.updateDatabase(true);
+      case USER_ACCOUNT:
+        return userAccountTable.updateDatabase(true);
+      case SIGNAGE_PRESET:
+        return signagePresetTable.updateDatabase(true);
+      case ALERT:
+        return alertTable.updateDatabase(true);
+    }
+
+    return false;
   }
 
   // TODO: ALL commas need to be removed/refactored from text fields before exporting
@@ -381,6 +462,12 @@ public class Fdb {
 
       case USER_ACCOUNT:
         return userAccountTable.importCSV(filepath, backup);
+
+      case SIGNAGE_PRESET:
+        return signagePresetTable.importCSV(filepath, backup);
+
+      case ALERT:
+        return alertTable.importCSV(filepath, backup);
     }
     return false;
   }
@@ -424,6 +511,12 @@ public class Fdb {
 
       case USER_ACCOUNT:
         return userAccountTable.exportCSV(directory);
+
+      case SIGNAGE_PRESET:
+        return signagePresetTable.exportCSV(directory);
+
+      case ALERT:
+        return alertTable.exportCSV(directory);
     }
     return false;
   }
@@ -526,6 +619,11 @@ public class Fdb {
         .toList();
   }
 
+  public List<Location> getDestLocations() {
+
+    return locationTable.getAllEntries().stream().filter(Location::isDestination).toList();
+  }
+
   public int getNextNodeID() {
     return nodeTable.getNextID();
   }
@@ -566,5 +664,9 @@ public class Fdb {
               } else return false;
             })
         .toList();
+  }
+
+  public Alert getLatestAlert() {
+    return alertTable.getLatestAlert();
   }
 }

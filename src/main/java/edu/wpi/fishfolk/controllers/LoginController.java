@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.database.TableEntry.UserAccount;
@@ -10,14 +11,12 @@ import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.List;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 
 public class LoginController extends AbsController {
-  @FXML MFXButton loginBtn;
+  @FXML MFXButton loginBtn, GuestLoginBtn;
   @FXML MFXTextField loginIDField;
   @FXML MFXPasswordField loginPassField;
   @FXML Label errorBox;
@@ -25,7 +24,12 @@ public class LoginController extends AbsController {
   /** Initialize state and set event handlers. */
   @FXML
   private void initialize() {
-    loginBtn.setOnMouseClicked(loginHandler);
+    Fapp.getRootPane().getLeft().setDisable(true);
+    Fapp.getRootPane().getLeft().setVisible(false);
+    Fapp.getRootPane().getTop().setDisable(true);
+    Fapp.getRootPane().getTop().setVisible(false);
+    loginBtn.setOnMouseClicked(event -> attemptLogin());
+    GuestLoginBtn.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     loginPassField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
     loginIDField.setOnKeyReleased(this::attemptLoginOnEnterPressed);
     errorBox.setText("");
@@ -82,7 +86,21 @@ public class LoginController extends AbsController {
         // valid account. We're already logged in if we get here!
         errorBox.setText("Logged in successfully!");
         errorBox.setStyle("-fx-alignment: center; -fx-background-color:  green;");
-        Navigation.navigate(Screen.HOME);
+        System.out.println("perm: " + SharedResources.getCurrentUser().getLevel());
+        switch (SharedResources.getCurrentUser().getLevel()) {
+          case GUEST:
+            Navigation.navigate(Screen.SIGNAGE);
+            break;
+          case STAFF:
+            Navigation.navigate(Screen.STAFF_DASHBOARD);
+            break;
+          case ADMIN:
+            Navigation.navigate(Screen.ADMIN_DASHBOARD);
+            break;
+          case ROOT:
+            Navigation.navigate(Screen.ADMIN_DASHBOARD);
+            break;
+        }
       } else {
         errorBox.setText("Incorrect password.");
         errorBox.setVisible(true);
@@ -90,10 +108,4 @@ public class LoginController extends AbsController {
       }
     }
   }
-
-  /** Event handler to attempt login when the login button is pressed. */
-  public final EventHandler<MouseEvent> loginHandler =
-      event -> {
-        attemptLogin();
-      };
 }

@@ -1,9 +1,9 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.FlowerRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
@@ -63,7 +63,7 @@ public class NewFlowerOrderController extends AbsController {
     checkoutButton.setOnAction(event -> openCart());
     submitButton.setOnAction(event -> submit());
     backButton.setOnAction(event -> closeCart());
-    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
+    okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
     springTab.setOnAction(event -> tab(0));
     gratitudeTab.setOnAction(event -> tab(1));
     sympathyTab.setOnAction(event -> tab(2));
@@ -117,7 +117,7 @@ public class NewFlowerOrderController extends AbsController {
   /** Clear the cart, and Return Home */
   private void cancel() {
     cart = null;
-    Navigation.navigate(Screen.HOME); // todo discuss changing this to service request
+    Navigation.navigate(SharedResources.getHome()); // todo discuss changing this to service request
   }
 
   /** Load cart items into viewable format, and put the cart on screen */

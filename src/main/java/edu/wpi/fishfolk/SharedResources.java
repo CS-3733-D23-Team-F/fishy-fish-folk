@@ -4,6 +4,7 @@ import static edu.wpi.fishfolk.util.PermissionLevel.GUEST;
 
 import edu.wpi.fishfolk.controllers.RootController;
 import edu.wpi.fishfolk.database.TableEntry.UserAccount;
+import edu.wpi.fishfolk.navigation.Screen;
 import lombok.Setter;
 
 public class SharedResources {
@@ -39,7 +40,23 @@ public class SharedResources {
 
   /** Log out of the currently logged in account. If not logged in, do nothing. */
   public static void logout() {
-    currentAccount = new UserAccount("guest", "", "", GUEST);
+    currentAccount = new UserAccount("extremely_guest", "", "", GUEST);
     rootController.updatePermissionsAccess();
+  }
+
+  public static Screen getHome() {
+
+    switch (currentAccount.getLevel()) {
+      case ROOT:
+      case ADMIN:
+        return Screen.ADMIN_DASHBOARD;
+
+      case STAFF:
+        return Screen.STAFF_DASHBOARD;
+
+      case GUEST:
+      default:
+        return Screen.SIGNAGE;
+    }
   }
 }

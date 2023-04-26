@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewSignageController">
+   <children>
+      <HBox alignment="CENTER" minHeight="610.0" minWidth="200.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fx:id="iconl0" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+                     <image>
+                        <Image url="@../images/Signage/arrowsquare.PNG" />
+                     </image>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="iconl1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+                     <image>
+                        <Image url="@../images/Signage/arrowsquare.PNG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="iconl2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+                     <image>
+                        <Image url="@../images/Signage/arrowsquare.PNG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="iconl3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+                     <image>
+                        <Image url="@../images/Signage/arrowsquare.PNG" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" minHeight="320.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <VBox alignment="CENTER_LEFT" minHeight="131.0" prefWidth="100.0">
+                     <children>
+                        <Text fx:id="textl0" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font name="Open Sans Regular" size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextl0" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" minHeight="131.0" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text fx:id="textl1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextl1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" minHeight="131.0" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text fx:id="textl2" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextl2" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" minHeight="131.0" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text fx:id="textl3" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextl3" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox minWidth="50.0" />
+            <VBox alignment="CENTER_RIGHT" layoutX="500.0" layoutY="10.0" minHeight="320.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <VBox alignment="CENTER_RIGHT" minHeight="131.0" prefWidth="100.0">
+                     <children>
+                        <Text fx:id="textr0" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font name="Open Sans Regular" size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextr0" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_RIGHT" minHeight="131.0" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text fx:id="textr1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextr1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_RIGHT" minHeight="131.0" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text fx:id="textr2" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextr2" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_RIGHT" minHeight="131.0" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text fx:id="textr3" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="subtextr3" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Subtext">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox layoutX="375.0" layoutY="-240.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fx:id="iconr0" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+                     <image>
+                        <Image url="@../images/Signage/arrowsquare.PNG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="iconr1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+                     <image>
+                        <Image url="@../images/Signage/arrowsquare.PNG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="iconr2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+                     <image>
+                        <Image url="@../images/Signage/arrowsquare.PNG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="iconr3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+                     <image>
+                        <Image url="@../images/Signage/arrowsquare.PNG" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" minHeight="75.0">
+         <children>
+            <MFXFilterComboBox fx:id="presetSelect" promptText="PRESET" style="-fx-border-radius: 2; -fx-border-color: #000000;" styleClass="fx">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </MFXFilterComboBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

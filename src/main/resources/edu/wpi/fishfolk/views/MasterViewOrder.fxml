@@ -24,7 +24,7 @@
                                <TableColumn fx:id="foodid" prefWidth="75.0" text="ID" />
                                <TableColumn fx:id="foodassignee" prefWidth="75.0" text="Assignee" />
                                  <TableColumn fx:id="foodstatus" prefWidth="75.0" text="Status" />
-                                 <TableColumn fx:id="fooddeliveryroom" prefWidth="200.0" text="Delivery Room" />
+                                 <TableColumn fx:id="fooddeliveryroom" prefWidth="250.0" text="Delivery Room" />
                                  <TableColumn fx:id="fooddeliverytime" prefWidth="120.0" text="Delivery Time" />
                                  <TableColumn fx:id="foodrecipientname" prefWidth="100.0" text="Recipient Name" />
                                  <TableColumn fx:id="fooditems" prefWidth="100.0" text="Items" />
@@ -32,7 +32,6 @@
                                  <TableColumn fx:id="foodnotes" prefWidth="60.0" text="Notes" />
                              </columns>
                            </TableView>
-                        <VBox prefWidth="20.0" style="-fx-background-color: #012d5a; -fx-background-radius: 10;" />
                         </children>
                      </HBox>
                      <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
@@ -82,13 +81,12 @@
                             <TableColumn fx:id="supplyid" prefWidth="75.0" text="ID" />
                             <TableColumn fx:id="supplyassignee" prefWidth="75.0" text="Assignee" />
                             <TableColumn fx:id="supplystatus" prefWidth="75.0" text="Status" />
-                            <TableColumn fx:id="supplydeliveryroom" prefWidth="200.0" text="Delivery Room" />
+                            <TableColumn fx:id="supplydeliveryroom" prefWidth="250.0" text="Delivery Room" />
                             <TableColumn fx:id="supplylink" prefWidth="150.0" text="Link" />
                             <TableColumn fx:id="supplynotes" prefWidth="60.0" text="Notes" />
                             <TableColumn fx:id="supplysupplies" prefWidth="100.0" text="Supplies" />
                          </columns>
                       </TableView>
-                      <VBox prefWidth="20.0" style="-fx-background-color: #012d5a; -fx-background-radius: 10;" />
                    </children>
                 </HBox>
                 <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
@@ -138,14 +136,13 @@
                               <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
                               <TableColumn fx:id="furnitureassignee" prefWidth="75.0" text="Assignee" />
                               <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
-                              <TableColumn fx:id="furnituredeliveryroom" prefWidth="200.0" text="Delivery Room" />
+                              <TableColumn fx:id="furnituredeliveryroom" prefWidth="250.0" text="Delivery Room" />
                               <TableColumn fx:id="furnituredeliverydate" prefWidth="120.0" text="Delivery Date" />
                               <TableColumn fx:id="furniturenotes" prefWidth="60.0" text="Notes" />
                               <TableColumn fx:id="furnitureservicetype" prefWidth="100.0" text="Service Type" />
                               <TableColumn fx:id="furniturefurniture" prefWidth="100.0" text="Furniture" />
                            </columns>
                         </TableView>
-                        <VBox prefWidth="20.0" style="-fx-background-color: #012d5a; -fx-background-radius: 10;" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
@@ -195,7 +192,7 @@
                               <TableColumn fx:id="flowerid" prefWidth="75.0" text="ID" />
                               <TableColumn fx:id="flowerassignee" prefWidth="75.0" text="Assignee" />
                               <TableColumn fx:id="flowerstatus" prefWidth="75.0" text="Status" />
-                              <TableColumn fx:id="flowerdeliveryroom" prefWidth="200.0" text="Delivery Room" />
+                              <TableColumn fx:id="flowerdeliveryroom" prefWidth="250.0" text="Delivery Room" />
                               <TableColumn fx:id="flowerdeliverytime" prefWidth="120.0" text="Delivery Time" />
                               <TableColumn fx:id="flowerrecipientname" prefWidth="100.0" text="Recipient Name" />
                               <TableColumn fx:id="floweritems" minWidth="2.00006103515625" prefWidth="100.0" text="Items" />
@@ -203,7 +200,6 @@
                               <TableColumn fx:id="flowernotes" prefWidth="60.0" text="Notes" />
                            </columns>
                         </TableView>
-                        <VBox prefWidth="20.0" style="-fx-background-color: #012d5a; -fx-background-radius: 10;" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
@@ -288,6 +284,39 @@
                      </MFXFilterComboBox>
                   </children></AnchorPane>
            </content> -->
+         </Tab>
+         <Tab text="Conference Room Bookings">
+            <content>
+               <VBox alignment="CENTER" spacing="20.0">
+                  <children>
+                     <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+                        <children>
+                           <TableView fx:id="conferenceTable" HBox.hgrow="ALWAYS">
+                              <columns>
+                                 <TableColumn fx:id="conferenceid" minWidth="2.00006103515625" prefWidth="75.0" text="ID" />
+                                 <TableColumn fx:id="conferenceroom" prefWidth="250.0" text="Room" />
+                                 <TableColumn fx:id="conferencestart" prefWidth="100.0" text="Start Time" />
+                                 <TableColumn fx:id="conferenceend" prefWidth="100.0" text="End Time" />
+                                 <TableColumn fx:id="conferencebooker" prefWidth="100.0" text="Booked By" />
+                                 <TableColumn fx:id="conferenceattendees" prefWidth="70.0" text="Attendees" />
+                                 <TableColumn fx:id="conferencerecurring" prefWidth="70.0" text="Recurring?" />
+                                 <TableColumn fx:id="conferencenotes" prefWidth="60.0" text="Notes" />
+                              </columns>
+                           </TableView>
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER_LEFT" spacing="20.0" VBox.vgrow="NEVER">
+                        <children>
+                           <MFXButton fx:id="conferenceRemoveButton" layoutX="1422.0" layoutY="10.0" style="-fx-background-color: #012d5a;" text="Remove" textFill="WHITE">
+                              <font>
+                                 <Font name="Open Sans Bold" size="26.0" />
+                              </font>
+                           </MFXButton>
+                        </children>
+                     </HBox>
+                  </children>
+               </VBox>
+            </content>
          </Tab>
      </tabs>
    </TabPane>

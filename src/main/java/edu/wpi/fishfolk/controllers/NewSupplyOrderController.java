@@ -1,18 +1,23 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.SupplyRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.SupplyItem;
 import edu.wpi.fishfolk.ui.SupplyOrder;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.fxml.FXML;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 
 public class NewSupplyOrderController extends AbsController {
 
@@ -24,9 +29,9 @@ public class NewSupplyOrderController extends AbsController {
   SupplyOrder currentSupplyOrder = new SupplyOrder();
   @FXML MFXFilterComboBox<String> roomSelector;
   ArrayList<SupplyItem> supplyOptions;
-  @FXML Rectangle cancelButton;
-  @FXML Rectangle supplySubmitButton;
-  @FXML Rectangle clearButton;
+  @FXML MFXButton cancelButton;
+  @FXML MFXButton supplySubmitButton;
+  @FXML MFXButton clearButton;
   // @FXML MFXCheckbox check1, check2, check3, check4, check5, check6, check7;
   @FXML
   MFXRectangleToggleNode rectangle1,
@@ -37,6 +42,10 @@ public class NewSupplyOrderController extends AbsController {
       rectangle6,
       rectangle7;
   @FXML MFXTextField linkTextField, notesTextField;
+  @FXML HBox confirmBlur;
+  @FXML HBox confirmBox;
+  @FXML AnchorPane confirmPane;
+  @FXML MFXButton okButton;
 
   public NewSupplyOrderController() {
     super();
@@ -45,7 +54,8 @@ public class NewSupplyOrderController extends AbsController {
   @FXML
   public void initialize() {
     loadOptions();
-    cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
+    cancelButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     supplySubmitButton.setOnMouseClicked(event -> submit());
     clearButton.setOnMouseClicked(event -> clearAllFields());
     loadRooms();
@@ -97,14 +107,15 @@ public class NewSupplyOrderController extends AbsController {
   }
 
   private boolean submittable() {
-    if (rectangle1.isSelected()
-        || rectangle2.isSelected()
-        || rectangle3.isSelected()
-        || rectangle4.isSelected()
-        || rectangle5.isSelected()
-        || rectangle6.isSelected()
-        || rectangle7.isSelected()
-        || (!(currentSupplyOrder.link == ""))) {
+    if ((rectangle1.isSelected()
+            || rectangle2.isSelected()
+            || rectangle3.isSelected()
+            || rectangle4.isSelected()
+            || rectangle5.isSelected()
+            || rectangle6.isSelected()
+            || rectangle7.isSelected()
+            || (!(currentSupplyOrder.link == "")))
+        && roomSelector.getValue() != null) {
       System.out.println("Sufficient fields filled");
       return true;
     } else {
@@ -144,7 +155,18 @@ public class NewSupplyOrderController extends AbsController {
               roomSelector.getValue(),
               currentSupplyOrder.supplies);
       dbConnection.insertEntry(request);
-      Navigation.navigate(Screen.HOME);
+      confirmBlur.setDisable(false);
+      confirmBlur.setVisible(true);
+      confirmBox.setDisable(false);
+      confirmBox.setVisible(true);
+      confirmPane.setVisible(true);
+      confirmPane.setDisable(false);
+    } else {
+      PopOver error = new PopOver();
+      Text errorText = new Text("One or more required fields have not been filled");
+      errorText.setFont(new Font("Open Sans", 26));
+      error.setContentNode(errorText);
+      error.show(supplySubmitButton);
     }
   }
 }

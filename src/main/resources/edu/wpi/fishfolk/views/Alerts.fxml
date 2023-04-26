@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="600.0" style="-fx-background-color: #F1F1F1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AlertsController">
+   <children>
+      <Label fx:id="alertText" minHeight="22.0" minWidth="40.0" text="Text" textFill="#012d5a" HBox.hgrow="ALWAYS">
+         <font>
+            <Font name="Open Sans Regular" size="15.0" />
+         </font>
+         <HBox.margin>
+            <Insets left="15.0" />
+         </HBox.margin>
+      </Label>
+      <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+         <children>
+            <MFXButton fx:id="closeAlert" contentDisplay="GRAPHIC_ONLY" style="-fx-background-color: #F1F1F1;">
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/close.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </MFXButton>
+         </children>
+      </HBox>
+   </children>
+</HBox>

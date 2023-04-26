@@ -81,4 +81,13 @@ public class Node {
         .map(loc -> loc.getLongName().substring(8, 10)) // extract elevator letter
         .toList();
   }
+
+  /**
+   * Snap this node to the nearest point on a lattice grid of given size
+   *
+   * @param s sidelength of a square in the grid
+   */
+  public void snapToGrid(double s) {
+    point = new Point2D(Math.round(point.getX() / s) * s, Math.round(point.getY() / s) * s);
+  }
 }

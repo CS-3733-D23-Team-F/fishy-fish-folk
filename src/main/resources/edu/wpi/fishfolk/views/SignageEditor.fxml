@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.SignageEditorController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1080.0" VBox.vgrow="ALWAYS">
+         <children>
+            <MFXTextField fx:id="presetText" minHeight="57.0" minWidth="350.0" promptText="PRESET NAME" style="-fx-border-color: #000000; -fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets top="50.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXTextField>
+            <MFXDatePicker fx:id="datePicker" alignment="BOTTOM_LEFT" minHeight="57.0" minWidth="350.0" promptText="IMPLEMENTATION DATE" style="-fx-border-width: 2; -fx-border-color: #000000;">
+               <HBox.margin>
+                  <Insets left="100.0" top="50.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXDatePicker>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="378.0" minHeight="100.0" prefHeight="100.0" prefWidth="1092.0">
+         <children>
+            <ImageView fx:id="iconl0" fitHeight="150.0" fitWidth="200.0" layoutX="877.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
+            <MFXFilterComboBox fx:id="rooml0" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-color: #000000; -fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXFilterComboBox>
+            <MFXFilterComboBox fx:id="roomr0" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-width: 2; -fx-border-color: #000000;">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXFilterComboBox>
+            <ImageView fx:id="iconr0" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox alignment="TOP_CENTER">
+         <children>
+            <MFXTextField fx:id="subtextl0" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+            </MFXTextField>
+            <MFXTextField fx:id="subtextr0" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="630.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
+         <children>
+            <ImageView fx:id="iconl1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
+            <MFXFilterComboBox fx:id="rooml1" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-color: #000000; -fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXFilterComboBox>
+            <MFXFilterComboBox fx:id="roomr1" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-width: 2; -fx-border-color: #000000;">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXFilterComboBox>
+            <ImageView fx:id="iconr1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="258.0">
+         <children>
+            <MFXTextField fx:id="subtextl1" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+            </MFXTextField>
+            <MFXTextField fx:id="subtextr1" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="630.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
+         <children>
+            <ImageView fx:id="iconl2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
+            <MFXFilterComboBox fx:id="rooml2" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-color: #000000; -fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXFilterComboBox>
+            <MFXFilterComboBox fx:id="roomr2" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-width: 2; -fx-border-color: #000000;">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXFilterComboBox>
+            <ImageView fx:id="iconr2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="373.0">
+         <children>
+            <MFXTextField fx:id="subtextl2" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+            </MFXTextField>
+            <MFXTextField fx:id="subtextr2" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="530.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
+         <children>
+            <ImageView fx:id="iconl3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
+            <MFXFilterComboBox fx:id="rooml3" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-color: #000000; -fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXFilterComboBox>
+            <MFXFilterComboBox fx:id="roomr3" minHeight="57.0" minWidth="350.0" promptText="ROOM" style="-fx-border-width: 2; -fx-border-color: #000000;">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+            </MFXFilterComboBox>
+            <ImageView fx:id="iconr3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
+               <image>
+                  <Image url="@../images/Signage/arrowsquare.PNG" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="488.0">
+         <children>
+            <MFXTextField fx:id="subtextl3" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+            </MFXTextField>
+            <MFXTextField fx:id="subtextr3" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" minHeight="50.0" minWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <MFXButton fx:id="cancelButton" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Bold" size="26.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="65.0" />
+               </HBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="clearButton" layoutX="518.0" layoutY="72.0" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CLEAR" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Bold" size="26.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="submitButton" layoutX="550.0" layoutY="72.0" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #F0BF4C; -fx-background-radius: 5;" text="SUBMIT" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Bold" size="26.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="370.0" />
+               </HBox.margin>
+            </MFXButton>
+         </children>
+      </HBox>
+   </children>
+</VBox>

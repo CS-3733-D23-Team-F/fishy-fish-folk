@@ -6,6 +6,9 @@ import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.geometry.NodeOrientation;
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -16,6 +19,9 @@ public class RootController {
   @FXML MFXButton flowerNav;
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
+  @FXML MFXButton conferenceNav;
+  @FXML MFXButton switchAccsButton;
+  @FXML MFXButton AccManagerBtn;
   @FXML VBox serviceBar;
   @FXML MFXButton serviceNav;
   @FXML MFXButton exitButton;
@@ -27,8 +33,11 @@ public class RootController {
   // @FXML Text directionInstructions;
   @FXML MFXButton viewOrders;
   @FXML MFXButton furnitureNav;
+  @FXML MFXButton aboutButton;
+  @FXML MFXButton creditButton;
   @FXML StackPane sidebar;
-
+  @FXML HBox serviceBox;
+  @FXML VBox buttonsBox;
   // @FXML MFXButton moveEditorNav;
   // @FXML AnchorPane sideBar;
 
@@ -40,11 +49,13 @@ public class RootController {
     SharedResources.setRootController(this);
 
     viewOrders.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
-
+    creditButton.setOnMouseClicked(event -> Navigation.navigate(Screen.CREDITS));
+    aboutButton.setOnMouseClicked(event -> Navigation.navigate(Screen.ABOUTME));
     flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
     supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    conferenceNav.setOnMouseClicked(event -> Navigation.navigate(Screen.CONFERENCE));
 
     // accountManagerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
@@ -58,37 +69,14 @@ public class RootController {
 
 
     */
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    switchAccsButton.setOnMouseClicked(event -> accSwitch());
+    AccManagerBtn.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
+    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_SIGNAGE));
     exitButton.setOnMouseClicked(event -> System.exit(0));
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
-    // moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
-    serviceNav.setOnMouseEntered(
-        event -> {
-          serviceNav.setStyle(
-              "-fx-background-color: #0e4675;\n"
-                  + "    -fx-border-color: transparent transparent transparent #F0BF4C;\n"
-                  + "    -fx-border-width: 4px;");
-          serviceBar.setVisible(true);
-          serviceBar.setDisable(false);
-          serviceBar.setOnMouseEntered(
-              event1 -> {
-                serviceBar.setVisible(true);
-                serviceBar.setDisable(false);
-              });
-          serviceBar.setOnMouseExited(
-              event1 -> {
-                serviceBar.setVisible(false);
-                serviceBar.setDisable(true);
-                serviceNav.setStyle(null);
-              });
-        });
-    serviceNav.setOnMouseExited(
-        event -> {
-          serviceBar.setVisible(false);
-          serviceBar.setDisable(true);
-        });
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
 
+    setupServiceNavButton();
     /*
        serviceNav.setOnMouseExited(
            event -> {
@@ -96,6 +84,34 @@ public class RootController {
              serviceBar.setDisable(true);
            });
     */
+  }
+
+  public void setupServiceNavButton() {
+    serviceNav.setOnMouseClicked(
+        event -> {
+          serviceNav.setStyle(
+              "-fx-background-color: #0e4675;\n"
+                  + "    -fx-border-color: transparent transparent transparent #F0BF4C;\n"
+                  + "    -fx-border-width: 4px;");
+          serviceBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+          serviceBar.setVisible(true);
+          serviceBar.setDisable(false);
+          buttonsBox.setAlignment(Pos.TOP_LEFT);
+          serviceNav.setOnMouseClicked(
+              event2 -> {
+                serviceNav.setStyle(null);
+                serviceBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+                serviceBar.setVisible(false);
+                serviceBar.setDisable(true);
+                buttonsBox.setAlignment(Pos.TOP_RIGHT);
+                setupServiceNavButton();
+              });
+        });
+  }
+
+  public void accSwitch() {
+    SharedResources.logout();
+    Navigation.navigate(Screen.LOGIN);
   }
 
   public void updatePermissionsAccess() {
@@ -116,18 +132,82 @@ public class RootController {
 
     switch (SharedResources.getCurrentUser().getLevel()) {
       case GUEST:
+        // Features that are inaccessible
         serviceNav.setDisable(true);
         flowerNav.setDisable(true);
         furnitureNav.setDisable(true);
         supplyNav.setDisable(true);
         mealNav.setDisable(true);
         viewOrders.setDisable(true);
-      case STAFF:
+        AccManagerBtn.setDisable(true);
+        serviceNav.setVisible(false);
+        flowerNav.setVisible(false);
+        furnitureNav.setVisible(false);
+        supplyNav.setVisible(false);
+        mealNav.setVisible(false);
+        viewOrders.setVisible(false);
+        AccManagerBtn.setVisible(false);
         mapEditorNav.setDisable(true);
-        // accountManagerNav.setDisable(true);
-        // moveEditorNav.setDisable(true);
+        mapEditorNav.setVisible(false);
+        break;
+      case STAFF:
+        // Features that are inaccessible
+        mapEditorNav.setDisable(true);
+        mapEditorNav.setVisible(false);
+        AccManagerBtn.setDisable(true);
+        AccManagerBtn.setVisible(false);
+        viewOrders.setVisible(false);
+        viewOrders.setDisable(true);
+
+        // Features that are accessible
+        serviceNav.setDisable(false);
+        flowerNav.setDisable(false);
+        furnitureNav.setDisable(false);
+        supplyNav.setDisable(false);
+        mealNav.setDisable(false);
+        serviceNav.setVisible(true);
+        flowerNav.setVisible(true);
+        furnitureNav.setVisible(true);
+        supplyNav.setVisible(true);
+        mealNav.setVisible(true);
+        break;
       case ADMIN:
+        // Features that are accessible
+        serviceNav.setDisable(false);
+        flowerNav.setDisable(false);
+        furnitureNav.setDisable(false);
+        supplyNav.setDisable(false);
+        mealNav.setDisable(false);
+        viewOrders.setDisable(false);
+        AccManagerBtn.setDisable(false);
+        serviceNav.setVisible(true);
+        flowerNav.setVisible(true);
+        furnitureNav.setVisible(true);
+        supplyNav.setVisible(true);
+        mealNav.setVisible(true);
+        viewOrders.setVisible(true);
+        AccManagerBtn.setVisible(true);
+        mapEditorNav.setDisable(false);
+        mapEditorNav.setVisible(true);
+        break;
       case ROOT:
+        // Features that are accessible
+        serviceNav.setDisable(false);
+        flowerNav.setDisable(false);
+        furnitureNav.setDisable(false);
+        supplyNav.setDisable(false);
+        mealNav.setDisable(false);
+        viewOrders.setDisable(false);
+        AccManagerBtn.setDisable(false);
+        serviceNav.setVisible(true);
+        flowerNav.setVisible(true);
+        furnitureNav.setVisible(true);
+        supplyNav.setVisible(true);
+        mealNav.setVisible(true);
+        viewOrders.setVisible(true);
+        AccManagerBtn.setVisible(true);
+        mapEditorNav.setDisable(false);
+        mapEditorNav.setVisible(true);
         break;
     }
   }

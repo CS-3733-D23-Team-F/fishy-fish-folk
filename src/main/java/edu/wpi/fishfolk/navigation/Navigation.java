@@ -13,6 +13,10 @@ public class Navigation {
     try {
       final var resource = Fapp.class.getResource(filename);
       final FXMLLoader loader = new FXMLLoader(resource);
+      Fapp.getRootPane().getLeft().setDisable(false);
+      Fapp.getRootPane().getLeft().setVisible(true);
+      Fapp.getRootPane().getTop().setDisable(false);
+      Fapp.getRootPane().getTop().setVisible(true);
 
       Fapp.getRootPane().setCenter(loader.load());
       Node leftNode = Fapp.getRootPane().getLeft();

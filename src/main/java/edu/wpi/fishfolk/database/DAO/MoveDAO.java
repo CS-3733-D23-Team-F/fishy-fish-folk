@@ -70,7 +70,7 @@ public class MoveDAO implements IDAO<Move> {
                 + tableName
                 + " (id SMALLINT," // 2 bytes: -2^15 to 2^15-1
                 + " longname VARCHAR(64)," // 64 characters
-                + " date date);"; // (day, month, year) in 4 bytes
+                + " date DATE);"; // (day, month, year) in 4 bytes
         statement.executeUpdate(query);
       }
 
