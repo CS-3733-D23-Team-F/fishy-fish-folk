@@ -29,7 +29,7 @@
             </ImageView>
          </children>
       </HBox>
-      <VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="900.0" maxWidth="600.0" minHeight="900.0" minWidth="600.0" opacity="0.9" spacing="20.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30;" StackPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="900.0" maxWidth="600.0" minHeight="900.0" minWidth="600.0" opacity="0.9" spacing="10.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30;" StackPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -91,7 +91,7 @@
                   </StackPane>
                </children>
                <VBox.margin>
-                  <Insets top="100.0" />
+                  <Insets top="30.0" />
                </VBox.margin>
             </HBox>
             <Label fx:id="errorBox" style="-fx-alignment: center; -fx-background-color: F4F4F4;" textAlignment="CENTER">
@@ -109,6 +109,11 @@
                <VBox.margin>
                   <Insets />
                </VBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="GuestLoginBtn" buttonType="RAISED" depthLevel="LEVEL1" minHeight="50.0" minWidth="225.0" style="-fx-background-color: #012D5A; -fx-background-radius: 5;" text="Login as Guest" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Bold" size="24.0" />
+               </font>
             </MFXButton>
          </children>
       </VBox>

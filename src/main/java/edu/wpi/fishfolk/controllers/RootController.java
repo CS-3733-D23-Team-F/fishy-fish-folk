@@ -21,6 +21,7 @@ public class RootController {
   @FXML MFXButton mapEditorNav;
   @FXML MFXButton conferenceNav;
   @FXML MFXButton switchAccsButton;
+  @FXML MFXButton AccManagerBtn;
   @FXML VBox serviceBar;
   @FXML MFXButton serviceNav;
   @FXML MFXButton exitButton;
@@ -67,6 +68,7 @@ public class RootController {
     */
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     switchAccsButton.setOnMouseClicked(event -> accSwitch());
+    AccManagerBtn.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     homeButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
