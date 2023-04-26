@@ -26,7 +26,10 @@ public enum Screen {
   STAFF_DASHBOARD("views/StaffDashboard.fxml"),
 
   TEMPLATE("views/Template.fxml"),
-  CONFERENCE("views/NewConference.fxml");
+  CONFERENCE("views/NewConference.fxml"),
+
+  CREDITS("views/Credits.fxml"),
+  ABOUTME("views/AboutMe.fxml");
 
   private final String filename;
 
