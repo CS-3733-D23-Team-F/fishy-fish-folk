@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.database.TableEntry.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
@@ -101,6 +102,11 @@ public class Fdb {
       if (db != null) {
         System.out.println("[Fdb.connect]: Connection established.");
         db.setSchema("iter2db");
+
+        String query = "SET idle_session_timeout = 0;";
+        Statement statement = db.createStatement();
+        statement.executeUpdate(query);
+
       } else {
         System.out.println("[Fdb.connect]: Connection failed.");
       }
