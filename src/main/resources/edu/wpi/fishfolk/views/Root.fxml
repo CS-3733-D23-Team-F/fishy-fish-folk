@@ -43,7 +43,7 @@
                         </MFXButton>
                         <MFXButton fx:id="creditButton" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" depthLevel="LEVEL1" style="-fx-background-color: transparent;">
                            <graphic>
-                              <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="creditsButton" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/NavigationBar/002-copyright.png" />
                                  </image>

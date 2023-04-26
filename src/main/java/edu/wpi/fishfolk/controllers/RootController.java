@@ -33,6 +33,8 @@ public class RootController {
   // @FXML Text directionInstructions;
   @FXML MFXButton viewOrders;
   @FXML MFXButton furnitureNav;
+  @FXML MFXButton aboutButton;
+  @FXML MFXButton creditButton;
   @FXML StackPane sidebar;
   @FXML HBox serviceBox;
   @FXML VBox buttonsBox;
@@ -47,7 +49,8 @@ public class RootController {
     SharedResources.setRootController(this);
 
     viewOrders.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
-
+    creditButton.setOnMouseClicked(event -> Navigation.navigate(Screen.CREDITS));
+    aboutButton.setOnMouseClicked(event -> Navigation.navigate(Screen.ABOUTME));
     flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
     supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));

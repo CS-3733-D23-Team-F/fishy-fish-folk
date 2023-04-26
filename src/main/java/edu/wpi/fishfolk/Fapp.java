@@ -42,7 +42,7 @@ public class Fapp extends Application {
     primaryStage.setMaximized(true);
     primaryStage.show();
 
-    Navigation.navigate(Screen.CREDITS);
+    Navigation.navigate(Screen.LOGIN);
 
     // root.setLeft(roots.getServiceBar());
 
