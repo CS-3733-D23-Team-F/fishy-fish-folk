@@ -33,8 +33,12 @@ public class Fapp extends Application {
 
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Root.fxml"));
     final BorderPane root = loader.load();
-
+    root.getLeft().setDisable(true);
+    root.getLeft().setVisible(false);
+    root.getTop().setDisable(true);
+    root.getTop().setVisible(false);
     Fapp.rootPane = root;
+
     final Scene scene = new Scene(root);
     scene.getStylesheets().add(Fapp.class.getResource("Styles/style.css").toExternalForm());
 
@@ -43,6 +47,10 @@ public class Fapp extends Application {
     primaryStage.show();
 
     Navigation.navigate(Screen.LOGIN);
+    root.getLeft().setDisable(true);
+    root.getLeft().setVisible(false);
+    root.getTop().setDisable(true);
+    root.getTop().setVisible(false);
 
     // root.setLeft(roots.getServiceBar());
 

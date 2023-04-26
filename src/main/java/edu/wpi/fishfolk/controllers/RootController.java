@@ -135,8 +135,19 @@ public class RootController {
         supplyNav.setDisable(true);
         mealNav.setDisable(true);
         viewOrders.setDisable(true);
+        AccManagerBtn.setDisable(true);
+        serviceNav.setVisible(false);
+        flowerNav.setVisible(false);
+        furnitureNav.setVisible(false);
+        supplyNav.setVisible(false);
+        mealNav.setVisible(false);
+        viewOrders.setVisible(false);
+        AccManagerBtn.setVisible(false);
+        mapEditorNav.setDisable(true);
+        mapEditorNav.setVisible(false);
       case STAFF:
         mapEditorNav.setDisable(true);
+        AccManagerBtn.setDisable(true);
         // accountManagerNav.setDisable(true);
         // moveEditorNav.setDisable(true);
       case ADMIN:
