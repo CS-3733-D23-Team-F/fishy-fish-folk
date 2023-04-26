@@ -127,10 +127,12 @@ public class RootController {
         supplyNav.setDisable(true);
         mealNav.setDisable(true);
         viewOrders.setDisable(true);
+
       case STAFF:
         mapEditorNav.setDisable(true);
         accountManagerNav.setDisable(true);
         moveEditorNav.setDisable(true);
+
       case ADMIN:
       case ROOT:
         break;

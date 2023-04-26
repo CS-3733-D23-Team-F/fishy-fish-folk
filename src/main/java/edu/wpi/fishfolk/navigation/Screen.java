@@ -9,7 +9,7 @@ public enum Screen {
   NEW_FOOD_ORDER("views/NewFoodOrder.fxml"),
   SUPPLIES_REQUEST("views/NewSupplyOrder.fxml"),
   FURNITURE_REQUEST("views/NewFurnitureOrder.fxml"),
-  FLOWER_REQUEST("views/FlowerOrder.fxml"),
+  FLOWER_REQUEST("views/NewFlowerOrder.fxml"),
 
   VIEW_MASTER_ORDER("views/MasterViewOrder.fxml"),
 
@@ -23,6 +23,7 @@ public enum Screen {
   LOGIN("views/Login.fxml"),
 
   ACCOUNT_MANAGER("views/AccountManager.fxml"),
+  STAFF_DASHBOARD("views/StaffDashboard.fxml"),
 
   TEMPLATE("views/Template.fxml");
 

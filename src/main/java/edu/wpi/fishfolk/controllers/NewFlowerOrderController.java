@@ -1,7 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
-import edu.wpi.fishfolk.database.TableEntry.FoodRequest;
+import edu.wpi.fishfolk.database.TableEntry.FlowerRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.*;
@@ -29,26 +29,24 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.controlsfx.control.PopOver;
 
-public class NewFoodOrderController extends AbsController {
-  @FXML MFXButton appsTab, sidesTab, mainsTab, drinksTab, dessertsTab; // tab buttons
+public class NewFlowerOrderController extends AbsController {
+  @FXML MFXButton springTab, gratitudeTab, sympathyTab; // tab buttons
   @FXML MFXButton clearButton, cancelButton, checkoutButton; // main page buttons
   @FXML MFXButton submitButton, backButton; // cart view buttons
   @FXML MFXFilterComboBox<String> roomSelector;
   @FXML TextField recipientField, timeSelector;
   @FXML TextArea notesField;
   @FXML ScrollPane menuItemsPane, cartItemsPane;
-  @FXML AnchorPane cartViewPane;
-  @FXML HBox cartWrap, blur, confirmBlur;
-  @FXML HBox confirmBox;
-  @FXML AnchorPane confirmPane;
+  @FXML AnchorPane cartViewPane, confirmPane;
+  @FXML HBox cartWrap, blur, confirmBlur, confirmBox;
   @FXML MFXButton okButton;
   Font oSans26, oSans20, oSans26bold;
 
-  private List<NewFoodMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
-  private NewFoodCart cart;
+  private List<FlowerMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
+  private FlowerCart cart;
   MFXButton[] tabButtons;
 
-  public NewFoodOrderController() {
+  public NewFlowerOrderController() {
     super();
   }
 
@@ -57,7 +55,7 @@ public class NewFoodOrderController extends AbsController {
   private void initialize() {
     loadMenu();
     loadRooms();
-    cart = new NewFoodCart();
+    cart = new FlowerCart();
     cartViewPane.setVisible(false);
     cartViewPane.setDisable(true);
     cancelButton.setOnAction(event -> cancel());
@@ -65,13 +63,11 @@ public class NewFoodOrderController extends AbsController {
     checkoutButton.setOnAction(event -> openCart());
     submitButton.setOnAction(event -> submit());
     backButton.setOnAction(event -> closeCart());
-    appsTab.setOnAction(event -> tab(0));
-    sidesTab.setOnAction(event -> tab(1));
-    mainsTab.setOnAction(event -> tab(2));
-    drinksTab.setOnAction(event -> tab(3));
-    dessertsTab.setOnAction(event -> tab(4));
     okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
-    tabButtons = new MFXButton[] {appsTab, sidesTab, mainsTab, drinksTab, dessertsTab};
+    springTab.setOnAction(event -> tab(0));
+    gratitudeTab.setOnAction(event -> tab(1));
+    sympathyTab.setOnAction(event -> tab(2));
+    tabButtons = new MFXButton[] {springTab, gratitudeTab, sympathyTab};
     oSans20 = new Font("Open Sans Regular", 20);
     oSans26 = new Font("Open Sans Regular", 26);
     oSans26bold = new Font("Open Sans Bold", 26);
@@ -80,37 +76,27 @@ public class NewFoodOrderController extends AbsController {
 
   /** Load food items into Respoective menu tabs */
   private void loadMenu() {
-    menuTabs = new List[5];
-    for (int i = 0; i < 5; i++) {
-      menuTabs[i] = new ArrayList<NewFoodMenuItem>();
+    menuTabs = new List[3];
+    for (int i = 0; i < 3; i++) {
+      menuTabs[i] = new ArrayList<FlowerMenuItem>();
     }
 
-    List<NewFoodMenuItem> allItems = FoodMenuLoader.loadItems();
-    for (NewFoodMenuItem item : allItems) {
+    List<FlowerMenuItem> allItems = FlowerMenuLoader.loadItems();
+    for (FlowerMenuItem item : allItems) {
       switch (item.getCat()) {
-        case app:
+        case spring:
           {
             menuTabs[0].add(item);
             break;
           }
-        case side:
+        case gratitude:
           {
             menuTabs[1].add(item);
             break;
           }
-        case main:
+        case sympathy:
           {
             menuTabs[2].add(item);
-            break;
-          }
-        case drink:
-          {
-            menuTabs[3].add(item);
-            break;
-          }
-        case dessert:
-          {
-            menuTabs[4].add(item);
             break;
           }
       }
@@ -125,7 +111,7 @@ public class NewFoodOrderController extends AbsController {
 
   /** remove all items from the cart */
   private void clear() {
-    cart = new NewFoodCart();
+    cart = new FlowerCart();
   }
 
   /** Clear the cart, and Return Home */
@@ -177,20 +163,21 @@ public class NewFoodOrderController extends AbsController {
       recipientError();
       return;
     }
-    List<NewFoodItem> items = cart.getSubmittableItems();
+    List<FlowerItem> items = cart.getSubmittableItems();
     LocalDateTime deliveryTime = LocalDateTime.of(LocalDate.now(), time);
     if (deliveryTime.isBefore(LocalDateTime.now())) {
       deliveryTime.plusDays(1);
     }
-    FoodRequest thisOrder =
-        new FoodRequest(
+
+    FlowerRequest thisOrder =
+        new FlowerRequest(
             "",
             FormStatus.submitted,
             notes,
-            cart.getTotalPrice(),
+            recipientField.getText(),
             room,
             deliveryTime,
-            recipientField.getText(),
+            cart.getTotalPrice(),
             items);
     dbConnection.insertEntry(thisOrder);
     blur.setDisable(true);
@@ -275,7 +262,7 @@ public class NewFoodOrderController extends AbsController {
    * @param target the page to load - 0 is apps, 1 is sides, 2 is mains, 3 is drinks, 4 is desserts
    */
   private void tab(int target) {
-    List<NewFoodMenuItem> items = menuTabs[target];
+    List<FlowerMenuItem> items = menuTabs[target];
     int numRows = (items.size() + 1) / 2;
     System.out.printf("%d items, %d rows\n", items.size(), numRows);
     VBox itemRows = new VBox();
@@ -288,7 +275,7 @@ public class NewFoodOrderController extends AbsController {
       itemRow.setPrefHeight(250);
       itemRow.setPrefWidth(1195);
       for (int j = 0; j < 2; j++) {
-        NewFoodMenuItem currentItem = null;
+        FlowerMenuItem currentItem = null;
         try {
           currentItem = items.get(i * 2 + j);
           AnchorPane itemPane = new AnchorPane();
@@ -354,7 +341,7 @@ public class NewFoodOrderController extends AbsController {
           addItemButton.setPrefWidth(330);
           addItemButton.setStyle("-fx-background-color: #012d5a;");
           addItemButton.setTextFill(Paint.valueOf("WHITE"));
-          NewFoodMenuItem finalCurrentItem = currentItem;
+          FlowerMenuItem finalCurrentItem = currentItem;
           addItemButton.setOnAction(event -> cart.add(finalCurrentItem));
           itemPane.getChildren().add(addItemButton);
           itemRow.getChildren().add(itemPane);
@@ -370,7 +357,7 @@ public class NewFoodOrderController extends AbsController {
       itemRows.getChildren().add(itemRow);
     }
     menuItemsPane.setContent(itemRows);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 3; i++) {
       if (i == target) {
         tabButtons[i].setDisable(true);
       } else {
@@ -381,11 +368,11 @@ public class NewFoodOrderController extends AbsController {
 
   /** prepares the visual cart with the items that have been added */
   private void loadCart() {
-    List<NewFoodCart.quantityItem> items = cart.getItems();
+    List<FlowerCart.quantityItem> items = cart.getItems();
     VBox itemsBox = new VBox();
     itemsBox.setPrefHeight(130 * items.size());
     itemsBox.setPrefWidth(1190);
-    for (NewFoodCart.quantityItem item : items) {
+    for (FlowerCart.quantityItem item : items) {
       AnchorPane itemPane = new AnchorPane();
       itemPane.setPrefHeight(130);
       itemPane.setPrefWidth(1190);
@@ -447,7 +434,7 @@ public class NewFoodOrderController extends AbsController {
       minusButton.setMinHeight(28);
       minusButton.setMinWidth(28);
       minusButton.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 14;");
-      final NewFoodMenuItem currentItem = item.getItem();
+      final FlowerMenuItem currentItem = item.getItem();
       minusButton.setOnAction(
           event -> {
             cart.remove(currentItem);
