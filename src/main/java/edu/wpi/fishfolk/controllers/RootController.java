@@ -35,6 +35,7 @@ public class RootController {
   @FXML StackPane sidebar;
   @FXML HBox serviceBox;
   @FXML VBox buttonsBox;
+  @FXML MFXButton conferenceNav;
 
   // @FXML MFXButton moveEditorNav;
   // @FXML AnchorPane sideBar;
