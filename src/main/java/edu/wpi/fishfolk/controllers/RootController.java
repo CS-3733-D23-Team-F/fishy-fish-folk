@@ -132,7 +132,7 @@ public class RootController {
 
     switch (SharedResources.getCurrentUser().getLevel()) {
       case GUEST:
-        //Features that are inaccessible
+        // Features that are inaccessible
         serviceNav.setDisable(true);
         flowerNav.setDisable(true);
         furnitureNav.setDisable(true);
@@ -149,8 +149,9 @@ public class RootController {
         AccManagerBtn.setVisible(false);
         mapEditorNav.setDisable(true);
         mapEditorNav.setVisible(false);
+        break;
       case STAFF:
-        //Features that are inaccessible
+        // Features that are inaccessible
         mapEditorNav.setDisable(true);
         mapEditorNav.setVisible(false);
         AccManagerBtn.setDisable(true);
@@ -158,7 +159,7 @@ public class RootController {
         viewOrders.setVisible(false);
         viewOrders.setDisable(true);
 
-        //Features that are accessible
+        // Features that are accessible
         serviceNav.setDisable(false);
         flowerNav.setDisable(false);
         furnitureNav.setDisable(false);
@@ -169,8 +170,9 @@ public class RootController {
         furnitureNav.setVisible(true);
         supplyNav.setVisible(true);
         mealNav.setVisible(true);
+        break;
       case ADMIN:
-        //Features that are accessible
+        // Features that are accessible
         serviceNav.setDisable(false);
         flowerNav.setDisable(false);
         furnitureNav.setDisable(false);
@@ -187,8 +189,9 @@ public class RootController {
         AccManagerBtn.setVisible(true);
         mapEditorNav.setDisable(false);
         mapEditorNav.setVisible(true);
+        break;
       case ROOT:
-        //Features that are accessible
+        // Features that are accessible
         serviceNav.setDisable(false);
         flowerNav.setDisable(false);
         furnitureNav.setDisable(false);
