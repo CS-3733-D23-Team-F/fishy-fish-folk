@@ -162,7 +162,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox>
+                  <HBox VBox.vgrow="ALWAYS">
                      <children>
                         <VBox style="-fx-border-color: #012D5A; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
                            <children>
@@ -207,7 +207,7 @@
                               </VBox>
                            </children>
                            <HBox.margin>
-                              <Insets top="25.0" />
+                              <Insets />
                            </HBox.margin>
                         </VBox>
                         <VBox alignment="CENTER">
@@ -220,6 +220,7 @@
                                     <Insets />
                                  </VBox.margin>
                               </MFXButton>
+                              <HBox VBox.vgrow="ALWAYS" />
                               <StackPane>
                                  <children>
                                     <MFXButton fx:id="outstandingFilter" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Outstanding Service" textFill="WHITE">
@@ -233,32 +234,37 @@
                                        </font>
                                     </MFXButton>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
                               </StackPane>
-                              <VBox VBox.vgrow="ALWAYS" />
+                              <HBox VBox.vgrow="ALWAYS" />
                               <MFXButton fx:id="toMoveEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Move Editor" textFill="#012d5a">
                                  <font>
                                     <Font name="Open Sans Bold" size="20.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets bottom="15.0" top="15.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </MFXButton>
-                              <VBox VBox.vgrow="ALWAYS" />
+                              <HBox VBox.vgrow="ALWAYS" />
                               <MFXButton fx:id="toSignageEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Signage Editor" textFill="#012d5a">
                                  <font>
                                     <Font name="Open Sans Bold" size="20.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets bottom="15.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </MFXButton>
-                              <VBox />
                            </children>
                            <HBox.margin>
-                              <Insets left="5.0" top="25.0" />
+                              <Insets left="5.0" />
                            </HBox.margin>
                         </VBox>
                      </children>
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
                <HBox.margin>
