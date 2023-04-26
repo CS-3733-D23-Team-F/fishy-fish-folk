@@ -4,11 +4,13 @@ import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
+import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
-import javafx.util.Duration;
+import javafx.geometry.NodeOrientation;
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class RootController {
   @FXML MFXButton signageNav;
@@ -17,21 +19,28 @@ public class RootController {
   @FXML MFXButton flowerNav;
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
-  @FXML AnchorPane serviceBar;
+  @FXML MFXButton conferenceNav;
+  @FXML VBox serviceBar;
   @FXML MFXButton serviceNav;
   @FXML MFXButton exitButton;
-  @FXML MFXButton switchAccountButton;
-  @FXML MFXButton accountManagerNav;
+  // @FXML MFXButton switchAccountButton;
+  // @FXML MFXButton accountManagerNav;
   @FXML MFXButton homeButton;
-  @FXML MFXButton closeServiceNav;
-  @FXML AnchorPane slider;
+  //  @FXML MFXButton closeServiceNav;
+  // @FXML AnchorPane slider;
   // @FXML Text directionInstructions;
   @FXML MFXButton viewOrders;
   @FXML MFXButton furnitureNav;
-  @FXML MFXButton moveEditorNav;
+  @FXML StackPane sidebar;
+  @FXML HBox serviceBox;
+  @FXML VBox buttonsBox;
+
+  // @FXML MFXButton moveEditorNav;
+  // @FXML AnchorPane sideBar;
 
   @FXML
-  public void initialize() {
+  public void initialize() throws IOException {
+
     updatePermissionsAccess();
 
     SharedResources.setRootController(this);
@@ -42,63 +51,54 @@ public class RootController {
     mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
     supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
     furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    conferenceNav.setOnMouseClicked(event -> Navigation.navigate(Screen.CONFERENCE));
 
-    accountManagerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
+    // accountManagerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
     mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    /*
     switchAccountButton.setOnMouseClicked(
         event -> {
           SharedResources.logout();
           Navigation.navigate(Screen.LOGIN);
         });
 
+
+    */
     signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
     exitButton.setOnMouseClicked(event -> System.exit(0));
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
-    moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
+    // moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
-    closeServiceNav.setVisible(false);
-    closeServiceNav.setDisable(true);
+    setupServiceNavButton();
+    /*
+       serviceNav.setOnMouseExited(
+           event -> {
+             serviceBar.setVisible(false);
+             serviceBar.setDisable(true);
+           });
+    */
+  }
 
+  public void setupServiceNavButton() {
     serviceNav.setOnMouseClicked(
         event -> {
+          serviceNav.setStyle(
+              "-fx-background-color: #0e4675;\n"
+                  + "    -fx-border-color: transparent transparent transparent #F0BF4C;\n"
+                  + "    -fx-border-width: 4px;");
+          serviceBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
           serviceBar.setVisible(true);
           serviceBar.setDisable(false);
-          TranslateTransition slide = new TranslateTransition();
-          slide.setDuration(Duration.seconds(0.4));
-          slide.setNode(slider);
-
-          slide.setToY(420);
-          slide.play();
-
-          slider.setTranslateY(420);
-          slide.setOnFinished(
-              (ActionEvent e) -> {
-                serviceNav.setVisible(false);
-                closeServiceNav.setVisible(true);
-                serviceNav.setDisable(true);
-                closeServiceNav.setDisable(false);
-              });
-        });
-
-    closeServiceNav.setOnMouseClicked(
-        event -> {
-          TranslateTransition slide = new TranslateTransition();
-          slide.setDuration(Duration.seconds(0.4));
-          slide.setNode(slider);
-          slide.setToY(0);
-          slide.play();
-
-          slider.setTranslateY(0);
-
-          slide.setOnFinished(
-              (ActionEvent e) -> {
-                serviceNav.setVisible(true);
-                closeServiceNav.setVisible(false);
-                serviceNav.setDisable(false);
-                closeServiceNav.setDisable(true);
+          buttonsBox.setAlignment(Pos.TOP_LEFT);
+          serviceNav.setOnMouseClicked(
+              event2 -> {
+                serviceNav.setStyle(null);
+                serviceBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
                 serviceBar.setVisible(false);
                 serviceBar.setDisable(true);
+                buttonsBox.setAlignment(Pos.TOP_RIGHT);
+                setupServiceNavButton();
               });
         });
   }
@@ -113,10 +113,10 @@ public class RootController {
     serviceNav.setDisable(false);
 
     signageNav.setDisable(false);
-    accountManagerNav.setDisable(false);
+    // accountManagerNav.setDisable(false);
     pathfindingNav.setDisable(false);
 
-    moveEditorNav.setDisable(false);
+    // moveEditorNav.setDisable(false);
     mapEditorNav.setDisable(false);
 
     switch (SharedResources.getCurrentUser().getLevel()) {
@@ -127,12 +127,10 @@ public class RootController {
         supplyNav.setDisable(true);
         mealNav.setDisable(true);
         viewOrders.setDisable(true);
-
       case STAFF:
         mapEditorNav.setDisable(true);
-        accountManagerNav.setDisable(true);
-        moveEditorNav.setDisable(true);
-
+        // accountManagerNav.setDisable(true);
+        // moveEditorNav.setDisable(true);
       case ADMIN:
       case ROOT:
         break;

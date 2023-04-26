@@ -590,6 +590,11 @@ public class Fdb {
         .toList();
   }
 
+  public List<Location> getDestLocations() {
+
+    return locationTable.getAllEntries().stream().filter(Location::isDestination).toList();
+  }
+
   public int getNextNodeID() {
     return nodeTable.getNextID();
   }

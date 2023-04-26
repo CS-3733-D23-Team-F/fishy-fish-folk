@@ -31,4 +31,9 @@ public class Location {
   public boolean isDestination() {
     return nodeType != NodeType.HALL && nodeType != NodeType.ELEV && nodeType != NodeType.STAI;
   }
+
+  @Override
+  public String toString() {
+    return "[" + longName + "] [" + shortName + "] [" + nodeType + "].";
+  }
 }
