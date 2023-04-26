@@ -3,7 +3,6 @@ package edu.wpi.fishfolk.controllers;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.Recurring;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
@@ -40,8 +39,8 @@ public class NewConferenceController extends AbsController {
   @FXML
   public void initialize() {
     addDropdownOptions();
-    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
-    confCancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
+    confCancelButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     confClearButton.setOnMouseClicked(event -> clearFields());
     confSubmitButton.setOnMouseClicked(event -> attemptSubmit());
 
