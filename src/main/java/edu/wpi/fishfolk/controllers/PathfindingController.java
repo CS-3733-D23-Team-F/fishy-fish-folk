@@ -291,6 +291,8 @@ public class PathfindingController extends AbsController {
           locationGroup.setVisible(showLocations.isSelected());
         });
 
+    generateqr.setDisable(true);
+
     generateqr.setOnMouseClicked(
         event -> {
           Stage popup = new Stage();
