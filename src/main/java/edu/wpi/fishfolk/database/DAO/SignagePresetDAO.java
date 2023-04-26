@@ -439,8 +439,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
                 + " ("
                 + "signkey INT,"
                 + "signroom VARCHAR(256),"
-                + "signdirection REAL," +
-                  "signsubtext VARCHAR(256),"
+                + "signdirection REAL,"
+                + "signsubtext VARCHAR(256),"
                 + "signindex INT"
                 + ");";
         statement.executeUpdate(query);
@@ -519,8 +519,10 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       while (results.next()) {
         int index = results.getInt("signindex");
         presetArray[index] =
-            new Sign(results.getString("signroom"), results.getDouble("signdirection"),
-                    results.getString("signsubtext"));
+            new Sign(
+                results.getString("signroom"),
+                results.getDouble("signdirection"),
+                results.getString("signsubtext"));
       }
 
       // Return the list

@@ -10,6 +10,7 @@ import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 public class SignageEditorController extends AbsController {
   @FXML MFXTextField presetText; // name for the signage preset
@@ -28,6 +29,8 @@ public class SignageEditorController extends AbsController {
   ImageView iconl0, iconl1, iconl2, iconl3; // direction arrows for left side (0-3 is top-bottom)
   @FXML
   ImageView iconr0, iconr1, iconr2, iconr3; // direction arrows for right side (0-3 is top-bottom)
+  @FXML Text subtextl0, subtextl1, subtextl2, subtextl3;
+  @FXML Text subtextr0, subtextr1, subtextr2, subtextr3;
   @FXML
   MFXButton cancelButton, clearButton, submitButton; // cancel form, clear fields, and submit form
 
@@ -47,15 +50,56 @@ public class SignageEditorController extends AbsController {
     fullDisable(iconr2);
     fullDisable(iconr3);
 
+    subtextl0.setOpacity(0);
+    subtextl1.setOpacity(0);
+    subtextl2.setOpacity(0);
+    subtextl3.setOpacity(0);
+    subtextr0.setOpacity(0);
+    subtextr1.setOpacity(0);
+    subtextr2.setOpacity(0);
+    subtextr3.setOpacity(0);
+
     // direction arrows are not interactable until the associated text box is filled
-    rooml0.setOnAction(event -> fullEnable(iconl0));
-    rooml1.setOnAction(event -> fullEnable(iconl1));
-    rooml2.setOnAction(event -> fullEnable(iconl2));
-    rooml3.setOnAction(event -> fullEnable(iconl3));
-    roomr0.setOnAction(event -> fullEnable(iconr0));
-    roomr1.setOnAction(event -> fullEnable(iconr1));
-    roomr2.setOnAction(event -> fullEnable(iconr2));
-    roomr3.setOnAction(event -> fullEnable(iconr3));
+    rooml0.setOnAction(
+        event -> {
+          fullEnable(iconl0);
+          subtextl0.setOpacity(1);
+        });
+    rooml1.setOnAction(
+        event -> {
+          fullEnable(iconl1);
+          subtextl1.setOpacity(1);
+        });
+    rooml2.setOnAction(
+        event -> {
+          fullEnable(iconl2);
+          subtextl2.setOpacity(1);
+        });
+    rooml3.setOnAction(
+        event -> {
+          fullEnable(iconl3);
+          subtextl3.setOpacity(1);
+        });
+    roomr0.setOnAction(
+        event -> {
+          fullEnable(iconr0);
+          subtextr0.setOpacity(1);
+        });
+    roomr1.setOnAction(
+        event -> {
+          fullEnable(iconr1);
+          subtextr1.setOpacity(1);
+        });
+    roomr2.setOnAction(
+        event -> {
+          fullEnable(iconr2);
+          subtextr2.setOpacity(1);
+        });
+    roomr3.setOnAction(
+        event -> {
+          fullEnable(iconr3);
+          subtextr3.setOpacity(1);
+        });
 
     // clicking on any not-disabled direction arrow causes multiRotate for associated arrow
     iconl0.setOnMouseClicked(event -> multiRotate(iconl0));
@@ -140,15 +184,15 @@ public class SignageEditorController extends AbsController {
 
     // assigns choice box and direction arrow direction to new Sign object and adds to
     // currentPreset's list of Signs
-    currentPreset.addSign(new Sign(rooml0.getValue(), iconl0.getRotate()), 0);
-    currentPreset.addSign(new Sign(rooml1.getValue(), iconl1.getRotate()), 1);
-    currentPreset.addSign(new Sign(rooml2.getValue(), iconl2.getRotate()), 2);
-    currentPreset.addSign(new Sign(rooml3.getValue(), iconl3.getRotate()), 3);
+    currentPreset.addSign(new Sign(rooml0.getValue(), iconl0.getRotate(), subtextl0.getText()), 0);
+    currentPreset.addSign(new Sign(rooml1.getValue(), iconl1.getRotate(), subtextl1.getText()), 1);
+    currentPreset.addSign(new Sign(rooml2.getValue(), iconl2.getRotate(), subtextl2.getText()), 2);
+    currentPreset.addSign(new Sign(rooml3.getValue(), iconl3.getRotate(), subtextl3.getText()), 3);
 
-    currentPreset.addSign(new Sign(roomr0.getValue(), iconr0.getRotate()), 4);
-    currentPreset.addSign(new Sign(roomr1.getValue(), iconr1.getRotate()), 5);
-    currentPreset.addSign(new Sign(roomr2.getValue(), iconr2.getRotate()), 6);
-    currentPreset.addSign(new Sign(roomr3.getValue(), iconr3.getRotate()), 7);
+    currentPreset.addSign(new Sign(roomr0.getValue(), iconr0.getRotate(), subtextr0.getText()), 4);
+    currentPreset.addSign(new Sign(roomr1.getValue(), iconr1.getRotate(), subtextr1.getText()), 5);
+    currentPreset.addSign(new Sign(roomr2.getValue(), iconr2.getRotate(), subtextr2.getText()), 6);
+    currentPreset.addSign(new Sign(roomr3.getValue(), iconr3.getRotate(), subtextr3.getText()), 7);
 
     edu.wpi.fishfolk.database.TableEntry.SignagePreset preset =
         new edu.wpi.fishfolk.database.TableEntry.SignagePreset(

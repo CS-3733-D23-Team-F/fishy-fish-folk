@@ -62,12 +62,12 @@
       </HBox>
       <HBox alignment="TOP_CENTER">
          <children>
-            <MFXTextField minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+            <MFXTextField fx:id="subtextl0" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
                <HBox.margin>
                   <Insets right="100.0" />
                </HBox.margin>
             </MFXTextField>
-            <MFXTextField minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+            <MFXTextField fx:id="subtextr0" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
          </children>
       </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="630.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
@@ -99,12 +99,12 @@
       </HBox>
       <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="258.0">
          <children>
-            <MFXTextField minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+            <MFXTextField fx:id="subtextl1" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
                <HBox.margin>
                   <Insets right="100.0" />
                </HBox.margin>
             </MFXTextField>
-            <MFXTextField minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+            <MFXTextField fx:id="subtextr1" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
          </children>
       </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="630.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
@@ -136,12 +136,12 @@
       </HBox>
       <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="373.0">
          <children>
-            <MFXTextField minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+            <MFXTextField fx:id="subtextl2" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
                <HBox.margin>
                   <Insets right="100.0" />
                </HBox.margin>
             </MFXTextField>
-            <MFXTextField minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+            <MFXTextField fx:id="subtextr2" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
          </children>
       </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="530.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
@@ -173,12 +173,12 @@
       </HBox>
       <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="488.0">
          <children>
-            <MFXTextField minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+            <MFXTextField fx:id="subtextl3" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
                <HBox.margin>
                   <Insets right="100.0" />
                </HBox.margin>
             </MFXTextField>
-            <MFXTextField minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+            <MFXTextField fx:id="subtextr3" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
          </children>
       </HBox>
       <HBox alignment="CENTER" minHeight="50.0" minWidth="200.0" VBox.vgrow="ALWAYS">
