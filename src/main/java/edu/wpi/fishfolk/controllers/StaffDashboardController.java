@@ -137,8 +137,8 @@ public class StaffDashboardController {
 
       alertPane.setPrefWidth(alertGrid.getWidth());
 
-      //staff shouldnt be pushing alerts to the db
-      //dbConnection.insertEntry(alert);
+      // staff shouldnt be pushing alerts to the db
+      // dbConnection.insertEntry(alert);
       alertGrid.add(alertPane, 1, rowA);
       rowA += 1;
 
