@@ -43,7 +43,6 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton linearAlign, snapGrid;
 
   @FXML MFXFilterComboBox<String> locationSearch;
-  @FXML MFXToggleButton toggleLocations;
   @FXML CheckComboBox<NodeType> showLocationType;
 
   @FXML MFXTextField nodeidText, xText, yText, buildingText;
@@ -109,8 +108,6 @@ public class MapEditorController extends AbsController {
 
     // other buttons in radio group are deselected by default
     radioNoEdge.setSelected(true);
-
-    toggleLocations.setSelected(false);
 
     // draw everything on current floor
     switchFloor(allFloors.get(currentFloor));
@@ -319,11 +316,6 @@ public class MapEditorController extends AbsController {
                     "selected node types: " + showLocationType.getCheckModel().getCheckedItems());
               }
             });
-
-    toggleLocations.setOnAction(
-        event -> {
-          locationGroup.setVisible(toggleLocations.isSelected());
-        });
 
     Fapp.getPrimaryStage()
         .getScene()
@@ -686,34 +678,6 @@ public class MapEditorController extends AbsController {
 
     edgeGroup.getChildren().add(line);
     return true;
-  }
-
-  private void drawLocations(String floor, boolean visibility) {
-
-    dbConnection
-        .getNodesOnFloor(floor)
-        .forEach(
-            node -> {
-              List<String> shortnames =
-                  dbConnection.getLocations(node.getNodeID(), today).stream()
-                      .filter(Location::isDestination)
-                      .map(Location::getShortName)
-                      .toList();
-
-              if (!shortnames.isEmpty()) {
-                String label = String.join(", ", shortnames);
-                locationGroup
-                    .getChildren()
-                    .add(
-                        new NodeText(
-                            node.getNodeID(),
-                            node.getX() - label.length() * 5,
-                            node.getY() - 10,
-                            label));
-              }
-            });
-
-    locationGroup.setVisible(visibility);
   }
 
   private void selectNode(int nodeID) {

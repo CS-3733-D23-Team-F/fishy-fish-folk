@@ -7,7 +7,6 @@
 <?import io.github.palexdev.materialfx.controls.MFXRadioButton?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
-<?import io.github.palexdev.materialfx.controls.MFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Group?>
@@ -306,14 +305,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </VBox>
-            <HBox HBox.hgrow="SOMETIMES">
-               <children>
-                  <MFXToggleButton fx:id="toggleLocations" contentDisplay="TOP" gap="4.0" length="28.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0" radius="8.0" text="Locations" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Regular" size="12.0" />
-                     </font>
-                  </MFXToggleButton>
-               </children></HBox>
+            <HBox HBox.hgrow="SOMETIMES" />
          </children>
          <padding>
             <Insets bottom="5.0" top="10.0" />
