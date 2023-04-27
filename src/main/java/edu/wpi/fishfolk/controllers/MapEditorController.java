@@ -31,9 +31,6 @@ public class MapEditorController extends AbsController {
   @FXML public Group drawGroup;
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
-
-  // @FXML HBox buttonPane;
-
   @FXML MFXButton moveEditorNav;
   @FXML MFXButton importCSV, exportCSV;
   @FXML MFXButton addNode, delNode;
