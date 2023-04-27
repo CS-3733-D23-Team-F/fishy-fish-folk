@@ -16,14 +16,13 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 
 public class StaffDashboardController {
 
@@ -72,7 +71,7 @@ public class StaffDashboardController {
       flowerrecipientname,
       floweritems;
 
-  private int rowA = 1;
+  private int rowA = 0;
 
   @FXML
   public void initialize() {
@@ -129,14 +128,15 @@ public class StaffDashboardController {
       alertsController.closeAlert.setVisible(false);
       alertsController.closeAlert.setDisable(true);
 
-      alertPane.setPrefWidth(alertGrid.getWidth());
+      GridPane.setHgrow(alertPane, Priority.ALWAYS);
+      GridPane.setMargin(alertPane, new Insets(10));
+      alertPane.setAlignment(Pos.TOP_CENTER);
 
       // staff shouldnt be pushing alerts to the db
       // dbConnection.insertEntry(alert);
-      alertGrid.add(alertPane, 1, rowA);
+      alertGrid.add(alertPane, 0, rowA);
+      GridPane.setValignment(alertPane, VPos.TOP);
       rowA += 1;
-
-      GridPane.setMargin(alertPane, new Insets(10));
 
     } catch (IOException e) {
       e.printStackTrace();
