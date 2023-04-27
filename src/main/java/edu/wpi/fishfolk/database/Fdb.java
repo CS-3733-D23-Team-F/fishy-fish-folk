@@ -74,7 +74,7 @@ public class Fdb {
     // Alert table
     this.alertTable = new AlertDAO(dbConnection);
 
-    //importLocalCSV();
+    // importLocalCSV();
 
     Runtime.getRuntime()
         .addShutdownHook(
@@ -583,8 +583,8 @@ public class Fdb {
    * Get the Node ID corresponding to the given Location on a given date
    *
    * @param longname the longname of the Location
-   * @param date
-   * @return
+   * @param date the date to search on
+   * @return the ID (int > 0) of the node where the given location is found at the given date, otherwise -1.
    */
   public int getNodeIDFromLocation(String longname, LocalDate date) {
 

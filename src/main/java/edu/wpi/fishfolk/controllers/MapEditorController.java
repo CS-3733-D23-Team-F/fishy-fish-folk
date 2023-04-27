@@ -5,7 +5,6 @@ import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.mapeditor.BuildingChecker;
 import edu.wpi.fishfolk.mapeditor.EdgeLine;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
-import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.util.NodeType;
@@ -316,6 +315,22 @@ public class MapEditorController extends AbsController {
                     "selected node types: " + showLocationType.getCheckModel().getCheckedItems());
               }
             });
+
+    locationSearch.setOnAction(
+        event -> {
+          int nodeID = dbConnection.getNodeIDFromLocation(locationSearch.getValue(), today);
+          if (nodeID > 0) {
+            Node node = (Node) dbConnection.getEntry(nodeID, TableEntryType.NODE);
+            //switch floor is an expensive operation, only do it if requested node is on a different floor
+            if (!node.getFloor().equals(allFloors.get(currentFloor))) {
+              switchFloor(node.getFloor());
+            }
+            gesturePane.centreOn(node.getPoint());
+
+          } else {
+            System.out.println("location " + locationSearch.getValue() + " not at any node");
+          }
+        });
 
     Fapp.getPrimaryStage()
         .getScene()
