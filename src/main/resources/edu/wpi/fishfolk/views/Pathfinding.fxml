@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
@@ -45,7 +46,7 @@
             </Group>
          </content>
       </GesturePane>
-      <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" maxHeight="325.0" maxWidth="225.0" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
+      <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" maxHeight="300.0" maxWidth="275.0" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
          <children>
             <HBox alignment="CENTER" minHeight="50.0">
                <children>
@@ -69,22 +70,98 @@
             </HBox>
             <VBox prefHeight="140.0" prefWidth="200.0">
                <children>
-                  <MFXToggleButton fx:id="noStairs" contentDisplay="TOP" prefHeight="72.0" prefWidth="180.0" text="Disable Stairs" textFill="#012d5a">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </MFXToggleButton>
-                  <MFXToggleButton fx:id="showLocations" contentDisplay="TOP" gap="10.0" prefHeight="42.0" prefWidth="199.0" text="Display Locations" textFill="#012d5a">
+                  <MFXToggleButton fx:id="noStairs" contentDisplay="TOP" prefHeight="42.0" prefWidth="145.0" text="Avoid Stairs" textFill="#012d5a">
                      <font>
                         <Font size="15.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets left="5.0" />
                      </VBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
                   </MFXToggleButton>
+                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Activate Location Names:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Text>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <MFXCheckbox fx:id="infoCheck" text="Info Desk" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="retlCheck" text="Food" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="restCheck" text="Restroom" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="servCheck" text="Service" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="exitCheck" text="Exit" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="allCheck" text="Activate All" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="15.0" top="10.0" />
+                                 </VBox.margin>
+                              </MFXCheckbox>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <MFXCheckbox fx:id="elevCheck" text="Elevator" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="staiCheck" text="Stairs" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="deptCheck" text="Department" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="confCheck" text="Conference" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="labsCheck" text="Lab" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>
@@ -92,7 +169,7 @@
             <Insets />
          </opaqueInsets>
          <StackPane.margin>
-            <Insets right="10.0" top="52.0" />
+            <Insets right="20.0" top="55.0" />
          </StackPane.margin>
       </VBox>
       <VBox fx:id="adminBox" alignment="TOP_CENTER" disable="true" maxHeight="267.0" maxWidth="250.0" minHeight="267.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="267.0" prefWidth="250.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
@@ -178,7 +255,7 @@
             <Insets />
          </opaqueInsets>
          <StackPane.margin>
-            <Insets right="245.0" />
+            <Insets right="445.0" />
          </StackPane.margin>
       </VBox>
       <VBox maxHeight="165.0" maxWidth="55.0" minHeight="162.0" minWidth="55.0" nodeOrientation="LEFT_TO_RIGHT" StackPane.alignment="TOP_RIGHT">
@@ -197,6 +274,9 @@
                <image>
                   <Image url="@../images/Gear.png" />
                </image>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </ImageView>
          </children>
          <StackPane.margin>

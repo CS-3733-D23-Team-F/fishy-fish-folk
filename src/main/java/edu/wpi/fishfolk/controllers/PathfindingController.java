@@ -66,6 +66,18 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXButton closeSettings;
 
+  @FXML
+  MFXCheckbox elevCheck,
+      confCheck,
+      deptCheck,
+      restCheck,
+      exitCheck,
+      infoCheck,
+      labsCheck,
+      retlCheck,
+      servCheck,
+      staiCheck;
+
   @FXML VBox adminBox;
 
   @FXML MFXButton closeAdmin;
@@ -82,7 +94,6 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton generateqr;
 
   @FXML MFXToggleButton noStairs;
-  @FXML MFXToggleButton showLocations;
 
   private PathfindSingleton pathfinder;
 
@@ -92,11 +103,11 @@ public class PathfindingController extends AbsController {
   Group locationGroup = new Group();
 
   Map<NodeType, Group> locationGroups;
-  Map<NodeType, MFXToggleButton> locationsButtons;
+  Map<NodeType, MFXCheckbox> locationsButtons;
 
   ArrayList<NodeType> displayTypes;
 
-  ArrayList<MFXToggleButton> displayButtons;
+  ArrayList<MFXCheckbox> displayButtons;
 
   ArrayList<String> floors;
   int currentFloor;
@@ -126,9 +137,6 @@ public class PathfindingController extends AbsController {
           }
         });
 
-    settingBox.setTranslateX(1000);
-    adminBox.setTranslateX(1000);
-
     methodSelector.getItems().addAll("A*", "BFS", "DFS", "Dijkstra's");
 
     try {
@@ -148,6 +156,11 @@ public class PathfindingController extends AbsController {
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
+
+    settingBox.setTranslateX(1000);
+    adminBox.setTranslateX(1000);
+    settingBox.setVisible(false);
+    adminBox.setVisible(false);
 
     settingButton.setOnMouseClicked(
         event -> {
@@ -397,7 +410,7 @@ public class PathfindingController extends AbsController {
 
     // Bath, Conf, Dept, Elev, Exit, Info, Labs, Rest, Retl, serv, stai
 
-    locationsButtons = new HashMap<NodeType, MFXToggleButton>();
+    locationsButtons = new HashMap<NodeType, MFXCheckbox>();
     locationGroups = new HashMap<NodeType, Group>();
 
     displayTypes =
@@ -414,23 +427,27 @@ public class PathfindingController extends AbsController {
                 NodeType.RETL,
                 NodeType.SERV,
                 NodeType.STAI));
-    displayButtons = new ArrayList<>();
-    displayButtons.add(showLocations);
+    displayButtons =
+        new ArrayList<>(
+            Arrays.asList(
+                elevCheck, confCheck, deptCheck, restCheck, exitCheck, infoCheck, labsCheck,
+                restCheck, retlCheck, servCheck, staiCheck));
+    displayButtons.add(elevCheck);
 
-    for (int typeNum = 0; typeNum < displayButtons.size(); typeNum++) {
+    for (int typeNum = 0; typeNum < displayButtons.size() - 1; typeNum++) {
 
       NodeType type = displayTypes.get(typeNum);
 
-      drawLocations("L1", showLocations.isSelected(), type);
+      locationsButtons.put(type, displayButtons.get(typeNum));
+
+      drawLocations("L1", locationsButtons.get(type).isSelected(), type);
 
       displayButtons
           .get(typeNum)
           .setOnAction(
               event -> {
-                locationGroups.get(type).setVisible(showLocations.isSelected());
+                locationGroups.get(type).setVisible(locationsButtons.get(type).isSelected());
               });
-
-      locationsButtons.put(type, showLocations);
 
       drawGroup.getChildren().add(locationGroups.get(type));
     }
@@ -646,11 +663,11 @@ public class PathfindingController extends AbsController {
       itr.next().setVisible(false);
     }
 
-    for (int typeNum = 0; typeNum < displayButtons.size(); typeNum++) {
+    for (int typeNum = 0; typeNum < displayButtons.size() - 1; typeNum++) {
 
       NodeType type = displayTypes.get(typeNum);
 
-      drawLocations(floors.get(currentFloor), showLocations.isSelected(), type);
+      drawLocations(floors.get(currentFloor), locationsButtons.get(type).isSelected(), type);
 
       drawGroup.getChildren().add(locationGroups.get(type));
     }
