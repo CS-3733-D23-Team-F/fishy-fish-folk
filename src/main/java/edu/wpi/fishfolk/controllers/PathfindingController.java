@@ -12,6 +12,7 @@ import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.pathfinding.*;
+import edu.wpi.fishfolk.util.NodeType;
 import edu.wpi.fishfolk.util.PermissionLevel;
 import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
@@ -92,6 +93,13 @@ public class PathfindingController extends AbsController {
   ArrayList<Path> paths;
   Group locationGroup = new Group();
 
+  Map<NodeType, Group> locationGroups;
+  Map<NodeType, MFXToggleButton> locationsButtons;
+
+  ArrayList<NodeType> displayTypes;
+
+  ArrayList<MFXToggleButton> displayButtons;
+
   ArrayList<String> floors;
   int currentFloor;
 
@@ -121,7 +129,6 @@ public class PathfindingController extends AbsController {
         });
 
     methodSelector.getItems().addAll("A*", "BFS", "DFS", "Dijkstra's");
-    drawGroup.getChildren().add(locationGroup);
 
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
@@ -298,11 +305,6 @@ public class PathfindingController extends AbsController {
           endSelector.clear();
         });
 
-    showLocations.setOnAction(
-        event -> {
-          locationGroup.setVisible(showLocations.isSelected());
-        });
-
     generateqr.setDisable(true);
 
     generateqr.setOnMouseClicked(
@@ -386,8 +388,45 @@ public class PathfindingController extends AbsController {
     floors = new ArrayList<>();
     pathAnimations = new ArrayList<>();
 
-    // hardcoded default first floor
-    drawLocations("L1", showLocations.isSelected());
+    // Bath, Conf, Dept, Elev, Exit, Info, Labs, Rest, Retl, serv, stai
+
+    locationsButtons = new HashMap<NodeType, MFXToggleButton>();
+    locationGroups = new HashMap<NodeType, Group>();
+
+    displayTypes =
+        new ArrayList<>(
+            Arrays.asList(
+                NodeType.ELEV,
+                NodeType.CONF,
+                NodeType.DEPT,
+                NodeType.BATH,
+                NodeType.EXIT,
+                NodeType.INFO,
+                NodeType.LABS,
+                NodeType.REST,
+                NodeType.RETL,
+                NodeType.SERV,
+                NodeType.STAI));
+    displayButtons = new ArrayList<>();
+    displayButtons.add(showLocations);
+
+    for (int typeNum = 0; typeNum < displayButtons.size(); typeNum++) {
+
+      NodeType type = displayTypes.get(typeNum);
+
+      drawLocations("L1", showLocations.isSelected(), type);
+
+      displayButtons
+          .get(typeNum)
+          .setOnAction(
+              event -> {
+                locationGroups.get(type).setVisible(showLocations.isSelected());
+              });
+
+      locationsButtons.put(type, showLocations);
+
+      drawGroup.getChildren().add(locationGroups.get(type));
+    }
 
     graph = new Graph(dbConnection, AbsController.today);
   }
@@ -496,22 +535,38 @@ public class PathfindingController extends AbsController {
     }
   }
 
-  private void drawLocations(String floor, boolean visibility) {
+  private void drawLocations(String floor, boolean visibility, NodeType type) {
+
+    locationGroups.put(type, new Group());
 
     // copied directly from mapeditor function
     dbConnection
         .getNodesOnFloor(floor)
         .forEach(
             node -> {
+              List<Location> locations =
+                  dbConnection.getLocations(node.getNodeID(), today).stream().toList();
+
+              List<String> shortnames = new ArrayList<>();
+              for (int locatNum = 0; locatNum < locations.size(); locatNum++) {
+                if (locations.get(locatNum).getNodeType() == type) {
+                  shortnames.add(locations.get(locatNum).getShortName());
+                }
+              }
+
+              /*
               List<String> shortnames =
                   dbConnection.getLocations(node.getNodeID(), today).stream()
                       .filter(Location::isDestination)
                       .map(Location::getShortName)
                       .toList();
 
+                 */
+
               if (!shortnames.isEmpty()) {
                 String label = String.join(", ", shortnames);
-                locationGroup
+                locationGroups
+                    .get(type)
                     .getChildren()
                     .add(
                         new NodeText(
@@ -522,7 +577,7 @@ public class PathfindingController extends AbsController {
               }
             });
 
-    locationGroup.setVisible(visibility);
+    locationGroups.get(type).setVisible(visibility);
   }
 
   /**
@@ -584,8 +639,14 @@ public class PathfindingController extends AbsController {
       itr.next().setVisible(false);
     }
 
-    locationGroup.getChildren().clear();
-    drawLocations(floors.get(currentFloor), showLocations.isSelected());
+    for (int typeNum = 0; typeNum < displayButtons.size(); typeNum++) {
+
+      NodeType type = displayTypes.get(typeNum);
+
+      drawLocations(floors.get(currentFloor), showLocations.isSelected(), type);
+
+      drawGroup.getChildren().add(locationGroups.get(type));
+    }
 
     // stop all animations
     pathAnimations.forEach(ParallelTransition::stop);
