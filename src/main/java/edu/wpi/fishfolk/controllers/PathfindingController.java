@@ -261,58 +261,62 @@ public class PathfindingController extends AbsController {
 
     startSelector.setOnAction(
         event -> {
-          pathAnimations.clear();
+          if (startSelector.getValue() != null) {
+            pathAnimations.clear();
 
-          drawGroup.getChildren().clear();
+            drawGroup.getChildren().clear();
 
-          drawGroup.getChildren().add(mapImg);
+            drawGroup.getChildren().add(mapImg);
 
-          drawGroup.getChildren().add(locationGroup);
+            drawGroup.getChildren().add(locationGroup);
 
-          // clear list of floors
-          floors.clear();
-          start = dbConnection.getNodeIDFromLocation(startSelector.getValue(), today);
-          // floor of the selected unode id
-          currentFloor = 0;
-          System.out.println("start node: " + start);
-          endSelector.setVisible(true);
-          endSelector.setDisable(false);
+            // clear list of floors
+            floors.clear();
+            start = dbConnection.getNodeIDFromLocation(startSelector.getValue(), today);
+            // floor of the selected unode id
+            currentFloor = 0;
+            System.out.println("start node: " + start);
+            endSelector.setVisible(true);
+            endSelector.setDisable(false);
+          }
         });
 
     endSelector.setOnAction(
         event -> {
-          grid.getChildren().clear();
-          end = dbConnection.getNodeIDFromLocation(endSelector.getValue(), today);
-          System.out.println("end node: " + end);
-          pathfinder = PathfindSingleton.PATHFINDER;
-          if (methodSelector.getValue() == null || methodSelector.getValue().equals("A*")) {
-            pathfinder.setPathMethod(new AStar(graph));
-          } else if (methodSelector.getValue().equals("BFS")) {
-            pathfinder.setPathMethod(new BFS(graph));
-          } else if (methodSelector.getValue().equals("DFS")) {
-            pathfinder.setPathMethod(new DFS(graph));
-          } else if (methodSelector.getValue().equals("Dijkstra's")) {
-            pathfinder.setPathMethod(new Dijkstras(graph));
-          }
+          if (endSelector.getValue() != null) {
+            grid.getChildren().clear();
+            end = dbConnection.getNodeIDFromLocation(endSelector.getValue(), today);
+            System.out.println("end node: " + end);
+            pathfinder = PathfindSingleton.PATHFINDER;
+            if (methodSelector.getValue() == null || methodSelector.getValue().equals("A*")) {
+              pathfinder.setPathMethod(new AStar(graph));
+            } else if (methodSelector.getValue().equals("BFS")) {
+              pathfinder.setPathMethod(new BFS(graph));
+            } else if (methodSelector.getValue().equals("DFS")) {
+              pathfinder.setPathMethod(new DFS(graph));
+            } else if (methodSelector.getValue().equals("Dijkstra's")) {
+              pathfinder.setPathMethod(new Dijkstras(graph));
+            }
 
-          paths = pathfinder.getPathMethod().pathfind(start, end, !noStairs.isSelected());
+            paths = pathfinder.getPathMethod().pathfind(start, end, !noStairs.isSelected());
 
-          System.out.println(paths);
+            System.out.println(paths);
 
-          textDirections = new LinkedList<>();
-          populateTextDirections(paths);
+            textDirections = new LinkedList<>();
+            populateTextDirections(paths);
 
-          // index 0 in floors in this path - not allFloors
-          currentFloor = 0;
+            // index 0 in floors in this path - not allFloors
+            currentFloor = 0;
 
-          drawPaths(paths);
-          if (paths.size() > 0) {
-            pane.animate(Duration.millis(200))
-                .interpolateWith(Interpolator.EASE_BOTH)
-                .centreOn(paths.get(0).centerToPath(7));
+            drawPaths(paths);
+            if (paths.size() > 0) {
+              pane.animate(Duration.millis(200))
+                  .interpolateWith(Interpolator.EASE_BOTH)
+                  .centreOn(paths.get(0).centerToPath(7));
 
-            displayFloor();
-            endSelector.setDisable(true);
+              displayFloor();
+              endSelector.setDisable(true);
+            }
           }
         });
 
