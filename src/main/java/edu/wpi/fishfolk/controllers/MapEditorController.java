@@ -294,7 +294,6 @@ public class MapEditorController extends AbsController {
           }
         });
 
-    // TODO test this (checkcombobox listeners)
     showLocationType
         .getCheckModel()
         .getCheckedItems()
@@ -303,10 +302,21 @@ public class MapEditorController extends AbsController {
               @Override
               public void onChanged(Change<? extends NodeType> c) {
                 while (c.next()) {
-                  c.getAddedSubList().forEach(type -> locationLabels.get(type).setVisible(true));
-                  c.getRemoved().forEach(type -> locationLabels.get(type).setVisible(false));
+                  c.getAddedSubList()
+                      .forEach(
+                          type -> {
+                            visibleNodeTypes.add(type);
+                            locationLabels.get(type).setVisible(true);
+                          });
+                  c.getRemoved()
+                      .forEach(
+                          type -> {
+                            visibleNodeTypes.remove(type);
+                            locationLabels.get(type).setVisible(false);
+                          });
                 }
-                System.out.println(showLocationType.getCheckModel().getCheckedItems());
+                System.out.println(
+                    "selected node types: " + showLocationType.getCheckModel().getCheckedItems());
               }
             });
 

@@ -74,7 +74,7 @@ public class Fdb {
     // Alert table
     this.alertTable = new AlertDAO(dbConnection);
 
-    // importLocalCSV();
+    //importLocalCSV();
 
     Runtime.getRuntime()
         .addShutdownHook(
@@ -654,13 +654,14 @@ public class Fdb {
                   .forEach(
                       location -> {
                         // create text label and add it to list of labels in the map
+                        String labelText = location.getShortName();
                         map.get(location.getNodeType())
                             .add(
                                 new NodeText(
                                     node.getNodeID(),
-                                    node.getX() + offset[0],
-                                    node.getY() + offset[0],
-                                    location.getShortName()));
+                                    node.getX() - labelText.length() * 5 + offset[0],
+                                    node.getY() - 10 + offset[0],
+                                    labelText));
                         offset[0] += 20;
                       });
             });
