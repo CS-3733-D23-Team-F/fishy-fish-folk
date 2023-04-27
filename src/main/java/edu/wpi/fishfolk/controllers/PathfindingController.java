@@ -72,8 +72,6 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXDatePicker pathDate;
 
-  @FXML MFXTextField pathMessage;
-
   @FXML MFXButton submitSetting;
 
   @FXML HBox pathTextBox;
@@ -128,6 +126,9 @@ public class PathfindingController extends AbsController {
           }
         });
 
+    settingBox.setTranslateX(1000);
+    adminBox.setTranslateX(1000);
+
     methodSelector.getItems().addAll("A*", "BFS", "DFS", "Dijkstra's");
 
     try {
@@ -155,7 +156,11 @@ public class PathfindingController extends AbsController {
             settingBox.setDisable(true);
             adminBox.setVisible(false);
             adminBox.setDisable(true);
+            adminBox.setTranslateX(1000);
+            settingBox.setTranslateX(1000);
           } else {
+            adminBox.setTranslateX(0);
+            settingBox.setTranslateX(0);
             settingBox.setVisible(true);
             settingBox.setDisable(false);
             if (SharedResources.getCurrentUser().getLevel() == PermissionLevel.ADMIN
@@ -168,12 +173,14 @@ public class PathfindingController extends AbsController {
 
     closeSettings.setOnMouseClicked(
         event -> {
+          settingBox.setTranslateX(1000);
           settingBox.setVisible(false);
           settingBox.setDisable(true);
         });
 
     closeAdmin.setOnMouseClicked(
         event -> {
+          settingBox.setTranslateX(0);
           adminBox.setVisible(false);
           adminBox.setDisable(true);
         });
@@ -779,11 +786,6 @@ public class PathfindingController extends AbsController {
   private void submitSettings() {
     if (!(pathDate.getValue() == null)) {
       graph = new Graph(dbConnection, pathDate.getValue());
-    }
-    if (!(pathMessage.getText().equals(""))) {
-      pathTextBox.setVisible(true);
-    } else {
-      pathTextBox.setVisible(false);
     }
     adminBox.setVisible(false);
     adminBox.setDisable(true);
