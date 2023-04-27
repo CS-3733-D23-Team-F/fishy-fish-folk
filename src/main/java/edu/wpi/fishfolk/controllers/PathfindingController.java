@@ -52,6 +52,8 @@ public class PathfindingController extends AbsController {
   @FXML MFXButton clearBtn;
 
   @FXML Group drawGroup;
+
+  @FXML Group locationGroup;
   @FXML ImageView mapImg;
 
   @FXML MFXButton zoomOut;
@@ -76,7 +78,8 @@ public class PathfindingController extends AbsController {
       labsCheck,
       retlCheck,
       servCheck,
-      staiCheck;
+      staiCheck,
+      allCheck;
 
   @FXML VBox adminBox;
 
@@ -100,7 +103,6 @@ public class PathfindingController extends AbsController {
   int start, end;
   Graph graph;
   ArrayList<Path> paths;
-  Group locationGroup = new Group();
 
   Map<NodeType, Group> locationGroups;
   Map<NodeType, MFXCheckbox> locationsButtons;
@@ -260,8 +262,13 @@ public class PathfindingController extends AbsController {
     startSelector.setOnAction(
         event -> {
           pathAnimations.clear();
+
           drawGroup.getChildren().clear();
+
           drawGroup.getChildren().add(mapImg);
+
+          drawGroup.getChildren().add(locationGroup);
+
           // clear list of floors
           floors.clear();
           start = dbConnection.getNodeIDFromLocation(startSelector.getValue(), today);
@@ -312,8 +319,11 @@ public class PathfindingController extends AbsController {
     clearBtn.setOnMouseClicked(
         event -> {
           // clear paths
+
           drawGroup.getChildren().clear();
           drawGroup.getChildren().add(mapImg);
+
+          drawGroup.getChildren().add(locationGroup);
 
           startSelector.clearSelection();
           endSelector.clearSelection();
@@ -442,14 +452,7 @@ public class PathfindingController extends AbsController {
 
       drawLocations("L1", locationsButtons.get(type).isSelected(), type);
 
-      displayButtons
-          .get(typeNum)
-          .setOnAction(
-              event -> {
-                locationGroups.get(type).setVisible(locationsButtons.get(type).isSelected());
-              });
-
-      drawGroup.getChildren().add(locationGroups.get(type));
+      locationGroup.getChildren().add(locationGroups.get(type));
     }
 
     graph = new Graph(dbConnection, AbsController.today);
@@ -578,15 +581,6 @@ public class PathfindingController extends AbsController {
                 }
               }
 
-              /*
-              List<String> shortnames =
-                  dbConnection.getLocations(node.getNodeID(), today).stream()
-                      .filter(Location::isDestination)
-                      .map(Location::getShortName)
-                      .toList();
-
-                 */
-
               if (!shortnames.isEmpty()) {
                 String label = String.join(", ", shortnames);
                 locationGroups
@@ -599,6 +593,13 @@ public class PathfindingController extends AbsController {
                             node.getY() - 10,
                             label));
               }
+            });
+
+    locationsButtons
+        .get(type)
+        .setOnAction(
+            event -> {
+              locationGroups.get(type).setVisible(locationsButtons.get(type).isSelected());
             });
 
     locationGroups.get(type).setVisible(visibility);
@@ -663,13 +664,17 @@ public class PathfindingController extends AbsController {
       itr.next().setVisible(false);
     }
 
+    locationGroup.getChildren().clear();
+
+    locationGroup.setVisible(true);
+
     for (int typeNum = 0; typeNum < displayButtons.size() - 1; typeNum++) {
 
       NodeType type = displayTypes.get(typeNum);
 
       drawLocations(floors.get(currentFloor), locationsButtons.get(type).isSelected(), type);
 
-      drawGroup.getChildren().add(locationGroups.get(type));
+      locationGroup.getChildren().add(locationGroups.get(type));
     }
 
     // stop all animations
@@ -678,7 +683,7 @@ public class PathfindingController extends AbsController {
     // show and start animation for current floor
     drawGroup
         .getChildren()
-        .get(currentFloor + 1)
+        .get(currentFloor + 2)
         .setVisible(true); // offset by 1 because first child is gesture pane
     pathAnimations.get(currentFloor).play();
 

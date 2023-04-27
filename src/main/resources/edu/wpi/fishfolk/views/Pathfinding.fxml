@@ -42,6 +42,8 @@
                         <Rectangle2D />
                      </viewport>
                   </ImageView>
+                  <Group fx:id="locationGroup">
+                  </Group>
                </children>
             </Group>
          </content>
