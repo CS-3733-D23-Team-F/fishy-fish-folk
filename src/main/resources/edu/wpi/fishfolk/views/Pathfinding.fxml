@@ -48,9 +48,9 @@
             </Group>
          </content>
       </GesturePane>
-      <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" maxHeight="300.0" maxWidth="275.0" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
+      <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" maxHeight="290.0" maxWidth="275.0" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
          <children>
-            <HBox alignment="CENTER" minHeight="50.0">
+            <HBox alignment="CENTER" minHeight="45.0" prefHeight="45.0" prefWidth="275.0">
                <children>
                   <Text fx:id="floorDisplay1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="floorDisplay" text="Settings">
                      <font>
@@ -62,7 +62,7 @@
                   </Text>
                   <MFXButton fx:id="closeSettings" style="-fx-background-color: #900000;" text="X" textFill="WHITE">
                      <HBox.margin>
-                        <Insets left="90.0" />
+                        <Insets left="167.0" />
                      </HBox.margin>
                      <font>
                         <Font size="15.0" />
@@ -163,6 +163,9 @@
                            </HBox.margin>
                         </VBox>
                      </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>
@@ -171,7 +174,7 @@
             <Insets />
          </opaqueInsets>
          <StackPane.margin>
-            <Insets right="20.0" top="55.0" />
+            <Insets bottom="13.0" right="20.0" />
          </StackPane.margin>
       </VBox>
       <VBox fx:id="adminBox" alignment="TOP_CENTER" disable="true" maxHeight="267.0" maxWidth="250.0" minHeight="267.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="267.0" prefWidth="250.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
@@ -257,7 +260,7 @@
             <Insets />
          </opaqueInsets>
          <StackPane.margin>
-            <Insets right="445.0" />
+            <Insets bottom="35.0" right="305.0" />
          </StackPane.margin>
       </VBox>
       <VBox maxHeight="165.0" maxWidth="55.0" minHeight="162.0" minWidth="55.0" nodeOrientation="LEFT_TO_RIGHT" StackPane.alignment="TOP_RIGHT">
