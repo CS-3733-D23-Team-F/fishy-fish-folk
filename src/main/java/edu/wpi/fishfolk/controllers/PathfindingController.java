@@ -195,7 +195,7 @@ public class PathfindingController extends AbsController {
 
     closeAdmin.setOnMouseClicked(
         event -> {
-          settingBox.setTranslateX(0);
+          adminBox.setTranslateX(1000);
           adminBox.setVisible(false);
           adminBox.setDisable(true);
         });
@@ -401,15 +401,19 @@ public class PathfindingController extends AbsController {
 
     pane.setOnMouseClicked(
         event -> {
+          settingBox.setTranslateX(1000);
           settingBox.setVisible(false);
           settingBox.setDisable(true);
+          adminBox.setTranslateX(1000);
           adminBox.setVisible(false);
           adminBox.setDisable(true);
         });
     pane.setOnDragDetected(
         event -> {
+          settingBox.setTranslateX(1000);
           settingBox.setVisible(false);
           settingBox.setDisable(true);
+          adminBox.setTranslateX(1000);
           adminBox.setVisible(false);
           adminBox.setDisable(true);
         });
