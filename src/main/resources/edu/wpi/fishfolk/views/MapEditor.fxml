@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXRadioButton?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
@@ -22,6 +23,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import net.kurobako.gesturefx.GesturePane?>
+<?import org.controlsfx.control.CheckComboBox?>
 
 <StackPane alignment="TOP_LEFT" minHeight="670.0" minWidth="1180.0" prefHeight="670.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorController">
    <children>
@@ -277,20 +279,44 @@
             </Line>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
+                  <Label alignment="TOP_LEFT" text="Show location types:" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <CheckComboBox fx:id="showLocationType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="125.0" />
+                  <Label alignment="TOP_LEFT" text="Search for a location:" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <MFXFilterComboBox fx:id="locationSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="16" prefHeight="25.0" prefWidth="180.0" searchText="Search for location" selectable="true">
+                     <textFill>
+                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" />
+                     </textFill>
+                  </MFXFilterComboBox>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
+            <HBox HBox.hgrow="SOMETIMES">
+               <children>
                   <MFXToggleButton fx:id="toggleLocations" contentDisplay="TOP" gap="4.0" length="28.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0" radius="8.0" text="Locations" textFill="#012d5a">
                      <font>
                         <Font name="Open Sans Regular" size="12.0" />
                      </font>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
                   </MFXToggleButton>
-               </children>
-            </VBox>
-            <HBox HBox.hgrow="SOMETIMES" />
+               </children></HBox>
          </children>
          <padding>
-            <Insets top="10.0" />
+            <Insets bottom="5.0" top="10.0" />
          </padding>
       </HBox>
       <HBox alignment="CENTER" fillHeight="false" maxHeight="60.0" maxWidth="400.0" minHeight="60.0" minWidth="400.0" style="-fx-background-radius: 15; -fx-background-color: #F1F1F1;" StackPane.alignment="TOP_CENTER">
@@ -347,7 +373,7 @@
             <DropShadow height="9.28" offsetY="1.0" radius="4.14" width="9.28" />
          </effect>
          <StackPane.margin>
-            <Insets top="110.0" />
+            <Insets top="120.0" />
          </StackPane.margin>
       </HBox>
       <VBox fx:id="sidePane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #F1F1F1;" StackPane.alignment="TOP_RIGHT">
@@ -527,7 +553,7 @@
             </VBox>
          </children>
          <StackPane.margin>
-            <Insets top="110.0" />
+            <Insets top="120.0" />
          </StackPane.margin>
          <padding>
             <Insets bottom="10.0" left="20.0" top="10.0" />

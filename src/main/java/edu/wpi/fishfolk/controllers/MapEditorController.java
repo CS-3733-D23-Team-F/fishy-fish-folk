@@ -12,6 +12,8 @@ import edu.wpi.fishfolk.util.NodeType;
 import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
 import java.util.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -22,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import net.kurobako.gesturefx.GesturePane;
+import org.controlsfx.control.CheckComboBox;
 
 public class MapEditorController extends AbsController {
 
@@ -32,15 +35,16 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
 
-  // @FXML HBox buttonPane;
-
   @FXML MFXButton moveEditorNav;
   @FXML MFXButton importCSV, exportCSV;
   @FXML MFXButton addNode, delNode;
   @FXML MFXRadioButton radioAllEdge, radioSelectedEdge, radioNoEdge;
   @FXML MFXButton addEdge, delEdge;
   @FXML MFXButton linearAlign, snapGrid;
+
+  @FXML MFXFilterComboBox<String> locationSearch;
   @FXML MFXToggleButton toggleLocations;
+  @FXML CheckComboBox<NodeType> showLocationType;
 
   @FXML MFXTextField nodeidText, xText, yText, buildingText;
 
@@ -66,6 +70,11 @@ public class MapEditorController extends AbsController {
 
   private LinkedList<Location> currentLocations = new LinkedList<>();
 
+  private HashMap<NodeType, Group> locationLabels;
+  private HashSet<NodeType> visibleNodeTypes = new HashSet<>();
+  private final List<NodeType> observableNodeTypes =
+      FXCollections.observableList(dbConnection.getNodeTypes());
+
   private BuildingChecker buildingChecker = new BuildingChecker();
 
   private EDITOR_STATE state = EDITOR_STATE.IDLE;
@@ -82,13 +91,21 @@ public class MapEditorController extends AbsController {
     // copy contents, not reference
     ArrayList<String> floorsReverse = new ArrayList<>(allFloors);
     Collections.reverse(floorsReverse);
-
     floorSelector.getItems().addAll(floorsReverse);
+
+    locationSearch.getItems().addAll(dbConnection.getDestLongnames());
+    showLocationType.getItems().addAll(observableNodeTypes);
 
     nodeGroup = new Group();
     edgeGroup = new Group();
     locationGroup = new Group();
     drawGroup.getChildren().addAll(nodeGroup, edgeGroup, locationGroup);
+
+    locationLabels = new HashMap<>();
+
+    // set initial zoom and center
+    gesturePane.centreOn(new Point2D(1700, 1100));
+    gesturePane.zoomTo(0.4, new Point2D(2500, 1600));
 
     // other buttons in radio group are deselected by default
     radioNoEdge.setSelected(true);
@@ -100,6 +117,44 @@ public class MapEditorController extends AbsController {
 
     // ensure the vbox holding the new location & date fields is managed only when visible
     newLocationVbox.managedProperty().bind(newLocationVbox.visibleProperty());
+
+    // buttons and state switching
+
+    moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
+
+    importCSV.setOnAction(
+        event -> {
+          fileChooser.setTitle("Select the Node CSV file");
+          String nodePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Location CSV file");
+          String locationPath =
+              fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Move CSV file");
+          String movePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          fileChooser.setTitle("Select the Edge CSV file");
+          String edgePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+
+          dbConnection.importCSV(nodePath, false, TableEntryType.NODE);
+          dbConnection.importCSV(locationPath, false, TableEntryType.LOCATION);
+          dbConnection.importCSV(movePath, false, TableEntryType.MOVE);
+          dbConnection.importCSV(edgePath, false, TableEntryType.EDGE);
+
+          initialize();
+        });
+
+    exportCSV.setOnAction(
+        event -> {
+          dirChooser.setTitle("Select Export Directory");
+          String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+          dbConnection.exportCSV(exportPath, TableEntryType.NODE);
+          dbConnection.exportCSV(exportPath, TableEntryType.LOCATION);
+          dbConnection.exportCSV(exportPath, TableEntryType.MOVE);
+          dbConnection.exportCSV(exportPath, TableEntryType.EDGE);
+          // fileChooser.setInitialDirectory(new File(exportPath));
+        });
 
     floorSelector.setOnAction(
         event -> {
@@ -123,13 +178,6 @@ public class MapEditorController extends AbsController {
             floorSelector.setText(allFloors.get(currentFloor));
           }
         });
-
-    moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
-
-    gesturePane.centreOn(new Point2D(1700, 1100));
-    gesturePane.zoomTo(0.4, new Point2D(2500, 1600));
-
-    // buttons and state switching
 
     mapImg.setOnMouseClicked(
         event -> {
@@ -246,6 +294,22 @@ public class MapEditorController extends AbsController {
           }
         });
 
+    // TODO test this (checkcombobox listeners)
+    showLocationType
+        .getCheckModel()
+        .getCheckedItems()
+        .addListener(
+            new ListChangeListener<NodeType>() {
+              @Override
+              public void onChanged(Change<? extends NodeType> c) {
+                while (c.next()) {
+                  c.getAddedSubList().forEach(type -> locationLabels.get(type).setVisible(true));
+                  c.getRemoved().forEach(type -> locationLabels.get(type).setVisible(false));
+                }
+                System.out.println(showLocationType.getCheckModel().getCheckedItems());
+              }
+            });
+
     toggleLocations.setOnAction(
         event -> {
           locationGroup.setVisible(toggleLocations.isSelected());
@@ -324,40 +388,6 @@ public class MapEditorController extends AbsController {
                         });
               }
             });
-
-    importCSV.setOnAction(
-        event -> {
-          fileChooser.setTitle("Select the Node CSV file");
-          String nodePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-
-          fileChooser.setTitle("Select the Location CSV file");
-          String locationPath =
-              fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-
-          fileChooser.setTitle("Select the Move CSV file");
-          String movePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-
-          fileChooser.setTitle("Select the Edge CSV file");
-          String edgePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-
-          dbConnection.importCSV(nodePath, false, TableEntryType.NODE);
-          dbConnection.importCSV(locationPath, false, TableEntryType.LOCATION);
-          dbConnection.importCSV(movePath, false, TableEntryType.MOVE);
-          dbConnection.importCSV(edgePath, false, TableEntryType.EDGE);
-
-          initialize();
-        });
-
-    exportCSV.setOnAction(
-        event -> {
-          dirChooser.setTitle("Select Export Directory");
-          String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-          dbConnection.exportCSV(exportPath, TableEntryType.NODE);
-          dbConnection.exportCSV(exportPath, TableEntryType.LOCATION);
-          dbConnection.exportCSV(exportPath, TableEntryType.MOVE);
-          dbConnection.exportCSV(exportPath, TableEntryType.EDGE);
-          // fileChooser.setInitialDirectory(new File(exportPath));
-        });
 
     linearAlign.setOnAction(
         event -> {
@@ -499,7 +529,23 @@ public class MapEditorController extends AbsController {
     deselectAllEdges();
 
     locationGroup.getChildren().clear();
-    drawLocations(floor, toggleLocations.isSelected());
+    locationLabels.clear();
+    // get shortname labels organized by node type
+    dbConnection
+        .getLocationLabelsByType(floor, today)
+        .forEach(
+            (type, labels) -> {
+              Group g = new Group();
+              g.getChildren().addAll(labels);
+
+              g.setVisible(visibleNodeTypes.contains(type));
+              locationGroup.getChildren().add(g);
+
+              locationLabels.put(type, g);
+            });
+
+    // locationGroup.getChildren().clear();
+    // drawLocations(floor, toggleLocations.isSelected());
   }
 
   private void drawNode(Node node) {
