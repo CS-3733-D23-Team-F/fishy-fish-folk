@@ -42,13 +42,13 @@
                                 </MFXButton>
                             </children>
                             <VBox.margin>
-                                <Insets bottom="25.0" top="15.0" />
+                                <Insets bottom="10.0" top="10.0" />
                             </VBox.margin>
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
                             <children>
                                 <HBox HBox.hgrow="ALWAYS" />
-                                <ScrollPane fx:id="menuItemsPane" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="500.0" prefWidth="1195.0" style="-fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
+                                <ScrollPane fx:id="menuItemsPane" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="500.0" prefWidth="1170.0" style="-fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
                                     <content>
                                         <VBox spacing="25.0">
                                             <children>
@@ -114,32 +114,32 @@
                                         <Font name="Open Sans Regular" size="26.0" />
                                     </font>
                                     <HBox.margin>
-                                        <Insets left="390.0" />
+                                        <Insets left="350.0" />
                                     </HBox.margin>
                                 </MFXButton>
                             </children>
                             <VBox.margin>
-                                <Insets bottom="15.0" top="15.0" />
+                                <Insets bottom="10.0" top="10.0" />
                             </VBox.margin>
                         </HBox>
                     </children>
                 </VBox>
-                <HBox fx:id="blur" alignment="CENTER" disable="true" minHeight="670.0" minWidth="1180.0" opacity="0.76" style="-fx-background-color: #000000;" visible="false" StackPane.alignment="CENTER" />
+                <HBox fx:id="blur" alignment="CENTER" disable="true" minHeight="650.0" minWidth="1180.0" opacity="0.76" style="-fx-background-color: #000000;" visible="false" StackPane.alignment="CENTER" />
                 <HBox fx:id="cartWrap" alignment="CENTER" disable="true" visible="false" StackPane.alignment="CENTER">
                     <children>
                         <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
-                        <VBox alignment="CENTER" maxWidth="1300.0" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" maxWidth="1180.0" HBox.hgrow="ALWAYS">
                             <children>
                                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS" />
                         <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
                            <children>
-                              <ScrollPane fx:id="cartItemsPane" hbarPolicy="NEVER" minHeight="350.0" minWidth="1190.0" prefHeight="350.0" prefWidth="1190.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER">
+                              <ScrollPane fx:id="cartItemsPane" hbarPolicy="NEVER" minHeight="300.0" minWidth="1150.0" prefHeight="300.0" prefWidth="1150.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER">
                                  <content>
                                     <VBox prefHeight="500.0" prefWidth="1190.0">
                                        <children>
                                           <AnchorPane prefHeight="140.0" prefWidth="1190.0">
                                              <children>
-                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="90.0" layoutX="20.0" layoutY="20.0" stroke="#012d5a" strokeType="INSIDE" width="1150.0" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="90.0" layoutX="20.0" layoutY="20.0" stroke="#012d5a" strokeType="INSIDE" width="1100.0" />
                                                 <Text layoutX="42.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chocolate Cake" wrappingWidth="300.0">
                                                    <font>
                                                       <Font name="Open Sans Regular" size="26.0" />
@@ -162,7 +162,7 @@
                                                       <Font name="Open Sans Regular" size="26.0" />
                                                    </font>
                                                 </Text>
-                                                <MFXButton fx:id="removeButton" layoutX="844.0" layoutY="38.0" prefHeight="55.0" prefWidth="309.0" style="-fx-background-color: #900000;" text="Remove from Order" textFill="WHITE">
+                                                <MFXButton fx:id="removeButton" layoutX="800.0" layoutY="38.0" prefHeight="55.0" prefWidth="280.0" style="-fx-background-color: #900000;" text="Remove from Order" textFill="WHITE">
                                                    <font>
                                                       <Font name="Open Sans Regular" size="26.0" />
                                                    </font>
@@ -201,13 +201,13 @@
                                           </TextField>
                                           <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                                              <children>
-                                                <MFXButton fx:id="backButton" alignment="CENTER" prefHeight="55.0" prefWidth="260.0" style="-fx-background-color: #012d5a;" text="Back to Menu" textFill="WHITE">
+                                                <MFXButton fx:id="backButton" alignment="CENTER" prefHeight="55.0" prefWidth="225.0" style="-fx-background-color: #012d5a;" text="Back to Menu" textFill="WHITE">
                                                    <font>
                                                       <Font name="Open Sans Regular" size="26.0" />
                                                    </font>
                                                 </MFXButton>
                                                 <HBox HBox.hgrow="ALWAYS" />
-                                                <MFXButton fx:id="submitButton" alignment="CENTER" prefHeight="55.0" prefWidth="260.0" style="-fx-background-color: #f0Bf4c;" text="Confirm Order" textFill="#012d5a">
+                                                <MFXButton fx:id="submitButton" alignment="CENTER" prefHeight="55.0" prefWidth="225.0" style="-fx-background-color: #f0Bf4c;" text="Confirm Order" textFill="#012d5a">
                                                    <font>
                                                       <Font name="Open Sans Regular" size="26.0" />
                                                    </font>
@@ -234,7 +234,7 @@
                               </HBox>
                            </children>
                            <padding>
-                              <Insets bottom="5.0" left="15.0" right="15.0" top="15.0" />
+                              <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
                            </padding>
                         </VBox>
                                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS" />
@@ -243,7 +243,7 @@
                         <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
-            <HBox fx:id="confirmBlur" alignment="CENTER" disable="true" minHeight="670.0" minWidth="1180.0" opacity="0.76" style="-fx-background-color: #000000;" visible="false" />
+            <HBox fx:id="confirmBlur" alignment="CENTER" disable="true" minHeight="650.0" minWidth="1180.0" opacity="0.76" style="-fx-background-color: #000000;" visible="false" />
             <HBox fx:id="confirmBox" alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="200.0" visible="false">
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
