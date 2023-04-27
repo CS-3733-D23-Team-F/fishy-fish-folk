@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import net.kurobako.gesturefx.GesturePane?>
 
-<StackPane alignment="TOP_LEFT" minHeight="720.0" minWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorController">
+<StackPane alignment="TOP_LEFT" minHeight="670.0" minWidth="1180.0" prefHeight="670.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorController">
    <children>
       <GesturePane fx:id="gesturePane" hbarPolicy="NEVER" vbarPolicy="NEVER" StackPane.alignment="TOP_LEFT">
          <Group fx:id="drawGroup">
@@ -44,11 +44,12 @@
             <Insets />
          </StackPane.margin>
       </GesturePane>
-      <HBox fx:id="buttonPane" maxHeight="110.0" style="-fx-background-color: #F1F1F1;">
+      <HBox fx:id="buttonPane" maxHeight="95.0" style="-fx-background-color: #F1F1F1;">
          <effect>
             <DropShadow height="6.0" offsetY="1.0" radius="2.5" width="6.0" />
          </effect>
          <children>
+            <HBox HBox.hgrow="SOMETIMES" />
             <VBox>
                <children>
                   <MFXButton fx:id="moveEditorNav" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="90.0" text="Move Editor" textFill="#012d5a">
@@ -101,7 +102,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </VBox>
-            <Line endX="-100.0" endY="110.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5">
+            <Line endY="80.0" fill="#454343" stroke="#454343" strokeWidth="0.5">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -143,7 +144,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </VBox>
-            <Line endX="-100.0" endY="110.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5" HBox.hgrow="ALWAYS">
+            <Line endY="80.0" fill="#454343" stroke="#454343" strokeWidth="0.5" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -227,7 +228,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </VBox>
-            <Line endX="-100.0" endY="110.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5">
+            <Line endY="80.0" fill="#454343" stroke="#454343" strokeWidth="0.5">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -269,7 +270,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </VBox>
-            <Line endX="-100.0" endY="110.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.5">
+            <Line endY="80.0" fill="#454343" stroke="#454343" strokeWidth="0.5">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -286,7 +287,7 @@
                   </MFXToggleButton>
                </children>
             </VBox>
-            <HBox HBox.hgrow="ALWAYS" />
+            <HBox HBox.hgrow="SOMETIMES" />
          </children>
          <padding>
             <Insets top="10.0" />
@@ -346,7 +347,7 @@
             <DropShadow height="9.28" offsetY="1.0" radius="4.14" width="9.28" />
          </effect>
          <StackPane.margin>
-            <Insets top="130.0" />
+            <Insets top="110.0" />
          </StackPane.margin>
       </HBox>
       <VBox fx:id="sidePane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #F1F1F1;" StackPane.alignment="TOP_RIGHT">
@@ -526,7 +527,7 @@
             </VBox>
          </children>
          <StackPane.margin>
-            <Insets top="130.0" />
+            <Insets top="110.0" />
          </StackPane.margin>
          <padding>
             <Insets bottom="10.0" left="20.0" top="10.0" />
