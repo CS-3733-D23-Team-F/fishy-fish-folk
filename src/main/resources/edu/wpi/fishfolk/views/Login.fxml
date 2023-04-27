@@ -17,7 +17,7 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="670.0" minWidth="1180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.LoginController">
    <children>
-      <HBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0" StackPane.alignment="CENTER">
+      <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="1180.0" StackPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="1500.0" fitWidth="2256.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                <image>
@@ -29,92 +29,101 @@
             </ImageView>
          </children>
       </HBox>
-      <VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="750.0" maxWidth="500.0" minHeight="750.0" minWidth="500.0" opacity="0.9" spacing="10.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30;" StackPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" StackPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/FFF.png" />
-               </image>
-               <VBox.margin>
-                  <Insets top="50.0" />
-               </VBox.margin>
-            </ImageView>
-            <HBox alignment="CENTER">
+            <VBox alignment="CENTER" VBox.vgrow="ALWAYS" />
+            <VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="670.0" maxWidth="500.0" minHeight="670.0" minWidth="500.0" opacity="0.9" spacing="10.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30;">
                <children>
-                  <StackPane alignment="CENTER_LEFT">
+                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/FFF.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <HBox alignment="CENTER">
                      <children>
-                        <MFXTextField fx:id="loginIDField" floatMode="DISABLED" minHeight="50.0" minWidth="400.0" promptText="User ID" styleClass="loginField">
-                           <font>
-                              <Font name="Open Sans Regular" size="15.0" />
-                           </font>
-                           <textFill>
-                              <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-                           </textFill>
-                           <padding>
-                              <Insets left="35.0" />
-                           </padding>
-                        </MFXTextField>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/003-user-1.png" />
-                           </image>
-                        </ImageView>
+                        <StackPane alignment="CENTER_LEFT">
+                           <children>
+                              <MFXTextField fx:id="loginIDField" floatMode="DISABLED" minHeight="50.0" minWidth="400.0" promptText="User ID" styleClass="loginField">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                                 <padding>
+                                    <Insets left="35.0" />
+                                 </padding>
+                              </MFXTextField>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/003-user-1.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
                      </children>
-                  </StackPane>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <AnchorPane fx:id="menuWrap" minWidth="70.0" />
+                  <HBox>
+                     <children>
+                        <StackPane alignment="CENTER_LEFT">
+                           <children>
+                              <MFXPasswordField fx:id="loginPassField" floatMode="DISABLED" minHeight="50.0" minWidth="400.0" promptText="Password/PIN" styleClass="loginField">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="16.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                                 <padding>
+                                    <Insets left="35.0" />
+                                 </padding>
+                              </MFXPasswordField>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/002-padlock.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Label fx:id="errorBox" style="-fx-alignment: center; -fx-background-color: F4F4F4;" textAlignment="CENTER">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font name="Open Sans Regular" size="16.0" />
+                     </font>
+                  </Label>
+                  <MFXButton fx:id="loginBtn" buttonType="RAISED" depthLevel="LEVEL1" minHeight="50.0" minWidth="225.0" style="-fx-background-color: #012D5A; -fx-background-radius: 5;" text="Login" textFill="WHITE">
+                     <font>
+                        <Font name="Open Sans Bold" size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </MFXButton>
+                  <MFXButton fx:id="GuestLoginBtn" buttonType="RAISED" depthLevel="LEVEL1" minHeight="50.0" minWidth="225.0" style="-fx-background-color: #012D5A; -fx-background-radius: 5;" text="Login as Guest" textFill="WHITE">
+                     <font>
+                        <Font name="Open Sans Bold" size="24.0" />
+                     </font>
+                  </MFXButton>
                </children>
                <VBox.margin>
-                  <Insets top="30.0" />
+                  <Insets bottom="50.0" />
                </VBox.margin>
-            </HBox>
-            <AnchorPane fx:id="menuWrap" minWidth="70.0" />
-            <HBox>
-               <children>
-                  <StackPane alignment="CENTER_LEFT">
-                     <children>
-                        <MFXPasswordField fx:id="loginPassField" floatMode="DISABLED" minHeight="50.0" minWidth="400.0" promptText="Password/PIN" styleClass="loginField">
-                           <font>
-                              <Font name="Open Sans Regular" size="16.0" />
-                           </font>
-                           <StackPane.margin>
-                              <Insets />
-                           </StackPane.margin>
-                           <padding>
-                              <Insets left="35.0" />
-                           </padding>
-                        </MFXPasswordField>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/002-padlock.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-               </children>
-               <VBox.margin>
-                  <Insets top="30.0" />
-               </VBox.margin>
-            </HBox>
-            <Label fx:id="errorBox" style="-fx-alignment: center; -fx-background-color: F4F4F4;" textAlignment="CENTER">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-               <font>
-                  <Font name="Open Sans Regular" size="16.0" />
-               </font>
-            </Label>
-            <MFXButton fx:id="loginBtn" buttonType="RAISED" depthLevel="LEVEL1" minHeight="50.0" minWidth="225.0" style="-fx-background-color: #012D5A; -fx-background-radius: 5;" text="Login" textFill="WHITE">
-               <font>
-                  <Font name="Open Sans Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </MFXButton>
-            <MFXButton fx:id="GuestLoginBtn" buttonType="RAISED" depthLevel="LEVEL1" minHeight="50.0" minWidth="225.0" style="-fx-background-color: #012D5A; -fx-background-radius: 5;" text="Login as Guest" textFill="WHITE">
-               <font>
-                  <Font name="Open Sans Bold" size="24.0" />
-               </font>
-            </MFXButton>
+            </VBox>
+            <VBox alignment="CENTER" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
    </children>
