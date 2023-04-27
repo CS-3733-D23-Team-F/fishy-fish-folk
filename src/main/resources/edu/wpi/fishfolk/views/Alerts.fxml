@@ -10,7 +10,7 @@
 
 <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="600.0" style="-fx-background-color: #F1F1F1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AlertsController">
    <children>
-      <Label fx:id="alertText" minHeight="22.0" minWidth="40.0" text="Text" textFill="#012d5a" HBox.hgrow="ALWAYS">
+      <Label fx:id="alertText" minHeight="22.0" minWidth="40.0" text="Text" textFill="#012d5a" wrapText="true" HBox.hgrow="ALWAYS">
          <font>
             <Font name="Open Sans Regular" size="15.0" />
          </font>
