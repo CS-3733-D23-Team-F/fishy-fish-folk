@@ -42,7 +42,7 @@
                                 </MFXButton>
                             </children>
                             <VBox.margin>
-                                <Insets bottom="50.0" top="15.0" />
+                                <Insets bottom="25.0" top="15.0" />
                             </VBox.margin>
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
