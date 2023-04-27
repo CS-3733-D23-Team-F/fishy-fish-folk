@@ -455,6 +455,15 @@ public class PathfindingController extends AbsController {
       locationGroup.getChildren().add(locationGroups.get(type));
     }
 
+    allCheck.setOnAction(
+        event -> {
+          for (int typeNum = 0; typeNum < displayButtons.size() - 1; typeNum++) {
+            NodeType type = displayTypes.get(typeNum);
+            locationsButtons.get(type).setSelected(allCheck.isSelected());
+            locationGroups.get(type).setVisible(allCheck.isSelected());
+          }
+        });
+
     graph = new Graph(dbConnection, AbsController.today);
   }
 
