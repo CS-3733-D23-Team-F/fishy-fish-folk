@@ -96,15 +96,22 @@ public class Fdb {
    * @return Database connection object (null if no connection is made)
    */
   private Connection connect(String dbName, String dbUser, String dbPass) {
+
+    // Server URL
     String dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
     try {
+
+      // Attempt a database connection
       Class.forName("org.postgresql.Driver");
       Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
       if (db != null) {
+
+        // Notify console of successful connection and connect to specified schema
         System.out.println("[Fdb.connect]: Connection established.");
         db.setSchema("iter2db");
 
-        String query = "SET idle_session_timeout = 0;";
+        // Set timeout to 1 day (86400000 ms)
+        String query = "SET idle_session_timeout = 86400000;";
         Statement statement = db.createStatement();
         statement.executeUpdate(query);
 

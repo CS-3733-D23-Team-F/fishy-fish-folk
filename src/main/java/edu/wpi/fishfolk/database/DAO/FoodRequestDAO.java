@@ -49,6 +49,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
 
     init(false);
     initSubtable(false);
+    prepareListener();
     populateLocalTable();
   }
 
@@ -131,6 +132,29 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
       }
 
     } catch (SQLException | NumberFormatException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  public void prepareListener() {
+
+    try {
+
+      // Create a function that calls NOTIFY when the table is modified
+      dbConnection.prepareStatement(
+          "CREATE OR REPLACE FUNCTION notifyFoodRequest() RETURNS TRIGGER AS $foodrequest$"
+              + "BEGIN "
+              + "NOTIFY foodrequest;"
+              + "RETURN NULL;"
+              + "END; $foodrequest$ language plpgsql").execute();
+
+      // Create a trigger that calls the function on any change
+      dbConnection.prepareStatement(
+              "CREATE OR REPLACE TRIGGER foodRequestUpdate AFTER UPDATE OR INSERT OR DELETE ON " +
+              "foodrequest FOR EACH STATEMENT EXECUTE FUNCTION notifyFoodRequest()"
+      ).execute();
+
+    } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
   }
