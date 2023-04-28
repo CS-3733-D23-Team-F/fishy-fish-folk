@@ -5,6 +5,7 @@ import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.database.TableEntry.Alert;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -15,6 +16,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,10 +28,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -157,7 +158,30 @@ public class AdminDashboardController {
       e.printStackTrace();
     }
 
-    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+    // Recurring refresh of alerts table
+    ScheduledExecutorService alertRefreshScheduler = Executors.newScheduledThreadPool(1);
+    alertRefreshScheduler.scheduleAtFixedRate(
+        () -> {
+          try {
+
+            // v v v v v
+            alertGrid.getChildren().removeAll();
+
+            dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+
+            System.out.println(
+                    "[AdminDashboardController.initialize]: Alerts refreshed ("
+                            + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+                            + ")");
+            // ^ ^ ^ ^ ^
+
+          } catch (Exception e) {
+            System.out.println(e.getMessage());
+          }
+        },
+        0,
+        TimeUnit.SECONDS.toSeconds(15),
+        TimeUnit.SECONDS);
 
     addAlert.setOnAction(
         event -> {
