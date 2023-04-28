@@ -187,8 +187,6 @@ public class MapEditorController extends AbsController {
 
           } else if (state == EDITOR_STATE.EDITING_NODE || state == EDITOR_STATE.EDITING_EDGE) {
 
-            state = EDITOR_STATE.IDLE;
-
             // clear node stuff
             deselectAllNodes();
             clearNodeFields();
@@ -199,6 +197,11 @@ public class MapEditorController extends AbsController {
             // clear & hide edge stuff
             deselectAllEdges();
             edgeGroup.getChildren().forEach(fxnode -> fxnode.setVisible(radioAllEdge.isSelected()));
+
+            // clear location search box
+            locationSearch.clearSelection();
+
+            state = EDITOR_STATE.IDLE;
           }
         });
 
@@ -338,6 +341,10 @@ public class MapEditorController extends AbsController {
               // switchFloor(node.getFloor());
             }
             gesturePane.centreOn(node.getPoint());
+            gesturePane.zoomTo(1.25, node.getPoint());
+            deselectAllNodes();
+            selectNode(node);
+            state = EDITOR_STATE.EDITING_NODE;
 
           } else {
             System.out.println("location " + locationSearch.getValue() + " not at any node");
@@ -597,18 +604,7 @@ public class MapEditorController extends AbsController {
           if (!controlPressed) {
             deselectAllNodes();
           }
-          selectNode(node.getNodeID());
-
-          radioSelectedEdge.setDisable(false);
-
-          // at least one node selected so visible and disabled if > 1 nodes selected
-          newLocationVbox.setVisible(true);
-          newLocationVbox.setDisable(selectedNodes.size() > 1);
-
-          currentLocations.addAll(dbConnection.getLocations(node.getNodeID(), today));
-
-          fillNodeFields(node);
-          fillLocationFields();
+          selectNode(node);
         });
 
     nodeCircle.setOnMouseDragged(
@@ -707,14 +703,25 @@ public class MapEditorController extends AbsController {
     return true;
   }
 
-  private void selectNode(int nodeID) {
-    selectedNodes.add(nodeID);
+  private void selectNode(Node node) {
+    selectedNodes.add(node.getNodeID());
     nodeGroup
         .getChildren()
         .forEach(
             fxnode -> {
-              ((NodeCircle) fxnode).highlightIf(nodeID);
+              ((NodeCircle) fxnode).highlightIf(node.getNodeID());
             });
+
+    radioSelectedEdge.setDisable(false);
+
+    // at least one node selected so visible and disabled if > 1 nodes selected
+    newLocationVbox.setVisible(true);
+    newLocationVbox.setDisable(selectedNodes.size() > 1);
+
+    currentLocations.addAll(dbConnection.getLocations(node.getNodeID(), today));
+
+    fillNodeFields(node);
+    fillLocationFields();
   }
 
   private void deselectNode(int nodeID) {
