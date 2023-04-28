@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.database.TableEntry.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
@@ -33,7 +34,9 @@ public class Fdb {
   // Signage Tables
   private final SignagePresetDAO signagePresetTable;
 
-  // TODO use map from tabletype -> dao table object to simplify delegation
+  private final AlertDAO alertTable;
+
+  // TODO refactor use map from tabletype -> dao table object to simplify delegation
 
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb() {
@@ -59,6 +62,9 @@ public class Fdb {
     // Signage Tables
     this.signagePresetTable = new SignagePresetDAO(dbConnection);
 
+    // Alert table
+    this.alertTable = new AlertDAO(dbConnection);
+
     // importLocalCSV();
 
     Runtime.getRuntime()
@@ -75,6 +81,8 @@ public class Fdb {
                   conferenceRequestTable.updateDatabase(true);
                   userAccountTable.updateDatabase(true);
                   signagePresetTable.updateDatabase(true);
+                  alertTable.updateDatabase(true);
+
                   disconnect();
                 }));
   }
@@ -95,6 +103,11 @@ public class Fdb {
       if (db != null) {
         System.out.println("[Fdb.connect]: Connection established.");
         db.setSchema("iter2db");
+
+        String query = "SET idle_session_timeout = 0;";
+        Statement statement = db.createStatement();
+        statement.executeUpdate(query);
+
       } else {
         System.out.println("[Fdb.connect]: Connection failed.");
       }
@@ -155,6 +168,9 @@ public class Fdb {
 
     } else if (entry instanceof SignagePreset) {
       return signagePresetTable.insertEntry((SignagePreset) entry);
+
+    } else if (entry instanceof Alert) {
+      return alertTable.insertEntry((Alert) entry);
     }
 
     return false;
@@ -200,6 +216,9 @@ public class Fdb {
 
     } else if (entry instanceof SignagePreset) {
       return signagePresetTable.updateEntry((SignagePreset) entry);
+
+    } else if (entry instanceof Alert) {
+      return alertTable.updateEntry((Alert) entry);
     }
 
     return false;
@@ -237,6 +256,8 @@ public class Fdb {
         return userAccountTable.removeEntry(identifier);
       case SIGNAGE_PRESET:
         return signagePresetTable.removeEntry(identifier);
+      case ALERT:
+        return alertTable.removeEntry(identifier);
     }
 
     return false;
@@ -274,6 +295,8 @@ public class Fdb {
         return userAccountTable.getEntry(identifier);
       case SIGNAGE_PRESET:
         return signagePresetTable.getEntry(identifier);
+      case ALERT:
+        return alertTable.getEntry(identifier);
     }
 
     return null;
@@ -310,6 +333,8 @@ public class Fdb {
         return userAccountTable.getAllEntries();
       case SIGNAGE_PRESET:
         return signagePresetTable.getAllEntries();
+      case ALERT:
+        return alertTable.getAllEntries();
     }
 
     return null;
@@ -357,6 +382,9 @@ public class Fdb {
       case SIGNAGE_PRESET:
         signagePresetTable.undoChange();
         break;
+      case ALERT:
+        alertTable.undoChange();
+        break;
     }
   }
 
@@ -391,6 +419,8 @@ public class Fdb {
         return userAccountTable.updateDatabase(true);
       case SIGNAGE_PRESET:
         return signagePresetTable.updateDatabase(true);
+      case ALERT:
+        return alertTable.updateDatabase(true);
     }
 
     return false;
@@ -442,6 +472,9 @@ public class Fdb {
 
       case SIGNAGE_PRESET:
         return signagePresetTable.importCSV(filepath, backup);
+
+      case ALERT:
+        return alertTable.importCSV(filepath, backup);
     }
     return false;
   }
@@ -488,6 +521,9 @@ public class Fdb {
 
       case SIGNAGE_PRESET:
         return signagePresetTable.exportCSV(directory);
+
+      case ALERT:
+        return alertTable.exportCSV(directory);
     }
     return false;
   }
@@ -635,5 +671,9 @@ public class Fdb {
               } else return false;
             })
         .toList();
+  }
+
+  public Alert getLatestAlert() {
+    return alertTable.getLatestAlert();
   }
 }

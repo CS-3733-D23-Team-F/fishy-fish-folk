@@ -5,8 +5,14 @@ import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.navigation.Navigation;
+import edu.wpi.fishfolk.navigation.Screen;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -16,25 +22,30 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
-public class HomeController {
+public class AdminDashboardController {
 
   // @FXML MFXButton navigateButton;
   @FXML GridPane grid;
   @FXML GridPane alertGrid;
+  @FXML Label tableHeader;
+  @FXML MFXButton outstandingFilter, unassignedTasks;
   // @FXML MFXPaginatedTableView paginated;
   @FXML TableView<FoodOrderObservable> foodTable;
   @FXML TableView<FurnitureOrderObservable> furnitureTable;
   @FXML TableView<FlowerOrderObservable> flowerTable;
   @FXML TableView<SupplyOrderObservable> supplyTable;
   @FXML MFXTextField addAlert;
+  @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodassignee,
@@ -79,46 +90,51 @@ public class HomeController {
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
 
+    outstandingFilter.setOnMouseClicked(
+        event -> {
+          setOutstandingTable();
+          unassignedTasks.setVisible(true);
+          unassignedTasks.setDisable(false);
+          outstandingFilter.setDisable(true);
+          outstandingFilter.setVisible(false);
+          tableHeader.setText("Outstanding Services");
+        });
+
+    unassignedTasks.setOnMouseClicked(
+        event -> {
+          setTable();
+          unassignedTasks.setVisible(false);
+          unassignedTasks.setDisable(true);
+          outstandingFilter.setDisable(false);
+          outstandingFilter.setVisible(true);
+          tableHeader.setText("Unassigned Tasks");
+        });
+
     int col = 0;
     int row = 1;
     try {
       for (Move move : moves) {
+
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
         AnchorPane anchorPane = fxmlLoader.load();
         FutureMovesController futureMoves = fxmlLoader.getController();
+
         futureMoves.setData(move.getLongName(), "" + move.getDate());
+
         futureMoves.notify.setOnMouseClicked(
             event -> {
-              try {
-                FXMLLoader fxmlLoader2 = new FXMLLoader();
-                fxmlLoader2.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
+              String longname = futureMoves.longname;
+              LocalDate date = LocalDate.parse(futureMoves.sDate);
+              // truncate example:
+              // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
+              Alert alert =
+                  new Alert(
+                      LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), longname, date, "");
 
-                AnchorPane anchorPane2 = fxmlLoader2.load();
-
-                AlertsController alerts = fxmlLoader2.getController();
-                alerts.closeAlert.setOnMouseClicked(
-                    event1 -> {
-                      alertGrid.getChildren().remove(anchorPane2);
-                      return;
-                    });
-
-                alerts.setData(futureMoves.longname, futureMoves.sDate);
-
-                anchorPane2.setPrefWidth(alertGrid.getWidth());
-                alertGrid.add(anchorPane2, 1, rowA);
-                rowA += 1;
-
-                alertGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-                alertGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                alertGrid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-                GridPane.setMargin(anchorPane2, new Insets(10));
-
-              } catch (IOException e) {
-                e.printStackTrace();
-              }
+              addAlert(alert);
             });
+
         if (col == 1) {
           col = 0;
           row++;
@@ -140,41 +156,55 @@ public class HomeController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+
     addAlert.setOnAction(
-        event3 -> {
-          try {
-            FXMLLoader fxmlLoader2 = new FXMLLoader();
-            fxmlLoader2.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
-
-            AnchorPane anchorPane2 = fxmlLoader2.load();
-
-            AlertsController alerts = fxmlLoader2.getController();
-            alerts.closeAlert.setOnMouseClicked(
-                event1 -> {
-                  alertGrid.getChildren().remove(anchorPane2);
-                  return;
-                });
-            alerts.setData(addAlert.getText());
-            anchorPane2.setPrefWidth(alertGrid.getWidth());
-            alertGrid.add(anchorPane2, 1, rowA);
-            rowA += 1;
-
-            alertGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-            alertGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-            alertGrid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-            GridPane.setMargin(anchorPane2, new Insets(10));
-
-            addAlert.clear();
-            return;
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
+        event -> {
+          Alert alert =
+              new Alert(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), addAlert.getText());
+          addAlert(alert);
         });
+
     supplyassignee.setOnEditCommit(this::onSetSupplyEdit);
     foodassignee.setOnEditCommit(this::onSetFoodEdit);
     flowerassignee.setOnEditCommit(this::onSetFlowerEdit);
     furnitureassignee.setOnEditCommit(this::onSetFurnitureEdit);
+
+    toMapEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
+    toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
+    toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE_EDITOR));
+  }
+
+  public void addAlert(Alert alert) {
+    try {
+      FXMLLoader fxmlLoader = new FXMLLoader();
+      fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
+
+      HBox alertPane = fxmlLoader.load();
+
+      AlertsController alertsController = fxmlLoader.getController();
+      alertsController.setData(alert);
+
+      alertsController.closeAlert.setOnMouseClicked(
+          event -> {
+            alertGrid.getChildren().remove(alertPane);
+            dbConnection.removeEntry(alert.getTimestamp(), TableEntryType.ALERT);
+          });
+
+      alertPane.setPrefWidth(alertGrid.getWidth());
+
+      dbConnection.insertEntry(alert);
+      alertGrid.add(alertPane, 1, rowA);
+      rowA += 1;
+
+      GridPane.setMargin(alertPane, new Insets(10));
+
+      addAlert.clear();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void onSetSupplyEdit(TableColumn.CellEditEvent<SupplyOrderObservable, String> t) {
@@ -219,6 +249,90 @@ public class HomeController {
     return dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT).stream()
         .map(obj -> ((UserAccount) obj).getUsername())
         .toList();
+  }
+
+  public void setOutstandingTable() {
+    foodid.setCellValueFactory(new PropertyValueFactory<FoodOrderObservable, String>("foodid"));
+    foodassignee.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodassignee"));
+    foodtotalprice.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodtotalprice"));
+    foodstatus.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodstatus"));
+    fooddeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("fooddeliveryroom"));
+    fooddeliverytime.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("fooddeliverytime"));
+    foodrecipientname.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodrecipientname"));
+    foodnotes.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("foodnotes"));
+    fooditems.setCellValueFactory(
+        new PropertyValueFactory<FoodOrderObservable, String>("fooditems"));
+
+    supplyid.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplyid"));
+    supplyassignee.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplyassignee"));
+    supplystatus.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplystatus"));
+    supplydeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplydeliveryroom"));
+    supplylink.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplylink"));
+    supplynotes.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplynotes"));
+    supplysupplies.setCellValueFactory(
+        new PropertyValueFactory<SupplyOrderObservable, String>("supplysupplies"));
+
+    furnitureid.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureid"));
+    furnitureassignee.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureassignee"));
+    furniturestatus.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturestatus"));
+    furnituredeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnituredeliveryroom"));
+    furnituredeliverydate.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnituredeliverydate"));
+    furniturenotes.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturenotes"));
+    furnitureservicetype.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureservicetype"));
+    furniturefurniture.setCellValueFactory(
+        new PropertyValueFactory<FurnitureOrderObservable, String>("furniturefurniture"));
+
+    flowerid.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));
+    flowerassignee.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerassignee"));
+    flowertotalprice.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowertotalprice"));
+    flowerstatus.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerstatus"));
+    flowerdeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliveryroom"));
+    flowerdeliverytime.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliverytime"));
+    flowerrecipientname.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerrecipientname"));
+    floweritems.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
+
+    ObservableList<String> ol = FXCollections.observableList(getAssignees());
+    supplyassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    foodassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    furnitureassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    flowerassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    foodTable.setEditable(true);
+    furnitureTable.setEditable(true);
+    supplyTable.setEditable(true);
+    flowerTable.setEditable(true);
+
+    foodTable.setItems(getOutstandingFoodOrderRows());
+    supplyTable.setItems(getOutstandingSupplyOrderRows());
+    furnitureTable.setItems(getOutstandingFurnitureOrderRows());
+    flowerTable.setItems(getOutstandingFlowerOrderRows());
   }
 
   public void setTable() {
@@ -350,6 +464,55 @@ public class HomeController {
       returnable.add(new FlowerOrderObservable(request));
     }
     Predicate<FlowerOrderObservable> filter = p -> p.getFlowerassignee().isEmpty();
+    FilteredList<FlowerOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<FoodOrderObservable> getOutstandingFoodOrderRows() {
+    ArrayList<FoodRequest> foodList =
+        (ArrayList<FoodRequest>) dbConnection.getAllEntries(TableEntryType.FOOD_REQUEST);
+    ObservableList<FoodOrderObservable> returnable = FXCollections.observableArrayList();
+
+    for (FoodRequest request : foodList) {
+      returnable.add(new FoodOrderObservable(request));
+    }
+    Predicate<FoodOrderObservable> filter = p -> p.getFoodstatus().equals("Submitted");
+    FilteredList<FoodOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<SupplyOrderObservable> getOutstandingSupplyOrderRows() {
+    ArrayList<SupplyRequest> supplyList =
+        (ArrayList<SupplyRequest>) dbConnection.getAllEntries(TableEntryType.SUPPLY_REQUEST);
+    ObservableList<SupplyOrderObservable> returnable = FXCollections.observableArrayList();
+    for (SupplyRequest request : supplyList) {
+      returnable.add(new SupplyOrderObservable(request));
+    }
+    Predicate<SupplyOrderObservable> filter = p -> p.getSupplystatus().equals("Submitted");
+    FilteredList<SupplyOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<FurnitureOrderObservable> getOutstandingFurnitureOrderRows() {
+    ArrayList<FurnitureRequest> furnitureList =
+        (ArrayList<FurnitureRequest>) dbConnection.getAllEntries(TableEntryType.FURNITURE_REQUEST);
+    ObservableList<FurnitureOrderObservable> returnable = FXCollections.observableArrayList();
+    for (FurnitureRequest request : furnitureList) {
+      returnable.add(new FurnitureOrderObservable(request));
+    }
+    Predicate<FurnitureOrderObservable> filter = p -> p.getFurniturestatus().equals("Submitted");
+    FilteredList<FurnitureOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<FlowerOrderObservable> getOutstandingFlowerOrderRows() {
+    ArrayList<FlowerRequest> flowerList =
+        (ArrayList<FlowerRequest>) dbConnection.getAllEntries(TableEntryType.FLOWER_REQUEST);
+    ObservableList<FlowerOrderObservable> returnable = FXCollections.observableArrayList();
+    for (FlowerRequest request : flowerList) {
+      returnable.add(new FlowerOrderObservable(request));
+    }
+    Predicate<FlowerOrderObservable> filter = p -> p.getFlowerstatus().equals("Submitted");
     FilteredList<FlowerOrderObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }

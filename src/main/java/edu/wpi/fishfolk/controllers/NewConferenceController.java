@@ -3,7 +3,6 @@ package edu.wpi.fishfolk.controllers;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.Recurring;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
@@ -12,6 +11,8 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.controlsfx.control.PopOver;
@@ -21,6 +22,10 @@ public class NewConferenceController extends AbsController {
   @FXML MFXFilterComboBox startTimeDrop, endTimeDrop, startAMPMDrop, endAMPMDrop, recurringDrop;
   @FXML MFXTextField numAttnBox, nameBox, notesBox;
   @FXML MFXRectangleToggleNode rec1, rec2, rec3, rec4, rec5, rec6, rec7;
+  @FXML HBox confirmBlur;
+  @FXML HBox confirmBox;
+  @FXML AnchorPane confirmPane;
+  @FXML MFXButton okButton;
   Font oSans26;
 
   ArrayList<String> AMPM = new ArrayList<>();
@@ -34,7 +39,8 @@ public class NewConferenceController extends AbsController {
   @FXML
   public void initialize() {
     addDropdownOptions();
-    confCancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
+    confCancelButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     confClearButton.setOnMouseClicked(event -> clearFields());
     confSubmitButton.setOnMouseClicked(event -> attemptSubmit());
 
@@ -111,8 +117,7 @@ public class NewConferenceController extends AbsController {
 
   public void checkNumBox() {
     try {
-      int stwing = Integer.parseInt(numAttnBox.getText());
-      if (stwing > 20) {
+      if (Integer.parseInt(numAttnBox.getText()) > 20) {
         numAttnBox.clear();
       }
     } catch (Exception e) {
@@ -134,10 +139,20 @@ public class NewConferenceController extends AbsController {
           && !(endTimeDrop.getText().isEmpty())
           && !(endAMPMDrop.getText().isEmpty())) {
         if (!(numAttnBox.getText().isEmpty())) {
-          if (!(recurringDrop.getText().isEmpty())) {
-            submit();
+          int numba = 75;
+          try {
+            numba = Integer.parseInt(numAttnBox.getText());
+          } catch (Exception e) {
+            submissionError("Nice Try Bernhardt.", numAttnBox);
+          }
+          if (numba < 21 && numba > 1 && numba != 75) {
+            if (!(recurringDrop.getText().isEmpty())) {
+              submit();
+            } else {
+              submissionError("You must choose your setting for recurring.", recurringDrop);
+            }
           } else {
-            submissionError("You must choose your setting for recurring.", recurringDrop);
+            submissionError("Invalid Input for number of attendees.", numAttnBox);
           }
         } else {
           submissionError("You must put in the number of attendees.", numAttnBox);
@@ -167,12 +182,12 @@ public class NewConferenceController extends AbsController {
   /**
    * Deselects all other options once a togglebox is selected
    *
-   * @param rec1
-   * @param rec2
-   * @param rec3
-   * @param rec4
-   * @param rec5
-   * @param rec6
+   * @param rec1 rectangle 1
+   * @param rec2 rectangle 2
+   * @param rec3 rectangle 3
+   * @param rec4 rectangle 4
+   * @param rec5 rectangle 5
+   * @param rec6 rectangle 6
    */
   public void deselect(
       MFXRectangleToggleNode rec1,
@@ -187,7 +202,6 @@ public class NewConferenceController extends AbsController {
     rec4.setSelected(false);
     rec5.setSelected(false);
     rec6.setSelected(false);
-    rec7.setSelected(false);
   }
 
   /** imputs all values from the reservation into the database table. */
@@ -224,8 +238,13 @@ public class NewConferenceController extends AbsController {
             Integer.parseInt(numAttnBox.getText()),
             dummyVariable);
     dbConnection.insertEntry(res);
-    Navigation.navigate(Screen.HOME);
-    /**
+    confirmBlur.setDisable(false);
+    confirmBlur.setVisible(true);
+    confirmBox.setDisable(false);
+    confirmBox.setVisible(true);
+    confirmPane.setVisible(true);
+    confirmPane.setDisable(false);
+    /*
      * String notes, String username, String startTime, String endTime, Recurring recurringOption,
      * int numAttendees, String roomName
      */

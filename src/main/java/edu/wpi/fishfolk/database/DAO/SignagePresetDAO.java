@@ -440,6 +440,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
                 + "signkey INT,"
                 + "signroom VARCHAR(256),"
                 + "signdirection REAL,"
+                + "signsubtext VARCHAR(256),"
                 + "signindex INT"
                 + ");";
         statement.executeUpdate(query);
@@ -518,7 +519,10 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       while (results.next()) {
         int index = results.getInt("signindex");
         presetArray[index] =
-            new Sign(results.getString("signroom"), results.getDouble("signdirection"));
+            new Sign(
+                results.getString("signroom"),
+                results.getDouble("signdirection"),
+                results.getString("signsubtext"));
       }
 
       // Return the list
@@ -550,17 +554,18 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
               + "."
               + this.tableName
               + "signs"
-              + " VALUES (?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?);";
 
       PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
 
       // Run the query for each item to insert
       for (int i = 0; i < 8; i++) {
-        if (signs[i].getLabel() != null) {
+        if (signs[i] != null) {
           preparedInsert.setInt(1, getSubtableItemsID(requestID));
           preparedInsert.setString(2, signs[i].getLabel());
           preparedInsert.setDouble(3, signs[i].getDirection());
-          preparedInsert.setInt(4, i);
+          preparedInsert.setString(4, signs[i].getSubtext());
+          preparedInsert.setInt(5, i);
           preparedInsert.executeUpdate();
         }
       }

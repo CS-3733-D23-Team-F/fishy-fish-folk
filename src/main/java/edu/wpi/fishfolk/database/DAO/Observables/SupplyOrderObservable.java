@@ -21,7 +21,7 @@ public class SupplyOrderObservable {
     this.supplyassignee = order.getAssignee();
     switch (order.getFormStatus()) {
       case submitted:
-        this.supplystatus = "submitted";
+        this.supplystatus = "Submitted";
         break;
       case notSubmitted:
         this.supplystatus = "Not Submitted";

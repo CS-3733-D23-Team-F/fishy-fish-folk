@@ -1,10 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.SharedResources;
-import edu.wpi.fishfolk.database.DAO.Observables.FlowerOrderObservable;
-import edu.wpi.fishfolk.database.DAO.Observables.FoodOrderObservable;
-import edu.wpi.fishfolk.database.DAO.Observables.FurnitureOrderObservable;
-import edu.wpi.fishfolk.database.DAO.Observables.SupplyOrderObservable;
+import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.ui.FormStatus;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -20,7 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Paint;
 
 public class ViewMasterOrderController extends AbsController {
-  @FXML TableView foodTable, supplyTable, furnitureTable, flowerTable;
+  @FXML TableView foodTable, supplyTable, furnitureTable, flowerTable, conferenceTable;
   @FXML
   TableColumn foodid,
       foodassignee,
@@ -59,6 +56,15 @@ public class ViewMasterOrderController extends AbsController {
       floweritems,
       flowernotes;
   @FXML
+  TableColumn conferenceid,
+      conferenceroom,
+      conferencestart,
+      conferenceend,
+      conferencebooker,
+      conferenceattendees,
+      conferencerecurring,
+      conferencenotes;
+  @FXML
   MFXButton foodFillButton,
       foodCancelButton,
       foodRemoveButton,
@@ -82,6 +88,7 @@ public class ViewMasterOrderController extends AbsController {
       flowerRemoveButton,
       flowerAssignButton,
       flowerFilterOrdersButton;
+  @FXML MFXButton conferenceRemoveButton;
 
   @FXML MFXFilterComboBox<String> foodAssignSelector;
 
@@ -167,10 +174,28 @@ public class ViewMasterOrderController extends AbsController {
     flowernotes.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("flowernotes"));
 
+    conferenceid.setCellValueFactory(
+        new PropertyValueFactory<ConferenceRequestObservable, String>("conferenceid"));
+    conferenceroom.setCellValueFactory(
+        new PropertyValueFactory<ConferenceRequestObservable, String>("conferenceroom"));
+    conferencestart.setCellValueFactory(
+        new PropertyValueFactory<ConferenceRequestObservable, String>("conferencestart"));
+    conferenceend.setCellValueFactory(
+        new PropertyValueFactory<ConferenceRequestObservable, String>("conferenceend"));
+    conferencebooker.setCellValueFactory(
+        new PropertyValueFactory<ConferenceRequestObservable, String>("conferencebooker"));
+    conferenceattendees.setCellValueFactory(
+        new PropertyValueFactory<ConferenceRequestObservable, String>("conferenceattendees"));
+    conferencerecurring.setCellValueFactory(
+        new PropertyValueFactory<ConferenceRequestObservable, String>("conferencerecurring"));
+    conferencenotes.setCellValueFactory(
+        new PropertyValueFactory<ConferenceRequestObservable, String>("conferencenotes"));
+
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
     flowerTable.setItems(getFlowerOrderRows());
+    conferenceTable.setItems(getConferenceRows());
 
     foodFillButton.setOnMouseClicked(event -> foodSetStatus(FormStatus.filled));
     foodCancelButton.setOnMouseClicked(event -> foodSetStatus(FormStatus.cancelled));
@@ -195,6 +220,8 @@ public class ViewMasterOrderController extends AbsController {
     flowerAssignButton.setOnMouseClicked(event -> flowerAssign());
     flowerRemoveButton.setOnMouseClicked(event -> flowerRemove());
     flowerFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
+
+    conferenceRemoveButton.setOnMouseClicked(event -> conferenceRemove());
 
     ArrayList<UserAccount> users =
         (ArrayList<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
@@ -277,6 +304,17 @@ public class ViewMasterOrderController extends AbsController {
     ObservableList<FlowerOrderObservable> returnable = FXCollections.observableArrayList();
     for (FlowerRequest request : flowerList) {
       returnable.add(new FlowerOrderObservable(request));
+    }
+    return returnable;
+  }
+
+  public ObservableList<ConferenceRequestObservable> getConferenceRows() {
+    ArrayList<ConferenceRequest> conferencelist =
+        (ArrayList<ConferenceRequest>)
+            dbConnection.getAllEntries(TableEntryType.CONFERENCE_REQUEST);
+    ObservableList<ConferenceRequestObservable> returnable = FXCollections.observableArrayList();
+    for (ConferenceRequest request : conferencelist) {
+      returnable.add(new ConferenceRequestObservable(request));
     }
     return returnable;
   }
@@ -455,6 +493,14 @@ public class ViewMasterOrderController extends AbsController {
     dbConnection.removeEntry(flower.id, TableEntryType.FLOWER_REQUEST);
     flowerTable.getItems().remove(flower);
     flowerTable.refresh();
+  }
+
+  private void conferenceRemove() {
+    ConferenceRequestObservable conf =
+        (ConferenceRequestObservable) conferenceTable.getSelectionModel().getSelectedItem();
+    dbConnection.removeEntry(conf.id, TableEntryType.CONFERENCE_REQUEST);
+    conferenceTable.getItems().remove(conf);
+    conferenceTable.refresh();
   }
 
   private void filterOrders() {

@@ -24,7 +24,7 @@ public class FlowerOrderObservable {
     this.flowertotalprice = String.format("%.2f", order.getTotalPrice());
     switch (order.getFormStatus()) {
       case submitted:
-        this.flowerstatus = "submitted";
+        this.flowerstatus = "Submitted";
         break;
       case notSubmitted:
         this.flowerstatus = "Not Submitted";

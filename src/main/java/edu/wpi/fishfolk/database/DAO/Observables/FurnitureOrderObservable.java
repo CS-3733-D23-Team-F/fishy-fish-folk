@@ -22,7 +22,7 @@ public class FurnitureOrderObservable {
     this.furnitureassignee = order.getAssignee();
     switch (order.getFormStatus()) {
       case submitted:
-        this.furniturestatus = "submitted";
+        this.furniturestatus = "Submitted";
         break;
       case notSubmitted:
         this.furniturestatus = "Not Submitted";
