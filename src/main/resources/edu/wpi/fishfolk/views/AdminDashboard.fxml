@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -233,6 +234,7 @@
                               <HBox VBox.vgrow="ALWAYS" />
                               <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                                  <children>
+                                    <MFXComboBox fx:id="serverSelectorCombo" minHeight="50.0" minWidth="200.0" promptText="Select Server" style="-fx-border-color: #012D5A; -fx-background-color: #FFFFFF; -fx-border-radius: 5; -fx-border-width: 1;" />
                                     <MFXButton fx:id="toMapEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Map Editor" textFill="#012d5a">
                                        <font>
                                           <Font name="Open Sans Bold" size="20.0" />

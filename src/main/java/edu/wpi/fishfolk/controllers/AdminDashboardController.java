@@ -3,11 +3,15 @@ package edu.wpi.fishfolk.controllers;
 import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
+import edu.wpi.fishfolk.database.DBSource;
+import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -46,6 +50,7 @@ public class AdminDashboardController {
   @FXML TableView<SupplyOrderObservable> supplyTable;
   @FXML MFXTextField addAlert;
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
+  @FXML MFXComboBox<String> serverSelectorCombo;
   @FXML ScrollPane scroll;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
@@ -108,6 +113,16 @@ public class AdminDashboardController {
           outstandingFilter.setDisable(false);
           outstandingFilter.setVisible(true);
           tableHeader.setText("Unassigned Tasks");
+        });
+
+    serverSelectorCombo.setItems(FXCollections.observableList(List.of("DB_WPI", "DB_AWS")));
+    serverSelectorCombo.setPromptText("Current DB: " + dbConnection.getDbSource().toString());
+    serverSelectorCombo.setOnAction(
+        event -> {
+          DBSource src = DBSource.valueOf(serverSelectorCombo.getSelectedItem());
+          dbConnection = new Fdb(src);
+          SharedResources.logout();
+          Navigation.navigate(Screen.LOGIN);
         });
 
     int col = 0;

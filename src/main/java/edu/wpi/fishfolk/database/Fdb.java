@@ -24,6 +24,8 @@ public class Fdb {
   private final List<NodeType> nodeTypes =
       List.of(BATH, CONF, DEPT, ELEV, EXIT, HALL, INFO, LABS, REST, RETL, SERV, STAI);
 
+  @Getter private final DBSource dbSource;
+
   // Hospital Map Tables
   private final NodeDAO nodeTable;
   private final LocationDAO locationTable;
@@ -49,6 +51,7 @@ public class Fdb {
 
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb(DBSource dbSource) {
+    this.dbSource = dbSource;
     switch (dbSource) {
       case DB_WPI:
         this.dbConnection = connect("teamfdb", "teamf", "teamf60", dbSource);
