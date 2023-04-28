@@ -14,6 +14,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 
 public class AccountManagerController extends AbsController {
 
@@ -87,8 +90,17 @@ public class AccountManagerController extends AbsController {
       password = row.passhash;
       entry.setPassword(password);
       userAccountsTable.refresh();
-      System.out.println(
-          "Password updated failed due to invalid password. Please only include a-Z, 0-9, periods, and underlines.");
+      System.out.println("Password update failed due to invalid password.");
+      PopOver error = new PopOver();
+      Text errorText =
+          new Text(
+              "ERROR: Please only include a-Z, 0-9, periods, and underlines in a password.\nPress Escape to clear this message.");
+      errorText.setStyle("-fx-text-alignment: center;");
+      errorText.setFont(new Font("Open Sans", 26));
+      error.setContentNode(errorText);
+      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_CENTER);
+      error.show(t.getTableView());
+
       return;
     }
     System.out.print("New password: ");
