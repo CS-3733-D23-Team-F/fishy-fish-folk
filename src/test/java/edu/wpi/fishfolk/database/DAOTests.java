@@ -68,7 +68,7 @@ public class DAOTests {
 
     fdb.removeEntry(".Bingus Tower III", TableEntryType.LOCATION);
 
-    fdb.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/", TableEntryType.NODE);
+    fdb.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/", TableEntryType.LOCATION);
   }
 
   @Test

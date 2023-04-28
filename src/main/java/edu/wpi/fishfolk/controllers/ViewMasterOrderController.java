@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Paint;
 
 public class ViewMasterOrderController extends AbsController {
+  @FXML MFXButton refreshButton;
   @FXML TableView foodTable, supplyTable, furnitureTable, flowerTable, conferenceTable;
   @FXML
   TableColumn foodid,
@@ -105,6 +106,7 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   public void initialize() {
+    refreshButton.setOnMouseClicked(event -> refreshOrders());
     foodid.setCellValueFactory(new PropertyValueFactory<FoodOrderObservable, String>("foodid"));
     foodassignee.setCellValueFactory(
         new PropertyValueFactory<FoodOrderObservable, String>("foodassignee"));
@@ -620,5 +622,18 @@ public class ViewMasterOrderController extends AbsController {
     flowerTable.refresh();
     furnitureTable.refresh();
     supplyTable.refresh();
+  }
+
+  private void refreshOrders() {
+    foodTable.setItems(getFoodOrderRows());
+    supplyTable.setItems(getSupplyOrderRows());
+    flowerTable.setItems(getFlowerOrderRows());
+    furnitureTable.setItems(getFurnitureOrderRows());
+    conferenceTable.setItems(getConferenceRows());
+    foodTable.refresh();
+    supplyTable.refresh();
+    flowerTable.refresh();
+    furnitureTable.refresh();
+    conferenceTable.refresh();
   }
 }

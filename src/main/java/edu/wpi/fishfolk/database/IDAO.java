@@ -14,6 +14,15 @@ public interface IDAO<T> {
   /** Take all entries from a PostgreSQL database and populate a local table. */
   void populateLocalTable();
 
+  /** Prepares an adjacent connection to listen for updates to the table. */
+  void prepareListener();
+
+  /** Re-listens to the table updates, used every time the connection is refreshed. */
+  void reListen();
+
+  /** Check if local refresh is necessary, refresh if needed. */
+  void verifyLocalTable();
+
   /**
    * Insert an entry into a local table.
    *

@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
@@ -12,10 +13,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.postgresql.PGConnection;
+import org.postgresql.util.PSQLException;
 
 public class SignagePresetDAO implements IDAO<SignagePreset> {
 
   private final Connection dbConnection;
+  private Connection dbListener;
 
   private final String tableName;
   private final ArrayList<String> headers;
@@ -30,15 +34,11 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
     this.headers = new ArrayList<>(List.of("presetname", "startdate", "signs"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
-
-    /*
-                   + "room VARCHAR(256),"
-               + "direction DOUBLE,"
-               + "arrindex INT
-    */
+    this.dataEditQueue.setBatchLimit(1);
 
     init(false);
     initSubtable(false);
+    prepareListener();
     populateLocalTable();
   }
 
@@ -109,6 +109,78 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       }
 
     } catch (SQLException | NumberFormatException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void prepareListener() {
+
+    try {
+
+      dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
+
+      if (dbListener == null) {
+        System.out.println("[SignagePresetDAO.prepareListener]: Listener is null.");
+        return;
+      }
+
+      // Create a function that calls NOTIFY when the table is modified
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE FUNCTION notifySignagePreset() RETURNS TRIGGER AS $signagepreset$"
+                  + "BEGIN "
+                  + "NOTIFY signagepreset;"
+                  + "RETURN NULL;"
+                  + "END; $signagepreset$ language plpgsql")
+          .execute();
+
+      // Create a trigger that calls the function on any change
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE TRIGGER signagePresetUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "signagepreset FOR EACH STATEMENT EXECUTE FUNCTION notifySignagePreset()")
+          .execute();
+
+      // Start listener
+      reListen();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void reListen() {
+    try {
+      dbListener.prepareStatement("LISTEN signagepreset").execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void verifyLocalTable() {
+
+    try {
+
+      // Check for notifications on the table
+      PGConnection driver = dbListener.unwrap(PGConnection.class);
+
+      // See if there is a notification
+      if (driver.getNotifications().length > 0) {
+        System.out.println("[SignagePresetDAO.verifyLocalTable]: Notification received!");
+        populateLocalTable();
+      }
+
+      // Catch a timeout and reset refresh local table
+    } catch (PSQLException e) {
+
+      dbListener = ConnectionBuilder.buildConnection();
+      reListen();
+      populateLocalTable();
+
+    } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
   }
@@ -206,6 +278,9 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
   @Override
   public SignagePreset getEntry(Object identifier) {
+
+    verifyLocalTable();
+
     // Check if input identifier is correct type
     if (!(identifier instanceof String)) {
       System.out.println(
@@ -230,6 +305,9 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
   @Override
   public ArrayList<SignagePreset> getAllEntries() {
+
+    verifyLocalTable();
+
     ArrayList<SignagePreset> allSignagePresets = new ArrayList<>();
 
     // Add all entries in local table to a list
