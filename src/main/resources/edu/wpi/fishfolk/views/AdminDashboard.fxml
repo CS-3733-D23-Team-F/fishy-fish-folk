@@ -21,7 +21,52 @@
 
 <VBox minHeight="670.0" minWidth="1080.0" style="-fx-background-color: #F4F4F4;" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AdminDashboardController">
    <children>
-      <HBox style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
+      <HBox alignment="TOP_CENTER" style="-fx-background-color: #EEEEEE;" VBox.vgrow="ALWAYS">
+         <children>
+            <StackPane>
+               <children>
+                  <MFXButton fx:id="outstandingFilter" buttonType="RAISED" minHeight="50.0" minWidth="300.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Outstanding Service" textFill="WHITE">
+                     <font>
+                        <Font name="Open Sans Bold" size="17.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXButton fx:id="unassignedTasks" buttonType="RAISED" disable="true" minHeight="50.0" minWidth="300.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Unassigned Tasks" textFill="WHITE" visible="false">
+                     <font>
+                        <Font name="Open Sans Bold" size="17.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </StackPane>
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+               <children>
+                  <MFXButton fx:id="toMapEditor" buttonType="RAISED" minHeight="50.0" minWidth="225.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Map Editor" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="20.0" />
+                     </font>
+                  </MFXButton>
+                  <HBox HBox.hgrow="ALWAYS" />
+                  <MFXButton fx:id="toMoveEditor" buttonType="RAISED" minHeight="50.0" minWidth="225.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Move Editor" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="20.0" />
+                     </font>
+                  </MFXButton>
+                  <HBox HBox.hgrow="ALWAYS" />
+                  <MFXButton fx:id="toSignageEditor" buttonType="RAISED" minHeight="50.0" minWidth="225.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Signage Editor" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="20.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+               <HBox.margin>
+                  <Insets left="25.0" />
+               </HBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="50.0" right="50.0" top="50.0" />
+         </padding>
+      </HBox>
+      <HBox style="-fx-background-color: #EEEEEE;" VBox.vgrow="ALWAYS">
          <children>
             <VBox>
                <children>
@@ -176,7 +221,7 @@
                                     </Label>
                                  </children>
                               </HBox>
-                              <VBox VBox.vgrow="ALWAYS">
+                              <VBox style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
                                  <children>
                                     <MFXScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="100.0" minWidth="475.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                                        <VBox.margin>
@@ -209,59 +254,6 @@
                            </children>
                            <HBox.margin>
                               <Insets />
-                           </HBox.margin>
-                        </VBox>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <StackPane>
-                                 <children>
-                                    <MFXButton fx:id="outstandingFilter" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Outstanding Service" textFill="WHITE">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="17.0" />
-                                       </font>
-                                    </MFXButton>
-                                    <MFXButton fx:id="unassignedTasks" buttonType="RAISED" disable="true" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Unassigned Tasks" textFill="WHITE" visible="false">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="17.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </StackPane>
-                              <HBox VBox.vgrow="ALWAYS" />
-                              <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-                                 <children>
-                                    <MFXButton fx:id="toMapEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Map Editor" textFill="#012d5a">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="20.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </MFXButton>
-                                    <MFXButton fx:id="toMoveEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Move Editor" textFill="#012d5a">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="20.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </MFXButton>
-                                    <MFXButton fx:id="toSignageEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Signage Editor" textFill="#012d5a">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="20.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </MFXButton>
-                                 </children>
-                              </VBox>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="5.0" />
                            </HBox.margin>
                         </VBox>
                      </children>
