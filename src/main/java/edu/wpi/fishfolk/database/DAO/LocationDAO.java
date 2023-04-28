@@ -5,7 +5,9 @@ import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
+import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Location;
+import edu.wpi.fishfolk.database.TableEntry.Node;
 import edu.wpi.fishfolk.util.NodeType;
 import java.io.*;
 import java.sql.*;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LocationDAO implements IDAO<Location> {
+public class LocationDAO implements IDAO<Location>, IProcessEdit {
 
   private final Connection dbConnection;
 
@@ -104,6 +106,21 @@ public class LocationDAO implements IDAO<Location> {
 
     } catch (SQLException | NumberFormatException e) {
       System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void processEdit(DataEdit<Object> edit) {
+    switch(edit.getType()){
+      case INSERT:
+        insertEntry((Location) edit.getNewEntry());
+        break;
+      case REMOVE:
+        removeEntry((String) edit.getNewEntry());
+        break;
+      case UPDATE:
+        updateEntry((Location) edit.getNewEntry());
+        break;
     }
   }
 

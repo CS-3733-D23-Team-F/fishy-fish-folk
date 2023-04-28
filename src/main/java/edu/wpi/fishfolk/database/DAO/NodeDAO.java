@@ -5,6 +5,7 @@ import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
+import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.io.*;
 import java.sql.*;
@@ -14,7 +15,7 @@ import java.util.*;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 
-public class NodeDAO implements IDAO<Node> {
+public class NodeDAO implements IDAO<Node>, IProcessEdit {
 
   private final Connection dbConnection;
 
@@ -112,6 +113,22 @@ public class NodeDAO implements IDAO<Node> {
 
     } catch (SQLException | NumberFormatException e) {
       System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void processEdit(DataEdit<Object> edit){
+
+    switch(edit.getType()){
+      case INSERT:
+        insertEntry((Node) edit.getNewEntry());
+        break;
+      case REMOVE:
+        removeEntry((int) edit.getNewEntry());
+        break;
+      case UPDATE:
+        updateEntry((Node) edit.getNewEntry());
+        break;
     }
   }
 

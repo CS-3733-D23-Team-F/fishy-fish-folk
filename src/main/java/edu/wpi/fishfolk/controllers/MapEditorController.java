@@ -1,6 +1,9 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.DataEdit.DataEdit;
+import edu.wpi.fishfolk.database.DataEdit.DataEditType;
+import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.mapeditor.BuildingChecker;
 import edu.wpi.fishfolk.mapeditor.EdgeLine;
@@ -34,7 +37,7 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
 
-  @FXML MFXButton moveEditorNav;
+  @FXML MFXButton moveEditorNav, save;
   @FXML MFXButton importCSV, exportCSV;
   @FXML MFXButton addNode, delNode;
   @FXML MFXRadioButton radioAllEdge, radioSelectedEdge, radioNoEdge;
@@ -80,6 +83,8 @@ public class MapEditorController extends AbsController {
   private int currentFloor = 2;
   private boolean controlPressed = false;
 
+  private final DataEditQueue<Object> editQueue = new DataEditQueue<>();
+
   public MapEditorController() {
     super();
   }
@@ -119,7 +124,11 @@ public class MapEditorController extends AbsController {
 
     moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
-    importCSV.setOnAction(
+    save.setOnMouseClicked(event -> {
+
+    });
+
+    importCSV.setOnMouseClicked(
         event -> {
           fileChooser.setTitle("Select the Node CSV file");
           String nodePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
@@ -142,7 +151,7 @@ public class MapEditorController extends AbsController {
           initialize();
         });
 
-    exportCSV.setOnAction(
+    exportCSV.setOnMouseClicked(
         event -> {
           dirChooser.setTitle("Select Export Directory");
           String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
@@ -320,7 +329,7 @@ public class MapEditorController extends AbsController {
               }
             });
 
-    clearLocationType.setOnAction(
+    clearLocationType.setOnMouseClicked(
         event -> {
           visibleNodeTypes.clear();
           observableNodeTypes.forEach(
@@ -404,7 +413,8 @@ public class MapEditorController extends AbsController {
                                         nodeCircle.getNodeID(), TableEntryType.NODE);
                             newNode.setPoint(
                                 new Point2D(nodeCircle.getCenterX(), nodeCircle.getCenterY()));
-                            dbConnection.updateEntry(newNode);
+                            editQueue.add(new DataEdit<>(newNode, DataEditType.UPDATE, TableEntryType.NODE), false);
+                            //dbConnection.updateEntry(newNode);
                           }
                         });
 
@@ -425,7 +435,7 @@ public class MapEditorController extends AbsController {
               }
             });
 
-    linearAlign.setOnAction(
+    linearAlign.setOnMouseClicked(
         event -> {
           // find the line of best fit through the selected points
           // project each point to the line
@@ -492,12 +502,13 @@ public class MapEditorController extends AbsController {
                           });
 
                   // update db
-                  dbConnection.updateEntry(node);
+                  editQueue.add(new DataEdit<>(node, DataEditType.UPDATE, TableEntryType.NODE), false);
+                  //dbConnection.updateEntry(node);
                 });
           }
         });
 
-    snapGrid.setOnAction(
+    snapGrid.setOnMouseClicked(
         event -> {
           List<Node> nodes = new LinkedList<>();
 
@@ -523,22 +534,25 @@ public class MapEditorController extends AbsController {
                         });
 
                 // update db
-                dbConnection.updateEntry(node);
+                editQueue.add(new DataEdit<>(node, DataEditType.UPDATE, TableEntryType.NODE), false);
+                //dbConnection.updateEntry(node);
               });
         });
 
-    newLocationSubmit.setOnAction(
+    newLocationSubmit.setOnMouseClicked(
         event -> {
           Location newLocation =
               new Location(
                   newLocationLongname.getText(),
                   newLocationShortname.getText(),
                   NodeType.valueOf(newLocationType.getValue()));
-          dbConnection.insertEntry(newLocation);
+          editQueue.add(new DataEdit<>(newLocation, DataEditType.INSERT, TableEntryType.LOCATION), false);
+          // dbConnection.insertEntry(newLocation);
 
           Move move =
               new Move(selectedNodes.get(0), newLocation.getLongName(), newLocationDate.getValue());
-          dbConnection.insertEntry(move);
+          editQueue.add(new DataEdit<>(move, DataEditType.INSERT, TableEntryType.MOVE), false);
+          //dbConnection.insertEntry(move);
         });
   }
 
@@ -660,7 +674,8 @@ public class MapEditorController extends AbsController {
                       });
 
               // update node in database with updated x & y
-              dbConnection.updateEntry(node);
+              editQueue.add(new DataEdit<>(node, DataEditType.UPDATE, TableEntryType.NODE), false);
+              //dbConnection.updateEntry(node);
 
             } else {
               nodeCircle.setCenterX(nodeCircle.getPrevX());
@@ -792,7 +807,8 @@ public class MapEditorController extends AbsController {
             id, new Point2D(x, y), floor, buildingChecker.getBuilding(new Point2D(x, y), floor));
 
     drawNode(node);
-    dbConnection.insertEntry(node);
+    editQueue.add(new DataEdit<>(node, DataEditType.INSERT, TableEntryType.NODE), false);
+    //dbConnection.insertEntry(node);
   }
 
   private void removeNode(int nodeID) {
@@ -809,7 +825,8 @@ public class MapEditorController extends AbsController {
     }
 
     // remove from database
-    dbConnection.removeEntry(nodeID, TableEntryType.NODE);
+      editQueue.add(new DataEdit<>(nodeID, DataEditType.REMOVE, TableEntryType.NODE), false);
+    //dbConnection.removeEntry(nodeID, TableEntryType.NODE);
     // must be Integer to remove object since int removes that index
     selectedNodes.remove(Integer.valueOf(nodeID));
   }
@@ -835,7 +852,8 @@ public class MapEditorController extends AbsController {
       while (edgeItr.hasNext()) {
         Edge curr = edgeItr.next();
         if (curr.containsNode(nodeID)) {
-          dbConnection.removeEntry(curr, TableEntryType.EDGE);
+            editQueue.add(new DataEdit<>(curr, DataEditType.REMOVE, TableEntryType.EDGE), false);
+          //dbConnection.removeEntry(curr, TableEntryType.EDGE);
           edgeItr.remove();
         }
       }
@@ -850,7 +868,8 @@ public class MapEditorController extends AbsController {
       }
 
       // remove from database
-      dbConnection.removeEntry(nodeID, TableEntryType.NODE);
+        editQueue.add(new DataEdit<>(nodeID, DataEditType.REMOVE, TableEntryType.NODE), false);
+      //dbConnection.removeEntry(nodeID, TableEntryType.NODE);
 
       // remove from selected nodes
       selectedItr.remove();
@@ -862,7 +881,8 @@ public class MapEditorController extends AbsController {
 
   private void insertEdge(int start, int end) {
     Edge newEdge = new Edge(start, end);
-    dbConnection.insertEntry(newEdge);
+    editQueue.add(new DataEdit<>(newEdge, DataEditType.INSERT, TableEntryType.EDGE), false);
+    //dbConnection.insertEntry(newEdge);
     drawEdge(newEdge, true);
   }
 
@@ -871,7 +891,8 @@ public class MapEditorController extends AbsController {
 
     edgeGroup.getChildren().removeIf(node -> ((EdgeLine) node).matches(edge));
 
-    dbConnection.removeEntry(edge, TableEntryType.EDGE);
+    editQueue.add(new DataEdit<>(edge, DataEditType.REMOVE, TableEntryType.EDGE), false);
+    //dbConnection.removeEntry(edge, TableEntryType.EDGE);
   }
 
   private void removeSelectedEdges() {
@@ -890,7 +911,8 @@ public class MapEditorController extends AbsController {
       }
 
       // remove from database
-      dbConnection.removeEntry(edge, TableEntryType.EDGE);
+      editQueue.add(new DataEdit<>(edge, DataEditType.REMOVE, TableEntryType.EDGE), false);
+      //dbConnection.removeEntry(edge, TableEntryType.EDGE);
 
       // remove from selected edges
       selectedItr.remove();

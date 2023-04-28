@@ -3,7 +3,7 @@ package edu.wpi.fishfolk.database;
 import static edu.wpi.fishfolk.util.NodeType.*;
 
 import edu.wpi.fishfolk.database.DAO.*;
-import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.database.DataEdit.DataEdit;import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.util.NodeType;
 import java.sql.Connection;
@@ -543,6 +543,32 @@ public class Fdb {
     locationTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Location.csv", false);
     moveTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
     edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
+  }
+
+  public void processEditQueue(DataEditQueue<Object> queue) {
+
+    queue.setPointer(0);
+
+    while (queue.hasNext()) {
+
+      DataEdit<Object> edit = queue.next();
+
+      switch (edit.getTable()) {
+        case NODE:
+          nodeTable.processEdit(edit);
+          break;
+        case LOCATION:
+          locationTable.processEdit(edit);
+          break;
+        case MOVE:
+          moveTable.processEdit(edit);
+          break;
+        case EDGE:
+          edgeTable.processEdit(edit);
+          break;
+      }
+    }
+    
   }
 
   /**
