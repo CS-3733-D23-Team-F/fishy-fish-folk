@@ -46,6 +46,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
                 "items"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
+    this.dataEditQueue.setBatchLimit(1);
 
     init(false);
     initSubtable(false);

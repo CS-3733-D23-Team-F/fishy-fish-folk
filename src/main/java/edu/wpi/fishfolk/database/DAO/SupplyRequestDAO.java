@@ -37,6 +37,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
             List.of("id", "assignee", "status", "notes", "link", "roomnumber", "supplies"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
+    this.dataEditQueue.setBatchLimit(1);
 
     init(false);
     initSubtable(false);

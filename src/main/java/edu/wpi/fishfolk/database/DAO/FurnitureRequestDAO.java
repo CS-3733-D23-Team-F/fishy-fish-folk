@@ -43,8 +43,9 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
                 "servicetype",
                 "roomnumber",
                 "deliverydate"));
-    tableMap = new HashMap<>();
-    dataEditQueue = new DataEditQueue<>();
+    this.tableMap = new HashMap<>();
+    this.dataEditQueue = new DataEditQueue<>();
+    this.dataEditQueue.setBatchLimit(1);
 
     init(false);
     populateLocalTable();

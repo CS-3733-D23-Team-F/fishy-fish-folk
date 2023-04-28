@@ -43,6 +43,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
                 "roomname"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
+    this.dataEditQueue.setBatchLimit(1);
 
     init(false);
     populateLocalTable();
