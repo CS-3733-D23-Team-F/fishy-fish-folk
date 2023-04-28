@@ -127,7 +127,7 @@ public class Fdb {
       Class.forName("org.postgresql.Driver");
       Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
       if (db != null) {
-        System.out.println("[Fdb.connect]: Connection established.");
+        System.out.println("[Fdb.connect]: Connection established with " + dbSource.toString());
         db.setSchema("iter2db");
 
         String query = "SET idle_session_timeout = 0;";
