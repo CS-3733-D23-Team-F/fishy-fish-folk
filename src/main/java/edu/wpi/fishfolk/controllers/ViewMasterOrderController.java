@@ -322,6 +322,9 @@ public class ViewMasterOrderController extends AbsController {
   private void foodSetStatus(FormStatus string) {
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     FoodRequest dbRequest =
         (FoodRequest) dbConnection.getEntry(food.id, TableEntryType.FOOD_REQUEST);
     switch (string) {
@@ -346,6 +349,9 @@ public class ViewMasterOrderController extends AbsController {
   private void supplySetStatus(FormStatus string) {
     SupplyOrderObservable food =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     SupplyRequest dbRequest =
         (SupplyRequest) dbConnection.getEntry(food.id, TableEntryType.SUPPLY_REQUEST);
     switch (string) {
@@ -370,6 +376,9 @@ public class ViewMasterOrderController extends AbsController {
   private void furnitureSetStatus(FormStatus string) {
     FurnitureOrderObservable food =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     FurnitureRequest dbRequest =
         (FurnitureRequest) dbConnection.getEntry(food.id, TableEntryType.FURNITURE_REQUEST);
     switch (string) {
@@ -394,6 +403,9 @@ public class ViewMasterOrderController extends AbsController {
   private void flowerSetStatus(FormStatus string) {
     FlowerOrderObservable food =
         (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     FlowerRequest dbRequest =
         (FlowerRequest) dbConnection.getEntry(food.id, TableEntryType.FLOWER_REQUEST);
     switch (string) {
@@ -418,6 +430,9 @@ public class ViewMasterOrderController extends AbsController {
   private void foodAssign() {
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     FoodRequest dbRequest =
         (FoodRequest) dbConnection.getEntry(food.id, TableEntryType.FOOD_REQUEST);
     String assignee = foodAssignSelector.getValue();
@@ -430,6 +445,9 @@ public class ViewMasterOrderController extends AbsController {
   private void supplyAssign() {
     SupplyOrderObservable supply =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
+    if (supply == null) {
+      return;
+    }
     SupplyRequest dbRequest =
         (SupplyRequest) dbConnection.getEntry(supply.id, TableEntryType.SUPPLY_REQUEST);
     String assignee = supplyAssignSelector.getValue();
@@ -442,6 +460,9 @@ public class ViewMasterOrderController extends AbsController {
   private void furnitureAssign() {
     FurnitureOrderObservable furniture =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
+    if (furniture == null) {
+      return;
+    }
     FurnitureRequest dbRequest =
         (FurnitureRequest) dbConnection.getEntry(furniture.id, TableEntryType.FURNITURE_REQUEST);
     String assignee = furnitureAssignSelector.getValue();
@@ -454,6 +475,9 @@ public class ViewMasterOrderController extends AbsController {
   private void flowerAssign() {
     FlowerOrderObservable flower =
         (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
+    if (flower == null) {
+      return;
+    }
     FlowerRequest dbRequest =
         (FlowerRequest) dbConnection.getEntry(flower.id, TableEntryType.FLOWER_REQUEST);
     String assignee = flowerAssignSelector.getValue();
@@ -466,6 +490,9 @@ public class ViewMasterOrderController extends AbsController {
   private void foodRemove() {
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     dbConnection.removeEntry(food.id, TableEntryType.FOOD_REQUEST);
     foodTable.getItems().remove(food);
     foodTable.refresh();
@@ -474,6 +501,9 @@ public class ViewMasterOrderController extends AbsController {
   private void supplyRemove() {
     SupplyOrderObservable supply =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
+    if (supply == null) {
+      return;
+    }
     dbConnection.removeEntry(supply.id, TableEntryType.SUPPLY_REQUEST);
     supplyTable.getItems().remove(supply);
     supplyTable.refresh();
@@ -482,6 +512,9 @@ public class ViewMasterOrderController extends AbsController {
   private void furnitureRemove() {
     FurnitureOrderObservable furniture =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
+    if (furniture == null) {
+      return;
+    }
     dbConnection.removeEntry(furniture.id, TableEntryType.FURNITURE_REQUEST);
     furnitureTable.getItems().remove(furniture);
     furnitureTable.refresh();
@@ -490,6 +523,9 @@ public class ViewMasterOrderController extends AbsController {
   private void flowerRemove() {
     FurnitureOrderObservable flower =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
+    if (flower == null) {
+      return;
+    }
     dbConnection.removeEntry(flower.id, TableEntryType.FLOWER_REQUEST);
     flowerTable.getItems().remove(flower);
     flowerTable.refresh();
@@ -498,6 +534,9 @@ public class ViewMasterOrderController extends AbsController {
   private void conferenceRemove() {
     ConferenceRequestObservable conf =
         (ConferenceRequestObservable) conferenceTable.getSelectionModel().getSelectedItem();
+    if (conf == null) {
+      return;
+    }
     dbConnection.removeEntry(conf.id, TableEntryType.CONFERENCE_REQUEST);
     conferenceTable.getItems().remove(conf);
     conferenceTable.refresh();

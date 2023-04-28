@@ -111,29 +111,6 @@
                                           </AnchorPane>
                                        </content>
                                     </Tab>
-                                    <Tab text="Furniture Orders">
-                                       <content>
-                                          <AnchorPane>
-                                             <children>
-                                                <TableView fx:id="furnitureTable" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <columns>
-                                                      <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
-                                                      <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
-                                                      <TableColumn fx:id="furnituredeliveryroom" prefWidth="98.7999267578125" text="Delivery Room" />
-                                                      <TableColumn fx:id="furnituredeliverydate" prefWidth="94.0" text="Delivery Date" />
-                                                      <TableColumn fx:id="furniturenotes" prefWidth="67.99996948242188" text="Notes" />
-                                                      <TableColumn fx:id="furnitureservicetype" prefWidth="89.20001220703125" text="Service Type" />
-                                                      <TableColumn fx:id="furniturefurniture" prefWidth="78.4000244140625" text="Furniture" />
-                                                      <TableColumn fx:id="furnitureassignee" prefWidth="75.0" text="Assignee" />
-                                                   </columns>
-                                                   <columnResizePolicy>
-                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                   </columnResizePolicy>
-                                                </TableView>
-                                             </children>
-                                          </AnchorPane>
-                                       </content>
-                                    </Tab>
                                     <Tab text="Flower Orders">
                                        <content>
                                           <AnchorPane>
@@ -148,6 +125,29 @@
                                                       <TableColumn fx:id="flowerrecipientname" prefWidth="108.4000244140625" text="Recipient Name" />
                                                       <TableColumn fx:id="floweritems" minWidth="2.00006103515625" prefWidth="66.0" text="Items" />
                                                       <TableColumn fx:id="flowerassignee" prefWidth="75.0" text="Assignee" />
+                                                   </columns>
+                                                   <columnResizePolicy>
+                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                   </columnResizePolicy>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
+                                    <Tab text="Furniture Orders">
+                                       <content>
+                                          <AnchorPane>
+                                             <children>
+                                                <TableView fx:id="furnitureTable" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
+                                                      <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
+                                                      <TableColumn fx:id="furnituredeliveryroom" prefWidth="98.7999267578125" text="Delivery Room" />
+                                                      <TableColumn fx:id="furnituredeliverydate" prefWidth="94.0" text="Delivery Date" />
+                                                      <TableColumn fx:id="furniturenotes" prefWidth="67.99996948242188" text="Notes" />
+                                                      <TableColumn fx:id="furnitureservicetype" prefWidth="89.20001220703125" text="Service Type" />
+                                                      <TableColumn fx:id="furniturefurniture" prefWidth="78.4000244140625" text="Furniture" />
+                                                      <TableColumn fx:id="furnitureassignee" prefWidth="75.0" text="Assignee" />
                                                    </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
