@@ -155,6 +155,8 @@ public class PathfindingController extends AbsController {
 
       pathTextBox.getChildren().clear();
       pathTextBox.getChildren().add(alertPane);
+      alertPane.setStyle("-fx-background-radius: 15");
+
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
