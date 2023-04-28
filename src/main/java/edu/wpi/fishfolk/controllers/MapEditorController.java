@@ -43,6 +43,7 @@ public class MapEditorController extends AbsController {
 
   @FXML MFXFilterComboBox<String> locationSearch;
   @FXML CheckComboBox<NodeType> showLocationType;
+  @FXML MFXButton clearLocationType;
 
   @FXML MFXTextField nodeidText, xText, yText, buildingText;
 
@@ -316,14 +317,25 @@ public class MapEditorController extends AbsController {
               }
             });
 
+    clearLocationType.setOnAction(
+        event -> {
+          visibleNodeTypes.clear();
+          observableNodeTypes.forEach(
+              type -> showLocationType.getItemBooleanProperty(type).setValue(false));
+          // observableNodeTypes.forEach(type -> locationLabels.get(type).setVisible(false));
+          // showLocationType.setTitle("");
+        });
+
     locationSearch.setOnAction(
         event -> {
           int nodeID = dbConnection.getNodeIDFromLocation(locationSearch.getValue(), today);
           if (nodeID > 0) {
             Node node = (Node) dbConnection.getEntry(nodeID, TableEntryType.NODE);
-            //switch floor is an expensive operation, only do it if requested node is on a different floor
+            // switch floor is an expensive operation, only do it if requested node is on a
+            // different floor
             if (!node.getFloor().equals(allFloors.get(currentFloor))) {
-              switchFloor(node.getFloor());
+              floorSelector.setValue(node.getFloor());
+              // switchFloor(node.getFloor());
             }
             gesturePane.centreOn(node.getPoint());
 

@@ -584,7 +584,8 @@ public class Fdb {
    *
    * @param longname the longname of the Location
    * @param date the date to search on
-   * @return the ID (int > 0) of the node where the given location is found at the given date, otherwise -1.
+   * @return the ID (int > 0) of the node where the given location is found at the given date,
+   *     otherwise -1.
    */
   public int getNodeIDFromLocation(String longname, LocalDate date) {
 
