@@ -12,7 +12,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 import lombok.Getter;
 
 public class Fdb {
