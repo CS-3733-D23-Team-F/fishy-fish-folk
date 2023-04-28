@@ -25,6 +25,7 @@ public class ConferenceRequestObservable {
     conferenceend = request.getEndTime();
     conferencebooker = request.getUsername();
     conferenceattendees = "" + request.getNumAttendees();
+    id = request.getConferenceRequestID();
     switch (request.getRecurringOption()) {
       case DAILY:
         {

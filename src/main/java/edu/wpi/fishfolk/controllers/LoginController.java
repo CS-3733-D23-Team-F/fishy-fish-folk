@@ -80,12 +80,12 @@ public class LoginController extends AbsController {
     if (foundAccount == null) {
       errorBox.setText("Account not found.");
       errorBox.setVisible(true);
-      errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
+      errorBox.setStyle("-fx-alignment: center; -fx-text-fill:  red;");
     } else {
       if (SharedResources.login(foundAccount, password)) {
         // valid account. We're already logged in if we get here!
         errorBox.setText("Logged in successfully!");
-        errorBox.setStyle("-fx-alignment: center; -fx-background-color:  green;");
+        errorBox.setStyle("-fx-alignment: center; -fx-text-fill:  green;");
         System.out.println("perm: " + SharedResources.getCurrentUser().getLevel());
         switch (SharedResources.getCurrentUser().getLevel()) {
           case GUEST:
@@ -104,7 +104,7 @@ public class LoginController extends AbsController {
       } else {
         errorBox.setText("Incorrect password.");
         errorBox.setVisible(true);
-        errorBox.setStyle("-fx-alignment: center; -fx-background-color:  red;");
+        errorBox.setStyle("-fx-alignment: center; -fx-text-fill:  red;");
       }
     }
   }

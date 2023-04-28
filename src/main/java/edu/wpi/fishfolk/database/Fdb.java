@@ -1,17 +1,27 @@
 package edu.wpi.fishfolk.database;
 
+import static edu.wpi.fishfolk.util.NodeType.*;
+
 import edu.wpi.fishfolk.database.DAO.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.mapeditor.NodeText;
+import edu.wpi.fishfolk.util.NodeType;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+import lombok.Getter;
 
 public class Fdb {
 
   private final Connection dbConnection;
+
+  @Getter
+  private final List<NodeType> nodeTypes =
+      List.of(BATH, CONF, DEPT, ELEV, EXIT, HALL, INFO, LABS, REST, RETL, SERV, STAI);
 
   // Hospital Map Tables
   private final NodeDAO nodeTable;
@@ -34,7 +44,7 @@ public class Fdb {
 
   private final AlertDAO alertTable;
 
-  // TODO refactor use map from tabletype -> dao table object to simplify delegation
+  // TODO refactor: use map from tabletype -> dao table object to simplify delegation
 
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb() {
@@ -436,6 +446,7 @@ public class Fdb {
    */
   public boolean importCSV(String filepath, boolean backup, TableEntryType tableEntryType) {
 
+    // Commented out due to regex error -Christian
     // System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(filepath).toMatchResult().group());
 
     switch (tableEntryType) {
@@ -573,8 +584,9 @@ public class Fdb {
    * Get the Node ID corresponding to the given Location on a given date
    *
    * @param longname the longname of the Location
-   * @param date
-   * @return
+   * @param date the date to search on
+   * @return the ID (int > 0) of the node where the given location is found at the given date,
+   *     otherwise -1.
    */
   public int getNodeIDFromLocation(String longname, LocalDate date) {
 
@@ -628,6 +640,35 @@ public class Fdb {
   public List<Location> getDestLocations() {
 
     return locationTable.getAllEntries().stream().filter(Location::isDestination).toList();
+  }
+
+  public HashMap<NodeType, List<NodeText>> getLocationLabelsByType(String floor, LocalDate date) {
+
+    HashMap<NodeType, List<NodeText>> map = new HashMap<>();
+    nodeTypes.forEach(type -> map.put(type, new ArrayList<>()));
+
+    getNodesOnFloor(floor)
+        .forEach(
+            node -> {
+              int[] offset = {0}; // offset multiple labels at the same node
+
+              getLocations(node.getNodeID(), date)
+                  .forEach(
+                      location -> {
+                        // create text label and add it to list of labels in the map
+                        String labelText = location.getShortName();
+                        map.get(location.getNodeType())
+                            .add(
+                                new NodeText(
+                                    node.getNodeID(),
+                                    node.getX() - labelText.length() * 5 + offset[0],
+                                    node.getY() - 10 + offset[0],
+                                    labelText));
+                        offset[0] += 20;
+                      });
+            });
+
+    return map;
   }
 
   public int getNextNodeID() {
