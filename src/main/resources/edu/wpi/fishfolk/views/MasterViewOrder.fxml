@@ -11,7 +11,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.ViewMasterOrderController">
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.ViewMasterOrderController">
+   <MFXButton fx:id="refreshButton" style="-fx-background-color: #012d5a;" text="Refresh Orders" textFill="WHITE">
+      <font>
+         <Font name="Open Sans Bold" size="26.0" />
+      </font>
+   </MFXButton>
    <TabPane fx:id="tabPane" layoutX="50.0" layoutY="50.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
      <tabs>
        <Tab text="Food Orders">
