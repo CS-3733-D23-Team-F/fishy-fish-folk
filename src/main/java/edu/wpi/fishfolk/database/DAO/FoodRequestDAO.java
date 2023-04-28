@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk.database.DAO;
 
-import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import edu.wpi.fishfolk.database.ConnectionBuilder;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
@@ -54,7 +54,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
 
     init(false);
     initSubtable(false);
-    // prepareListener();
+    prepareListener();
     populateLocalTable();
   }
 
@@ -141,79 +141,79 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
     }
   }
 
-//  public void prepareListener() {
-//
-//    try {
-//
-//      listener = ConnectionBuilder.buildConnection();
-//
-//      if (listener == null) {
-//        System.out.println("[FoodRequestDAO.prepareListener]: Listener is null.");
-//        return;
-//      }
-//
-//      // Create a function that calls NOTIFY when the table is modified
-//      listener
-//          .prepareStatement(
-//              "CREATE OR REPLACE FUNCTION notifyFoodRequest() RETURNS TRIGGER AS $foodrequest$"
-//                  + "BEGIN "
-//                  + "NOTIFY foodrequest;"
-//                  + "RETURN NULL;"
-//                  + "END; $foodrequest$ language plpgsql")
-//          .execute();
-//
-//      // Create a trigger that calls the function on any change
-//      listener
-//          .prepareStatement(
-//              "CREATE OR REPLACE TRIGGER foodRequestUpdate AFTER UPDATE OR INSERT OR DELETE ON "
-//                  + "foodrequest FOR EACH STATEMENT EXECUTE FUNCTION notifyFoodRequest()")
-//          .execute();
-//
-//    } catch (SQLException e) {
-//      System.out.println(e.getMessage());
-//    }
-//  }
-//
-//  /** Re-listens to the table updates, used every time the connection is refreshed. */
-//  public void reListen() {
-//    try {
-//      listener.prepareStatement("LISTEN foodrequest").execute();
-//    } catch (SQLException e) {
-//      System.out.println(e.getMessage());
-//    }
-//  }
-//
-//  /** Refreshes the entire local table. */
-//  public void refreshLocalTable() {
-//    // tableMap.clear();
-//    populateLocalTable();
-//  }
-//
-//  /** Check if local refresh is necessary, refresh if needed. */
-//  public void verifyLocalTable() {
-//
-//    try {
-//
-//      // Check for notifications on the table
-//      PGConnection driver = listener.unwrap(PGConnection.class);
-//
-//      // See if there is a notification
-//      if (driver.getNotifications().length > 0) {
-//        System.out.println("[FoodRequestDAO.verifyLocalTable]: Notification received!");
-//        refreshLocalTable();
-//      }
-//
-//      // Catch a timeout and reset re-build local table
-//    } catch (PSQLException e) {
-//
-//      listener = ConnectionBuilder.buildConnection();
-//      reListen();
-//      refreshLocalTable();
-//
-//    } catch (SQLException e) {
-//      System.out.println(e.getMessage());
-//    }
-//  }
+    public void prepareListener() {
+
+      try {
+
+        listener = ConnectionBuilder.buildConnection();
+
+        if (listener == null) {
+          System.out.println("[FoodRequestDAO.prepareListener]: Listener is null.");
+          return;
+        }
+
+        // Create a function that calls NOTIFY when the table is modified
+        listener
+            .prepareStatement(
+                "CREATE OR REPLACE FUNCTION notifyFoodRequest() RETURNS TRIGGER AS $foodrequest$"
+                    + "BEGIN "
+                    + "NOTIFY foodrequest;"
+                    + "RETURN NULL;"
+                    + "END; $foodrequest$ language plpgsql")
+            .execute();
+
+        // Create a trigger that calls the function on any change
+        listener
+            .prepareStatement(
+                "CREATE OR REPLACE TRIGGER foodRequestUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                    + "foodrequest FOR EACH STATEMENT EXECUTE FUNCTION notifyFoodRequest()")
+            .execute();
+
+      } catch (SQLException e) {
+        System.out.println(e.getMessage());
+      }
+    }
+
+    /** Re-listens to the table updates, used every time the connection is refreshed. */
+    public void reListen() {
+      try {
+        listener.prepareStatement("LISTEN foodrequest").execute();
+      } catch (SQLException e) {
+        System.out.println(e.getMessage());
+      }
+    }
+
+    /** Refreshes the entire local table. */
+    public void refreshLocalTable() {
+      // tableMap.clear();
+      populateLocalTable();
+    }
+
+    /** Check if local refresh is necessary, refresh if needed. */
+    public void verifyLocalTable() {
+
+      try {
+
+        // Check for notifications on the table
+        PGConnection driver = listener.unwrap(PGConnection.class);
+
+        // See if there is a notification
+        if (driver.getNotifications().length > 0) {
+          System.out.println("[FoodRequestDAO.verifyLocalTable]: Notification received!");
+          refreshLocalTable();
+        }
+
+        // Catch a timeout and reset re-build local table
+      } catch (PSQLException e) {
+
+        listener = ConnectionBuilder.buildConnection();
+        reListen();
+        refreshLocalTable();
+
+      } catch (SQLException e) {
+        System.out.println(e.getMessage());
+      }
+    }
 
   @Override
   public boolean insertEntry(FoodRequest entry) {
@@ -309,7 +309,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
   @Override
   public FoodRequest getEntry(Object identifier) {
 
-    // verifyLocalTable();
+    verifyLocalTable();
 
     // Check if input identifier is correct type
     if (!(identifier instanceof LocalDateTime)) {
@@ -336,7 +336,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
   @Override
   public ArrayList<FoodRequest> getAllEntries() {
 
-    // verifyLocalTable();
+    verifyLocalTable();
 
     ArrayList<FoodRequest> allFoodRequests = new ArrayList<>();
 
