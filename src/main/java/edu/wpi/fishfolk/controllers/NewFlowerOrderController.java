@@ -37,7 +37,7 @@ public class NewFlowerOrderController extends AbsController {
   @FXML TextField recipientField, timeSelector;
   @FXML TextArea notesField;
   @FXML ScrollPane menuItemsPane, cartItemsPane;
-  @FXML AnchorPane cartViewPane, confirmPane;
+  @FXML AnchorPane confirmPane;
   @FXML HBox cartWrap, blur, confirmBlur, confirmBox;
   @FXML MFXButton okButton;
   Font oSans26, oSans20, oSans26bold;
@@ -56,8 +56,7 @@ public class NewFlowerOrderController extends AbsController {
     loadMenu();
     loadRooms();
     cart = new FlowerCart();
-    cartViewPane.setVisible(false);
-    cartViewPane.setDisable(true);
+
     cancelButton.setOnAction(event -> cancel());
     clearButton.setOnAction(event -> clear());
     checkoutButton.setOnAction(event -> openCart());
@@ -125,8 +124,7 @@ public class NewFlowerOrderController extends AbsController {
   private void openCart() {
     loadCart();
     notesField.setWrapText(true);
-    cartViewPane.setDisable(false);
-    cartViewPane.setVisible(true);
+    cartWrap.setVisible(true);
     cartWrap.setDisable(false);
     blur.setDisable(false);
     blur.setVisible(true);
@@ -134,8 +132,7 @@ public class NewFlowerOrderController extends AbsController {
 
   /** Hide the cart */
   private void closeCart() {
-    cartViewPane.setDisable(true);
-    cartViewPane.setVisible(false);
+    cartWrap.setVisible(false);
     cartWrap.setDisable(true);
     blur.setDisable(true);
     blur.setVisible(false);
