@@ -354,13 +354,13 @@
          </HBox>
          <HBox alignment="CENTER" maxWidth="1020.0">
             <children>
-               <MFXButton fx:id="clearButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CLEAR" textFill="WHITE">
+               <MFXButton fx:id="cancelButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CANCEL" textFill="WHITE">
                   <font>
                      <Font name="Open Sans Bold" size="26.0" />
                   </font>
                </MFXButton>
                <VBox HBox.hgrow="ALWAYS" />
-               <MFXButton fx:id="cancelButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CANCEL" textFill="WHITE">
+               <MFXButton fx:id="clearButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CLEAR" textFill="WHITE">
                   <font>
                      <Font name="Open Sans Bold" size="26.0" />
                   </font>
