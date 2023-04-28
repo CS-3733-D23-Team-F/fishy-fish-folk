@@ -4,7 +4,6 @@ import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.ui.Recurring;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-
 import lombok.Getter;
 import lombok.Setter;
 

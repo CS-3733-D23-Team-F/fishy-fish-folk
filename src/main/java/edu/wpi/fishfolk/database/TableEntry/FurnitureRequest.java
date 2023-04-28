@@ -6,7 +6,6 @@ import edu.wpi.fishfolk.ui.FurnitureItem;
 import edu.wpi.fishfolk.ui.ServiceType;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-
 import lombok.Getter;
 import lombok.Setter;
 
