@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -52,40 +51,59 @@
                                     <content>
                                         <VBox spacing="25.0">
                                             <children>
-                                                <HBox spacing="25.0">
+                                                <HBox alignment="CENTER" spacing="25.0">
                                                     <children>
-                                                        <AnchorPane prefHeight="250.0" prefWidth="585.0" HBox.hgrow="NEVER">
+                                                        <AnchorPane prefHeight="250.0" prefWidth="585.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-background-color: #ffffff;" HBox.hgrow="NEVER">
                                                             <children>
-                                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="230.0" layoutX="10.0" layoutY="10.0" stroke="#012d5a" strokeType="INSIDE" width="565.0" />
-                                                                <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="25.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
-                                                                    <image>
-                                                                        <Image url="@../images/chocoCake.jpg" />
-                                                                    </image>
-                                                                </ImageView>
-                                                                <Text layoutX="225.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chocolate Cake" wrappingWidth="345.0">
-                                                                    <font>
-                                                                        <Font name="Open Sans Regular" size="26.0" />
-                                                                    </font>
-                                                                </Text>
-                                                                <Text layoutX="225.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A slice of Delicious, Scrumptious, Overly well described Chocolate Cake. Optionally served with whipped cream." wrappingWidth="345.0">
-                                                                    <font>
-                                                                        <Font name="Open Sans Regular" size="20.0" />
-                                                                    </font>
-                                                                </Text>
-                                                                <MFXButton layoutX="225.0" layoutY="177.0" prefHeight="43.0" prefWidth="330.0" style="-fx-background-color: #012d5a;" text="Add to Order" textFill="WHITE">
-                                                                    <font>
-                                                                        <Font name="Open Sans Regular" size="20.0" />
-                                                                    </font>
-                                                                </MFXButton>
-                                                                <Text layoutX="225.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.50" textAlignment="RIGHT" wrappingWidth="345.0">
-                                                                    <font>
-                                                                        <Font name="Open Sans Regular" size="26.0" />
-                                                                    </font>
-                                                                </Text>
+                                                <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <children>
+                                                                      <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                                          <image>
+                                                                              <Image url="@../images/chocoCake.jpg" />
+                                                                          </image>
+                                                                      </ImageView>
+                                                      <VBox alignment="CENTER" spacing="15.0">
+                                                         <children>
+                                                            <HBox>
+                                                               <children>
+                                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Chocolate Cake">
+                                                                                      <font>
+                                                                                          <Font name="Open Sans Regular" size="26.0" />
+                                                                                      </font>
+                                                                                  </Text>
+                                                                  <HBox HBox.hgrow="ALWAYS" />
+                                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.50" textAlignment="RIGHT">
+                                                                                      <font>
+                                                                                          <Font name="Open Sans Regular" size="26.0" />
+                                                                                      </font>
+                                                                                  </Text>
+                                                               </children>
+                                                            </HBox>
+                                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="A slice of Delicious, Scrumptious, Overly well described Chocolate Cake. Optionally served with whipped cream." wrappingWidth="345.0">
+                                                                                <font>
+                                                                                    <Font name="Open Sans Regular" size="20.0" />
+                                                                                </font>
+                                                                            </Text>
+                                                                            <MFXButton prefHeight="43.0" prefWidth="330.0" style="-fx-background-color: #012d5a;" text="Add to Order" textFill="WHITE">
+                                                                                <font>
+                                                                                    <Font name="Open Sans Regular" size="20.0" />
+                                                                                </font>
+                                                                            </MFXButton>
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" />
+                                                         </padding>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
                                                             </children>
                                                         </AnchorPane>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                         <AnchorPane prefHeight="250.0" prefWidth="585.0" HBox.hgrow="NEVER" />
                                                     </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" top="5.0" />
+                                       </padding>
                                                 </HBox>
                                             </children>
                                         </VBox>
@@ -128,50 +146,66 @@
                 <HBox fx:id="cartWrap" alignment="CENTER" disable="true" visible="false" StackPane.alignment="CENTER">
                     <children>
                         <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
-                        <VBox alignment="CENTER" maxWidth="1180.0" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                             <children>
                                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS" />
                         <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
                            <children>
-                              <ScrollPane fx:id="cartItemsPane" hbarPolicy="NEVER" minHeight="300.0" minWidth="1150.0" prefHeight="300.0" prefWidth="1150.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER">
+                              <ScrollPane fx:id="cartItemsPane" fitToWidth="true" hbarPolicy="NEVER" minHeight="300.0" minWidth="1150.0" pannable="true" prefHeight="300.0" prefWidth="1150.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER">
                                  <content>
-                                    <VBox prefHeight="500.0" prefWidth="1190.0">
+                                    <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="1100.0">
                                        <children>
-                                          <AnchorPane prefHeight="140.0" prefWidth="1190.0">
+                                          <AnchorPane prefHeight="100.0" prefWidth="1100.0">
                                              <children>
-                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="90.0" layoutX="20.0" layoutY="20.0" stroke="#012d5a" strokeType="INSIDE" width="1100.0" />
-                                                <Text layoutX="42.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chocolate Cake" wrappingWidth="300.0">
-                                                   <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
-                                                   </font>
-                                                </Text>
-                                                <Text layoutX="302.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.50" wrappingWidth="79.0">
-                                                   <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
-                                                   </font>
-                                                </Text>
-                                                <MFXButton layoutX="616.0" layoutY="51.0" minHeight="28.0" minWidth="28.0" style="-fx-border-color: #012d5a; -fx-border-radius: 14;" text="+" />
-                                                <MFXButton layoutX="450.0" layoutY="51.0" minHeight="28.0" minWidth="28.0" style="-fx-border-color: #012d5a; -fx-border-radius: 14;" text="-" />
-                                                <Text layoutX="508.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x2" textAlignment="CENTER" wrappingWidth="79.0">
-                                                   <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
-                                                   </font>
-                                                </Text>
-                                                <Text layoutX="700.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$7.00" textAlignment="CENTER" wrappingWidth="79.0">
-                                                   <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
-                                                   </font>
-                                                </Text>
-                                                <MFXButton fx:id="removeButton" layoutX="800.0" layoutY="38.0" prefHeight="55.0" prefWidth="280.0" style="-fx-background-color: #900000;" text="Remove from Order" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
-                                                   </font>
-                                                </MFXButton>
+                                                <HBox alignment="CENTER" spacing="10.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Chocolate Cake" wrappingWidth="300.0">
+                                                         <font>
+                                                            <Font name="Open Sans Regular" size="26.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.50" wrappingWidth="79.0">
+                                                         <font>
+                                                            <Font name="Open Sans Regular" size="26.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <MFXButton minHeight="28.0" minWidth="28.0" style="-fx-border-color: #012d5a; -fx-border-radius: 14;" text="-">
+                                                         <HBox.margin>
+                                                            <Insets left="15.0" />
+                                                         </HBox.margin>
+                                                      </MFXButton>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="x2" textAlignment="CENTER" wrappingWidth="79.0">
+                                                         <font>
+                                                            <Font name="Open Sans Regular" size="26.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <MFXButton minHeight="28.0" minWidth="28.0" style="-fx-border-color: #012d5a; -fx-border-radius: 14;" text="+" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$7.00" textAlignment="CENTER" wrappingWidth="79.0">
+                                                         <font>
+                                                            <Font name="Open Sans Regular" size="26.0" />
+                                                         </font>
+                                                         <HBox.margin>
+                                                            <Insets left="15.0" />
+                                                         </HBox.margin>
+                                                      </Text>
+                                                      <MFXButton fx:id="removeButton" prefHeight="55.0" prefWidth="280.0" style="-fx-background-color: #900000;" text="Remove from Order" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Open Sans Regular" size="26.0" />
+                                                         </font>
+                                                         <HBox.margin>
+                                                            <Insets left="15.0" />
+                                                         </HBox.margin>
+                                                      </MFXButton>
+                                                   </children>
+                                                </HBox>
                                              </children>
                                           </AnchorPane>
                                        </children>
                                     </VBox>
                                  </content>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                 </padding>
                               </ScrollPane>
                               <HBox alignment="TOP_CENTER">
                                  <children>
