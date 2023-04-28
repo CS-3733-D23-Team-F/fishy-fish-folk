@@ -83,6 +83,14 @@ public class AccountManagerController extends AbsController {
         (UserAccount) dbConnection.getEntry(row.getUserID(), TableEntryType.USER_ACCOUNT);
     // set to the hashed version of the password
     String password = t.getNewValue();
+    if (!password.matches("^[a-zA-Z0-9._]+$")) {
+      password = row.passhash;
+      entry.setPassword(password);
+      userAccountsTable.refresh();
+      System.out.println(
+          "Password updated failed due to invalid password. Please only include a-Z, 0-9, periods, and underlines.");
+      return;
+    }
     System.out.print("New password: ");
     System.out.println(password);
     entry.setPassword(String.valueOf(password.hashCode()));
