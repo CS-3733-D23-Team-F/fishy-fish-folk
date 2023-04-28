@@ -37,7 +37,6 @@ public class NewFoodOrderController extends AbsController {
   @FXML TextField recipientField, timeSelector;
   @FXML TextArea notesField;
   @FXML ScrollPane menuItemsPane, cartItemsPane;
-  @FXML AnchorPane cartViewPane;
   @FXML HBox cartWrap, blur, confirmBlur;
   @FXML HBox confirmBox;
   @FXML AnchorPane confirmPane;
@@ -58,8 +57,6 @@ public class NewFoodOrderController extends AbsController {
     loadMenu();
     loadRooms();
     cart = new NewFoodCart();
-    cartViewPane.setVisible(false);
-    cartViewPane.setDisable(true);
     cancelButton.setOnAction(event -> cancel());
     clearButton.setOnAction(event -> clear());
     checkoutButton.setOnAction(event -> openCart());
@@ -139,8 +136,7 @@ public class NewFoodOrderController extends AbsController {
   private void openCart() {
     loadCart();
     notesField.setWrapText(true);
-    cartViewPane.setDisable(false);
-    cartViewPane.setVisible(true);
+    cartWrap.setVisible(true);
     cartWrap.setDisable(false);
     blur.setDisable(false);
     blur.setVisible(true);
@@ -148,8 +144,7 @@ public class NewFoodOrderController extends AbsController {
 
   /** Hide the cart */
   private void closeCart() {
-    cartViewPane.setDisable(true);
-    cartViewPane.setVisible(false);
+    cartWrap.setVisible(false);
     cartWrap.setDisable(true);
     blur.setDisable(true);
     blur.setVisible(false);

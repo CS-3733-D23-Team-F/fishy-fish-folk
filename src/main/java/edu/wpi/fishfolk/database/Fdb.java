@@ -7,13 +7,11 @@ import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.util.NodeType;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 import lombok.Getter;
 
 public class Fdb {
@@ -108,9 +106,6 @@ public class Fdb {
   /**
    * Connect to a PostgreSQL database.
    *
-   * @param dbName Database name
-   * @param dbUser Account
-   * @param dbPass Password
    * @return Database connection object (null if no connection is made)
    */
   private Connection connect(String dbName, String dbUser, String dbPass, DBSource dbSource) {
@@ -124,13 +119,16 @@ public class Fdb {
         break;
     }
     try {
-      Class.forName("org.postgresql.Driver");
-      Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
+
+      // Attempt a database connection
+      Connection db = ConnectionBuilder.buildConnection();
+
       if (db != null) {
         System.out.println("[Fdb.connect]: Connection established with " + dbSource.toString());
         db.setSchema("iter2db");
 
-        String query = "SET idle_session_timeout = 0;";
+        // Set timeout to 1 day (86400000 ms)
+        String query = "SET idle_session_timeout = 86400000;";
         Statement statement = db.createStatement();
         statement.executeUpdate(query);
 
@@ -138,7 +136,7 @@ public class Fdb {
         System.out.println("[Fdb.connect]: Connection failed.");
       }
       return db;
-    } catch (ClassNotFoundException | SQLException e) {
+    } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
     return null;
@@ -463,7 +461,8 @@ public class Fdb {
    */
   public boolean importCSV(String filepath, boolean backup, TableEntryType tableEntryType) {
 
-    System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(filepath).toMatchResult().group());
+    // Commented out due to regex error -Christian
+    // System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(filepath).toMatchResult().group());
 
     switch (tableEntryType) {
       case NODE:

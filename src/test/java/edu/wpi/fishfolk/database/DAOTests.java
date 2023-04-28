@@ -3,6 +3,7 @@ package edu.wpi.fishfolk.database;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.ui.*;
 import edu.wpi.fishfolk.util.NodeType;
+import edu.wpi.fishfolk.util.PermissionLevel;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,7 @@ public class DAOTests {
 
     fdb.removeEntry(".Bingus Tower III", TableEntryType.LOCATION);
 
-    fdb.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/", TableEntryType.NODE);
+    fdb.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/", TableEntryType.LOCATION);
   }
 
   @Test
@@ -415,5 +416,36 @@ public class DAOTests {
     fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.CONFERENCE_REQUEST);
 
     fdb.exportCSV("D:\\", TableEntryType.CONFERENCE_REQUEST);
+  }
+
+  @Test
+  public void accountDAOTests() {
+
+    Fdb fdb = new Fdb();
+
+    fdb.insertEntry(
+        new UserAccount("cingus", "bongus", "null@null.whatever", PermissionLevel.STAFF));
+    fdb.insertEntry(
+        new UserAccount("dingus", "dongus", "null@null.whatever", PermissionLevel.GUEST));
+    fdb.insertEntry(
+        new UserAccount("fingus", "fongus", "null@null.whatever", PermissionLevel.ADMIN));
+    fdb.insertEntry(
+        new UserAccount("gingus", "gongus", "null@null.whatever", PermissionLevel.ROOT));
+    fdb.insertEntry(
+        new UserAccount("hingus", "hongus", "null@null.whatever", PermissionLevel.GUEST));
+    fdb.insertEntry(
+        new UserAccount("jingus", "jongus", "null@null.whatever", PermissionLevel.ADMIN));
+
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      // >:(
+    }
+
+    fdb.undoChange(TableEntryType.USER_ACCOUNT);
+    fdb.undoChange(TableEntryType.USER_ACCOUNT);
+    fdb.undoChange(TableEntryType.USER_ACCOUNT);
+    fdb.undoChange(TableEntryType.USER_ACCOUNT);
+    fdb.undoChange(TableEntryType.USER_ACCOUNT);
   }
 }
