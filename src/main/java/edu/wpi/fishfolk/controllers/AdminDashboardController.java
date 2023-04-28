@@ -8,6 +8,7 @@ import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.DBSource;
 import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.database.TableEntry.Alert;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -28,10 +29,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -119,6 +117,20 @@ public class AdminDashboardController {
     serverSelectorCombo.setPromptText("Current DB: " + dbConnection.getDbSource().toString());
     serverSelectorCombo.setOnAction(
         event -> {
+          javafx.scene.control.Alert confirm =
+              new javafx.scene.control.Alert(
+                  javafx.scene.control.Alert.AlertType.CONFIRMATION,
+                  "Switch DB?",
+                  ButtonType.YES,
+                  ButtonType.CANCEL);
+          confirm.setGraphic(null);
+          confirm.setHeaderText("");
+          confirm.showAndWait();
+          if (confirm.getResult() == ButtonType.CANCEL) {
+            System.out.println("[AdminDashboard]: Cancelled DB switch.");
+            return;
+          }
+          System.out.println("[AdminDashboard]: Switching DB...");
           DBSource src = DBSource.valueOf(serverSelectorCombo.getSelectedItem());
           dbConnection = new Fdb(src);
           SharedResources.logout();
