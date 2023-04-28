@@ -215,7 +215,7 @@ public class NewFurnitureOrderController extends AbsController {
     currentFurnitureOrder.addNotes(notesTextField.getText());
     currentFurnitureOrder.addDate(getDate());
 
-    if (currentFurnitureOrder.deliveryDate.isBefore(LocalDateTime.now())) {
+    if (currentFurnitureOrder.deliveryDate.isBefore(LocalDateTime.now().minusDays(1))) {
       PopOver error = new PopOver();
       Text errorText = new Text("Cannot set delivery date before current date");
       errorText.setFont(new Font("Open Sans", 26));
