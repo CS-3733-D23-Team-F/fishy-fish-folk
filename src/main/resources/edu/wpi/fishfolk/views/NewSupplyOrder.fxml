@@ -164,7 +164,7 @@
       <VBox alignment="CENTER" spacing="20.0">
          <HBox alignment="CENTER" maxWidth="1020.0" spacing="20.0">
             <children>
-               <ScrollPane hbarPolicy="NEVER" maxHeight="700.0" minHeight="300.0" minWidth="1020.0" VBox.vgrow="ALWAYS">
+               <ScrollPane hbarPolicy="NEVER" maxHeight="700.0" minHeight="300.0" minWidth="1020.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                   <content>
                      <VBox>
                         <children>

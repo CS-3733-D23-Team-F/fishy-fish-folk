@@ -27,7 +27,7 @@
                      <Font name="Open Sans SemiBold" size="26.0" />
                   </font>
                </Text>
-                <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a; -fx-border-width: 2;" vbarPolicy="NEVER">
+                <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a; -fx-border-width: 2;" vbarPolicy="ALWAYS">
                     <content>
                         <VBox>
                             <children>
@@ -89,7 +89,7 @@
                      <Font name="Open Sans SemiBold" size="26.0" />
                   </font>
                </Text>
-               <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-color: #012d5a; -fx-border-width: 2; -fx-border-radius: 5;" vbarPolicy="NEVER">
+               <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-color: #012d5a; -fx-border-width: 2; -fx-border-radius: 5;" vbarPolicy="ALWAYS">
                   <content>
                      <VBox minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="620.0">
                         <children>
