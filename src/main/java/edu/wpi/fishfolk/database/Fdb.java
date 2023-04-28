@@ -48,9 +48,15 @@ public class Fdb {
   // TODO refactor: use map from tabletype -> dao table object to simplify delegation
 
   /** Singleton facade for managing all PostgreSQL database communication. */
-  public Fdb() {
-
-    this.dbConnection = connect("teamfdb", "teamf", "bingus7223");
+  public Fdb(DBSource dbSource) {
+    switch (dbSource) {
+      case DB_WPI:
+        this.dbConnection = connect("teamfdb", "teamf", "teamf60", dbSource);
+        break;
+      default:
+        this.dbConnection = connect("teamfdb", "teamf", "bingus7223", dbSource);
+        break;
+    }
 
     // Hospital Map Tables
     this.nodeTable = new NodeDAO(dbConnection);
@@ -104,8 +110,16 @@ public class Fdb {
    * @param dbPass Password
    * @return Database connection object (null if no connection is made)
    */
-  private Connection connect(String dbName, String dbUser, String dbPass) {
-    String dbServer = "jdbc:postgresql://postgres.thesamrooney.com:5432/";
+  private Connection connect(String dbName, String dbUser, String dbPass, DBSource dbSource) {
+    String dbServer;
+    switch (dbSource) {
+      case DB_WPI:
+        dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
+        break;
+      default:
+        dbServer = "jdbc:postgresql://postgres.thesamrooney.com:5432/"; // i.e. DB_AWS
+        break;
+    }
     try {
       Class.forName("org.postgresql.Driver");
       Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);

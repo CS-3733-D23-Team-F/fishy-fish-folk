@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.DBSource;
 import edu.wpi.fishfolk.database.Fdb;
 import java.time.LocalDate;
 import java.time.Month;
@@ -28,7 +29,7 @@ public abstract class AbsController {
   public AbsController() {
 
     if (dbConnection == null) {
-      dbConnection = new Fdb();
+      dbConnection = new Fdb(DBSource.DB_AWS);
     }
 
     mapImgURLs = new HashMap<>();
