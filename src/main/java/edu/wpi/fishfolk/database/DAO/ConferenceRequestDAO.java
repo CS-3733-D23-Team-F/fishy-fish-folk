@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
@@ -15,10 +16,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.postgresql.PGConnection;
+import org.postgresql.util.PSQLException;
 
 public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
   private final Connection dbConnection;
+  private Connection dbListener;
 
   private final String tableName;
   private final ArrayList<String> headers;
@@ -46,6 +50,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
     this.dataEditQueue.setBatchLimit(1);
 
     init(false);
+    prepareListener();
     populateLocalTable();
   }
 
@@ -123,6 +128,78 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
       }
 
     } catch (SQLException | NumberFormatException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void prepareListener() {
+
+    try {
+
+      dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
+
+      if (dbListener == null) {
+        System.out.println("[ConferenceRequestDAO.prepareListener]: Listener is null.");
+        return;
+      }
+
+      // Create a function that calls NOTIFY when the table is modified
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE FUNCTION notifyConferenceRequest() RETURNS TRIGGER AS $conferencerequest$"
+                  + "BEGIN "
+                  + "NOTIFY conferencerequest;"
+                  + "RETURN NULL;"
+                  + "END; $conferencerequest$ language plpgsql")
+          .execute();
+
+      // Create a trigger that calls the function on any change
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE TRIGGER furnitureRequestUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "conferencerequest FOR EACH STATEMENT EXECUTE FUNCTION notifyConferenceRequest()")
+          .execute();
+
+      // Start listener
+      reListen();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void reListen() {
+    try {
+      dbListener.prepareStatement("LISTEN conferencerequest").execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void verifyLocalTable() {
+
+    try {
+
+      // Check for notifications on the table
+      PGConnection driver = dbListener.unwrap(PGConnection.class);
+
+      // See if there is a notification
+      if (driver.getNotifications().length > 0) {
+        System.out.println("[ConferenceRequestDAO.verifyLocalTable]: Notification received!");
+        populateLocalTable();
+      }
+
+      // Catch a timeout and reset refresh local table
+    } catch (PSQLException e) {
+
+      dbListener = ConnectionBuilder.buildConnection();
+      reListen();
+      populateLocalTable();
+
+    } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
   }
@@ -221,6 +298,9 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
   @Override
   public ConferenceRequest getEntry(Object identifier) {
+
+    verifyLocalTable();
+
     // Check if input identifier is correct type
     if (!(identifier instanceof LocalDateTime)) {
       System.out.println(
@@ -245,6 +325,9 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
   @Override
   public ArrayList<ConferenceRequest> getAllEntries() {
+
+    verifyLocalTable();
+
     ArrayList<ConferenceRequest> allConferenceRequests = new ArrayList<>();
 
     // Add all entries in local table to a list

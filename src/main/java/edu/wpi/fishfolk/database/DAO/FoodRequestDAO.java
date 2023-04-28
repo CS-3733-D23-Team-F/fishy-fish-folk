@@ -24,7 +24,7 @@ import org.postgresql.util.PSQLException;
 public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodItem> {
 
   private final Connection dbConnection;
-  private Connection listener;
+  private Connection dbListener;
 
   private final String tableName;
   private final ArrayList<String> headers;
@@ -141,19 +141,20 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
     }
   }
 
+  @Override
   public void prepareListener() {
 
     try {
 
-      listener = ConnectionBuilder.buildConnection();
+      dbListener = ConnectionBuilder.buildConnection();
 
-      if (listener == null) {
+      if (dbListener == null) {
         System.out.println("[FoodRequestDAO.prepareListener]: Listener is null.");
         return;
       }
 
       // Create a function that calls NOTIFY when the table is modified
-      listener
+      dbListener
           .prepareStatement(
               "CREATE OR REPLACE FUNCTION notifyFoodRequest() RETURNS TRIGGER AS $foodrequest$"
                   + "BEGIN "
@@ -163,52 +164,49 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
           .execute();
 
       // Create a trigger that calls the function on any change
-      listener
+      dbListener
           .prepareStatement(
               "CREATE OR REPLACE TRIGGER foodRequestUpdate AFTER UPDATE OR INSERT OR DELETE ON "
                   + "foodrequest FOR EACH STATEMENT EXECUTE FUNCTION notifyFoodRequest()")
           .execute();
 
+      // Start listener
+      reListen();
+
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  /** Re-listens to the table updates, used every time the connection is refreshed. */
+  @Override
   public void reListen() {
     try {
-      listener.prepareStatement("LISTEN foodrequest").execute();
+      dbListener.prepareStatement("LISTEN foodrequest").execute();
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  /** Refreshes the entire local table. */
-  public void refreshLocalTable() {
-    // tableMap.clear();
-    populateLocalTable();
-  }
-
-  /** Check if local refresh is necessary, refresh if needed. */
+  @Override
   public void verifyLocalTable() {
 
     try {
 
       // Check for notifications on the table
-      PGConnection driver = listener.unwrap(PGConnection.class);
+      PGConnection driver = dbListener.unwrap(PGConnection.class);
 
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[FoodRequestDAO.verifyLocalTable]: Notification received!");
-        refreshLocalTable();
+        populateLocalTable();
       }
 
-      // Catch a timeout and reset re-build local table
+      // Catch a timeout and reset refresh local table
     } catch (PSQLException e) {
 
-      listener = ConnectionBuilder.buildConnection();
+      dbListener = ConnectionBuilder.buildConnection();
       reListen();
-      refreshLocalTable();
+      populateLocalTable();
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());

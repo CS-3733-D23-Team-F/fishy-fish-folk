@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
@@ -13,10 +14,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javafx.geometry.Point2D;
 import lombok.Getter;
+import org.postgresql.PGConnection;
+import org.postgresql.util.PSQLException;
 
 public class NodeDAO implements IDAO<Node> {
 
   private final Connection dbConnection;
+  private Connection dbListener;
 
   private final String tableName;
   private final ArrayList<String> headers;
@@ -37,6 +41,7 @@ public class NodeDAO implements IDAO<Node> {
     freeIDs = new HashSet<>(800);
 
     init(false);
+    prepareListener();
     populateLocalTable();
   }
 
@@ -111,6 +116,78 @@ public class NodeDAO implements IDAO<Node> {
       }
 
     } catch (SQLException | NumberFormatException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void prepareListener() {
+
+    try {
+
+      dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
+
+      if (dbListener == null) {
+        System.out.println("[NodeDAO.prepareListener]: Listener is null.");
+        return;
+      }
+
+      // Create a function that calls NOTIFY when the table is modified
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE FUNCTION notifyNode() RETURNS TRIGGER AS $node$"
+                  + "BEGIN "
+                  + "NOTIFY node;"
+                  + "RETURN NULL;"
+                  + "END; $node$ language plpgsql")
+          .execute();
+
+      // Create a trigger that calls the function on any change
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE TRIGGER nodeUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "node FOR EACH STATEMENT EXECUTE FUNCTION notifyNode()")
+          .execute();
+
+      // Start listener
+      reListen();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void reListen() {
+    try {
+      dbListener.prepareStatement("LISTEN node").execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void verifyLocalTable() {
+
+    try {
+
+      // Check for notifications on the table
+      PGConnection driver = dbListener.unwrap(PGConnection.class);
+
+      // See if there is a notification
+      if (driver.getNotifications().length > 0) {
+        System.out.println("[NodeDAO.verifyLocalTable]: Notification received!");
+        populateLocalTable();
+      }
+
+      // Catch a timeout and reset refresh local table
+    } catch (PSQLException e) {
+
+      dbListener = ConnectionBuilder.buildConnection();
+      reListen();
+      populateLocalTable();
+
+    } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
   }
@@ -215,6 +292,8 @@ public class NodeDAO implements IDAO<Node> {
   @Override
   public Node getEntry(Object identifier) {
 
+    verifyLocalTable();
+
     // Check if input identifier is correct type
     if (!(identifier instanceof Integer)) {
       System.out.println("[NodeDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
@@ -236,6 +315,9 @@ public class NodeDAO implements IDAO<Node> {
 
   @Override
   public ArrayList<Node> getAllEntries() {
+
+    verifyLocalTable();
+
     ArrayList<Node> allNodes = new ArrayList<>();
 
     // Add all Nodes in local table to a list
