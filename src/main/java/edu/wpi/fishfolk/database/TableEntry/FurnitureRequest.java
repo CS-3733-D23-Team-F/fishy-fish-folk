@@ -5,6 +5,8 @@ import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.FurnitureItem;
 import edu.wpi.fishfolk.ui.ServiceType;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -81,7 +83,7 @@ public class FurnitureRequest {
       ServiceType serviceType,
       String roomNumber,
       LocalDateTime deliveryDate) {
-    this.furnitureRequestID = LocalDateTime.now();
+    this.furnitureRequestID = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     this.assignee = assignee;
     this.formStatus = formStatus;
     this.notes = notes;

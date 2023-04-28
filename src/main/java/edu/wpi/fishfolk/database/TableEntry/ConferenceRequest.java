@@ -3,6 +3,8 @@ package edu.wpi.fishfolk.database.TableEntry;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.ui.Recurring;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +33,7 @@ public class ConferenceRequest {
       Recurring recurringOption,
       int numAttendees,
       String roomName) {
-    this.conferenceRequestID = LocalDateTime.now();
+    this.conferenceRequestID = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     this.notes = notes;
     this.username = username;
     this.startTime = startTime;
