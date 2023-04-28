@@ -414,6 +414,8 @@ public class AdminDashboardController {
     supplyTable.setEditable(true);
     flowerTable.setEditable(true);
 
+    foodTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
