@@ -50,55 +50,55 @@ public class RootController {
 
     viewOrders.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.VIEW_MASTER_ORDER);
           setupServiceNavButton();
+          Navigation.navigate(Screen.VIEW_MASTER_ORDER);
         });
     creditButton.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.CREDITS);
           setupServiceNavButton();
+          Navigation.navigate(Screen.CREDITS);
         });
     aboutButton.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.ABOUTME);
           setupServiceNavButton();
+          Navigation.navigate(Screen.ABOUTME);
         });
     flowerNav.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.FLOWER_REQUEST);
           setupServiceNavButton();
+          Navigation.navigate(Screen.FLOWER_REQUEST);
         });
     mealNav.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.NEW_FOOD_ORDER);
           setupServiceNavButton();
+          Navigation.navigate(Screen.NEW_FOOD_ORDER);
         });
     supplyNav.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.SUPPLIES_REQUEST);
           setupServiceNavButton();
+          Navigation.navigate(Screen.SUPPLIES_REQUEST);
         });
     furnitureNav.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.FURNITURE_REQUEST);
           setupServiceNavButton();
+          Navigation.navigate(Screen.FURNITURE_REQUEST);
         });
     conferenceNav.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.CONFERENCE);
           setupServiceNavButton();
+          Navigation.navigate(Screen.CONFERENCE);
         });
 
     // accountManagerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
     mapEditorNav.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.MAP_EDITOR);
           setupServiceNavButton();
+          Navigation.navigate(Screen.MAP_EDITOR);
         });
     pathfindingNav.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.PATHFINDING);
           setupServiceNavButton();
+          Navigation.navigate(Screen.PATHFINDING);
         });
     /*
     switchAccountButton.setOnMouseClicked(
@@ -112,20 +112,20 @@ public class RootController {
     switchAccsButton.setOnMouseClicked(event -> accSwitch());
     AccManagerBtn.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.ACCOUNT_MANAGER);
           setupServiceNavButton();
+          Navigation.navigate(Screen.ACCOUNT_MANAGER);
         });
     signageNav.setOnMouseClicked(
         event -> {
-          Navigation.navigate(Screen.NEW_SIGNAGE);
           setupServiceNavButton();
+          Navigation.navigate(Screen.NEW_SIGNAGE);
         });
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
     homeButton.setOnMouseClicked(
         event -> {
-          Navigation.navigate(SharedResources.getHome());
           setupServiceNavButton();
+          Navigation.navigate(SharedResources.getHome());
         });
 
     setupServiceNavButton();
@@ -162,9 +162,9 @@ public class RootController {
   }
 
   public void accSwitch() {
+    setupServiceNavButton();
     SharedResources.logout();
     Navigation.navigate(Screen.LOGIN);
-    setupServiceNavButton();
   }
 
   public void updatePermissionsAccess() {
