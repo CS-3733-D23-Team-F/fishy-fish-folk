@@ -17,6 +17,7 @@ public class ConferenceRequest {
   @Getter @Setter private String username;
   @Getter @Setter private String startTime;
   @Getter @Setter private String endTime;
+  // @Getter @Setter private LocalDateTime date;
   @Getter @Setter private Recurring recurringOption;
   @Getter @Setter private int numAttendees;
   @Getter @Setter private String roomName;
@@ -29,6 +30,7 @@ public class ConferenceRequest {
       String username,
       String startTime,
       String endTime,
+      // LocalDateTime date,
       Recurring recurringOption,
       int numAttendees,
       String roomName) {
@@ -37,6 +39,7 @@ public class ConferenceRequest {
     this.username = username;
     this.startTime = startTime;
     this.endTime = endTime;
+    // this.date = date;
     this.recurringOption = recurringOption;
     this.numAttendees = numAttendees;
     this.roomName = roomName;
@@ -49,6 +52,7 @@ public class ConferenceRequest {
       String username,
       String startTime,
       String endTime,
+      // LocalDateTime date,
       Recurring recurringOption,
       int numAttendees,
       String roomName) {
@@ -57,6 +61,7 @@ public class ConferenceRequest {
     this.username = username;
     this.startTime = startTime;
     this.endTime = endTime;
+    // this.date = date;
     this.recurringOption = recurringOption;
     this.numAttendees = numAttendees;
     this.roomName = roomName;
