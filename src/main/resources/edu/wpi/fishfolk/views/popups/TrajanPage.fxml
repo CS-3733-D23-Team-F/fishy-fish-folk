@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.views.popups.TrajanPage">
+   <children>
+      <VBox minHeight="720.0" minWidth="1080.0">
+         <children>
+            <HBox prefHeight="358.0" prefWidth="1080.0">
+               <children>
+                  <VBox minWidth="1080.0">
+                     <children>
+                        <AnchorPane prefHeight="359.0" prefWidth="1080.0">
+                           <children>
+                              <ImageView fitHeight="249.0" fitWidth="344.0" layoutX="411.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../Pictures/trajan.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="456.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trajan Espelien ">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="407.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lead Software Engineer">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="179.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science and Mathematics Bachelor's degrees">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="362.0" prefWidth="1080.0">
+               <children>
+                  <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
+                     <children>
+                        <Text layoutX="350.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="223.606689453125">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
