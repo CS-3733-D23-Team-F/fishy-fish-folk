@@ -239,7 +239,7 @@ public class SignageEditorController extends AbsController {
             && roomr1.getText().equals("")
             && roomr2.getText().equals("")
             && roomr3.getText().equals(""))
-        || presetText.equals("")
+        || presetText.getText().equals("")
         || datePicker.getValue() == null) {
       PopOver error = new PopOver();
       Text errorText = new Text("Insufficient fields entered");
