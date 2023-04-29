@@ -8,8 +8,12 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.time.LocalDateTime;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 
 public class SignageEditorController extends AbsController {
   @FXML MFXTextField presetText; // name for the signage preset
@@ -171,6 +175,24 @@ public class SignageEditorController extends AbsController {
     fullDisable(iconr2);
     fullDisable(iconr3);
 
+    subtextl0.setText("");
+    subtextl1.setText("");
+    subtextl2.setText("");
+    subtextl3.setText("");
+    subtextr0.setText("");
+    subtextr1.setText("");
+    subtextr2.setText("");
+    subtextr3.setText("");
+
+    subtextl0.setOpacity(0);
+    subtextl1.setOpacity(0);
+    subtextl2.setOpacity(0);
+    subtextl3.setOpacity(0);
+    subtextr0.setOpacity(0);
+    subtextr1.setOpacity(0);
+    subtextr2.setOpacity(0);
+    subtextr3.setOpacity(0);
+
     presetText.setText(""); // resets preset name text box
     datePicker.setValue(null); // rests date picker with null value
   }
@@ -208,6 +230,38 @@ public class SignageEditorController extends AbsController {
     if (!(iconr3.isDisable()))
       currentPreset.addSign(
           new Sign(roomr3.getValue(), iconr3.getRotate(), subtextr3.getText()), 7);
+
+    if ((rooml0.getText().equals("")
+            && rooml1.getText().equals("")
+            && rooml2.getText().equals("")
+            && rooml3.getText().equals("")
+            && roomr0.getText().equals("")
+            && roomr1.getText().equals("")
+            && roomr2.getText().equals("")
+            && roomr3.getText().equals(""))
+        || presetText.equals("")
+        || datePicker.getValue() == null) {
+      PopOver error = new PopOver();
+      Text errorText = new Text("Insufficient fields entered");
+      errorText.setFont(new Font("Open Sans", 26));
+      error.setContentNode(errorText);
+      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+      error.show(submitButton);
+      return;
+    }
+
+    if (currentPreset
+        .getImplementationDate()
+        .atStartOfDay()
+        .isBefore(LocalDateTime.now().minusDays(1))) {
+      PopOver error = new PopOver();
+      Text errorText = new Text("Cannot set implementation date before current date");
+      errorText.setFont(new Font("Open Sans", 26));
+      error.setContentNode(errorText);
+      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+      error.show(submitButton);
+      return;
+    }
 
     edu.wpi.fishfolk.database.TableEntry.SignagePreset preset =
         new edu.wpi.fishfolk.database.TableEntry.SignagePreset(
