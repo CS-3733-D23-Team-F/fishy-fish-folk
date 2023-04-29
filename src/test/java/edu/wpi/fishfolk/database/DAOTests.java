@@ -448,4 +448,34 @@ public class DAOTests {
     fdb.undoChange(TableEntryType.USER_ACCOUNT);
     fdb.undoChange(TableEntryType.USER_ACCOUNT);
   }
+
+  @Test
+  public void itDAOTests() {
+
+    Fdb fdb = new Fdb();
+
+    fdb.insertEntry(
+        new ITRequest(
+            LocalDateTime.of(2020, 2, 2, 2, 2), "Person A", FormStatus.submitted, "Notes"));
+    fdb.insertEntry(
+        new ITRequest(
+            LocalDateTime.of(2021, 2, 2, 2, 2), "Person B", FormStatus.submitted, "Notes"));
+    fdb.insertEntry(
+        new ITRequest(
+            LocalDateTime.of(2022, 2, 2, 2, 2), "Person C", FormStatus.submitted, "Notes"));
+
+    fdb.updateEntry(
+        new ITRequest(
+            LocalDateTime.of(2021, 2, 2, 2, 2), "Person B", FormStatus.submitted, "NEW Notes"));
+
+    System.out.println(
+        "[Main]: " + fdb.getEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.IT_REQUEST));
+    System.out.println("[Main]: " + fdb.getAllEntries(TableEntryType.IT_REQUEST));
+
+    fdb.updateEntry(
+        new ITRequest(
+            LocalDateTime.of(2020, 2, 2, 2, 2), "Person A", FormStatus.submitted, "NEWER Notes"));
+
+    fdb.removeEntry(LocalDateTime.of(2022, 2, 2, 2, 2), TableEntryType.IT_REQUEST);
+  }
 }
