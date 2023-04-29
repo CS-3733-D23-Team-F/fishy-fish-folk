@@ -87,7 +87,7 @@
                                     <Font name="Open Sans Bold" size="26.0" />
                                  </font>
                               </Text>
-                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Day: ">
+                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Date: ">
                                  <font>
                                     <Font name="Open Sans Bold" size="26.0" />
                                  </font>
@@ -140,7 +140,11 @@
                                     </MFXFilterComboBox>
                                  </children>
                               </HBox>
-                              <MFXDatePicker fx:id="datePicker" minHeight="50.0" minWidth="300.0" style="-fx-border-color: #012d5a;" />
+                              <MFXDatePicker fx:id="datePicker" floatMode="INLINE" floatingText="DATE" minHeight="50.0" minWidth="300.0" style="-fx-border-color: #012d5a;">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXDatePicker>
                               <MFXTextField fx:id="numAttnBox" alignment="CENTER_RIGHT" floatingText="2 - 20 PEOPLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
