@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
@@ -14,10 +15,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import org.postgresql.PGConnection;
+import org.postgresql.util.PSQLException;
 
 public class AlertDAO implements IDAO<Alert> {
 
   private final Connection dbConnection;
+  private Connection dbListener;
 
   private final String tableName;
   private final ArrayList<String> headers;
@@ -32,8 +36,10 @@ public class AlertDAO implements IDAO<Alert> {
     this.dbConnection = dbConnection;
     this.tableName = "alert";
     this.headers = new ArrayList<>(List.of("timestamp", "longname", "date", "text", "type"));
+    this.dataEditQueue.setBatchLimit(1);
 
     init(false);
+    prepareListener();
     populateLocalTable();
   }
 
@@ -121,6 +127,78 @@ public class AlertDAO implements IDAO<Alert> {
   }
 
   @Override
+  public void prepareListener() {
+
+    try {
+
+      dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
+
+      if (dbListener == null) {
+        System.out.println("[AlertDAO.prepareListener]: Listener is null.");
+        return;
+      }
+
+      // Create a function that calls NOTIFY when the table is modified
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE FUNCTION notifyAlert() RETURNS TRIGGER AS $alert$"
+                  + "BEGIN "
+                  + "NOTIFY alert;"
+                  + "RETURN NULL;"
+                  + "END; $alert$ language plpgsql")
+          .execute();
+
+      // Create a trigger that calls the function on any change
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE TRIGGER alertUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "alert FOR EACH STATEMENT EXECUTE FUNCTION notifyAlert()")
+          .execute();
+
+      // Start listener
+      reListen();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void reListen() {
+    try {
+      dbListener.prepareStatement("LISTEN alert").execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void verifyLocalTable() {
+
+    try {
+
+      // Check for notifications on the table
+      PGConnection driver = dbListener.unwrap(PGConnection.class);
+
+      // See if there is a notification
+      if (driver.getNotifications().length > 0) {
+        System.out.println("[AlertDAO.verifyLocalTable]: Notification received!");
+        populateLocalTable();
+      }
+
+      // Catch a timeout and reset refresh local table
+    } catch (PSQLException e) {
+
+      dbListener = ConnectionBuilder.buildConnection();
+      reListen();
+      populateLocalTable();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
   public boolean insertEntry(Alert entry) {
 
     if (alerts.containsKey(entry.getTimestamp())) return false;
@@ -195,6 +273,9 @@ public class AlertDAO implements IDAO<Alert> {
 
   @Override
   public Alert getEntry(Object identifier) {
+
+    verifyLocalTable();
+
     // Check if input identifier is correct type
     if (!(identifier instanceof LocalDateTime)) {
       System.out.println("[AlertDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
@@ -217,6 +298,8 @@ public class AlertDAO implements IDAO<Alert> {
 
   @Override
   public ArrayList<Alert> getAllEntries() {
+
+    verifyLocalTable();
 
     ArrayList<Alert> allAlerts = new ArrayList<>();
 

@@ -4,6 +4,7 @@ import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.ui.FlowerItem;
 import edu.wpi.fishfolk.ui.FormStatus;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -82,7 +83,7 @@ public class FlowerRequest {
       LocalDateTime deliveryTime,
       double totalPrice,
       List<FlowerItem> items) {
-    this.flowerRequestID = LocalDateTime.now();
+    this.flowerRequestID = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     this.assignee = assignee;
     this.formStatus = formStatus;
     this.notes = notes;

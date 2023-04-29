@@ -48,18 +48,58 @@ public class RootController {
 
     SharedResources.setRootController(this);
 
-    viewOrders.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
-    creditButton.setOnMouseClicked(event -> Navigation.navigate(Screen.CREDITS));
-    aboutButton.setOnMouseClicked(event -> Navigation.navigate(Screen.ABOUTME));
-    flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
-    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
-    supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
-    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
-    conferenceNav.setOnMouseClicked(event -> Navigation.navigate(Screen.CONFERENCE));
+    viewOrders.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.VIEW_MASTER_ORDER);
+        });
+    creditButton.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.CREDITS);
+        });
+    aboutButton.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.ABOUTME);
+        });
+    flowerNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.FLOWER_REQUEST);
+        });
+    mealNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.NEW_FOOD_ORDER);
+        });
+    supplyNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.SUPPLIES_REQUEST);
+        });
+    furnitureNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.FURNITURE_REQUEST);
+        });
+    conferenceNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.CONFERENCE);
+        });
 
     // accountManagerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
-    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    mapEditorNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.MAP_EDITOR);
+        });
+    pathfindingNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.PATHFINDING);
+        });
     /*
     switchAccountButton.setOnMouseClicked(
         event -> {
@@ -70,11 +110,23 @@ public class RootController {
 
     */
     switchAccsButton.setOnMouseClicked(event -> accSwitch());
-    AccManagerBtn.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_SIGNAGE));
+    AccManagerBtn.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.ACCOUNT_MANAGER);
+        });
+    signageNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.NEW_SIGNAGE);
+        });
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
+    homeButton.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(SharedResources.getHome());
+        });
 
     setupServiceNavButton();
     /*
@@ -87,6 +139,11 @@ public class RootController {
   }
 
   public void setupServiceNavButton() {
+    serviceNav.setStyle(null);
+    serviceBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+    serviceBar.setVisible(false);
+    serviceBar.setDisable(true);
+    buttonsBox.setAlignment(Pos.TOP_RIGHT);
     serviceNav.setOnMouseClicked(
         event -> {
           serviceNav.setStyle(
@@ -99,11 +156,6 @@ public class RootController {
           buttonsBox.setAlignment(Pos.TOP_LEFT);
           serviceNav.setOnMouseClicked(
               event2 -> {
-                serviceNav.setStyle(null);
-                serviceBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
-                serviceBar.setVisible(false);
-                serviceBar.setDisable(true);
-                buttonsBox.setAlignment(Pos.TOP_RIGHT);
                 setupServiceNavButton();
               });
         });
@@ -111,6 +163,7 @@ public class RootController {
 
   /** logs user out of their current account and brings them back to the login screen */
   public void accSwitch() {
+    setupServiceNavButton();
     SharedResources.logout();
     Navigation.navigate(Screen.LOGIN);
   }

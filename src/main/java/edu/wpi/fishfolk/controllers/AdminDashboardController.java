@@ -22,15 +22,15 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 
 public class AdminDashboardController {
 
@@ -46,6 +46,7 @@ public class AdminDashboardController {
   @FXML TableView<SupplyOrderObservable> supplyTable;
   @FXML MFXTextField addAlert;
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
+  @FXML ScrollPane scroll;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodassignee,
@@ -83,13 +84,12 @@ public class AdminDashboardController {
       flowerrecipientname,
       floweritems;
 
-  private int rowA = 1;
+  private int rowA = 0;
 
   @FXML
   public void initialize() {
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
-
     outstandingFilter.setOnMouseClicked(
         event -> {
           setOutstandingTable();
@@ -180,7 +180,6 @@ public class AdminDashboardController {
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
-
       HBox alertPane = fxmlLoader.load();
 
       AlertsController alertsController = fxmlLoader.getController();
@@ -192,14 +191,16 @@ public class AdminDashboardController {
             dbConnection.removeEntry(alert.getTimestamp(), TableEntryType.ALERT);
           });
 
-      alertPane.setPrefWidth(alertGrid.getWidth());
-
       dbConnection.insertEntry(alert);
-      alertGrid.add(alertPane, 1, rowA);
-      rowA += 1;
 
+      GridPane.setHgrow(alertPane, Priority.ALWAYS);
       GridPane.setMargin(alertPane, new Insets(10));
+      alertPane.setAlignment(Pos.TOP_CENTER);
 
+      alertGrid.add(alertPane, 0, rowA);
+
+      GridPane.setValignment(alertPane, VPos.TOP);
+      rowA += 1;
       addAlert.clear();
 
     } catch (IOException e) {
