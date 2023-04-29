@@ -34,7 +34,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <MFXScrollPane fx:id="scroll" hbarPolicy="NEVER" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                  <MFXScrollPane hbarPolicy="NEVER" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                      <content>
                         <GridPane fx:id="grid">
                           <rowConstraints>

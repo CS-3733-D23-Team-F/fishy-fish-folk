@@ -147,7 +147,7 @@
     -fx-border-width: 0 0 2 0;
 }
 
-.table-view .table-column .table-cell{
+.table-cell{
     -fx-wrap-text: true;
 }
 
@@ -200,6 +200,7 @@
     -fx-background-color: white;
     -fx-wrap-text: true;
 }
+
 
 
 
