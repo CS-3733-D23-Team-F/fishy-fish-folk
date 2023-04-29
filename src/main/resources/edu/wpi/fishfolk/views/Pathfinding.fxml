@@ -275,14 +275,18 @@
                   <Font name="Open Sans Bold" size="24.0" />
                </font>
             </MFXButton>
-            <ImageView fx:id="settingButton" accessibleRole="BUTTON" fitHeight="55.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/Gear.png" />
-               </image>
+            <MFXButton fx:id="settingButton" ellipsisString="" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" style="-fx-background-color: #012D5A;">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Gear.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-            </ImageView>
+            </MFXButton>
          </children>
          <StackPane.margin>
             <Insets right="25.0" top="40.0" />

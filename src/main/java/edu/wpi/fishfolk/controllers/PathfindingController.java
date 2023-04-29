@@ -64,7 +64,7 @@ public class PathfindingController extends AbsController {
   @FXML VBox textInstruct;
 
   @FXML VBox settingBox;
-  @FXML ImageView settingButton;
+  @FXML MFXButton settingButton;
 
   @FXML MFXButton closeSettings;
 
