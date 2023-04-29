@@ -7,7 +7,6 @@ import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
 import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Location;
-import edu.wpi.fishfolk.database.TableEntry.Node;
 import edu.wpi.fishfolk.util.NodeType;
 import java.io.*;
 import java.sql.*;
@@ -111,7 +110,7 @@ public class LocationDAO implements IDAO<Location>, IProcessEdit {
 
   @Override
   public void processEdit(DataEdit<Object> edit) {
-    switch(edit.getType()){
+    switch (edit.getType()) {
       case INSERT:
         insertEntry((Location) edit.getNewEntry());
         break;

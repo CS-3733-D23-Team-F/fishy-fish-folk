@@ -7,7 +7,6 @@ import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
 import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Edge;
-import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -102,7 +101,7 @@ public class EdgeDAO implements IDAO<Edge>, IProcessEdit {
   @Override
   public void processEdit(DataEdit<Object> edit) {
     Edge newEdge = (Edge) edit.getNewEntry();
-    switch(edit.getType()){
+    switch (edit.getType()) {
       case INSERT:
         this.insertEntry(newEdge);
         break;
@@ -110,8 +109,8 @@ public class EdgeDAO implements IDAO<Edge>, IProcessEdit {
         removeEntry(newEdge);
         break;
       case UPDATE:
-        //updating edge is meaningless
-        //updateEntry(edit.getNewEntry());
+        // updating edge is meaningless
+        // updateEntry(edit.getNewEntry());
         break;
     }
   }

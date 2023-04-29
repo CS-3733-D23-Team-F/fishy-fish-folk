@@ -1,5 +1,7 @@
 package edu.wpi.fishfolk.mapeditor;
 
+import edu.wpi.fishfolk.database.TableEntry.Node;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import lombok.Getter;
@@ -10,11 +12,25 @@ public class NodeCircle extends Circle {
   @Getter private int nodeID;
   @Getter @Setter private double prevX, prevY;
 
+  public NodeCircle(Node node, double radius) {
+    super(node.getX(), node.getY(), radius);
+    this.nodeID = node.getNodeID();
+    this.prevX = node.getX();
+    this.prevY = node.getY();
+  }
+
   public NodeCircle(int nodeID, double centerX, double centerY, double radius) {
     super(centerX, centerY, radius);
     this.nodeID = nodeID;
     this.prevX = centerX;
     this.prevY = centerY;
+  }
+
+  public void setCenter(Point2D center) {
+    setCenterX(center.getX());
+    prevX = center.getX();
+    setCenterY(center.getY());
+    prevY = center.getY();
   }
 
   public void reset() {

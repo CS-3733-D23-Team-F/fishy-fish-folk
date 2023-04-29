@@ -1,7 +1,7 @@
 package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
-import java.util.ArrayList;import java.util.LinkedList;
+import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -71,7 +71,7 @@ public class DataEditQueue<T> {
     }
 
     // if needed decrease pointer to stay in bounds
-    if(pointer == dataEditQueue.size() - 1) pointer--;
+    if (pointer == dataEditQueue.size() - 1) pointer--;
 
     editCount--;
 

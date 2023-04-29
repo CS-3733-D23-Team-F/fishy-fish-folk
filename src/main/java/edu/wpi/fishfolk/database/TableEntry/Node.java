@@ -2,8 +2,11 @@ package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.util.NodeType;
-import java.util.HashSet;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +19,9 @@ public class Node {
   @Getter @Setter private String building;
   @Getter @Setter private EntryStatus status;
 
-  private HashSet<Location> locations;
-  private HashSet<Integer> neighbors;
+  @Getter private ObjectProperty<Node> nodeProperty;
+
+  private ArrayList<LocationDate> moves = new ArrayList<>();
 
   /**
    * Table entry type: Node
@@ -33,7 +37,8 @@ public class Node {
     this.floor = floor;
     this.building = building;
     this.status = EntryStatus.OLD;
-    this.locations = new HashSet<>();
+
+    nodeProperty = new SimpleObjectProperty<>(this);
   }
 
   public double getX() {
@@ -44,41 +49,28 @@ public class Node {
     return point.getY();
   }
 
-  public boolean addLocation(Location l) {
-    return locations.add(l);
+  public void addMove(Location location, LocalDate date) {
+    moves.add(new LocationDate(location, date));
   }
 
-  public boolean removeLocation(Location l) {
-    return locations.remove(l);
-  }
-
-  public List<Location> getLocations() {
-    return locations.stream().toList();
-  }
-
-  public boolean addEdge(int other) {
-    return neighbors.add(other);
-  }
-
-  public boolean removeEdge(int other) {
-    return neighbors.remove(other);
-  }
-
-  public List<Integer> getNeighbors() {
-    return neighbors.stream().toList();
+  public List<Location> getLocations(LocalDate date) {
+    return moves.stream()
+        .filter(move -> move.getDate().isBefore(date))
+        .map(LocationDate::getLocation)
+        .toList();
   }
 
   public boolean containsType(NodeType type) {
-    for (Location loc : locations) {
-      if (loc.getNodeType() == type) return true;
+    for (LocationDate move : moves) {
+      if (move.getLocation().getNodeType() == type) return true;
     }
     return false;
   }
 
   public List<String> getElevLetters() {
-    return locations.stream()
-        .filter(loc -> loc.getNodeType() == NodeType.ELEV)
-        .map(loc -> loc.getLongName().substring(8, 10)) // extract elevator letter
+    return moves.stream()
+        .filter(move -> move.getLocation().getNodeType() == NodeType.ELEV)
+        .map(move -> move.getLocation().getLongName().substring(8, 10)) // extract elevator letter
         .toList();
   }
 
@@ -89,5 +81,15 @@ public class Node {
    */
   public void snapToGrid(double s) {
     point = new Point2D(Math.round(point.getX() / s) * s, Math.round(point.getY() / s) * s);
+  }
+}
+
+class LocationDate {
+  @Getter private Location location;
+  @Getter private LocalDate date;
+
+  public LocationDate(Location location, LocalDate date) {
+    this.location = location;
+    this.date = date;
   }
 }

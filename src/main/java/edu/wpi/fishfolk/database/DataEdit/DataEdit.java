@@ -1,9 +1,7 @@
 package edu.wpi.fishfolk.database.DataEdit;
 
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
-import edu.wpi.fishfolk.util.NodeType;
 import lombok.Getter;
-import lombok.Setter;
 
 public class DataEdit<T> {
 
@@ -38,6 +36,7 @@ public class DataEdit<T> {
     this.type = type;
     this.table = null;
   }
+
   public DataEdit(T newEntry, DataEditType type, TableEntryType table) {
     this.oldEntry = newEntry;
     this.newEntry = newEntry;

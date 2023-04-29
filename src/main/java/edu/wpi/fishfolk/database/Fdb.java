@@ -3,7 +3,8 @@ package edu.wpi.fishfolk.database;
 import static edu.wpi.fishfolk.util.NodeType.*;
 
 import edu.wpi.fishfolk.database.DAO.*;
-import edu.wpi.fishfolk.database.DataEdit.DataEdit;import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.database.DataEdit.DataEdit;
+import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.util.NodeType;
 import java.sql.Connection;
@@ -82,14 +83,19 @@ public class Fdb {
                 () -> {
                   System.out.println("[Fdb]: Shutdown received...");
                   nodeTable.updateDatabase(true);
+                  edgeTable.updateDatabase(true);
                   locationTable.updateDatabase(true);
+                  moveTable.updateDatabase(true);
+
                   foodRequestTable.updateDatabase(true);
                   supplyRequestTable.updateDatabase(true);
                   furnitureRequestTable.updateDatabase(true);
                   flowerRequestTable.updateDatabase(true);
                   conferenceRequestTable.updateDatabase(true);
+
                   userAccountTable.updateDatabase(true);
                   signagePresetTable.updateDatabase(true);
+
                   alertTable.updateDatabase(true);
 
                   disconnect();
@@ -568,7 +574,6 @@ public class Fdb {
           break;
       }
     }
-    
   }
 
   /**
@@ -696,6 +701,11 @@ public class Fdb {
     return map;
   }
 
+  /**
+   * Get a unique ID from the NodeTable, which reserves the ID.
+   *
+   * @return
+   */
   public int getNextNodeID() {
     return nodeTable.getNextID();
   }

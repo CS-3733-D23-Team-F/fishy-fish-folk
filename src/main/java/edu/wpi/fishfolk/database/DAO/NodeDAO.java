@@ -25,7 +25,8 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
   private final HashMap<Integer, Node> tableMap;
   private final DataEditQueue<Node> dataEditQueue;
 
-  private final HashSet<Integer> freeIDs;
+  private final Stack<Integer> freeIDs;
+  private int maxID = 4000;
   @Getter private int numNodes;
 
   /** DAO for Node table in PostgreSQL database. */
@@ -35,7 +36,7 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
     this.headers = new ArrayList<>(List.of("id", "x", "y", "floor", "building"));
     this.tableMap = new HashMap<>(800); // a little more than (3000-100)/5 * 4/3 = 730
     this.dataEditQueue = new DataEditQueue<>();
-    freeIDs = new HashSet<>(800);
+    freeIDs = new Stack<>();
 
     init(false);
     populateLocalTable();
@@ -44,7 +45,7 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
   @Override
   public void init(boolean drop) {
 
-    for (int i = 100; i < 4000; i += 5) {
+    for (int i = maxID; i >= 100; i -= 5) {
       freeIDs.add(i);
     }
 
@@ -99,6 +100,8 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
       preparedGetAll.execute();
       ResultSet results = preparedGetAll.getResultSet();
 
+      HashSet<Integer> takenIDs = new HashSet<>();
+
       // For each Node in the results, create a new Node object and put it in the local table
       while (results.next()) {
         Node node =
@@ -108,8 +111,11 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
                 results.getString(4),
                 results.getString(5));
         tableMap.put(node.getNodeID(), node);
+        takenIDs.add(node.getNodeID());
         numNodes++;
       }
+
+      freeIDs.removeIf(takenIDs::contains);
 
     } catch (SQLException | NumberFormatException e) {
       System.out.println(e.getMessage());
@@ -117,9 +123,9 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
   }
 
   @Override
-  public void processEdit(DataEdit<Object> edit){
+  public void processEdit(DataEdit<Object> edit) {
 
-    switch(edit.getType()){
+    switch (edit.getType()) {
       case INSERT:
         insertEntry((Node) edit.getNewEntry());
         break;
@@ -138,8 +144,8 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
     // Mark entry Node status as NEW
     entry.setStatus(EntryStatus.NEW);
 
-    // record that ID is taken
-    freeIDs.remove(entry.getNodeID());
+    // ensure that ID is taken if not already
+    freeIDs.remove((Integer) entry.getNodeID());
     numNodes++;
 
     // Push an INSERT to the data edit stack, update the db if the batch limit has been reached
@@ -203,7 +209,8 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
     }
 
     // free up id
-    freeIDs.add(nodeID);
+
+    freeIDs.push(nodeID);
     numNodes--;
 
     // Get entry from local table
@@ -534,11 +541,19 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
   }
 
   /**
-   * Gets the next free id but does not reserve it.
+   * Gets the next free id, removing it from usage. IDs are only put back when the node is removed.
    *
-   * @return
+   * @return a unique id
    */
   public int getNextID() {
-    return freeIDs.iterator().next();
+
+    if (freeIDs.isEmpty()) {
+      // add 200 new ids if empty
+      for (int i = maxID + 1000; i >= maxID; i -= 5) {
+        freeIDs.push(i);
+      }
+      maxID += 1000;
+    }
+    return freeIDs.pop();
   }
 }

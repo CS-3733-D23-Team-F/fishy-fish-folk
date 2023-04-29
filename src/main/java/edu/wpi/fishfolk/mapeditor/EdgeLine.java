@@ -3,6 +3,7 @@ package edu.wpi.fishfolk.mapeditor;
 import edu.wpi.fishfolk.database.TableEntry.Edge;
 import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.util.List;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
@@ -12,7 +13,20 @@ public class EdgeLine extends Line {
 
   @Getter private int startNodeID, endNodeID;
 
+  public EdgeLine(Edge edge, Point2D start, Point2D end) {
+
+    super(start.getX(), start.getY(), end.getX(), end.getY());
+
+    this.startNodeID = edge.getStartNode();
+    this.endNodeID = edge.getEndNode();
+
+    this.getStrokeDashArray().addAll(7.5, 5.0);
+    this.setStrokeWidth(2.5);
+    this.setStrokeLineCap(StrokeLineCap.ROUND);
+  }
+
   public EdgeLine(int startNodeID, int endNodeID, double x1, double y1, double x2, double y2) {
+
     super(x1, y1, x2, y2);
 
     this.startNodeID = startNodeID;

@@ -7,7 +7,6 @@ import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
 import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Move;
-import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDate;
@@ -111,7 +110,7 @@ public class MoveDAO implements IDAO<Move>, IProcessEdit {
 
   @Override
   public void processEdit(DataEdit<Object> edit) {
-    switch(edit.getType()){
+    switch (edit.getType()) {
       case INSERT:
         insertEntry((Move) edit.getNewEntry());
         break;
