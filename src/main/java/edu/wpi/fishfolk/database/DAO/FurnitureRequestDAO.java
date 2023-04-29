@@ -209,6 +209,10 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
 
   @Override
   public boolean insertEntry(FurnitureRequest entry) {
+
+    // Check if the entry already exists. Update instead?
+    if (tableMap.containsKey(entry.getFurnitureRequestID())) return false;
+
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 
