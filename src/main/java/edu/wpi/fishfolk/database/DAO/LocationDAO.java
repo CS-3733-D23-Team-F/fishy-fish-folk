@@ -187,6 +187,9 @@ public class LocationDAO implements IDAO<Location> {
   @Override
   public boolean insertEntry(Location entry) {
 
+    // Check if the entry already exists.
+    if (tableMap.containsKey(entry.getLongName())) return false;
+
     // Mark entry Location status as NEW
     entry.setStatus(EntryStatus.NEW);
 
