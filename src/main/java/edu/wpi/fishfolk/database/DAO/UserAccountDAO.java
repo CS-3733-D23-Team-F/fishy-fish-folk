@@ -190,7 +190,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
   @Override
   public boolean insertEntry(UserAccount entry) {
 
-    // Check if the entry already exists. Update instead?
+    // Check if the entry already exists.
     if (tableMap.containsKey(entry.getUsername())) return false;
 
     // Mark entry status as NEW
