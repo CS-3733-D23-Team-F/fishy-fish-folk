@@ -207,6 +207,9 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
   @Override
   public boolean insertEntry(ConferenceRequest entry) {
 
+    // Check if the entry already exists. Unlikely conflicts.
+    if (tableMap.containsKey(entry.getConferenceRequestID())) return false;
+
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 

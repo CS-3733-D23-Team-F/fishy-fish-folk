@@ -187,6 +187,9 @@ public class MoveDAO implements IDAO<Move> {
   @Override
   public boolean insertEntry(Move entry) {
 
+    // Check if the entry already exists.
+    if (tableMap.containsKey(entry.getMoveID())) return false;
+
     // Mark entry Move status as NEW
     entry.setStatus(EntryStatus.NEW);
 
