@@ -18,12 +18,12 @@
                      <children>
                         <AnchorPane prefHeight="359.0" prefWidth="1080.0">
                            <children>
-                              <Text layoutX="456.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bernhardt Adler">
+                              <Text layoutX="474.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sam Rooney">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="365.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assistant Lead Software Engineer">
+                              <Text layoutX="460.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Owner">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -33,9 +33,9 @@
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="216.0" fitWidth="253.0" layoutX="413.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="224.0" fitWidth="186.0" layoutX="464.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../Pictures/bernhardt.jpg" />
+                                    <Image url="@../../../../../../../../../../Pictures/Sam.jpg" />
                                  </image>
                               </ImageView>
                            </children>

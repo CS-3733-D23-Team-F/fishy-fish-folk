@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.wpi.fishfolk.views.popups.BrendanByrne"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.views.popups.TrajanPage">
+   <children>
+      <VBox minHeight="720.0" minWidth="1080.0">
+         <children>
+            <HBox prefHeight="358.0" prefWidth="1080.0">
+               <children>
+                  <VBox minWidth="1080.0">
+                     <children>
+                        <AnchorPane prefHeight="359.0" prefWidth="1080.0">
+                           <children>
+                              <Text layoutX="463.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brendan Byrne">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="441.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Software Engineer">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="138.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Robotics Engineering and Computer Science bachelor's degrees">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                              <ImageView fitHeight="226.0" fitWidth="239.0" layoutX="426.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../Pictures/Brendan.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="362.0" prefWidth="1080.0">
+               <children>
+                  <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
+                     <children>
+                        <Text layoutX="417.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Lobster" wrappingWidth="253.94000244140625">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="314.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Traveling, Hiking, or both " wrappingWidth="451.27325439453125">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="172.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: ‘Ours is not to reason why, ours is but to do and die’ by Alfred Lord Tennyson" textAlignment="CENTER" wrappingWidth="737.2732543945312">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>
