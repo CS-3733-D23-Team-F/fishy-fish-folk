@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,9 +9,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.views.popups.TrajanPage">
+<AnchorPane maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
    <children>
-      <VBox minHeight="720.0" minWidth="1080.0">
+      <VBox maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0">
          <children>
             <HBox prefHeight="358.0" prefWidth="1080.0">
                <children>
@@ -18,17 +19,17 @@
                      <children>
                         <AnchorPane prefHeight="359.0" prefWidth="1080.0">
                            <children>
-                              <Text layoutX="463.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brendan Byrne">
+                              <Text fill="#f1f1f1" layoutX="463.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brendan Byrne">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="441.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Software Engineer">
+                              <Text fill="#f1f1f1" layoutX="441.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Software Engineer">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="138.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Robotics Engineering and Computer Science bachelor's degrees">
+                              <Text fill="#f1f1f1" layoutX="138.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Robotics Engineering and Computer Science bachelor's degrees">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -38,6 +39,7 @@
                                     <Image url="@../../../../../../../../../../Pictures/Brendan.png" />
                                  </image>
                               </ImageView>
+                              <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -48,17 +50,17 @@
                <children>
                   <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
                      <children>
-                        <Text layoutX="417.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Lobster" wrappingWidth="253.94000244140625">
+                        <Text fill="#f1f1f1" layoutX="417.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Lobster" wrappingWidth="253.94000244140625">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text layoutX="314.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Traveling, Hiking, or both " wrappingWidth="451.27325439453125">
+                        <Text fill="#f1f1f1" layoutX="314.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Traveling, Hiking, or both " wrappingWidth="451.27325439453125">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text layoutX="172.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: ‘Ours is not to reason why, ours is but to do and die’ by Alfred Lord Tennyson" textAlignment="CENTER" wrappingWidth="737.2732543945312">
+                        <Text fill="#f1f1f1" layoutX="172.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: ‘Ours is not to reason why, ours is but to do and die’ by Alfred Lord Tennyson" textAlignment="CENTER" wrappingWidth="737.2732543945312">
                            <font>
                               <Font size="24.0" />
                            </font>

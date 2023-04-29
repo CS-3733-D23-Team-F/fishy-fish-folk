@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,9 +9,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.views.popups.TrajanPage">
+<AnchorPane maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
    <children>
-      <VBox minHeight="720.0" minWidth="1080.0">
+      <VBox maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0">
          <children>
             <HBox prefHeight="358.0" prefWidth="1080.0">
                <children>
@@ -18,17 +19,17 @@
                      <children>
                         <AnchorPane prefHeight="359.0" prefWidth="1080.0">
                            <children>
-                              <Text layoutX="456.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tristin Youtz">
+                              <Text fill="#f1f1f1" layoutX="456.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tristin Youtz">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="435.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Project Manager">
+                              <Text fill="#f1f1f1" layoutX="435.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Project Manager">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="179.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Major">
+                              <Text fill="#f1f1f1" layoutX="193.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Robotics Engineering and Mechanical Engineering">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -38,6 +39,7 @@
                                     <Image url="@../../../../../../../../../../Pictures/tristin.png" />
                                  </image>
                               </ImageView>
+                              <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -48,7 +50,17 @@
                <children>
                   <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
                      <children>
-                        <Text layoutX="350.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="223.606689453125">
+                        <Text fill="#f1f1f1" layoutX="428.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: " wrappingWidth="223.606689453125">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#f1f1f1" layoutX="420.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: " wrappingWidth="223.606689453125">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#f1f1f1" layoutX="420.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: " wrappingWidth="223.606689453125">
                            <font>
                               <Font size="24.0" />
                            </font>

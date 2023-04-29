@@ -16,9 +16,9 @@
    <children>
       <HBox alignment="TOP_CENTER" prefHeight="150.0" prefWidth="1974.0">
          <children>
-            <VBox prefHeight="188.0" prefWidth="800.0">
+            <VBox alignment="CENTER" maxWidth="1973.0" minWidth="1080.0" prefHeight="150.0" prefWidth="1973.0">
                <children>
-                  <Label fx:id="AboutM" alignment="CENTER" maxHeight="620.0" maxWidth="880.0" minHeight="57.0" minWidth="800.0" prefHeight="57.0" prefWidth="800.0" text="WPI Computer Science Department CS3733-D23 Software Engineering " textAlignment="CENTER">
+                  <Label fx:id="AboutM" alignment="CENTER" maxHeight="620.0" maxWidth="1400.0" minHeight="57.0" minWidth="800.0" prefHeight="57.0" prefWidth="1400.0" text="WPI Computer Science Department CS3733-D23 Software Engineering " textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -44,16 +44,16 @@
          <children>
             <VBox alignment="CENTER" prefHeight="782.0" prefWidth="1968.0">
                <children>
-                  <ScrollPane prefHeight="899.0" prefWidth="1968.0">
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="899.0" prefWidth="1968.0">
                      <content>
-                        <AnchorPane minHeight="449.0" prefHeight="795.0" prefWidth="1968.0">
+                        <AnchorPane maxWidth="1080.0" minHeight="449.0" minWidth="1080.0" prefHeight="795.0" prefWidth="1968.0">
                            <children>
                               <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1075.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../../../../../../Pictures/bernhardt.jpg" />
                                  </image>
                               </ImageView>
-                              <Button layoutX="1060.0" layoutY="206.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
+                              <Button fx:id="Bernhardt" layoutX="1060.0" layoutY="206.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Bernhardt" />
                               <Text layoutX="1031.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bernhardt - Assistant Lead " textAlignment="CENTER">
                                  <font>
                                     <Font size="24.0" />
@@ -64,19 +64,19 @@
                                     <Image url="@../../../../../../../../../Pictures/Meg.jpg" />
                                  </image>
                               </ImageView>
-                              <Button layoutX="213.0" layoutY="703.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
+                              <Button fx:id="Meg" layoutX="213.0" layoutY="703.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Aloise, Megan" />
                               <Text layoutX="174.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aloise, Megan - Software Engineer" textAlignment="CENTER">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="163.0" fitWidth="149.0" layoutX="1553.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="163.0" fitWidth="149.0" layoutX="1045.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../../../../../../Pictures/Charlie.jpg" />
                                  </image>
                               </ImageView>
-                              <Button layoutX="1539.0" layoutY="448.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
-                              <Text layoutX="1422.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Anderson, Charles - Documentation Analyst" textAlignment="CENTER">
+                              <Button fx:id="Charlie" layoutX="1031.0" layoutY="448.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Anderson, Charles" />
+                              <Text layoutX="914.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Anderson, Charles - Documentation Analyst" textAlignment="CENTER">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -86,7 +86,7 @@
                                     <Image url="@../../../../../../../../../Pictures/trajan.png" />
                                  </image>
                               </ImageView>
-                              <Button layoutX="579.0" layoutY="206.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
+                              <Button fx:id="Trajan" layoutX="579.0" layoutY="206.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Espelien, Trajan" />
                               <Text layoutX="481.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Espelien, Trajan - Lead Software Engineer" textAlignment="CENTER">
                                  <font>
                                     <Font size="24.0" />
@@ -97,8 +97,8 @@
                                     <Image url="@../../../../../../../../../Pictures/Brendan.png" />
                                  </image>
                               </ImageView>
-                              <Button layoutX="1459.0" layoutY="703.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
-                              <Text layoutX="1386.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Byrne Brendan - Software Engineer" textAlignment="CENTER">
+                              <Button fx:id="Brendan" layoutX="1459.0" layoutY="703.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Byrne, Brendan" />
+                              <Text layoutX="1386.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Byrne, Brendan - Software Engineer" textAlignment="CENTER">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -108,7 +108,7 @@
                                     <Image url="@../../../../../../../../../Pictures/jon.jpg" />
                                  </image>
                               </ImageView>
-                              <Button layoutX="579.0" layoutY="448.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
+                              <Button fx:id="Jon" layoutX="579.0" layoutY="448.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Pantojas, Jonathan" />
                               <Text layoutX="504.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pantojas, Jonathan - Scrum Master" textAlignment="CENTER">
                                  <font>
                                     <Font size="24.0" />
@@ -119,19 +119,19 @@
                                     <Image url="@../../../../../../../../../Pictures/Louis.png" />
                                  </image>
                               </ImageView>
-                              <Button layoutX="67.0" layoutY="448.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
+                              <Button fx:id="Louis" layoutX="67.0" layoutY="448.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Pham, Louis" />
                               <Text layoutX="33.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pham, Louis - Software Engineer">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1577.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1554.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../../../../../../Pictures/Sam.jpg" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="Sam" layoutX="1539.0" layoutY="206.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
-                              <Text layoutX="1483.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rooney, Sam - Product Owner">
+                              <Button fx:id="Sam" layoutX="1516.0" layoutY="207.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Rooney, Sam" />
+                              <Text layoutX="1460.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rooney, Sam - Product Owner">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -141,7 +141,7 @@
                                     <Image url="@../../../../../../../../../Pictures/christian.jpg" />
                                  </image>
                               </ImageView>
-                              <Button layoutX="67.0" layoutY="206.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
+                              <Button fx:id="Christian" layoutX="67.0" layoutY="206.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Rua, Christian" />
                               <Text layoutX="54.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rua, Christian - Assistant Lead">
                                  <font>
                                     <Font size="24.0" />
@@ -152,19 +152,19 @@
                                     <Image url="@../../../../../../../../../Pictures/Max.jpg" />
                                  </image>
                               </ImageView>
-                              <Button layoutX="862.0" layoutY="703.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
+                              <Button fx:id="Max" layoutX="862.0" layoutY="703.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Smith, Max" />
                               <Text layoutX="813.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Smith, Max - Software Engineer">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="151.0" fitWidth="118.0" layoutX="1101.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="151.0" fitWidth="118.0" layoutX="1530.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../../../../../../Pictures/tristin.png" />
                                  </image>
                               </ImageView>
-                              <Button layoutX="1060.0" layoutY="448.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Button" />
-                              <Text layoutX="1008.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Product Manager">
+                              <Button fx:id="Tristin" layoutX="1489.0" layoutY="448.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="253.0" text="Youtz, Tristin" />
+                              <Text layoutX="1437.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Product Manager">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -185,7 +185,7 @@
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="he Brigham &amp; Women’s Hospital mapsand data used in this application are copyrighted and provided for the sole use of educational purposes.">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham &amp; Women’s Hospital mapsand data used in this application are copyrighted and provided for the sole use of educational purposes.">
                      <font>
                         <Font size="24.0" />
                      </font>

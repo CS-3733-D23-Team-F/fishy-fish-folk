@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,36 +9,37 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.views.popups.TrajanPage">
+<AnchorPane fx:id="JonPage" maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
    <children>
-      <VBox minHeight="720.0" minWidth="1080.0">
+      <VBox maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0">
          <children>
-            <HBox prefHeight="358.0" prefWidth="1080.0">
+            <HBox prefHeight="470.0" prefWidth="1080.0">
                <children>
                   <VBox minWidth="1080.0">
                      <children>
-                        <AnchorPane prefHeight="359.0" prefWidth="1080.0">
+                        <AnchorPane prefHeight="428.0" prefWidth="1080.0">
                            <children>
-                              <Text layoutX="456.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jonathan Pantajas">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <Text layoutX="478.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scrum Master">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <Text layoutX="179.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Major">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
                               <ImageView fitHeight="214.0" fitWidth="268.0" layoutX="417.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../../../../../../../Pictures/jon.jpg" />
                                  </image>
                               </ImageView>
+                              <Text fill="#f1f1f1" layoutX="456.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jonathan Pantajas">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="#f1f1f1" layoutX="477.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scrum Master">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="#f1f1f1" layoutX="291.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science Bachelor's Degree Cyber Security Consetration" textAlignment="CENTER" wrappingWidth="523.4896240234375">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                              <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -49,6 +51,21 @@
                   <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
                      <children>
                         <Text layoutX="350.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="223.606689453125">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#f1f1f1" layoutX="384.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Generic Chicken">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#f1f1f1" layoutX="423.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Movies">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#f1f1f1" layoutX="171.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: &quot;Ever since that incident in Bahrain, nothing phases me&quot; by Wilson Wong" textAlignment="CENTER" wrappingWidth="764.8840942382812">
                            <font>
                               <Font size="24.0" />
                            </font>
