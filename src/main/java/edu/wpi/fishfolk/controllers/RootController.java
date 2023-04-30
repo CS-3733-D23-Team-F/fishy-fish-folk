@@ -1,13 +1,16 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -35,9 +38,12 @@ public class RootController {
   @FXML MFXButton furnitureNav;
   @FXML MFXButton aboutButton;
   @FXML MFXButton creditButton;
+
+  //@FXML MFXButton userDropdown;
   @FXML StackPane sidebar;
   @FXML HBox serviceBox;
   @FXML VBox buttonsBox;
+
   // @FXML MFXButton moveEditorNav;
   // @FXML AnchorPane sideBar;
 
@@ -48,6 +54,25 @@ public class RootController {
 
     SharedResources.setRootController(this);
 
+    /*
+    userDropdown.setOnMouseClicked(
+        event -> {
+          try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(Fapp.class.getResource("views/UserProfile.fxml"));
+            AnchorPane anchorPane = fxmlLoader.load();
+            anchorPane.toFront();
+            UserProfileController userProfile = fxmlLoader.getController();
+            anchorPane.setTranslateY(50);
+            anchorPane.setTranslateX(Fapp.getRootPane().getWidth() - 250);
+            Fapp.getRootPane().getChildren().add(anchorPane);
+
+          } catch (Exception e) {
+          }
+        });
+
+
+     */
     viewOrders.setOnMouseClicked(
         event -> {
           setupServiceNavButton();
