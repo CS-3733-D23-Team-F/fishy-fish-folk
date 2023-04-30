@@ -27,15 +27,28 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                  <StackPane minHeight="50.0">
                      <children>
-                        <Label text="Future Moves" textFill="WHITE">
-                           <font>
-                              <Font name="Open Sans Bold" size="24.0" />
-                           </font>
-                        </Label>
+                        <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                           <children>
+                              <Label text="Future Moves" textFill="WHITE">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
+                           <children>
+                              <ImageView fx:id="movesRefresh" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/Gear.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </StackPane>
                   <MFXScrollPane fx:id="scroll" hbarPolicy="NEVER" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                      <content>
                         <GridPane fx:id="grid">
@@ -54,15 +67,28 @@
                <children>
                   <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                        <StackPane minHeight="50.0">
                            <children>
-                              <Label fx:id="tableHeader" text="Unassigned Tasks" textFill="WHITE">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="24.0" />
-                                 </font>
-                              </Label>
+                              <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                                 <children>
+                                    <Label fx:id="tableHeader" text="Unassigned Tasks" textFill="WHITE">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
+                                 <children>
+                                    <ImageView fx:id="serviceRefresh" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/Gear.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
+                        </StackPane>
                         <HBox alignment="CENTER" minHeight="300.0" minWidth="700.0" prefHeight="300.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
                            <children>
                               <TabPane fx:id="tabPane" minHeight="300.0" minWidth="700.0" prefHeight="300.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">

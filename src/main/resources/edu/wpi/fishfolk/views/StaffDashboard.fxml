@@ -7,11 +7,14 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -21,15 +24,28 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                  <StackPane minHeight="50.0">
                      <children>
-                        <Label text="Future Moves" textFill="WHITE">
-                           <font>
-                              <Font name="Open Sans Bold" size="24.0" />
-                           </font>
-                        </Label>
+                        <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                           <children>
+                              <Label text="Future Moves" textFill="WHITE">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
+                           <children>
+                              <ImageView fx:id="movesRefresh" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/Gear.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </StackPane>
                   <MFXScrollPane fx:id="scroll" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                      <content>
                         <GridPane fx:id="grid">
@@ -48,15 +64,28 @@
                <children>
                   <VBox alignment="TOP_CENTER" minHeight="300.0" minWidth="700.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                        <StackPane minHeight="50.0">
                            <children>
-                              <Label text="Assigned Tasks" textFill="WHITE">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="24.0" />
-                                 </font>
-                              </Label>
+                              <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                                 <children>
+                                    <Label fx:id="tableHeader" text="Unassigned Tasks" textFill="WHITE">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
+                                 <children>
+                                    <ImageView fx:id="serviceRefresh" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/Gear.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
+                        </StackPane>
                         <HBox alignment="CENTER" minHeight="300.0" minWidth="700.0" prefHeight="300.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
                            <children>
                               <TabPane fx:id="tabPane" minHeight="300.0" minWidth="700.0" prefHeight="300.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
@@ -163,15 +192,28 @@
                      <children>
                         <VBox style="-fx-border-color: #012D5A; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
                            <children>
-                              <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                              <StackPane minHeight="50.0">
                                  <children>
-                                    <Label text="Alerts" textFill="WHITE">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="24.0" />
-                                       </font>
-                                    </Label>
+                                    <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                                       <children>
+                                          <Label text="Alerts" textFill="WHITE">
+                                             <font>
+                                                <Font name="Open Sans Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
+                                       <children>
+                                          <ImageView fx:id="alertsRefresh" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/Gear.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
+                              </StackPane>
                               <VBox alignment="TOP_CENTER" minWidth="450.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <MFXScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="300.0" minHeight="100.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">

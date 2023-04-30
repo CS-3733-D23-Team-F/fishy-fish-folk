@@ -46,7 +46,7 @@ public class AdminDashboardController {
   @FXML MFXTextField addAlert;
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
   @FXML ScrollPane scroll;
-  @FXML ImageView alertsRefresh;
+  @FXML ImageView alertsRefresh, serviceRefresh, movesRefresh;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodassignee,
@@ -110,6 +110,15 @@ public class AdminDashboardController {
           tableHeader.setText("Unassigned Tasks");
         });
 
+    serviceRefresh.setOnMouseClicked(
+        event -> {
+          if (tableHeader.getText().equals("Unassigned Tasks")) {
+            setTable();
+          } else {
+            setOutstandingTable();
+          }
+        });
+
     int col = 0;
     int row = 1;
     try {
@@ -156,6 +165,62 @@ public class AdminDashboardController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    movesRefresh.setOnMouseClicked(
+        event -> {
+          ArrayList<Move> moves2 =
+              (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
+          int col2 = 0;
+          int row2 = 1;
+          grid.getChildren().removeAll(grid.getChildren());
+          try {
+            for (Move move : moves2) {
+
+              FXMLLoader fxmlLoader = new FXMLLoader();
+              fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
+              AnchorPane anchorPane = fxmlLoader.load();
+              FutureMovesController futureMoves = fxmlLoader.getController();
+
+              futureMoves.setData(move.getLongName(), "" + move.getDate());
+
+              futureMoves.notify.setOnMouseClicked(
+                  event2 -> {
+                    String longname = futureMoves.longname;
+                    LocalDate date = LocalDate.parse(futureMoves.sDate);
+                    // truncate example:
+                    // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
+                    Alert alert =
+                        new Alert(
+                            LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                            longname,
+                            date,
+                            "");
+
+                    addAlert(alert);
+                  });
+
+              if (col2 == 1) {
+                col2 = 0;
+                row2++;
+              }
+
+              // col++;
+              grid.add(anchorPane, col2++, row2);
+
+              grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+              grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+              grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+              grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+              grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+              grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+              GridPane.setMargin(anchorPane, new Insets(10));
+            }
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
 
     /*
     // Recurring refresh of alerts table
