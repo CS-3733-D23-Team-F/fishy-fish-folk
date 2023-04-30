@@ -65,4 +65,16 @@ public class DataEdit<T> {
     this.type = type;
     this.table = table;
   }
+
+  public String toString() {
+    switch (type) {
+      case INSERT:
+        return "insert " + newEntry.toString() + " into " + table;
+      case REMOVE:
+        return "remove " + newEntry.toString() + " from " + table;
+      case UPDATE:
+        return "update " + oldEntry.toString() + " to " + newEntry.toString() + " in " + table;
+    }
+    return "";
+  }
 }
