@@ -165,6 +165,8 @@
     -fx-background-color: #ffffff;
     -thumb-hover-color: #fcd474;
     -track-color: #ffffff;
+    -fx-hbar-policy: "NEVER";
+    -fx-vbar-policy: "ALWAYS";
 }
 
 .newScrolls:hover{
