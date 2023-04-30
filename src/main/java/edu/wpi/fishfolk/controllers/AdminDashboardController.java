@@ -50,6 +50,11 @@ public class AdminDashboardController {
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
   @FXML MFXComboBox<String> serverSelectorCombo;
   @FXML ScrollPane scroll;
+  @FXML HBox confirmBox;
+  @FXML AnchorPane confirmPane;
+  @FXML MFXButton yesSwitchDB;
+  @FXML MFXButton cancelSwitchDB;
+  @FXML HBox confirmBlur;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodassignee,
@@ -117,24 +122,31 @@ public class AdminDashboardController {
     serverSelectorCombo.setPromptText("Current DB: " + dbConnection.getDbSource().toString());
     serverSelectorCombo.setOnAction(
         event -> {
-          javafx.scene.control.Alert confirm =
-              new javafx.scene.control.Alert(
-                  javafx.scene.control.Alert.AlertType.CONFIRMATION,
-                  "Switch DB?",
-                  ButtonType.YES,
-                  ButtonType.CANCEL);
-          confirm.setGraphic(null);
-          confirm.setHeaderText("");
-          confirm.showAndWait();
-          if (confirm.getResult() == ButtonType.CANCEL) {
-            System.out.println("[AdminDashboard]: Cancelled DB switch.");
-            return;
-          }
+          confirmBox.setDisable(false);
+          confirmBox.setVisible(true);
+          confirmPane.setDisable(false);
+          confirmPane.setVisible(true);
+          confirmBlur.setDisable(false);
+          confirmBlur.setVisible(true);
+        });
+
+    yesSwitchDB.setOnAction(
+        event -> {
           System.out.println("[AdminDashboard]: Switching DB...");
           DBSource src = DBSource.valueOf(serverSelectorCombo.getSelectedItem());
           dbConnection = new Fdb(src);
           SharedResources.logout();
           Navigation.navigate(Screen.LOGIN);
+        });
+    cancelSwitchDB.setOnAction(
+        event -> {
+          System.out.println("[AdminDashboard]: Cancelled DB switch.");
+          confirmPane.setDisable(true);
+          confirmPane.setVisible(false);
+          confirmBox.setDisable(true);
+          confirmBox.setVisible(false);
+          confirmBlur.setDisable(true);
+          confirmBlur.setVisible(false);
         });
 
     int col = 0;
