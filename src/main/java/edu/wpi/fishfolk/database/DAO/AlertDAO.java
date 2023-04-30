@@ -6,16 +6,19 @@ import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
-import edu.wpi.fishfolk.database.TableEntry.Edge;
+import edu.wpi.fishfolk.database.TableEntry.Alert;
+import edu.wpi.fishfolk.util.AlertType;
 import java.io.*;
 import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class EdgeDAO implements IDAO<Edge> {
+public class AlertDAO implements IDAO<Alert> {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -23,16 +26,17 @@ public class EdgeDAO implements IDAO<Edge> {
   private final String tableName;
   private final ArrayList<String> headers;
 
-  private final HashSet<Edge> edgeSet;
-  private final DataEditQueue<Edge> dataEditQueue;
+  private final HashMap<LocalDateTime, Alert> alerts = new HashMap<>();
+  private final DataEditQueue<Alert> dataEditQueue = new DataEditQueue<>();
 
-  /** DAO for Edge table in PostgreSQL database. */
-  public EdgeDAO(Connection dbConnection) {
+  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+  /** DAO for Alert table in PostgreSQL database. */
+  public AlertDAO(Connection dbConnection) {
     this.dbConnection = dbConnection;
-    this.tableName = "edge";
-    this.headers = new ArrayList<>(List.of("startnode", "endnode"));
-    this.edgeSet = new HashSet<>();
-    this.dataEditQueue = new DataEditQueue<>();
+    this.tableName = "alert";
+    this.headers = new ArrayList<>(List.of("timestamp", "longname", "date", "text", "type"));
+    this.dataEditQueue.setBatchLimit(1);
 
     init(false);
     prepareListener();
@@ -68,8 +72,11 @@ public class EdgeDAO implements IDAO<Edge> {
         query =
             "CREATE TABLE "
                 + tableName
-                + " (startnode SMALLINT," // 2 bytes, same as Node id
-                + " endnode SMALLINT);"; // 2 bytes -2^15 to 2^15-1
+                + " (timestamp TIMESTAMP PRIMARY KEY," // compatible with LocalDataTime
+                + " longname VARCHAR(64)," // same as in location table
+                + " date DATE," // same as in move table
+                + " text VARCHAR(256),"
+                + " type VARCHAR(8));";
         statement.executeUpdate(query);
       }
 
@@ -91,10 +98,27 @@ public class EdgeDAO implements IDAO<Edge> {
       preparedGetAll.execute();
       ResultSet results = preparedGetAll.getResultSet();
 
-      // Create a new Edge object for each result and put it in the local table
+      // Create a new Alert object for each result and put it in the local table
       while (results.next()) {
-        Edge edge = new Edge(results.getInt(1), results.getInt(2));
-        edgeSet.add(edge);
+
+        Alert alert = null;
+        LocalDateTime timestamp = LocalDateTime.parse(results.getString(1), formatter);
+
+        switch (AlertType.valueOf(results.getString("type"))) {
+          case MOVE:
+            alert =
+                new Alert(
+                    timestamp,
+                    results.getString("longname"),
+                    LocalDate.parse(results.getString("date")),
+                    results.getString("text"));
+            break;
+
+          case OTHER:
+            alert = new Alert(timestamp, results.getString("text"));
+        }
+
+        alerts.put(alert.getTimestamp(), alert);
       }
 
     } catch (SQLException | NumberFormatException e) {
@@ -110,25 +134,25 @@ public class EdgeDAO implements IDAO<Edge> {
       dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
 
       if (dbListener == null) {
-        System.out.println("[EdgeDAO.prepareListener]: Listener is null.");
+        System.out.println("[AlertDAO.prepareListener]: Listener is null.");
         return;
       }
 
       // Create a function that calls NOTIFY when the table is modified
       dbListener
           .prepareStatement(
-              "CREATE OR REPLACE FUNCTION notifyEdge() RETURNS TRIGGER AS $edge$"
+              "CREATE OR REPLACE FUNCTION notifyAlert() RETURNS TRIGGER AS $alert$"
                   + "BEGIN "
-                  + "NOTIFY edge;"
+                  + "NOTIFY alert;"
                   + "RETURN NULL;"
-                  + "END; $edge$ language plpgsql")
+                  + "END; $alert$ language plpgsql")
           .execute();
 
       // Create a trigger that calls the function on any change
       dbListener
           .prepareStatement(
-              "CREATE OR REPLACE TRIGGER edgeUpdate AFTER UPDATE OR INSERT OR DELETE ON "
-                  + "edge FOR EACH STATEMENT EXECUTE FUNCTION notifyEdge()")
+              "CREATE OR REPLACE TRIGGER alertUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "alert FOR EACH STATEMENT EXECUTE FUNCTION notifyAlert()")
           .execute();
 
       // Start listener
@@ -142,7 +166,7 @@ public class EdgeDAO implements IDAO<Edge> {
   @Override
   public void reListen() {
     try {
-      dbListener.prepareStatement("LISTEN edge").execute();
+      dbListener.prepareStatement("LISTEN alert").execute();
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
@@ -158,7 +182,7 @@ public class EdgeDAO implements IDAO<Edge> {
 
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
-        System.out.println("[EdgeDAO.verifyLocalTable]: Notification received!");
+        System.out.println("[AlertDAO.verifyLocalTable]: Notification received!");
         populateLocalTable();
       }
 
@@ -175,9 +199,12 @@ public class EdgeDAO implements IDAO<Edge> {
   }
 
   @Override
-  public boolean insertEntry(Edge entry) {
+  public boolean insertEntry(Alert entry) {
 
-    // Mark entry Edge status as NEW
+    // Check if the entry already exists.
+    if (alerts.containsKey(entry.getTimestamp())) return false;
+
+    // Mark entry Alert status as NEW
     entry.setStatus(EntryStatus.NEW);
 
     // Push an INSERT to the data edit stack, update the db if the batch limit has been reached
@@ -191,16 +218,15 @@ public class EdgeDAO implements IDAO<Edge> {
       removeThread.start();
     }
 
-    // Store edge in set
-    edgeSet.add(entry);
+    // Store alert in list
+    alerts.put(entry.getTimestamp(), entry);
 
     return true;
   }
 
-  // update is meaningless for edges
-  // map editor removes and adds
+  // currently no way of updating alerts
   @Override
-  public boolean updateEntry(Edge entry) {
+  public boolean updateEntry(Alert entry) {
     return false;
   }
 
@@ -208,26 +234,29 @@ public class EdgeDAO implements IDAO<Edge> {
 
     // Check if input identifier is correct type
     // must be edge
-    if (!(identifier instanceof Edge)) {
+    if (!(identifier instanceof LocalDateTime)) {
       System.out.println(
-          "[EdgeDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
+          "[AlertDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
       return false;
     }
 
-    Edge edge = (Edge) identifier;
+    LocalDateTime timestamp = (LocalDateTime) identifier;
 
     // Check if local table contains identifier
-    if (!edgeSet.contains(edge)) {
+    if (!alerts.containsKey(timestamp)) {
       System.out.println(
-          "[EdgeDAO.removeEntry]: Identifier " + edge + " does not exist in local table.");
+          "[AlertDAO.removeEntry]: Identifier " + identifier + " does not exist in local table.");
       return false;
     }
 
+    // get entry from local table
+    Alert entry = alerts.get(timestamp);
+
     // Mark edge status as NEW
-    edge.setStatus(EntryStatus.NEW);
+    entry.setStatus(EntryStatus.NEW);
 
     // Push a REMOVE to the data edit stack, update the db if the batch limit has been reached
-    if (dataEditQueue.add(new DataEdit<>(edge, DataEditType.REMOVE), true)) {
+    if (dataEditQueue.add(new DataEdit<>(entry, DataEditType.REMOVE), true)) {
 
       // Reset edit count
       dataEditQueue.setEditCount(0);
@@ -238,32 +267,59 @@ public class EdgeDAO implements IDAO<Edge> {
     }
 
     // Remove edge from set
-    edgeSet.remove(edge);
+    alerts.remove(entry.getTimestamp());
 
     return true;
   }
 
-  // get is also meaningless
   @Override
-  public Edge getEntry(Object identifier) {
+  public Alert getEntry(Object identifier) {
+
     verifyLocalTable();
-    return null;
+
+    // Check if input identifier is correct type
+    if (!(identifier instanceof LocalDateTime)) {
+      System.out.println("[AlertDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
+      return null;
+    }
+
+    // remember that moveID is the longame concatenated with the move date
+    LocalDateTime timestamp = (LocalDateTime) identifier;
+
+    // Check if local table contains identifier
+    if (!alerts.containsKey(timestamp)) {
+      System.out.println(
+          "[AlertDAO.getEntry]: Identifier " + timestamp + " does not exist in local table.");
+      return null;
+    }
+
+    // Return Move object from local table
+    return alerts.get(timestamp);
   }
 
   @Override
-  public ArrayList<Edge> getAllEntries() {
+  public ArrayList<Alert> getAllEntries() {
 
     verifyLocalTable();
 
-    // hashset has no specified order so the list will be scrambled
-    return new ArrayList<>(edgeSet);
+    ArrayList<Alert> allAlerts = new ArrayList<>();
+
+    // Add all Moves in local table to a list
+    for (LocalDateTime timestamp : alerts.keySet()) {
+      allAlerts.add(alerts.get(timestamp));
+    }
+
+    Collections.sort(
+        allAlerts, (alert1, alert2) -> alert1.getTimestamp().compareTo(alert2.getTimestamp()));
+
+    return allAlerts;
   }
 
   @Override
   public void undoChange() {
 
     // Pop the top item of the data edit stack
-    DataEdit<Edge> dataEdit = dataEditQueue.popRecent();
+    DataEdit<Alert> dataEdit = dataEditQueue.popRecent();
 
     // Check if there is an update to be done
     if (dataEdit == null) return;
@@ -299,11 +355,34 @@ public class EdgeDAO implements IDAO<Edge> {
 
       // Print active thread (DEBUG)
       System.out.println(
-          "[EdgeDAO.updateDatabase]: Updating database in " + Thread.currentThread().getName());
+          "[AlertDAO.updateDatabase]: Updating database in " + Thread.currentThread().getName());
 
       // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
       String insert =
-          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?);";
+          "INSERT INTO "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " VALUES (?, ?, ?, ?, ?);";
+
+      String update =
+          "UPDATE "
+              + dbConnection.getSchema()
+              + "."
+              + this.tableName
+              + " SET "
+              + headers.get(0)
+              + " = ?, "
+              + headers.get(1)
+              + " = ?, "
+              + headers.get(2)
+              + " = ?, "
+              + headers.get(3)
+              + " = ?, "
+              + headers.get(4)
+              + " = ? WHERE "
+              + headers.get(0)
+              + " = ?;";
 
       String remove =
           "DELETE FROM "
@@ -312,11 +391,10 @@ public class EdgeDAO implements IDAO<Edge> {
               + this.tableName
               + " WHERE "
               + headers.get(0)
-              + " = ? AND "
-              + headers.get(1)
               + " = ?;";
 
       PreparedStatement preparedInsert = dbConnection.prepareStatement(insert);
+      PreparedStatement preparedUpdate = dbConnection.prepareStatement(update);
       PreparedStatement preparedRemove = dbConnection.prepareStatement(remove);
 
       // For each data edit in the data edit stack, perform the indicated update to the db table
@@ -327,23 +405,27 @@ public class EdgeDAO implements IDAO<Edge> {
         if (!dataEditQueue.hasNext()) break;
 
         // Get the next data edit in the queue
-        DataEdit<Edge> dataEdit = dataEditQueue.next();
-        Edge newEdgeEntry = dataEdit.getNewEntry();
+        DataEdit<Alert> dataEdit = dataEditQueue.next();
 
         // Print update info (DEBUG)
         System.out.println(
-            "[EdgeDAO.updateDatabase]: "
+            "[AlertDAO.updateDatabase]: "
                 + dataEdit.getType()
-                + " Edge "
+                + " Alert "
                 + dataEdit.getNewEntry().toString());
+
+        Alert newAlertEntry = dataEdit.getNewEntry();
 
         // Change behavior based on data edit type
         switch (dataEdit.getType()) {
           case INSERT:
 
             // Put the new Edge's data into the prepared query
-            preparedInsert.setInt(1, newEdgeEntry.getStartNode());
-            preparedInsert.setInt(2, newEdgeEntry.getEndNode());
+            preparedInsert.setTimestamp(1, Timestamp.valueOf(newAlertEntry.getTimestamp()));
+            preparedInsert.setString(2, newAlertEntry.getLongName());
+            preparedInsert.setDate(3, Date.valueOf(newAlertEntry.getDate()));
+            preparedInsert.setString(4, newAlertEntry.getText());
+            preparedInsert.setString(5, newAlertEntry.getType().toString());
 
             // Execute the query
             preparedInsert.executeUpdate();
@@ -351,30 +433,38 @@ public class EdgeDAO implements IDAO<Edge> {
 
           case UPDATE:
 
-            // do nothing for update
+            // Put the new Node's data into the prepared query
+            preparedUpdate.setTimestamp(1, Timestamp.valueOf(newAlertEntry.getTimestamp()));
+            preparedUpdate.setString(2, newAlertEntry.getLongName());
+            preparedUpdate.setDate(3, Date.valueOf(newAlertEntry.getDate()));
+            preparedUpdate.setString(4, newAlertEntry.getText());
+            preparedUpdate.setString(5, newAlertEntry.getType().toString());
+            preparedUpdate.setTimestamp(6, Timestamp.valueOf(newAlertEntry.getTimestamp()));
+
+            // Execute the query
+            preparedUpdate.executeUpdate();
             break;
 
           case REMOVE:
 
             // Put the new Edge's data into the prepared query
-            preparedRemove.setInt(1, newEdgeEntry.getStartNode());
-            preparedRemove.setInt(2, newEdgeEntry.getEndNode());
+            preparedRemove.setTimestamp(1, Timestamp.valueOf(newAlertEntry.getTimestamp()));
 
             // Execute the query
             preparedRemove.executeUpdate();
             break;
         }
 
-        // Mark Edge in local table as OLD
-        edgeSet.remove(newEdgeEntry);
-        newEdgeEntry.setStatus(EntryStatus.OLD);
-        edgeSet.add(newEdgeEntry);
+        // Mark Alert in local table as OLD
+        alerts.remove(newAlertEntry.getTimestamp());
+        newAlertEntry.setStatus(EntryStatus.OLD);
+        alerts.put(newAlertEntry.getTimestamp(), newAlertEntry);
       }
     } catch (SQLException e) {
 
       // Print active thread error (DEBUG)
       System.out.println(
-          "[EdgeDAO.updateDatabase]: Error updating database in "
+          "[AlertDAO.updateDatabase]: Error updating database in "
               + Thread.currentThread().getName());
 
       System.out.println(e.getMessage());
@@ -383,91 +473,40 @@ public class EdgeDAO implements IDAO<Edge> {
 
     // Print active thread end (DEBUG)
     System.out.println(
-        "[EdgeDAO.updateDatabase]: Finished updating database in "
+        "[AlertDAO.updateDatabase]: Finished updating database in "
             + Thread.currentThread().getName());
 
     // On success
     return true;
   }
 
+  // TODO import and export alert table
   @Override
   public boolean importCSV(String filepath, boolean backup) {
-
-    String[] pathArr = filepath.split("/");
-
-    if (backup) {
-
-      // filepath except for last part (actual file name)
-      StringBuilder folder = new StringBuilder();
-      for (int i = 0; i < pathArr.length - 1; i++) {
-        folder.append(pathArr[i]).append("/");
-      }
-      exportCSV(folder.toString());
-    }
-
-    try (BufferedReader br =
-        new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
-
-      // delete the old data
-      dbConnection
-          .createStatement()
-          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
-
-      // skip first row of csv which has the headers
-      String line = br.readLine();
-
-      String insert =
-          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?);";
-
-      PreparedStatement insertPS = dbConnection.prepareStatement(insert);
-
-      while ((line = br.readLine()) != null) {
-
-        String[] parts = line.split(",");
-
-        Edge e = new Edge(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
-
-        edgeSet.add(e);
-
-        insertPS.setInt(1, e.getStartNode());
-        insertPS.setInt(2, e.getEndNode());
-
-        insertPS.executeUpdate();
-      }
-
-      return true;
-
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      return false;
-    }
+    return false;
   }
 
   @Override
   public boolean exportCSV(String directory) {
+    return false;
+  }
 
-    LocalDateTime dateTime = LocalDateTime.now();
+  public Alert getLatestAlert() {
+    Iterator<LocalDateTime> itr = alerts.keySet().iterator();
 
-    // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ofPattern-java.lang.String-
-    String filename =
-        tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
-
-    try {
-      PrintStream out = new PrintStream(new FileOutputStream(directory + "\\" + filename));
-
-      out.println(String.join(",", headers));
-
-      edgeSet.forEach(
-          e -> {
-            out.println(e.getStartNode() + "," + e.getEndNode());
-          });
-
-      out.close();
-      return true;
-
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      return false;
+    if (!itr.hasNext()) {
+      return null;
     }
+
+    LocalDateTime last = itr.next();
+
+    while (itr.hasNext()) {
+      LocalDateTime curr = itr.next();
+      if (curr.isAfter(last)) {
+        last = curr;
+      }
+    }
+
+    return alerts.get(last);
   }
 }

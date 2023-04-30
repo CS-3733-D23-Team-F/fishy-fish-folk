@@ -60,6 +60,19 @@
             </ImageView>
          </children>
       </HBox>
+      <HBox alignment="TOP_CENTER">
+         <children>
+            <MFXTextField fx:id="subtextl0" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+            </MFXTextField>
+            <MFXTextField fx:id="subtextr0" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="630.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
          <children>
             <ImageView fx:id="iconl1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
@@ -86,6 +99,19 @@
                </image>
             </ImageView>
          </children>
+      </HBox>
+      <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="258.0">
+         <children>
+            <MFXTextField fx:id="subtextl1" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+            </MFXTextField>
+            <MFXTextField fx:id="subtextr1" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
       </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="630.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
          <children>
@@ -114,6 +140,19 @@
             </ImageView>
          </children>
       </HBox>
+      <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="373.0">
+         <children>
+            <MFXTextField fx:id="subtextl2" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+            </MFXTextField>
+            <MFXTextField fx:id="subtextr2" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="530.0" minHeight="100.0" minWidth="200.0" prefHeight="100.0">
          <children>
             <ImageView fx:id="iconl3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.5" scaleY="0.5">
@@ -141,7 +180,20 @@
             </ImageView>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+      <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="488.0">
+         <children>
+            <MFXTextField fx:id="subtextl3" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;">
+               <HBox.margin>
+                  <Insets right="100.0" />
+               </HBox.margin>
+            </MFXTextField>
+            <MFXTextField fx:id="subtextr3" minHeight="30.0" minWidth="300.0" promptText="SUBTEXT" style="-fx-border-width: 2;" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" minHeight="50.0" minWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
             <MFXButton fx:id="cancelButton" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
                <font>

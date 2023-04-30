@@ -1,8 +1,8 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.FurnitureRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.FurnitureItem;
 import edu.wpi.fishfolk.ui.FurnitureOrder;
@@ -51,8 +51,8 @@ public class NewFurnitureOrderController extends AbsController {
   public void initialize() {
     loadOptions();
     loadRoomChoice();
-    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
-    cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
+    cancelButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     furnituresubmitButton.setOnMouseClicked(event -> submit());
     clearButton.setOnMouseClicked(event -> clearAllFields());
     radioButton1.setOnMouseClicked(
@@ -197,6 +197,7 @@ public class NewFurnitureOrderController extends AbsController {
   void submit() {
     setServiceTypeToRadios();
     setItemToRadios();
+
     if (currentFurnitureOrder.furnitureItem == null
         || currentFurnitureOrder.serviceType == null
         || roomSelector.getValue() == null
@@ -205,12 +206,25 @@ public class NewFurnitureOrderController extends AbsController {
       Text errorText = new Text("One or more required fields have not been filled");
       errorText.setFont(new Font("Open Sans", 26));
       error.setContentNode(errorText);
+      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
       error.show(furnituresubmitButton);
       return;
     }
+
     currentFurnitureOrder.setRoomNum(roomSelector.getValue());
     currentFurnitureOrder.addNotes(notesTextField.getText());
     currentFurnitureOrder.addDate(getDate());
+
+    if (currentFurnitureOrder.deliveryDate.isBefore(LocalDateTime.now().minusDays(1))) {
+      PopOver error = new PopOver();
+      Text errorText = new Text("Cannot set delivery date before current date");
+      errorText.setFont(new Font("Open Sans", 26));
+      error.setContentNode(errorText);
+      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+      error.show(furnituresubmitButton);
+      return;
+    }
+
     currentFurnitureOrder.setStatus(FormStatus.submitted);
     FurnitureRequest request =
         new FurnitureRequest(

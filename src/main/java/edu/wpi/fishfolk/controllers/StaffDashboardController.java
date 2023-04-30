@@ -6,10 +6,6 @@ import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
-import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +16,17 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 
 public class StaffDashboardController {
 
   // @FXML MFXButton navigateButton;
-  @FXML MFXButton toMapEditor, toMoveEditor, toSignageEditor;
   @FXML GridPane grid;
   @FXML GridPane alertGrid;
   // @FXML MFXPaginatedTableView paginated;
@@ -39,7 +34,6 @@ public class StaffDashboardController {
   @FXML TableView<FurnitureOrderObservable> furnitureTable;
   @FXML TableView<FlowerOrderObservable> flowerTable;
   @FXML TableView<SupplyOrderObservable> supplyTable;
-  @FXML MFXTextField addAlert;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodCompletion,
@@ -77,14 +71,13 @@ public class StaffDashboardController {
       flowerrecipientname,
       floweritems;
 
-  private int rowA = 1;
+  private int rowA = 0;
 
   @FXML
   public void initialize() {
+    // TODO fix this to load alerts in db and fix adding to alerts grid
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
-    toMapEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
     // toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.));
     int col = 0;
     int row = 1;
@@ -118,9 +111,37 @@ public class StaffDashboardController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
   }
 
-  public void setAlert(String alert) {}
+  public void addAlert(Alert alert) {
+    try {
+      FXMLLoader fxmlLoader = new FXMLLoader();
+      fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
+
+      HBox alertPane = fxmlLoader.load();
+
+      AlertsController alertsController = fxmlLoader.getController();
+      alertsController.setData(alert);
+
+      alertsController.closeAlert.setVisible(false);
+      alertsController.closeAlert.setDisable(true);
+
+      GridPane.setHgrow(alertPane, Priority.ALWAYS);
+      GridPane.setMargin(alertPane, new Insets(10));
+      alertPane.setAlignment(Pos.TOP_CENTER);
+
+      // staff shouldnt be pushing alerts to the db
+      // dbConnection.insertEntry(alert);
+      alertGrid.add(alertPane, 0, rowA);
+      GridPane.setValignment(alertPane, VPos.TOP);
+      rowA += 1;
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   public List<String> getAssignees() {
     return dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT).stream()

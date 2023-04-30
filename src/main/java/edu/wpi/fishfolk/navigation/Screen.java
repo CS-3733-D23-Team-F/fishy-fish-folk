@@ -2,9 +2,9 @@ package edu.wpi.fishfolk.navigation;
 
 public enum Screen {
   ROOT("views/Root.fxml"),
-  HOME("views/Home.fxml"),
+  ADMIN_DASHBOARD("views/AdminDashboard.fxml"),
   SERVICE_REQUEST("views/ServiceRequest.fxml"),
-  SIGNAGE("views/Signage.fxml"),
+  SIGNAGE("views/NewSignage.fxml"),
 
   NEW_FOOD_ORDER("views/NewFoodOrder.fxml"),
   SUPPLIES_REQUEST("views/NewSupplyOrder.fxml"),
@@ -26,7 +26,10 @@ public enum Screen {
   STAFF_DASHBOARD("views/StaffDashboard.fxml"),
 
   TEMPLATE("views/Template.fxml"),
-  CONFERENCE("views/NewConference.fxml");
+  CONFERENCE("views/NewConference.fxml"),
+
+  CREDITS("views/Credits.fxml"),
+  ABOUTME("views/AboutMe.fxml");
 
   private final String filename;
 

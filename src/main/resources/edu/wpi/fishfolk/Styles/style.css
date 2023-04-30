@@ -154,3 +154,9 @@
     -fx-border-color: #012D5A;
     -fx-border-radius: 5;
 }
+
+.loginField{
+    -fx-border-radius: 0;
+    -fx-border-width: 0 0 0.5 0;
+    -fx-border-color: #012D5A;
+}

@@ -8,195 +8,240 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #FFFFFF; -fx-region-background: #f0bf4c;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewConferenceController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="670.0" minWidth="1180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewConferenceController">
    <children>
-      <VBox>
+      <HBox style="-fx-background-color: #FFFFFF; -fx-region-background: #f0bf4c;" StackPane.alignment="CENTER">
          <children>
-            <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Conference Room:">
-               <font>
-                  <Font name="Open Sans Bold" size="26.0" />
-               </font>
-            </Text>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <VBox alignment="CENTER">
                <children>
-                  <ScrollPane hbarPolicy="NEVER" minHeight="311.0" minWidth="472.0" prefHeight="311.0" prefWidth="563.0" style="-fx-background-radius: 5; -fx-background-color: #FFFFFF; -fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
-                    <content>
-                      <AnchorPane style="-fx-background-color: #FFFFFF;">
-                           <children>
-                              <MFXRectangleToggleNode fx:id="rec1" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="-1.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="BTM CONFERENCE CENTER" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Regular" size="15.0" />
-                                 </font>
-                              </MFXRectangleToggleNode>
-                              <MFXRectangleToggleNode fx:id="rec2" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="49.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="DUNCAN REID CONFERENCE ROOM" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Regular" size="15.0" />
-                                 </font>
-                              </MFXRectangleToggleNode>
-                              <MFXRectangleToggleNode fx:id="rec3" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="99.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="ANESTHESIA CONF FLOOR L1" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Regular" size="15.0" />
-                                 </font>
-                              </MFXRectangleToggleNode>
-                              <MFXRectangleToggleNode fx:id="rec4" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="149.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="MEDICAL RECORDS CONFERENCE ROOM FLOOR L1" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Regular" size="15.0" />
-                                 </font>
-                              </MFXRectangleToggleNode>
-                              <MFXRectangleToggleNode fx:id="rec5" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="199.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="ABRAMS CONFERENCE ROOM" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Regular" size="15.0" />
-                                 </font>
-                              </MFXRectangleToggleNode>
-                              <MFXRectangleToggleNode fx:id="rec6" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="249.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="CARRIE M. HALL CONFERENCE CENTER FLOOR 2" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Regular" size="15.0" />
-                                 </font>
-                              </MFXRectangleToggleNode>
-                              <MFXRectangleToggleNode fx:id="rec7" alignment="CENTER_LEFT" layoutX="-1.0" layoutY="299.0" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="SHAPIRO BOARD ROOM MAPNODE 20 FLOOR 1" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Regular" size="15.0" />
-                                 </font>
-                              </MFXRectangleToggleNode>
-                           </children></AnchorPane>
-                    </content>
-                  </ScrollPane>
-                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
+                  <HBox>
                      <children>
-                        <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:">
-                           <font>
-                              <Font name="Open Sans Bold" size="26.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:">
-                           <font>
-                              <Font name="Open Sans Bold" size="26.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Attendees:">
-                           <font>
-                              <Font name="Open Sans Bold" size="26.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Recurring Meeting?">
+                        <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Conference Room:">
                            <font>
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
                         </Text>
                      </children>
-                     <HBox.margin>
-                        <Insets bottom="60.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                      <children>
-                        <HBox>
+                        <ScrollPane hbarPolicy="NEVER" minHeight="311.0" minWidth="472.0" prefHeight="311.0" prefWidth="563.0" style="-fx-background-radius: 5; -fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
+                           <content>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <MFXRectangleToggleNode fx:id="rec1" alignment="CENTER_LEFT" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="BTM CONFERENCE CENTER" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </MFXRectangleToggleNode>
+                                    <MFXRectangleToggleNode fx:id="rec2" alignment="CENTER_LEFT" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="DUNCAN REID CONFERENCE ROOM" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </MFXRectangleToggleNode>
+                                    <MFXRectangleToggleNode fx:id="rec3" alignment="CENTER_LEFT" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="ANESTHESIA CONF FLOOR L1" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </MFXRectangleToggleNode>
+                                    <MFXRectangleToggleNode fx:id="rec4" alignment="CENTER_LEFT" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="MEDICAL RECORDS CONFERENCE ROOM FLOOR L1" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </MFXRectangleToggleNode>
+                                    <MFXRectangleToggleNode fx:id="rec5" alignment="CENTER_LEFT" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="ABRAMS CONFERENCE ROOM" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </MFXRectangleToggleNode>
+                                    <MFXRectangleToggleNode fx:id="rec6" alignment="CENTER_LEFT" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="CARRIE M. HALL CONFERENCE CENTER FLOOR 2" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </MFXRectangleToggleNode>
+                                    <MFXRectangleToggleNode fx:id="rec7" alignment="CENTER_LEFT" minHeight="50.0" minWidth="563.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="SHAPIRO BOARD ROOM MAPNODE 20 FLOOR 1" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </MFXRectangleToggleNode>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
                            <children>
-                              <MFXFilterComboBox fx:id="startTimeDrop" floatingText="TIME" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
+                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:">
                                  <font>
-                                    <Font name="Open Sans Regular" size="15.0" />
+                                    <Font name="Open Sans Bold" size="26.0" />
                                  </font>
-                              </MFXFilterComboBox>
-                              <MFXFilterComboBox fx:id="startAMPMDrop" floatingText="AM/PM" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
+                              </Text>
+                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:">
                                  <font>
-                                    <Font name="Open Sans Regular" size="15.0" />
+                                    <Font name="Open Sans Bold" size="26.0" />
                                  </font>
-                              </MFXFilterComboBox>
+                              </Text>
+                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Attendees:">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="26.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Recurring Meeting?">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="26.0" />
+                                 </font>
+                              </Text>
                            </children>
-                        </HBox>
-                        <HBox>
+                           <HBox.margin>
+                              <Insets bottom="60.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
                            <children>
-                              <MFXFilterComboBox fx:id="endTimeDrop" floatingText="TIME" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
+                              <HBox>
+                                 <children>
+                                    <MFXFilterComboBox fx:id="startTimeDrop" floatingText="TIME" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </MFXFilterComboBox>
+                                    <MFXFilterComboBox fx:id="startAMPMDrop" floatingText="AM/PM" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </MFXFilterComboBox>
+                                 </children>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <MFXFilterComboBox fx:id="endTimeDrop" floatingText="TIME" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                       <textFill>
+                                          <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                       </textFill>
+                                    </MFXFilterComboBox>
+                                    <MFXFilterComboBox fx:id="endAMPMDrop" floatingText="AM/PM" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </MFXFilterComboBox>
+                                 </children>
+                              </HBox>
+                              <MFXTextField fx:id="numAttnBox" alignment="CENTER_RIGHT" floatingText="2 - 20 PEOPLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font>
                                  <textFill>
                                     <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                                  </textFill>
-                              </MFXFilterComboBox>
-                              <MFXFilterComboBox fx:id="endAMPMDrop" floatingText="AM/PM" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
+                              </MFXTextField>
+                              <MFXFilterComboBox fx:id="recurringDrop" floatMode="DISABLED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012D5A;" />
+                              <MFXTextField fx:id="nameBox" allowEdit="false" floatingText="NAME" minHeight="50.0" minWidth="257.0" mouseTransparent="true" prefHeight="50.0" prefWidth="350.0" style="-fx-border-color: #012D5A;">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
                                  </font>
-                              </MFXFilterComboBox>
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                              </MFXTextField>
                            </children>
-                        </HBox>
-                        <MFXTextField fx:id="numAttnBox" alignment="CENTER_RIGHT" floatingText="&lt;= 20 PEOPLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #012D5A;">
-                           <font>
-                              <Font name="Open Sans Regular" size="15.0" />
-                           </font>
-                           <textFill>
-                              <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-                           </textFill>
-                        </MFXTextField>
-                        <MFXFilterComboBox fx:id="recurringDrop" floatMode="DISABLED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012D5A;" />
-                        <MFXTextField fx:id="nameBox" allowEdit="false" floatingText="NAME" minHeight="50.0" minWidth="257.0" mouseTransparent="true" prefHeight="50.0" prefWidth="350.0" style="-fx-border-color: #012D5A;">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <font>
-                              <Font name="Open Sans Regular" size="15.0" />
-                           </font>
-                           <textFill>
-                              <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-                           </textFill></MFXTextField>
+                        </VBox>
                      </children>
-                  </VBox>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Notes:">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <MFXTextField fx:id="notesBox" minHeight="176.0" minWidth="1190.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Open Sans Regular" size="26.0" />
+                     </font>
+                  </MFXTextField>
+                  <HBox spacing="20.0">
+                     <children>
+                        <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="215.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                        </MFXButton>
+                        <MFXButton fx:id="confClearButton" minHeight="55.0" minWidth="215.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CLEAR" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                        </MFXButton>
+                        <MFXButton fx:id="confSubmitButton" minHeight="55.0" minWidth="215.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" style="-fx-background-color: #f0bf4c; -fx-background-radius: 5;" text="SUBMIT" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="500.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
                </children>
-               <VBox.margin>
-                  <Insets bottom="20.0" />
-               </VBox.margin>
-            </HBox>
-            <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Notes:">
-               <font>
-                  <Font name="Open Sans Bold" size="26.0" />
-               </font>
-            </Text>
-            <MFXTextField fx:id="notesBox" minHeight="176.0" minWidth="1190.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;">
-               <VBox.margin>
-                  <Insets bottom="20.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Open Sans Regular" size="26.0" />
-               </font>
-            </MFXTextField>
-            <HBox spacing="20.0">
-               <children>
-                  <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="215.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                  </MFXButton>
-                  <MFXButton fx:id="confClearButton" minHeight="55.0" minWidth="215.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CLEAR" textFill="WHITE">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                  </MFXButton>
-                  <MFXButton fx:id="confSubmitButton" minHeight="55.0" minWidth="215.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" style="-fx-background-color: #f0bf4c; -fx-background-radius: 5;" text="SUBMIT" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="500.0" />
-                     </HBox.margin>
-                  </MFXButton>
-               </children>
-               <VBox.margin>
+               <HBox.margin>
                   <Insets />
-               </VBox.margin>
-            </HBox>
+               </HBox.margin>
+            </VBox>
          </children>
-         <HBox.margin>
-            <Insets bottom="50.0" top="30.0" />
-         </HBox.margin>
-      </VBox>
+         <padding>
+            <Insets left="50.0" right="50.0" />
+         </padding>
+      </HBox>
+      <HBox fx:id="confirmBlur" alignment="CENTER" disable="true" minHeight="670.0" minWidth="1180.0" opacity="0.76" style="-fx-background-color: #000000;" visible="false" />
+      <HBox fx:id="confirmBox" alignment="CENTER" disable="true">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <AnchorPane fx:id="confirmPane" disable="true" style="-fx-border-color: #012d5a; -fx-border-radius: 3; -fx-background-color: WHITE; -fx-background-radius: 8; -fx-border-width: 2;" visible="false">
+                     <children>
+                        <VBox alignment="CENTER" spacing="15.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Order Confirmed">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </Text>
+                              <MFXButton fx:id="okButton" style="-fx-background-color: #f0bf4c;" text="OK">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="20.0" />
+                                 </font>
+                              </MFXButton>
+                           </children>
+                           <padding>
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
    </children>
-   <padding>
-      <Insets left="50.0" right="50.0" />
-   </padding>
-</HBox>
+</StackPane>

@@ -4,6 +4,7 @@ import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.SupplyItem;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -70,7 +71,7 @@ public class SupplyRequest {
       String link,
       String roomNumber,
       List<SupplyItem> supplies) {
-    this.supplyRequestID = LocalDateTime.now();
+    this.supplyRequestID = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     this.assignee = assignee;
     this.formStatus = formStatus;
     this.notes = notes;

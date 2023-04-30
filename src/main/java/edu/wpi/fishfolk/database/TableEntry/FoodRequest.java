@@ -4,6 +4,7 @@ import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.NewFoodItem;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -84,7 +85,7 @@ public class FoodRequest {
       LocalDateTime deliveryTime,
       String recipientName,
       List<NewFoodItem> foodItems) {
-    this.foodRequestID = LocalDateTime.now();
+    this.foodRequestID = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     this.assignee = assignee;
     this.formStatus = formStatus;
     this.notes = notes;

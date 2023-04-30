@@ -1,18 +1,26 @@
 package edu.wpi.fishfolk.database;
 
+import static edu.wpi.fishfolk.util.NodeType.*;
+
 import edu.wpi.fishfolk.database.DAO.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.mapeditor.NodeText;
+import edu.wpi.fishfolk.util.NodeType;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
+import lombok.Getter;
 
 public class Fdb {
 
   private final Connection dbConnection;
+
+  @Getter
+  private final List<NodeType> nodeTypes =
+      List.of(BATH, CONF, DEPT, ELEV, EXIT, HALL, INFO, LABS, REST, RETL, SERV, STAI);
 
   // Hospital Map Tables
   private final NodeDAO nodeTable;
@@ -33,12 +41,14 @@ public class Fdb {
   // Signage Tables
   private final SignagePresetDAO signagePresetTable;
 
-  // TODO use map from tabletype -> dao table object to simplify delegation
+  private final AlertDAO alertTable;
+
+  // TODO refactor: use map from tabletype -> dao table object to simplify delegation
 
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb() {
 
-    this.dbConnection = connect("teamfdb", "teamf", "teamf60");
+    this.dbConnection = connect();
 
     // Hospital Map Tables
     this.nodeTable = new NodeDAO(dbConnection);
@@ -59,6 +69,9 @@ public class Fdb {
     // Signage Tables
     this.signagePresetTable = new SignagePresetDAO(dbConnection);
 
+    // Alert table
+    this.alertTable = new AlertDAO(dbConnection);
+
     // importLocalCSV();
 
     Runtime.getRuntime()
@@ -75,6 +88,8 @@ public class Fdb {
                   conferenceRequestTable.updateDatabase(true);
                   userAccountTable.updateDatabase(true);
                   signagePresetTable.updateDatabase(true);
+                  alertTable.updateDatabase(true);
+
                   disconnect();
                 }));
   }
@@ -82,24 +97,30 @@ public class Fdb {
   /**
    * Connect to a PostgreSQL database.
    *
-   * @param dbName Database name
-   * @param dbUser Account
-   * @param dbPass Password
    * @return Database connection object (null if no connection is made)
    */
-  private Connection connect(String dbName, String dbUser, String dbPass) {
-    String dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
+  private Connection connect() {
+
     try {
-      Class.forName("org.postgresql.Driver");
-      Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
+
+      // Attempt a database connection
+      Connection db = ConnectionBuilder.buildConnection();
+
       if (db != null) {
+
+        // Notify console of successful connection
         System.out.println("[Fdb.connect]: Connection established.");
-        db.setSchema("iter2db");
+
+        // Set timeout to 1 day (86400000 ms)
+        String query = "SET idle_session_timeout = 86400000;";
+        Statement statement = db.createStatement();
+        statement.executeUpdate(query);
+
       } else {
         System.out.println("[Fdb.connect]: Connection failed.");
       }
       return db;
-    } catch (ClassNotFoundException | SQLException e) {
+    } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
     return null;
@@ -155,6 +176,9 @@ public class Fdb {
 
     } else if (entry instanceof SignagePreset) {
       return signagePresetTable.insertEntry((SignagePreset) entry);
+
+    } else if (entry instanceof Alert) {
+      return alertTable.insertEntry((Alert) entry);
     }
 
     return false;
@@ -200,6 +224,9 @@ public class Fdb {
 
     } else if (entry instanceof SignagePreset) {
       return signagePresetTable.updateEntry((SignagePreset) entry);
+
+    } else if (entry instanceof Alert) {
+      return alertTable.updateEntry((Alert) entry);
     }
 
     return false;
@@ -237,6 +264,8 @@ public class Fdb {
         return userAccountTable.removeEntry(identifier);
       case SIGNAGE_PRESET:
         return signagePresetTable.removeEntry(identifier);
+      case ALERT:
+        return alertTable.removeEntry(identifier);
     }
 
     return false;
@@ -274,6 +303,8 @@ public class Fdb {
         return userAccountTable.getEntry(identifier);
       case SIGNAGE_PRESET:
         return signagePresetTable.getEntry(identifier);
+      case ALERT:
+        return alertTable.getEntry(identifier);
     }
 
     return null;
@@ -310,6 +341,8 @@ public class Fdb {
         return userAccountTable.getAllEntries();
       case SIGNAGE_PRESET:
         return signagePresetTable.getAllEntries();
+      case ALERT:
+        return alertTable.getAllEntries();
     }
 
     return null;
@@ -357,6 +390,9 @@ public class Fdb {
       case SIGNAGE_PRESET:
         signagePresetTable.undoChange();
         break;
+      case ALERT:
+        alertTable.undoChange();
+        break;
     }
   }
 
@@ -391,6 +427,8 @@ public class Fdb {
         return userAccountTable.updateDatabase(true);
       case SIGNAGE_PRESET:
         return signagePresetTable.updateDatabase(true);
+      case ALERT:
+        return alertTable.updateDatabase(true);
     }
 
     return false;
@@ -401,49 +439,93 @@ public class Fdb {
    * Import a CSV file into a table
    *
    * @param tableEntryType The type of table to import into
-   * @param filepath
+   * @param tableFilepath
    * @param backup
    * @return true on success, false otherwise
    */
-  public boolean importCSV(String filepath, boolean backup, TableEntryType tableEntryType) {
+  public boolean importCSV(String tableFilepath, boolean backup, TableEntryType tableEntryType) {
 
-    System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(filepath).toMatchResult().group());
+    // Commented out due to regex error -Christian
+    // System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(tableFilepath).toMatchResult().group());
 
     switch (tableEntryType) {
       case NODE:
-        return nodeTable.importCSV(filepath, backup);
+        return nodeTable.importCSV(tableFilepath, backup);
 
       case LOCATION:
-        return locationTable.importCSV(filepath, backup);
+        return locationTable.importCSV(tableFilepath, backup);
 
       case MOVE:
-        return moveTable.importCSV(filepath, backup);
+        return moveTable.importCSV(tableFilepath, backup);
 
       case EDGE:
-        return edgeTable.importCSV(filepath, backup);
+        return edgeTable.importCSV(tableFilepath, backup);
 
       case FOOD_REQUEST:
-        return foodRequestTable.importCSV(filepath, backup);
+        return foodRequestTable.importCSV(tableFilepath, backup);
 
       case SUPPLY_REQUEST:
-        return supplyRequestTable.importCSV(filepath, backup);
+        return supplyRequestTable.importCSV(tableFilepath, backup);
 
       case FURNITURE_REQUEST:
-        return furnitureRequestTable.importCSV(filepath, backup);
+        return furnitureRequestTable.importCSV(tableFilepath, backup);
 
       case FLOWER_REQUEST:
-        return flowerRequestTable.importCSV(filepath, backup);
+        return flowerRequestTable.importCSV(tableFilepath, backup);
 
       case CONFERENCE_REQUEST:
-        return conferenceRequestTable.importCSV(filepath, backup);
+        return conferenceRequestTable.importCSV(tableFilepath, backup);
 
       case USER_ACCOUNT:
-        return userAccountTable.importCSV(filepath, backup);
+        return userAccountTable.importCSV(tableFilepath, backup);
 
       case SIGNAGE_PRESET:
-        return signagePresetTable.importCSV(filepath, backup);
+        return signagePresetTable.importCSV(tableFilepath, backup);
+
+      case ALERT:
+        return alertTable.importCSV(tableFilepath, backup);
     }
     return false;
+  }
+
+  /**
+   * Potentially temporary secondary declaration of importCSV for classes with subtables.
+   *
+   * @param tableFilepath Filepath of the main table
+   * @param subtableFilepath Filepath of the subtable
+   * @param backup Backup the current db to a CSV?
+   * @param tableEntryType Intended table to perform operation
+   * @return True on success, false otherwise
+   */
+  public boolean importCSV(
+      String tableFilepath,
+      String subtableFilepath,
+      boolean backup,
+      TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case FOOD_REQUEST:
+        return foodRequestTable.importCSV(tableFilepath, subtableFilepath, backup);
+    }
+
+    return false;
+  }
+
+  /**
+   * DEBUG ONLY: Import only a subtable from a CSV.
+   *
+   * @param subtableFilepath Filepath of the subtable
+   * @param tableEntryType Intended table to perform operation
+   * @return Hashmap of Lists with subtable IDs as keys
+   */
+  public HashMap<?, ?> importSubtable(String subtableFilepath, TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case FOOD_REQUEST:
+        return foodRequestTable.importSubtable(subtableFilepath);
+    }
+
+    return null;
   }
 
   /**
@@ -488,6 +570,9 @@ public class Fdb {
 
       case SIGNAGE_PRESET:
         return signagePresetTable.exportCSV(directory);
+
+      case ALERT:
+        return alertTable.exportCSV(directory);
     }
     return false;
   }
@@ -538,8 +623,9 @@ public class Fdb {
    * Get the Node ID corresponding to the given Location on a given date
    *
    * @param longname the longname of the Location
-   * @param date
-   * @return
+   * @param date the date to search on
+   * @return the ID (int > 0) of the node where the given location is found at the given date,
+   *     otherwise -1.
    */
   public int getNodeIDFromLocation(String longname, LocalDate date) {
 
@@ -595,6 +681,35 @@ public class Fdb {
     return locationTable.getAllEntries().stream().filter(Location::isDestination).toList();
   }
 
+  public HashMap<NodeType, List<NodeText>> getLocationLabelsByType(String floor, LocalDate date) {
+
+    HashMap<NodeType, List<NodeText>> map = new HashMap<>();
+    nodeTypes.forEach(type -> map.put(type, new ArrayList<>()));
+
+    getNodesOnFloor(floor)
+        .forEach(
+            node -> {
+              int[] offset = {0}; // offset multiple labels at the same node
+
+              getLocations(node.getNodeID(), date)
+                  .forEach(
+                      location -> {
+                        // create text label and add it to list of labels in the map
+                        String labelText = location.getShortName();
+                        map.get(location.getNodeType())
+                            .add(
+                                new NodeText(
+                                    node.getNodeID(),
+                                    node.getX() - labelText.length() * 5 + offset[0],
+                                    node.getY() - 10 + offset[0],
+                                    labelText));
+                        offset[0] += 20;
+                      });
+            });
+
+    return map;
+  }
+
   public int getNextNodeID() {
     return nodeTable.getNextID();
   }
@@ -635,5 +750,9 @@ public class Fdb {
               } else return false;
             })
         .toList();
+  }
+
+  public Alert getLatestAlert() {
+    return alertTable.getLatestAlert();
   }
 }

@@ -1,8 +1,8 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.SupplyRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.SupplyItem;
 import edu.wpi.fishfolk.ui.SupplyOrder;
@@ -54,8 +54,8 @@ public class NewSupplyOrderController extends AbsController {
   @FXML
   public void initialize() {
     loadOptions();
-    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
-    cancelButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
+    cancelButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     supplySubmitButton.setOnMouseClicked(event -> submit());
     clearButton.setOnMouseClicked(event -> clearAllFields());
     loadRooms();
@@ -166,6 +166,7 @@ public class NewSupplyOrderController extends AbsController {
       Text errorText = new Text("One or more required fields have not been filled");
       errorText.setFont(new Font("Open Sans", 26));
       error.setContentNode(errorText);
+      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
       error.show(supplySubmitButton);
     }
   }

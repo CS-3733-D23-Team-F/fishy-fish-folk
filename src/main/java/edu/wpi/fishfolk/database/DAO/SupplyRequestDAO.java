@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
@@ -17,10 +18,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.postgresql.PGConnection;
+import org.postgresql.util.PSQLException;
 
 public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<SupplyItem> {
 
   private final Connection dbConnection;
+  private Connection dbListener;
 
   private final String tableName;
   private final ArrayList<String> headers;
@@ -37,9 +41,11 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
             List.of("id", "assignee", "status", "notes", "link", "roomnumber", "supplies"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
+    this.dataEditQueue.setBatchLimit(1);
 
     init(false);
     initSubtable(false);
+    prepareListener();
     populateLocalTable();
   }
 
@@ -120,7 +126,82 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
   }
 
   @Override
+  public void prepareListener() {
+
+    try {
+
+      dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
+
+      if (dbListener == null) {
+        System.out.println("[SupplyRequestDAO.prepareListener]: Listener is null.");
+        return;
+      }
+
+      // Create a function that calls NOTIFY when the table is modified
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE FUNCTION notifySupplyRequest() RETURNS TRIGGER AS $supplyrequest$"
+                  + "BEGIN "
+                  + "NOTIFY supplyrequest;"
+                  + "RETURN NULL;"
+                  + "END; $supplyrequest$ language plpgsql")
+          .execute();
+
+      // Create a trigger that calls the function on any change
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE TRIGGER supplyRequestUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "supplyrequest FOR EACH STATEMENT EXECUTE FUNCTION notifySupplyRequest()")
+          .execute();
+
+      // Start listener
+      reListen();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void reListen() {
+    try {
+      dbListener.prepareStatement("LISTEN supplyrequest").execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void verifyLocalTable() {
+
+    try {
+
+      // Check for notifications on the table
+      PGConnection driver = dbListener.unwrap(PGConnection.class);
+
+      // See if there is a notification
+      if (driver.getNotifications().length > 0) {
+        System.out.println("[SupplyRequestDAO.verifyLocalTable]: Notification received!");
+        populateLocalTable();
+      }
+
+      // Catch a timeout and reset refresh local table
+    } catch (PSQLException e) {
+
+      dbListener = ConnectionBuilder.buildConnection();
+      reListen();
+      populateLocalTable();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
   public boolean insertEntry(SupplyRequest entry) {
+
+    // Check if the entry already exists. Unlikely conflicts.
+    if (tableMap.containsKey(entry.getSupplyRequestID())) return false;
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
@@ -213,6 +294,9 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
 
   @Override
   public SupplyRequest getEntry(Object identifier) {
+
+    verifyLocalTable();
+
     // Check if input identifier is correct type
     if (!(identifier instanceof LocalDateTime)) {
       System.out.println(
@@ -237,6 +321,9 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
 
   @Override
   public ArrayList<SupplyRequest> getAllEntries() {
+
+    verifyLocalTable();
+
     ArrayList<SupplyRequest> allSupplyRequests = new ArrayList<>();
 
     // Add all entries in local table to a list

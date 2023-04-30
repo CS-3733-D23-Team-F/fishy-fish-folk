@@ -1,9 +1,9 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.FoodRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.ui.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
@@ -37,7 +37,6 @@ public class NewFoodOrderController extends AbsController {
   @FXML TextField recipientField, timeSelector;
   @FXML TextArea notesField;
   @FXML ScrollPane menuItemsPane, cartItemsPane;
-  @FXML AnchorPane cartViewPane;
   @FXML HBox cartWrap, blur, confirmBlur;
   @FXML HBox confirmBox;
   @FXML AnchorPane confirmPane;
@@ -58,8 +57,6 @@ public class NewFoodOrderController extends AbsController {
     loadMenu();
     loadRooms();
     cart = new NewFoodCart();
-    cartViewPane.setVisible(false);
-    cartViewPane.setDisable(true);
     cancelButton.setOnAction(event -> cancel());
     clearButton.setOnAction(event -> clear());
     checkoutButton.setOnAction(event -> openCart());
@@ -70,7 +67,7 @@ public class NewFoodOrderController extends AbsController {
     mainsTab.setOnAction(event -> tab(2));
     drinksTab.setOnAction(event -> tab(3));
     dessertsTab.setOnAction(event -> tab(4));
-    okButton.setOnAction(event -> Navigation.navigate(Screen.HOME));
+    okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
     tabButtons = new MFXButton[] {appsTab, sidesTab, mainsTab, drinksTab, dessertsTab};
     oSans20 = new Font("Open Sans Regular", 20);
     oSans26 = new Font("Open Sans Regular", 26);
@@ -131,7 +128,7 @@ public class NewFoodOrderController extends AbsController {
   /** Clear the cart, and Return Home */
   private void cancel() {
     cart = null;
-    Navigation.navigate(Screen.HOME); // todo discuss changing this to service request
+    Navigation.navigate(SharedResources.getHome()); // todo discuss changing this to service request
   }
 
   /** Load cart items into viewable format, and put the cart on screen */
@@ -139,8 +136,7 @@ public class NewFoodOrderController extends AbsController {
   private void openCart() {
     loadCart();
     notesField.setWrapText(true);
-    cartViewPane.setDisable(false);
-    cartViewPane.setVisible(true);
+    cartWrap.setVisible(true);
     cartWrap.setDisable(false);
     blur.setDisable(false);
     blur.setVisible(true);
@@ -148,8 +144,7 @@ public class NewFoodOrderController extends AbsController {
 
   /** Hide the cart */
   private void closeCart() {
-    cartViewPane.setDisable(true);
-    cartViewPane.setVisible(false);
+    cartWrap.setVisible(false);
     cartWrap.setDisable(true);
     blur.setDisable(true);
     blur.setVisible(false);

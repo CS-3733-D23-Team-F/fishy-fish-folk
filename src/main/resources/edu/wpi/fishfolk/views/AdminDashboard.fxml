@@ -10,14 +10,16 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="670.0" minWidth="1080.0" style="-fx-background-color: #F4F4F4;" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.HomeController">
+<VBox minHeight="670.0" minWidth="1080.0" style="-fx-background-color: #F4F4F4;" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AdminDashboardController">
    <children>
       <HBox style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
          <children>
@@ -32,7 +34,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <MFXScrollPane fx:id="scroll" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+                  <MFXScrollPane fx:id="scroll" hbarPolicy="NEVER" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                      <content>
                         <GridPane fx:id="grid">
                           <rowConstraints>
@@ -48,11 +50,11 @@
             </VBox>
             <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox alignment="TOP_CENTER" minHeight="300.0" minWidth="700.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                      <children>
                         <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
                            <children>
-                              <Label text="Unassigned Tasks" textFill="WHITE">
+                              <Label fx:id="tableHeader" text="Unassigned Tasks" textFill="WHITE">
                                  <font>
                                     <Font name="Open Sans Bold" size="24.0" />
                                  </font>
@@ -109,29 +111,6 @@
                                           </AnchorPane>
                                        </content>
                                     </Tab>
-                                    <Tab text="Furniture Orders">
-                                       <content>
-                                          <AnchorPane>
-                                             <children>
-                                                <TableView fx:id="furnitureTable" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <columns>
-                                                      <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
-                                                      <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
-                                                      <TableColumn fx:id="furnituredeliveryroom" prefWidth="98.7999267578125" text="Delivery Room" />
-                                                      <TableColumn fx:id="furnituredeliverydate" prefWidth="94.0" text="Delivery Date" />
-                                                      <TableColumn fx:id="furniturenotes" prefWidth="67.99996948242188" text="Notes" />
-                                                      <TableColumn fx:id="furnitureservicetype" prefWidth="89.20001220703125" text="Service Type" />
-                                                      <TableColumn fx:id="furniturefurniture" prefWidth="78.4000244140625" text="Furniture" />
-                                                      <TableColumn fx:id="furnitureassignee" prefWidth="75.0" text="Assignee" />
-                                                   </columns>
-                                                   <columnResizePolicy>
-                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                   </columnResizePolicy>
-                                                </TableView>
-                                             </children>
-                                          </AnchorPane>
-                                       </content>
-                                    </Tab>
                                     <Tab text="Flower Orders">
                                        <content>
                                           <AnchorPane>
@@ -155,13 +134,36 @@
                                           </AnchorPane>
                                        </content>
                                     </Tab>
+                                    <Tab text="Furniture Orders">
+                                       <content>
+                                          <AnchorPane>
+                                             <children>
+                                                <TableView fx:id="furnitureTable" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
+                                                      <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
+                                                      <TableColumn fx:id="furnituredeliveryroom" prefWidth="98.7999267578125" text="Delivery Room" />
+                                                      <TableColumn fx:id="furnituredeliverydate" prefWidth="94.0" text="Delivery Date" />
+                                                      <TableColumn fx:id="furniturenotes" prefWidth="67.99996948242188" text="Notes" />
+                                                      <TableColumn fx:id="furnitureservicetype" prefWidth="89.20001220703125" text="Service Type" />
+                                                      <TableColumn fx:id="furniturefurniture" prefWidth="78.4000244140625" text="Furniture" />
+                                                      <TableColumn fx:id="furnitureassignee" prefWidth="75.0" text="Assignee" />
+                                                   </columns>
+                                                   <columnResizePolicy>
+                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                   </columnResizePolicy>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
                                  </tabs>
                               </TabPane>
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox>
+                  <HBox VBox.vgrow="ALWAYS">
                      <children>
                         <VBox style="-fx-border-color: #012D5A; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
                            <children>
@@ -174,17 +176,17 @@
                                     </Label>
                                  </children>
                               </HBox>
-                              <VBox alignment="TOP_CENTER" minWidth="450.0">
+                              <VBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <MFXScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="300.0" minHeight="100.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" vbarPolicy="NEVER">
+                                    <MFXScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="100.0" minWidth="475.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                                        <VBox.margin>
                                           <Insets left="10.0" right="10.0" top="10.0" />
                                        </VBox.margin>
                                        <content>
                                           <GridPane fx:id="alertGrid" maxWidth="1.7976931348623157E308">
-                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                             </rowConstraints>
+                                             <columnConstraints>
+                                                <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
                                           </GridPane>
                                        </content>
                                     </MFXScrollPane>
@@ -206,40 +208,66 @@
                               </VBox>
                            </children>
                            <HBox.margin>
-                              <Insets top="25.0" />
+                              <Insets />
                            </HBox.margin>
                         </VBox>
                         <VBox alignment="CENTER">
                            <children>
-                              <MFXButton buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Map Editor" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="20.0" />
-                                 </font>
+                              <StackPane>
+                                 <children>
+                                    <MFXButton fx:id="outstandingFilter" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Outstanding Service" textFill="WHITE">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="17.0" />
+                                       </font>
+                                    </MFXButton>
+                                    <MFXButton fx:id="unassignedTasks" buttonType="RAISED" disable="true" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Unassigned Tasks" textFill="WHITE" visible="false">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="17.0" />
+                                       </font>
+                                    </MFXButton>
+                                 </children>
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </MFXButton>
-                              <VBox VBox.vgrow="ALWAYS" />
-                              <MFXButton buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Move Editor" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="20.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="37.0" top="37.0" />
-                                 </VBox.margin>
-                              </MFXButton>
-                              <VBox VBox.vgrow="ALWAYS" />
-                              <MFXButton buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Signage Editor" textFill="#012d5a">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="20.0" />
-                                 </font>
-                              </MFXButton>
+                              </StackPane>
+                              <HBox VBox.vgrow="ALWAYS" />
+                              <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                                 <children>
+                                    <MFXButton fx:id="toMapEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Map Editor" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="20.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </MFXButton>
+                                    <MFXButton fx:id="toMoveEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Move Editor" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="20.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </MFXButton>
+                                    <MFXButton fx:id="toSignageEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Signage Editor" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="20.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </MFXButton>
+                                 </children>
+                              </VBox>
                            </children>
                            <HBox.margin>
-                              <Insets left="5.0" top="25.0" />
+                              <Insets left="5.0" />
                            </HBox.margin>
                         </VBox>
                      </children>
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
                <HBox.margin>
