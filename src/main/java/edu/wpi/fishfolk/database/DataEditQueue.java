@@ -7,11 +7,11 @@ import lombok.Setter;
 
 public class DataEditQueue<T> {
 
-  private final ArrayList<DataEdit<T>> dataEditQueue = new ArrayList<>();
+  protected final ArrayList<DataEdit<T>> dataEditQueue = new ArrayList<>();
 
-  @Getter @Setter private int pointer;
-  @Setter private int editCount;
-  @Getter @Setter private int batchLimit;
+  @Getter @Setter protected int pointer;
+  @Setter protected int editCount;
+  @Getter @Setter protected int batchLimit;
 
   /** Represents a queue of data edits for a PostgreSQL database. */
   public DataEditQueue() {

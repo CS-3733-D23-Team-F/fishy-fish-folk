@@ -28,6 +28,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import lombok.Getter;
+import lombok.Setter;
 import net.kurobako.gesturefx.GesturePane;
 import org.controlsfx.control.CheckComboBox;
 
@@ -107,8 +109,7 @@ public class MapEditorController extends AbsController {
   private int currentFloor = 2;
   private boolean controlPressed = false;
 
-  private final DataEditQueue<Object> editQueue = new DataEditQueue<>(),
-      undoneEdits = new DataEditQueue<>();
+  private final MapEditQueue<Object> editQueue = new MapEditQueue<>();
 
   public MapEditorController() {
     super();
@@ -436,14 +437,14 @@ public class MapEditorController extends AbsController {
           editQueue.clear();
         });
 
-    // TODO idea: instead of storing list of undone edits, just move pointer back in edit queue
+    // TODO: instead of storing list of undone edits, just move pointer back in edit queue
     undo.setOnMouseClicked(
         event -> {
           if (editQueue.isEmpty()) {
             System.out.println("no edits to undo");
 
           } else {
-            DataEdit<Object> lastEdit = editQueue.popRecent();
+            DataEdit<Object> lastEdit = editQueue.undoEdit();
             System.out.println("undoing " + lastEdit.toString());
 
             switch (lastEdit.getTable()) {
@@ -490,7 +491,6 @@ public class MapEditorController extends AbsController {
 
                     break;
                 }
-                undoneEdits.add(lastEdit, false);
                 break;
 
               case EDGE:
@@ -1304,6 +1304,59 @@ public class MapEditorController extends AbsController {
     locationScrollpane.setDisable(true);
     locationScrollpane.setMaxHeight(0);
   }
+}
+
+class MapEditQueue<Object> extends DataEditQueue<Object> {
+
+  // tracks the last edit displayed
+  @Getter @Setter private int undoPointer;
+
+  MapEditQueue() {
+    super();
+    undoPointer = 0;
+  }
+
+  @Override
+  public boolean add(DataEdit<Object> dataEdit, boolean countEntry) {
+
+    undoPointer++;
+
+    return dataEditQueue.add(dataEdit);
+  }
+
+    /**
+     * Undoes the last edit by moving the pointer backwards one.
+     * @return
+     */
+  public DataEdit<Object> undoEdit(){
+
+      // Check if queue is empty
+      if (dataEditQueue.isEmpty()) {
+          return null;
+      }
+
+      undoPointer--;
+
+      return dataEditQueue.get(undoPointer);
+  }
+
+  @Override
+  public void clear() {
+      dataEditQueue.clear();
+      pointer = 0;
+      editCount = 0;
+      undoPointer = 0;
+  }
+
+    /**
+     * Clear the edits after the undo pointer.
+     */
+  public void clearUndoneEdits(){
+      dataEditQueue.subList(undoPointer, dataEditQueue.size()).clear();
+  }
+
+  //leave the DataEditQueue next() and hasNext() as they are
+  // for iterating through the queue in fdb.processEdits(queue)
 }
 
 enum EDITOR_STATE {
