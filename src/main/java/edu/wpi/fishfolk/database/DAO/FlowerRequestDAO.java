@@ -213,6 +213,10 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
 
   @Override
   public boolean insertEntry(FlowerRequest entry) {
+
+    // Check if the entry already exists. Unlikely conflicts.
+    if (tableMap.containsKey(entry.getFlowerRequestID())) return false;
+
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 

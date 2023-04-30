@@ -2,7 +2,6 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,6 +12,46 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="rootPane" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.RootController">
+   <top>
+      <AnchorPane minHeight="50.0" minWidth="1080.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #012D5A;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox alignment="CENTER" maxWidth="100.0" minWidth="100.0" styleClass="navIcon">
+                     <children>
+                        <MFXButton fx:id="homeButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="0.0" maxHeight="50.0" maxWidth="95.0" minHeight="50.0" minWidth="95.0" style="-fx-background-color: #012d5a; -fx-background-radius: 0;" text=" ">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="50.0" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/bwlogoWhite.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MFXButton>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <MFXButton fx:id="aboutButton" minHeight="50.0" style="-fx-background-radius: 0; -fx-text-fill: #ffffff; -fx-background-color: #012d5a;" text="About Us">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </MFXButton>
+                        <MFXButton fx:id="creditButton" minHeight="50.0" style="-fx-background-radius: 0; -fx-text-fill: #ffffff; -fx-background-color: #012d5a;" text="Credits">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font>
+                        </MFXButton>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </top>
    <left>
       <StackPane fx:id="sidebar" alignment="BOTTOM_CENTER" BorderPane.alignment="CENTER">
          <children>
@@ -20,21 +59,6 @@
                <children>
                   <VBox fx:id="buttonsBox" alignment="TOP_RIGHT" maxWidth="100.0" minHeight="670.0" minWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <MFXButton fx:id="homeButton" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" VBox.vgrow="ALWAYS">
-                           <font>
-                              <Font name="Open Sans Bold" size="16.0" />
-                           </font>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/NavigationBar/home.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </MFXButton>
                         <MFXButton fx:id="signageNav" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" VBox.vgrow="ALWAYS">
                            <font>
                               <Font name="Open Sans Bold" size="16.0" />
@@ -58,43 +82,17 @@
                               <Insets left="10.0" />
                            </padding>
                            <graphic>
-                              <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="35.0" fitWidth="35.0">
                                  <image>
-                                    <Image url="@../images/NavigationBar/map.png" />
+                                    <Image url="@../images/NavigationBar/pathfinding.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </MFXButton>
-                        <MFXButton fx:id="mapEditorNav" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" VBox.vgrow="ALWAYS">
-                           <font>
-                              <Font name="Open Sans Bold" size="16.0" />
-                           </font>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <graphic>
-                              <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/NavigationBar/002-line-segment.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </MFXButton>
-                        <HBox fx:id="serviceBox" fillHeight="false" maxHeight="360.0" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+                        <HBox fx:id="serviceBox" fillHeight="false" maxHeight="300.0" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
                            <children>
-                              <VBox fx:id="serviceBar" disable="true" maxHeight="360.0" maxWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: #ffffff;" visible="false">
+                              <VBox fx:id="serviceBar" disable="true" maxHeight="300.0" maxWidth="200.0" minHeight="300.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: #ffffff;" visible="false">
                                  <children>
-                                    <MFXButton fx:id="viewOrders" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="View Orders" textFill="#012d5a">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="15.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets left="10.0" />
-                                       </padding>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </MFXButton>
                                     <MFXButton fx:id="mealNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Meal Order" textFill="#012d5a">
                                        <font>
                                           <Font name="Open Sans Bold" size="15.0" />
@@ -145,9 +143,9 @@
                                     <Insets left="10.0" />
                                  </padding>
                                  <graphic>
-                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="35.0" fitWidth="35.0">
                                        <image>
-                                          <Image url="@../images/NavigationBar/delivery.png" />
+                                          <Image url="@../images/NavigationBar/serviceRequest.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -156,40 +154,27 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <MFXButton fx:id="switchAccsButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="-8.0" layoutY="600.0" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <MFXButton fx:id="mapEditorNav" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="210.0">
                      <font>
                         <Font name="Open Sans Bold" size="16.0" />
                      </font>
                      <padding>
-                        <Insets left="5.0" />
+                        <Insets left="10.0" />
                      </padding>
                      <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                        <ImageView fitHeight="35.0" fitWidth="35.0">
                            <image>
-                              <Image url="@../images/NavigationBar/exit.png" />
+                              <Image url="@../images/NavigationBar/mapEditor.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </MFXButton>
-                  <MFXButton fx:id="exitButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <MFXButton fx:id="exitButton" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" style="-fx-background-color: #012d5a; -fx-background-radius: 0;" text="Exit" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <font>
-                        <Font name="Open Sans Bold" size="16.0" />
+                        <Font name="Open Sans Regular" size="15.0" />
                      </font>
-                     <graphic>
-                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/NavigationBar/power.png" />
-                           </image>
-                           <effect>
-                              <ColorAdjust brightness="1.0" />
-                           </effect>
-                        </ImageView>
-                     </graphic>
-                     <padding>
-                        <Insets left="5.0" />
-                     </padding>
                   </MFXButton>
-                  <MFXButton fx:id="AccManagerBtn" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="2.0" layoutY="610.0" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <MFXButton fx:id="viewOrders" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="2.0" layoutY="610.0" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="280.0">
                      <font>
                         <Font name="Open Sans Bold" size="16.0" />
                      </font>
@@ -199,71 +184,34 @@
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="35.0">
                            <image>
-                              <Image url="@../images/NavigationBar/003-group.png" />
+                              <Image url="@../images/NavigationBar/anotherTable.png" />
                            </image>
                         </ImageView>
                      </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="AccManagerBtn" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="12.0" layoutY="620.0" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="350.0">
+                     <font>
+                        <Font name="Open Sans Bold" size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="35.0">
+                           <image>
+                              <Image url="@../images/NavigationBar/justAddMorePeople.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="switchAccsButton" layoutX="10.0" layoutY="10.0" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" style="-fx-background-color: #012d5a; -fx-background-radius: 0;" text="Logout" textFill="WHITE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <font>
+                        <Font name="Open Sans Regular" size="15.0" />
+                     </font>
                   </MFXButton>
                </children>
             </AnchorPane>
          </children>
       </StackPane>
    </left>
-   <top>
-      <StackPane BorderPane.alignment="CENTER">
-         <children>
-            <AnchorPane maxHeight="50.0" minHeight="50.0" minWidth="1080.0" StackPane.alignment="CENTER">
-               <children>
-                  <HBox alignment="CENTER_LEFT" maxHeight="50.0" style="-fx-background-color: #012D5A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <HBox alignment="CENTER" maxWidth="100.0" minWidth="100.0" styleClass="navIcon">
-                           <children>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/FFF.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-                           <children>
-                              <MFXButton fx:id="aboutButton" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" depthLevel="LEVEL1" style="-fx-background-color: transparent;">
-                                 <graphic>
-                                    <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/NavigationBar/001-information.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </MFXButton>
-                              <MFXButton fx:id="creditButton" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" depthLevel="LEVEL1" style="-fx-background-color: transparent;">
-                                 <graphic>
-                                    <ImageView fx:id="creditsButton" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/NavigationBar/002-copyright.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </MFXButton>
-                              <MFXButton fx:id="userDropdown" contentDisplay="GRAPHIC_ONLY" style="-fx-background-color: transparent;">
-                                 <graphic>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/FFF.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </MFXButton>
-                           </children>
-                        </HBox>
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-         </children>
-      </StackPane>
-   </top>
 </BorderPane>
