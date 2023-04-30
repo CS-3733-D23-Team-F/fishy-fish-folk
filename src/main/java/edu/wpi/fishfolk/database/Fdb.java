@@ -109,13 +109,18 @@ public class Fdb {
    * @return Database connection object (null if no connection is made)
    */
   private Connection connect(String dbName, String dbUser, String dbPass, DBSource dbSource) {
-    String dbServer;
     switch (dbSource) {
       case DB_WPI:
-        dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
+        ConnectionBuilder.setURL("jdbc:postgresql://database.cs.wpi.edu:5432/");
+        ConnectionBuilder.setUsername(dbUser);
+        ConnectionBuilder.setPassword(dbPass);
+        ConnectionBuilder.setDbName(dbName);
         break;
       default:
-        dbServer = "jdbc:postgresql://postgres.thesamrooney.com:5432/"; // i.e. DB_AWS
+        ConnectionBuilder.setURL("jdbc:postgresql://postgres.thesamrooney.com:5432/"); // i.e. DB_AWS
+        ConnectionBuilder.setUsername(dbUser);
+        ConnectionBuilder.setPassword(dbPass);
+        ConnectionBuilder.setDbName(dbName);
         break;
     }
     try {

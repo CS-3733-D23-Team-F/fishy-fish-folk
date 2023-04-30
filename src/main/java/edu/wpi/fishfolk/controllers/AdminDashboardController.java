@@ -196,6 +196,7 @@ public class AdminDashboardController {
       e.printStackTrace();
     }
 
+    alertGrid.getChildren().removeAll();
     dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
 
     addAlert.setOnAction(

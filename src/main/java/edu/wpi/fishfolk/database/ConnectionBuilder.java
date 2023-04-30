@@ -7,11 +7,11 @@ import lombok.NonNull;
 
 public class ConnectionBuilder {
 
-  private static final String username = "teamf";
-  private static final String password = "teamf60";
-  private static final String dbName = "teamfdb";
+  private static String username = "teamf";
+  private static String password = "teamf60";
+  private static String dbName = "teamfdb";
   private static String schema = "iter2db";
-  private static final String URL = "jdbc:postgresql://database.cs.wpi.edu:5432/";
+  private static String URL = "jdbc:postgresql://database.cs.wpi.edu:5432/";
 
   /**
    * Creates a new connection to the database with preset parameters.
@@ -38,4 +38,12 @@ public class ConnectionBuilder {
   public static void setSchema(@NonNull String schema) {
     ConnectionBuilder.schema = schema;
   }
+
+  public static void setURL(@NonNull String URL) { ConnectionBuilder.URL = URL; }
+
+  public static void setUsername(@NonNull String username) { ConnectionBuilder.username = username; }
+
+  public static void setPassword(@NonNull String password) { ConnectionBuilder.password = password; }
+
+  public static void setDbName(@NonNull String dbName) { ConnectionBuilder.dbName = dbName; }
 }
