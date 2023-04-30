@@ -2,7 +2,6 @@ package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
-import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.ui.Recurring;
 import io.github.palexdev.materialfx.controls.*;
@@ -12,8 +11,6 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import org.controlsfx.control.PopOver;
 
 public class NewConferenceController extends AbsController {
   @FXML MFXButton confClearButton, confCancelButton, confSubmitButton;
@@ -122,6 +119,7 @@ public class NewConferenceController extends AbsController {
 
   /**
    * Finds which conference room was selected by the user.
+   *
    * @return returns the name of the conference room
    */
   public String whichConf() {
@@ -151,6 +149,7 @@ public class NewConferenceController extends AbsController {
 
   /**
    * Checks to see if the end time comes after the start time
+   *
    * @return true if it is, false if not
    */
   public boolean validEndTime() {
@@ -173,6 +172,7 @@ public class NewConferenceController extends AbsController {
 
   /**
    * checks to see if the given timeframe is interrupted by another booked conference
+   *
    * @return returns true if there is a time interference
    */
   /*
@@ -233,39 +233,44 @@ public class NewConferenceController extends AbsController {
                   }
                   if (numba < 21 && numba > 1 && numba != 75) {
                     if (!(recurringDrop.getText().isEmpty())) {
-                      //if (isItFree()) {
-                        submit();
+                      // if (isItFree()) {
+                      submit();
                       /*} else {
                         submissionError(
                             "There is already a meeting scheduled for this time.",
                             confSubmitButton);
                       }*/
                     } else {
-                      submissionError("You must choose your setting for recurring.", confSubmitButton); //recurringDrop);
+                      submissionError(
+                          "You must choose your setting for recurring.",
+                          confSubmitButton); // recurringDrop);
                     }
                   } else {
-                    submissionError("Invalid Input for number of attendees.", confSubmitButton); //numAttnBox);
+                    submissionError(
+                        "Invalid Input for number of attendees.", confSubmitButton); // numAttnBox);
                   }
                 } else {
-                  submissionError("You must put in the number of attendees.", confSubmitButton); //numAttnBox);
+                  submissionError(
+                      "You must put in the number of attendees.", confSubmitButton); // numAttnBox);
                 }
               } else {
-                submissionError("You must choose a date in the future.", confSubmitButton); //datePicker);
+                submissionError(
+                    "You must choose a date in the future.", confSubmitButton); // datePicker);
               }
             } else {
-              submissionError("You must include a date", confSubmitButton); //datePicker);
+              submissionError("You must include a date", confSubmitButton); // datePicker);
             }
           } else {
-            submissionError("That's not how time works.", confSubmitButton); //endTimeDrop);
+            submissionError("That's not how time works.", confSubmitButton); // endTimeDrop);
           }
         } else {
-          submissionError("You must put in a time.", confSubmitButton); //endTimeDrop);
+          submissionError("You must put in a time.", confSubmitButton); // endTimeDrop);
         }
       } else {
-        submissionError("You must put in a time.", confSubmitButton); //startTimeDrop);
+        submissionError("You must put in a time.", confSubmitButton); // startTimeDrop);
       }
     } else {
-      submissionError("You must select a room.", confSubmitButton); //rec1);
+      submissionError("You must select a room.", confSubmitButton); // rec1);
     }
   }
 
@@ -276,11 +281,15 @@ public class NewConferenceController extends AbsController {
    * @param node the area it will pop up next to.
    */
   private void submissionError(String error, Node node) {
+
+    /*
     PopOver popup = new PopOver();
     Text popText = new Text(error);
     popText.setFont(oSans26);
     popup.setContentNode(popText);
     popup.show(node);
+
+     */
   }
 
   /**

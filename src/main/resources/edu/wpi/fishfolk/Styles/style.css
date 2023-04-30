@@ -119,10 +119,6 @@
     -fx-font-weight: bold;
 }
 
-.rectToggle:selected {
-    -fx-background-color: #F0BF4C;
-    -fx-border-color: #F0BF4C;
-}
 .rectToggle .mfx-ripple-generator{
     -mfx-ripple-color: transparent;
 }
@@ -158,4 +154,33 @@
     -fx-border-radius: 0;
     -fx-border-width: 0 0 0.5 0;
     -fx-border-color: #012D5A;
+}
+
+.newScrolls{
+    -fx-background-radius: 5;
+    -fx-border-color: #012d5a;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
+    -thumb-color: #012d5a;
+    -fx-background-color: #ffffff;
+    -thumb-hover-color: #fcd474;
+    -track-color: #ffffff;
+}
+
+.newScrolls:hover{
+    -thumb-hover-color: #fcd474;
+    -thumb-color: #fcd474;
+}
+
+.rectToggle:selected {
+    -fx-background-color: #fcd474;
+    -fx-border-color: #fcd474;
+}
+
+.rectToggle{
+    -fx-background-color: #ffffff;
+}
+
+.rectToggle:hover{
+    -fx-background-color: #f9e4b3;
 }
