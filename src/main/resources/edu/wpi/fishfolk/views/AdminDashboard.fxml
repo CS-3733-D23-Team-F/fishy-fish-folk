@@ -9,6 +9,8 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -167,15 +169,28 @@
                      <children>
                         <VBox style="-fx-border-color: #012D5A; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
                            <children>
-                              <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                              <StackPane minHeight="50.0">
                                  <children>
-                                    <Label text="Alerts" textFill="WHITE">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="24.0" />
-                                       </font>
-                                    </Label>
+                                    <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                                       <children>
+                                          <Label text="Alerts" textFill="WHITE">
+                                             <font>
+                                                <Font name="Open Sans Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
+                                       <children>
+                                          <ImageView fx:id="alertsRefresh" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/Gear.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
+                              </StackPane>
                               <VBox VBox.vgrow="ALWAYS">
                                  <children>
                                     <MFXScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="100.0" minWidth="475.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">

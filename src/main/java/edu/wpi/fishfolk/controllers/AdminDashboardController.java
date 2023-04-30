@@ -16,9 +16,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +28,7 @@ import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 public class AdminDashboardController {
@@ -48,6 +46,7 @@ public class AdminDashboardController {
   @FXML MFXTextField addAlert;
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
   @FXML ScrollPane scroll;
+  @FXML ImageView alertsRefresh;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodassignee,
@@ -158,6 +157,7 @@ public class AdminDashboardController {
       e.printStackTrace();
     }
 
+    /*
     // Recurring refresh of alerts table
     ScheduledExecutorService alertRefreshScheduler = Executors.newScheduledThreadPool(1);
     alertRefreshScheduler.scheduleAtFixedRate(
@@ -182,6 +182,19 @@ public class AdminDashboardController {
         0,
         TimeUnit.SECONDS.toSeconds(15),
         TimeUnit.SECONDS);
+        */
+    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+    alertsRefresh.setOnMouseClicked(
+        event -> {
+          alertGrid.getChildren().removeAll();
+
+          dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+
+          System.out.println(
+              "[AdminDashboardController.initialize]: Alerts refreshed ("
+                  + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+                  + ")");
+        });
 
     addAlert.setOnAction(
         event -> {
