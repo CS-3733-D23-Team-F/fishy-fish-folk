@@ -122,9 +122,10 @@ public class NewConferenceController extends AbsController {
 
   /**
    * Finds which conference room was selected by the user.
+   *
    * @return returns the name of the conference room
    */
-  public String whichConf(){
+  public String whichConf() {
     if (rec1.isSelected()) {
       return "BTM Conference Center";
     }
@@ -151,6 +152,7 @@ public class NewConferenceController extends AbsController {
 
   /**
    * Checks to see if the end time comes after the start time
+   *
    * @return true if it is, false if not
    */
   public boolean validEndTime() {
@@ -172,16 +174,20 @@ public class NewConferenceController extends AbsController {
   }
 
   /**
-   * Checks to see if the meeting you want to schedule has any conflicts with already existing meetings.
+   * Checks to see if the meeting you want to schedule has any conflicts with already existing
+   * meetings.
+   *
    * @return returns true if there's no conflicts, false if there is
    */
-  public boolean isItFree(){
-    ArrayList<ConferenceRequest> allrequests = (ArrayList<ConferenceRequest>) dbConnection.getAllEntries(TableEntryType.CONFERENCE_REQUEST);
-    for (int i = 0; i<allrequests.size(); i++){
-      if (recurringDrop.getText().equals(Recurring.NEVER)){
-        if (whichConf().equals(allrequests.get(i).getRoomName())){
-          if(datePicker.getValue().atStartOfDay().equals(allrequests.get(i))){
-            //TODO: this dumb shit.
+  public boolean isItFree() {
+    ArrayList<ConferenceRequest> allrequests =
+        (ArrayList<ConferenceRequest>)
+            dbConnection.getAllEntries(TableEntryType.CONFERENCE_REQUEST);
+    for (int i = 0; i < allrequests.size(); i++) {
+      if (recurringDrop.getText().equals(Recurring.NEVER)) {
+        if (whichConf().equals(allrequests.get(i).getRoomName())) {
+          if (datePicker.getValue().atStartOfDay().equals(allrequests.get(i))) {
+            // TODO: this dumb shit.
           }
         }
       }
@@ -215,10 +221,12 @@ public class NewConferenceController extends AbsController {
                   }
                   if (numba < 21 && numba > 1 && numba != 75) {
                     if (!(recurringDrop.getText().isEmpty())) {
-                      if(isItFree()) {
+                      if (isItFree()) {
                         submit();
-                      }else{
-                        submissionError("There is already a meeting scheduled for this time.", confSubmitButton);
+                      } else {
+                        submissionError(
+                            "There is already a meeting scheduled for this time.",
+                            confSubmitButton);
                       }
                     } else {
                       submissionError("You must choose your setting for recurring.", recurringDrop);
@@ -296,7 +304,8 @@ public class NewConferenceController extends AbsController {
             notesBox.getText(),
             SharedResources.getCurrentUser().getUsername(),
             startTimeDrop.getText(),
-            endTimeDrop.getText(), // datePicker.getValue().atStartOfDay(),
+            endTimeDrop.getText(),
+            datePicker.getValue().atStartOfDay(),
             Recurring.valueOf(recurringDrop.getText()),
             Integer.parseInt(numAttnBox.getText()),
             dummyVariable);

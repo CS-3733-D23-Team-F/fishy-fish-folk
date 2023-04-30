@@ -302,6 +302,7 @@
                                  <TableColumn fx:id="conferenceroom" prefWidth="250.0" text="Room" />
                                  <TableColumn fx:id="conferencestart" prefWidth="100.0" text="Start Time" />
                                  <TableColumn fx:id="conferenceend" prefWidth="100.0" text="End Time" />
+                                 <TableColumn fx:id="conferenceDateReserved" prefWidth="100.0" text="Date Reserved" />
                                  <TableColumn fx:id="conferencebooker" prefWidth="100.0" text="Booked By" />
                                  <TableColumn fx:id="conferenceattendees" prefWidth="70.0" text="Attendees" />
                                  <TableColumn fx:id="conferencerecurring" prefWidth="70.0" text="Recurring?" />
