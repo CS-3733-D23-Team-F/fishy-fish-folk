@@ -18,7 +18,7 @@ import java.util.*;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableArray;import javafx.collections.ObservableList;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -233,10 +233,9 @@ public class MapEditorController extends AbsController {
                 HashSet<Integer> removed =
                     new HashSet<>(change.getRemoved().stream().map(Node::getNodeID).toList());
 
-                // since arraylist removal shifts all subsequent elements to the left, id2idx must be updated
-                change.getRemoved().forEach(node -> {
-
-                });
+                // since arraylist removal shifts all subsequent elements to the left, id2idx must
+                // be updated
+                change.getRemoved().forEach(node -> {});
 
                 // remove nodecircles from the draw group
                 nodeGroup
@@ -245,11 +244,14 @@ public class MapEditorController extends AbsController {
 
                 // add new nodecircles to the node draw group
 
-                  change.getAddedSubList().forEach(node -> {
-                      //save nodeID -> idx mapping
-                      nodeID2idx.put(node.getNodeID(), nodes.indexOf(node));
-                      nodeGroup.getChildren().add(drawNode(node));
-                  });
+                change
+                    .getAddedSubList()
+                    .forEach(
+                        node -> {
+                          // save nodeID -> idx mapping
+                          nodeID2idx.put(node.getNodeID(), nodes.indexOf(node));
+                          nodeGroup.getChildren().add(drawNode(node));
+                        });
 
                 nodeGroup
                     .getChildren()
@@ -1075,7 +1077,12 @@ public class MapEditorController extends AbsController {
     // remove nodes from nodes observable list and listeners will update the ui
     selectedNodes.forEach(
         nodeID -> {
-          nodes.remove((int) nodeID2idx.get(nodeID));
+          int removedIdx = nodeID2idx.get(nodeID);
+          for (int i = removedIdx + 1; i < nodes.size(); i++) {
+            int oldIdx = nodeID2idx.get(nodes.get(i).getNodeID());
+            nodeID2idx.put(nodes.get(i).getNodeID(), oldIdx - 1);
+          }
+          nodes.remove(removedIdx);
           // record in edit queue
           editQueue.add(new DataEdit<>(nodeID, DataEditType.REMOVE, TableEntryType.NODE), false);
         });
