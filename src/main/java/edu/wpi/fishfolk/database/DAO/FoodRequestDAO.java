@@ -119,7 +119,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
       preparedGetAll.execute();
       ResultSet results = preparedGetAll.getResultSet();
 
-      // For each Location in the results, create a new FoodRequest object and put it in the local
+      // For each result, create a new FoodRequest object and put it in the local
       // table
       while (results.next()) {
         FoodRequest foodRequest =
