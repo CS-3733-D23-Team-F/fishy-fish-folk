@@ -94,11 +94,13 @@ public class NewSignageController extends AbsController {
     // dictates what do do if preset is selected
     presetSelect.setOnAction(
         event -> {
-          for (int i = 0; i < allPresets.size(); i++) {
-            if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
-              identifier = presetSelect.getValue();
-              initialize();
-              break;
+          if (!(presetSelect.getValue() == null)) {
+            for (int i = 0; i < allPresets.size(); i++) {
+              if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
+                identifier = presetSelect.getValue();
+                initialize();
+                break;
+              }
             }
           }
         });
