@@ -60,7 +60,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" maxHeight="88.0" maxWidth="927.0" minHeight="88.0" minWidth="927.0" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label fx:id="loading" text="What?&#10;Magikarp is evolving!" textFill="#64646c">
+                              <Label fx:id="loading" text="What?&#10;MAGIKARP is evolving!" textFill="#64646c">
                                  <font>
                                     <Font name="Lucida Console" size="36.0" />
                                  </font>
