@@ -5,7 +5,6 @@ import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.ui.Recurring;
 import io.github.palexdev.materialfx.controls.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -247,7 +246,7 @@ public class NewConferenceController extends AbsController {
             endTimeDrop.getText()
                 + " "
                 + endAMPMDrop.getText(), // datePicker.getValue().atStartOfDay(),
-            LocalDateTime.now(), // TODO: @Jon this is a placeholder
+            datePicker.getValue().atStartOfDay(),
             Recurring.valueOf(recurringDrop.getText()),
             Integer.parseInt(numAttnBox.getText()),
             dummyVariable);
