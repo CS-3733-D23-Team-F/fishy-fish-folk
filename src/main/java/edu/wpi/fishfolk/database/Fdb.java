@@ -34,6 +34,7 @@ public class Fdb {
   private final FurnitureRequestDAO furnitureRequestTable;
   private final FlowerRequestDAO flowerRequestTable;
   private final ConferenceRequestDAO conferenceRequestTable;
+  private final ITRequestDAO itRequestTable;
 
   // Login & User Accounts Tables
   private final UserAccountDAO userAccountTable;
@@ -62,6 +63,7 @@ public class Fdb {
     this.furnitureRequestTable = new FurnitureRequestDAO(dbConnection);
     this.flowerRequestTable = new FlowerRequestDAO(dbConnection);
     this.conferenceRequestTable = new ConferenceRequestDAO(dbConnection);
+    this.itRequestTable = new ITRequestDAO(dbConnection);
 
     // Login & User Accounts Tables
     this.userAccountTable = new UserAccountDAO(dbConnection);
@@ -86,6 +88,7 @@ public class Fdb {
                   furnitureRequestTable.updateDatabase(true);
                   flowerRequestTable.updateDatabase(true);
                   conferenceRequestTable.updateDatabase(true);
+                  itRequestTable.updateDatabase(true);
                   userAccountTable.updateDatabase(true);
                   signagePresetTable.updateDatabase(true);
                   alertTable.updateDatabase(true);
@@ -171,6 +174,9 @@ public class Fdb {
     } else if (entry instanceof ConferenceRequest) {
       return conferenceRequestTable.insertEntry((ConferenceRequest) entry);
 
+    } else if (entry instanceof ITRequest) {
+      return itRequestTable.insertEntry((ITRequest) entry);
+
     } else if (entry instanceof UserAccount) {
       return userAccountTable.insertEntry((UserAccount) entry);
 
@@ -219,6 +225,9 @@ public class Fdb {
     } else if (entry instanceof ConferenceRequest) {
       return conferenceRequestTable.updateEntry((ConferenceRequest) entry);
 
+    } else if (entry instanceof ITRequest) {
+      return itRequestTable.updateEntry((ITRequest) entry);
+
     } else if (entry instanceof UserAccount) {
       return userAccountTable.updateEntry((UserAccount) entry);
 
@@ -260,6 +269,8 @@ public class Fdb {
         return flowerRequestTable.removeEntry(identifier);
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.removeEntry(identifier);
+      case IT_REQUEST:
+        return itRequestTable.removeEntry(identifier);
       case USER_ACCOUNT:
         return userAccountTable.removeEntry(identifier);
       case SIGNAGE_PRESET:
@@ -299,6 +310,8 @@ public class Fdb {
         return flowerRequestTable.getEntry(identifier);
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.getEntry(identifier);
+      case IT_REQUEST:
+        return itRequestTable.getEntry(identifier);
       case USER_ACCOUNT:
         return userAccountTable.getEntry(identifier);
       case SIGNAGE_PRESET:
@@ -337,6 +350,8 @@ public class Fdb {
         return flowerRequestTable.getAllEntries();
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.getAllEntries();
+      case IT_REQUEST:
+        return itRequestTable.getAllEntries();
       case USER_ACCOUNT:
         return userAccountTable.getAllEntries();
       case SIGNAGE_PRESET:
@@ -384,6 +399,9 @@ public class Fdb {
       case CONFERENCE_REQUEST:
         conferenceRequestTable.undoChange();
         break;
+      case IT_REQUEST:
+        itRequestTable.undoChange();
+        break;
       case USER_ACCOUNT:
         userAccountTable.undoChange();
         break;
@@ -423,6 +441,8 @@ public class Fdb {
         return flowerRequestTable.updateDatabase(true);
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.updateDatabase(true);
+      case IT_REQUEST:
+        return itRequestTable.updateDatabase(true);
       case USER_ACCOUNT:
         return userAccountTable.updateDatabase(true);
       case SIGNAGE_PRESET:
@@ -476,6 +496,9 @@ public class Fdb {
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.importCSV(filepath, backup);
 
+      case IT_REQUEST:
+        return itRequestTable.importCSV(filepath, backup);
+
       case USER_ACCOUNT:
         return userAccountTable.importCSV(filepath, backup);
 
@@ -524,6 +547,9 @@ public class Fdb {
 
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.exportCSV(directory);
+
+      case IT_REQUEST:
+        return itRequestTable.exportCSV(directory);
 
       case USER_ACCOUNT:
         return userAccountTable.exportCSV(directory);
