@@ -63,7 +63,7 @@
             </HBox>
          </children>
          <padding>
-            <Insets left="50.0" right="50.0" top="50.0" />
+            <Insets left="25.0" right="25.0" top="25.0" />
          </padding>
       </HBox>
       <HBox style="-fx-background-color: #EEEEEE;" VBox.vgrow="ALWAYS">
@@ -90,7 +90,7 @@
                   </MFXScrollPane>
                </children>
                <HBox.margin>
-                  <Insets bottom="50.0" left="50.0" top="50.0" />
+                  <Insets bottom="25.0" left="25.0" top="25.0" />
                </HBox.margin>
             </VBox>
             <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
@@ -106,15 +106,15 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" minHeight="300.0" minWidth="700.0" prefHeight="300.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
+                        <HBox alignment="CENTER" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <TabPane fx:id="tabPane" minHeight="300.0" minWidth="700.0" prefHeight="300.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+                              <TabPane fx:id="tabPane" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
                                  <tabs>
                                     <Tab text="Food Orders">
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="foodTable" prefHeight="400.0" prefWidth="719.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="foodTable" prefHeight="200.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="foodid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="foodtotalprice" prefWidth="75.0" text="Total Price" />
@@ -138,7 +138,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="supplyTable" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="supplyTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="supplyid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="supplystatus" prefWidth="75.0" text="Form Status" />
@@ -160,7 +160,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="flowerTable" minHeight="270.0" minWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="flowerTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="flowerid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="flowertotalprice" prefWidth="75.0" text="Total Price" />
@@ -183,7 +183,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="furnitureTable" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="furnitureTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
@@ -263,7 +263,7 @@
                   </HBox>
                </children>
                <HBox.margin>
-                  <Insets bottom="50.0" left="25.0" right="50.0" top="50.0" />
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                </HBox.margin>
             </VBox>
          </children>
