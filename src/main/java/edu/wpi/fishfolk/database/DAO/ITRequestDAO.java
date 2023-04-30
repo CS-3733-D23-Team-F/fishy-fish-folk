@@ -1,13 +1,11 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
-import edu.wpi.fishfolk.database.DataEditQueue;
-import edu.wpi.fishfolk.database.EntryStatus;
-import edu.wpi.fishfolk.database.IDAO;
-import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
-import edu.wpi.fishfolk.ui.Recurring;
+import edu.wpi.fishfolk.database.TableEntry.ITRequest;
+import edu.wpi.fishfolk.ui.FormStatus;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -19,7 +17,7 @@ import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
+public class ITRequestDAO implements IDAO<ITRequest> {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -27,25 +25,14 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
   private final String tableName;
   private final ArrayList<String> headers;
 
-  private final HashMap<LocalDateTime, ConferenceRequest> tableMap;
-  private final DataEditQueue<ConferenceRequest> dataEditQueue;
+  private final HashMap<LocalDateTime, ITRequest> tableMap;
+  private final DataEditQueue<ITRequest> dataEditQueue;
 
-  /** DAO for Conference Request table in PostgreSQL database. */
-  public ConferenceRequestDAO(Connection dbConnection) {
+  /** DAO for IT Request table in PostgreSQL database. */
+  public ITRequestDAO(Connection dbConnection) {
     this.dbConnection = dbConnection;
-    this.tableName = "conferencerequest";
-    this.headers =
-        new ArrayList<>(
-            List.of(
-                "id",
-                "notes",
-                "username",
-                "starttime",
-                "endtime",
-                "datereserved",
-                "recurring",
-                "numattendees",
-                "roomname"));
+    this.tableName = "itrequest";
+    this.headers = new ArrayList<>(List.of("id", "assignee", "status", "notes"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
     this.dataEditQueue.setBatchLimit(1);
@@ -84,15 +71,11 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
         query =
             "CREATE TABLE "
                 + tableName
-                + " (id TIMESTAMP PRIMARY KEY,"
-                + "notes VARCHAR(256),"
-                + "username VARCHAR(256),"
-                + "starttime VARCHAR(256),"
-                + "endtime VARCHAR(256),"
-                + "datereserved TIMESTAMP,"
-                + "recurring VARCHAR(256),"
-                + "numattendees INT,"
-                + "roomname VARCHAR(256)"
+                + " ("
+                + "id TIMESTAMP PRIMARY KEY,"
+                + "assignee VARCHAR(64),"
+                + "status VARCHAR(12),"
+                + "notes VARCHAR(256)"
                 + ");";
         statement.executeUpdate(query);
       }
@@ -104,9 +87,10 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
   @Override
   public void populateLocalTable() {
+
     try {
 
-      // Prepare SQL query to select all nodes from the db table
+      // Prepare SQL query to select all food requests from the db table
       String getAll = "SELECT * FROM " + dbConnection.getSchema() + "." + this.tableName + ";";
       PreparedStatement preparedGetAll = dbConnection.prepareStatement(getAll);
 
@@ -114,20 +98,17 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
       preparedGetAll.execute();
       ResultSet results = preparedGetAll.getResultSet();
 
-      // For each in the results, create a new SupplyRequest object and put it in the local table
+      // For each Location in the results, create a new FoodRequest object and put it in the local
+      // table
       while (results.next()) {
-        ConferenceRequest conferenceRequest =
-            new ConferenceRequest(
+
+        ITRequest itRequest =
+            new ITRequest(
                 results.getTimestamp(headers.get(0)).toLocalDateTime(),
                 results.getString(headers.get(1)),
-                results.getString(headers.get(2)),
-                results.getString(headers.get(3)),
-                results.getString(headers.get(4)),
-                results.getTimestamp(headers.get(5)).toLocalDateTime(),
-                Recurring.valueOf(results.getString(headers.get(6))),
-                results.getInt(headers.get(7)),
-                results.getString(headers.get(8)));
-        tableMap.put(conferenceRequest.getConferenceRequestID(), conferenceRequest);
+                FormStatus.valueOf(results.getString(headers.get(2))),
+                results.getString(headers.get(3)));
+        tableMap.put(itRequest.getItRequestID(), itRequest);
       }
 
     } catch (SQLException | NumberFormatException e) {
@@ -140,28 +121,28 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
     try {
 
-      dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
+      dbListener = ConnectionBuilder.buildConnection();
 
       if (dbListener == null) {
-        System.out.println("[ConferenceRequestDAO.prepareListener]: Listener is null.");
+        System.out.println("[ITRequestDAO.prepareListener]: Listener is null.");
         return;
       }
 
       // Create a function that calls NOTIFY when the table is modified
       dbListener
           .prepareStatement(
-              "CREATE OR REPLACE FUNCTION notifyConferenceRequest() RETURNS TRIGGER AS $conferencerequest$"
+              "CREATE OR REPLACE FUNCTION notifyITRequest() RETURNS TRIGGER AS $itrequest$"
                   + "BEGIN "
-                  + "NOTIFY conferencerequest;"
+                  + "NOTIFY itrequest;"
                   + "RETURN NULL;"
-                  + "END; $conferencerequest$ language plpgsql")
+                  + "END; $itrequest$ language plpgsql")
           .execute();
 
       // Create a trigger that calls the function on any change
       dbListener
           .prepareStatement(
-              "CREATE OR REPLACE TRIGGER furnitureRequestUpdate AFTER UPDATE OR INSERT OR DELETE ON "
-                  + "conferencerequest FOR EACH STATEMENT EXECUTE FUNCTION notifyConferenceRequest()")
+              "CREATE OR REPLACE TRIGGER itRequestUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "itrequest FOR EACH STATEMENT EXECUTE FUNCTION notifyITRequest()")
           .execute();
 
       // Start listener
@@ -175,7 +156,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
   @Override
   public void reListen() {
     try {
-      dbListener.prepareStatement("LISTEN conferencerequest").execute();
+      dbListener.prepareStatement("LISTEN itrequest").execute();
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
@@ -191,7 +172,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
-        System.out.println("[ConferenceRequestDAO.verifyLocalTable]: Notification received!");
+        System.out.println("[ITRequestDAO.verifyLocalTable]: Notification received!");
         populateLocalTable();
       }
 
@@ -208,12 +189,12 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
   }
 
   @Override
-  public boolean insertEntry(ConferenceRequest entry) {
+  public boolean insertEntry(ITRequest entry) {
 
     // Check if the entry already exists. Unlikely conflicts.
-    if (tableMap.containsKey(entry.getConferenceRequestID())) return false;
+    if (tableMap.containsKey(entry.getItRequestID())) return false;
 
-    // Mark entry status as NEW
+    // Mark entry FoodRequest status as NEW
     entry.setStatus(EntryStatus.NEW);
 
     // Push an INSERT to the data edit stack, update the db if the batch limit has been reached
@@ -227,22 +208,21 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
       removeThread.start();
     }
 
-    // Put entry in local table
-    tableMap.put(entry.getConferenceRequestID(), entry);
+    // Put entry FoodRequest in local table
+    tableMap.put(entry.getItRequestID(), entry);
 
     return true;
   }
 
   @Override
-  public boolean updateEntry(ConferenceRequest entry) {
+  public boolean updateEntry(ITRequest entry) {
 
-    // Mark entry status as NEW
+    // Mark entry FoodRequest status as NEW
     entry.setStatus(EntryStatus.NEW);
 
     // Push an UPDATE to the data edit stack, update the db if the batch limit has been reached
     if (dataEditQueue.add(
-        new DataEdit<>(tableMap.get(entry.getConferenceRequestID()), entry, DataEditType.UPDATE),
-        true)) {
+        new DataEdit<>(tableMap.get(entry.getItRequestID()), entry, DataEditType.UPDATE), true)) {
 
       // Reset edit count
       dataEditQueue.setEditCount(0);
@@ -252,8 +232,8 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
       removeThread.start();
     }
 
-    // Update entry in local table
-    tableMap.put(entry.getConferenceRequestID(), entry);
+    // Update entry FoodRequest in local table
+    tableMap.put(entry.getItRequestID(), entry);
 
     return true;
   }
@@ -264,25 +244,25 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
     // Check if input identifier is correct type
     if (!(identifier instanceof LocalDateTime)) {
       System.out.println(
-          "[ConferenceRequestDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
+          "[ITRequestDAO.removeEntry]: Invalid identifier " + identifier.toString() + ".");
       return false;
     }
 
-    LocalDateTime conferenceRequestID = (LocalDateTime) identifier;
+    LocalDateTime itRequestID = (LocalDateTime) identifier;
 
     // Check if local table contains identifier
-    if (!tableMap.containsKey(conferenceRequestID)) {
+    if (!tableMap.containsKey(itRequestID)) {
       System.out.println(
-          "[ConferenceRequestDAO.removeEntry]: Identifier "
-              + conferenceRequestID
+          "[ITRequestDAO.removeEntry]: Identifier "
+              + itRequestID
               + " does not exist in local table.");
       return false;
     }
 
     // Get entry from local table
-    ConferenceRequest entry = tableMap.get(conferenceRequestID);
+    ITRequest entry = tableMap.get(itRequestID);
 
-    // Mark entry status as NEW
+    // Mark entry FoodRequest status as NEW
     entry.setStatus(EntryStatus.NEW);
 
     // Push a REMOVE to the data edit stack, update the db if the batch limit has been reached
@@ -296,57 +276,56 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
       removeThread.start();
     }
 
-    // Remove entry from local table
-    tableMap.remove(entry.getConferenceRequestID(), entry);
+    // Remove entry FoodRequest from local table
+    tableMap.remove(entry.getItRequestID(), entry);
 
     return true;
   }
 
   @Override
-  public ConferenceRequest getEntry(Object identifier) {
+  public ITRequest getEntry(Object identifier) {
 
     verifyLocalTable();
 
     // Check if input identifier is correct type
     if (!(identifier instanceof LocalDateTime)) {
       System.out.println(
-          "[ConferenceRequestDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
+          "[ITRequestDAO.getEntry]: Invalid identifier " + identifier.toString() + ".");
       return null;
     }
 
-    LocalDateTime conferenceRequestID = (LocalDateTime) identifier;
+    LocalDateTime itRequestID = (LocalDateTime) identifier;
 
     // Check if local table contains identifier
-    if (!tableMap.containsKey(conferenceRequestID)) {
+    if (!tableMap.containsKey(itRequestID)) {
       System.out.println(
-          "[ConferenceRequestDAO.getEntry]: Identifier "
-              + conferenceRequestID
-              + " does not exist in local table.");
+          "[ITRequestDAO.getEntry]: Identifier " + itRequestID + " does not exist in local table.");
       return null;
     }
 
-    // Return entry objects from local table
-    return tableMap.get(conferenceRequestID);
+    // Return FoodRequest object from local table
+    return tableMap.get(itRequestID);
   }
 
   @Override
-  public ArrayList<ConferenceRequest> getAllEntries() {
+  public ArrayList<ITRequest> getAllEntries() {
 
     verifyLocalTable();
 
-    ArrayList<ConferenceRequest> allConferenceRequests = new ArrayList<>();
+    ArrayList<ITRequest> allITRequests = new ArrayList<>();
 
-    // Add all entries in local table to a list
-    for (LocalDateTime conferenceRequestID : tableMap.keySet()) {
-      allConferenceRequests.add(tableMap.get(conferenceRequestID));
+    // Add all FoodRequests in local table to a list
+    for (LocalDateTime itRequestID : tableMap.keySet()) {
+      allITRequests.add(tableMap.get(itRequestID));
     }
 
-    return allConferenceRequests;
+    return allITRequests;
   }
 
   @Override
   public void undoChange() {
-    DataEdit<ConferenceRequest> dataEdit = dataEditQueue.popRecent();
+    // Pop the top item of the data edit stack
+    DataEdit<ITRequest> dataEdit = dataEditQueue.popRecent();
 
     // Check if there is an update to be done
     if (dataEdit == null) return;
@@ -356,7 +335,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
       case INSERT:
 
         // REMOVE the entry if it was an INSERT
-        removeEntry(dataEdit.getNewEntry().getConferenceRequestID());
+        removeEntry(dataEdit.getNewEntry().getItRequestID());
         break;
 
       case UPDATE:
@@ -383,7 +362,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
       // Print active thread (DEBUG)
       System.out.println(
-          "[ConferenceRequestDAO.updateDatabase]: Updating database in "
+          "[ITRequestDAO.updateDatabase]: Updating database in "
               + Thread.currentThread().getName());
 
       // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
@@ -392,7 +371,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?);";
 
       String update =
           "UPDATE "
@@ -407,16 +386,6 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
               + headers.get(2)
               + " = ?, "
               + headers.get(3)
-              + " = ?, "
-              + headers.get(4)
-              + " = ?, "
-              + headers.get(5)
-              + " = ?, "
-              + headers.get(6)
-              + " = ?, "
-              + headers.get(7)
-              + " = ?, "
-              + headers.get(8)
               + " = ? WHERE "
               + headers.get(0)
               + " = ?;";
@@ -442,31 +411,25 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
         if (!dataEditQueue.hasNext()) break;
 
         // Get the next data edit in the queue
-        DataEdit<ConferenceRequest> dataEdit = dataEditQueue.next();
+        DataEdit<ITRequest> dataEdit = dataEditQueue.next();
 
         // Print update info (DEBUG)
         System.out.println(
-            "[ConferenceRequestDAO.updateDatabase]: "
+            "[ITRequestDAO.updateDatabase]: "
                 + dataEdit.getType()
-                + " ConferenceRequest "
-                + dataEdit.getNewEntry().getConferenceRequestID());
+                + " FoodRequest "
+                + dataEdit.getNewEntry().getItRequestID());
 
         // Change behavior based on data edit type
         switch (dataEdit.getType()) {
           case INSERT:
 
-            // Put the new entry's data into the prepared query
+            // Put the new FoodRequest's data into the prepared query
             preparedInsert.setTimestamp(
-                1, Timestamp.valueOf(dataEdit.getNewEntry().getConferenceRequestID()));
-            preparedInsert.setString(2, dataEdit.getNewEntry().getNotes());
-            preparedInsert.setString(3, dataEdit.getNewEntry().getUsername());
-            preparedInsert.setString(4, dataEdit.getNewEntry().getStartTime());
-            preparedInsert.setString(5, dataEdit.getNewEntry().getEndTime());
-            preparedInsert.setTimestamp(
-                6, Timestamp.valueOf(dataEdit.getNewEntry().getDateReserved()));
-            preparedInsert.setString(7, dataEdit.getNewEntry().getRecurringOption().toString());
-            preparedInsert.setInt(8, dataEdit.getNewEntry().getNumAttendees());
-            preparedInsert.setString(9, dataEdit.getNewEntry().getRoomName());
+                1, Timestamp.valueOf(dataEdit.getNewEntry().getItRequestID()));
+            preparedInsert.setString(2, dataEdit.getNewEntry().getAssignee());
+            preparedInsert.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
+            preparedInsert.setString(4, dataEdit.getNewEntry().getNotes());
 
             // Execute the query
             preparedInsert.executeUpdate();
@@ -475,45 +438,40 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
           case UPDATE:
 
-            // Put the new entry's data into the prepared query
+            // Put the new FoodRequest's data into the prepared query
             preparedUpdate.setTimestamp(
-                1, Timestamp.valueOf(dataEdit.getNewEntry().getConferenceRequestID()));
-            preparedUpdate.setString(2, dataEdit.getNewEntry().getNotes());
-            preparedUpdate.setString(3, dataEdit.getNewEntry().getUsername());
-            preparedUpdate.setString(4, dataEdit.getNewEntry().getStartTime());
-            preparedUpdate.setString(5, dataEdit.getNewEntry().getEndTime());
+                1, Timestamp.valueOf(dataEdit.getNewEntry().getItRequestID()));
+            preparedUpdate.setString(2, dataEdit.getNewEntry().getAssignee());
+            preparedUpdate.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
+            preparedUpdate.setString(4, dataEdit.getNewEntry().getNotes());
             preparedUpdate.setTimestamp(
-                6, Timestamp.valueOf(dataEdit.getNewEntry().getDateReserved()));
-            preparedUpdate.setString(7, dataEdit.getNewEntry().getRecurringOption().toString());
-            preparedUpdate.setInt(8, dataEdit.getNewEntry().getNumAttendees());
-            preparedUpdate.setString(9, dataEdit.getNewEntry().getRoomName());
-            preparedUpdate.setTimestamp(
-                10, Timestamp.valueOf(dataEdit.getNewEntry().getConferenceRequestID()));
+                5, Timestamp.valueOf(dataEdit.getNewEntry().getItRequestID()));
 
             // Execute the query
             preparedUpdate.executeUpdate();
+
             break;
 
           case REMOVE:
 
-            // Put the new entry's data into the prepared query
+            // Put the new FoodRequest's data into the prepared query
             preparedRemove.setTimestamp(
-                1, Timestamp.valueOf(dataEdit.getNewEntry().getConferenceRequestID()));
+                1, Timestamp.valueOf(dataEdit.getNewEntry().getItRequestID()));
 
             // Execute the query
             preparedRemove.executeUpdate();
             break;
         }
 
-        // Mark entry in local table as OLD
+        // Mark FoodRequest in local table as OLD
         dataEdit.getNewEntry().setStatus(EntryStatus.OLD);
-        tableMap.put(dataEdit.getNewEntry().getConferenceRequestID(), dataEdit.getNewEntry());
+        tableMap.put(dataEdit.getNewEntry().getItRequestID(), dataEdit.getNewEntry());
       }
     } catch (SQLException e) {
 
       // Print active thread error (DEBUG)
       System.out.println(
-          "[ConferenceRequestDAO.updateDatabase]: Error updating database in "
+          "[ITRequestDAO.updateDatabase]: Error updating database in "
               + Thread.currentThread().getName());
 
       System.out.println(e.getMessage());
@@ -522,7 +480,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
     // Print active thread end (DEBUG)
     System.out.println(
-        "[ConferenceRequestDAO.updateDatabase]: Finished updating database in "
+        "[ITRequestDAO.updateDatabase]: Finished updating database in "
             + Thread.currentThread().getName());
 
     // On success
@@ -531,6 +489,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
   @Override
   public boolean importCSV(String filepath, boolean backup) {
+
     String[] pathArr = filepath.split("/");
 
     if (backup) {
@@ -559,7 +518,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
@@ -567,29 +526,16 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
         String[] parts = line.split(",");
 
-        ConferenceRequest cr =
-            new ConferenceRequest(
-                LocalDateTime.parse(parts[0]),
-                parts[1],
-                parts[2],
-                parts[3],
-                parts[4],
-                LocalDateTime.parse(parts[5]),
-                Recurring.valueOf(parts[6]),
-                Integer.parseInt(parts[7]),
-                parts[8]);
+        ITRequest ir =
+            new ITRequest(
+                LocalDateTime.parse(parts[0]), parts[1], FormStatus.valueOf(parts[2]), parts[3]);
 
-        tableMap.put(cr.getConferenceRequestID(), cr);
+        tableMap.put(ir.getItRequestID(), ir);
 
-        insertPS.setTimestamp(1, Timestamp.valueOf(cr.getConferenceRequestID()));
-        insertPS.setString(2, cr.getNotes());
-        insertPS.setString(3, cr.getUsername());
-        insertPS.setString(4, cr.getStartTime());
-        insertPS.setString(5, cr.getEndTime());
-        insertPS.setTimestamp(6, Timestamp.valueOf(cr.getDateReserved()));
-        insertPS.setString(7, cr.getRecurringOption().toString());
-        insertPS.setInt(8, cr.getNumAttendees());
-        insertPS.setString(9, cr.getRoomName());
+        insertPS.setTimestamp(1, Timestamp.valueOf(ir.getItRequestID()));
+        insertPS.setString(2, ir.getAssignee());
+        insertPS.setString(3, ir.getFormStatus().toString());
+        insertPS.setString(4, ir.getNotes());
 
         insertPS.executeUpdate();
       }
@@ -616,26 +562,16 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
       out.println(String.join(",", headers));
 
-      for (Map.Entry<LocalDateTime, ConferenceRequest> entry : tableMap.entrySet()) {
-        ConferenceRequest cr = entry.getValue();
+      for (Map.Entry<LocalDateTime, ITRequest> entry : tableMap.entrySet()) {
+        ITRequest ir = entry.getValue();
         out.println(
-            cr.getConferenceRequestID()
+            ir.getItRequestID()
                 + ","
-                + cr.getNotes()
+                + ir.getAssignee()
                 + ","
-                + cr.getUsername()
+                + ir.getFormStatus()
                 + ","
-                + cr.getStartTime()
-                + ","
-                + cr.getEndTime()
-                + ","
-                + cr.getDateReserved()
-                + ","
-                + cr.getRecurringOption().toString()
-                + ","
-                + cr.getNumAttendees()
-                + ","
-                + cr.getRoomName());
+                + ir.getNotes());
       }
 
       out.close();
