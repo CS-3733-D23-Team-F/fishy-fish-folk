@@ -14,14 +14,19 @@
    <children>
       <StackPane>
          <children>
-            <ImageView fx:id="evolved" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="evolved" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/NavigationBar/magikarp-evolve.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="evolving" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="evolving" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/NavigationBar/Untitled.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="evolvedA" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../images/FFF.png" />
                </image>
             </ImageView>
             <ImageView fx:id="defaultForm" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
