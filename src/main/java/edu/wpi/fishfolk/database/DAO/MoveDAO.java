@@ -6,6 +6,7 @@ import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
+import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Move;
 import java.io.*;
 import java.sql.*;
@@ -19,7 +20,7 @@ import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class MoveDAO implements IDAO<Move> {
+public class MoveDAO implements IDAO<Move>, IProcessEdit {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -113,6 +114,20 @@ public class MoveDAO implements IDAO<Move> {
   }
 
   @Override
+  public void processEdit(DataEdit<Object> edit) {
+    switch (edit.getType()) {
+      case INSERT:
+        insertEntry((Move) edit.getNewEntry());
+        break;
+      case REMOVE:
+        removeEntry((String) edit.getNewEntry());
+        break;
+      case UPDATE:
+        updateEntry((Move) edit.getNewEntry());
+        break;
+    }
+  }
+
   public void prepareListener() {
 
     try {
