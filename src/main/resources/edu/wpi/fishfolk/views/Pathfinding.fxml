@@ -301,7 +301,7 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <MFXButton alignment="CENTER" cacheShape="false" centerShape="false" ellipsisString="" focusTraversable="false" graphicTextGap="0.0" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="75.0" prefHeight="10.0" prefWidth="10.0" scaleShape="false" style="-fx-background-color: #012D5A; -fx-background-radius: 8;" text=" ">
+                        <MFXButton fx:id="upFloor" alignment="CENTER" cacheShape="false" centerShape="false" ellipsisString="" focusTraversable="false" graphicTextGap="0.0" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="75.0" prefHeight="10.0" prefWidth="10.0" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" scaleShape="false" style="-fx-background-color: #012D5A; -fx-background-radius: 8;" text=" ">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>
@@ -338,7 +338,7 @@
                               <Insets left="7.0" />
                            </VBox.margin>
                         </Text>
-                        <MFXButton alignment="CENTER" cacheShape="false" centerShape="false" ellipsisString="" focusTraversable="false" graphicTextGap="0.0" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="75.0" prefHeight="10.0" prefWidth="10.0" scaleShape="false" style="-fx-background-color: #012D5A; -fx-background-radius: 8;" text=" ">
+                        <MFXButton fx:id="downFloor" alignment="CENTER" cacheShape="false" centerShape="false" ellipsisString="" focusTraversable="false" graphicTextGap="0.0" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="75.0" prefHeight="10.0" prefWidth="10.0" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" scaleShape="false" style="-fx-background-color: #012D5A; -fx-background-radius: 8;" text=" ">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>
