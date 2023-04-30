@@ -396,8 +396,13 @@ public class PathfindingController extends AbsController {
           slideDown.setVisible(false);
           slideUp.setDisable(true);
           slideDown.setDisable(true);
-          downFloor.setDisable(false);
-          upFloor.setDisable(false);
+          if (!(currFloorNoPath == 4)) {
+            upFloor.setDisable(false);
+          }
+          if (!(currFloorNoPath == 0)) {
+            downFloor.setDisable(false);
+          }
+
           textInstruct.setTranslateY(252);
 
           drawGroup.getChildren().clear();
