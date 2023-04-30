@@ -68,6 +68,6 @@ public class Move {
 
   @Override
   public String toString() {
-    return longName + " moving to " + nodeID + " on " + date;
+    return "[longname: " + longName + "; nodeID:" + nodeID + "; date: " + date + "]";
   }
 }

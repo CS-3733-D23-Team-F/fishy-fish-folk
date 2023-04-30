@@ -78,7 +78,7 @@ public class Node {
   }
 
   public String toString() {
-    return "node" + nodeID + " at " + getPoint();
+    return "[nodeID: " + nodeID + "; point: " + getPoint() + "]";
   }
 
   public void addMove(Location location, LocalDate date) {
