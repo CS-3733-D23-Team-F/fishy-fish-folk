@@ -69,6 +69,25 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </MFXButton>
+                  <HBox>
+                     <children>
+                        <MFXButton fx:id="undo" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="80.0" text="Undo" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Regular" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/undo-arrow.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MFXButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
                </children>
                <HBox.margin>
                   <Insets left="10.0" />

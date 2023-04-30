@@ -40,7 +40,7 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
 
-  @FXML MFXButton moveEditorNav, save;
+  @FXML MFXButton moveEditorNav, save, undo;
   @FXML MFXButton importCSV, exportCSV;
   @FXML MFXButton addNode, delNode;
   @FXML MFXRadioButton radioAllEdge, radioSelectedEdge, radioNoEdge;
