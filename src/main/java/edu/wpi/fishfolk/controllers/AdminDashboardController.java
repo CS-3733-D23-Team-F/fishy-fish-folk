@@ -186,7 +186,7 @@ public class AdminDashboardController {
     dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
     alertsRefresh.setOnMouseClicked(
         event -> {
-          alertGrid.getChildren().removeAll();
+          alertGrid.getChildren().removeAll(alertGrid.getChildren());
 
           dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
 
