@@ -161,4 +161,18 @@ public class CSVTests {
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.CONFERENCE_REQUEST);
   }
+
+  @Test
+  public void userAccountTableImport() {
+    Fdb fdb = new Fdb();
+
+    fdb.importCSV("D:\\CSVTests\\account.csv", false, TableEntryType.USER_ACCOUNT);
+  }
+
+  @Test
+  public void userAccountTableExport() {
+    Fdb fdb = new Fdb();
+
+    fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.USER_ACCOUNT);
+  }
 }
