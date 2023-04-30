@@ -10,36 +10,46 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="evolve" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.LoadingScreenController">
+<StackPane fx:id="stacks" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.LoadingScreenController">
    <children>
-      <StackPane>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="evolve" stylesheets="@../Styles/style.css">
          <children>
-            <ImageView fx:id="evolved" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../images/NavigationBar/magikarp-evolve.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="evolving" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../images/NavigationBar/Untitled.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="evolvedA" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../images/FFF.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="defaultForm" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/NavigationBar/magikarp-f.png" />
-               </image>
-            </ImageView>
+            <StackPane>
+               <children>
+                  <ImageView fx:id="evolved" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../images/NavigationBar/magikarp-evolve.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="evolving" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../images/NavigationBar/Untitled.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="evolvedA" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../images/FFF.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="defaultForm" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/NavigationBar/magikarp-f.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="150.0" />
+               </VBox.margin>
+            </StackPane>
          </children>
-         <VBox.margin>
-            <Insets bottom="150.0" />
-         </VBox.margin>
-      </StackPane>
-      <HBox alignment="CENTER" style="-fx-border-color: #64646c; -fx-border-width: 2; -fx-border-radius: 5;">
+         <padding>
+            <Insets left="15.0" right="15.0" top="100.0" />
+         </padding>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </VBox>
+      <HBox fx:id="textBox" alignment="CENTER" maxHeight="108.0" maxWidth="1050.0" prefHeight="108.0" prefWidth="1050.0" style="-fx-border-color: #64646c; -fx-border-width: 2; -fx-border-radius: 5;">
          <children>
             <HBox alignment="CENTER" style="-fx-border-color: #fff76d; -fx-border-width: 2; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
                <children>
@@ -76,15 +86,12 @@
                </children>
             </HBox>
          </children>
-         <VBox.margin>
-            <Insets bottom="15.0" />
-         </VBox.margin>
          <padding>
             <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
          </padding>
+         <StackPane.margin>
+            <Insets bottom="15.0" />
+         </StackPane.margin>
       </HBox>
    </children>
-   <padding>
-      <Insets left="15.0" right="15.0" />
-   </padding>
-</VBox>
+</StackPane>

@@ -10,11 +10,13 @@ import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -26,6 +28,14 @@ public class LoadingScreenController implements Initializable {
   public ImageView evolved, evolving, defaultForm, evolvedA;
   public static ImageView evolvesf, evolvingf, defaultFormf, evolvedf;
 
+  public StackPane stacks;
+
+  public static StackPane stack;
+
+  public HBox textBox;
+
+  public static HBox evolveText;
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     loadings = loading;
@@ -33,6 +43,8 @@ public class LoadingScreenController implements Initializable {
     evolvingf = evolving;
     defaultFormf = defaultForm;
     evolvedf = evolvedA;
+    stack = stacks;
+    evolveText = textBox;
   }
 
   public String checkFunctions() {
@@ -61,6 +73,37 @@ public class LoadingScreenController implements Initializable {
               Platform.runLater(
                   () -> {
                     loadings.setText(message[0]);
+
+                    HBox blackbar1 = new HBox();
+                    HBox blackbar2 = new HBox();
+                    blackbar1.setPrefWidth(1080);
+                    blackbar1.setPrefHeight(100);
+                    blackbar2.setPrefWidth(1080);
+                    blackbar2.setPrefHeight(100);
+                    blackbar2.setMaxHeight(300);
+                    blackbar1.setMaxHeight(300);
+                    blackbar1.setTranslateY(-1370);
+                    blackbar2.setTranslateY(920);
+                    blackbar1.setTranslateX(0);
+
+                    blackbar2.setTranslateX(0);
+                    blackbar2.setBackground(
+                        new Background(
+                            new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+                    blackbar1.setBackground(
+                        new Background(
+                            new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+                    stack.getChildren().addAll(blackbar2, blackbar1);
+
+                    TranslateTransition transition =
+                        new TranslateTransition(Duration.seconds(4), blackbar1);
+                    TranslateTransition transition2 =
+                        new TranslateTransition(Duration.seconds(4), blackbar2);
+                    transition.setToY(-500);
+                    transition2.setToY(50);
+                    evolveText.toFront();
+                    transition2.play();
+                    transition.play();
 
                     evolvesf.setVisible(false);
                     evolvingf.setVisible(false);
@@ -157,8 +200,7 @@ public class LoadingScreenController implements Initializable {
                             .getIcons()
                             .add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
                         // primaryStage.setMaximized(true);
-                        stage.setWidth(1536);
-                        stage.setHeight(864);
+                        stage.setMaximized(true);
                         Fapp.primaryStage = stage;
 
                         Navigation.navigate(Screen.LOGIN);
