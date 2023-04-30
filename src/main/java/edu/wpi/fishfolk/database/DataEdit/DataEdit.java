@@ -37,8 +37,30 @@ public class DataEdit<T> {
     this.table = null;
   }
 
+  /**
+   * Constructor usually used for INSERT and REMOVE
+   *
+   * @param newEntry
+   * @param type
+   * @param table
+   */
   public DataEdit(T newEntry, DataEditType type, TableEntryType table) {
     this.oldEntry = newEntry;
+    this.newEntry = newEntry;
+    this.type = type;
+    this.table = table;
+  }
+
+  /**
+   * Constructor usually used for UPDATE
+   *
+   * @param oldEntry
+   * @param newEntry
+   * @param type
+   * @param table
+   */
+  public DataEdit(T oldEntry, T newEntry, DataEditType type, TableEntryType table) {
+    this.oldEntry = oldEntry;
     this.newEntry = newEntry;
     this.type = type;
     this.table = table;

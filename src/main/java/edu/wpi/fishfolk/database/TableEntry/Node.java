@@ -57,6 +57,10 @@ public class Node {
     this.pointProperty.setValue(point);
   }
 
+  public Node deepCopy() {
+    return new Node(this.nodeID, this.getPoint(), this.floor, this.building);
+  }
+
   public void addMove(Location location, LocalDate date) {
     moves.add(new LocationDate(location, date));
   }

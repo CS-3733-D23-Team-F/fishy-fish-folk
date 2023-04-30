@@ -76,6 +76,7 @@ public class MapEditorController extends AbsController {
           node -> new Observable[] {node.getNodeProperty(), node.getPointProperty()});
   // easy access to a specific node via its id
   private HashMap<Integer, Integer> nodeID2idx = new HashMap<>();
+  private HashMap<Integer, Node> removedNodes = new HashMap<>();
 
   private ObservableList<Edge> edges =
       FXCollections.observableArrayList(edge -> new Observable[] {edge.getEdgeProperty()});
@@ -106,7 +107,8 @@ public class MapEditorController extends AbsController {
   private int currentFloor = 2;
   private boolean controlPressed = false;
 
-  private final DataEditQueue<Object> editQueue = new DataEditQueue<>();
+  private final DataEditQueue<Object> editQueue = new DataEditQueue<>(),
+      undoneEdits = new DataEditQueue<>();
 
   public MapEditorController() {
     super();
@@ -208,9 +210,12 @@ public class MapEditorController extends AbsController {
                     .forEach(
                         fxnode -> {
                           NodeCircle nodeCircle = (NodeCircle) fxnode;
+
                           if (updated.containsKey(nodeCircle.getNodeID())) {
+
                             // update center of node circle
                             nodeCircle.setCenter(updated.get(nodeCircle.getNodeID()).getPoint());
+                            fillNodeFields(updated.get(nodeCircle.getNodeID()));
                           }
                         });
 
@@ -423,6 +428,64 @@ public class MapEditorController extends AbsController {
           dbConnection.processEditQueue(editQueue);
 
           editQueue.clear();
+        });
+
+    undo.setOnMouseClicked(
+        event -> {
+          if (!editQueue.isEmpty()) {
+            DataEdit<Object> lastEdit = editQueue.popRecent();
+            switch (lastEdit.getTable()) {
+              case NODE:
+                switch (lastEdit.getType()) {
+                  case INSERT:
+                    // undo node insertion by deleting the node
+                    Node insertedNode = (Node) lastEdit.getNewEntry();
+
+                    // save currently selected nodes
+                    HashSet<Integer> previouslySelectedNodes = new HashSet<>(selectedNodes);
+                    // make sure node is deselected so it doesn't get "selected" after deletion
+                    previouslySelectedNodes.remove(insertedNode.getNodeID());
+
+                    // delete the added node
+                    selectedNodes.clear();
+                    selectedNodes.add(insertedNode.getNodeID());
+                    // this function removes and handles the index shifting
+                    removeSelectedNodes();
+
+                    // revert to previously selected nodes
+                    selectedNodes.addAll(previouslySelectedNodes);
+                    break;
+
+                  case REMOVE:
+                    // undo node deletion by inserting the node
+                    int removedNodeID = (int) lastEdit.getNewEntry();
+
+                    // move the node from the map of removed nodes to the list of nodes
+                    Node removedNode = removedNodes.remove(removedNodeID);
+                    // add to observable list and let listeners handle drawing
+                    nodes.add(removedNode);
+
+                    break;
+
+                  case UPDATE:
+                    // undo moving node by moving it to its previous point
+                    Node origNode = (Node) lastEdit.getOldEntry();
+                    Node movedNode = (Node) lastEdit.getNewEntry();
+                    // listeners will draw it in its original spot
+                    movedNode.setPoint(origNode.getPoint());
+
+                    break;
+                }
+                undoneEdits.add(lastEdit, false);
+                break;
+
+              case EDGE:
+
+              case LOCATION:
+
+              case MOVE:
+            }
+          }
         });
 
     importCSV.setOnMouseClicked(
@@ -732,16 +795,17 @@ public class MapEditorController extends AbsController {
                         fxnode -> {
                           NodeCircle nodeCircle = (NodeCircle) fxnode;
                           if (selectedNodes.contains(nodeCircle.getNodeID())) {
-                            Node newNode =
+                            Node oldNode =
                                 (Node)
                                     dbConnection.getEntry(
                                         nodeCircle.getNodeID(), TableEntryType.NODE);
+                            Node newNode = oldNode.deepCopy();
                             newNode.setPoint(
                                 new Point2D(nodeCircle.getCenterX(), nodeCircle.getCenterY()));
                             editQueue.add(
-                                new DataEdit<>(newNode, DataEditType.UPDATE, TableEntryType.NODE),
+                                new DataEdit<>(
+                                    oldNode, newNode, DataEditType.UPDATE, TableEntryType.NODE),
                                 false);
-                            // dbConnection.updateEntry(newNode);
                           }
                         });
 
@@ -770,21 +834,19 @@ public class MapEditorController extends AbsController {
 
           double xbar = 0, ybar = 0;
 
-          List<Node> nodes = new LinkedList<>();
+          List<Node> nodesToAlign =
+              selectedNodes.stream().map(nodeID -> nodes.get(nodeID2idx.get(nodeID))).toList();
 
-          selectedNodes.forEach(
-              nodeID -> nodes.add((Node) dbConnection.getEntry(nodeID, TableEntryType.NODE)));
-
-          for (Node node : nodes) {
+          for (Node node : nodesToAlign) {
             xbar += node.getX();
             ybar += node.getY();
           }
 
-          xbar /= nodes.size();
-          ybar /= nodes.size();
+          xbar /= nodesToAlign.size();
+          ybar /= nodesToAlign.size();
 
           double numerator = 0, denominator = 0;
-          for (Node node : nodes) {
+          for (Node node : nodesToAlign) {
             numerator += (node.getX() - xbar) * (node.getY() - ybar);
             denominator += Math.pow(node.getX() - xbar, 2);
           }
@@ -792,8 +854,9 @@ public class MapEditorController extends AbsController {
           // if the line of best fit is essentially vertical, align each point to that line
           if (Math.abs(denominator) < 1) {
 
-            double x = (nodes.get(0).getX() + nodes.get(nodes.size() - 1).getX()) / 2;
-            nodes.forEach(node -> node.setPoint(new Point2D(x, node.getY())));
+            double x =
+                (nodesToAlign.get(0).getX() + nodesToAlign.get(nodesToAlign.size() - 1).getX()) / 2;
+            nodesToAlign.forEach(node -> node.setPoint(new Point2D(x, node.getY())));
 
           } else {
 
@@ -805,66 +868,34 @@ public class MapEditorController extends AbsController {
             Point2D line = new Point2D(500, 500 * m);
 
             double line2 = line.dotProduct(line);
-            nodes.forEach(
+            nodesToAlign.forEach(
                 node -> {
+                  Node oldNode = node.deepCopy();
                   Point2D v = node.getPoint().subtract(0, b);
                   Point2D proj = line.multiply(v.dotProduct(line) / line2);
+
+                  // update node point in observable list and listeners will update ui
                   node.setPoint(proj.add(0, b));
-                });
 
-            nodes.forEach(
-                node -> {
-                  // draw NodeCircle at updated node points
-                  nodeGroup
-                      .getChildren()
-                      .forEach(
-                          fxnode -> {
-                            NodeCircle nodeCircle = (NodeCircle) fxnode;
-                            if (nodeCircle.getNodeID() == node.getNodeID()) {
-                              nodeCircle.setCenterX(node.getX());
-                              nodeCircle.setPrevX(node.getX());
-                              nodeCircle.setCenterY(node.getY());
-                              nodeCircle.setPrevY(node.getY());
-                            }
-                          });
-
-                  // update db
+                  // save edit
                   editQueue.add(
-                      new DataEdit<>(node, DataEditType.UPDATE, TableEntryType.NODE), false);
-                  // dbConnection.updateEntry(node);
+                          new DataEdit<>(oldNode, node, DataEditType.UPDATE, TableEntryType.NODE),false);
                 });
           }
         });
 
     snapGrid.setOnMouseClicked(
         event -> {
-          List<Node> nodes = new LinkedList<>();
-
           selectedNodes.forEach(
-              nodeID -> nodes.add((Node) dbConnection.getEntry(nodeID, TableEntryType.NODE)));
+              nodeID -> {
+                Node node = nodes.get(nodeID2idx.get(nodeID));
+                Node oldNode = node.deepCopy();
 
-          nodes.forEach(
-              node -> {
-                node.snapToGrid(2.5);
+                node.snapToGrid(5);
 
-                // draw NodeCircle at updated node points
-                nodeGroup
-                    .getChildren()
-                    .forEach(
-                        fxnode -> {
-                          NodeCircle nodeCircle = (NodeCircle) fxnode;
-                          if (nodeCircle.getNodeID() == node.getNodeID()) {
-                            nodeCircle.setCenterX(node.getX());
-                            nodeCircle.setPrevX(node.getX());
-                            nodeCircle.setCenterY(node.getY());
-                            nodeCircle.setPrevY(node.getY());
-                          }
-                        });
-
-                // update db
+                // save edit
                 editQueue.add(
-                    new DataEdit<>(node, DataEditType.UPDATE, TableEntryType.NODE), false);
-                // dbConnection.updateEntry(node);
+                    new DataEdit<>(oldNode, node, DataEditType.UPDATE, TableEntryType.NODE), false);
               });
         });
 
@@ -1028,7 +1059,10 @@ public class MapEditorController extends AbsController {
 
             System.out.println("dragged " + dist);
 
-            if (dist > 25) {
+            if (dist > 10) {
+
+              Node oldNode = node.deepCopy();
+              oldNode.setPoint(new Point2D(nodeCircle.getPrevX(), nodeCircle.getPrevY()));
 
               nodeCircle.setPrevX(event.getX());
               nodeCircle.setPrevY((event.getY()));
@@ -1038,11 +1072,14 @@ public class MapEditorController extends AbsController {
               node.setBuilding(
                   buildingChecker.getBuilding(node.getPoint(), allFloors.get(currentFloor)));
 
-              fillNodeFields(node);
+              // TODO test to ensure this happens automatically via listeners on the drag updates
+              // fillNodeFields(node);
 
-              // update node in database with updated x & y
-              editQueue.add(new DataEdit<>(node, DataEditType.UPDATE, TableEntryType.NODE), false);
-              // dbConnection.updateEntry(node);
+              System.out.println(oldNode.getPoint() + " dragged to " + node.getPoint());
+
+              // save edit
+              editQueue.add(
+                  new DataEdit<>(oldNode, node, DataEditType.UPDATE, TableEntryType.NODE), false);
 
             } else {
               // bring point back to the previous position
@@ -1098,6 +1135,9 @@ public class MapEditorController extends AbsController {
     selectedNodes.forEach(
         nodeID -> {
           int removedIdx = nodeID2idx.get(nodeID);
+
+          removedNodes.put(nodeID, nodes.get(removedIdx));
+
           for (int i = removedIdx + 1; i < nodes.size(); i++) {
             int oldIdx = nodeID2idx.get(nodes.get(i).getNodeID());
             nodeID2idx.put(nodes.get(i).getNodeID(), oldIdx - 1);

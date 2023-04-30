@@ -31,6 +31,10 @@ public class NodeCircle extends Circle {
     setCenterY(center.getY());
   }
 
+  public Point2D getCenter() {
+    return new Point2D(getCenterX(), getCenterY());
+  }
+
   public void reset() {
     this.setStrokeWidth(2);
     this.setStroke(Color.rgb(42, 99, 156)); // #2B639C

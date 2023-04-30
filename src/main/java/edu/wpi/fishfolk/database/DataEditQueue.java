@@ -20,6 +20,11 @@ public class DataEditQueue<T> {
     this.batchLimit = 4;
   }
 
+  /** @return true if the underlying queue is empty, otherwise false. */
+  public boolean isEmpty() {
+    return dataEditQueue.isEmpty();
+  }
+
   /** @return the total number of edits in the queue. */
   public int size() {
     return dataEditQueue.size();
