@@ -437,7 +437,7 @@ public class MapEditorController extends AbsController {
           editQueue.clear();
         });
 
-    // TODO: instead of storing list of undone edits, just move pointer back in edit queue
+    // TODO WIP: instead of storing list of undone edits, just move pointer back in edit queue
     undo.setOnMouseClicked(
         event -> {
           if (editQueue.isEmpty()) {
@@ -463,9 +463,7 @@ public class MapEditorController extends AbsController {
                     selectedNodes.clear();
                     selectedNodes.add(insertedNode.getNodeID());
                     // this function removes and handles the index shifting
-                    removeSelectedNodes();
-                    // removeSelected() adds an unnecesary data edit so remove it
-                    editQueue.removeRecent();
+                    removeSelectedNodes(false);
 
                     // revert to previously selected nodes
                     selectedNodes.addAll(previouslySelectedNodes);
@@ -604,7 +602,7 @@ public class MapEditorController extends AbsController {
     delNode.setOnMouseClicked(
         event -> {
           if (state == EDITOR_STATE.EDITING_NODE) {
-            removeSelectedNodes();
+            removeSelectedNodes(true);
             state = EDITOR_STATE.IDLE;
           }
         });
@@ -763,7 +761,7 @@ public class MapEditorController extends AbsController {
               System.out.println("key pressed: " + event.getCode());
               if (event.getCode() == KeyCode.DELETE) {
 
-                removeSelectedNodes();
+                removeSelectedNodes(true);
                 removeSelectedEdges();
 
                 // in case a node is deleted while dragging (gestures are disabled when dragging)
@@ -1151,7 +1149,8 @@ public class MapEditorController extends AbsController {
     editQueue.add(new DataEdit<>(node, DataEditType.INSERT, TableEntryType.NODE), false);
   }
 
-  private void removeSelectedNodes() {
+  /** @param track true if the edits should get added to the queue, false if not (ex: undoing). */
+  private void removeSelectedNodes(boolean track) {
 
     // remove nodes from nodes observable list and listeners will update the ui
     selectedNodes.forEach(
@@ -1165,8 +1164,11 @@ public class MapEditorController extends AbsController {
             nodeID2idx.put(nodes.get(i).getNodeID(), oldIdx - 1);
           }
           nodes.remove(removedIdx);
-          // record in edit queue
-          editQueue.add(new DataEdit<>(nodeID, DataEditType.REMOVE, TableEntryType.NODE), false);
+
+          if (track) {
+            // record in edit queue
+            editQueue.add(new DataEdit<>(nodeID, DataEditType.REMOVE, TableEntryType.NODE), false);
+          }
         });
 
     // remove edges that contain nodes-to-be-removed
@@ -1324,38 +1326,37 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
     return dataEditQueue.add(dataEdit);
   }
 
-    /**
-     * Undoes the last edit by moving the pointer backwards one.
-     * @return
-     */
-  public DataEdit<Object> undoEdit(){
+  /**
+   * Undoes the last edit by moving the pointer backwards one.
+   *
+   * @return
+   */
+  public DataEdit<Object> undoEdit() {
 
-      // Check if queue is empty
-      if (dataEditQueue.isEmpty()) {
-          return null;
-      }
+    // Check if queue is empty
+    if (dataEditQueue.isEmpty()) {
+      return null;
+    }
 
-      undoPointer--;
+    undoPointer--;
 
-      return dataEditQueue.get(undoPointer);
+    return dataEditQueue.get(undoPointer);
   }
 
   @Override
   public void clear() {
-      dataEditQueue.clear();
-      pointer = 0;
-      editCount = 0;
-      undoPointer = 0;
+    dataEditQueue.clear();
+    pointer = 0;
+    editCount = 0;
+    undoPointer = 0;
   }
 
-    /**
-     * Clear the edits after the undo pointer.
-     */
-  public void clearUndoneEdits(){
-      dataEditQueue.subList(undoPointer, dataEditQueue.size()).clear();
+  /** Clear the edits after the undo pointer. */
+  public void clearUndoneEdits() {
+    dataEditQueue.subList(undoPointer, dataEditQueue.size()).clear();
   }
 
-  //leave the DataEditQueue next() and hasNext() as they are
+  // leave the DataEditQueue next() and hasNext() as they are
   // for iterating through the queue in fdb.processEdits(queue)
 }
 
