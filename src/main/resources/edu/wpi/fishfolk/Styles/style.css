@@ -91,7 +91,6 @@
 
 .service:hover{
     -fx-background-color: #F9E4B3;
-
 }
 
 .sideNav{
@@ -160,3 +159,6 @@
     -fx-border-width: 0 0 0.5 0;
     -fx-border-color: #012D5A;
 }
+
+
+
