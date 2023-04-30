@@ -11,6 +11,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 
 public class NewConferenceController extends AbsController {
   @FXML MFXButton confClearButton, confCancelButton, confSubmitButton;
@@ -281,15 +283,11 @@ public class NewConferenceController extends AbsController {
    * @param node the area it will pop up next to.
    */
   private void submissionError(String error, Node node) {
-
-    /*
     PopOver popup = new PopOver();
     Text popText = new Text(error);
     popText.setFont(oSans26);
     popup.setContentNode(popText);
     popup.show(node);
-
-     */
   }
 
   /**
