@@ -160,11 +160,14 @@
     -fx-border-width: 0 0 0.5 0;
     -fx-border-color: #012D5A;
 }
-.userIcon{
 
+.evolve{
+    -fx-background-color: linear-gradient(to bottom, rgb(2,0,36), rgb(55,121,107), rgb(255,255,255));
 }
 
 .userNav:hover{
     -fx-background-color: #EEEEEE;
 }
+
+
 

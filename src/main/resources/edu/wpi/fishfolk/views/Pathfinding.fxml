@@ -275,14 +275,15 @@
                   <Font name="Open Sans Bold" size="24.0" />
                </font>
             </MFXButton>
-            <ImageView fx:id="settingButton" accessibleRole="BUTTON" fitHeight="55.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/Gear.png" />
-               </image>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </ImageView>
+            <MFXButton fx:id="settingButton" contentDisplay="GRAPHIC_ONLY" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" style="-fx-background-color: #012D5A;">
+               <graphic>
+                  <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/NavigationBar/setting.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </MFXButton>
          </children>
          <StackPane.margin>
             <Insets right="25.0" top="40.0" />

@@ -55,7 +55,7 @@
                <children>
                   <MFXButton fx:id="moveEditorNav" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="90.0" text="Move Editor" textFill="#012d5a">
                      <font>
-                        <Font name="Open Sans Regular" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                      <VBox.margin>
                         <Insets />
@@ -70,7 +70,7 @@
                <children>
                   <MFXButton fx:id="importCSV" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="110.0" text="Import CSV" textFill="#012d5a">
                      <font>
-                        <Font name="Open Sans Regular" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -85,7 +85,7 @@
                   </MFXButton>
                   <MFXButton fx:id="exportCSV" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="110.0" text="Export CSV" textFill="#012d5a">
                      <font>
-                        <Font name="Open Sans Regular" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -112,7 +112,7 @@
                <children>
                   <MFXButton fx:id="addNode" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="85.0" text="Add" textFill="#012d5a" VBox.vgrow="ALWAYS">
                      <font>
-                        <Font name="Open Sans Regular" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -127,7 +127,7 @@
                   </MFXButton>
                   <MFXButton fx:id="delNode" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="85.0" text="Delete" textFill="#012d5a">
                      <font>
-                        <Font name="Open Sans Regular" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -154,7 +154,7 @@
                <children>
                   <MFXButton fx:id="addEdge" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="85.0" text="Add" textFill="#012d5a" VBox.vgrow="ALWAYS">
                      <font>
-                        <Font name="Open Sans Regular" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -169,7 +169,7 @@
                   </MFXButton>
                   <MFXButton fx:id="delEdge" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="85.0" text="Delete" textFill="#012d5a">
                      <font>
-                        <Font name="Open Sans Regular" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -245,7 +245,7 @@
                         </ImageView>
                      </graphic>
                      <font>
-                        <Font name="Open Sans Regular" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                      <VBox.margin>
                         <Insets />
@@ -260,7 +260,7 @@
                         </ImageView>
                      </graphic>
                      <font>
-                        <Font name="Open Sans Regular" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -280,7 +280,7 @@
                <children>
                   <Label alignment="TOP_LEFT" text="Show location types:" textFill="#012d5a">
                      <font>
-                        <Font name="Open Sans Bold" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                   </Label>
                   <HBox prefHeight="100.0" prefWidth="200.0">
@@ -288,7 +288,7 @@
                         <CheckComboBox fx:id="showLocationType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="125.0" />
                         <MFXButton fx:id="clearLocationType" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="45.0" style="-fx-background-color: #012d5a;" text="Clear" textFill="WHITE">
                            <font>
-                              <Font name="Open Sans Regular" size="12.0" />
+                              <Font name="Open Sans Bold" size="11.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="10.0" />
@@ -298,7 +298,7 @@
                   </HBox>
                   <Label alignment="TOP_LEFT" text="Search for a location:" textFill="#012d5a">
                      <font>
-                        <Font name="Open Sans Bold" size="12.0" />
+                        <Font name="Open Sans Bold" size="11.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="5.0" />
@@ -341,7 +341,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Label>
-            <MFXComboBox fx:id="floorSelector" alignment="CENTER" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" style="-fx-border-color: #012D5A;" text="Floor 1" HBox.hgrow="ALWAYS">
+            <MFXComboBox fx:id="floorSelector" alignment="CENTER" floatMode="DISABLED" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" style="-fx-border-color: #012D5A;" text="Floor 1" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Open Sans Bold" size="15.0" />
                </font>

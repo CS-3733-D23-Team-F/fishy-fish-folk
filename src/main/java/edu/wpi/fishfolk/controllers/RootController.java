@@ -1,16 +1,13 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -39,7 +36,7 @@ public class RootController {
   @FXML MFXButton aboutButton;
   @FXML MFXButton creditButton;
 
-  //@FXML MFXButton userDropdown;
+  // @FXML MFXButton userDropdown;
   @FXML StackPane sidebar;
   @FXML HBox serviceBox;
   @FXML VBox buttonsBox;
@@ -59,7 +56,7 @@ public class RootController {
         event -> {
           try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(Fapp.class.getResource("views/UserProfile.fxml"));
+            fxmlLoader.setLocation(Fapp.class.getResource("views/LoadingScreen.fxml"));
             AnchorPane anchorPane = fxmlLoader.load();
             anchorPane.toFront();
             UserProfileController userProfile = fxmlLoader.getController();
