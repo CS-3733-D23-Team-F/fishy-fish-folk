@@ -16,7 +16,7 @@ import org.controlsfx.control.PopOver;
 
 public class NewConferenceController extends AbsController {
   @FXML MFXButton confClearButton, confCancelButton, confSubmitButton;
-  @FXML MFXFilterComboBox startTimeDrop, endTimeDrop, startAMPMDrop, endAMPMDrop, recurringDrop;
+  @FXML MFXFilterComboBox startTimeDrop, endTimeDrop, recurringDrop;
   @FXML MFXTextField numAttnBox, nameBox, notesBox;
   @FXML MFXRectangleToggleNode rec1, rec2, rec3, rec4, rec5, rec6, rec7;
   @FXML HBox confirmBlur;
@@ -26,7 +26,6 @@ public class NewConferenceController extends AbsController {
   @FXML MFXDatePicker datePicker;
   Font oSans26;
 
-  ArrayList<String> AMPM = new ArrayList<>();
   ArrayList<String> times = new ArrayList<>();
   ArrayList<Recurring> recurring = new ArrayList<>();
 
@@ -65,8 +64,6 @@ public class NewConferenceController extends AbsController {
     rec6.setSelected(false);
     rec7.setSelected(false);
     startTimeDrop.setValue(null);
-    startAMPMDrop.setValue(null);
-    endAMPMDrop.setValue(null);
     endTimeDrop.setValue(null);
     recurringDrop.setValue(null);
     numAttnBox.clear();
@@ -77,27 +74,25 @@ public class NewConferenceController extends AbsController {
   /** Initializing the dropdowns so they have all the required options. */
   public void addDropdownOptions() {
 
-    // Dropdown options getting added to an arraylist called AMPM
-    AMPM.add("AM");
-    AMPM.add("PM");
-
-    // Adding the arraylist of AM or PM to the dropdowns so they can be selected
-    startAMPMDrop.getItems().addAll(AMPM);
-    endAMPMDrop.getItems().addAll(AMPM);
-
     // Dropdown options getting added to an arraylist called times
-    times.add("1:00");
-    times.add("2:00");
-    times.add("3:00");
-    times.add("4:00");
-    times.add("5:00");
-    times.add("6:00");
-    times.add("7:00");
-    times.add("8:00");
-    times.add("9:00");
-    times.add("10:00");
-    times.add("11:00");
-    times.add("12:00");
+    times.add("6:00 AM");
+    times.add("7:00 AM");
+    times.add("8:00 AM");
+    times.add("9:00 AM");
+    times.add("10:00 AM");
+    times.add("11:00 AM");
+    times.add("12:00 PM");
+    times.add("1:00 PM");
+    times.add("2:00 PM");
+    times.add("3:00 PM");
+    times.add("4:00 PM");
+    times.add("5:00 PM");
+    times.add("6:00 PM");
+    times.add("7:00 PM");
+    times.add("8:00 PM");
+    times.add("9:00 PM");
+    times.add("10:00 PM");
+    times.add("11:00 PM");
 
     // Adding the arraylist of times to the dropdowns so they can be selected
     startTimeDrop.getItems().addAll(times);
@@ -124,6 +119,29 @@ public class NewConferenceController extends AbsController {
     }
   }
 
+  /**
+   * Checks to see if the end time comes after the start time
+   *
+   * @return true if it is, false if not
+   */
+  public boolean validEndTime() {
+    int start = -1;
+    for (int i = 0; i < times.size(); i++) {
+      if (startTimeDrop.getText().equals(times.get(i))) {
+        start = i;
+      }
+    }
+    if (start == -1) {
+      return false;
+    }
+    for (int i = start + 1; i < times.size(); i++) {
+      if (endTimeDrop.getText().equals(times.get(i))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /** Attempts to submit the form, but if it Doesn't pass the tests it sends errors to the users. */
   public void attemptSubmit() {
     if (rec1.isSelected()
@@ -133,39 +151,44 @@ public class NewConferenceController extends AbsController {
         || rec5.isSelected()
         || rec6.isSelected()
         || rec7.isSelected()) {
-      if (!(startTimeDrop.getText().isEmpty())
-          && !(startAMPMDrop.getText().isEmpty())
-          && !(endTimeDrop.getText().isEmpty())
-          && !(endAMPMDrop.getText().isEmpty())) {
-        if (!(datePicker.getValue() == null)) {
-          if (!datePicker
-              .getValue()
-              .atStartOfDay()
-              .isBefore(datePicker.getCurrentDate().atStartOfDay())) {
-            if (!(numAttnBox.getText().isEmpty())) {
-              int numba = 75;
-              try {
-                numba = Integer.parseInt(numAttnBox.getText());
-              } catch (Exception e) {
-                submissionError("Nice Try Bernhardt.", numAttnBox);
-              }
-              if (numba < 21 && numba > 1 && numba != 75) {
-                if (!(recurringDrop.getText().isEmpty())) {
-                  submit();
+      if (!(startTimeDrop.getText().isEmpty())) {
+        if (!(endTimeDrop.getText().isEmpty())) {
+          if (validEndTime()) {
+            if (!(datePicker.getValue() == null)) {
+              if (datePicker
+                  .getValue()
+                  .atStartOfDay()
+                  .isAfter(datePicker.getCurrentDate().atStartOfDay())) {
+                if (!(numAttnBox.getText().isEmpty())) {
+                  int numba = 75;
+                  try {
+                    numba = Integer.parseInt(numAttnBox.getText());
+                  } catch (Exception e) {
+                    submissionError("Nice Try Bernhardt.", numAttnBox);
+                  }
+                  if (numba < 21 && numba > 1 && numba != 75) {
+                    if (!(recurringDrop.getText().isEmpty())) {
+                      submit();
+                    } else {
+                      submissionError("You must choose your setting for recurring.", recurringDrop);
+                    }
+                  } else {
+                    submissionError("Invalid Input for number of attendees.", numAttnBox);
+                  }
                 } else {
-                  submissionError("You must choose your setting for recurring.", recurringDrop);
+                  submissionError("You must put in the number of attendees.", numAttnBox);
                 }
               } else {
-                submissionError("Invalid Input for number of attendees.", numAttnBox);
+                submissionError("You must choose a date in the future.", datePicker);
               }
             } else {
-              submissionError("You must put in the number of attendees.", numAttnBox);
+              submissionError("You must include a date", datePicker);
             }
           } else {
-            submissionError("You must choose today's date or a date in the future.", datePicker);
+            submissionError("That's not how time works.", endTimeDrop);
           }
         } else {
-          submissionError("You must include a date", datePicker);
+          submissionError("You must put in a time.", endTimeDrop);
         }
       } else {
         submissionError("You must put in a time.", startTimeDrop);
@@ -242,10 +265,8 @@ public class NewConferenceController extends AbsController {
         new ConferenceRequest(
             notesBox.getText(),
             SharedResources.getCurrentUser().getUsername(),
-            startTimeDrop.getText() + " " + startAMPMDrop.getText(),
-            endTimeDrop.getText()
-                + " "
-                + endAMPMDrop.getText(), // datePicker.getValue().atStartOfDay(),
+            startTimeDrop.getText(),
+            endTimeDrop.getText(), // datePicker.getValue().atStartOfDay(),
             Recurring.valueOf(recurringDrop.getText()),
             Integer.parseInt(numAttnBox.getText()),
             dummyVariable);

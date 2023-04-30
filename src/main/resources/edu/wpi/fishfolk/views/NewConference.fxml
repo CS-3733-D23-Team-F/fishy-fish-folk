@@ -109,37 +109,19 @@
                         </VBox>
                         <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
                            <children>
-                              <HBox>
-                                 <children>
-                                    <MFXFilterComboBox fx:id="startTimeDrop" floatingText="TIME" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
-                                       <font>
-                                          <Font name="Open Sans Regular" size="15.0" />
-                                       </font>
-                                    </MFXFilterComboBox>
-                                    <MFXFilterComboBox fx:id="startAMPMDrop" floatingText="AM/PM" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
-                                       <font>
-                                          <Font name="Open Sans Regular" size="15.0" />
-                                       </font>
-                                    </MFXFilterComboBox>
-                                 </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <MFXFilterComboBox fx:id="endTimeDrop" floatingText="TIME" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
-                                       <font>
-                                          <Font name="Open Sans Regular" size="15.0" />
-                                       </font>
-                                       <textFill>
-                                          <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-                                       </textFill>
-                                    </MFXFilterComboBox>
-                                    <MFXFilterComboBox fx:id="endAMPMDrop" floatingText="AM/PM" minHeight="50.0" minWidth="150.0" style="-fx-border-color: #012d5a;">
-                                       <font>
-                                          <Font name="Open Sans Regular" size="15.0" />
-                                       </font>
-                                    </MFXFilterComboBox>
-                                 </children>
-                              </HBox>
+                              <MFXFilterComboBox fx:id="startTimeDrop" floatingText="TIME" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="300.0" style="-fx-border-color: #012d5a;">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                              </MFXFilterComboBox>
+                              <MFXFilterComboBox fx:id="endTimeDrop" floatingText="TIME" minHeight="50.0" minWidth="300.0" style="-fx-border-color: #012d5a;">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                                 <textFill>
+                                    <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                 </textFill>
+                              </MFXFilterComboBox>
                               <MFXDatePicker fx:id="datePicker" floatMode="INLINE" floatingText="DATE" minHeight="50.0" minWidth="300.0" style="-fx-border-color: #012d5a;">
                                  <font>
                                     <Font name="Open Sans Regular" size="15.0" />
