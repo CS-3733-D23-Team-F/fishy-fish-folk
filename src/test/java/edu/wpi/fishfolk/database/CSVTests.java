@@ -133,4 +133,32 @@ public class CSVTests {
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.SIGNAGE_PRESET);
   }
+
+  @Test
+  public void furnitureRequestTableImport() {
+    Fdb fdb = new Fdb();
+
+    fdb.importCSV("D:\\CSVTests\\furniturerequest.csv", false, TableEntryType.FURNITURE_REQUEST);
+  }
+
+  @Test
+  public void furnitureRequestTableExport() {
+    Fdb fdb = new Fdb();
+
+    fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.FURNITURE_REQUEST);
+  }
+
+  @Test
+  public void conferenceRequestTableImport() {
+    Fdb fdb = new Fdb();
+
+    fdb.importCSV("D:\\CSVTests\\conferencerequest.csv", false, TableEntryType.CONFERENCE_REQUEST);
+  }
+
+  @Test
+  public void conferenceRequestTableExport() {
+    Fdb fdb = new Fdb();
+
+    fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.CONFERENCE_REQUEST);
+  }
 }

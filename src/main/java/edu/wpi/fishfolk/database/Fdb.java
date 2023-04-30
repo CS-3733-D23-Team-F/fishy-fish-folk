@@ -497,7 +497,7 @@ public class Fdb {
         return conferenceRequestTable.importCSV(tableFilepath, backup);
 
       case IT_REQUEST:
-        return itRequestTable.importCSV(filepath, backup);
+        return itRequestTable.importCSV(tableFilepath, backup);
 
       case USER_ACCOUNT:
         return userAccountTable.importCSV(tableFilepath, backup);
