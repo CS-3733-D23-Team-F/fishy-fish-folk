@@ -164,9 +164,9 @@
       <VBox alignment="CENTER" spacing="20.0">
          <HBox alignment="CENTER" maxWidth="1020.0" spacing="20.0">
             <children>
-               <ScrollPane hbarPolicy="NEVER" maxHeight="700.0" minHeight="300.0" minWidth="1020.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+               <ScrollPane hbarPolicy="NEVER" maxHeight="700.0" minHeight="300.0" minWidth="1020.0" style="-fx-border-radius: 20; -fx-border-width: 3;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                   <content>
-                     <VBox>
+                     <VBox style="-fx-border-radius: 20; -fx-border-width: 3;">
                         <children>
                            <MFXRectangleToggleNode fx:id="rectangle1" minHeight="100.0" minWidth="1020.0" styleClass="rectToggle" text="PENCIL                                                                                                                            " wrapText="true">
                               <font>
@@ -337,7 +337,7 @@
          </MFXTextField>
          <HBox alignment="CENTER" spacing="20.0">
             <children>
-               <MFXFilterComboBox fx:id="roomSelector" floatMode="ABOVE" minHeight="86.0" minWidth="500.0" popupOffsetY="-500.0" promptText="ROOM" style="-fx-border-color: #012d5a; -fx-border-width: 3;" HBox.hgrow="ALWAYS">
+               <MFXFilterComboBox fx:id="roomSelector" floatMode="ABOVE" minHeight="86.0" minWidth="500.0" popupOffsetY="-2620.0" promptText="ROOM" style="-fx-border-color: #012d5a; -fx-border-width: 3;" HBox.hgrow="ALWAYS">
                   <font>
                      <Font name="Open Sans Regular" size="26.0" />
                   </font>
@@ -354,13 +354,13 @@
          </HBox>
          <HBox alignment="CENTER" maxWidth="1020.0">
             <children>
-               <MFXButton fx:id="clearButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CLEAR" textFill="WHITE">
+               <MFXButton fx:id="cancelButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CANCEL" textFill="WHITE">
                   <font>
                      <Font name="Open Sans Bold" size="26.0" />
                   </font>
                </MFXButton>
                <VBox HBox.hgrow="ALWAYS" />
-               <MFXButton fx:id="cancelButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CANCEL" textFill="WHITE">
+               <MFXButton fx:id="clearButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-border-radius: 20; -fx-background-color: #012d5a;" text="CLEAR" textFill="WHITE">
                   <font>
                      <Font name="Open Sans Bold" size="26.0" />
                   </font>

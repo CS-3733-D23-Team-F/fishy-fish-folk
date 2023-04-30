@@ -11,7 +11,7 @@ public class DataEditQueue<T> {
 
   @Getter @Setter private int pointer;
   @Setter private int editCount;
-  @Getter private final int batchLimit;
+  @Getter @Setter private int batchLimit;
 
   /** Represents a queue of data edits for a PostgreSQL database. */
   public DataEditQueue() {
