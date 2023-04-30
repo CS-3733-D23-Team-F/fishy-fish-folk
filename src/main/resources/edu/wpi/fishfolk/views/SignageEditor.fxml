@@ -208,7 +208,7 @@
                   <Font name="Open Sans Bold" size="26.0" />
                </font>
             </MFXButton>
-            <MFXFilterComboBox fx:id="presetSelect" minHeight="57.0" minWidth="200.0" promptText="LOAD PRESET" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
+            <MFXFilterComboBox fx:id="presetSelect" minHeight="57.0" minWidth="200.0" popupOffsetY="-2120.0" promptText="LOAD PRESET" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
