@@ -657,6 +657,12 @@ public class PathfindingController extends AbsController {
                       direction(path.getFloor(), paths.get(i + 1).getFloor()),
                       true));
         }
+        if (paths.size() == 1) {
+          Point2D p2 = path.points.get(path.numNodes - 1);
+          NodeCircle end = new NodeCircle(-1, p2.getX(), p2.getY(), 12);
+          end.setFill(Color.rgb(1, 45, 90));
+          g.getChildren().add(end);
+        }
         drawGroup.getChildren().add(g);
         g.setVisible(false);
 
