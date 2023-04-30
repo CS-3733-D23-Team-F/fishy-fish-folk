@@ -1,31 +1,35 @@
 package edu.wpi.fishfolk.controllers;
 
-import java.io.IOException;
+import edu.wpi.fishfolk.Fapp;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 
 public class AboutMeController {
 
   @FXML Label AboutM;
-  @FXML Button Jon;
-  @FXML Button Meg;
-  @FXML Button Sam;
-  @FXML Button Christian;
-  @FXML Button Max;
-  @FXML Button Charlie;
-  @FXML Button Louis;
-  @FXML Button Tristin;
-  @FXML Button Trajan;
-  @FXML Button Bernhardt;
-  @FXML Button Brendan;
+  @FXML MFXButton Jon;
+  @FXML MFXButton Meg;
+  @FXML MFXButton Sam;
+  @FXML MFXButton Christian;
+  @FXML MFXButton Max;
+  @FXML MFXButton Charlie;
+  @FXML MFXButton Louis;
+  @FXML MFXButton Tristin;
+  @FXML MFXButton Trajan;
+  @FXML MFXButton Bernhardt;
+  @FXML MFXButton Brendan;
+  @FXML AnchorPane AboutMe;
 
   @FXML
   public void initialize() {
 
     // none of this works
-    FXMLLoader JonPage = new FXMLLoader(getClass().getResource("JonPage.fxml"));
+    final FXMLLoader JonPage =
+        new FXMLLoader(AboutMeController.class.getResource("views/popups/JonPage.fxml"));
     FXMLLoader MaxPage = new FXMLLoader(getClass().getResource("MaxPage.fxml"));
     FXMLLoader MegPage = new FXMLLoader(getClass().getResource("MegPage.fxml"));
     FXMLLoader TrajanPage = new FXMLLoader(getClass().getResource("TrajanPage.fxml"));
@@ -50,10 +54,17 @@ public class AboutMeController {
   }
 
   public void PopPage(FXMLLoader name) {
+
     try {
-      name.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+      FXMLLoader fxmlLoader = new FXMLLoader();
+      fxmlLoader.setLocation(Fapp.class.getResource("views/popups/JonPage.fxml"));
+
+      HBox namePane = fxmlLoader.load();
+
+      AboutMe.getChildren().clear();
+      AboutMe.getChildren().add(namePane);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
     }
   }
 }

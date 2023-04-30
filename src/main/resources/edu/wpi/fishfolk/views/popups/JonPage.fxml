@@ -21,7 +21,7 @@
                            <children>
                               <ImageView fitHeight="214.0" fitWidth="268.0" layoutX="417.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../Pictures/jon.jpg" />
+                                    <Image url="@../../images/About/jon.jpg" />
                                  </image>
                               </ImageView>
                               <Text fill="#f1f1f1" layoutX="456.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jonathan Pantajas">

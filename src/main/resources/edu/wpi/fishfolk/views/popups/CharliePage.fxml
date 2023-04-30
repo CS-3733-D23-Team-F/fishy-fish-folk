@@ -36,7 +36,7 @@
                               </Text>
                               <ImageView fitHeight="219.0" fitWidth="193.0" layoutX="470.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../Pictures/Charlie.jpg" />
+                                    <Image url="@../../images/About/Charlie.jpg" />
                                  </image>
                               </ImageView>
                               <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />

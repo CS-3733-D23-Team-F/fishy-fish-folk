@@ -46,7 +46,7 @@ public class Fapp extends Application {
     primaryStage.setMaximized(true);
     primaryStage.show();
 
-    Navigation.navigate(Screen.LOGIN);
+    Navigation.navigate(Screen.ABOUTME);
     root.getLeft().setDisable(true);
     root.getLeft().setVisible(false);
     root.getTop().setDisable(true);

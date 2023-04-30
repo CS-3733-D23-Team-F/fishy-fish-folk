@@ -21,7 +21,7 @@
                            <children>
                               <ImageView fitHeight="239.0" fitWidth="209.0" layoutX="438.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../Pictures/trajan.png" />
+                                    <Image url="@../../images/About/trajan.png" />
                                  </image>
                               </ImageView>
                               <Text fill="#f1f1f1" layoutX="462.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trajan Espelien ">
@@ -29,12 +29,12 @@
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <Text fill="#f1f1f1" layoutX="413.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lead Software Engineer">
+                              <Text fill="#f1f1f1" layoutX="416.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lead Software Engineer">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <Text fill="#f1f1f1" layoutX="185.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science and Mathematics Bachelor's degrees">
+                              <Text fill="#f1f1f1" layoutX="187.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science and Mathematics Bachelor's degrees">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -50,7 +50,17 @@
                <children>
                   <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
                      <children>
-                        <Text layoutX="350.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="223.606689453125">
+                        <Text fill="#f1f1f1" layoutX="410.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Pad Thai" wrappingWidth="259.606689453125">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#f1f1f1" layoutX="376.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Ballroom Dance" wrappingWidth="350.606689453125">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#f1f1f1" layoutX="367.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: &quot;thats rough buddy&quot; by Zuko" textAlignment="CENTER" wrappingWidth="395.606689453125">
                            <font>
                               <Font size="24.0" />
                            </font>
