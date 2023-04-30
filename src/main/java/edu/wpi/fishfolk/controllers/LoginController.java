@@ -65,6 +65,20 @@ public class LoginController extends AbsController {
     String loginID = loginIDField.getText();
     String password = loginPassField.getText();
 
+    if (!loginID.matches("^[a-zA-Z0-9._]+$")) {
+      errorBox.setText("Invalid username: Please only use a-Z, 0-9, dots, and underlines.");
+      errorBox.setVisible(true);
+      errorBox.setStyle("-fx-alignment: center; -fx-text-fill:  red;");
+      return;
+    }
+
+    if (!password.matches("^[a-zA-Z0-9._]*$")) { // empty is technically allowed!
+      errorBox.setText("Invalid password: Please only use a-Z, 0-9, dots, and underlines.");
+      errorBox.setVisible(true);
+      errorBox.setStyle("-fx-alignment: center; -fx-text-fill:  red;");
+      return;
+    }
+
     List<UserAccount> userAccounts =
         (List<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
 
