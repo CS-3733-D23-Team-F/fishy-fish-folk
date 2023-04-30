@@ -196,6 +196,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[FlowerRequestDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
