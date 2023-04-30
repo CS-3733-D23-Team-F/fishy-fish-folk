@@ -445,7 +445,6 @@ public class MapEditorController extends AbsController {
 
           } else {
             DataEdit<Object> lastEdit = editQueue.undoEdit();
-            System.out.println("undoing " + lastEdit.toString());
 
             switch (lastEdit.getTable()) {
               case NODE:
@@ -454,19 +453,11 @@ public class MapEditorController extends AbsController {
                     // undo node insertion by deleting the node
                     Node insertedNode = (Node) lastEdit.getNewEntry();
 
-                    // save currently selected nodes
-                    HashSet<Integer> previouslySelectedNodes = new HashSet<>(selectedNodes);
-                    // make sure node is deselected so it doesn't get "selected" after deletion
-                    previouslySelectedNodes.remove(insertedNode.getNodeID());
-
                     // delete the added node
                     selectedNodes.clear();
                     selectedNodes.add(insertedNode.getNodeID());
                     // this function removes and handles the index shifting
                     removeSelectedNodes(false);
-
-                    // revert to previously selected nodes
-                    selectedNodes.addAll(previouslySelectedNodes);
                     break;
 
                   case REMOVE:
@@ -495,8 +486,23 @@ public class MapEditorController extends AbsController {
                 switch (lastEdit.getType()) {
                   case INSERT:
                     // undo edge insertion by removing it
+                    Edge insertedEdge = (Edge) lastEdit.getNewEntry();
 
-                    // save
+                    // delete the edge
+                    selectedEdges.clear();
+                    selectedEdges.add(insertedEdge);
+                    removeSelectedEdges(false);
+                    break;
+
+                  case REMOVE:
+                    // undo edge deletion by inserting it
+                    Edge removedEdge = (Edge) lastEdit.getNewEntry();
+                    edges.add(removedEdge);
+                    break;
+
+                  case UPDATE:
+                    // no update edits for edges
+
                 }
 
               case LOCATION:
@@ -645,7 +651,7 @@ public class MapEditorController extends AbsController {
     delEdge.setOnMouseClicked(
         event -> {
           if (state == EDITOR_STATE.EDITING_EDGE) {
-            removeSelectedEdges();
+            removeSelectedEdges(true);
             state = EDITOR_STATE.IDLE;
 
           } else if (state == EDITOR_STATE.EDITING_NODE) {
@@ -656,7 +662,7 @@ public class MapEditorController extends AbsController {
                     selectedEdges.add(edge);
                   }
                 });
-            removeSelectedEdges();
+            removeSelectedEdges(true);
 
             // stay in node editing state
           }
@@ -768,7 +774,7 @@ public class MapEditorController extends AbsController {
               if (event.getCode() == KeyCode.DELETE) {
 
                 removeSelectedNodes(true);
-                removeSelectedEdges();
+                removeSelectedEdges(true);
 
                 // in case a node is deleted while dragging (gestures are disabled when dragging)
                 gesturePane.setGestureEnabled(true);
@@ -1158,6 +1164,22 @@ public class MapEditorController extends AbsController {
   /** @param track true if the edits should get added to the queue, false if not (ex: undoing). */
   private void removeSelectedNodes(boolean track) {
 
+    // remove edges that contain nodes-to-be-removed before removing nodes
+    // listeners on observable list of edges will handle ui updates
+
+    Iterator<Edge> edgeItr = edges.iterator();
+    while (edgeItr.hasNext()) {
+      Edge edge = edgeItr.next();
+
+      // remove edges connected to removed nodes
+      // both from db and edge list
+      if (selectedNodes.contains(edge.getStartNode())
+          || selectedNodes.contains(edge.getEndNode())) {
+        editQueue.add(new DataEdit<>(edge, DataEditType.REMOVE, TableEntryType.EDGE), false);
+        edgeItr.remove();
+      }
+    }
+
     // remove nodes from nodes observable list and listeners will update the ui
     selectedNodes.forEach(
         nodeID -> {
@@ -1177,22 +1199,6 @@ public class MapEditorController extends AbsController {
           }
         });
 
-    // remove edges that contain nodes-to-be-removed
-    // listeners on observable list of edges will handle ui updates
-
-    Iterator<Edge> edgeItr = edges.iterator();
-    while (edgeItr.hasNext()) {
-      Edge edge = edgeItr.next();
-
-      // remove edges connected to removed nodes
-      // both from db and edge list
-      if (selectedNodes.contains(edge.getStartNode())
-          || selectedNodes.contains(edge.getEndNode())) {
-        editQueue.add(new DataEdit<>(edge, DataEditType.REMOVE, TableEntryType.EDGE), false);
-        edgeItr.remove();
-      }
-    }
-
     selectedNodes.clear();
   }
 
@@ -1206,12 +1212,15 @@ public class MapEditorController extends AbsController {
     editQueue.add(new DataEdit<>(newEdge, DataEditType.INSERT, TableEntryType.EDGE), false);
   }
 
-  private void removeSelectedEdges() {
+  /** @param track true if the edit should get tracked, false if not (ex: undoing) */
+  private void removeSelectedEdges(boolean track) {
 
     selectedEdges.forEach(
         edge -> {
           edges.remove(edge);
-          editQueue.add(new DataEdit<>(edge, DataEditType.REMOVE, TableEntryType.EDGE), false);
+          if (track) {
+            editQueue.add(new DataEdit<>(edge, DataEditType.REMOVE, TableEntryType.EDGE), false);
+          }
         });
 
     selectedEdges.clear();
@@ -1318,16 +1327,27 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
 
   // tracks the last edit displayed
   @Getter @Setter private int undoPointer;
+  private int endPointer;
 
   MapEditQueue() {
     super();
+    endPointer = 0;
     undoPointer = 0;
   }
 
   @Override
   public boolean add(DataEdit<Object> dataEdit, boolean countEntry) {
 
+    // if edits exist beyond the undo pointer, clear them out
+    if (undoPointer < endPointer) {
+      dataEditQueue.subList(undoPointer, dataEditQueue.size()).clear();
+      endPointer = undoPointer;
+    }
+
     undoPointer++;
+    endPointer++;
+
+    System.out.println("undo " + undoPointer + " end " + endPointer);
 
     return dataEditQueue.add(dataEdit);
   }
@@ -1358,16 +1378,11 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
     dataEditQueue.clear();
     pointer = 0;
     editCount = 0;
+    endPointer = 0;
     undoPointer = 0;
   }
 
-  /** Clear the edits after the undo pointer. */
-  public void clearUndoneEdits() {
-    dataEditQueue.subList(undoPointer, dataEditQueue.size()).clear();
-  }
-
   public boolean canUndo() {
-    System.out.println("undo ptr " + undoPointer);
     // can't undo beyond first element
     return undoPointer > 0;
   }
