@@ -535,11 +535,15 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
 
   @Override
   public boolean importCSV(String filepath, boolean backup) {
-    String[] pathArr = filepath.split("/");
+    return false;
+  }
+
+  public boolean importCSV(String tableFilepath, String subtableFilepath, boolean backup) {
+    String[] pathArr = tableFilepath.split("/");
 
     if (backup) {
 
-      // filepath except for last part (actual file name)
+      // tableFilepath except for last part (actual file name)
       StringBuilder folder = new StringBuilder();
       for (int i = 0; i < pathArr.length - 1; i++) {
         folder.append(pathArr[i]).append("/");
@@ -548,12 +552,21 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
     }
 
     try (BufferedReader br =
-        new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
+        new BufferedReader(new InputStreamReader(new FileInputStream(tableFilepath)))) {
 
       // delete the old data
       dbConnection
           .createStatement()
-          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+          .executeUpdate(
+              "DELETE FROM "
+                  + dbConnection.getSchema()
+                  + "."
+                  + tableName
+                  + ";"
+                  + "ALTER SEQUENCE flowerrequest_items_seq RESTART WITH 1;");
+
+      // Get map representation of subtable
+      HashMap<Integer, ArrayList<FlowerItem>> subtable = importSubtable(subtableFilepath);
 
       // skip first row of csv which has the headers
       String line = br.readLine();
@@ -571,7 +584,7 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
 
         String[] parts = line.split(",");
 
-        FlowerRequest fr =
+        FlowerRequest flowerRequest =
             new FlowerRequest(
                 LocalDateTime.parse(parts[0]),
                 parts[1],
@@ -581,20 +594,22 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
                 parts[5],
                 LocalDateTime.parse(parts[6]),
                 Double.parseDouble(parts[7]),
-                getSubtableItems(Integer.parseInt(parts[8])));
+                subtable.get(Integer.parseInt(parts[8])));
 
-        tableMap.put(fr.getFlowerRequestID(), fr);
+        tableMap.put(flowerRequest.getFlowerRequestID(), flowerRequest);
 
-        insertPS.setTimestamp(1, Timestamp.valueOf(fr.getFlowerRequestID()));
-        insertPS.setString(2, fr.getAssignee());
-        insertPS.setString(3, fr.getFormStatus().toString());
-        insertPS.setString(4, fr.getNotes());
-        insertPS.setString(5, fr.getRecipientName());
-        insertPS.setString(6, fr.getDeliveryLocation());
-        insertPS.setTimestamp(7, Timestamp.valueOf(fr.getDeliveryTime()));
-        insertPS.setDouble(8, fr.getTotalPrice());
+        insertPS.setTimestamp(1, Timestamp.valueOf(flowerRequest.getFlowerRequestID()));
+        insertPS.setString(2, flowerRequest.getAssignee());
+        insertPS.setString(3, flowerRequest.getFormStatus().toString());
+        insertPS.setString(4, flowerRequest.getNotes());
+        insertPS.setString(5, flowerRequest.getRecipientName());
+        insertPS.setString(6, flowerRequest.getDeliveryLocation());
+        insertPS.setTimestamp(7, Timestamp.valueOf(flowerRequest.getDeliveryTime()));
+        insertPS.setDouble(8, flowerRequest.getTotalPrice());
 
         insertPS.executeUpdate();
+
+        setSubtableItems(flowerRequest.getFlowerRequestID(), flowerRequest.getItems());
       }
 
       return true;
@@ -634,12 +649,17 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
                 + ","
                 + fr.getDeliveryLocation()
                 + ","
+                + fr.getDeliveryTime()
+                + ","
                 + fr.getTotalPrice()
                 + ","
                 + getSubtableItemsID(fr.getFlowerRequestID()));
       }
 
       out.close();
+
+      exportSubtable(directory);
+
       return true;
 
     } catch (Exception e) {
@@ -681,8 +701,8 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
                 + " ("
                 + "itemkey INT,"
                 + "itemname VARCHAR(64),"
-                + "fullcost REAL,"
-                + "itemamount INT"
+                + "itemamount INT,"
+                + "itemprice REAL"
                 + ");";
         statement.executeUpdate(query);
       }
@@ -752,8 +772,8 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
         allFlowerItems.add(
             new FlowerItem(
                 results.getString("itemname"),
-                results.getInt("fullcost"),
-                results.getInt("itemamount")));
+                results.getInt("itemamount"),
+                results.getDouble("itemprice")));
       }
 
       // Return the list
@@ -789,8 +809,8 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
 
         preparedInsert.setInt(1, getSubtableItemsID(requestID));
         preparedInsert.setString(2, item.getName());
-        preparedInsert.setDouble(3, item.getPrice());
-        preparedInsert.setInt(4, item.getQuantity());
+        preparedInsert.setInt(3, item.getQuantity());
+        preparedInsert.setDouble(4, item.getPrice());
         preparedInsert.executeUpdate();
       }
 
@@ -820,6 +840,91 @@ public class FlowerRequestDAO implements IDAO<FlowerRequest>, IHasSubtable<Flowe
       preparedDeleteAll.executeUpdate();
 
     } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  public HashMap<Integer, ArrayList<FlowerItem>> importSubtable(String subtableFilepath) {
+
+    // Create empty output
+    HashMap<Integer, ArrayList<FlowerItem>> subtable = new HashMap<>();
+
+    // Create buffered reader for CSV
+    try (BufferedReader br =
+        new BufferedReader(new InputStreamReader(new FileInputStream(subtableFilepath)))) {
+
+      // Delete the old data
+      dbConnection
+          .createStatement()
+          .executeUpdate(
+              "DELETE FROM " + dbConnection.getSchema() + "." + tableName + "floweritems" + ";");
+
+      // Iterate through each line of the CSV
+      String line = br.readLine();
+      while ((line = br.readLine()) != null) {
+
+        // Split the input row into parts
+        String[] parts = line.split(",");
+
+        // Read the item ID (table link)
+        int itemID = Integer.parseInt(parts[0]);
+
+        // Make new list entry from row
+        FlowerItem flowerItem =
+            new FlowerItem(parts[1], Integer.parseInt(parts[2]), Double.parseDouble(parts[3]));
+
+        // If there is no list at the item ID in the map, make one
+        if (!subtable.containsKey(itemID)) {
+          subtable.put(itemID, new ArrayList<>());
+        }
+
+        // Add the entry to the list at the item ID in the map
+        subtable.get(itemID).add(flowerItem);
+      }
+
+      // Return the map representation of the subtable
+      return subtable;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+
+      // Return empty map on error, rather than null
+      return new HashMap<>();
+    }
+  }
+
+  public void exportSubtable(String directory) {
+
+    LocalDateTime dateTime = LocalDateTime.now();
+
+    try {
+
+      String subtableFilename =
+          tableName
+              + "floweritems"
+              + "_"
+              + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm"))
+              + ".csv";
+
+      PrintStream subtableOut =
+          new PrintStream(new FileOutputStream(directory + "\\" + subtableFilename));
+
+      subtableOut.println("itemkey,itemname,itemamount,itemprice");
+
+      for (Map.Entry<LocalDateTime, FlowerRequest> entry : tableMap.entrySet()) {
+
+        List<FlowerItem> flowerItems = entry.getValue().getItems();
+        int subtableID = getSubtableItemsID(entry.getValue().getFlowerRequestID());
+
+        for (FlowerItem item : flowerItems) {
+          subtableOut.println(
+              subtableID + "," + item.getName() + "," + item.getQuantity() + "," + item.getPrice());
+        }
+      }
+
+      subtableOut.close();
+
+    } catch (Exception e) {
       System.out.println(e.getMessage());
     }
   }

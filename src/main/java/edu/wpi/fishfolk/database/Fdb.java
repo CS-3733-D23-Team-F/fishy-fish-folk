@@ -509,6 +509,9 @@ public class Fdb {
 
       case SUPPLY_REQUEST:
         return supplyRequestTable.importCSV(tableFilepath, subtableFilepath, backup);
+
+      case FLOWER_REQUEST:
+        return flowerRequestTable.importCSV(tableFilepath, subtableFilepath, backup);
     }
 
     return false;
@@ -529,6 +532,9 @@ public class Fdb {
 
       case SUPPLY_REQUEST:
         return supplyRequestTable.importSubtable(subtableFilepath);
+
+      case FLOWER_REQUEST:
+        return flowerRequestTable.importSubtable(subtableFilepath);
     }
 
     return null;

@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
+import edu.wpi.fishfolk.ui.FlowerItem;
 import edu.wpi.fishfolk.ui.NewFoodItem;
 import edu.wpi.fishfolk.ui.SupplyItem;
 import java.util.ArrayList;
@@ -67,5 +68,35 @@ public class CSVTests {
     Fdb fdb = new Fdb();
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.SUPPLY_REQUEST);
+  }
+
+  @Test
+  public void flowerRequestSubtableImport() {
+    Fdb fdb = new Fdb();
+
+    HashMap<Integer, ArrayList<FlowerItem>> items =
+        (HashMap<Integer, ArrayList<FlowerItem>>)
+            fdb.importSubtable(
+                "D:\\CSVTests\\flowerrequestfloweritems.csv", TableEntryType.FLOWER_REQUEST);
+
+    System.out.println(items.toString());
+  }
+
+  @Test
+  public void flowerRequestTableImport() {
+    Fdb fdb = new Fdb();
+
+    fdb.importCSV(
+        "D:\\CSVTests\\flowerrequest.csv",
+        "D:\\CSVTests\\flowerrequestfloweritems.csv",
+        false,
+        TableEntryType.FLOWER_REQUEST);
+  }
+
+  @Test
+  public void flowerRequestTableExport() {
+    Fdb fdb = new Fdb();
+
+    fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.FLOWER_REQUEST);
   }
 }
