@@ -18,7 +18,7 @@ import java.util.*;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import javafx.collections.ObservableArray;import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -90,7 +90,6 @@ public class MapEditorController extends AbsController {
   // different listeners than the large lists above containing the entire map
   private ObservableList<Integer> selectedNodes = FXCollections.observableArrayList();
   private ObservableList<Edge> selectedEdges = FXCollections.observableArrayList();
-  private ObservableList<String> selectedLocations = FXCollections.observableArrayList();
 
   // cache ids of nodes on the selected floor
   private HashSet<Integer> nodesOnFloor = new HashSet<>();
@@ -234,18 +233,27 @@ public class MapEditorController extends AbsController {
                 HashSet<Integer> removed =
                     new HashSet<>(change.getRemoved().stream().map(Node::getNodeID).toList());
 
+                // since arraylist removal shifts all subsequent elements to the left, id2idx must be updated
+                change.getRemoved().forEach(node -> {
+
+                });
+
                 // remove nodecircles from the draw group
                 nodeGroup
                     .getChildren()
                     .removeIf(node -> removed.contains(((NodeCircle) node).getNodeID()));
 
                 // add new nodecircles to the node draw group
+
+                  change.getAddedSubList().forEach(node -> {
+                      //save nodeID -> idx mapping
+                      nodeID2idx.put(node.getNodeID(), nodes.indexOf(node));
+                      nodeGroup.getChildren().add(drawNode(node));
+                  });
+
                 nodeGroup
                     .getChildren()
-                    .addAll(
-                        change.getAddedSubList().stream()
-                            .map(node -> new NodeCircle(node, 4))
-                            .toList());
+                    .addAll(change.getAddedSubList().stream().map(node -> drawNode(node)).toList());
               }
             }
           }
@@ -286,6 +294,107 @@ public class MapEditorController extends AbsController {
 
     // no listeners needed for general location and move lists
 
+    // listeners for observable lists of selected items
+
+    selectedNodes.addListener(
+        new ListChangeListener<Integer>() {
+          @Override
+          public void onChanged(Change<? extends Integer> change) {
+
+            while (change.next()) {
+              // possible operations: remove or add
+
+              HashSet<Integer> removed = new HashSet<>(change.getRemoved());
+              HashSet<Integer> added = new HashSet<>(change.getAddedSubList());
+
+              // update highlighted nodes on ui
+              nodeGroup
+                  .getChildren()
+                  .forEach(
+                      fxnode -> {
+                        NodeCircle nodeCircle = (NodeCircle) fxnode;
+
+                        if (removed.contains(nodeCircle.getNodeID())) {
+                          nodeCircle.reset();
+
+                        } else if (added.contains(nodeCircle.getNodeID())) {
+                          nodeCircle.highlight();
+                        }
+                      });
+            }
+
+            System.out.println(selectedNodes.size());
+
+            // add locations to right side pane:
+            // no nodes selected: empty node info pane, hide location pane
+            // 1 node selected: show node info, locations at the node, box to add new location
+            // >1 node selected: empty node info pane, hide location pane
+
+            if (selectedNodes.isEmpty()) {
+
+              // disable since no nodes are selected
+              radioSelectedEdge.setDisable(true);
+              delNode.setDisable(true);
+              clearNodeFields();
+              clearLocationFields();
+
+            } else if (selectedNodes.size() == 1) {
+
+              Node node = nodes.get(nodeID2idx.get(selectedNodes.get(0)));
+              fillNodeFields(node);
+              fillLocationFields(node.getLocations(today));
+
+              delNode.setDisable(false);
+              radioSelectedEdge.setDisable(false);
+
+            } else {
+
+              clearNodeFields();
+              clearLocationFields();
+
+              delNode.setDisable(false);
+              radioSelectedEdge.setDisable(true);
+            }
+          }
+        });
+
+    selectedEdges.addListener(
+        new ListChangeListener<Edge>() {
+          @Override
+          public void onChanged(Change<? extends Edge> change) {
+
+            while (change.next()) {
+              // possible operations: remove or add
+
+              HashSet<Edge> removed = new HashSet<>(change.getRemoved());
+              HashSet<Edge> added = new HashSet<>(change.getAddedSubList());
+
+              // update highlighted edges on ui
+              edgeGroup
+                  .getChildren()
+                  .forEach(
+                      fxnode -> {
+                        EdgeLine edgeLine = (EdgeLine) fxnode;
+
+                        if (removed.contains(edgeLine)) {
+                          edgeLine.reset();
+
+                        } else if (added.contains(edgeLine)) {
+                          edgeLine.highlight();
+                        }
+                      });
+            }
+
+            if (selectedEdges.isEmpty()) {
+
+              delEdge.setDisable(true);
+
+            } else {
+              delEdge.setDisable(false);
+            }
+          }
+        });
+
     // draw everything on current floor
     switchFloor(allFloors.get(currentFloor));
 
@@ -293,8 +402,16 @@ public class MapEditorController extends AbsController {
 
     moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
-    // TODO save changes from queue to db
-    save.setOnMouseClicked(event -> {});
+    save.setOnMouseClicked(
+        event -> {
+          System.out.println(editQueue.size());
+
+          // TODO clean up intermediate edits
+
+          dbConnection.processEditQueue(editQueue);
+
+          editQueue.clear();
+        });
 
     importCSV.setOnMouseClicked(
         event -> {
@@ -366,14 +483,12 @@ public class MapEditorController extends AbsController {
           } else if (state == EDITOR_STATE.EDITING_NODE || state == EDITOR_STATE.EDITING_EDGE) {
 
             // clear node stuff
-            deselectAllNodes();
+            selectedNodes.clear();
             clearNodeFields();
             clearLocationFields();
 
-            radioSelectedEdge.setDisable(true);
-
             // clear & hide edge stuff
-            deselectAllEdges();
+            selectedEdges.clear();
             edgeGroup.getChildren().forEach(fxnode -> fxnode.setVisible(radioAllEdge.isSelected()));
 
             // clear location search box
@@ -520,8 +635,10 @@ public class MapEditorController extends AbsController {
             }
             gesturePane.centreOn(node.getPoint());
             gesturePane.zoomTo(1.25, node.getPoint());
-            deselectAllNodes();
-            selectNode(node.getNodeID());
+
+            selectedNodes.clear();
+            selectedNodes.add(node.getNodeID());
+
             state = EDITOR_STATE.EDITING_NODE;
 
           } else {
@@ -806,9 +923,8 @@ public class MapEditorController extends AbsController {
                       });
             });
 
-    deselectAllNodes();
-    deselectAllEdges();
-    selectedLocations.clear();
+    selectedNodes.clear();
+    selectedEdges.clear();
 
     // drawLocations(floor, toggleLocations.isSelected());
   }
@@ -834,15 +950,15 @@ public class MapEditorController extends AbsController {
 
             // control click on a selected node to deselect it
             if (selectedNodes.contains(node.getNodeID())) {
-              deselectNode(node.getNodeID());
+              selectedNodes.remove(Integer.valueOf(node.getNodeID()));
 
             } else { // control click on unselected node
-              selectNode(node.getNodeID());
+              selectedNodes.add(node.getNodeID());
             }
 
           } else { // control not pressed
-            deselectAllNodes();
-            selectNode(node.getNodeID());
+            selectedNodes.clear();
+            selectedNodes.add(node.getNodeID());
           }
         });
 
@@ -928,135 +1044,14 @@ public class MapEditorController extends AbsController {
 
     line.setOnMousePressed(
         event -> {
-          if (!controlPressed) deselectAllEdges();
-          selectEdge(edge);
+          if (!controlPressed) selectedEdges.clear();
+          selectedEdges.add(edge);
           state = EDITOR_STATE.EDITING_EDGE;
         });
 
     line.setVisible(visibility);
 
     return line;
-  }
-
-  private void selectNode(int nodeID) {
-
-    // add node to observable list and listeners will handle updating the ui
-    selectedNodes.add(nodeID);
-
-    //    nodeGroup
-    //        .getChildren()
-    //        .forEach(
-    //            fxnode -> {
-    //              ((NodeCircle) fxnode).highlightIf(node.getNodeID());
-    //            });
-
-    // abilities that require a selected node
-    radioSelectedEdge.setDisable(false);
-    delNode.setDisable(false);
-
-    // at least one node selected so visible
-    // and disabled if > 1 nodes selected
-    newLocationVbox.setVisible(true);
-    newLocationVbox.setDisable(selectedNodes.size() > 1);
-
-    // TODO handle the below in listeners on selectedNodes
-    // selectedLocations.addAll(dbConnection.getLocations(node.getNodeID(), today));
-
-    //    fillNodeFields(node);
-    //    fillLocationFields();
-  }
-
-  private void deselectNode(int nodeID) {
-
-    selectedNodes.remove(Integer.valueOf(nodeID));
-
-    int numSelected = selectedNodes.size();
-
-    if (numSelected == 1) {
-      newLocationVbox.setDisable(false);
-
-    } else if (numSelected == 0) {
-      newLocationVbox.setVisible(false);
-      radioSelectedEdge.setDisable(true);
-    }
-
-    // TODO handle this in selectedNodes listener
-    //    nodeGroup
-    //        .getChildren()
-    //        .forEach(
-    //            fxnode -> {
-    //              ((NodeCircle) fxnode).resetIf(nodeID);
-    //            });
-  }
-
-  private void deselectAllNodes() {
-
-    selectedNodes.clear();
-
-    // only allow adding locations to nodes if some are selected
-    newLocationVbox.setVisible(false);
-    newLocationVbox.setDisable(true);
-
-    // disable since no nodes are selected
-    radioSelectedEdge.setDisable(true);
-
-    // clear location info in right side pane
-    selectedLocations.clear();
-    locationsVbox.getChildren().clear();
-
-    // TODO handle in selectedNodes listeners
-    //    nodeGroup
-    //        .getChildren()
-    //        .forEach(
-    //            fxnode -> {
-    //              ((NodeCircle) fxnode).reset();
-    //            });
-  }
-
-  private void selectEdge(Edge edge) {
-
-    selectedEdges.add(edge);
-
-    delEdge.setDisable(false);
-
-    // TODO handle in selectedEdges listener
-    //    edgeGroup
-    //        .getChildren()
-    //        .forEach(
-    //            fxnode -> {
-    //              ((EdgeLine) fxnode).highlightIf(edge);
-    //            });
-  }
-
-  private void deselectEdge(Edge edge) {
-
-    selectedEdges.remove(edge);
-
-    // disable delete edge button if none are selected
-    if (selectedEdges.isEmpty()) delEdge.setDisable(true);
-
-    // TODO handle in selectedEdges listener
-    //    edgeGroup
-    //        .getChildren()
-    //        .forEach(
-    //            fxnode -> {
-    //              ((EdgeLine) fxnode).resetIf(edge);
-    //            });
-  }
-
-  private void deselectAllEdges() {
-
-    selectedEdges.clear();
-
-    delEdge.setDisable(true);
-
-    // TODO handle in selectedEdges listener
-    //    edgeGroup
-    //        .getChildren()
-    //        .forEach(
-    //            fxnode -> {
-    //              ((EdgeLine) fxnode).reset();
-    //            });
   }
 
   private void insertNode(Point2D point) {
@@ -1070,37 +1065,9 @@ public class MapEditorController extends AbsController {
     // add new node to observable list and listeners will handle the drawing
     nodes.add(node);
 
-    selectNode(node.getNodeID());
-
-    // drawNode(node);
+    selectedNodes.add(node.getNodeID());
 
     editQueue.add(new DataEdit<>(node, DataEditType.INSERT, TableEntryType.NODE), false);
-    // dbConnection.insertEntry(node);
-  }
-
-  private void removeNode(int nodeID) {
-
-    // remove idx of this node from observable list
-    // listeners will handle drawing
-    nodes.remove((int) nodeID2idx.get(nodeID));
-
-    // must be Integer to remove object since int removes that index
-    selectedNodes.remove(Integer.valueOf(nodeID));
-
-    //    Iterator<javafx.scene.Node> itr = nodeGroup.getChildren().iterator();
-    //    while (itr.hasNext()) {
-    //
-    //      NodeCircle curr = (NodeCircle) itr.next();
-    //
-    //      if (curr.getNodeID() == nodeID) {
-    //        itr.remove();
-    //        System.out.println("removed node" + nodeID);
-    //      }
-    //    }
-
-    // remove from database
-    editQueue.add(new DataEdit<>(nodeID, DataEditType.REMOVE, TableEntryType.NODE), false);
-    // dbConnection.removeEntry(nodeID, TableEntryType.NODE);
   }
 
   private void removeSelectedNodes() {
@@ -1138,17 +1105,6 @@ public class MapEditorController extends AbsController {
     edges.add(newEdge);
 
     editQueue.add(new DataEdit<>(newEdge, DataEditType.INSERT, TableEntryType.EDGE), false);
-  }
-
-  private void removeEdge(Edge edge) {
-
-    edges.remove(edge);
-
-    // unlikely to be necessary
-    selectedEdges.remove(edge);
-
-    editQueue.add(new DataEdit<>(edge, DataEditType.REMOVE, TableEntryType.EDGE), false);
-    // dbConnection.removeEntry(edge, TableEntryType.EDGE);
   }
 
   private void removeSelectedEdges() {
@@ -1219,20 +1175,18 @@ public class MapEditorController extends AbsController {
   }
 
   /** Display current locations in info pane on UI. */
-  private void fillLocationFields() {
+  private void fillLocationFields(List<Location> locations) {
 
-    if (selectedLocations.isEmpty()) {
-      clearLocationFields();
+    locationsVbox.getChildren().clear();
+    locationsVbox.setMaxHeight(300);
 
-    } else {
-      locationScrollpane.setVisible(true);
-      locationScrollpane.setDisable(false);
-      locationScrollpane.setMaxHeight(300);
-    }
+    locationScrollpane.setVisible(true);
+    locationScrollpane.setDisable(false);
+    locationScrollpane.setMaxHeight(300);
 
     try {
 
-      for (String longname : selectedLocations) {
+      for (Location location : locations) {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(Fapp.class.getResource("views/MapEditorLocation.fxml"));
@@ -1240,7 +1194,7 @@ public class MapEditorController extends AbsController {
         VBox entry = fxmlLoader.load();
 
         MapEditorLocationController controller = fxmlLoader.getController();
-        controller.setData(locations.get(longname2idx.get(longname)));
+        controller.setData(location);
 
         locationsVbox.getChildren().add(entry);
       }
@@ -1252,13 +1206,12 @@ public class MapEditorController extends AbsController {
 
   private void clearLocationFields() {
 
-    selectedLocations.clear();
+    locationsVbox.getChildren().clear();
+    locationsVbox.setMaxHeight(0);
 
     locationScrollpane.setVisible(false);
     locationScrollpane.setDisable(true);
     locationScrollpane.setMaxHeight(0);
-
-    locationsVbox.getChildren().clear();
   }
 }
 

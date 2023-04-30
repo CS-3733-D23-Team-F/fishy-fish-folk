@@ -75,7 +75,7 @@ public class Fdb {
     // Alert table
     this.alertTable = new AlertDAO(dbConnection);
 
-    importLocalCSV();
+    // importLocalCSV();
 
     Runtime.getRuntime()
         .addShutdownHook(

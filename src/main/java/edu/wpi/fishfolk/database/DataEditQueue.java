@@ -20,6 +20,11 @@ public class DataEditQueue<T> {
     this.batchLimit = 4;
   }
 
+  /** @return the total number of edits in the queue. */
+  public int size() {
+    return dataEditQueue.size();
+  }
+
   /**
    * Add a data edit to the queue.
    *
@@ -77,6 +82,12 @@ public class DataEditQueue<T> {
 
     // remove and return the most recently added element in the queue
     return dataEditQueue.remove(dataEditQueue.size() - 1);
+  }
+
+  public void clear() {
+    dataEditQueue.clear();
+    pointer = 0;
+    editCount = 0;
   }
 
   /**
