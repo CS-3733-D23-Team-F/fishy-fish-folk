@@ -879,8 +879,23 @@ public class MapEditorController extends AbsController {
 
                   // save edit
                   editQueue.add(
-                          new DataEdit<>(oldNode, node, DataEditType.UPDATE, TableEntryType.NODE),false);
+                      new DataEdit<>(oldNode, node, DataEditType.UPDATE, TableEntryType.NODE),
+                      false);
                 });
+
+            // update prev x and y
+            nodeGroup
+                .getChildren()
+                .forEach(
+                    fxnode -> {
+                      NodeCircle nodeCircle = (NodeCircle) fxnode;
+
+                      if (selectedNodes.contains(nodeCircle.getNodeID())) {
+                        Point2D p = nodes.get(nodeID2idx.get(nodeCircle.getNodeID())).getPoint();
+                        nodeCircle.setPrevX(p.getX());
+                        nodeCircle.setPrevY(p.getY());
+                      }
+                    });
           }
         });
 
@@ -892,6 +907,18 @@ public class MapEditorController extends AbsController {
                 Node oldNode = node.deepCopy();
 
                 node.snapToGrid(5);
+
+                // update prev x and y
+                nodeGroup
+                    .getChildren()
+                    .forEach(
+                        fxnode -> {
+                          NodeCircle nodeCircle = (NodeCircle) fxnode;
+                          if (nodeCircle.getNodeID() == node.getNodeID()) {
+                            nodeCircle.setPrevX(node.getX());
+                            nodeCircle.setPrevY(node.getY());
+                          }
+                        });
 
                 // save edit
                 editQueue.add(
