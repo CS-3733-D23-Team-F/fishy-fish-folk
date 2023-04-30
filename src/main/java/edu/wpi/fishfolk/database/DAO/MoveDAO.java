@@ -184,6 +184,7 @@ public class MoveDAO implements IDAO<Move>, IProcessEdit {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[MoveDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
