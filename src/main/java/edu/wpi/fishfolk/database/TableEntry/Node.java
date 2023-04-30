@@ -14,11 +14,11 @@ import lombok.Setter;
 public class Node {
 
   @Getter @Setter private int nodeID;
-  @Getter @Setter private Point2D point;
   @Getter @Setter private String floor;
   @Getter @Setter private String building;
   @Getter @Setter private EntryStatus status;
 
+  @Getter private ObjectProperty<Point2D> pointProperty;
   @Getter private ObjectProperty<Node> nodeProperty;
 
   private ArrayList<LocationDate> moves = new ArrayList<>();
@@ -33,7 +33,7 @@ public class Node {
    */
   public Node(int nodeID, Point2D point, String floor, String building) {
     this.nodeID = nodeID;
-    this.point = point;
+    this.pointProperty = new SimpleObjectProperty<>(point);
     this.floor = floor;
     this.building = building;
     this.status = EntryStatus.OLD;
@@ -42,11 +42,19 @@ public class Node {
   }
 
   public double getX() {
-    return point.getX();
+    return getPoint().getX();
   }
 
   public double getY() {
-    return point.getY();
+    return getPoint().getY();
+  }
+
+  public Point2D getPoint() {
+    return this.pointProperty.getValue();
+  }
+
+  public void setPoint(Point2D point) {
+    this.pointProperty.setValue(point);
   }
 
   public void addMove(Location location, LocalDate date) {
@@ -80,7 +88,8 @@ public class Node {
    * @param s sidelength of a square in the grid
    */
   public void snapToGrid(double s) {
-    point = new Point2D(Math.round(point.getX() / s) * s, Math.round(point.getY() / s) * s);
+
+    pointProperty.setValue(new Point2D(Math.round(getX() / s) * s, Math.round(getY() / s) * s));
   }
 }
 

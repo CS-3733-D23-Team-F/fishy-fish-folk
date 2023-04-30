@@ -72,7 +72,8 @@ public class MapEditorController extends AbsController {
   // calls
 
   private ObservableList<Node> nodes =
-      FXCollections.observableArrayList(node -> new Observable[] {node.getNodeProperty()});
+      FXCollections.observableArrayList(
+          node -> new Observable[] {node.getNodeProperty(), node.getPointProperty()});
   // easy access to a specific node via its id
   private HashMap<Integer, Integer> nodeID2idx = new HashMap<>();
 
@@ -192,6 +193,8 @@ public class MapEditorController extends AbsController {
           public void onChanged(Change<? extends Node> change) {
             while (change.next()) {
 
+              System.out.println(change.toString());
+
               // possible changes: update, remove, insert
 
               if (change.wasUpdated()) {
@@ -200,6 +203,8 @@ public class MapEditorController extends AbsController {
                 for (int i = change.getFrom(); i < change.getTo(); i++) {
                   updated.put(nodes.get(i).getNodeID(), nodes.get(i));
                 }
+
+                System.out.println(updated.keySet());
 
                 // update the nodecircles in the drawn group
                 nodeGroup
@@ -283,7 +288,6 @@ public class MapEditorController extends AbsController {
                           .map(
                               // create new edgeline for each added edge
                               edge -> {
-                                System.out.println(edge.toString());
                                 return new EdgeLine(
                                     edge,
                                     nodes.get(nodeID2idx.get(edge.getStartNode())).getPoint(),
@@ -324,8 +328,6 @@ public class MapEditorController extends AbsController {
                         }
                       });
             }
-
-            System.out.println(selectedNodes.size());
 
             // add locations to right side pane:
             // no nodes selected: empty node info pane, hide location pane
@@ -477,7 +479,6 @@ public class MapEditorController extends AbsController {
     mapImg.setOnMouseClicked(
         event -> {
           if (state == EDITOR_STATE.ADDING_NODE) {
-            // System.out.println("adding at " + event.getX() + ", " + event.getY());
             insertNode(new Point2D(event.getX(), event.getY()));
 
             state = EDITOR_STATE.EDITING_NODE;
@@ -971,6 +972,7 @@ public class MapEditorController extends AbsController {
             // TODO drag all selected nodes the same amount - later
             gesturePane.setGestureEnabled(false);
 
+            // update this node's point
             node.setPoint(new Point2D(event.getX(), event.getY()));
 
             // nodeCircle.setCenterX(event.getX());
@@ -996,10 +998,7 @@ public class MapEditorController extends AbsController {
 
             if (dist > 25) {
 
-              // nodeCircle.setCenterX(event.getX());
-              // nodeCircle.setPrevX(event.getX());
-
-              nodeCircle.setCenterY(event.getY());
+              nodeCircle.setPrevX(event.getX());
               nodeCircle.setPrevY((event.getY()));
 
               // update node and listeners will handle updating the ui
