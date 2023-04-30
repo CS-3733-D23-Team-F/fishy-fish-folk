@@ -506,6 +506,9 @@ public class Fdb {
     switch (tableEntryType) {
       case FOOD_REQUEST:
         return foodRequestTable.importCSV(tableFilepath, subtableFilepath, backup);
+
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.importCSV(tableFilepath, subtableFilepath, backup);
     }
 
     return false;
@@ -523,6 +526,9 @@ public class Fdb {
     switch (tableEntryType) {
       case FOOD_REQUEST:
         return foodRequestTable.importSubtable(subtableFilepath);
+
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.importSubtable(subtableFilepath);
     }
 
     return null;

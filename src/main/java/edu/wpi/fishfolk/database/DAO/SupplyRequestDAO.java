@@ -514,11 +514,15 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
 
   @Override
   public boolean importCSV(String filepath, boolean backup) {
-    String[] pathArr = filepath.split("/");
+    return false;
+  }
+
+  public boolean importCSV(String tableFilepath, String subtableFilepath, boolean backup) {
+    String[] pathArr = tableFilepath.split("/");
 
     if (backup) {
 
-      // filepath except for last part (actual file name)
+      // tableFilepath except for last part (actual file name)
       StringBuilder folder = new StringBuilder();
       for (int i = 0; i < pathArr.length - 1; i++) {
         folder.append(pathArr[i]).append("/");
@@ -527,12 +531,21 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
     }
 
     try (BufferedReader br =
-        new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
+        new BufferedReader(new InputStreamReader(new FileInputStream(tableFilepath)))) {
 
       // delete the old data
       dbConnection
           .createStatement()
-          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+          .executeUpdate(
+              "DELETE FROM "
+                  + dbConnection.getSchema()
+                  + "."
+                  + tableName
+                  + ";"
+                  + "ALTER SEQUENCE supplyrequest_supplies_seq RESTART WITH 1;");
+
+      // Get map representation of subtable
+      HashMap<Integer, ArrayList<SupplyItem>> subtable = importSubtable(subtableFilepath);
 
       // skip first row of csv which has the headers
       String line = br.readLine();
@@ -550,26 +563,29 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
 
         String[] parts = line.split(",");
 
-        SupplyRequest sr =
+        SupplyRequest supplyRequest =
             new SupplyRequest(
-                LocalDateTime.parse(parts[0]),
-                parts[1],
+                LocalDateTime.parse(
+                    parts[0].replace(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                parts[1].replace("\"", ""),
                 FormStatus.valueOf(parts[2]),
-                parts[3],
-                parts[4],
-                parts[5],
-                getSubtableItems(Integer.parseInt(parts[6])));
+                parts[3].replace("\"", ""),
+                parts[4].replace("\"", ""),
+                parts[5].replace("\"", ""),
+                subtable.get(Integer.parseInt(parts[6])));
 
-        tableMap.put(sr.getSupplyRequestID(), sr);
+        tableMap.put(supplyRequest.getSupplyRequestID(), supplyRequest);
 
-        insertPS.setTimestamp(1, Timestamp.valueOf(sr.getSupplyRequestID()));
-        insertPS.setString(2, sr.getAssignee());
-        insertPS.setString(3, sr.getFormStatus().toString());
-        insertPS.setString(4, sr.getNotes());
-        insertPS.setString(5, sr.getLink());
-        insertPS.setString(6, sr.getRoomNumber());
+        insertPS.setTimestamp(1, Timestamp.valueOf(supplyRequest.getSupplyRequestID()));
+        insertPS.setString(2, supplyRequest.getAssignee());
+        insertPS.setString(3, supplyRequest.getFormStatus().toString());
+        insertPS.setString(4, supplyRequest.getNotes());
+        insertPS.setString(5, supplyRequest.getLink());
+        insertPS.setString(6, supplyRequest.getRoomNumber());
 
         insertPS.executeUpdate();
+
+        setSubtableItems(supplyRequest.getSupplyRequestID(), supplyRequest.getSupplies());
       }
 
       return true;
@@ -613,6 +629,9 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
       }
 
       out.close();
+
+      exportSubtable(directory);
+
       return true;
 
     } catch (Exception e) {
@@ -783,6 +802,89 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
       preparedDeleteAll.executeUpdate();
 
     } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  public HashMap<Integer, ArrayList<SupplyItem>> importSubtable(String subtableFilepath) {
+
+    // Create empty output
+    HashMap<Integer, ArrayList<SupplyItem>> subtable = new HashMap<>();
+
+    // Create buffered reader for CSV
+    try (BufferedReader br =
+        new BufferedReader(new InputStreamReader(new FileInputStream(subtableFilepath)))) {
+
+      // Delete the old data
+      dbConnection
+          .createStatement()
+          .executeUpdate(
+              "DELETE FROM " + dbConnection.getSchema() + "." + tableName + "supplyitems" + ";");
+
+      // Iterate through each line of the CSV
+      String line = br.readLine();
+      while ((line = br.readLine()) != null) {
+
+        // Split the input row into parts
+        String[] parts = line.split(",");
+
+        // Read the item ID (table link)
+        int itemID = Integer.parseInt(parts[0]);
+
+        // Make new list entry from row
+        SupplyItem supplyItem = new SupplyItem(parts[1], 0);
+
+        // If there is no list at the item ID in the map, make one
+        if (!subtable.containsKey(itemID)) {
+          subtable.put(itemID, new ArrayList<>());
+        }
+
+        // Add the entry to the list at the item ID in the map
+        subtable.get(itemID).add(supplyItem);
+      }
+
+      // Return the map representation of the subtable
+      return subtable;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+
+      // Return empty map on error, rather than null
+      return new HashMap<>();
+    }
+  }
+
+  public void exportSubtable(String directory) {
+
+    LocalDateTime dateTime = LocalDateTime.now();
+
+    try {
+
+      String subtableFilename =
+          tableName
+              + "supplyitems"
+              + "_"
+              + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm"))
+              + ".csv";
+
+      PrintStream subtableOut =
+          new PrintStream(new FileOutputStream(directory + "\\" + subtableFilename));
+
+      subtableOut.println("itemkey,itemname");
+
+      for (Map.Entry<LocalDateTime, SupplyRequest> entry : tableMap.entrySet()) {
+
+        List<SupplyItem> supplyItems = entry.getValue().getSupplies();
+        int subtableID = getSubtableItemsID(entry.getValue().getSupplyRequestID());
+
+        for (SupplyItem item : supplyItems) {
+          subtableOut.println(subtableID + "," + item.supplyName);
+        }
+      }
+
+      subtableOut.close();
+
+    } catch (Exception e) {
       System.out.println(e.getMessage());
     }
   }

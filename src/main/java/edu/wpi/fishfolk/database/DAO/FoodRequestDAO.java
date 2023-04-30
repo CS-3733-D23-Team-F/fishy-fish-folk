@@ -553,7 +553,6 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
         folder.append(pathArr[i]).append("/");
       }
       exportCSV(folder.toString());
-      // TODO: Export subtable here
     }
 
     try (BufferedReader br =
@@ -562,13 +561,19 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
       // delete the old data
       dbConnection
           .createStatement()
-          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+          .executeUpdate(
+              "DELETE FROM "
+                  + dbConnection.getSchema()
+                  + "."
+                  + tableName
+                  + ";"
+                  + "ALTER SEQUENCE foodrequest_fooditems_seq RESTART WITH 1;");
 
       // Get map representation of subtable
       HashMap<Integer, ArrayList<NewFoodItem>> subtable = importSubtable(subtableFilepath);
 
       // skip first row of csv which has the headers
-      // String line = br.readLine();
+      String line = br.readLine();
 
       String insert =
           "INSERT INTO "
@@ -579,12 +584,11 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
-      String line;
       while ((line = br.readLine()) != null) {
 
         String[] parts = line.split(",");
 
-        FoodRequest fr =
+        FoodRequest foodRequest =
             new FoodRequest(
                 LocalDateTime.parse(
                     parts[0].replace(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME),
@@ -598,20 +602,20 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
                 parts[7].replace("\"", ""),
                 subtable.get(Integer.parseInt(parts[8])));
 
-        tableMap.put(fr.getFoodRequestID(), fr);
+        tableMap.put(foodRequest.getFoodRequestID(), foodRequest);
 
-        insertPS.setTimestamp(1, Timestamp.valueOf(fr.getFoodRequestID()));
-        insertPS.setString(2, fr.getAssignee());
-        insertPS.setString(3, fr.getFormStatus().toString());
-        insertPS.setString(4, fr.getNotes());
-        insertPS.setDouble(5, fr.getTotalPrice());
-        insertPS.setString(6, fr.getDeliveryRoom());
-        insertPS.setTimestamp(7, Timestamp.valueOf(fr.getDeliveryTime()));
-        insertPS.setString(8, fr.getRecipientName());
+        insertPS.setTimestamp(1, Timestamp.valueOf(foodRequest.getFoodRequestID()));
+        insertPS.setString(2, foodRequest.getAssignee());
+        insertPS.setString(3, foodRequest.getFormStatus().toString());
+        insertPS.setString(4, foodRequest.getNotes());
+        insertPS.setDouble(5, foodRequest.getTotalPrice());
+        insertPS.setString(6, foodRequest.getDeliveryRoom());
+        insertPS.setTimestamp(7, Timestamp.valueOf(foodRequest.getDeliveryTime()));
+        insertPS.setString(8, foodRequest.getRecipientName());
 
         insertPS.executeUpdate();
 
-        setSubtableItems(fr.getFoodRequestID(), fr.getFoodItems());
+        setSubtableItems(foodRequest.getFoodRequestID(), foodRequest.getFoodItems());
       }
 
       return true;
@@ -628,37 +632,43 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
     LocalDateTime dateTime = LocalDateTime.now();
 
     // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ofPattern-java.lang.String-
-    String filename =
-        tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
 
     try {
-      PrintStream out = new PrintStream(new FileOutputStream(directory + "\\" + filename));
 
-      out.println(String.join(",", headers));
+      String tableFilename =
+          tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
+
+      PrintStream tableOut =
+          new PrintStream(new FileOutputStream(directory + "\\" + tableFilename));
+
+      tableOut.println(String.join(",", headers));
 
       for (Map.Entry<LocalDateTime, FoodRequest> entry : tableMap.entrySet()) {
-        FoodRequest fr = entry.getValue();
-        out.println(
-            fr.getFoodRequestID()
+        FoodRequest foodRequest = entry.getValue();
+        tableOut.println(
+            foodRequest.getFoodRequestID()
                 + ","
-                + fr.getAssignee()
+                + foodRequest.getAssignee()
                 + ","
-                + fr.getFormStatus()
+                + foodRequest.getFormStatus()
                 + ","
-                + fr.getNotes()
+                + foodRequest.getNotes()
                 + ","
-                + fr.getTotalPrice()
+                + foodRequest.getTotalPrice()
                 + ","
-                + fr.getDeliveryRoom()
+                + foodRequest.getDeliveryRoom()
                 + ","
-                + fr.getDeliveryTime()
+                + foodRequest.getDeliveryTime()
                 + ","
-                + fr.getRecipientName()
+                + foodRequest.getRecipientName()
                 + ","
-                + getSubtableItemsID(fr.getFoodRequestID()));
+                + getSubtableItemsID(foodRequest.getFoodRequestID()));
       }
 
-      out.close();
+      tableOut.close();
+
+      exportSubtable(directory);
+
       return true;
 
     } catch (Exception e) {
@@ -848,10 +858,11 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
       // Delete the old data
       dbConnection
           .createStatement()
-          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+          .executeUpdate(
+              "DELETE FROM " + dbConnection.getSchema() + "." + tableName + "fooditems" + ";");
 
       // Iterate through each line of the CSV
-      String line;
+      String line = br.readLine();
       while ((line = br.readLine()) != null) {
 
         // Split the input row into parts
@@ -880,6 +891,41 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
 
       // Return empty map on error, rather than null
       return new HashMap<>();
+    }
+  }
+
+  public void exportSubtable(String directory) {
+
+    LocalDateTime dateTime = LocalDateTime.now();
+
+    try {
+
+      String subtableFilename =
+          tableName
+              + "fooditems"
+              + "_"
+              + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm"))
+              + ".csv";
+
+      PrintStream subtableOut =
+          new PrintStream(new FileOutputStream(directory + "\\" + subtableFilename));
+
+      subtableOut.println("itemkey,itemname,itemquantity");
+
+      for (Map.Entry<LocalDateTime, FoodRequest> entry : tableMap.entrySet()) {
+
+        List<NewFoodItem> newFoodItems = entry.getValue().getFoodItems();
+        int subtableID = getSubtableItemsID(entry.getValue().getFoodRequestID());
+
+        for (NewFoodItem item : newFoodItems) {
+          subtableOut.println(subtableID + "," + item.getName() + "," + item.getQuantity());
+        }
+      }
+
+      subtableOut.close();
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
     }
   }
 }
