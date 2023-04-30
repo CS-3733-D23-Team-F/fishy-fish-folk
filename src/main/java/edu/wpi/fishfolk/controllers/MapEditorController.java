@@ -501,7 +501,7 @@ public class MapEditorController extends AbsController {
             // clear & hide edge stuff
             selectedEdges.clear();
 
-            //since no nodes are selected anymore, switch to no edge
+            // since no nodes are selected anymore, switch to no edge
             // note that if all edges (or none) are visible, this wont change anything
             if (radioSelectedEdge.isSelected()) {
               radioNoEdge.fire();
@@ -1122,6 +1122,8 @@ public class MapEditorController extends AbsController {
         edgeItr.remove();
       }
     }
+
+    selectedNodes.clear();
   }
 
   private void insertEdge(int start, int end) {
