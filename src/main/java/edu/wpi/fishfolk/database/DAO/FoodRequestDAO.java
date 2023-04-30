@@ -538,29 +538,37 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
 
   @Override
   public boolean importCSV(String filepath, boolean backup) {
+    return false;
+  }
 
-    String[] pathArr = filepath.split("/");
+  public boolean importCSV(String tableFilepath, String subtableFilepath, boolean backup) {
+
+    String[] pathArr = tableFilepath.split("/");
 
     if (backup) {
 
-      // filepath except for last part (actual file name)
+      // tableFilepath except for last part (actual file name)
       StringBuilder folder = new StringBuilder();
       for (int i = 0; i < pathArr.length - 1; i++) {
         folder.append(pathArr[i]).append("/");
       }
       exportCSV(folder.toString());
+      // TODO: Export subtable here
     }
 
     try (BufferedReader br =
-        new BufferedReader(new InputStreamReader(new FileInputStream(filepath)))) {
+        new BufferedReader(new InputStreamReader(new FileInputStream(tableFilepath)))) {
 
       // delete the old data
       dbConnection
           .createStatement()
           .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
 
+      // Get map representation of subtable
+      HashMap<Integer, ArrayList<NewFoodItem>> subtable = importSubtable(subtableFilepath);
+
       // skip first row of csv which has the headers
-      String line = br.readLine();
+      // String line = br.readLine();
 
       String insert =
           "INSERT INTO "
@@ -571,21 +579,24 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
+      String line;
       while ((line = br.readLine()) != null) {
 
         String[] parts = line.split(",");
 
         FoodRequest fr =
             new FoodRequest(
-                LocalDateTime.parse(parts[0]),
-                parts[1],
+                LocalDateTime.parse(
+                    parts[0].replace(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                parts[1].replace("\"", ""),
                 FormStatus.valueOf(parts[2]),
-                parts[3],
+                parts[3].replace("\"", ""),
                 Float.parseFloat(parts[4]),
-                parts[5],
-                LocalDateTime.parse(parts[6]),
-                parts[7],
-                getSubtableItems(Integer.parseInt(parts[8])));
+                parts[5].replace("\"", ""),
+                LocalDateTime.parse(
+                    parts[6].replace(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                parts[7].replace("\"", ""),
+                subtable.get(Integer.parseInt(parts[8])));
 
         tableMap.put(fr.getFoodRequestID(), fr);
 
@@ -599,6 +610,8 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
         insertPS.setString(8, fr.getRecipientName());
 
         insertPS.executeUpdate();
+
+        setSubtableItems(fr.getFoodRequestID(), fr.getFoodItems());
       }
 
       return true;
@@ -820,6 +833,53 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
+    }
+  }
+
+  public HashMap<Integer, ArrayList<NewFoodItem>> importSubtable(String subtableFilepath) {
+
+    // Create empty output
+    HashMap<Integer, ArrayList<NewFoodItem>> subtable = new HashMap<>();
+
+    // Create buffered reader for CSV
+    try (BufferedReader br =
+        new BufferedReader(new InputStreamReader(new FileInputStream(subtableFilepath)))) {
+
+      // Delete the old data
+      dbConnection
+          .createStatement()
+          .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+
+      // Iterate through each line of the CSV
+      String line;
+      while ((line = br.readLine()) != null) {
+
+        // Split the input row into parts
+        String[] parts = line.split(",");
+
+        // Read the item ID (table link)
+        int itemID = Integer.parseInt(parts[0]);
+
+        // Make new list entry from row
+        NewFoodItem foodItem = new NewFoodItem(parts[1], Integer.parseInt(parts[2]));
+
+        // If there is no list at the item ID in the map, make one
+        if (!subtable.containsKey(itemID)) {
+          subtable.put(itemID, new ArrayList<>());
+        }
+
+        // Add the entry to the list at the item ID in the map
+        subtable.get(itemID).add(foodItem);
+      }
+
+      // Return the map representation of the subtable
+      return subtable;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+
+      // Return empty map on error, rather than null
+      return new HashMap<>();
     }
   }
 }

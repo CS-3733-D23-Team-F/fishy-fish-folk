@@ -439,53 +439,93 @@ public class Fdb {
    * Import a CSV file into a table
    *
    * @param tableEntryType The type of table to import into
-   * @param filepath
+   * @param tableFilepath
    * @param backup
    * @return true on success, false otherwise
    */
-  public boolean importCSV(String filepath, boolean backup, TableEntryType tableEntryType) {
+  public boolean importCSV(String tableFilepath, boolean backup, TableEntryType tableEntryType) {
 
     // Commented out due to regex error -Christian
-    // System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(filepath).toMatchResult().group());
+    // System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(tableFilepath).toMatchResult().group());
 
     switch (tableEntryType) {
       case NODE:
-        return nodeTable.importCSV(filepath, backup);
+        return nodeTable.importCSV(tableFilepath, backup);
 
       case LOCATION:
-        return locationTable.importCSV(filepath, backup);
+        return locationTable.importCSV(tableFilepath, backup);
 
       case MOVE:
-        return moveTable.importCSV(filepath, backup);
+        return moveTable.importCSV(tableFilepath, backup);
 
       case EDGE:
-        return edgeTable.importCSV(filepath, backup);
+        return edgeTable.importCSV(tableFilepath, backup);
 
       case FOOD_REQUEST:
-        return foodRequestTable.importCSV(filepath, backup);
+        return foodRequestTable.importCSV(tableFilepath, backup);
 
       case SUPPLY_REQUEST:
-        return supplyRequestTable.importCSV(filepath, backup);
+        return supplyRequestTable.importCSV(tableFilepath, backup);
 
       case FURNITURE_REQUEST:
-        return furnitureRequestTable.importCSV(filepath, backup);
+        return furnitureRequestTable.importCSV(tableFilepath, backup);
 
       case FLOWER_REQUEST:
-        return flowerRequestTable.importCSV(filepath, backup);
+        return flowerRequestTable.importCSV(tableFilepath, backup);
 
       case CONFERENCE_REQUEST:
-        return conferenceRequestTable.importCSV(filepath, backup);
+        return conferenceRequestTable.importCSV(tableFilepath, backup);
 
       case USER_ACCOUNT:
-        return userAccountTable.importCSV(filepath, backup);
+        return userAccountTable.importCSV(tableFilepath, backup);
 
       case SIGNAGE_PRESET:
-        return signagePresetTable.importCSV(filepath, backup);
+        return signagePresetTable.importCSV(tableFilepath, backup);
 
       case ALERT:
-        return alertTable.importCSV(filepath, backup);
+        return alertTable.importCSV(tableFilepath, backup);
     }
     return false;
+  }
+
+  /**
+   * Potentially temporary secondary declaration of importCSV for classes with subtables.
+   *
+   * @param tableFilepath Filepath of the main table
+   * @param subtableFilepath Filepath of the subtable
+   * @param backup Backup the current db to a CSV?
+   * @param tableEntryType Intended table to perform operation
+   * @return True on success, false otherwise
+   */
+  public boolean importCSV(
+      String tableFilepath,
+      String subtableFilepath,
+      boolean backup,
+      TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case FOOD_REQUEST:
+        return foodRequestTable.importCSV(tableFilepath, subtableFilepath, backup);
+    }
+
+    return false;
+  }
+
+  /**
+   * DEBUG ONLY: Import only a subtable from a CSV.
+   *
+   * @param subtableFilepath Filepath of the subtable
+   * @param tableEntryType Intended table to perform operation
+   * @return Hashmap of Lists with subtable IDs as keys
+   */
+  public HashMap<?, ?> importSubtable(String subtableFilepath, TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case FOOD_REQUEST:
+        return foodRequestTable.importSubtable(subtableFilepath);
+    }
+
+    return null;
   }
 
   /**
