@@ -246,6 +246,7 @@ public class NewConferenceController extends AbsController {
             endTimeDrop.getText()
                 + " "
                 + endAMPMDrop.getText(), // datePicker.getValue().atStartOfDay(),
+            datePicker.getValue().atStartOfDay(),
             Recurring.valueOf(recurringDrop.getText()),
             Integer.parseInt(numAttnBox.getText()),
             dummyVariable);
