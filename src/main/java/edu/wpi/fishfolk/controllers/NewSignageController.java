@@ -69,7 +69,7 @@ public class NewSignageController extends AbsController {
       } else {
         listTexts.get(i).setOpacity(1);
         listIcons.get(i).setOpacity(1);
-        listSubText.get(i).setOpacity(1); // CHANGE ONCE SUBTEXT IS ADDED TO DB
+        listSubText.get(i).setOpacity(1);
         listTexts
             .get(i)
             .setText(
