@@ -3,6 +3,7 @@ package edu.wpi.fishfolk.mapeditor;
 import edu.wpi.fishfolk.database.TableEntry.Edge;
 import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.util.List;
+import java.util.Set;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -66,6 +67,15 @@ public class EdgeLine extends Line {
 
   public boolean matches(Edge edge) {
     return containsNode(edge.getStartNode()) && containsNode(edge.getEndNode());
+  }
+
+  public boolean matchesOneOf(Set<Edge> edgeSet) {
+
+    for (Edge edge : edgeSet) {
+      if (this.matches(edge)) return true;
+    }
+
+    return false;
   }
 
   public void reset() {

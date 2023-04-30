@@ -1,6 +1,8 @@
 package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.database.EntryStatus;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +14,8 @@ public class Edge {
 
   @Getter String edgeID;
 
+  @Getter private ObjectProperty<Edge> edgeProperty;
+
   /**
    * Table entry type: Edge
    *
@@ -22,6 +26,8 @@ public class Edge {
     this.startNode = startNode;
     this.endNode = endNode;
     edgeID = startNode + "<->" + endNode;
+
+    edgeProperty = new SimpleObjectProperty<>(this);
   }
 
   public Edge reverse() {

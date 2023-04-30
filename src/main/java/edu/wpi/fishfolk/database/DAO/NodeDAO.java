@@ -481,7 +481,7 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
                 parts[4]);
 
         // record that id is taken
-        freeIDs.remove(n.getNodeID());
+        freeIDs.remove(Integer.valueOf(n.getNodeID()));
 
         // store node in local table
         tableMap.put(n.getNodeID(), n);
