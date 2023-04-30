@@ -10,9 +10,13 @@ import edu.wpi.fishfolk.database.TableEntry.SignagePreset;
 import edu.wpi.fishfolk.ui.Sign;
 import java.io.*;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
@@ -478,9 +482,109 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
     return false;
   }
 
+  public boolean importCSV(String tableFilepath, String subtableFilepath, boolean backup) {
+    String[] pathArr = tableFilepath.split("/");
+
+    if (backup) {
+
+      // tableFilepath except for last part (actual file name)
+      StringBuilder folder = new StringBuilder();
+      for (int i = 0; i < pathArr.length - 1; i++) {
+        folder.append(pathArr[i]).append("/");
+      }
+      exportCSV(folder.toString());
+    }
+
+    try (BufferedReader br =
+        new BufferedReader(new InputStreamReader(new FileInputStream(tableFilepath)))) {
+
+      // delete the old data
+      dbConnection
+          .createStatement()
+          .executeUpdate(
+              "DELETE FROM "
+                  + dbConnection.getSchema()
+                  + "."
+                  + tableName
+                  + ";"
+                  + "ALTER SEQUENCE signagepreset_signs_seq RESTART WITH 1;");
+
+      // Get map representation of subtable
+      HashMap<Integer, Sign[]> subtable = importSubtable(subtableFilepath);
+
+      // skip first row of csv which has the headers
+      String line = br.readLine();
+
+      String insert =
+          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?);";
+
+      PreparedStatement insertPS = dbConnection.prepareStatement(insert);
+
+      while ((line = br.readLine()) != null) {
+
+        String[] parts = line.split(",");
+
+        SignagePreset signagePreset =
+            new SignagePreset(
+                parts[0],
+                LocalDate.parse(parts[1], DateTimeFormatter.ISO_LOCAL_DATE),
+                subtable.get(Integer.parseInt(parts[2])));
+
+        tableMap.put(signagePreset.getName(), signagePreset);
+
+        insertPS.setString(1, signagePreset.getName());
+        insertPS.setDate(2, Date.valueOf(signagePreset.getDate()));
+
+        insertPS.executeUpdate();
+
+        setSubtableItems(signagePreset.getName(), signagePreset.getSigns());
+      }
+
+      return true;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+  }
+
   @Override
   public boolean exportCSV(String directory) {
-    return false;
+
+    LocalDateTime dateTime = LocalDateTime.now();
+
+    // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ofPattern-java.lang.String-
+
+    try {
+
+      String tableFilename =
+          tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
+
+      PrintStream tableOut =
+          new PrintStream(new FileOutputStream(directory + "\\" + tableFilename));
+
+      tableOut.println(String.join(",", headers));
+
+      for (Map.Entry<String, SignagePreset> entry : tableMap.entrySet()) {
+        SignagePreset signagePreset = entry.getValue();
+        tableOut.println(
+            signagePreset.getName()
+                + ","
+                + signagePreset.getDate()
+                + ","
+                + getSubtableItemsID(signagePreset.getName()));
+      }
+
+      tableOut.close();
+
+      exportSubtable(directory);
+
+      return true;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
   }
 
   /**
@@ -681,6 +785,102 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       preparedDeleteAll.executeUpdate();
 
     } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  public HashMap<Integer, Sign[]> importSubtable(String subtableFilepath) {
+
+    // Create empty output
+    HashMap<Integer, Sign[]> subtable = new HashMap<>();
+
+    // Create buffered reader for CSV
+    try (BufferedReader br =
+        new BufferedReader(new InputStreamReader(new FileInputStream(subtableFilepath)))) {
+
+      // Delete the old data
+      dbConnection
+          .createStatement()
+          .executeUpdate(
+              "DELETE FROM " + dbConnection.getSchema() + "." + tableName + "signs" + ";");
+
+      // Iterate through each line of the CSV
+      String line = br.readLine();
+      while ((line = br.readLine()) != null) {
+
+        // Split the input row into parts
+        String[] parts = line.split(",");
+
+        // Read the item ID (table link)
+        int itemID = Integer.parseInt(parts[0]);
+
+        // Make new array entry from row
+        Sign sign = new Sign(parts[1], Double.parseDouble(parts[2]), parts[3]);
+
+        // If there is no array at the item ID in the map, make one
+        if (!subtable.containsKey(itemID)) {
+          subtable.put(itemID, new Sign[8]);
+        }
+
+        // Add the entry to the array at the item ID in the map
+        subtable.get(itemID)[Integer.parseInt(parts[4])] = sign;
+      }
+
+      // Return the map representation of the subtable
+      return subtable;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+
+      // Return empty map on error, rather than null
+      return new HashMap<>();
+    }
+  }
+
+  public void exportSubtable(String directory) {
+
+    LocalDateTime dateTime = LocalDateTime.now();
+
+    try {
+
+      String subtableFilename =
+          tableName
+              + "signs"
+              + "_"
+              + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm"))
+              + ".csv";
+
+      PrintStream subtableOut =
+          new PrintStream(new FileOutputStream(directory + "\\" + subtableFilename));
+
+      subtableOut.println("signkey,signroom,signdirection,signsubject,signindex");
+
+      for (Map.Entry<String, SignagePreset> entry : tableMap.entrySet()) {
+
+        Sign[] signagePresets = entry.getValue().getSigns();
+        int subtableID = getSubtableItemsID(entry.getValue().getName());
+
+        for (int i = 0; i < 8; i++) {
+
+          if (signagePresets[i] != null) {
+
+            subtableOut.println(
+                subtableID
+                    + ","
+                    + signagePresets[i].getLabel()
+                    + ","
+                    + signagePresets[i].getDirection()
+                    + ","
+                    + signagePresets[i].getSubtext()
+                    + ","
+                    + i);
+          }
+        }
+      }
+
+      subtableOut.close();
+
+    } catch (Exception e) {
       System.out.println(e.getMessage());
     }
   }

@@ -3,10 +3,14 @@ package edu.wpi.fishfolk.database;
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.ui.FlowerItem;
 import edu.wpi.fishfolk.ui.NewFoodItem;
+import edu.wpi.fishfolk.ui.Sign;
 import edu.wpi.fishfolk.ui.SupplyItem;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.junit.jupiter.api.Test;
+
+// PLEASE NOTE: All of these tests make use of hardcoded paths. To use them, replicate or replace
+// the specified paths. This method is used because JavaFX sucks :/
 
 public class CSVTests {
 
@@ -98,5 +102,35 @@ public class CSVTests {
     Fdb fdb = new Fdb();
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.FLOWER_REQUEST);
+  }
+
+  @Test
+  public void signagePresetSubtableImport() {
+    Fdb fdb = new Fdb();
+
+    HashMap<Integer, Sign[]> items =
+        (HashMap<Integer, Sign[]>)
+            fdb.importSubtable(
+                "D:\\CSVTests\\signagepresetsigns.csv", TableEntryType.SIGNAGE_PRESET);
+
+    System.out.println(items.toString());
+  }
+
+  @Test
+  public void signagePresetTableImport() {
+    Fdb fdb = new Fdb();
+
+    fdb.importCSV(
+        "D:\\CSVTests\\signagepreset.csv",
+        "D:\\CSVTests\\signagepresetsigns.csv",
+        false,
+        TableEntryType.SIGNAGE_PRESET);
+  }
+
+  @Test
+  public void signageRequestTableExport() {
+    Fdb fdb = new Fdb();
+
+    fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.SIGNAGE_PRESET);
   }
 }

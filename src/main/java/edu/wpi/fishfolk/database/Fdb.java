@@ -512,6 +512,9 @@ public class Fdb {
 
       case FLOWER_REQUEST:
         return flowerRequestTable.importCSV(tableFilepath, subtableFilepath, backup);
+
+      case SIGNAGE_PRESET:
+        return signagePresetTable.importCSV(tableFilepath, subtableFilepath, backup);
     }
 
     return false;
@@ -535,6 +538,9 @@ public class Fdb {
 
       case FLOWER_REQUEST:
         return flowerRequestTable.importSubtable(subtableFilepath);
+
+      case SIGNAGE_PRESET:
+        return signagePresetTable.importSubtable(subtableFilepath);
     }
 
     return null;
