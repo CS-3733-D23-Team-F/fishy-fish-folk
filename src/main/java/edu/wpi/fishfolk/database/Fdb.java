@@ -3,17 +3,16 @@ package edu.wpi.fishfolk.database;
 import static edu.wpi.fishfolk.util.NodeType.*;
 
 import edu.wpi.fishfolk.database.DAO.*;
+import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.util.NodeType;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 import lombok.Getter;
 
 public class Fdb {
@@ -36,6 +35,7 @@ public class Fdb {
   private final FurnitureRequestDAO furnitureRequestTable;
   private final FlowerRequestDAO flowerRequestTable;
   private final ConferenceRequestDAO conferenceRequestTable;
+  private final ITRequestDAO itRequestTable;
 
   // Login & User Accounts Tables
   private final UserAccountDAO userAccountTable;
@@ -50,7 +50,7 @@ public class Fdb {
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb() {
 
-    this.dbConnection = connect("teamfdb", "teamf", "teamf60");
+    this.dbConnection = connect();
 
     // Hospital Map Tables
     this.nodeTable = new NodeDAO(dbConnection);
@@ -64,6 +64,7 @@ public class Fdb {
     this.furnitureRequestTable = new FurnitureRequestDAO(dbConnection);
     this.flowerRequestTable = new FlowerRequestDAO(dbConnection);
     this.conferenceRequestTable = new ConferenceRequestDAO(dbConnection);
+    this.itRequestTable = new ITRequestDAO(dbConnection);
 
     // Login & User Accounts Tables
     this.userAccountTable = new UserAccountDAO(dbConnection);
@@ -82,14 +83,20 @@ public class Fdb {
                 () -> {
                   System.out.println("[Fdb]: Shutdown received...");
                   nodeTable.updateDatabase(true);
+                  edgeTable.updateDatabase(true);
                   locationTable.updateDatabase(true);
+                  moveTable.updateDatabase(true);
+
                   foodRequestTable.updateDatabase(true);
                   supplyRequestTable.updateDatabase(true);
                   furnitureRequestTable.updateDatabase(true);
                   flowerRequestTable.updateDatabase(true);
                   conferenceRequestTable.updateDatabase(true);
+                  itRequestTable.updateDatabase(true);
+
                   userAccountTable.updateDatabase(true);
                   signagePresetTable.updateDatabase(true);
+
                   alertTable.updateDatabase(true);
 
                   disconnect();
@@ -99,21 +106,22 @@ public class Fdb {
   /**
    * Connect to a PostgreSQL database.
    *
-   * @param dbName Database name
-   * @param dbUser Account
-   * @param dbPass Password
    * @return Database connection object (null if no connection is made)
    */
-  private Connection connect(String dbName, String dbUser, String dbPass) {
-    String dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
-    try {
-      Class.forName("org.postgresql.Driver");
-      Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
-      if (db != null) {
-        System.out.println("[Fdb.connect]: Connection established.");
-        db.setSchema("iter2db");
+  private Connection connect() {
 
-        String query = "SET idle_session_timeout = 0;";
+    try {
+
+      // Attempt a database connection
+      Connection db = ConnectionBuilder.buildConnection();
+
+      if (db != null) {
+
+        // Notify console of successful connection
+        System.out.println("[Fdb.connect]: Connection established.");
+
+        // Set timeout to 1 day (86400000 ms)
+        String query = "SET idle_session_timeout = 86400000;";
         Statement statement = db.createStatement();
         statement.executeUpdate(query);
 
@@ -121,7 +129,7 @@ public class Fdb {
         System.out.println("[Fdb.connect]: Connection failed.");
       }
       return db;
-    } catch (ClassNotFoundException | SQLException e) {
+    } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
     return null;
@@ -172,6 +180,9 @@ public class Fdb {
     } else if (entry instanceof ConferenceRequest) {
       return conferenceRequestTable.insertEntry((ConferenceRequest) entry);
 
+    } else if (entry instanceof ITRequest) {
+      return itRequestTable.insertEntry((ITRequest) entry);
+
     } else if (entry instanceof UserAccount) {
       return userAccountTable.insertEntry((UserAccount) entry);
 
@@ -220,6 +231,9 @@ public class Fdb {
     } else if (entry instanceof ConferenceRequest) {
       return conferenceRequestTable.updateEntry((ConferenceRequest) entry);
 
+    } else if (entry instanceof ITRequest) {
+      return itRequestTable.updateEntry((ITRequest) entry);
+
     } else if (entry instanceof UserAccount) {
       return userAccountTable.updateEntry((UserAccount) entry);
 
@@ -261,6 +275,8 @@ public class Fdb {
         return flowerRequestTable.removeEntry(identifier);
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.removeEntry(identifier);
+      case IT_REQUEST:
+        return itRequestTable.removeEntry(identifier);
       case USER_ACCOUNT:
         return userAccountTable.removeEntry(identifier);
       case SIGNAGE_PRESET:
@@ -300,6 +316,8 @@ public class Fdb {
         return flowerRequestTable.getEntry(identifier);
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.getEntry(identifier);
+      case IT_REQUEST:
+        return itRequestTable.getEntry(identifier);
       case USER_ACCOUNT:
         return userAccountTable.getEntry(identifier);
       case SIGNAGE_PRESET:
@@ -338,6 +356,8 @@ public class Fdb {
         return flowerRequestTable.getAllEntries();
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.getAllEntries();
+      case IT_REQUEST:
+        return itRequestTable.getAllEntries();
       case USER_ACCOUNT:
         return userAccountTable.getAllEntries();
       case SIGNAGE_PRESET:
@@ -385,6 +405,9 @@ public class Fdb {
       case CONFERENCE_REQUEST:
         conferenceRequestTable.undoChange();
         break;
+      case IT_REQUEST:
+        itRequestTable.undoChange();
+        break;
       case USER_ACCOUNT:
         userAccountTable.undoChange();
         break;
@@ -424,6 +447,8 @@ public class Fdb {
         return flowerRequestTable.updateDatabase(true);
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.updateDatabase(true);
+      case IT_REQUEST:
+        return itRequestTable.updateDatabase(true);
       case USER_ACCOUNT:
         return userAccountTable.updateDatabase(true);
       case SIGNAGE_PRESET:
@@ -446,7 +471,8 @@ public class Fdb {
    */
   public boolean importCSV(String filepath, boolean backup, TableEntryType tableEntryType) {
 
-    System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(filepath).toMatchResult().group());
+    // Commented out due to regex error -Christian
+    // System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(filepath).toMatchResult().group());
 
     switch (tableEntryType) {
       case NODE:
@@ -475,6 +501,9 @@ public class Fdb {
 
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.importCSV(filepath, backup);
+
+      case IT_REQUEST:
+        return itRequestTable.importCSV(filepath, backup);
 
       case USER_ACCOUNT:
         return userAccountTable.importCSV(filepath, backup);
@@ -525,6 +554,9 @@ public class Fdb {
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.exportCSV(directory);
 
+      case IT_REQUEST:
+        return itRequestTable.exportCSV(directory);
+
       case USER_ACCOUNT:
         return userAccountTable.exportCSV(directory);
 
@@ -543,6 +575,31 @@ public class Fdb {
     locationTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Location.csv", false);
     moveTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
     edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
+  }
+
+  public void processEditQueue(DataEditQueue<Object> queue) {
+
+    queue.setPointer(0);
+
+    while (queue.hasNext()) {
+
+      DataEdit<Object> edit = queue.next();
+
+      switch (edit.getTable()) {
+        case NODE:
+          nodeTable.processEdit(edit);
+          break;
+        case LOCATION:
+          locationTable.processEdit(edit);
+          break;
+        case MOVE:
+          moveTable.processEdit(edit);
+          break;
+        case EDGE:
+          edgeTable.processEdit(edit);
+          break;
+      }
+    }
   }
 
   /**
@@ -670,6 +727,11 @@ public class Fdb {
     return map;
   }
 
+  /**
+   * Get a unique ID from the NodeTable, which reserves the ID.
+   *
+   * @return
+   */
   public int getNextNodeID() {
     return nodeTable.getNextID();
   }

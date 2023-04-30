@@ -166,6 +166,7 @@ public class NewSupplyOrderController extends AbsController {
       Text errorText = new Text("One or more required fields have not been filled");
       errorText.setFont(new Font("Open Sans", 26));
       error.setContentNode(errorText);
+      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
       error.show(supplySubmitButton);
     }
   }

@@ -1,24 +1,28 @@
 package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 
 public class DataEditQueue<T> {
 
-  private final LinkedList<DataEdit<T>> dataEditQueue;
+  private final ArrayList<DataEdit<T>> dataEditQueue = new ArrayList<>();
 
-  private int pointer;
+  @Getter @Setter private int pointer;
   @Setter private int editCount;
-  @Getter private final int batchLimit;
+  @Getter @Setter private int batchLimit;
 
   /** Represents a queue of data edits for a PostgreSQL database. */
   public DataEditQueue() {
-    this.dataEditQueue = new LinkedList<>();
     this.pointer = 0;
     this.editCount = 0;
     this.batchLimit = 4;
+  }
+
+  /** @return the total number of edits in the queue. */
+  public int size() {
+    return dataEditQueue.size();
   }
 
   /**
@@ -51,8 +55,8 @@ public class DataEditQueue<T> {
     // If the size of the queue matches the pointer, decrease the pointer to stay in bounds
     if (pointer == (dataEditQueue.size() - 1)) pointer -= 1;
 
-    // Remove the most recently added item to the queue
-    dataEditQueue.remove(dataEditQueue.get(dataEditQueue.size() - 1));
+    // Remove the last element added
+    dataEditQueue.remove(dataEditQueue.size() - 1);
 
     // Decrease the edit count
     editCount -= 1;
@@ -71,14 +75,19 @@ public class DataEditQueue<T> {
       return null;
     }
 
-    // Get the most recently added data edit in the queue
-    DataEdit<T> edit = dataEditQueue.get(dataEditQueue.size() - 1);
+    // if needed decrease pointer to stay in bounds
+    if (pointer == dataEditQueue.size() - 1) pointer--;
 
-    // Remove it from the queue
-    removeRecent();
+    editCount--;
 
-    // Return it
-    return edit;
+    // remove and return the most recently added element in the queue
+    return dataEditQueue.remove(dataEditQueue.size() - 1);
+  }
+
+  public void clear() {
+    dataEditQueue.clear();
+    pointer = 0;
+    editCount = 0;
   }
 
   /**
@@ -88,11 +97,8 @@ public class DataEditQueue<T> {
    */
   public DataEdit<T> next() {
 
-    // Increment the pointer (data edit is being sent to database)
-    pointer += 1;
-
-    // Return the next data edit in the queue
-    return dataEditQueue.get(pointer - 1);
+    // return the element at the pointer prior to incrementing
+    return dataEditQueue.get(pointer++);
   }
 
   /**

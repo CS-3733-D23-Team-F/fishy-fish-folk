@@ -2,6 +2,8 @@ package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.util.NodeType;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +15,8 @@ public class Location {
   @Getter @Setter private EntryStatus status;
 
   @Getter @Setter private Node node;
+
+  @Getter private ObjectProperty<Location> locationProperty;
 
   /**
    * Table entry type: Location
@@ -26,6 +30,8 @@ public class Location {
     this.shortName = shortName;
     this.nodeType = nodeType;
     this.status = EntryStatus.OLD;
+
+    locationProperty = new SimpleObjectProperty<>(this);
   }
 
   public boolean isDestination() {

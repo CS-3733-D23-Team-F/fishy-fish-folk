@@ -1,20 +1,25 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
+import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Edge;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import org.postgresql.PGConnection;
+import org.postgresql.util.PSQLException;
 
-public class EdgeDAO implements IDAO<Edge> {
+public class EdgeDAO implements IDAO<Edge>, IProcessEdit {
 
   private final Connection dbConnection;
+  private Connection dbListener;
 
   private final String tableName;
   private final ArrayList<String> headers;
@@ -31,6 +36,7 @@ public class EdgeDAO implements IDAO<Edge> {
     this.dataEditQueue = new DataEditQueue<>();
 
     init(false);
+    prepareListener();
     populateLocalTable();
   }
 
@@ -93,6 +99,94 @@ public class EdgeDAO implements IDAO<Edge> {
       }
 
     } catch (SQLException | NumberFormatException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void processEdit(DataEdit<Object> edit) {
+    Edge newEdge = (Edge) edit.getNewEntry();
+    switch (edit.getType()) {
+      case INSERT:
+        this.insertEntry(newEdge);
+        break;
+      case REMOVE:
+        removeEntry(newEdge);
+        break;
+      case UPDATE:
+        // updating edge is meaningless
+        // updateEntry(edit.getNewEntry());
+        break;
+    }
+  }
+
+  public void prepareListener() {
+
+    try {
+
+      dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
+
+      if (dbListener == null) {
+        System.out.println("[EdgeDAO.prepareListener]: Listener is null.");
+        return;
+      }
+
+      // Create a function that calls NOTIFY when the table is modified
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE FUNCTION notifyEdge() RETURNS TRIGGER AS $edge$"
+                  + "BEGIN "
+                  + "NOTIFY edge;"
+                  + "RETURN NULL;"
+                  + "END; $edge$ language plpgsql")
+          .execute();
+
+      // Create a trigger that calls the function on any change
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE TRIGGER edgeUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "edge FOR EACH STATEMENT EXECUTE FUNCTION notifyEdge()")
+          .execute();
+
+      // Start listener
+      reListen();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void reListen() {
+    try {
+      dbListener.prepareStatement("LISTEN edge").execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void verifyLocalTable() {
+
+    try {
+
+      // Check for notifications on the table
+      PGConnection driver = dbListener.unwrap(PGConnection.class);
+
+      // See if there is a notification
+      if (driver.getNotifications().length > 0) {
+        System.out.println("[EdgeDAO.verifyLocalTable]: Notification received!");
+        populateLocalTable();
+      }
+
+      // Catch a timeout and reset refresh local table
+    } catch (PSQLException e) {
+
+      dbListener = ConnectionBuilder.buildConnection();
+      reListen();
+      populateLocalTable();
+
+    } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
   }
@@ -169,11 +263,14 @@ public class EdgeDAO implements IDAO<Edge> {
   // get is also meaningless
   @Override
   public Edge getEntry(Object identifier) {
+    verifyLocalTable();
     return null;
   }
 
   @Override
   public ArrayList<Edge> getAllEntries() {
+
+    verifyLocalTable();
 
     // hashset has no specified order so the list will be scrambled
     return new ArrayList<>(edgeSet);

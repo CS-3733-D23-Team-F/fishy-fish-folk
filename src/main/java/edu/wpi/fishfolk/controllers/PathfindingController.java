@@ -141,6 +141,11 @@ public class PathfindingController extends AbsController {
 
     methodSelector.getItems().addAll("A*", "BFS", "DFS", "Dijkstra's");
 
+    slideUp.setVisible(false);
+    slideDown.setVisible(false);
+    slideUp.setDisable(true);
+    slideDown.setDisable(true);
+
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
@@ -155,6 +160,8 @@ public class PathfindingController extends AbsController {
 
       pathTextBox.getChildren().clear();
       pathTextBox.getChildren().add(alertPane);
+      alertPane.setStyle("-fx-background-radius: 15");
+
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
@@ -302,6 +309,9 @@ public class PathfindingController extends AbsController {
 
             System.out.println(paths);
 
+            slideUp.setVisible(true);
+            slideUp.setDisable(false);
+
             textDirections = new LinkedList<>();
             populateTextDirections(paths);
 
@@ -323,6 +333,12 @@ public class PathfindingController extends AbsController {
     clearBtn.setOnMouseClicked(
         event -> {
           // clear paths
+
+          slideUp.setVisible(false);
+          slideDown.setVisible(false);
+          slideUp.setDisable(true);
+          slideDown.setDisable(true);
+          textInstruct.setTranslateY(252);
 
           drawGroup.getChildren().clear();
           drawGroup.getChildren().add(mapImg);

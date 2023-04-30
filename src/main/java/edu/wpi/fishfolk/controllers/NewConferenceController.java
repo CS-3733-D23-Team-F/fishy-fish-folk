@@ -4,10 +4,7 @@ import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.ui.Recurring;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
-import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.controls.*;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -26,6 +23,7 @@ public class NewConferenceController extends AbsController {
   @FXML HBox confirmBox;
   @FXML AnchorPane confirmPane;
   @FXML MFXButton okButton;
+  @FXML MFXDatePicker datePicker;
   Font oSans26;
 
   ArrayList<String> AMPM = new ArrayList<>();
@@ -73,6 +71,7 @@ public class NewConferenceController extends AbsController {
     recurringDrop.setValue(null);
     numAttnBox.clear();
     notesBox.clear();
+    datePicker.setValue(null);
   }
 
   /** Initializing the dropdowns so they have all the required options. */
@@ -138,24 +137,35 @@ public class NewConferenceController extends AbsController {
           && !(startAMPMDrop.getText().isEmpty())
           && !(endTimeDrop.getText().isEmpty())
           && !(endAMPMDrop.getText().isEmpty())) {
-        if (!(numAttnBox.getText().isEmpty())) {
-          int numba = 75;
-          try {
-            numba = Integer.parseInt(numAttnBox.getText());
-          } catch (Exception e) {
-            submissionError("Nice Try Bernhardt.", numAttnBox);
-          }
-          if (numba < 21 && numba > 1 && numba != 75) {
-            if (!(recurringDrop.getText().isEmpty())) {
-              submit();
+        if (!(datePicker.getValue() == null)) {
+          if (!datePicker
+              .getValue()
+              .atStartOfDay()
+              .isBefore(datePicker.getCurrentDate().atStartOfDay())) {
+            if (!(numAttnBox.getText().isEmpty())) {
+              int numba = 75;
+              try {
+                numba = Integer.parseInt(numAttnBox.getText());
+              } catch (Exception e) {
+                submissionError("Nice Try Bernhardt.", numAttnBox);
+              }
+              if (numba < 21 && numba > 1 && numba != 75) {
+                if (!(recurringDrop.getText().isEmpty())) {
+                  submit();
+                } else {
+                  submissionError("You must choose your setting for recurring.", recurringDrop);
+                }
+              } else {
+                submissionError("Invalid Input for number of attendees.", numAttnBox);
+              }
             } else {
-              submissionError("You must choose your setting for recurring.", recurringDrop);
+              submissionError("You must put in the number of attendees.", numAttnBox);
             }
           } else {
-            submissionError("Invalid Input for number of attendees.", numAttnBox);
+            submissionError("You must choose today's date or a date in the future.", datePicker);
           }
         } else {
-          submissionError("You must put in the number of attendees.", numAttnBox);
+          submissionError("You must include a date", datePicker);
         }
       } else {
         submissionError("You must put in a time.", startTimeDrop);
@@ -233,7 +243,10 @@ public class NewConferenceController extends AbsController {
             notesBox.getText(),
             SharedResources.getCurrentUser().getUsername(),
             startTimeDrop.getText() + " " + startAMPMDrop.getText(),
-            endTimeDrop.getText() + " " + endAMPMDrop.getText(),
+            endTimeDrop.getText()
+                + " "
+                + endAMPMDrop.getText(), // datePicker.getValue().atStartOfDay(),
+            datePicker.getValue().atStartOfDay(),
             Recurring.valueOf(recurringDrop.getText()),
             Integer.parseInt(numAttnBox.getText()),
             dummyVariable);
