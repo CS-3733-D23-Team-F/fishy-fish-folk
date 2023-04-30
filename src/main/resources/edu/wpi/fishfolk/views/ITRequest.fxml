@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.ITRequestController">
+   <children>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1080.0">
+         <children>
+            <HBox alignment="BOTTOM_CENTER" minHeight="70.0" prefHeight="70.0" prefWidth="1080.0">
+               <children>
+                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Component having issues:">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#012d5a" layoutX="400.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the issues:">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="275.0" right="225.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXScrollPane minHeight="400.0" minWidth="500.0" prefHeight="400.0" prefWidth="500.0" style="-fx-border-width: 3; -fx-border-color: #012D5A; -fx-border-radius: 5;">
+                     <content>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <MFXRectangleToggleNode fx:id="comp0" alignment="CENTER_LEFT" minHeight="75.0" minWidth="475.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="COMPUTER">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="component" />
+                                 </toggleGroup>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="comp1" alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" minHeight="75.0" minWidth="475.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="KEYBOARD" toggleGroup="$component">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="comp2" alignment="CENTER_LEFT" layoutX="10.0" layoutY="62.0" minHeight="75.0" minWidth="475.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="MOUSE" toggleGroup="$component">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="comp3" alignment="CENTER_LEFT" layoutX="10.0" layoutY="114.0" minHeight="75.0" minWidth="475.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="X-RAY MACHINE" toggleGroup="$component">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="comp4" alignment="CENTER_LEFT" layoutX="10.0" layoutY="166.0" minHeight="75.0" minWidth="475.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="PRINTER" toggleGroup="$component">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="comp5" alignment="CENTER_LEFT" layoutX="10.0" layoutY="218.0" minHeight="75.0" minWidth="475.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="PHONE" toggleGroup="$component">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="comp6" alignment="CENTER_LEFT" layoutX="10.0" layoutY="270.0" minHeight="75.0" minWidth="475.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="GAMER HEADSET" toggleGroup="$component">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="comp7" alignment="CENTER_LEFT" layoutX="10.0" layoutY="322.0" minHeight="75.0" minWidth="475.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="APPLE" toggleGroup="$component">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                              <MFXRectangleToggleNode fx:id="comp8" alignment="CENTER_LEFT" layoutX="10.0" layoutY="374.0" minHeight="75.0" minWidth="475.0" style="-fx-border-radius: 0;" styleClass="rectToggle" text="IM OUT OF IDEAS" toggleGroup="$component">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </MFXRectangleToggleNode>
+                           </children>
+                        </VBox>
+                     </content>
+                  </MFXScrollPane>
+                  <TextArea fx:id="issueText" minHeight="400.0" minWidth="500.0" prefHeight="400.0" prefWidth="500.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 3;" wrapText="true">
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextArea>
+               </children>
+            </HBox>
+            <HBox alignment="BOTTOM_CENTER" minHeight="50.0">
+               <children>
+                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Priority level:">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="300.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" minHeight="60.0" prefHeight="60.0" prefWidth="1080.0">
+               <children>
+                  <HBox alignment="CENTER" minHeight="50.0" minWidth="500.0" prefHeight="50.0" prefWidth="500.0">
+                     <children>
+                        <MFXRectangleToggleNode fx:id="priority0" minHeight="50.0" minWidth="165.0" prefHeight="50.0" prefWidth="132.0" selected="true" style="-fx-border-radius: 0; -fx-border-width: 3; -fx-border-color: #012D5A;" styleClass="priorityToggle" text="LOW" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="priority" />
+                           </toggleGroup>
+                        </MFXRectangleToggleNode>
+                        <MFXRectangleToggleNode fx:id="priority1" layoutX="29.0" layoutY="13.0" minHeight="50.0" minWidth="165.0" style="-fx-border-radius: 0; -fx-border-width: 3; -fx-border-color: #012D5A;" styleClass="priorityToggle" text="MEDIUM" textFill="WHITE" toggleGroup="$priority">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
+                        </MFXRectangleToggleNode>
+                        <MFXRectangleToggleNode fx:id="priority2" layoutX="110.0" layoutY="13.0" minHeight="50.0" minWidth="165.0" style="-fx-border-radius: 0; -fx-border-width: 3; -fx-border-color: #012D5A;" styleClass="priorityToggle" text="HIGH" textFill="WHITE" toggleGroup="$priority">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
+                        </MFXRectangleToggleNode>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="500.0">
+               <children>
+                  <MFXFilterComboBox fx:id="roomPicker" minHeight="55.0" minWidth="500.0" prefHeight="55.0" prefWidth="500.0" promptText="ROOM" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
+                     <font>
+                        <Font name="Open Sans Regular" size="20.0" />
+                     </font>
+                  </MFXFilterComboBox>
+                  <MFXTextField fx:id="contactInfoText" minHeight="55.0" minWidth="500.0" prefHeight="55.0" prefWidth="500.0" promptText="ADDITIONAL CONTACT INFO" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
+                     <font>
+                        <Font name="Open Sans Regular" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                  </MFXTextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="cancelButton" minWidth="140.0" prefHeight="55.0" prefWidth="140.0" style="-fx-background-color: #012D5A;" styleClass="blueButton" text="CANCEL" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </MFXButton>
+                  <MFXButton fx:id="clearButton" layoutX="480.0" layoutY="22.0" minWidth="140.0" prefHeight="55.0" prefWidth="140.0" style="-fx-background-color: #012D5A;" styleClass="blueButton" text="CLEAR" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="200.0" />
+                     </HBox.margin>
+                  </MFXButton>
+                  <MFXButton fx:id="submitButton" layoutX="550.0" layoutY="32.0" minWidth="140.0" prefHeight="55.0" prefWidth="140.0" style="-fx-background-color: #F0BF4C;" styleClass="yellowButton" text="SUBMIT" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="425.0" />
+                     </HBox.margin>
+                  </MFXButton>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox fx:id="confirmBlur" alignment="CENTER" disable="true" minHeight="880.0" minWidth="1300.0" opacity="0.76" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #000000;" visible="false" StackPane.alignment="CENTER" />
+      <HBox fx:id="confirmBox" alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="200.0" visible="false">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <AnchorPane fx:id="confirmPane" disable="true" style="-fx-border-color: #012d5a; -fx-border-radius: 3; -fx-background-color: WHITE; -fx-background-radius: 8; -fx-border-width: 2;">
+                     <children>
+                        <VBox alignment="CENTER" spacing="15.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Order Confirmed">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="26.0" />
+                                 </font>
+                              </Text>
+                              <MFXButton fx:id="okButton" style="-fx-background-color: #f0bf4c;" text="OK">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="20.0" />
+                                 </font>
+                              </MFXButton>
+                           </children>
+                           <padding>
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</StackPane>

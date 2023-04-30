@@ -133,6 +133,14 @@
                                           <Insets left="10.0" />
                                        </padding>
                                     </MFXButton>
+                                    <MFXButton fx:id="ITNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" layoutX="10.0" layoutY="310.0" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="IT Request" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="15.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </MFXButton>
                                  </children>
                               </VBox>
                               <MFXButton id="serviceNav" fx:id="serviceNav" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" depthLevel="LEVEL3" maxHeight="70.0" maxWidth="100.0" minHeight="70.0" minWidth="100.0" styleClass="sideNav" textFill="WHITE">

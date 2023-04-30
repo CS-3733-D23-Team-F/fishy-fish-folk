@@ -221,7 +221,7 @@
                 <children>
                     <AnchorPane fx:id="confirmPane" disable="true" style="-fx-border-color: #012d5a; -fx-border-radius: 3; -fx-background-color: WHITE; -fx-background-radius: 8; -fx-border-width: 2;" visible="false">
                         <children>
-                            <VBox alignment="CENTER" spacing="15.0">
+                            <VBox alignment="CENTER" spacing="15.0" visible="false">
                                 <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Order Confirmed">
                                         <font>
