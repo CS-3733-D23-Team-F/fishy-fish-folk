@@ -2,6 +2,7 @@ package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
+import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.ui.Recurring;
 import io.github.palexdev.materialfx.controls.*;
@@ -120,8 +121,36 @@ public class NewConferenceController extends AbsController {
   }
 
   /**
+   * Finds which conference room was selected by the user.
+   * @return returns the name of the conference room
+   */
+  public String whichConf(){
+    if (rec1.isSelected()) {
+      return "BTM Conference Center";
+    }
+    if (rec2.isSelected()) {
+      return "Duncan Reid Conference Room";
+    }
+    if (rec3.isSelected()) {
+      return "Anesthesia Conf Floor L1";
+    }
+    if (rec4.isSelected()) {
+      return "Medical Records Conference Room Floor L1";
+    }
+    if (rec5.isSelected()) {
+      return "Abrams Conference Room";
+    }
+    if (rec6.isSelected()) {
+      return "Carrie M. Hall Conference Center Floor 2";
+    }
+    if (rec7.isSelected()) {
+      return "Shapiro Board Room MapNode 20 Floor 1";
+    }
+    return null;
+  }
+
+  /**
    * Checks to see if the end time comes after the start time
-   *
    * @return true if it is, false if not
    */
   public boolean validEndTime() {
@@ -137,6 +166,24 @@ public class NewConferenceController extends AbsController {
     for (int i = start + 1; i < times.size(); i++) {
       if (endTimeDrop.getText().equals(times.get(i))) {
         return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Checks to see if the meeting you want to schedule has any conflicts with already existing meetings.
+   * @return returns true if there's no conflicts, false if there is
+   */
+  public boolean isItFree(){
+    ArrayList<ConferenceRequest> allrequests = (ArrayList<ConferenceRequest>) dbConnection.getAllEntries(TableEntryType.CONFERENCE_REQUEST);
+    for (int i = 0; i<allrequests.size(); i++){
+      if (recurringDrop.getText().equals(Recurring.NEVER)){
+        if (whichConf().equals(allrequests.get(i).getRoomName())){
+          if(datePicker.getValue().atStartOfDay().equals(allrequests.get(i))){
+            //TODO: this dumb shit.
+          }
+        }
       }
     }
     return false;
@@ -168,7 +215,11 @@ public class NewConferenceController extends AbsController {
                   }
                   if (numba < 21 && numba > 1 && numba != 75) {
                     if (!(recurringDrop.getText().isEmpty())) {
-                      submit();
+                      if(isItFree()) {
+                        submit();
+                      }else{
+                        submissionError("There is already a meeting scheduled for this time.", confSubmitButton);
+                      }
                     } else {
                       submissionError("You must choose your setting for recurring.", recurringDrop);
                     }
@@ -239,28 +290,7 @@ public class NewConferenceController extends AbsController {
 
   /** imputs all values from the reservation into the database table. */
   private void submit() {
-    String dummyVariable = "";
-    if (rec1.isSelected()) {
-      dummyVariable = "BTM Conference Center";
-    }
-    if (rec2.isSelected()) {
-      dummyVariable = "Duncan Reid Conference Room";
-    }
-    if (rec3.isSelected()) {
-      dummyVariable = "Anesthesia Conf Floor L1";
-    }
-    if (rec4.isSelected()) {
-      dummyVariable = "Medical Records Conference Room Floor L1";
-    }
-    if (rec5.isSelected()) {
-      dummyVariable = "Abrams Conference Room";
-    }
-    if (rec6.isSelected()) {
-      dummyVariable = "Carrie M. Hall Conference Center Floor 2";
-    }
-    if (rec7.isSelected()) {
-      dummyVariable = "Shapiro Board Room MapNode 20 Floor 1";
-    }
+    String dummyVariable = whichConf();
     ConferenceRequest res =
         new ConferenceRequest(
             notesBox.getText(),
