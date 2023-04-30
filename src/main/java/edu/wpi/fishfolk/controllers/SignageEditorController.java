@@ -220,6 +220,15 @@ public class SignageEditorController extends AbsController {
     roomr2.setValue(null);
     roomr3.setValue(null);
 
+    rooml0.setText(""); // set all eight room selector values to null
+    rooml1.setText("");
+    rooml2.setText("");
+    rooml3.setText("");
+    roomr0.setText("");
+    roomr1.setText("");
+    roomr2.setText("");
+    roomr3.setText("");
+
     fullDisable(iconl0); // fully disables all eight direction arrows
     fullDisable(iconl1);
     fullDisable(iconl2);
@@ -258,6 +267,7 @@ public class SignageEditorController extends AbsController {
   }
 
   private void loadPreset() {
+
     if (!(presetSelect.getValue() == null)) identifier = presetSelect.getValue();
     else return;
     clearAll();
@@ -282,8 +292,8 @@ public class SignageEditorController extends AbsController {
         listTexts
             .get(i)
             .setText(
-                preset.getSigns()[i]
-                    .getLabel()); // otherwise set the i'th text to the i'th Sign's name
+                preset.getSigns()[i].getLabel()); // otherwise set the i'th text to the i'th Sign's
+        // name
         listIcons
             .get(i)
             .setRotate(
