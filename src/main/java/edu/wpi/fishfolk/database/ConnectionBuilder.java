@@ -39,11 +39,19 @@ public class ConnectionBuilder {
     ConnectionBuilder.schema = schema;
   }
 
-  public static void setURL(@NonNull String URL) { ConnectionBuilder.URL = URL; }
+  public static void setURL(@NonNull String URL) {
+    ConnectionBuilder.URL = URL;
+  }
 
-  public static void setUsername(@NonNull String username) { ConnectionBuilder.username = username; }
+  public static void setUsername(@NonNull String username) {
+    ConnectionBuilder.username = username;
+  }
 
-  public static void setPassword(@NonNull String password) { ConnectionBuilder.password = password; }
+  public static void setPassword(@NonNull String password) {
+    ConnectionBuilder.password = password;
+  }
 
-  public static void setDbName(@NonNull String dbName) { ConnectionBuilder.dbName = dbName; }
+  public static void setDbName(@NonNull String dbName) {
+    ConnectionBuilder.dbName = dbName;
+  }
 }

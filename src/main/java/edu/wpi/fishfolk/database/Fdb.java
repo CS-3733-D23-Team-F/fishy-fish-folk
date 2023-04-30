@@ -126,7 +126,8 @@ public class Fdb {
         ConnectionBuilder.setDbName(dbName);
         break;
       default:
-        ConnectionBuilder.setURL("jdbc:postgresql://postgres.thesamrooney.com:5432/"); // i.e. DB_AWS
+        ConnectionBuilder.setURL(
+            "jdbc:postgresql://postgres.thesamrooney.com:5432/"); // i.e. DB_AWS
         ConnectionBuilder.setUsername(dbUser);
         ConnectionBuilder.setPassword(dbPass);
         ConnectionBuilder.setDbName(dbName);
