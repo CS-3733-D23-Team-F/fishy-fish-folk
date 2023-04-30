@@ -396,6 +396,8 @@ public class PathfindingController extends AbsController {
           slideDown.setVisible(false);
           slideUp.setDisable(true);
           slideDown.setDisable(true);
+          downFloor.setDisable(false);
+          upFloor.setDisable(false);
           textInstruct.setTranslateY(252);
 
           drawGroup.getChildren().clear();
@@ -538,9 +540,16 @@ public class PathfindingController extends AbsController {
     allCheck.setOnAction(
         event -> {
           for (int typeNum = 0; typeNum < displayButtons.size() - 1; typeNum++) {
+
             NodeType type = displayTypes.get(typeNum);
-            locationsButtons.get(type).setSelected(allCheck.isSelected());
-            locationGroups.get(type).setVisible(allCheck.isSelected());
+            if (allCheck.isSelected()) {
+              locationsButtons.get(type).setSelected(true);
+              drawLocations(
+                  eachFloor.get(currFloorNoPath), locationsButtons.get(type).isSelected(), type);
+            } else {
+              locationsButtons.get(type).setSelected(false);
+              locationGroups.get(type).setVisible(false);
+            }
           }
         });
 
@@ -755,6 +764,8 @@ public class PathfindingController extends AbsController {
 
   /** Display the floor indexed by the class variable currentFloor */
   private void displayFloor() {
+
+    currFloorNoPath = eachFloor.indexOf(floors.get(currentFloor));
 
     mapImg.setImage(images.get(floors.get(currentFloor)));
     floorDisplay.setText("Floor " + floors.get(currentFloor));
