@@ -26,18 +26,6 @@ public class EdgeLine extends Line {
     this.setStrokeLineCap(StrokeLineCap.ROUND);
   }
 
-  public EdgeLine(int startNodeID, int endNodeID, double x1, double y1, double x2, double y2) {
-
-    super(x1, y1, x2, y2);
-
-    this.startNodeID = startNodeID;
-    this.endNodeID = endNodeID;
-
-    this.getStrokeDashArray().addAll(7.5, 5.0);
-    this.setStrokeWidth(2.5);
-    this.setStrokeLineCap(StrokeLineCap.ROUND);
-  }
-
   public boolean containsNode(int nodeID) {
     return startNodeID == nodeID || endNodeID == nodeID;
   }

@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.database.EntryStatus;
+import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import lombok.Getter;
@@ -36,6 +37,13 @@ public class Edge {
 
   public boolean containsNode(int nodeID) {
     return startNode == nodeID || endNode == nodeID;
+  }
+
+  public boolean containsOneOf(List<Integer> nodeIDs) {
+    for (int nodeID : nodeIDs) {
+      if (containsNode(nodeID)) return true;
+    }
+    return false;
   }
 
   @Override

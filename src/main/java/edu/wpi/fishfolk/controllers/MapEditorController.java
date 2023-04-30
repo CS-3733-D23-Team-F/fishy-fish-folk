@@ -193,8 +193,6 @@ public class MapEditorController extends AbsController {
           public void onChanged(Change<? extends Node> change) {
             while (change.next()) {
 
-              System.out.println(change.toString());
-
               // possible changes: update, remove, insert
 
               if (change.wasUpdated()) {
@@ -203,8 +201,6 @@ public class MapEditorController extends AbsController {
                 for (int i = change.getFrom(); i < change.getTo(); i++) {
                   updated.put(nodes.get(i).getNodeID(), nodes.get(i));
                 }
-
-                System.out.println(updated.keySet());
 
                 // update the nodecircles in the drawn group
                 nodeGroup
@@ -279,7 +275,6 @@ public class MapEditorController extends AbsController {
               // remove edgelines that match an edge in removed
               edgeGroup.getChildren().removeIf(fxnode -> ((EdgeLine) fxnode).matchesOneOf(removed));
 
-              System.out.println("added " + change.getAddedSize() + " edges");
               // add new edgelines to the edge draw group
               edgeGroup
                   .getChildren()
@@ -287,12 +282,7 @@ public class MapEditorController extends AbsController {
                       change.getAddedSubList().stream()
                           .map(
                               // create new edgeline for each added edge
-                              edge -> {
-                                return new EdgeLine(
-                                    edge,
-                                    nodes.get(nodeID2idx.get(edge.getStartNode())).getPoint(),
-                                    nodes.get(nodeID2idx.get(edge.getEndNode())).getPoint());
-                              })
+                              edge -> drawEdge(edge, radioAllEdge.isSelected()))
                           .toList());
             }
           }
@@ -339,25 +329,45 @@ public class MapEditorController extends AbsController {
               // disable since no nodes are selected
               radioSelectedEdge.setDisable(true);
               delNode.setDisable(true);
+              addEdge.setDisable(true);
+              delEdge.setDisable(true);
+
               clearNodeFields();
               clearLocationFields();
-
-            } else if (selectedNodes.size() == 1) {
-
-              Node node = nodes.get(nodeID2idx.get(selectedNodes.get(0)));
-              fillNodeFields(node);
-              fillLocationFields(node.getLocations(today));
-
-              delNode.setDisable(false);
-              radioSelectedEdge.setDisable(false);
 
             } else {
 
-              clearNodeFields();
-              clearLocationFields();
+              if (selectedNodes.size() == 1) {
 
+                Node node = nodes.get(nodeID2idx.get(selectedNodes.get(0)));
+                fillNodeFields(node);
+                fillLocationFields(node.getLocations(today));
+
+              } else {
+
+                clearNodeFields();
+                clearLocationFields();
+              }
+
+              // for any number > 0 of selected nodes
+
+              radioSelectedEdge.setDisable(false);
               delNode.setDisable(false);
-              radioSelectedEdge.setDisable(true);
+              addEdge.setDisable(false);
+              delEdge.setDisable(false);
+
+              // have edges to show
+              if (radioSelectedEdge.isSelected()) {
+                edgeGroup
+                    .getChildren()
+                    .forEach(
+                        fxnode -> {
+                          EdgeLine edgeLine = (EdgeLine) fxnode;
+                          if (edgeLine.containsNodes(selectedNodes)) {
+                            edgeLine.setVisible(true);
+                          }
+                        });
+              }
             }
           }
         });
@@ -380,18 +390,18 @@ public class MapEditorController extends AbsController {
                       fxnode -> {
                         EdgeLine edgeLine = (EdgeLine) fxnode;
 
-                        if (removed.contains(edgeLine)) {
+                        // reset the deselected edges
+                        if (edgeLine.matchesOneOf(removed)) {
                           edgeLine.reset();
 
-                        } else if (added.contains(edgeLine)) {
+                          // highlight the newly selected edges
+                        } else if (edgeLine.matchesOneOf(added)) {
                           edgeLine.highlight();
                         }
                       });
             }
 
             if (selectedEdges.isEmpty()) {
-
-              delEdge.setDisable(true);
 
             } else {
               delEdge.setDisable(false);
@@ -408,9 +418,7 @@ public class MapEditorController extends AbsController {
 
     save.setOnMouseClicked(
         event -> {
-          System.out.println(editQueue.size());
-
-          // TODO clean up intermediate edits
+          System.out.println("saving " + editQueue.size() + " edits");
 
           dbConnection.processEditQueue(editQueue);
 
@@ -481,18 +489,23 @@ public class MapEditorController extends AbsController {
           if (state == EDITOR_STATE.ADDING_NODE) {
             insertNode(new Point2D(event.getX(), event.getY()));
 
+            addEdge.setDisable(false);
+
             state = EDITOR_STATE.EDITING_NODE;
 
           } else if (state == EDITOR_STATE.EDITING_NODE || state == EDITOR_STATE.EDITING_EDGE) {
 
             // clear node stuff
             selectedNodes.clear();
-            clearNodeFields();
-            clearLocationFields();
 
             // clear & hide edge stuff
             selectedEdges.clear();
-            edgeGroup.getChildren().forEach(fxnode -> fxnode.setVisible(radioAllEdge.isSelected()));
+
+            //since no nodes are selected anymore, switch to no edge
+            // note that if all edges (or none) are visible, this wont change anything
+            if (radioSelectedEdge.isSelected()) {
+              radioNoEdge.fire();
+            }
 
             // clear location search box
             locationSearch.clearSelection();
@@ -505,8 +518,10 @@ public class MapEditorController extends AbsController {
         event -> {
           // go to adding state no matter the previous state
           state = EDITOR_STATE.ADDING_NODE;
-          // disable deleting when adding
+          // disable other buttons while user adds node
           delNode.setDisable(true);
+          addEdge.setDisable(true);
+          delEdge.setDisable(true);
         });
 
     delNode.setOnMouseClicked(
@@ -540,6 +555,9 @@ public class MapEditorController extends AbsController {
               state = EDITOR_STATE.ADDING_EDGE;
               delEdge.setDisable(true);
             }
+
+            // make sure the added edges are made visible
+            if (!radioAllEdge.isSelected()) radioSelectedEdge.fire();
           }
         });
 
@@ -548,6 +566,18 @@ public class MapEditorController extends AbsController {
           if (state == EDITOR_STATE.EDITING_EDGE) {
             removeSelectedEdges();
             state = EDITOR_STATE.IDLE;
+
+          } else if (state == EDITOR_STATE.EDITING_NODE) {
+            // remove all edges connected to any of the selected nodes
+            edges.forEach(
+                edge -> {
+                  if (edge.containsOneOf(selectedNodes)) {
+                    selectedEdges.add(edge);
+                  }
+                });
+            removeSelectedEdges();
+
+            // stay in node editing state
           }
         });
 
@@ -564,7 +594,7 @@ public class MapEditorController extends AbsController {
 
     radioSelectedEdge.setOnAction(
         event -> {
-          if (radioSelectedEdge.isSelected()) { // && state == EDITOR_STATE.EDITING_NODE) {
+          if (radioSelectedEdge.isSelected()) {
 
             // show edges that connect to at least one of the selected nodes
             edgeGroup
@@ -663,6 +693,12 @@ public class MapEditorController extends AbsController {
                 gesturePane.setGestureEnabled(true);
                 state = EDITOR_STATE.IDLE;
 
+              } else if (event.getCode() == KeyCode.ESCAPE) {
+                state = EDITOR_STATE.IDLE;
+                selectedNodes.clear();
+                selectedEdges.clear();
+                locationSearch.clearSelection();
+
               } else if (event.getCode() == KeyCode.CONTROL) {
                 controlPressed = true;
 
@@ -672,7 +708,7 @@ public class MapEditorController extends AbsController {
                 moveSelectedNodes(2, MOVE_DIRECTION.UP);
               } else if (event.getCode() == KeyCode.D) {
                 moveSelectedNodes(2, MOVE_DIRECTION.RIGHT);
-              } else if (event.getCode() == KeyCode.S) {
+              } else if (event.getCode() == KeyCode.S && !controlPressed) {
                 moveSelectedNodes(2, MOVE_DIRECTION.DOWN);
               }
             });
@@ -934,8 +970,7 @@ public class MapEditorController extends AbsController {
 
   private NodeCircle drawNode(Node node) {
 
-    Point2D p = node.getPoint();
-    NodeCircle nodeCircle = new NodeCircle(node.getNodeID(), p.getX(), p.getY(), 6);
+    NodeCircle nodeCircle = new NodeCircle(node, 6);
     // set default visual characteristics
     nodeCircle.reset();
 
@@ -972,13 +1007,8 @@ public class MapEditorController extends AbsController {
             // TODO drag all selected nodes the same amount - later
             gesturePane.setGestureEnabled(false);
 
-            // update this node's point
+            // update this node's point which updates both its nodecircle and the connected edges
             node.setPoint(new Point2D(event.getX(), event.getY()));
-
-            // nodeCircle.setCenterX(event.getX());
-            // nodeCircle.setCenterY(event.getY());
-
-            // TODO redraw edges connected to this node during drag - in testing
           }
         });
 
@@ -996,36 +1026,27 @@ public class MapEditorController extends AbsController {
                     Math.pow((nodeCircle.getCenterX() - nodeCircle.getPrevX()), 2)
                         + Math.pow((nodeCircle.getCenterY() - nodeCircle.getPrevY()), 2));
 
+            System.out.println("dragged " + dist);
+
             if (dist > 25) {
 
               nodeCircle.setPrevX(event.getX());
               nodeCircle.setPrevY((event.getY()));
 
               // update node and listeners will handle updating the ui
-              node.setPoint(new Point2D(event.getX(), event.getY()));
+              // node.setPoint(new Point2D(event.getX(), event.getY()));
               node.setBuilding(
                   buildingChecker.getBuilding(node.getPoint(), allFloors.get(currentFloor)));
 
               fillNodeFields(node);
-
-              // update edgelines containing this node
-              //              edgeGroup
-              //                  .getChildren()
-              //                  .forEach(
-              //                      fxnode -> {
-              //                        EdgeLine edgeLine = (EdgeLine) fxnode;
-              //                        if (edgeLine.containsNode(node.getNodeID())) {
-              //                          edgeLine.updateEndpoint(node);
-              //                        }
-              //                      });
 
               // update node in database with updated x & y
               editQueue.add(new DataEdit<>(node, DataEditType.UPDATE, TableEntryType.NODE), false);
               // dbConnection.updateEntry(node);
 
             } else {
-              nodeCircle.setCenterX(nodeCircle.getPrevX());
-              nodeCircle.setCenterY(nodeCircle.getPrevY());
+              // bring point back to the previous position
+              node.setPoint(new Point2D(nodeCircle.getPrevX(), nodeCircle.getPrevY()));
             }
           }
         });

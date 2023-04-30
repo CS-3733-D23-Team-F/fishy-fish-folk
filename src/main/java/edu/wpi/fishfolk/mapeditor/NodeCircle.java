@@ -28,9 +28,7 @@ public class NodeCircle extends Circle {
 
   public void setCenter(Point2D center) {
     setCenterX(center.getX());
-    prevX = center.getX();
     setCenterY(center.getY());
-    prevY = center.getY();
   }
 
   public void reset() {
