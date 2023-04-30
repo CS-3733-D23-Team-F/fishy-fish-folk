@@ -440,7 +440,7 @@ public class MapEditorController extends AbsController {
     // TODO WIP: instead of storing list of undone edits, just move pointer back in edit queue
     undo.setOnMouseClicked(
         event -> {
-          if (editQueue.isEmpty()) {
+          if (!editQueue.canUndo()) {
             System.out.println("no edits to undo");
 
           } else {
@@ -492,6 +492,12 @@ public class MapEditorController extends AbsController {
                 break;
 
               case EDGE:
+                switch (lastEdit.getType()) {
+                  case INSERT:
+                    // undo edge insertion by removing it
+
+                    // save
+                }
 
               case LOCATION:
 
@@ -1338,9 +1344,13 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
       return null;
     }
 
-    undoPointer--;
+    // back to first element
+    if (undoPointer == 0) {
+      return dataEditQueue.get(0);
+    }
 
-    return dataEditQueue.get(undoPointer);
+    // get the index at the decremented pointer
+    return dataEditQueue.get(--undoPointer);
   }
 
   @Override
@@ -1354,6 +1364,12 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
   /** Clear the edits after the undo pointer. */
   public void clearUndoneEdits() {
     dataEditQueue.subList(undoPointer, dataEditQueue.size()).clear();
+  }
+
+  public boolean canUndo() {
+    System.out.println("undo ptr " + undoPointer);
+    // can't undo beyond first element
+    return undoPointer > 0;
   }
 
   // leave the DataEditQueue next() and hasNext() as they are
