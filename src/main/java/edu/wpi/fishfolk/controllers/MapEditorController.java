@@ -14,6 +14,7 @@ import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.util.NodeType;
 import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -79,7 +80,7 @@ public class MapEditorController extends AbsController {
       FXCollections.observableArrayList(
           node -> new Observable[] {node.getNodeProperty(), node.getPointProperty()});
   // easy access to a specific node via its id
-  private HashMap<Integer, Integer> nodeID2idx = new HashMap<>();
+  private static HashMap<Integer, Integer> nodeID2idx = new HashMap<>();
   private HashMap<Integer, Node> removedNodes = new HashMap<>();
 
   private ObservableList<Edge> edges =
@@ -117,6 +118,14 @@ public class MapEditorController extends AbsController {
     super();
   }
 
+  public static boolean validateNodeID(int nodeID) {
+    return nodeID2idx.containsKey(nodeID);
+  }
+
+  public static boolean validateDate(LocalDate date) {
+    return !today.isAfter(date);
+  }
+
   @FXML
   private void initialize() {
 
@@ -134,6 +143,7 @@ public class MapEditorController extends AbsController {
     drawGroup.getChildren().addAll(nodeGroup, edgeGroup, locationGroup);
 
     locationTypeGroups = new HashMap<>();
+    dbConnection.getNodeTypes().forEach(nodeType -> locationTypeGroups.put(nodeType, new Group()));
 
     // set initial zoom and center
     gesturePane.centreOn(new Point2D(1700, 1100));
@@ -182,7 +192,7 @@ public class MapEditorController extends AbsController {
               Location location = locations.get(longname2idx.get(move.getLongName()));
 
               // link the location to the node and store the date too
-              node.addMove(location, today);
+              node.addMove(location, move.getDate());
 
               // link the node the location
               location.setNode(node);
@@ -566,7 +576,7 @@ public class MapEditorController extends AbsController {
           editQueue.clear();
           nodesOnFloor.clear();
 
-          locationTypeGroups.clear();
+          locationTypeGroups.forEach((nodeType, group) -> group.getChildren().clear());
           visibleNodeTypes.clear();
 
           initialize();
@@ -784,9 +794,9 @@ public class MapEditorController extends AbsController {
           int nodeID = dbConnection.getNodeIDFromLocation(locationSearch.getValue(), today);
           if (nodeID > 0) {
             Node node = (Node) dbConnection.getEntry(nodeID, TableEntryType.NODE);
-            // switch floor is an expensive operation, only do it if requested node is on a
-            // different floor
+
             if (!node.getFloor().equals(allFloors.get(currentFloor))) {
+              // floor selector's on action automatically switches floor
               floorSelector.setValue(node.getFloor());
               // switchFloor(node.getFloor());
             }
@@ -1051,6 +1061,7 @@ public class MapEditorController extends AbsController {
               node.getLocations(today)
                   .forEach(
                       loc -> {
+                        System.out.println(loc);
                         // add location labels to the correct group (dependent on node type)
                         locationTypeGroups
                             .get(loc.getNodeType())
@@ -1129,9 +1140,7 @@ public class MapEditorController extends AbsController {
                     Math.pow((nodeCircle.getCenterX() - nodeCircle.getPrevX()), 2)
                         + Math.pow((nodeCircle.getCenterY() - nodeCircle.getPrevY()), 2));
 
-            System.out.println("dragged " + dist);
-
-            if (dist > 10) {
+           if (dist > 10) {
 
               Node oldNode = node.deepCopy();
               oldNode.setPoint(new Point2D(nodeCircle.getPrevX(), nodeCircle.getPrevY()));
@@ -1322,12 +1331,12 @@ public class MapEditorController extends AbsController {
   /** Display current locations in info pane on UI. */
   private void fillLocationFields(List<Location> locations) {
 
-    locationsVbox.getChildren().clear();
-    locationsVbox.setMaxHeight(300);
-
     locationScrollpane.setVisible(true);
     locationScrollpane.setDisable(false);
     locationScrollpane.setMaxHeight(300);
+
+    locationsVbox.getChildren().clear();
+    locationsVbox.setMaxHeight(300);
 
     try {
 
@@ -1340,6 +1349,28 @@ public class MapEditorController extends AbsController {
 
         MapEditorLocationController controller = fxmlLoader.getController();
         controller.setData(location);
+
+        controller.preview.setOnMouseClicked(
+            event -> {
+              Node node = nodes.get(nodeID2idx.get(controller.nodeID));
+
+              if (!node.getFloor().equals(allFloors.get(currentFloor))) {
+                // floor selector's onAction switches floors
+                floorSelector.setValue(node.getFloor());
+              }
+              gesturePane.centreOn(node.getPoint());
+              gesturePane.zoomTo(1.25, node.getPoint());
+            });
+
+        controller.submit.setOnMouseClicked(
+            event -> {
+              System.out.println(
+                  controller.longnameText.getText()
+                      + " -> "
+                      + controller.nodeID
+                      + " on "
+                      + controller.date);
+            });
 
         locationsVbox.getChildren().add(entry);
       }

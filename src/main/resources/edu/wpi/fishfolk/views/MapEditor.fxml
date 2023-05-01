@@ -313,7 +313,7 @@
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <CheckComboBox fx:id="showLocationType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="125.0" />
-                        <MFXButton fx:id="clearLocationType" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="45.0" style="-fx-background-color: #012d5a;" text="Clear" textFill="WHITE">
+                        <MFXButton fx:id="clearLocationType" alignment="CENTER" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="45.0" style="-fx-background-color: #012d5a;" text="Clear" textFill="WHITE">
                            <font>
                               <Font name="Open Sans Bold" size="11.0" />
                            </font>
@@ -509,9 +509,9 @@
                   </Line>
                </children>
             </VBox>
-            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" maxHeight="0.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefWidth="220.0" VBox.vgrow="ALWAYS">
+            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" maxHeight="0.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fx:id="locationsVbox" minHeight="0.0" minWidth="220.0" />
+                  <VBox fx:id="locationsVbox" minHeight="0.0" minWidth="200.0" />
                </content>
                <VBox.margin>
                   <Insets />
@@ -561,7 +561,7 @@
                   <HBox alignment="CENTER_LEFT">
                      <children>
                         <MFXDatePicker fx:id="newLocationDate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
-                        <MFXButton fx:id="newLocationSubmit" alignment="CENTER_RIGHT" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: #F0BF4C;" text="Add to node" textFill="#012d5a">
+                        <MFXButton fx:id="newLocationSubmit" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: #F0BF4C;" text="Add to node" textFill="#012d5a">
                            <font>
                               <Font name="Open Sans Bold" size="12.0" />
                            </font>

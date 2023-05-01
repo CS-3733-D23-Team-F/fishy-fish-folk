@@ -660,7 +660,7 @@ public class FoodRequestDAO
           };
 
       Thread th = new Thread(task);
-      //thread should terminate after completing the task
+      // thread should terminate after completing the task
       th.setDaemon(true);
       th.start();
 

@@ -125,4 +125,8 @@ class LocationDate {
     this.location = location;
     this.date = date;
   }
+
+  public String toString() {
+    return location.getLongName() + " moving on " + date;
+  }
 }
