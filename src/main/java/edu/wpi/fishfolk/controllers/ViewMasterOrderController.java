@@ -82,27 +82,25 @@ public class ViewMasterOrderController extends AbsController {
       supplyRemoveButton,
       supplyAssignButton,
       supplyFilterOrdersButton,
-          supplyImportCSVButton,
-          supplyExportCSVButton;
+      supplyImportCSVButton,
+      supplyExportCSVButton;
   @FXML
   MFXButton furnitureFillButton,
       furnitureCancelButton,
       furnitureRemoveButton,
       furnitureAssignButton,
       furnitureFilterOrdersButton,
-          furnitureImportCSVButton,
-          furnitureExportCSVButton;
+      furnitureImportCSVButton,
+      furnitureExportCSVButton;
   @FXML
   MFXButton flowerFillButton,
       flowerCancelButton,
       flowerRemoveButton,
       flowerAssignButton,
       flowerFilterOrdersButton,
-          flowerImportCSVButton,
-          flowerExportCSVButton;
-  @FXML MFXButton conferenceRemoveButton,
-          conferenceImportCSVButton,
-          conferenceExportCSVButton;
+      flowerImportCSVButton,
+      flowerExportCSVButton;
+  @FXML MFXButton conferenceRemoveButton, conferenceImportCSVButton, conferenceExportCSVButton;
 
   @FXML MFXFilterComboBox<String> foodAssignSelector;
 
@@ -228,20 +226,28 @@ public class ViewMasterOrderController extends AbsController {
     supplyAssignButton.setOnMouseClicked(event -> supplyAssign());
     supplyRemoveButton.setOnMouseClicked(event -> supplyRemove());
     supplyFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
+    supplyImportCSVButton.setOnMouseClicked(event -> supplyImportCSV());
+    supplyExportCSVButton.setOnMouseClicked(event -> supplyExportCSV());
 
     furnitureFillButton.setOnMouseClicked(event -> furnitureSetStatus(FormStatus.filled));
     furnitureCancelButton.setOnMouseClicked(event -> furnitureSetStatus(FormStatus.cancelled));
     furnitureAssignButton.setOnMouseClicked(event -> furnitureAssign());
     furnitureRemoveButton.setOnMouseClicked(event -> furnitureRemove());
     furnitureFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
+    furnitureImportCSVButton.setOnMouseClicked(event -> furnitureImportCSV());
+    furnitureExportCSVButton.setOnMouseClicked(event -> furnitureExportCSV());
 
     flowerFillButton.setOnMouseClicked(event -> flowerSetStatus(FormStatus.filled));
     flowerCancelButton.setOnMouseClicked(event -> flowerSetStatus(FormStatus.cancelled));
     flowerAssignButton.setOnMouseClicked(event -> flowerAssign());
     flowerRemoveButton.setOnMouseClicked(event -> flowerRemove());
     flowerFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
+    flowerImportCSVButton.setOnMouseClicked(event -> flowerImportCSV());
+    flowerExportCSVButton.setOnMouseClicked(event -> flowerExportCSV());
 
     conferenceRemoveButton.setOnMouseClicked(event -> conferenceRemove());
+    conferenceImportCSVButton.setOnMouseClicked(event -> conferenceImportCSV());
+    conferenceExportCSVButton.setOnMouseClicked(event -> conferenceExportCSV());
 
     ArrayList<UserAccount> users =
         (ArrayList<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
@@ -583,29 +589,49 @@ public class ViewMasterOrderController extends AbsController {
     String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
     fileChooser.setTitle("Select the Flower Request Subtable CSV file");
     String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST);
+    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FLOWER_REQUEST);
   }
 
   private void furnitureImportCSV() {
-    fileChooser.setTitle("Select the Food Request Main Table CSV file");
+    fileChooser.setTitle("Select the Furniture Request Main Table CSV file");
     String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-    fileChooser.setTitle("Select the Food Request Subtable CSV file");
-    String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST);
+    dbConnection.importCSV(mainTablePath, false, TableEntryType.FURNITURE_REQUEST);
   }
 
   private void conferenceImportCSV() {
-    fileChooser.setTitle("Select the Food Request Main Table CSV file");
+    fileChooser.setTitle("Select the Conference Request Main Table CSV file");
     String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-    fileChooser.setTitle("Select the Food Request Subtable CSV file");
-    String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST);
+    dbConnection.importCSV(mainTablePath, false, TableEntryType.CONFERENCE_REQUEST);
   }
 
   private void foodExportCSV() {
     dirChooser.setTitle("Select export directory");
     String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
     dbConnection.exportCSV(exportPath, TableEntryType.FOOD_REQUEST);
+  }
+
+  private void supplyExportCSV() {
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    dbConnection.exportCSV(exportPath, TableEntryType.SUPPLY_REQUEST);
+  }
+
+  private void flowerExportCSV() {
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    dbConnection.exportCSV(exportPath, TableEntryType.FLOWER_REQUEST);
+  }
+
+  private void furnitureExportCSV() {
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    dbConnection.exportCSV(exportPath, TableEntryType.FURNITURE_REQUEST);
+  }
+
+  private void conferenceExportCSV() {
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    dbConnection.exportCSV(exportPath, TableEntryType.CONFERENCE_REQUEST);
   }
 
   private void filterOrders() {
