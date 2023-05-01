@@ -183,9 +183,9 @@
 }
 
 .rectToggle:selected {
-    -fx-background-color: #fcd474;
-    -fx-border-color: #fcd474;
-    -fx-background-radius: 0;
+    -fx-background-color: #fcd474 !important;
+    -fx-border-color: #fcd474 !important;
+    -fx-background-radius: 0 !important;
 }
 
 .rectToggle{
@@ -197,4 +197,3 @@
     -fx-background-color: #f9e4b3;
     -fx-background-radius: 0;
 }
-
