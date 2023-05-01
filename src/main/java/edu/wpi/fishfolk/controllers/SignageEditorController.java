@@ -311,8 +311,10 @@ public class SignageEditorController extends AbsController {
   private void deletePreset() {
     for (int i = 0; i < allPresets.size(); i++) {
       if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
-        dbConnection.removeEntry(allPresets.get(i), TableEntryType.SIGNAGE_PRESET);
+        System.out.println("deleting " + allPresets.get(i).getName());
+        dbConnection.removeEntry(allPresets.get(i).getName(), TableEntryType.SIGNAGE_PRESET);
         presetSelect.getItems().remove(i);
+        return;
       }
     }
   }
