@@ -192,6 +192,7 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[FurnitureRequestDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
@@ -209,6 +210,10 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest> {
 
   @Override
   public boolean insertEntry(FurnitureRequest entry) {
+
+    // Check if the entry already exists. Unlikely conflicts.
+    if (tableMap.containsKey(entry.getFurnitureRequestID())) return false;
+
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 

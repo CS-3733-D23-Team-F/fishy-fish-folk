@@ -91,7 +91,6 @@
 
 .service:hover{
     -fx-background-color: #F9E4B3;
-
 }
 
 .sideNav{
@@ -120,10 +119,6 @@
     -fx-font-weight: bold;
 }
 
-.rectToggle:selected {
-    -fx-background-color: #F0BF4C;
-    -fx-border-color: #F0BF4C;
-}
 .rectToggle .mfx-ripple-generator{
     -mfx-ripple-color: transparent;
 }
@@ -218,4 +213,44 @@
 }
 
 
+.newScrolls{
+    -fx-background-radius: 5;
+    -fx-border-color: #012d5a;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
+    -thumb-color: #012d5a;
+    -fx-background-color: #ffffff;
+    -thumb-hover-color: #fcd474;
+    -track-color: #ffffff;
+    -fx-hbar-policy: "NEVER";
+    -fx-vbar-policy: "ALWAYS";
+}
+
+.newScrolls:hover{
+    -thumb-hover-color: #fcd474;
+    -thumb-color: #fcd474;
+}
+
+.evolve{
+    -fx-background-color: linear-gradient(to bottom, rgb(2,0,36), rgb(55,121,107), rgb(255,255,255));
+}
+
+.userNav:hover{
+    -fx-background-color: #EEEEEE;
+}
+
+
+
+.rectToggle:selected {
+    -fx-background-color: #fcd474;
+    -fx-border-color: #fcd474;
+}
+
+.rectToggle{
+    -fx-background-color: #ffffff;
+}
+
+.rectToggle:hover{
+    -fx-background-color: #f9e4b3;
+}
 

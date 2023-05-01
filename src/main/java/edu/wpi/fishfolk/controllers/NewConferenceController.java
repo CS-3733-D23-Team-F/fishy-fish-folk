@@ -4,10 +4,7 @@ import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.ui.Recurring;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
-import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.controls.*;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -19,16 +16,16 @@ import org.controlsfx.control.PopOver;
 
 public class NewConferenceController extends AbsController {
   @FXML MFXButton confClearButton, confCancelButton, confSubmitButton;
-  @FXML MFXFilterComboBox startTimeDrop, endTimeDrop, startAMPMDrop, endAMPMDrop, recurringDrop;
+  @FXML MFXFilterComboBox startTimeDrop, endTimeDrop, recurringDrop;
   @FXML MFXTextField numAttnBox, nameBox, notesBox;
   @FXML MFXRectangleToggleNode rec1, rec2, rec3, rec4, rec5, rec6, rec7;
   @FXML HBox confirmBlur;
   @FXML HBox confirmBox;
   @FXML AnchorPane confirmPane;
   @FXML MFXButton okButton;
+  @FXML MFXDatePicker datePicker;
   Font oSans26;
 
-  ArrayList<String> AMPM = new ArrayList<>();
   ArrayList<String> times = new ArrayList<>();
   ArrayList<Recurring> recurring = new ArrayList<>();
 
@@ -67,38 +64,35 @@ public class NewConferenceController extends AbsController {
     rec6.setSelected(false);
     rec7.setSelected(false);
     startTimeDrop.setValue(null);
-    startAMPMDrop.setValue(null);
-    endAMPMDrop.setValue(null);
     endTimeDrop.setValue(null);
     recurringDrop.setValue(null);
     numAttnBox.clear();
     notesBox.clear();
+    datePicker.setValue(null);
   }
 
   /** Initializing the dropdowns so they have all the required options. */
   public void addDropdownOptions() {
 
-    // Dropdown options getting added to an arraylist called AMPM
-    AMPM.add("AM");
-    AMPM.add("PM");
-
-    // Adding the arraylist of AM or PM to the dropdowns so they can be selected
-    startAMPMDrop.getItems().addAll(AMPM);
-    endAMPMDrop.getItems().addAll(AMPM);
-
     // Dropdown options getting added to an arraylist called times
-    times.add("1:00");
-    times.add("2:00");
-    times.add("3:00");
-    times.add("4:00");
-    times.add("5:00");
-    times.add("6:00");
-    times.add("7:00");
-    times.add("8:00");
-    times.add("9:00");
-    times.add("10:00");
-    times.add("11:00");
-    times.add("12:00");
+    times.add("6:00 AM");
+    times.add("7:00 AM");
+    times.add("8:00 AM");
+    times.add("9:00 AM");
+    times.add("10:00 AM");
+    times.add("11:00 AM");
+    times.add("12:00 PM");
+    times.add("1:00 PM");
+    times.add("2:00 PM");
+    times.add("3:00 PM");
+    times.add("4:00 PM");
+    times.add("5:00 PM");
+    times.add("6:00 PM");
+    times.add("7:00 PM");
+    times.add("8:00 PM");
+    times.add("9:00 PM");
+    times.add("10:00 PM");
+    times.add("11:00 PM");
 
     // Adding the arraylist of times to the dropdowns so they can be selected
     startTimeDrop.getItems().addAll(times);
@@ -125,6 +119,96 @@ public class NewConferenceController extends AbsController {
     }
   }
 
+  /**
+   * Finds which conference room was selected by the user.
+   *
+   * @return returns the name of the conference room
+   */
+  public String whichConf() {
+    if (rec1.isSelected()) {
+      return "BTM Conference Center";
+    }
+    if (rec2.isSelected()) {
+      return "Duncan Reid Conference Room";
+    }
+    if (rec3.isSelected()) {
+      return "Anesthesia Conf Floor L1";
+    }
+    if (rec4.isSelected()) {
+      return "Medical Records Conference Room Floor L1";
+    }
+    if (rec5.isSelected()) {
+      return "Abrams Conference Room";
+    }
+    if (rec6.isSelected()) {
+      return "Carrie M. Hall Conference Center Floor 2";
+    }
+    if (rec7.isSelected()) {
+      return "Shapiro Board Room MapNode 20 Floor 1";
+    }
+    return null;
+  }
+
+  /**
+   * Checks to see if the end time comes after the start time
+   *
+   * @return true if it is, false if not
+   */
+  public boolean validEndTime() {
+    int start = -1;
+    for (int i = 0; i < times.size(); i++) {
+      if (startTimeDrop.getText().equals(times.get(i))) {
+        start = i;
+      }
+    }
+    if (start == -1) {
+      return false;
+    }
+    for (int i = start + 1; i < times.size(); i++) {
+      if (endTimeDrop.getText().equals(times.get(i))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * checks to see if the given timeframe is interrupted by another booked conference
+   *
+   * @return returns true if there is a time interference
+   */
+  /*
+  public boolean timeInterference(String start, String end){
+    if (){
+
+    }
+  }*/
+
+  /**
+   * Checks to see if the meeting you want to schedule has any conflicts with already existing
+   * meetings.
+   *
+   * @return returns true if there's no conflicts, false if there is
+   */
+  /*
+  public boolean isItFree() {
+    ArrayList<ConferenceRequest> allrequests =
+        (ArrayList<ConferenceRequest>)
+            dbConnection.getAllEntries(TableEntryType.CONFERENCE_REQUEST);
+    for (int i = 0; i < allrequests.size(); i++) {
+      if (recurringDrop.getText().equals(Recurring.NEVER)) {
+        if (whichConf().equals(allrequests.get(i).getRoomName())) {
+          if (datePicker.getValue().atStartOfDay().equals(allrequests.get(i).getDateReserved())) {
+            if(timeInterference(allrequests.get(i).getStartTime(), allrequests.get(i).getEndTime())){
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  */
   /** Attempts to submit the form, but if it Doesn't pass the tests it sends errors to the users. */
   public void attemptSubmit() {
     if (rec1.isSelected()
@@ -134,34 +218,61 @@ public class NewConferenceController extends AbsController {
         || rec5.isSelected()
         || rec6.isSelected()
         || rec7.isSelected()) {
-      if (!(startTimeDrop.getText().isEmpty())
-          && !(startAMPMDrop.getText().isEmpty())
-          && !(endTimeDrop.getText().isEmpty())
-          && !(endAMPMDrop.getText().isEmpty())) {
-        if (!(numAttnBox.getText().isEmpty())) {
-          int numba = 75;
-          try {
-            numba = Integer.parseInt(numAttnBox.getText());
-          } catch (Exception e) {
-            submissionError("Nice Try Bernhardt.", numAttnBox);
-          }
-          if (numba < 21 && numba > 1 && numba != 75) {
-            if (!(recurringDrop.getText().isEmpty())) {
-              submit();
+      if (!(startTimeDrop.getText().isEmpty())) {
+        if (!(endTimeDrop.getText().isEmpty())) {
+          if (validEndTime()) {
+            if (!(datePicker.getValue() == null)) {
+              if (datePicker
+                  .getValue()
+                  .atStartOfDay()
+                  .isAfter(datePicker.getCurrentDate().atStartOfDay())) {
+                if (!(numAttnBox.getText().isEmpty())) {
+                  int numba = 75;
+                  try {
+                    numba = Integer.parseInt(numAttnBox.getText());
+                  } catch (Exception e) {
+                    submissionError("Nice Try Bernhardt.", numAttnBox);
+                  }
+                  if (numba < 21 && numba > 1 && numba != 75) {
+                    if (!(recurringDrop.getText().isEmpty())) {
+                      // if (isItFree()) {
+                      submit();
+                      /*} else {
+                        submissionError(
+                            "There is already a meeting scheduled for this time.",
+                            confSubmitButton);
+                      }*/
+                    } else {
+                      submissionError(
+                          "You must choose your setting for recurring.",
+                          confSubmitButton); // recurringDrop);
+                    }
+                  } else {
+                    submissionError(
+                        "Invalid Input for number of attendees.", confSubmitButton); // numAttnBox);
+                  }
+                } else {
+                  submissionError(
+                      "You must put in the number of attendees.", confSubmitButton); // numAttnBox);
+                }
+              } else {
+                submissionError(
+                    "You must choose a date in the future.", confSubmitButton); // datePicker);
+              }
             } else {
-              submissionError("You must choose your setting for recurring.", recurringDrop);
+              submissionError("You must include a date", confSubmitButton); // datePicker);
             }
           } else {
-            submissionError("Invalid Input for number of attendees.", numAttnBox);
+            submissionError("That's not how time works.", confSubmitButton); // endTimeDrop);
           }
         } else {
-          submissionError("You must put in the number of attendees.", numAttnBox);
+          submissionError("You must put in a time.", confSubmitButton); // endTimeDrop);
         }
       } else {
-        submissionError("You must put in a time.", startTimeDrop);
+        submissionError("You must put in a time.", confSubmitButton); // startTimeDrop);
       }
     } else {
-      submissionError("You must select a room.", rec1);
+      submissionError("You must select a room.", confSubmitButton); // rec1);
     }
   }
 
@@ -206,37 +317,16 @@ public class NewConferenceController extends AbsController {
 
   /** imputs all values from the reservation into the database table. */
   private void submit() {
-    String dummyVariable = "";
-    if (rec1.isSelected()) {
-      dummyVariable = "BTM Conference Center";
-    }
-    if (rec2.isSelected()) {
-      dummyVariable = "Duncan Reid Conference Room";
-    }
-    if (rec3.isSelected()) {
-      dummyVariable = "Anesthesia Conf Floor L1";
-    }
-    if (rec4.isSelected()) {
-      dummyVariable = "Medical Records Conference Room Floor L1";
-    }
-    if (rec5.isSelected()) {
-      dummyVariable = "Abrams Conference Room";
-    }
-    if (rec6.isSelected()) {
-      dummyVariable = "Carrie M. Hall Conference Center Floor 2";
-    }
-    if (rec7.isSelected()) {
-      dummyVariable = "Shapiro Board Room MapNode 20 Floor 1";
-    }
     ConferenceRequest res =
         new ConferenceRequest(
             notesBox.getText(),
             SharedResources.getCurrentUser().getUsername(),
-            startTimeDrop.getText() + " " + startAMPMDrop.getText(),
-            endTimeDrop.getText() + " " + endAMPMDrop.getText(),
+            startTimeDrop.getText(),
+            endTimeDrop.getText(),
+            datePicker.getValue().atStartOfDay(),
             Recurring.valueOf(recurringDrop.getText()),
             Integer.parseInt(numAttnBox.getText()),
-            dummyVariable);
+            whichConf());
     dbConnection.insertEntry(res);
     confirmBlur.setDisable(false);
     confirmBlur.setVisible(true);

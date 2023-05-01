@@ -172,6 +172,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[UserAccountDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
@@ -189,6 +190,9 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
   @Override
   public boolean insertEntry(UserAccount entry) {
+
+    // Check if the entry already exists.
+    if (tableMap.containsKey(entry.getUsername())) return false;
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);

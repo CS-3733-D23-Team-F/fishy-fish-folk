@@ -34,7 +34,7 @@
          <content>
             <Group fx:id="drawGroup">
                <children>
-                  <ImageView fx:id="mapImg" pickOnBounds="true" AnchorPane.leftAnchor="-459.0" AnchorPane.topAnchor="-145.0">
+                  <ImageView fx:id="mapImg" layoutX="-8.0" layoutY="-14.0" pickOnBounds="true" AnchorPane.leftAnchor="-8.0" AnchorPane.topAnchor="-14.0">
                      <image>
                         <Image url="@../map/clean/00_thelowerlevel1.png" />
                      </image>
@@ -275,14 +275,20 @@
                   <Font name="Open Sans Bold" size="24.0" />
                </font>
             </MFXButton>
-            <ImageView fx:id="settingButton" accessibleRole="BUTTON" fitHeight="55.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/Gear.png" />
-               </image>
+
+            <MFXButton fx:id="settingButton" ellipsisString="" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" style="-fx-background-color: #012D5A;">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Gear.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-            </ImageView>
+
+            </MFXButton>
          </children>
          <StackPane.margin>
             <Insets right="25.0" top="40.0" />
@@ -297,17 +303,68 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
+                        <MFXButton fx:id="upFloor" alignment="CENTER" cacheShape="false" centerShape="false" ellipsisString="" focusTraversable="false" graphicTextGap="0.0" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="75.0" prefHeight="10.0" prefWidth="10.0" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" scaleShape="false" style="-fx-background-color: #012D5A; -fx-background-radius: 8;" text=" ">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="15.0" fitWidth="15.0" scaleX="2.0" scaleY="2.0" scaleZ="0.0">
+                                 <image>
+                                    <Image url="@../images/Signage/arrowsquare.PNG" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </MFXButton>
                         <Text fill="#454343" strokeType="OUTSIDE" strokeWidth="0.0" text="Viewing: ">
                            <font>
                               <Font name="Open Sans Regular" size="15.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets left="8.0" />
+                           </VBox.margin>
                         </Text>
                         <Text fx:id="floorDisplay" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="floorDisplay" text="Floor 1">
                            <font>
                               <Font name="Open Sans Bold" size="15.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets left="7.0" />
+                           </VBox.margin>
                         </Text>
+                        <MFXButton fx:id="downFloor" alignment="CENTER" cacheShape="false" centerShape="false" ellipsisString="" focusTraversable="false" graphicTextGap="0.0" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="75.0" prefHeight="10.0" prefWidth="10.0" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" scaleShape="false" style="-fx-background-color: #012D5A; -fx-background-radius: 8;" text=" ">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="15.0" fitWidth="15.0" rotate="180.0" scaleX="2.0" scaleY="2.0" scaleZ="0.0">
+                                 <image>
+                                    <Image url="@../images/Signage/arrowsquare.PNG" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </MFXButton>
                      </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
@@ -341,7 +398,7 @@
                         </MFXFilterComboBox>
                      </children>
                      <HBox.margin>
-                        <Insets left="15.0" />
+                        <Insets left="25.0" />
                      </HBox.margin>
                   </VBox>
                   <MFXButton fx:id="clearBtn" buttonType="RAISED" contentDisplay="CENTER" depthLevel="LEVEL3" graphicTextGap="0.0" minHeight="37.0" minWidth="75.0" style="-fx-background-color: #012D5A; -fx-border-radius: 10;" text="Clear" textAlignment="CENTER" textFill="WHITE" HBox.hgrow="ALWAYS">

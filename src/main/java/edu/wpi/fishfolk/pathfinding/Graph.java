@@ -55,7 +55,11 @@ public class Graph {
                 elt -> {
                   Node node = (Node) elt;
 
-                  dbConnection.getLocations(node.getNodeID(), date).forEach(node::addLocation);
+                  // add moves to node objects to use location data later
+                  // for checking node type and elevators
+                  dbConnection
+                      .getLocations(node.getNodeID(), date)
+                      .forEach(loc -> node.addMove(loc, date));
 
                   id2idx.put(node.getNodeID(), nodeCount[0]);
                   nodeCount[0]++;

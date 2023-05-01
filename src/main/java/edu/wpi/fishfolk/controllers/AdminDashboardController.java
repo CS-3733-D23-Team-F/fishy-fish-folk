@@ -25,7 +25,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+
 import javafx.scene.control.*;
+
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -44,7 +50,6 @@ public class AdminDashboardController {
   @FXML TableView<SupplyOrderObservable> supplyTable;
   @FXML MFXTextField addAlert;
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
-  @FXML ScrollPane scroll;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodassignee,
@@ -421,7 +426,7 @@ public class AdminDashboardController {
 
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
-    flowerTable.setItems(getFlowerOrderRows());
+     flowerTable.setItems(getFlowerOrderRows());
   }
 
   public ObservableList<FoodOrderObservable> getFoodOrderRows() {

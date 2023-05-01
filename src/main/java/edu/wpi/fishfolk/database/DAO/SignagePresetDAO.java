@@ -170,6 +170,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[SignagePresetDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
@@ -187,6 +188,9 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
   @Override
   public boolean insertEntry(SignagePreset entry) {
+
+    // Check if the entry already exists.
+    if (tableMap.containsKey(entry.getName())) return false;
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);

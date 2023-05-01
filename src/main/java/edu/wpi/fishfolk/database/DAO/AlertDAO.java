@@ -183,6 +183,7 @@ public class AlertDAO implements IDAO<Alert> {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[AlertDAO.verifyLocalTable]: Notification received!");
+        alerts.clear();
         populateLocalTable();
       }
 
@@ -201,6 +202,7 @@ public class AlertDAO implements IDAO<Alert> {
   @Override
   public boolean insertEntry(Alert entry) {
 
+    // Check if the entry already exists.
     if (alerts.containsKey(entry.getTimestamp())) return false;
 
     // Mark entry Alert status as NEW

@@ -198,6 +198,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[FoodRequestDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
@@ -215,6 +216,9 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
 
   @Override
   public boolean insertEntry(FoodRequest entry) {
+
+    // Check if the entry already exists. Unlikely conflicts.
+    if (tableMap.containsKey(entry.getFoodRequestID())) return false;
 
     // Mark entry FoodRequest status as NEW
     entry.setStatus(EntryStatus.NEW);
