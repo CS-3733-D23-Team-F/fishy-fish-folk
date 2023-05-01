@@ -40,10 +40,13 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
                            <children>
-                              <ImageView fx:id="movesRefresh" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="movesRefresh" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/Gear.png" />
+                                    <Image url="@../images/refresh.png" />
                                  </image>
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
                               </ImageView>
                            </children>
                         </HBox>
@@ -80,10 +83,13 @@
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
                                  <children>
-                                    <ImageView fx:id="serviceRefresh" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="serviceRefresh" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../images/Gear.png" />
+                                          <Image url="@../images/refresh.png" />
                                        </image>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
                                     </ImageView>
                                  </children>
                               </HBox>
@@ -208,10 +214,13 @@
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
                                        <children>
-                                          <ImageView fx:id="alertsRefresh" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="alertsRefresh" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../images/Gear.png" />
+                                                <Image url="@../images/refresh.png" />
                                              </image>
+                                             <HBox.margin>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </HBox.margin>
                                           </ImageView>
                                        </children>
                                     </HBox>

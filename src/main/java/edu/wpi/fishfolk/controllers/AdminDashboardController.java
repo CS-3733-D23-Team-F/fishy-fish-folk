@@ -9,6 +9,7 @@ import edu.wpi.fishfolk.database.TableEntry.Alert;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -45,7 +46,7 @@ public class AdminDashboardController {
   @FXML TableView<SupplyOrderObservable> supplyTable;
   @FXML MFXTextField addAlert;
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
-  @FXML ScrollPane scroll;
+  @FXML MFXScrollPane scroll;
   @FXML ImageView alertsRefresh, serviceRefresh, movesRefresh;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
