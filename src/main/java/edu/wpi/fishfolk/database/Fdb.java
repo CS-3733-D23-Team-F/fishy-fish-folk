@@ -738,6 +738,7 @@ public class Fdb {
     return locationTable.getAllEntries().stream().filter(Location::isDestination).toList();
   }
 
+  @Deprecated
   public HashMap<NodeType, List<NodeText>> getLocationLabelsByType(String floor, LocalDate date) {
 
     HashMap<NodeType, List<NodeText>> map = new HashMap<>();
