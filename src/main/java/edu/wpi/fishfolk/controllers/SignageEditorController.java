@@ -9,7 +9,6 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -350,19 +349,6 @@ public class SignageEditorController extends AbsController {
         || datePicker.getValue() == null) {
       PopOver error = new PopOver();
       Text errorText = new Text("Insufficient fields entered");
-      errorText.setFont(new Font("Open Sans", 26));
-      error.setContentNode(errorText);
-      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
-      error.show(submitButton);
-      return;
-    }
-
-    if (currentPreset
-        .getImplementationDate()
-        .atStartOfDay()
-        .isBefore(LocalDateTime.now().minusDays(1))) {
-      PopOver error = new PopOver();
-      Text errorText = new Text("Cannot set implementation date before current date");
       errorText.setFont(new Font("Open Sans", 26));
       error.setContentNode(errorText);
       error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
