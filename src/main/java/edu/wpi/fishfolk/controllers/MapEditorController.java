@@ -28,6 +28,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import lombok.Getter;
+import lombok.Setter;
 import net.kurobako.gesturefx.GesturePane;
 import org.controlsfx.control.CheckComboBox;
 
@@ -40,7 +42,7 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
 
-  @FXML MFXButton moveEditorNav, save;
+  @FXML MFXButton moveEditorNav, save, undo;
   @FXML MFXButton importCSV, exportCSV;
   @FXML MFXButton addNode, delNode;
   @FXML MFXRadioButton radioAllEdge, radioSelectedEdge, radioNoEdge;
@@ -76,6 +78,7 @@ public class MapEditorController extends AbsController {
           node -> new Observable[] {node.getNodeProperty(), node.getPointProperty()});
   // easy access to a specific node via its id
   private HashMap<Integer, Integer> nodeID2idx = new HashMap<>();
+  private HashMap<Integer, Node> removedNodes = new HashMap<>();
 
   private ObservableList<Edge> edges =
       FXCollections.observableArrayList(edge -> new Observable[] {edge.getEdgeProperty()});
@@ -106,7 +109,7 @@ public class MapEditorController extends AbsController {
   private int currentFloor = 2;
   private boolean controlPressed = false;
 
-  private final DataEditQueue<Object> editQueue = new DataEditQueue<>();
+  private final MapEditQueue<Object> editQueue = new MapEditQueue<>();
 
   public MapEditorController() {
     super();
@@ -139,6 +142,7 @@ public class MapEditorController extends AbsController {
 
     // ensure the vbox holding the new location & date fields is managed only when visible
     newLocationVbox.managedProperty().bind(newLocationVbox.visibleProperty());
+    newLocationVbox.setDisable(true);
 
     // set up observable lists using data from the db
 
@@ -208,9 +212,12 @@ public class MapEditorController extends AbsController {
                     .forEach(
                         fxnode -> {
                           NodeCircle nodeCircle = (NodeCircle) fxnode;
+
                           if (updated.containsKey(nodeCircle.getNodeID())) {
+
                             // update center of node circle
                             nodeCircle.setCenter(updated.get(nodeCircle.getNodeID()).getPoint());
+                            fillNodeFields(updated.get(nodeCircle.getNodeID()));
                           }
                         });
 
@@ -244,7 +251,6 @@ public class MapEditorController extends AbsController {
                     .removeIf(node -> removed.contains(((NodeCircle) node).getNodeID()));
 
                 // add new nodecircles to the node draw group
-
                 change
                     .getAddedSubList()
                     .forEach(
@@ -335,18 +341,24 @@ public class MapEditorController extends AbsController {
               clearNodeFields();
               clearLocationFields();
 
+              newLocationVbox.setDisable(true);
+
             } else {
 
+              //
               if (selectedNodes.size() == 1) {
 
                 Node node = nodes.get(nodeID2idx.get(selectedNodes.get(0)));
                 fillNodeFields(node);
                 fillLocationFields(node.getLocations(today));
+                newLocationVbox.setDisable(false);
 
               } else {
 
                 clearNodeFields();
                 clearLocationFields();
+
+                newLocationVbox.setDisable(true);
               }
 
               // for any number > 0 of selected nodes
@@ -423,6 +435,81 @@ public class MapEditorController extends AbsController {
           dbConnection.processEditQueue(editQueue);
 
           editQueue.clear();
+        });
+
+    // TODO WIP: instead of storing list of undone edits, just move pointer back in edit queue
+    undo.setOnMouseClicked(
+        event -> {
+          if (!editQueue.canUndo()) {
+            System.out.println("no edits to undo");
+
+          } else {
+            DataEdit<Object> lastEdit = editQueue.undoEdit();
+
+            switch (lastEdit.getTable()) {
+              case NODE:
+                switch (lastEdit.getType()) {
+                  case INSERT:
+                    // undo node insertion by deleting the node
+                    Node insertedNode = (Node) lastEdit.getNewEntry();
+
+                    // delete the added node
+                    selectedNodes.clear();
+                    selectedNodes.add(insertedNode.getNodeID());
+                    // this function removes and handles the index shifting
+                    removeSelectedNodes(false);
+                    break;
+
+                  case REMOVE:
+                    // undo node deletion by inserting the node
+                    int removedNodeID = (int) lastEdit.getNewEntry();
+
+                    // move the node from the map of removed nodes to the list of nodes
+                    Node removedNode = removedNodes.remove(removedNodeID);
+                    // add to observable list and let listeners handle drawing
+                    nodes.add(removedNode);
+
+                    break;
+
+                  case UPDATE:
+                    // undo moving node by moving it to its previous point
+                    Node origNode = (Node) lastEdit.getOldEntry();
+                    Node movedNode = (Node) lastEdit.getNewEntry();
+                    // listeners will draw it in its original spot
+                    movedNode.setPoint(origNode.getPoint());
+
+                    break;
+                }
+                break;
+
+              case EDGE:
+                switch (lastEdit.getType()) {
+                  case INSERT:
+                    // undo edge insertion by removing it
+                    Edge insertedEdge = (Edge) lastEdit.getNewEntry();
+
+                    // delete the edge
+                    selectedEdges.clear();
+                    selectedEdges.add(insertedEdge);
+                    removeSelectedEdges(false);
+                    break;
+
+                  case REMOVE:
+                    // undo edge deletion by inserting it
+                    Edge removedEdge = (Edge) lastEdit.getNewEntry();
+                    edges.add(removedEdge);
+                    break;
+
+                  case UPDATE:
+                    // no update edits for edges
+
+                }
+
+              case LOCATION:
+
+              case MOVE:
+            }
+          }
         });
 
     importCSV.setOnMouseClicked(
@@ -527,7 +614,7 @@ public class MapEditorController extends AbsController {
     delNode.setOnMouseClicked(
         event -> {
           if (state == EDITOR_STATE.EDITING_NODE) {
-            removeSelectedNodes();
+            removeSelectedNodes(true);
             state = EDITOR_STATE.IDLE;
           }
         });
@@ -564,7 +651,7 @@ public class MapEditorController extends AbsController {
     delEdge.setOnMouseClicked(
         event -> {
           if (state == EDITOR_STATE.EDITING_EDGE) {
-            removeSelectedEdges();
+            removeSelectedEdges(true);
             state = EDITOR_STATE.IDLE;
 
           } else if (state == EDITOR_STATE.EDITING_NODE) {
@@ -575,7 +662,7 @@ public class MapEditorController extends AbsController {
                     selectedEdges.add(edge);
                   }
                 });
-            removeSelectedEdges();
+            removeSelectedEdges(true);
 
             // stay in node editing state
           }
@@ -686,8 +773,8 @@ public class MapEditorController extends AbsController {
               System.out.println("key pressed: " + event.getCode());
               if (event.getCode() == KeyCode.DELETE) {
 
-                removeSelectedNodes();
-                removeSelectedEdges();
+                removeSelectedNodes(true);
+                removeSelectedEdges(true);
 
                 // in case a node is deleted while dragging (gestures are disabled when dragging)
                 gesturePane.setGestureEnabled(true);
@@ -725,39 +812,24 @@ public class MapEditorController extends AbsController {
                   || event.getCode() == KeyCode.D
                   || event.getCode() == KeyCode.S) {
 
-                // for each drawn node, if its selected update its position
+                // find the previous positions and create the edit objects
                 nodeGroup
                     .getChildren()
                     .forEach(
                         fxnode -> {
                           NodeCircle nodeCircle = (NodeCircle) fxnode;
                           if (selectedNodes.contains(nodeCircle.getNodeID())) {
-                            Node newNode =
-                                (Node)
-                                    dbConnection.getEntry(
-                                        nodeCircle.getNodeID(), TableEntryType.NODE);
-                            newNode.setPoint(
-                                new Point2D(nodeCircle.getCenterX(), nodeCircle.getCenterY()));
-                            editQueue.add(
-                                new DataEdit<>(newNode, DataEditType.UPDATE, TableEntryType.NODE),
-                                false);
-                            // dbConnection.updateEntry(newNode);
-                          }
-                        });
+                            Node newNode = nodes.get(nodeID2idx.get(nodeCircle.getNodeID()));
 
-                // update edgelines containing the moved nodes
-                edgeGroup
-                    .getChildren()
-                    .forEach(
-                        fxnode -> {
-                          EdgeLine edgeLine = (EdgeLine) fxnode;
-                          selectedNodes.forEach(
-                              nodeID -> {
-                                if (edgeLine.containsNode(nodeID)) {
-                                  edgeLine.updateEndpoint(
-                                      (Node) dbConnection.getEntry(nodeID, TableEntryType.NODE));
-                                }
-                              });
+                            Node oldNode = newNode.deepCopy();
+                            oldNode.setX(nodeCircle.getPrevX());
+                            oldNode.setY(nodeCircle.getPrevY());
+
+                            editQueue.add(
+                                new DataEdit<>(
+                                    oldNode, newNode, DataEditType.UPDATE, TableEntryType.NODE),
+                                false);
+                          }
                         });
               }
             });
@@ -770,21 +842,19 @@ public class MapEditorController extends AbsController {
 
           double xbar = 0, ybar = 0;
 
-          List<Node> nodes = new LinkedList<>();
+          List<Node> nodesToAlign =
+              selectedNodes.stream().map(nodeID -> nodes.get(nodeID2idx.get(nodeID))).toList();
 
-          selectedNodes.forEach(
-              nodeID -> nodes.add((Node) dbConnection.getEntry(nodeID, TableEntryType.NODE)));
-
-          for (Node node : nodes) {
+          for (Node node : nodesToAlign) {
             xbar += node.getX();
             ybar += node.getY();
           }
 
-          xbar /= nodes.size();
-          ybar /= nodes.size();
+          xbar /= nodesToAlign.size();
+          ybar /= nodesToAlign.size();
 
           double numerator = 0, denominator = 0;
-          for (Node node : nodes) {
+          for (Node node : nodesToAlign) {
             numerator += (node.getX() - xbar) * (node.getY() - ybar);
             denominator += Math.pow(node.getX() - xbar, 2);
           }
@@ -792,8 +862,9 @@ public class MapEditorController extends AbsController {
           // if the line of best fit is essentially vertical, align each point to that line
           if (Math.abs(denominator) < 1) {
 
-            double x = (nodes.get(0).getX() + nodes.get(nodes.size() - 1).getX()) / 2;
-            nodes.forEach(node -> node.setPoint(new Point2D(x, node.getY())));
+            double x =
+                (nodesToAlign.get(0).getX() + nodesToAlign.get(nodesToAlign.size() - 1).getX()) / 2;
+            nodesToAlign.forEach(node -> node.setPoint(new Point2D(x, node.getY())));
 
           } else {
 
@@ -805,66 +876,61 @@ public class MapEditorController extends AbsController {
             Point2D line = new Point2D(500, 500 * m);
 
             double line2 = line.dotProduct(line);
-            nodes.forEach(
+            nodesToAlign.forEach(
                 node -> {
+                  Node oldNode = node.deepCopy();
                   Point2D v = node.getPoint().subtract(0, b);
                   Point2D proj = line.multiply(v.dotProduct(line) / line2);
+
+                  // update node point in observable list and listeners will update ui
                   node.setPoint(proj.add(0, b));
-                });
 
-            nodes.forEach(
-                node -> {
-                  // draw NodeCircle at updated node points
-                  nodeGroup
-                      .getChildren()
-                      .forEach(
-                          fxnode -> {
-                            NodeCircle nodeCircle = (NodeCircle) fxnode;
-                            if (nodeCircle.getNodeID() == node.getNodeID()) {
-                              nodeCircle.setCenterX(node.getX());
-                              nodeCircle.setPrevX(node.getX());
-                              nodeCircle.setCenterY(node.getY());
-                              nodeCircle.setPrevY(node.getY());
-                            }
-                          });
-
-                  // update db
+                  // save edit
                   editQueue.add(
-                      new DataEdit<>(node, DataEditType.UPDATE, TableEntryType.NODE), false);
-                  // dbConnection.updateEntry(node);
+                      new DataEdit<>(oldNode, node, DataEditType.UPDATE, TableEntryType.NODE),
+                      false);
                 });
+
+            // update prev x and y
+            nodeGroup
+                .getChildren()
+                .forEach(
+                    fxnode -> {
+                      NodeCircle nodeCircle = (NodeCircle) fxnode;
+
+                      if (selectedNodes.contains(nodeCircle.getNodeID())) {
+                        Point2D p = nodes.get(nodeID2idx.get(nodeCircle.getNodeID())).getPoint();
+                        nodeCircle.setPrevX(p.getX());
+                        nodeCircle.setPrevY(p.getY());
+                      }
+                    });
           }
         });
 
     snapGrid.setOnMouseClicked(
         event -> {
-          List<Node> nodes = new LinkedList<>();
-
           selectedNodes.forEach(
-              nodeID -> nodes.add((Node) dbConnection.getEntry(nodeID, TableEntryType.NODE)));
+              nodeID -> {
+                Node node = nodes.get(nodeID2idx.get(nodeID));
+                Node oldNode = node.deepCopy();
 
-          nodes.forEach(
-              node -> {
-                node.snapToGrid(2.5);
+                node.snapToGrid(5);
 
-                // draw NodeCircle at updated node points
+                // update prev x and y
                 nodeGroup
                     .getChildren()
                     .forEach(
                         fxnode -> {
                           NodeCircle nodeCircle = (NodeCircle) fxnode;
                           if (nodeCircle.getNodeID() == node.getNodeID()) {
-                            nodeCircle.setCenterX(node.getX());
                             nodeCircle.setPrevX(node.getX());
-                            nodeCircle.setCenterY(node.getY());
                             nodeCircle.setPrevY(node.getY());
                           }
                         });
 
-                // update db
+                // save edit
                 editQueue.add(
-                    new DataEdit<>(node, DataEditType.UPDATE, TableEntryType.NODE), false);
-                // dbConnection.updateEntry(node);
+                    new DataEdit<>(oldNode, node, DataEditType.UPDATE, TableEntryType.NODE), false);
               });
         });
 
@@ -1028,7 +1094,10 @@ public class MapEditorController extends AbsController {
 
             System.out.println("dragged " + dist);
 
-            if (dist > 25) {
+            if (dist > 10) {
+
+              Node oldNode = node.deepCopy();
+              oldNode.setPoint(new Point2D(nodeCircle.getPrevX(), nodeCircle.getPrevY()));
 
               nodeCircle.setPrevX(event.getX());
               nodeCircle.setPrevY((event.getY()));
@@ -1038,11 +1107,11 @@ public class MapEditorController extends AbsController {
               node.setBuilding(
                   buildingChecker.getBuilding(node.getPoint(), allFloors.get(currentFloor)));
 
-              fillNodeFields(node);
+              System.out.println(oldNode.getPoint() + " dragged to " + node.getPoint());
 
-              // update node in database with updated x & y
-              editQueue.add(new DataEdit<>(node, DataEditType.UPDATE, TableEntryType.NODE), false);
-              // dbConnection.updateEntry(node);
+              // save edit
+              editQueue.add(
+                  new DataEdit<>(oldNode, node, DataEditType.UPDATE, TableEntryType.NODE), false);
 
             } else {
               // bring point back to the previous position
@@ -1092,22 +1161,10 @@ public class MapEditorController extends AbsController {
     editQueue.add(new DataEdit<>(node, DataEditType.INSERT, TableEntryType.NODE), false);
   }
 
-  private void removeSelectedNodes() {
+  /** @param track true if the edits should get added to the queue, false if not (ex: undoing). */
+  private void removeSelectedNodes(boolean track) {
 
-    // remove nodes from nodes observable list and listeners will update the ui
-    selectedNodes.forEach(
-        nodeID -> {
-          int removedIdx = nodeID2idx.get(nodeID);
-          for (int i = removedIdx + 1; i < nodes.size(); i++) {
-            int oldIdx = nodeID2idx.get(nodes.get(i).getNodeID());
-            nodeID2idx.put(nodes.get(i).getNodeID(), oldIdx - 1);
-          }
-          nodes.remove(removedIdx);
-          // record in edit queue
-          editQueue.add(new DataEdit<>(nodeID, DataEditType.REMOVE, TableEntryType.NODE), false);
-        });
-
-    // remove edges that contain nodes-to-be-removed
+    // remove edges that contain nodes-to-be-removed before removing nodes
     // listeners on observable list of edges will handle ui updates
 
     Iterator<Edge> edgeItr = edges.iterator();
@@ -1123,6 +1180,25 @@ public class MapEditorController extends AbsController {
       }
     }
 
+    // remove nodes from nodes observable list and listeners will update the ui
+    selectedNodes.forEach(
+        nodeID -> {
+          int removedIdx = nodeID2idx.get(nodeID);
+
+          removedNodes.put(nodeID, nodes.get(removedIdx));
+
+          for (int i = removedIdx + 1; i < nodes.size(); i++) {
+            int oldIdx = nodeID2idx.get(nodes.get(i).getNodeID());
+            nodeID2idx.put(nodes.get(i).getNodeID(), oldIdx - 1);
+          }
+          nodes.remove(removedIdx);
+
+          if (track) {
+            // record in edit queue
+            editQueue.add(new DataEdit<>(nodeID, DataEditType.REMOVE, TableEntryType.NODE), false);
+          }
+        });
+
     selectedNodes.clear();
   }
 
@@ -1136,20 +1212,21 @@ public class MapEditorController extends AbsController {
     editQueue.add(new DataEdit<>(newEdge, DataEditType.INSERT, TableEntryType.EDGE), false);
   }
 
-  private void removeSelectedEdges() {
+  /** @param track true if the edit should get tracked, false if not (ex: undoing) */
+  private void removeSelectedEdges(boolean track) {
 
     selectedEdges.forEach(
         edge -> {
           edges.remove(edge);
-          editQueue.add(new DataEdit<>(edge, DataEditType.REMOVE, TableEntryType.EDGE), false);
+          if (track) {
+            editQueue.add(new DataEdit<>(edge, DataEditType.REMOVE, TableEntryType.EDGE), false);
+          }
         });
 
     selectedEdges.clear();
   }
 
   private void moveSelectedNodes(double dist, MOVE_DIRECTION dir) {
-
-    // TODO rewrite to update nodes directly
 
     nodeGroup
         .getChildren()
@@ -1158,25 +1235,27 @@ public class MapEditorController extends AbsController {
               NodeCircle nodeCircle = (NodeCircle) fxnode;
               if (selectedNodes.contains(nodeCircle.getNodeID())) {
 
+                Node node = nodes.get(nodeID2idx.get(nodeCircle.getNodeID()));
+
                 switch (dir) {
                   case LEFT:
-                    nodeCircle.setCenterX(nodeCircle.getCenterX() - dist);
-                    nodeCircle.setPrevX(nodeCircle.getCenterX());
+                    node.incrX(-dist);
+                    // nodeCircle.setPrevX(node.getX());
                     break;
 
                   case UP:
-                    nodeCircle.setCenterY(nodeCircle.getCenterY() - dist);
-                    nodeCircle.setPrevY(nodeCircle.getCenterY());
+                    node.incrY(-dist);
+                    // nodeCircle.setPrevY(node.getY());
                     break;
 
                   case RIGHT:
-                    nodeCircle.setCenterX(nodeCircle.getCenterX() + dist);
-                    nodeCircle.setPrevX(nodeCircle.getCenterX());
+                    node.incrX(dist);
+                    // nodeCircle.setPrevX(node.getX());
                     break;
 
                   case DOWN:
-                    nodeCircle.setCenterY(nodeCircle.getCenterY() + dist);
-                    nodeCircle.setPrevY(nodeCircle.getCenterY());
+                    node.incrY(dist);
+                    // nodeCircle.setPrevY(node.getY());
                     break;
                 }
               }
@@ -1242,6 +1321,74 @@ public class MapEditorController extends AbsController {
     locationScrollpane.setDisable(true);
     locationScrollpane.setMaxHeight(0);
   }
+}
+
+class MapEditQueue<Object> extends DataEditQueue<Object> {
+
+  // tracks the last edit displayed
+  @Getter @Setter private int undoPointer;
+  private int endPointer;
+
+  MapEditQueue() {
+    super();
+    endPointer = 0;
+    undoPointer = 0;
+  }
+
+  @Override
+  public boolean add(DataEdit<Object> dataEdit, boolean countEntry) {
+
+    // if edits exist beyond the undo pointer, clear them out
+    if (undoPointer < endPointer) {
+      dataEditQueue.subList(undoPointer, dataEditQueue.size()).clear();
+      endPointer = undoPointer;
+    }
+
+    undoPointer++;
+    endPointer++;
+
+    System.out.println("undo " + undoPointer + " end " + endPointer);
+
+    return dataEditQueue.add(dataEdit);
+  }
+
+  /**
+   * Undoes the last edit by moving the pointer backwards one.
+   *
+   * @return
+   */
+  public DataEdit<Object> undoEdit() {
+
+    // Check if queue is empty
+    if (dataEditQueue.isEmpty()) {
+      return null;
+    }
+
+    // back to first element
+    if (undoPointer == 0) {
+      return dataEditQueue.get(0);
+    }
+
+    // get the index at the decremented pointer
+    return dataEditQueue.get(--undoPointer);
+  }
+
+  @Override
+  public void clear() {
+    dataEditQueue.clear();
+    pointer = 0;
+    editCount = 0;
+    endPointer = 0;
+    undoPointer = 0;
+  }
+
+  public boolean canUndo() {
+    // can't undo beyond first element
+    return undoPointer > 0;
+  }
+
+  // leave the DataEditQueue next() and hasNext() as they are
+  // for iterating through the queue in fdb.processEdits(queue)
 }
 
 enum EDITOR_STATE {

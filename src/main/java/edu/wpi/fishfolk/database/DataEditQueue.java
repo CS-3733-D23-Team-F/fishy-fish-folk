@@ -7,17 +7,22 @@ import lombok.Setter;
 
 public class DataEditQueue<T> {
 
-  private final ArrayList<DataEdit<T>> dataEditQueue = new ArrayList<>();
+  protected final ArrayList<DataEdit<T>> dataEditQueue = new ArrayList<>();
 
-  @Getter @Setter private int pointer;
-  @Setter private int editCount;
-  @Getter @Setter private int batchLimit;
+  @Getter @Setter protected int pointer;
+  @Setter protected int editCount;
+  @Getter @Setter protected int batchLimit;
 
   /** Represents a queue of data edits for a PostgreSQL database. */
   public DataEditQueue() {
     this.pointer = 0;
     this.editCount = 0;
     this.batchLimit = 4;
+  }
+
+  /** @return true if the underlying queue is empty, otherwise false. */
+  public boolean isEmpty() {
+    return dataEditQueue.isEmpty();
   }
 
   /** @return the total number of edits in the queue. */
