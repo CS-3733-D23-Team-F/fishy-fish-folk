@@ -200,6 +200,9 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
   @Override
   public boolean insertEntry(SupplyRequest entry) {
 
+    // Check if the entry already exists. Unlikely conflicts.
+    if (tableMap.containsKey(entry.getSupplyRequestID())) return false;
+
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 

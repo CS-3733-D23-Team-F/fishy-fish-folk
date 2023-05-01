@@ -8,6 +8,7 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -35,41 +36,24 @@ public class RootController {
   @FXML MFXButton furnitureNav;
   @FXML MFXButton aboutButton;
   @FXML MFXButton creditButton;
-
-  // @FXML MFXButton userDropdown;
   @FXML StackPane sidebar;
   @FXML HBox serviceBox;
   @FXML VBox buttonsBox;
 
+  @FXML Label username, welcome;
   // @FXML MFXButton moveEditorNav;
   // @FXML AnchorPane sideBar;
 
   @FXML
   public void initialize() throws IOException {
-
     updatePermissionsAccess();
 
     SharedResources.setRootController(this);
 
-    /*
-    userDropdown.setOnMouseClicked(
-        event -> {
-          try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(Fapp.class.getResource("views/LoadingScreen.fxml"));
-            AnchorPane anchorPane = fxmlLoader.load();
-            anchorPane.toFront();
-            UserProfileController userProfile = fxmlLoader.getController();
-            anchorPane.setTranslateY(50);
-            anchorPane.setTranslateX(Fapp.getRootPane().getWidth() - 250);
-            Fapp.getRootPane().getChildren().add(anchorPane);
+    // if (Screen.values().equals(Screen.ADMIN_DASHBOARD)) {
 
-          } catch (Exception e) {
-          }
-        });
+    // }
 
-
-     */
     viewOrders.setOnMouseClicked(
         event -> {
           setupServiceNavButton();

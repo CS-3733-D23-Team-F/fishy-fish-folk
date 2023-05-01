@@ -333,7 +333,7 @@ public class AdminDashboardController {
     foodTable.setItems(getOutstandingFoodOrderRows());
     supplyTable.setItems(getOutstandingSupplyOrderRows());
     furnitureTable.setItems(getOutstandingFurnitureOrderRows());
-    flowerTable.setItems(getOutstandingFlowerOrderRows());
+    //  flowerTable.setItems(getOutstandingFlowerOrderRows());
   }
 
   public void setTable() {

@@ -201,6 +201,7 @@ public class AlertDAO implements IDAO<Alert> {
   @Override
   public boolean insertEntry(Alert entry) {
 
+    // Check if the entry already exists.
     if (alerts.containsKey(entry.getTimestamp())) return false;
 
     // Mark entry Alert status as NEW

@@ -42,6 +42,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
                 "username",
                 "starttime",
                 "endtime",
+                "datereserved",
                 "recurring",
                 "numattendees",
                 "roomname"));
@@ -88,6 +89,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
                 + "username VARCHAR(256),"
                 + "starttime VARCHAR(256),"
                 + "endtime VARCHAR(256),"
+                + "datereserved TIMESTAMP,"
                 + "recurring VARCHAR(256),"
                 + "numattendees INT,"
                 + "roomname VARCHAR(256)"
@@ -121,9 +123,10 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
                 results.getString(headers.get(2)),
                 results.getString(headers.get(3)),
                 results.getString(headers.get(4)),
-                Recurring.valueOf(results.getString(headers.get(5))),
-                results.getInt(headers.get(6)),
-                results.getString(headers.get(7)));
+                results.getTimestamp(headers.get(5)).toLocalDateTime(),
+                Recurring.valueOf(results.getString(headers.get(6))),
+                results.getInt(headers.get(7)),
+                results.getString(headers.get(8)));
         tableMap.put(conferenceRequest.getConferenceRequestID(), conferenceRequest);
       }
 
@@ -206,6 +209,9 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
   @Override
   public boolean insertEntry(ConferenceRequest entry) {
+
+    // Check if the entry already exists. Unlikely conflicts.
+    if (tableMap.containsKey(entry.getConferenceRequestID())) return false;
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
@@ -386,7 +392,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
       String update =
           "UPDATE "
@@ -409,6 +415,8 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
               + headers.get(6)
               + " = ?, "
               + headers.get(7)
+              + " = ?, "
+              + headers.get(8)
               + " = ? WHERE "
               + headers.get(0)
               + " = ?;";
@@ -454,9 +462,11 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
             preparedInsert.setString(3, dataEdit.getNewEntry().getUsername());
             preparedInsert.setString(4, dataEdit.getNewEntry().getStartTime());
             preparedInsert.setString(5, dataEdit.getNewEntry().getEndTime());
-            preparedInsert.setString(6, dataEdit.getNewEntry().getRecurringOption().toString());
-            preparedInsert.setInt(7, dataEdit.getNewEntry().getNumAttendees());
-            preparedInsert.setString(8, dataEdit.getNewEntry().getRoomName());
+            preparedInsert.setTimestamp(
+                6, Timestamp.valueOf(dataEdit.getNewEntry().getDateReserved()));
+            preparedInsert.setString(7, dataEdit.getNewEntry().getRecurringOption().toString());
+            preparedInsert.setInt(8, dataEdit.getNewEntry().getNumAttendees());
+            preparedInsert.setString(9, dataEdit.getNewEntry().getRoomName());
 
             // Execute the query
             preparedInsert.executeUpdate();
@@ -472,11 +482,13 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
             preparedUpdate.setString(3, dataEdit.getNewEntry().getUsername());
             preparedUpdate.setString(4, dataEdit.getNewEntry().getStartTime());
             preparedUpdate.setString(5, dataEdit.getNewEntry().getEndTime());
-            preparedUpdate.setString(6, dataEdit.getNewEntry().getRecurringOption().toString());
-            preparedUpdate.setInt(7, dataEdit.getNewEntry().getNumAttendees());
-            preparedUpdate.setString(8, dataEdit.getNewEntry().getRoomName());
             preparedUpdate.setTimestamp(
-                9, Timestamp.valueOf(dataEdit.getNewEntry().getConferenceRequestID()));
+                6, Timestamp.valueOf(dataEdit.getNewEntry().getDateReserved()));
+            preparedUpdate.setString(7, dataEdit.getNewEntry().getRecurringOption().toString());
+            preparedUpdate.setInt(8, dataEdit.getNewEntry().getNumAttendees());
+            preparedUpdate.setString(9, dataEdit.getNewEntry().getRoomName());
+            preparedUpdate.setTimestamp(
+                10, Timestamp.valueOf(dataEdit.getNewEntry().getConferenceRequestID()));
 
             // Execute the query
             preparedUpdate.executeUpdate();
@@ -547,7 +559,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
@@ -562,9 +574,10 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
                 parts[2],
                 parts[3],
                 parts[4],
-                Recurring.valueOf(parts[5]),
-                Integer.parseInt(parts[6]),
-                parts[7]);
+                LocalDateTime.parse(parts[5]),
+                Recurring.valueOf(parts[6]),
+                Integer.parseInt(parts[7]),
+                parts[8]);
 
         tableMap.put(cr.getConferenceRequestID(), cr);
 
@@ -573,9 +586,10 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
         insertPS.setString(3, cr.getUsername());
         insertPS.setString(4, cr.getStartTime());
         insertPS.setString(5, cr.getEndTime());
-        insertPS.setString(6, cr.getRecurringOption().toString());
-        insertPS.setInt(7, cr.getNumAttendees());
-        insertPS.setString(8, cr.getRoomName());
+        insertPS.setTimestamp(6, Timestamp.valueOf(cr.getDateReserved()));
+        insertPS.setString(7, cr.getRecurringOption().toString());
+        insertPS.setInt(8, cr.getNumAttendees());
+        insertPS.setString(9, cr.getRoomName());
 
         insertPS.executeUpdate();
       }
@@ -614,6 +628,8 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
                 + cr.getStartTime()
                 + ","
                 + cr.getEndTime()
+                + ","
+                + cr.getDateReserved()
                 + ","
                 + cr.getRecurringOption().toString()
                 + ","
