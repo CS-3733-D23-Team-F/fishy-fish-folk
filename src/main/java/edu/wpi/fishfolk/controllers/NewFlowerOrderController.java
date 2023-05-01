@@ -8,6 +8,7 @@ import edu.wpi.fishfolk.ui.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -18,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -37,7 +37,7 @@ public class NewFlowerOrderController extends AbsController {
   @FXML MFXButton clearButton, cancelButton, checkoutButton; // main page buttons
   @FXML MFXButton submitButton, backButton; // cart view buttons
   @FXML MFXFilterComboBox<String> roomSelector;
-  @FXML TextField recipientField, timeSelector;
+  @FXML MFXTextField recipientField, timeSelector;
   @FXML TextArea notesField;
   @FXML MFXScrollPane menuItemsPane, cartItemsPane;
   @FXML AnchorPane confirmPane;
@@ -136,6 +136,8 @@ public class NewFlowerOrderController extends AbsController {
     cartWrap.setDisable(false);
     blur.setDisable(false);
     blur.setVisible(true);
+    setToBlue();
+    clearError();
   }
 
   /** Hide the cart */
@@ -144,6 +146,8 @@ public class NewFlowerOrderController extends AbsController {
     cartWrap.setDisable(true);
     blur.setDisable(true);
     blur.setVisible(false);
+    setToBlue();
+    clearError();
   }
 
   /** Confirm the order, and add it to the Database */
@@ -262,6 +266,7 @@ public class NewFlowerOrderController extends AbsController {
     recipientField.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
     timeSelector.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
     roomSelector.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    notesField.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
   }
 
   /**
