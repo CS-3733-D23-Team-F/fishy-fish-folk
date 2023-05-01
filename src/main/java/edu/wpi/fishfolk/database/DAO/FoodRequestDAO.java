@@ -243,6 +243,9 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
   @Override
   public boolean updateEntry(FoodRequest entry) {
 
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getFoodRequestID())) return false;
+
     // Mark entry FoodRequest status as NEW
     entry.setStatus(EntryStatus.NEW);
 

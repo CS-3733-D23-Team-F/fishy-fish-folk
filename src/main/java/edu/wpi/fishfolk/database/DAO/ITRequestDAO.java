@@ -218,6 +218,9 @@ public class ITRequestDAO implements IDAO<ITRequest> {
   @Override
   public boolean updateEntry(ITRequest entry) {
 
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getItRequestID())) return false;
+
     // Mark entry FoodRequest status as NEW
     entry.setStatus(EntryStatus.NEW);
 
