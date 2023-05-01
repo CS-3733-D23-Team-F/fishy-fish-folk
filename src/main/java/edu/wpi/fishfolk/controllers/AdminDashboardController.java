@@ -3,6 +3,7 @@ package edu.wpi.fishfolk.controllers;
 import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.database.TableEntry.Alert;
@@ -135,7 +136,11 @@ public class AdminDashboardController {
                 // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
                 Alert alert =
                     new Alert(
-                        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), longname, date, "");
+                        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                        SharedResources.getUsername(),
+                        longname,
+                        date,
+                        "");
 
                 addAlert(alert);
               });
@@ -168,7 +173,10 @@ public class AdminDashboardController {
     addAlert.setOnAction(
         event -> {
           Alert alert =
-              new Alert(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), addAlert.getText());
+              new Alert(
+                  LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                  SharedResources.getUsername(),
+                  addAlert.getText());
           addAlert(alert);
         });
 
@@ -183,6 +191,7 @@ public class AdminDashboardController {
   }
 
   public void addAlert(Alert alert) {
+
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
