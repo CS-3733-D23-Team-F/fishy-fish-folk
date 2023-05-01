@@ -40,7 +40,8 @@ public class SignageEditorController extends AbsController {
   MFXButton cancelButton,
       clearButton,
       submitButton,
-      loadButton; // cancel form, clear fields, and submit form
+      loadButton,
+      deleteButton; // cancel form, clear fields, and submit form
   String identifier = "TEST";
 
   ArrayList<MFXFilterComboBox<String>> listTexts = new ArrayList<>();
@@ -140,6 +141,7 @@ public class SignageEditorController extends AbsController {
     submitButton.setOnMouseClicked(
         event -> submit()); // submit button does submit(), read documentation for submit()
     loadButton.setOnMouseClicked(event -> loadPreset());
+    deleteButton.setOnMouseClicked(event -> deletePreset());
   }
 
   private void loadListTexts() {
@@ -259,12 +261,15 @@ public class SignageEditorController extends AbsController {
     datePicker.setValue(null); // rests date picker with null value
   }
 
+  // loads MFXFilterCombobox with list of Signage Preset names
   private void loadPresetSelect() {
     for (int i = 0; i < allPresets.size(); i++) {
       presetSelect.getItems().add(allPresets.get(i).getName());
     }
   }
 
+  // when preset is selected in MFXFilterComboBox and Load button is pressed
+  // loads given preset fields into editor
   private void loadPreset() {
 
     if (!(presetSelect.getValue() == null)) identifier = presetSelect.getValue();
@@ -299,6 +304,15 @@ public class SignageEditorController extends AbsController {
                 preset.getSigns()[i]
                     .getDirection()); // and same for the i'th direction for the arrow
         listSubText.get(i).setText(preset.getSigns()[i].getSubtext());
+      }
+    }
+  }
+
+  private void deletePreset() {
+    for (int i = 0; i < allPresets.size(); i++) {
+      if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
+        dbConnection.removeEntry(allPresets.get(i), TableEntryType.SIGNAGE_PRESET);
+        presetSelect.getItems().remove(i);
       }
     }
   }

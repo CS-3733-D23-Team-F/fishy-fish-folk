@@ -208,9 +208,17 @@
                   <Font name="Open Sans Bold" size="26.0" />
                </font>
             </MFXButton>
-            <MFXFilterComboBox fx:id="presetSelect" minHeight="57.0" minWidth="200.0" popupOffsetY="-2120.0" promptText="LOAD PRESET" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
+            <MFXButton fx:id="deleteButton" layoutX="686.0" layoutY="22.0" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="DELETE" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Bold" size="26.0" />
+               </font>
                <HBox.margin>
                   <Insets left="50.0" />
+               </HBox.margin>
+            </MFXButton>
+            <MFXFilterComboBox fx:id="presetSelect" minHeight="57.0" minWidth="200.0" popupOffsetY="-2120.0" promptText="LOAD PRESET" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
+               <HBox.margin>
+                  <Insets />
                </HBox.margin>
                <font>
                   <Font name="Open Sans Regular" size="12.0" />
