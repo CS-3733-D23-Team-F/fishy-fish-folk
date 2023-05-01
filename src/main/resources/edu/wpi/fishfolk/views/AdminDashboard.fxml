@@ -114,7 +114,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="foodTable" prefHeight="200.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="foodTable" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="foodid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="foodtotalprice" prefWidth="75.0" text="Total Price" />
@@ -138,7 +138,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="supplyTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="supplyTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="supplyid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="supplystatus" prefWidth="75.0" text="Form Status" />
@@ -160,7 +160,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="flowerTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="flowerTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="flowerid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="flowertotalprice" prefWidth="75.0" text="Total Price" />
@@ -183,7 +183,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="furnitureTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="furnitureTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
