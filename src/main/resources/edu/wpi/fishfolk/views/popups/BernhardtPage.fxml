@@ -9,67 +9,63 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
+<VBox maxHeight="535.0" maxWidth="825.0" minHeight="535.0" minWidth="825.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0">
+      <HBox prefHeight="346.0" prefWidth="905.0">
          <children>
-            <HBox prefHeight="358.0" prefWidth="1080.0">
+            <VBox minWidth="825.0" prefHeight="346.0" prefWidth="825.0">
                <children>
-                  <VBox minWidth="1080.0">
+                  <AnchorPane prefHeight="359.0" prefWidth="1080.0">
                      <children>
-                        <AnchorPane prefHeight="359.0" prefWidth="1080.0">
-                           <children>
-                              <Text fill="#f1f1f1" layoutX="456.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bernhardt Adler">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="#f1f1f1" layoutX="365.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assistant Lead Software Engineer">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="#f1f1f1" layoutX="179.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Major">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="216.0" fitWidth="253.0" layoutX="413.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../images/About/bernhardt.jpg" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="362.0" prefWidth="1080.0">
-               <children>
-                  <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
-                     <children>
-                        <Text fill="#f1f1f1" layoutX="428.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: " wrappingWidth="223.606689453125">
+                        <Text fill="#f1f1f1" layoutX="325.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bernhardt Adler">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#f1f1f1" layoutX="420.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: " wrappingWidth="223.606689453125">
+                        <Text fill="#f1f1f1" layoutX="218.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assistant Lead Software Engineer">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#f1f1f1" layoutX="420.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: " wrappingWidth="223.606689453125">
+                        <Text fill="#f1f1f1" layoutX="58.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science and Mathematics Bachelor's Degrees">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
+                        <ImageView fitHeight="216.0" fitWidth="253.0" layoutX="280.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/About/bernhardt.jpg" />
+                           </image>
+                        </ImageView>
+                        <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
                      </children>
                   </AnchorPane>
                </children>
-            </HBox>
+            </VBox>
          </children>
-      </VBox>
+      </HBox>
+      <HBox prefHeight="362.0" prefWidth="1080.0">
+         <children>
+            <AnchorPane minWidth="825.0" prefHeight="200.0" prefWidth="825.0">
+               <children>
+                  <Text fill="#f1f1f1" layoutX="281.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Dumpling" wrappingWidth="261.94000244140625">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" layoutX="251.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: No-life gaming" wrappingWidth="349.4179687499999">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" layoutX="132.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: Bonus fact: Former competitive Curler" wrappingWidth="614.6067504882812">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
    </children>
-</AnchorPane>
+</VBox>
