@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import javafx.collections.FXCollections;
@@ -92,6 +94,7 @@ public class AdminDashboardController {
   @FXML
   public void initialize() {
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
+    Collections.sort(moves, Comparator.comparing(Move::getDate));
     setTable();
 
     outstandingFilter.setOnMouseClicked(
@@ -117,45 +120,47 @@ public class AdminDashboardController {
     int col = 0;
     int row = 1;
     try {
+      LocalDate currentDate = LocalDate.now();
       for (Move move : moves) {
+        if (!move.getDate().isBefore(currentDate)) {
+          System.out.println(move.getLongName() + " " + move.getDate());
 
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
-        AnchorPane anchorPane = fxmlLoader.load();
-        FutureMovesController futureMoves = fxmlLoader.getController();
+          FXMLLoader fxmlLoader = new FXMLLoader();
+          fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
+          AnchorPane anchorPane = fxmlLoader.load();
+          FutureMovesController futureMoves = fxmlLoader.getController();
+          futureMoves.setData(move.getLongName(), "" + move.getDate());
+          futureMoves.notify.setOnMouseClicked(
+              event -> {
+                String longname = futureMoves.longname;
+                LocalDate date = LocalDate.parse(futureMoves.sDate);
+                // truncate example:
+                // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
+                Alert alert =
+                    new Alert(
+                        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), longname, date, "");
 
-        futureMoves.setData(move.getLongName(), "" + move.getDate());
+                addAlert(alert);
+              });
 
-        futureMoves.notify.setOnMouseClicked(
-            event -> {
-              String longname = futureMoves.longname;
-              LocalDate date = LocalDate.parse(futureMoves.sDate);
-              // truncate example:
-              // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
-              Alert alert =
-                  new Alert(
-                      LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), longname, date, "");
+          if (col == 1) {
+            col = 0;
+            row++;
+          }
 
-              addAlert(alert);
-            });
+          // col++;
+          grid.add(anchorPane, col++, row);
 
-        if (col == 1) {
-          col = 0;
-          row++;
+          grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+          grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+          grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+          grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+          grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+          grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+          GridPane.setMargin(anchorPane, new Insets(10));
         }
-
-        // col++;
-        grid.add(anchorPane, col++, row);
-
-        grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-        grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-        grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-        grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-        GridPane.setMargin(anchorPane, new Insets(10));
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -426,7 +431,7 @@ public class AdminDashboardController {
 
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
-     flowerTable.setItems(getFlowerOrderRows());
+    flowerTable.setItems(getFlowerOrderRows());
   }
 
   public ObservableList<FoodOrderObservable> getFoodOrderRows() {
