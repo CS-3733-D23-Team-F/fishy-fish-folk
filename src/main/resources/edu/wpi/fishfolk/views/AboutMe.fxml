@@ -46,9 +46,9 @@
                <children>
                   <ScrollPane hbarPolicy="NEVER" prefHeight="899.0" prefWidth="1968.0">
                      <content>
-                        <AnchorPane maxWidth="1080.0" minHeight="449.0" minWidth="1080.0" prefHeight="795.0" prefWidth="1968.0">
+                        <AnchorPane maxWidth="1080.0" minHeight="449.0" minWidth="1080.0" prefHeight="795.0" prefWidth="1080.0">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1075.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1085.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/About/bernhardt.jpg" />
                                  </image>
@@ -59,7 +59,7 @@
                                  </font>
                               </Text>
                               <MFXButton fx:id="Bernhardt" layoutX="1060.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Bernhardt" textFill="#f1f1f1" />
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="267.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="277.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/About/Meg.jpg" />
                                  </image>
@@ -70,7 +70,7 @@
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="163.0" fitWidth="149.0" layoutX="1045.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="163.0" fitWidth="149.0" layoutX="1100.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/About/Charlie.jpg" />
                                  </image>
@@ -92,7 +92,7 @@
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1479.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1510.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/About/Brendan.png" />
                                  </image>
@@ -103,7 +103,7 @@
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="594.0" layoutY="264.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="606.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/About/jon.jpg" />
                                  </image>
@@ -114,7 +114,7 @@
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="151.0" layoutY="264.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="259.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/About/Louis.png" />
                                  </image>
@@ -125,7 +125,7 @@
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1554.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1570.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/About/Sam.jpg" />
                                  </image>
@@ -147,7 +147,7 @@
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="897.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="910.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/About/Max.jpg" />
                                  </image>
@@ -158,7 +158,7 @@
                                     <Font size="24.0" />
                                  </font>
                               </Text>
-                              <ImageView fitHeight="151.0" fitWidth="118.0" layoutX="1530.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="151.0" fitWidth="118.0" layoutX="1555.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/About/tristin.png" />
                                  </image>
