@@ -1,6 +1,5 @@
 package edu.wpi.fishfolk.controllers;
 
-import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
@@ -570,9 +569,9 @@ public class ViewMasterOrderController extends AbsController {
 
   private void foodImportCSV() {
     fileChooser.setTitle("Select the Food Request Main Table CSV file");
-    String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String mainTablePath = fileChooserPrompt();
     fileChooser.setTitle("Select the Food Request Subtable CSV file");
-    String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String subtablePath = fileChooserPrompt();
 
     String message;
     if (dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST)) {
@@ -597,9 +596,9 @@ public class ViewMasterOrderController extends AbsController {
 
   private void supplyImportCSV() {
     fileChooser.setTitle("Select the Supply Request Main Table CSV file");
-    String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String mainTablePath = fileChooserPrompt();
     fileChooser.setTitle("Select the Supply Request Subtable CSV file");
-    String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String subtablePath = fileChooserPrompt();
 
     String message;
     if (dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.SUPPLY_REQUEST)) {
@@ -624,9 +623,9 @@ public class ViewMasterOrderController extends AbsController {
 
   private void flowerImportCSV() {
     fileChooser.setTitle("Select the Flower Request Main Table CSV file");
-    String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String mainTablePath = fileChooserPrompt();
     fileChooser.setTitle("Select the Flower Request Subtable CSV file");
-    String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String subtablePath = fileChooserPrompt();
 
     String message;
     if (dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FLOWER_REQUEST)) {
@@ -651,7 +650,7 @@ public class ViewMasterOrderController extends AbsController {
 
   private void furnitureImportCSV() {
     fileChooser.setTitle("Select the Furniture Request Main Table CSV file");
-    String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String mainTablePath = fileChooserPrompt();
 
     String message;
     if (dbConnection.importCSV(mainTablePath, false, TableEntryType.FURNITURE_REQUEST)) {
@@ -676,7 +675,7 @@ public class ViewMasterOrderController extends AbsController {
 
   private void conferenceImportCSV() {
     fileChooser.setTitle("Select the Conference Request Main Table CSV file");
-    String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String mainTablePath = fileChooserPrompt();
 
     String message;
     if (dbConnection.importCSV(mainTablePath, false, TableEntryType.CONFERENCE_REQUEST)) {
@@ -701,31 +700,31 @@ public class ViewMasterOrderController extends AbsController {
 
   private void foodExportCSV() {
     dirChooser.setTitle("Select export directory");
-    String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.FOOD_REQUEST);
   }
 
   private void supplyExportCSV() {
     dirChooser.setTitle("Select export directory");
-    String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.SUPPLY_REQUEST);
   }
 
   private void flowerExportCSV() {
     dirChooser.setTitle("Select export directory");
-    String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.FLOWER_REQUEST);
   }
 
   private void furnitureExportCSV() {
     dirChooser.setTitle("Select export directory");
-    String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.FURNITURE_REQUEST);
   }
 
   private void conferenceExportCSV() {
     dirChooser.setTitle("Select export directory");
-    String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.CONFERENCE_REQUEST);
   }
 
