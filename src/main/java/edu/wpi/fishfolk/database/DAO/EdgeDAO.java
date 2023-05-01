@@ -176,6 +176,7 @@ public class EdgeDAO implements IDAO<Edge>, IProcessEdit {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[EdgeDAO.verifyLocalTable]: Notification received!");
+        edgeSet.clear();
         populateLocalTable();
       }
 

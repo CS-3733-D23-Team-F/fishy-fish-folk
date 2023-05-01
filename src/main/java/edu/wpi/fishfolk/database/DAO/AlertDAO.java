@@ -183,6 +183,7 @@ public class AlertDAO implements IDAO<Alert> {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[AlertDAO.verifyLocalTable]: Notification received!");
+        alerts.clear();
         populateLocalTable();
       }
 
