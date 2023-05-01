@@ -117,7 +117,7 @@ public class AdminDashboardController {
     try {
       LocalDate currentDate = LocalDate.now();
       for (Move move : moves) {
-        if ((move.getDate().compareTo(currentDate)) >= 0) {
+        if (!move.getDate().isBefore(currentDate)) {
           System.out.println(move.getLongName() + " " + move.getDate());
 
           FXMLLoader fxmlLoader = new FXMLLoader();
