@@ -21,7 +21,7 @@ public class Alert {
   @Getter @Setter private EntryStatus status;
 
   public Alert(
-      LocalDateTime timestamp, String longName, LocalDate date, String text, String username) {
+      LocalDateTime timestamp, String username, String longName, LocalDate date, String text) {
     this.timestamp = timestamp;
     this.longName = longName;
     this.date = date;
@@ -30,7 +30,7 @@ public class Alert {
     this.username = username;
   }
 
-  public Alert(LocalDateTime timestamp, String text, String username) {
+  public Alert(LocalDateTime timestamp, String username, String text) {
     this.timestamp = timestamp;
     this.longName = "no location";
     this.date = LocalDate.now();

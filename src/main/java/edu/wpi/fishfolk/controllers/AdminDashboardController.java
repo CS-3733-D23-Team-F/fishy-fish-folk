@@ -137,10 +137,10 @@ public class AdminDashboardController {
                 Alert alert =
                     new Alert(
                         LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                        SharedResources.getUsername(),
                         longname,
                         date,
-                        "",
-                        SharedResources.getCurrentUser().getUsername());
+                        "");
 
                 addAlert(alert);
               });
@@ -175,8 +175,8 @@ public class AdminDashboardController {
           Alert alert =
               new Alert(
                   LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
-                  addAlert.getText(),
-                  SharedResources.getCurrentUser().getUsername());
+                  SharedResources.getUsername(),
+                  addAlert.getText());
           addAlert(alert);
         });
 
