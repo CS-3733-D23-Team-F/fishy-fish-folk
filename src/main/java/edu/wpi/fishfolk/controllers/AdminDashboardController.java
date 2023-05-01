@@ -5,6 +5,7 @@ import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.database.TableEntry.Alert;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -24,9 +25,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+
+import javafx.scene.control.*;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -88,6 +93,7 @@ public class AdminDashboardController {
   public void initialize() {
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
+
     outstandingFilter.setOnMouseClicked(
         event -> {
           setOutstandingTable();
@@ -412,7 +418,12 @@ public class AdminDashboardController {
     supplyTable.setEditable(true);
     flowerTable.setEditable(true);
 
+    // foodTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+
+    // foodTable.autosize();
+
     foodTable.setItems(getFoodOrderRows());
+
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
      flowerTable.setItems(getFlowerOrderRows());
