@@ -182,6 +182,7 @@ public class SupplyRequestDAO implements IDAO<SupplyRequest>, IHasSubtable<Suppl
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[SupplyRequestDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
