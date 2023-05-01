@@ -167,28 +167,15 @@ public class RootController {
         });
   }
 
+  /** logs user out of their current account and brings them back to the login screen */
   public void accSwitch() {
     setupServiceNavButton();
     SharedResources.logout();
     Navigation.navigate(Screen.LOGIN);
   }
 
+  /** updates what permissions you have access to depending on what account you're signed into */
   public void updatePermissionsAccess() {
-    viewOrders.setDisable(false);
-
-    flowerNav.setDisable(false);
-    mealNav.setDisable(false);
-    furnitureNav.setDisable(false);
-    supplyNav.setDisable(false);
-    serviceNav.setDisable(false);
-
-    signageNav.setDisable(false);
-    // accountManagerNav.setDisable(false);
-    pathfindingNav.setDisable(false);
-
-    // moveEditorNav.setDisable(false);
-    mapEditorNav.setDisable(false);
-
     switch (SharedResources.getCurrentUser().getLevel()) {
       case GUEST:
         // Features that are inaccessible
@@ -208,6 +195,8 @@ public class RootController {
         AccManagerBtn.setVisible(false);
         mapEditorNav.setDisable(true);
         mapEditorNav.setVisible(false);
+        conferenceNav.setDisable(true);
+        conferenceNav.setVisible(false);
         break;
       case STAFF:
         // Features that are inaccessible
@@ -229,6 +218,8 @@ public class RootController {
         furnitureNav.setVisible(true);
         supplyNav.setVisible(true);
         mealNav.setVisible(true);
+        conferenceNav.setDisable(false);
+        conferenceNav.setVisible(true);
         break;
       case ADMIN:
         // Features that are accessible
@@ -248,6 +239,8 @@ public class RootController {
         AccManagerBtn.setVisible(true);
         mapEditorNav.setDisable(false);
         mapEditorNav.setVisible(true);
+        conferenceNav.setDisable(false);
+        conferenceNav.setVisible(true);
         break;
       case ROOT:
         // Features that are accessible
@@ -267,6 +260,8 @@ public class RootController {
         AccManagerBtn.setVisible(true);
         mapEditorNav.setDisable(false);
         mapEditorNav.setVisible(true);
+        conferenceNav.setDisable(false);
+        conferenceNav.setVisible(true);
         break;
     }
   }
