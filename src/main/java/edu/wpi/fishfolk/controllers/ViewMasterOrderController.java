@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.controllers;
 
+import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
@@ -15,6 +16,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Paint;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 public class ViewMasterOrderController extends AbsController {
   @FXML MFXButton refreshButton;
@@ -70,26 +73,36 @@ public class ViewMasterOrderController extends AbsController {
       foodCancelButton,
       foodRemoveButton,
       foodAssignButton,
-      foodFilterOrdersButton;
+      foodFilterOrdersButton,
+      foodImportCSVButton,
+      foodExportCSVButton;
   @FXML
   MFXButton supplyFillButton,
       supplyCancelButton,
       supplyRemoveButton,
       supplyAssignButton,
-      supplyFilterOrdersButton;
+      supplyFilterOrdersButton,
+          supplyImportCSVButton,
+          supplyExportCSVButton;
   @FXML
   MFXButton furnitureFillButton,
       furnitureCancelButton,
       furnitureRemoveButton,
       furnitureAssignButton,
-      furnitureFilterOrdersButton;
+      furnitureFilterOrdersButton,
+          furnitureImportCSVButton,
+          furnitureExportCSVButton;
   @FXML
   MFXButton flowerFillButton,
       flowerCancelButton,
       flowerRemoveButton,
       flowerAssignButton,
-      flowerFilterOrdersButton;
-  @FXML MFXButton conferenceRemoveButton;
+      flowerFilterOrdersButton,
+          flowerImportCSVButton,
+          flowerExportCSVButton;
+  @FXML MFXButton conferenceRemoveButton,
+          conferenceImportCSVButton,
+          conferenceExportCSVButton;
 
   @FXML MFXFilterComboBox<String> foodAssignSelector;
 
@@ -100,6 +113,9 @@ public class ViewMasterOrderController extends AbsController {
   @FXML MFXFilterComboBox<String> flowerAssignSelector;
 
   @FXML TabPane tabPane;
+
+  FileChooser fileChooser = new FileChooser();
+  DirectoryChooser dirChooser = new DirectoryChooser();
 
   public ViewMasterOrderController() {
     super();
@@ -204,6 +220,8 @@ public class ViewMasterOrderController extends AbsController {
     foodAssignButton.setOnMouseClicked(event -> foodAssign());
     foodRemoveButton.setOnMouseClicked(event -> foodRemove());
     foodFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
+    foodImportCSVButton.setOnMouseClicked(event -> foodImportCSV());
+    foodExportCSVButton.setOnMouseClicked(event -> foodExportCSV());
 
     supplyFillButton.setOnMouseClicked(event -> supplySetStatus(FormStatus.filled));
     supplyCancelButton.setOnMouseClicked(event -> supplySetStatus(FormStatus.cancelled));
@@ -542,6 +560,52 @@ public class ViewMasterOrderController extends AbsController {
     dbConnection.removeEntry(conf.id, TableEntryType.CONFERENCE_REQUEST);
     conferenceTable.getItems().remove(conf);
     conferenceTable.refresh();
+  }
+
+  private void foodImportCSV() {
+    fileChooser.setTitle("Select the Food Request Main Table CSV file");
+    String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    fileChooser.setTitle("Select the Food Request Subtable CSV file");
+    String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST);
+  }
+
+  private void supplyImportCSV() {
+    fileChooser.setTitle("Select the Supply Request Main Table CSV file");
+    String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    fileChooser.setTitle("Select the Supply Request Subtable CSV file");
+    String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.SUPPLY_REQUEST);
+  }
+
+  private void flowerImportCSV() {
+    fileChooser.setTitle("Select the Flower Request Main Table CSV file");
+    String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    fileChooser.setTitle("Select the Flower Request Subtable CSV file");
+    String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST);
+  }
+
+  private void furnitureImportCSV() {
+    fileChooser.setTitle("Select the Food Request Main Table CSV file");
+    String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    fileChooser.setTitle("Select the Food Request Subtable CSV file");
+    String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST);
+  }
+
+  private void conferenceImportCSV() {
+    fileChooser.setTitle("Select the Food Request Main Table CSV file");
+    String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    fileChooser.setTitle("Select the Food Request Subtable CSV file");
+    String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST);
+  }
+
+  private void foodExportCSV() {
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    dbConnection.exportCSV(exportPath, TableEntryType.FOOD_REQUEST);
   }
 
   private void filterOrders() {
