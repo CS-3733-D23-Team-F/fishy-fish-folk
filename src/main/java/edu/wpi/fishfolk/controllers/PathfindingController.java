@@ -780,9 +780,9 @@ public class PathfindingController extends AbsController {
       segment =
           new Polyline(
               floorBox.getLayoutX() + 3,
-              floorBox.getLayoutY() - 3,
+              floorBox.getLayoutY() + 3,
               floorBox.getLayoutX() + 3,
-              floorBox.getLayoutY() + 3);
+              floorBox.getLayoutY() - 3);
     }
 
     if (forwards) {
