@@ -29,6 +29,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -37,6 +38,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -117,6 +119,8 @@ public class PathfindingController extends AbsController {
   int currentFloor;
 
   int currFloorNoPath;
+
+  ParallelTransition parallelTransition;
 
   ArrayList<String> eachFloor;
 
@@ -376,6 +380,11 @@ public class PathfindingController extends AbsController {
             // index 0 in floors in this path - not allFloors
             currentFloor = 0;
 
+            for (int i = 0; i < paths.size(); i++) {
+              Path path = paths.get(i);
+              floors.add(path.getFloor());
+            }
+
             drawPaths(paths);
             if (paths.size() > 0) {
               pane.animate(Duration.millis(200))
@@ -575,7 +584,7 @@ public class PathfindingController extends AbsController {
         // create points to move along path
         int numPoints = (int) (pathLength * 0.04);
 
-        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition = new ParallelTransition();
         Duration duration = new Duration(1000);
         Point2D[] points = path.interpolate(numPoints);
 
@@ -595,8 +604,6 @@ public class PathfindingController extends AbsController {
           animation.setAutoReverse(false);
           parallelTransition.getChildren().add(animation);
         }
-
-        pathAnimations.add(parallelTransition);
         // add buttons to start and end of paths on each floor
 
         if (i == 0) {
@@ -611,10 +618,11 @@ public class PathfindingController extends AbsController {
             g.getChildren()
                 .add(
                     generatePathButtons(
-                        p2.getX(),
-                        p2.getY(),
+                        p2.getX() - 50,
+                        p2.getY() - 25,
                         direction(path.getFloor(), paths.get(1).getFloor()),
-                        true));
+                        true,
+                        i));
           }
 
         } else if (i == paths.size() - 1) { // last path segment
@@ -625,10 +633,11 @@ public class PathfindingController extends AbsController {
             g.getChildren()
                 .add(
                     generatePathButtons(
-                        p1.getX(),
-                        p1.getY(),
+                        p1.getX() - 50,
+                        p1.getY() - 25,
                         direction(path.getFloor(), paths.get(paths.size() - 2).getFloor()),
-                        false));
+                        false,
+                        i));
           }
 
           Point2D p2 = path.points.get(path.numNodes - 1);
@@ -641,22 +650,27 @@ public class PathfindingController extends AbsController {
           g.getChildren()
               .add(
                   generatePathButtons(
-                      p1.getX(),
-                      p1.getY(),
+                      p1.getX() - 50,
+                      p1.getY() - 25,
                       direction(
                           path.getFloor(), // this button goes in reverse
                           paths.get(i - 1).getFloor()),
-                      false));
+                      false,
+                      i));
 
           Point2D p2 = path.points.get(path.numNodes - 1);
           g.getChildren()
               .add(
                   generatePathButtons(
-                      p2.getX(),
-                      p2.getY(),
+                      p2.getX() - 50,
+                      p2.getY() - 25,
                       direction(path.getFloor(), paths.get(i + 1).getFloor()),
-                      true));
+                      true,
+                      i));
         }
+
+        pathAnimations.add(parallelTransition);
+
         if (paths.size() == 1) {
           Point2D p2 = path.points.get(path.numNodes - 1);
           NodeCircle end = new NodeCircle(-1, p2.getX(), p2.getY(), 12);
@@ -665,8 +679,6 @@ public class PathfindingController extends AbsController {
         }
         drawGroup.getChildren().add(g);
         g.setVisible(false);
-
-        floors.add(path.getFloor());
       }
     }
   }
@@ -709,7 +721,6 @@ public class PathfindingController extends AbsController {
           .get(type)
           .setOnAction(
               event -> {
-                System.out.println("eck");
                 locationGroups.get(type).setVisible(locationsButtons.get(type).isSelected());
               });
 
@@ -735,19 +746,55 @@ public class PathfindingController extends AbsController {
    * @param forwards true if this button goes forwards in the path, false if backwards
    * @return a JavaFX Node object to draw
    */
-  private javafx.scene.Node generatePathButtons(double x, double y, boolean up, boolean forwards) {
+  private javafx.scene.Node generatePathButtons(
+      double x, double y, boolean up, boolean forwards, int floorNum) {
+
+    HBox floorBox = new HBox();
+    floorBox.setMinHeight(50);
+    floorBox.setMinWidth(100);
+    floorBox.setStyle("-fx-background-radius:15; -fx-background-color: #f1f1f1");
+    floorBox.setEffect(new DropShadow(0, 0, 1, Color.web("#000000")));
+    floorBox.setLayoutX(x);
+    floorBox.setLayoutY(y);
+    floorBox.setVisible(true);
+
+    Text floorText = new Text();
 
     Polygon triangle = new Polygon();
+
+    Polyline segment = new Polyline();
 
     if (up) {
       triangle.getPoints().addAll(x - 15, y + 15, x + 15, y + 15, x, y - 15);
       triangle.setFill(Color.rgb(0, 100, 0));
+      segment =
+          new Polyline(
+              floorBox.getLayoutX() + 3,
+              floorBox.getLayoutY() - 3,
+              floorBox.getLayoutX() + 3,
+              floorBox.getLayoutY() + 3);
+
     } else {
       triangle.getPoints().addAll(x - 15, y - 15, x + 15, y - 15, x, y + 15);
       triangle.setFill(Color.rgb(100, 0, 0));
+      segment =
+          new Polyline(
+              floorBox.getLayoutX() + 3,
+              floorBox.getLayoutY() - 3,
+              floorBox.getLayoutX() + 3,
+              floorBox.getLayoutY() + 3);
     }
 
-    triangle.setOnMouseClicked(
+    if (forwards) {
+      floorText.setText("Floor: " + floors.get(floorNum + 1));
+    } else {
+      floorText.setText("Floor: " + floors.get(floorNum - 1));
+    }
+
+    floorText.setFont(new Font("OpenSans", 15));
+    floorBox.setAlignment(Pos.CENTER);
+
+    floorBox.setOnMouseClicked(
         event -> {
           if (forwards) {
             nextFloor();
@@ -758,7 +805,20 @@ public class PathfindingController extends AbsController {
           }
           displayFloor();
         });
-    return triangle;
+
+    Duration duration = new Duration(750);
+
+    PathTransition animation = new PathTransition(duration, segment, triangle);
+    animation.setInterpolator(Interpolator.LINEAR);
+    animation.setCycleCount(Timeline.INDEFINITE);
+    animation.setAutoReverse(true);
+    parallelTransition.getChildren().add(animation);
+
+    floorBox.getChildren().add(floorText);
+
+    floorBox.getChildren().add(triangle);
+
+    return floorBox;
   }
 
   private void nextFloor() {
@@ -882,12 +942,6 @@ public class PathfindingController extends AbsController {
       }
 
       if (!floorDirections.isEmpty()) {
-
-        System.out.println(
-            "floor dir: "
-                + floorDirections.get(i).getDirection()
-                + " dist "
-                + floorDirections.get(i).getDistance());
         textDirections.add(floorDirections);
       }
     }
