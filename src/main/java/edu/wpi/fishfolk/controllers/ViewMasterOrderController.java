@@ -572,6 +572,7 @@ public class ViewMasterOrderController extends AbsController {
     fileChooser.setTitle("Select the Food Request Subtable CSV file");
     String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
     dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST);
+    refreshOrders();
   }
 
   private void supplyImportCSV() {
@@ -580,6 +581,7 @@ public class ViewMasterOrderController extends AbsController {
     fileChooser.setTitle("Select the Supply Request Subtable CSV file");
     String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
     dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.SUPPLY_REQUEST);
+    refreshOrders();
   }
 
   private void flowerImportCSV() {
@@ -588,18 +590,21 @@ public class ViewMasterOrderController extends AbsController {
     fileChooser.setTitle("Select the Flower Request Subtable CSV file");
     String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
     dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FLOWER_REQUEST);
+    refreshOrders();
   }
 
   private void furnitureImportCSV() {
     fileChooser.setTitle("Select the Furniture Request Main Table CSV file");
     String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
     dbConnection.importCSV(mainTablePath, false, TableEntryType.FURNITURE_REQUEST);
+    refreshOrders();
   }
 
   private void conferenceImportCSV() {
     fileChooser.setTitle("Select the Conference Request Main Table CSV file");
     String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
     dbConnection.importCSV(mainTablePath, false, TableEntryType.CONFERENCE_REQUEST);
+    refreshOrders();
   }
 
   private void foodExportCSV() {
