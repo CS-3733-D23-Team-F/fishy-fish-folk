@@ -12,11 +12,24 @@
 <?import javafx.scene.text.Font?>
 
 <VBox spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.ViewMasterOrderController">
-   <MFXButton fx:id="refreshButton" style="-fx-background-color: #012d5a;" text="Refresh Orders" textFill="WHITE">
-      <font>
-         <Font name="Open Sans Bold" size="26.0" />
-      </font>
-   </MFXButton>
+   <HBox>
+      <children>
+         <MFXButton fx:id="refreshButton" style="-fx-background-color: #012d5a;" text="Refresh Orders" textFill="WHITE">
+            <font>
+               <Font name="Open Sans Bold" size="26.0" />
+            </font>
+         </MFXButton>
+         <HBox HBox.hgrow="ALWAYS" />
+         <MFXButton fx:id="filterOrdersButton" style="-fx-background-color: #012d5a;" text="Show my Orders" textFill="WHITE">
+            <font>
+               <Font name="Open Sans Bold" size="26.0" />
+            </font>
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+         </MFXButton>
+      </children>
+   </HBox>
    <TabPane fx:id="tabPane" layoutX="50.0" layoutY="50.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
      <tabs>
        <Tab text="Food Orders">
@@ -72,14 +85,6 @@
                            <font>
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
-                        </MFXButton>
-                        <MFXButton fx:id="foodFilterOrdersButton" layoutX="817.0" layoutY="14.0" style="-fx-background-color: #012d5a;" text="Show my Orders" textFill="WHITE">
-                           <font>
-                              <Font name="Open Sans Bold" size="26.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
                         </MFXButton>
                         </children>
                      </HBox>
@@ -138,14 +143,6 @@
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
                         </MFXButton>
-                      <MFXButton fx:id="supplyFilterOrdersButton" layoutX="817.0" layoutY="14.0" style="-fx-background-color: #012d5a;" text="Show my Orders" textFill="WHITE">
-                         <font>
-                            <Font name="Open Sans Bold" size="26.0" />
-                         </font>
-                         <HBox.margin>
-                            <Insets />
-                         </HBox.margin>
-                      </MFXButton>
                    </children>
                 </HBox>
              </children>
@@ -204,14 +201,6 @@
                            <font>
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
-                        </MFXButton>
-                        <MFXButton fx:id="flowerFilterOrdersButton" layoutX="817.0" layoutY="14.0" style="-fx-background-color: #012d5a;" text="Show my Orders" textFill="WHITE">
-                           <font>
-                              <Font name="Open Sans Bold" size="26.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
                         </MFXButton>
                      </children>
                   </HBox>
@@ -316,14 +305,6 @@
                            <font>
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
-                        </MFXButton>
-                        <MFXButton fx:id="furnitureFilterOrdersButton" layoutX="817.0" layoutY="14.0" style="-fx-background-color: #012d5a;" text="Show my Orders" textFill="WHITE">
-                           <font>
-                              <Font name="Open Sans Bold" size="26.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
                         </MFXButton>
                      </children>
                   </HBox>
