@@ -105,6 +105,10 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXButton upFloor, downFloor;
 
+  @FXML MFXToggleButton locationMoves;
+
+  Group alertGroup;
+
   private PathfindSingleton pathfinder;
 
   int start, end;
@@ -201,6 +205,7 @@ public class PathfindingController extends AbsController {
             adminBox.setTranslateX(1000);
             settingBox.setTranslateX(1000);
           } else {
+            textInstruct.setTranslateY(252);
             adminBox.setTranslateX(0);
             settingBox.setTranslateX(0);
             settingBox.setVisible(true);
@@ -232,8 +237,19 @@ public class PathfindingController extends AbsController {
           submitSettings();
         });
 
+    locationMoves.setOnMouseClicked(
+        event -> {
+          alertGroup.setVisible(locationMoves.isSelected());
+        });
+
     slideUp.setOnMouseClicked(
         event -> {
+          settingBox.setTranslateX(1000);
+          settingBox.setVisible(false);
+          settingBox.setDisable(true);
+          adminBox.setTranslateX(1000);
+          adminBox.setVisible(false);
+          adminBox.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(textInstruct);
@@ -862,6 +878,7 @@ public class PathfindingController extends AbsController {
     }
 
     locationGroup.getChildren().clear();
+    generateAlertBoxs();
 
     locationGroup.setVisible(true);
 
@@ -1046,6 +1063,7 @@ public class PathfindingController extends AbsController {
   }
 
   private void generateAlertBoxs() {
+    alertGroup = new Group();
     for (int locat = 0; locat < mapAlerts.size(); locat++) {
       Location currLocat = mapAlerts.get(locat);
       if (alertsNodes.get(currLocat).getFloor().equals(eachFloor.get(currFloorNoPath))) {
@@ -1072,8 +1090,10 @@ public class PathfindingController extends AbsController {
         mapAlert.getChildren().add(moveDate);
         mapAlert.setPadding(new Insets(0, 5, 0, 5));
 
-        locationGroup.getChildren().add(mapAlert);
+        alertGroup.getChildren().add(mapAlert);
       }
     }
+    alertGroup.setVisible(locationMoves.isSelected());
+    locationGroup.getChildren().add(alertGroup);
   }
 }
