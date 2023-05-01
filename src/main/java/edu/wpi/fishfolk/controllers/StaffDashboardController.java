@@ -7,7 +7,6 @@ import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -119,60 +118,59 @@ public class StaffDashboardController {
     }
 
     movesRefresh.setOnMouseClicked(
-            event -> {
-              ArrayList<Move> moves2 =
-                      (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
-              int col2 = 0;
-              int row2 = 1;
-              grid.getChildren().removeAll(grid.getChildren());
-              try {
-                for (Move move : moves2) {
+        event -> {
+          ArrayList<Move> moves2 =
+              (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
+          int col2 = 0;
+          int row2 = 1;
+          grid.getChildren().removeAll(grid.getChildren());
+          try {
+            for (Move move : moves2) {
 
-                  FXMLLoader fxmlLoader = new FXMLLoader();
-                  fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
-                  AnchorPane anchorPane = fxmlLoader.load();
-                  FutureMovesController futureMoves = fxmlLoader.getController();
-                  futureMoves.setData(move.getLongName(), "" + move.getDate());
+              FXMLLoader fxmlLoader = new FXMLLoader();
+              fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
+              AnchorPane anchorPane = fxmlLoader.load();
+              FutureMovesController futureMoves = fxmlLoader.getController();
+              futureMoves.setData(move.getLongName(), "" + move.getDate());
 
-                  futureMoves.notify.setDisable(true);
-                  futureMoves.notify.setVisible(false);
+              futureMoves.notify.setDisable(true);
+              futureMoves.notify.setVisible(false);
 
-                  if (col2 == 1) {
-                    col2 = 0;
-                    row2++;
-                  }
-
-                  // col++;
-                  grid.add(anchorPane, col2++, row2);
-
-                  grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-                  grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-                  grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-                  grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-                  grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                  grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-                  GridPane.setMargin(anchorPane, new Insets(10));
-                }
-              } catch (IOException e) {
-                e.printStackTrace();
+              if (col2 == 1) {
+                col2 = 0;
+                row2++;
               }
-            });
 
+              // col++;
+              grid.add(anchorPane, col2++, row2);
+
+              grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+              grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+              grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+              grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+              grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+              grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+              GridPane.setMargin(anchorPane, new Insets(10));
+            }
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
 
     dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
     alertsRefresh.setOnMouseClicked(
-            event -> {
-              alertGrid.getChildren().removeAll(alertGrid.getChildren());
+        event -> {
+          alertGrid.getChildren().removeAll(alertGrid.getChildren());
 
-              dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+          dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
 
-              System.out.println(
-                      "[AdminDashboardController.initialize]: Alerts refreshed ("
-                              + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
-                              + ")");
-            });
+          System.out.println(
+              "[AdminDashboardController.initialize]: Alerts refreshed ("
+                  + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+                  + ")");
+        });
   }
 
   public void addAlert(Alert alert) {
