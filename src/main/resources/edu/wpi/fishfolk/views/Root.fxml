@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -35,6 +36,26 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
+                        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="welcome" text="Welcome," textFill="WHITE">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="username" text="User" textFill="WHITE">
+                                 <font>
+                                    <Font name="Open Sans Regular" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
                         <MFXButton fx:id="aboutButton" minHeight="50.0" style="-fx-background-radius: 0; -fx-text-fill: #ffffff; -fx-background-color: #012d5a;" text="About Us">
                            <font>
                               <Font name="Open Sans Regular" size="15.0" />
