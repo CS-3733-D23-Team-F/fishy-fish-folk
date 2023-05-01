@@ -58,7 +58,7 @@
                   <HBox VBox.vgrow="ALWAYS">
                      <children>
                         <HBox HBox.hgrow="ALWAYS" />
-                        <MFXScrollPane fx:id="menuItemsPane" prefHeight="500.0" prefWidth="1170.0" styleClass="newScrolls">
+                        <MFXScrollPane fx:id="menuItemsPane" fitToWidth="true" hbarPolicy="NEVER" minHeight="500.0" minWidth="1170.0" pannable="true" prefHeight="500.0" prefWidth="1170.0" style="-fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
                            <content>
                               <VBox spacing="25.0">
                                  <children>
@@ -141,7 +141,7 @@
                   <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                      <children>
                         <VBox alignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
+                        <VBox alignment="TOP_CENTER" maxHeight="635.0" maxWidth="1180.0" minHeight="635.0" minWidth="1180.0" style="-fx-background-color: #ffffff;">
                            <children>
                               <MFXScrollPane fx:id="cartItemsPane" minHeight="300.0" minWidth="1150.0" prefHeight="300.0" prefWidth="1150.0" styleClass="newScrolls">
                                  <content>

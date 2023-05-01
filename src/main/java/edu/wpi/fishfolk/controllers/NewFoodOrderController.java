@@ -274,21 +274,21 @@ public class NewFoodOrderController extends AbsController {
     int numRows = (items.size() + 1) / 2;
     System.out.printf("%d items, %d rows\n", items.size(), numRows);
     VBox itemRows = new VBox();
-    itemRows.setSpacing(25);
-    itemRows.setPrefHeight(Math.max(0, (275 * numRows) - 25));
-    itemRows.setPrefWidth(1195);
+    itemRows.setSpacing(10);
+    itemRows.setPrefHeight(Math.max(0, (265 * numRows) - 25));
+    itemRows.setPrefWidth(1175);
     for (int i = 0; i < numRows; i++) {
       HBox itemRow = new HBox();
-      itemRow.setSpacing(25);
-      itemRow.setPrefHeight(250);
-      itemRow.setPrefWidth(1195);
+      itemRow.setSpacing(10);
+      itemRow.setPrefHeight(240);
+      itemRow.setPrefWidth(1175);
       for (int j = 0; j < 2; j++) {
         NewFoodMenuItem currentItem = null;
         try {
           currentItem = items.get(i * 2 + j);
           AnchorPane itemPane = new AnchorPane();
-          itemPane.setPrefHeight(250);
-          itemPane.setPrefWidth(585);
+          itemPane.setPrefHeight(240);
+          itemPane.setPrefWidth(575);
           Rectangle bgRectangle = new Rectangle();
           bgRectangle.setArcHeight(5);
           bgRectangle.setArcWidth(5);
@@ -379,17 +379,17 @@ public class NewFoodOrderController extends AbsController {
     List<NewFoodCart.quantityItem> items = cart.getItems();
     VBox itemsBox = new VBox();
     itemsBox.setPrefHeight(130 * items.size());
-    itemsBox.setPrefWidth(1190);
+    itemsBox.setPrefWidth(1150);
     for (NewFoodCart.quantityItem item : items) {
       AnchorPane itemPane = new AnchorPane();
       itemPane.setPrefHeight(130);
-      itemPane.setPrefWidth(1190);
+      itemPane.setPrefWidth(1150);
       Rectangle bgRectangle = new Rectangle();
       bgRectangle.setArcHeight(5);
       bgRectangle.setArcWidth(5);
       bgRectangle.setFill(Paint.valueOf("WHITE"));
       bgRectangle.setHeight(90);
-      bgRectangle.setWidth(1150);
+      bgRectangle.setWidth(1100);
       bgRectangle.setLayoutX(20);
       bgRectangle.setLayoutY(20);
       bgRectangle.setStroke(Paint.valueOf("#012d5a"));
@@ -408,7 +408,7 @@ public class NewFoodOrderController extends AbsController {
       Text unitPrice = new Text();
       unitPrice.setText(String.format("$%.2f", item.getItem().getPrice()));
       unitPrice.setLayoutY(75);
-      unitPrice.setLayoutX(302);
+      unitPrice.setLayoutX(300);
       unitPrice.setStrokeType(StrokeType.OUTSIDE);
       unitPrice.setStrokeWidth(0);
       unitPrice.setWrappingWidth(100);
@@ -418,7 +418,7 @@ public class NewFoodOrderController extends AbsController {
       Text quantityText = new Text();
       quantityText.setText(String.format("x%d", item.getQuantity()));
       quantityText.setLayoutY(75);
-      quantityText.setLayoutX(497);
+      quantityText.setLayoutX(485);
       quantityText.setStrokeType(StrokeType.OUTSIDE);
       quantityText.setStrokeWidth(0);
       quantityText.setWrappingWidth(100);
@@ -428,15 +428,15 @@ public class NewFoodOrderController extends AbsController {
       Text totalPrice = new Text();
       totalPrice.setText(String.format("$%.2f", item.getItem().getPrice() * item.getQuantity()));
       totalPrice.setLayoutY(75);
-      totalPrice.setLayoutX(700);
+      totalPrice.setLayoutX(660);
       totalPrice.setStrokeType(StrokeType.OUTSIDE);
       totalPrice.setStrokeWidth(0);
       totalPrice.setWrappingWidth(100);
       totalPrice.setFont(oSans26);
-      totalPrice.setTextAlignment(TextAlignment.LEFT);
+      totalPrice.setTextAlignment(TextAlignment.CENTER);
       itemPane.getChildren().add(totalPrice);
       MFXButton minusButton = new MFXButton();
-      minusButton.setLayoutX(450);
+      minusButton.setLayoutX(445);
       minusButton.setLayoutY(51);
       minusButton.setText("-");
       minusButton.setMinHeight(28);
@@ -450,7 +450,7 @@ public class NewFoodOrderController extends AbsController {
           });
       itemPane.getChildren().add(minusButton);
       MFXButton plusButton = new MFXButton();
-      plusButton.setLayoutX(616);
+      plusButton.setLayoutX(590);
       plusButton.setLayoutY(51);
       plusButton.setText("+");
       plusButton.setMinHeight(28);
@@ -464,10 +464,10 @@ public class NewFoodOrderController extends AbsController {
       itemPane.getChildren().add(plusButton);
       MFXButton removeButton = new MFXButton();
       removeButton.setText("Remove from Order");
-      removeButton.setLayoutX(844);
+      removeButton.setLayoutX(800);
       removeButton.setLayoutY(38);
       removeButton.setPrefHeight(55);
-      removeButton.setPrefWidth(309);
+      removeButton.setPrefWidth(300);
       removeButton.setFont(oSans26);
       removeButton.setStyle("-fx-background-color: #900000;");
       removeButton.setTextFill(Paint.valueOf("WHITE"));
