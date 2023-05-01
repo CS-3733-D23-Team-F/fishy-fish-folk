@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -25,6 +26,7 @@ public class NewConferenceController extends AbsController {
   @FXML MFXButton okButton;
   @FXML MFXDatePicker datePicker;
   @FXML MFXScrollPane scrolly;
+  @FXML Label errors;
   Font oSans26;
   ArrayList<String> times = new ArrayList<>();
   ArrayList<Recurring> recurring = new ArrayList<>();
@@ -37,6 +39,7 @@ public class NewConferenceController extends AbsController {
   @FXML
   public void initialize() {
     addDropdownOptions();
+    clearError();
     okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
     confCancelButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     confClearButton.setOnMouseClicked(event -> clearFields());
@@ -70,6 +73,15 @@ public class NewConferenceController extends AbsController {
     numAttnBox.clear();
     notesBox.clear();
     datePicker.setValue(null);
+    clearError();
+  }
+
+  /**
+   * Clears the error field
+   */
+  private void clearError() {
+    errors.setText("");
+    errors.setVisible(false);
   }
 
   /** Initializing the dropdowns so they have all the required options. */
@@ -277,7 +289,6 @@ public class NewConferenceController extends AbsController {
    * @param node the area it will pop up next to.
    */
   private void submissionError(String error, Node node) {
-    node.setStyle(".submissionError");
     if (thugShaker == null || thugShaker.getNode() != node) {
       thugShaker = new TranslateTransition(Duration.millis(100), node);
     }
@@ -286,6 +297,9 @@ public class NewConferenceController extends AbsController {
     thugShaker.setAutoReverse(true);
     thugShaker.setByX(15f);
     thugShaker.playFromStart();
+    errors.setText(error);
+    errors.setVisible(true);
+    errors.setStyle("-fx-text-fill:  red; -fx-font: oSans15;");
   }
 
   /**

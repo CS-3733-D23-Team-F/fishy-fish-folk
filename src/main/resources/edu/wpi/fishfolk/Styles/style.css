@@ -182,8 +182,6 @@
     -fx-background-color: #EEEEEE;
 }
 
-
-
 .rectToggle:selected {
     -fx-background-color: #fcd474;
     -fx-border-color: #fcd474;
@@ -200,9 +198,3 @@
     -fx-background-radius: 0;
 }
 
-.submissionError{
-    -fx-border-color: red ;
-    -fx-focus-color: red ;
-    -fx-border-width: 1;
-    -fx-border-radius: 5;
-}
