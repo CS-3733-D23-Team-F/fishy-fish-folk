@@ -919,8 +919,8 @@ public class PathfindingController extends AbsController {
 
   private void populateTextDirections(ArrayList<Path> paths) {
     int lastFloorIdx = paths.size() - 1;
-    System.out.println("path size: " + lastFloorIdx);
     for (int i = 0; i <= lastFloorIdx; i++) {
+
       List<TextDirection> floorDirections = new LinkedList<>(paths.get(i).getDirections());
 
       if (i == 0) {
@@ -934,9 +934,11 @@ public class PathfindingController extends AbsController {
 
       if (i == lastFloorIdx) {
         if (lastFloorIdx > 0) {
-          floorDirections.add(
-              textDirectionBetweenFloors(
-                  paths.get(lastFloorIdx - 1).getToNextPath(), paths.get(lastFloorIdx).getFloor()));
+          ((LinkedList<TextDirection>) floorDirections)
+              .addFirst(
+                  textDirectionBetweenFloors(
+                      paths.get(lastFloorIdx - 1).getToNextPath(),
+                      paths.get(lastFloorIdx).getFloor()));
         }
         floorDirections.add(new TextDirection(Direction.START, "End at " + endSelector.getValue()));
       }
@@ -964,7 +966,6 @@ public class PathfindingController extends AbsController {
         text = "Take the stairs down to " + second;
         break;
     }
-    System.out.println(text);
     return new TextDirection(direction, text);
   }
 
