@@ -111,11 +111,12 @@ public class AlertDAO implements IDAO<Alert> {
                     timestamp,
                     results.getString("longname"),
                     LocalDate.parse(results.getString("date")),
-                    results.getString("text"));
+                    results.getString("text"),
+                    "old data");
             break;
 
           case OTHER:
-            alert = new Alert(timestamp, results.getString("text"));
+            alert = new Alert(timestamp, results.getString("text"), "old data");
         }
 
         alerts.put(alert.getTimestamp(), alert);

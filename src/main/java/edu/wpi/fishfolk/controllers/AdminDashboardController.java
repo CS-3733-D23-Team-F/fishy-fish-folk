@@ -3,6 +3,7 @@ package edu.wpi.fishfolk.controllers;
 import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.database.TableEntry.Alert;
@@ -27,13 +28,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-
 import javafx.scene.control.*;
-
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -138,7 +136,11 @@ public class AdminDashboardController {
                 // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
                 Alert alert =
                     new Alert(
-                        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), longname, date, "");
+                        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                        longname,
+                        date,
+                        "",
+                        SharedResources.getCurrentUser().getUsername());
 
                 addAlert(alert);
               });
@@ -171,7 +173,10 @@ public class AdminDashboardController {
     addAlert.setOnAction(
         event -> {
           Alert alert =
-              new Alert(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), addAlert.getText());
+              new Alert(
+                  LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                  addAlert.getText(),
+                  SharedResources.getCurrentUser().getUsername());
           addAlert(alert);
         });
 
@@ -186,6 +191,7 @@ public class AdminDashboardController {
   }
 
   public void addAlert(Alert alert) {
+
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));

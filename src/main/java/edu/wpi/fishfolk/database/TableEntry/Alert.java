@@ -15,22 +15,27 @@ public class Alert {
   @Getter @Setter private String text;
   @Getter private final AlertType type;
 
+  @Getter @Setter private String username;
+
   // For DAO
   @Getter @Setter private EntryStatus status;
 
-  public Alert(LocalDateTime timestamp, String longName, LocalDate date, String text) {
+  public Alert(
+      LocalDateTime timestamp, String longName, LocalDate date, String text, String username) {
     this.timestamp = timestamp;
     this.longName = longName;
     this.date = date;
     this.text = text;
     this.type = AlertType.MOVE;
+    this.username = username;
   }
 
-  public Alert(LocalDateTime timestamp, String text) {
+  public Alert(LocalDateTime timestamp, String text, String username) {
     this.timestamp = timestamp;
     this.longName = "no location";
     this.date = LocalDate.now();
     this.text = text;
     this.type = AlertType.OTHER;
+    this.username = username;
   }
 }
