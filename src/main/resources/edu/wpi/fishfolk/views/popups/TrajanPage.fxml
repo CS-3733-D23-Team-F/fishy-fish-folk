@@ -9,67 +9,63 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
+<VBox maxHeight="535.0" maxWidth="825.0" minHeight="535.0" minWidth="825.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0">
+      <HBox prefHeight="353.0" prefWidth="526.0">
          <children>
-            <HBox prefHeight="358.0" prefWidth="1080.0">
+            <VBox minWidth="823.0" prefHeight="353.0" prefWidth="823.0">
                <children>
-                  <VBox minWidth="1080.0">
+                  <AnchorPane prefHeight="353.0" prefWidth="887.0">
                      <children>
-                        <AnchorPane prefHeight="359.0" prefWidth="1080.0">
-                           <children>
-                              <ImageView fitHeight="239.0" fitWidth="209.0" layoutX="438.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../images/About/trajan.png" />
-                                 </image>
-                              </ImageView>
-                              <Text fill="#f1f1f1" layoutX="462.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trajan Espelien ">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="#f1f1f1" layoutX="416.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lead Software Engineer">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="#f1f1f1" layoutX="187.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science and Mathematics Bachelor's degrees">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="362.0" prefWidth="1080.0">
-               <children>
-                  <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
-                     <children>
-                        <Text fill="#f1f1f1" layoutX="410.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Pad Thai" wrappingWidth="259.606689453125">
+                        <ImageView fitHeight="239.0" fitWidth="209.0" layoutX="307.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/About/trajan.png" />
+                           </image>
+                        </ImageView>
+                        <Text fill="#f1f1f1" layoutX="331.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trajan Espelien ">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#f1f1f1" layoutX="376.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Ballroom Dance" wrappingWidth="350.606689453125">
+                        <Text fill="#f1f1f1" layoutX="285.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lead Software Engineer">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#f1f1f1" layoutX="367.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: &quot;thats rough buddy&quot; by Zuko" textAlignment="CENTER" wrappingWidth="395.606689453125">
+                        <Text fill="#f1f1f1" layoutX="56.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science and Mathematics Bachelor's degrees">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
+                        <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
                      </children>
                   </AnchorPane>
                </children>
-            </HBox>
+            </VBox>
          </children>
-      </VBox>
+      </HBox>
+      <HBox prefHeight="182.0" prefWidth="775.0">
+         <children>
+            <AnchorPane minWidth="826.0" prefHeight="182.0" prefWidth="826.0">
+               <children>
+                  <Text fill="#f1f1f1" layoutX="257.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Pad Thai" wrappingWidth="259.606689453125">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" layoutX="223.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Ballroom Dance" wrappingWidth="350.606689453125">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" layoutX="214.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: &quot;thats rough buddy&quot; by Zuko" textAlignment="CENTER" wrappingWidth="395.606689453125">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
    </children>
-</AnchorPane>
+</VBox>

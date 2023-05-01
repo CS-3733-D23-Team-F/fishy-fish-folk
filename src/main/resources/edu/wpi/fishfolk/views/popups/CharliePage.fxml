@@ -9,67 +9,63 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
+<VBox maxHeight="535.0" maxWidth="825.0" minHeight="535.0" minWidth="825.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0">
+      <HBox prefHeight="409.0" prefWidth="1080.0">
          <children>
-            <HBox prefHeight="409.0" prefWidth="1080.0">
+            <VBox minWidth="826.0" prefHeight="418.0" prefWidth="826.0">
                <children>
-                  <VBox minWidth="1080.0">
+                  <AnchorPane prefHeight="416.0" prefWidth="1080.0">
                      <children>
-                        <AnchorPane prefHeight="416.0" prefWidth="1080.0">
-                           <children>
-                              <Text fill="#f1f1f1" layoutX="461.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Charles Anderson">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="#f1f1f1" layoutX="428.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Documentation Analyst">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="#f1f1f1" layoutX="295.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Major in Computer Science Barchelor's degree Cyber Security Concentration" textAlignment="CENTER" wrappingWidth="497.52862548828125">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="219.0" fitWidth="193.0" layoutX="470.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../images/About/Charlie.jpg" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="288.0" prefWidth="1080.0">
-               <children>
-                  <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
-                     <children>
-                        <Text fill="#f1f1f1" layoutX="401.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Chocolate" wrappingWidth="275.60662841796875">
+                        <Text fill="#f1f1f1" layoutX="317.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Charles Anderson">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#f1f1f1" layoutX="347.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Painting Sculptures" wrappingWidth="387.2734375">
+                        <Text fill="#f1f1f1" layoutX="296.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Documentation Analyst">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#f1f1f1" layoutX="348.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: &quot;Place holding text&quot; by Me" textAlignment="CENTER" wrappingWidth="398.606689453125">
+                        <Text fill="#f1f1f1" layoutX="150.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Major in Computer Science Barchelor's degree Cyber Security Concentration" textAlignment="CENTER" wrappingWidth="497.52862548828125">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
+                        <ImageView fitHeight="219.0" fitWidth="193.0" layoutX="324.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/About/Charlie.jpg" />
+                           </image>
+                        </ImageView>
+                        <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
                      </children>
                   </AnchorPane>
                </children>
-            </HBox>
+            </VBox>
          </children>
-      </VBox>
+      </HBox>
+      <HBox prefHeight="288.0" prefWidth="1080.0">
+         <children>
+            <AnchorPane minWidth="828.0" prefHeight="187.0" prefWidth="828.0">
+               <children>
+                  <Text fill="#f1f1f1" layoutX="266.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Chocolate" wrappingWidth="275.60662841796875">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" layoutX="212.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Painting Sculptures" wrappingWidth="387.2734375">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" layoutX="214.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: &quot;Place holding text&quot; by Me" textAlignment="CENTER" wrappingWidth="398.606689453125">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
    </children>
-</AnchorPane>
+</VBox>
