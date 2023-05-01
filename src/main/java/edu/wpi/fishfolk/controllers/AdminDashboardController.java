@@ -414,7 +414,6 @@ public class AdminDashboardController {
     supplyTable.setEditable(true);
     flowerTable.setEditable(true);
 
-
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
