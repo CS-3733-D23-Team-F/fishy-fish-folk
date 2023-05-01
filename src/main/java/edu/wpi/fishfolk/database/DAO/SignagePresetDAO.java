@@ -190,7 +190,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
   public boolean insertEntry(SignagePreset entry) {
 
     // Check if the entry already exists.
-    if (tableMap.containsKey(entry.getName())) return false;
+    if (tableMap.containsKey(entry.getName())) return updateEntry(entry);
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
