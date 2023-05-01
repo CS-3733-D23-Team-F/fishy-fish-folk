@@ -119,107 +119,14 @@ public class AdminDashboardController {
           }
         });
 
-    int col = 0;
-    int row = 1;
-    try {
-      for (Move move : moves) {
-
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
-        AnchorPane anchorPane = fxmlLoader.load();
-        FutureMovesController futureMoves = fxmlLoader.getController();
-
-        futureMoves.setData(move.getLongName(), "" + move.getDate());
-
-        futureMoves.notify.setOnMouseClicked(
-            event -> {
-              String longname = futureMoves.longname;
-              LocalDate date = LocalDate.parse(futureMoves.sDate);
-              // truncate example:
-              // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
-              Alert alert =
-                  new Alert(
-                      LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), longname, date, "");
-
-              addAlert(alert);
-            });
-
-        if (col == 1) {
-          col = 0;
-          row++;
-        }
-
-        // col++;
-        grid.add(anchorPane, col++, row);
-
-        grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-        grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-        grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-        grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-        GridPane.setMargin(anchorPane, new Insets(10));
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    populateMoves(moves);
 
     movesRefresh.setOnMouseClicked(
         event -> {
           ArrayList<Move> moves2 =
               (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
-          int col2 = 0;
-          int row2 = 1;
           grid.getChildren().removeAll(grid.getChildren());
-          try {
-            for (Move move : moves2) {
-
-              FXMLLoader fxmlLoader = new FXMLLoader();
-              fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
-              AnchorPane anchorPane = fxmlLoader.load();
-              FutureMovesController futureMoves = fxmlLoader.getController();
-
-              futureMoves.setData(move.getLongName(), "" + move.getDate());
-
-              futureMoves.notify.setOnMouseClicked(
-                  event2 -> {
-                    String longname = futureMoves.longname;
-                    LocalDate date = LocalDate.parse(futureMoves.sDate);
-                    // truncate example:
-                    // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
-                    Alert alert =
-                        new Alert(
-                            LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
-                            longname,
-                            date,
-                            "");
-
-                    addAlert(alert);
-                  });
-
-              if (col2 == 1) {
-                col2 = 0;
-                row2++;
-              }
-
-              // col++;
-              grid.add(anchorPane, col2++, row2);
-
-              grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-              grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-              grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-              grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-              grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-              grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-              GridPane.setMargin(anchorPane, new Insets(10));
-            }
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
+          populateMoves(moves2);
         });
 
     /*
@@ -277,6 +184,55 @@ public class AdminDashboardController {
     toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
     toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE_EDITOR));
   }
+
+  private void populateMoves(ArrayList<Move> moves) {
+
+    int col = 0, row = 1;
+
+try {
+  for (Move move : moves) {
+
+    FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
+    AnchorPane anchorPane = fxmlLoader.load();
+    FutureMovesController futureMoves = fxmlLoader.getController();
+
+    futureMoves.setData(move.getLongName(), "" + move.getDate());
+
+    futureMoves.notify.setOnMouseClicked(
+        event -> {
+          String longname = futureMoves.longname;
+          LocalDate date = LocalDate.parse(futureMoves.sDate);
+          // truncate example:
+          // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
+          Alert alert =
+              new Alert(
+                  LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), longname, date, "");
+
+          addAlert(alert);
+        });
+
+    if (col == 1) {
+      col = 0;
+      row++;
+    }
+
+    // col++;
+    grid.add(anchorPane, col++, row);
+
+    grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+    grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+    grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+    grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+    grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+    grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+    GridPane.setMargin(anchorPane, new Insets(10));
+  }
+} catch (IOException e) {
+  e.printStackTrace();
+}}
 
   public void addAlert(Alert alert) {
     try {
