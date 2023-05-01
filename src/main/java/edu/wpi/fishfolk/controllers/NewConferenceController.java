@@ -277,6 +277,7 @@ public class NewConferenceController extends AbsController {
    * @param node the area it will pop up next to.
    */
   private void submissionError(String error, Node node) {
+    node.setStyle(".submissionError");
     if (thugShaker == null || thugShaker.getNode() != node) {
       thugShaker = new TranslateTransition(Duration.millis(100), node);
     }

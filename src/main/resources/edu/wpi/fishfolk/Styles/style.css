@@ -187,12 +187,22 @@
 .rectToggle:selected {
     -fx-background-color: #fcd474;
     -fx-border-color: #fcd474;
+    -fx-background-radius: 0;
 }
 
 .rectToggle{
     -fx-background-color: #ffffff;
+    -fx-background-radius: 0;
 }
 
 .rectToggle:hover{
     -fx-background-color: #f9e4b3;
+    -fx-background-radius: 0;
+}
+
+.submissionError{
+    -fx-border-color: red ;
+    -fx-focus-color: red ;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
 }
