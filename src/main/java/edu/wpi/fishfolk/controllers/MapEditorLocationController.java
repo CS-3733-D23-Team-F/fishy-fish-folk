@@ -29,6 +29,7 @@ public class MapEditorLocationController {
           if (validNodeID) {
             nodeID = nid;
           }
+          System.out.println(nid + " valid? " + validNodeID);
           updateButtons();
         });
 
@@ -39,6 +40,7 @@ public class MapEditorLocationController {
           if (validDate) {
             date = d;
           }
+          System.out.println(d + " valid? " + validDate);
           updateButtons();
         });
   }

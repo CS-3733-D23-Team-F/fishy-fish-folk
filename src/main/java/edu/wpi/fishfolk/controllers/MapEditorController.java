@@ -123,7 +123,8 @@ public class MapEditorController extends AbsController {
   }
 
   public static boolean validateDate(LocalDate date) {
-    return !today.isAfter(date);
+    // equivalent to matches today or is after today
+    return !date.isBefore(today);
   }
 
   @FXML
@@ -1140,7 +1141,7 @@ public class MapEditorController extends AbsController {
                     Math.pow((nodeCircle.getCenterX() - nodeCircle.getPrevX()), 2)
                         + Math.pow((nodeCircle.getCenterY() - nodeCircle.getPrevY()), 2));
 
-           if (dist > 10) {
+            if (dist > 10) {
 
               Node oldNode = node.deepCopy();
               oldNode.setPoint(new Point2D(nodeCircle.getPrevX(), nodeCircle.getPrevY()));
@@ -1350,6 +1351,7 @@ public class MapEditorController extends AbsController {
         MapEditorLocationController controller = fxmlLoader.getController();
         controller.setData(location);
 
+        //TODO make this UX better bc switching floors and deselecting the previous node is goofy
         controller.preview.setOnMouseClicked(
             event -> {
               Node node = nodes.get(nodeID2idx.get(controller.nodeID));

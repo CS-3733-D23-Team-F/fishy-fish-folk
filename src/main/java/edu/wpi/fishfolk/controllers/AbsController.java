@@ -23,7 +23,7 @@ public abstract class AbsController {
   HashMap<String, String> mapImgURLs;
   HashMap<String, Image> images;
 
-  public static final LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
+  public static final LocalDate today = LocalDate.of(2023, Month.MAY, 1);
 
   public AbsController() {
 
