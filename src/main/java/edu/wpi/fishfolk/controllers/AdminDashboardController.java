@@ -415,7 +415,7 @@ public class AdminDashboardController {
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
-     flowerTable.setItems(getFlowerOrderRows());
+    flowerTable.setItems(getFlowerOrderRows());
   }
 
   public ObservableList<FoodOrderObservable> getFoodOrderRows() {

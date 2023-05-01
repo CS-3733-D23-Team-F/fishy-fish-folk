@@ -6,13 +6,13 @@ import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.ui.Recurring;
 import io.github.palexdev.materialfx.controls.*;
 import java.util.ArrayList;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import org.controlsfx.control.PopOver;
+import javafx.util.Duration;
 
 public class NewConferenceController extends AbsController {
   @FXML MFXButton confClearButton, confCancelButton, confSubmitButton;
@@ -24,10 +24,11 @@ public class NewConferenceController extends AbsController {
   @FXML AnchorPane confirmPane;
   @FXML MFXButton okButton;
   @FXML MFXDatePicker datePicker;
+  @FXML MFXScrollPane scrolly;
   Font oSans26;
-
   ArrayList<String> times = new ArrayList<>();
   ArrayList<Recurring> recurring = new ArrayList<>();
+  private static TranslateTransition thugShaker;
 
   public NewConferenceController() {
     super();
@@ -238,41 +239,34 @@ public class NewConferenceController extends AbsController {
                       // if (isItFree()) {
                       submit();
                       /*} else {
-                        submissionError(
-                            "There is already a meeting scheduled for this time.",
-                            confSubmitButton);
+                        submissionError("There is already a meeting scheduled for this time.", confSubmitButton);
                       }*/
                     } else {
-                      submissionError(
-                          "You must choose your setting for recurring.",
-                          confSubmitButton); // recurringDrop);
+                      submissionError("You must choose your setting for recurring.", recurringDrop);
                     }
                   } else {
-                    submissionError(
-                        "Invalid Input for number of attendees.", confSubmitButton); // numAttnBox);
+                    submissionError("Invalid Input for number of attendees.", numAttnBox);
                   }
                 } else {
-                  submissionError(
-                      "You must put in the number of attendees.", confSubmitButton); // numAttnBox);
+                  submissionError("You must put in the number of attendees.", numAttnBox);
                 }
               } else {
-                submissionError(
-                    "You must choose a date in the future.", confSubmitButton); // datePicker);
+                submissionError("You must choose a date in the future.", datePicker);
               }
             } else {
-              submissionError("You must include a date", confSubmitButton); // datePicker);
+              submissionError("You must include a date", datePicker);
             }
           } else {
-            submissionError("That's not how time works.", confSubmitButton); // endTimeDrop);
+            submissionError("That's not how time works.", endTimeDrop);
           }
         } else {
-          submissionError("You must put in a time.", confSubmitButton); // endTimeDrop);
+          submissionError("You must put in a time.", endTimeDrop);
         }
       } else {
-        submissionError("You must put in a time.", confSubmitButton); // startTimeDrop);
+        submissionError("You must put in a time.", startTimeDrop);
       }
     } else {
-      submissionError("You must select a room.", confSubmitButton); // rec1);
+      submissionError("You must select a room.", scrolly);
     }
   }
 
@@ -283,11 +277,14 @@ public class NewConferenceController extends AbsController {
    * @param node the area it will pop up next to.
    */
   private void submissionError(String error, Node node) {
-    PopOver popup = new PopOver();
-    Text popText = new Text(error);
-    popText.setFont(oSans26);
-    popup.setContentNode(popText);
-    popup.show(node);
+    if (thugShaker == null || thugShaker.getNode() != node) {
+      thugShaker = new TranslateTransition(Duration.millis(100), node);
+    }
+    thugShaker.setFromX(0f);
+    thugShaker.setCycleCount(4);
+    thugShaker.setAutoReverse(true);
+    thugShaker.setByX(15f);
+    thugShaker.playFromStart();
   }
 
   /**
