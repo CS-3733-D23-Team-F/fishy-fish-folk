@@ -229,6 +229,10 @@ public class MoveDAO implements IDAO<Move>, IProcessEdit {
 
   @Override
   public boolean updateEntry(Move entry) {
+
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getMoveID())) return false;
+
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 
