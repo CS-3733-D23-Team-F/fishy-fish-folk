@@ -215,7 +215,7 @@
                      <children>
                         <VBox alignment="CENTER" spacing="15.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Order Confirmed">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Conference Room Reserved">
                                  <font>
                                     <Font name="Open Sans Regular" size="26.0" />
                                  </font>
