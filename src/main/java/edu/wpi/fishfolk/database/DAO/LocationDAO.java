@@ -1,11 +1,9 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
-import edu.wpi.fishfolk.database.DataEditQueue;
-import edu.wpi.fishfolk.database.EntryStatus;
-import edu.wpi.fishfolk.database.IDAO;
 import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.util.NodeType;
 import java.io.*;
@@ -19,7 +17,7 @@ import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class LocationDAO implements IDAO<Location> {
+public class LocationDAO implements IDAO<Location>, ICSVNoSubtable {
 
   private final Connection dbConnection;
   private Connection dbListener;

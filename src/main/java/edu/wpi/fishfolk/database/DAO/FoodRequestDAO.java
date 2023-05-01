@@ -1,12 +1,9 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
-import edu.wpi.fishfolk.database.DataEditQueue;
-import edu.wpi.fishfolk.database.EntryStatus;
-import edu.wpi.fishfolk.database.IDAO;
-import edu.wpi.fishfolk.database.IHasSubtable;
 import edu.wpi.fishfolk.database.TableEntry.FoodRequest;
 import edu.wpi.fishfolk.ui.FormStatus;
 import edu.wpi.fishfolk.ui.NewFoodItem;
@@ -21,7 +18,8 @@ import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodItem> {
+public class FoodRequestDAO
+    implements IDAO<FoodRequest>, IHasSubtable<NewFoodItem>, ICSVWithSubtable {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -537,10 +535,6 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
   }
 
   @Override
-  public boolean importCSV(String filepath, boolean backup) {
-    return false;
-  }
-
   public boolean importCSV(String tableFilepath, String subtableFilepath, boolean backup) {
 
     String[] pathArr = tableFilepath.split("/");

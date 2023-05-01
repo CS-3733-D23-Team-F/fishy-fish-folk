@@ -459,8 +459,8 @@ public class Fdb {
    * Import a CSV file into a table
    *
    * @param tableEntryType The type of table to import into
-   * @param tableFilepath
-   * @param backup
+   * @param tableFilepath Filepath of the main table
+   * @param backup Backup the current db to a CSV?
    * @return true on success, false otherwise
    */
   public boolean importCSV(String tableFilepath, boolean backup, TableEntryType tableEntryType) {
@@ -481,17 +481,8 @@ public class Fdb {
       case EDGE:
         return edgeTable.importCSV(tableFilepath, backup);
 
-      case FOOD_REQUEST:
-        return foodRequestTable.importCSV(tableFilepath, backup);
-
-      case SUPPLY_REQUEST:
-        return supplyRequestTable.importCSV(tableFilepath, backup);
-
       case FURNITURE_REQUEST:
         return furnitureRequestTable.importCSV(tableFilepath, backup);
-
-      case FLOWER_REQUEST:
-        return flowerRequestTable.importCSV(tableFilepath, backup);
 
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.importCSV(tableFilepath, backup);
@@ -501,18 +492,12 @@ public class Fdb {
 
       case USER_ACCOUNT:
         return userAccountTable.importCSV(tableFilepath, backup);
-
-      case SIGNAGE_PRESET:
-        return signagePresetTable.importCSV(tableFilepath, backup);
-
-      case ALERT:
-        return alertTable.importCSV(tableFilepath, backup);
     }
     return false;
   }
 
   /**
-   * Potentially temporary secondary declaration of importCSV for classes with subtables.
+   * Secondary declaration of importCSV for classes with subtables.
    *
    * @param tableFilepath Filepath of the main table
    * @param subtableFilepath Filepath of the subtable
@@ -614,9 +599,6 @@ public class Fdb {
 
       case SIGNAGE_PRESET:
         return signagePresetTable.exportCSV(directory);
-
-      case ALERT:
-        return alertTable.exportCSV(directory);
     }
     return false;
   }

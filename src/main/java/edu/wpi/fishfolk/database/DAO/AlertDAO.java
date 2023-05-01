@@ -1,11 +1,9 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
-import edu.wpi.fishfolk.database.DataEditQueue;
-import edu.wpi.fishfolk.database.EntryStatus;
-import edu.wpi.fishfolk.database.IDAO;
 import edu.wpi.fishfolk.database.TableEntry.Alert;
 import edu.wpi.fishfolk.util.AlertType;
 import java.io.*;
@@ -478,17 +476,6 @@ public class AlertDAO implements IDAO<Alert> {
 
     // On success
     return true;
-  }
-
-  // TODO import and export alert table
-  @Override
-  public boolean importCSV(String filepath, boolean backup) {
-    return false;
-  }
-
-  @Override
-  public boolean exportCSV(String directory) {
-    return false;
   }
 
   public Alert getLatestAlert() {
