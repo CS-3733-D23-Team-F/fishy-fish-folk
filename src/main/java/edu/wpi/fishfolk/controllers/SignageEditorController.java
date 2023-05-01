@@ -296,11 +296,12 @@ public class SignageEditorController extends AbsController {
         listTexts
             .get(i)
             .setText(
-                preset.getSigns()[i].getLabel()); // otherwise set the i'th text to the i'th Sign's name
+                preset.getSigns()[i]
+                    .getLabel()); // otherwise set the i'th text to the i'th Sign's name
         listTexts
-                .get(i)
-                .setValue(
-                        preset.getSigns()[i].getLabel()); // the same thing again but with "value" instead
+            .get(i)
+            .setValue(
+                preset.getSigns()[i].getLabel()); // the same thing again but with "value" instead
         listIcons
             .get(i)
             .setRotate(
