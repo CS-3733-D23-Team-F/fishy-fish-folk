@@ -532,6 +532,27 @@ public class MapEditorController extends AbsController {
           dbConnection.importCSV(movePath, false, TableEntryType.MOVE);
           dbConnection.importCSV(edgePath, false, TableEntryType.EDGE);
 
+          // clear everything and re-init
+
+          selectedNodes.clear();
+          selectedEdges.clear();
+
+          nodes.clear();
+          nodeID2idx.clear();
+
+          edges.clear();
+
+          locations.clear();
+          longname2idx.clear();
+
+          moves.clear();
+
+          editQueue.clear();
+          nodesOnFloor.clear();
+
+          locationTypeGroups.clear();
+          visibleNodeTypes.clear();
+
           initialize();
         });
 
