@@ -22,12 +22,12 @@
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#f1f1f1" layoutX="219.0" layoutY="282.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assistant Lead Software Engineer">
+                        <Text fill="#f1f1f1" layoutX="219.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assistant Lead Software Engineer">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#f1f1f1" layoutX="116.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science Bachelor's Degree">
+                        <Text fill="#f1f1f1" layoutX="116.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science Bachelor's Degree">
                            <font>
                               <Font size="24.0" />
                            </font>

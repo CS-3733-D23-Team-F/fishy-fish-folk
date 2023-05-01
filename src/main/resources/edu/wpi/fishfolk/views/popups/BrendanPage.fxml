@@ -13,7 +13,7 @@
    <children>
       <HBox prefHeight="358.0" prefWidth="1080.0">
          <children>
-            <VBox minWidth="1080.0">
+            <VBox minWidth="828.0" prefHeight="347.0" prefWidth="828.0">
                <children>
                   <AnchorPane prefHeight="359.0" prefWidth="1080.0">
                      <children>
@@ -46,19 +46,19 @@
       </HBox>
       <HBox prefHeight="362.0" prefWidth="1080.0">
          <children>
-            <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
+            <AnchorPane minWidth="827.0" prefHeight="188.0" prefWidth="827.0">
                <children>
-                  <Text fill="#f1f1f1" layoutX="298.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Lobster" wrappingWidth="253.94000244140625">
+                  <Text fill="#f1f1f1" layoutX="304.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Lobster" wrappingWidth="253.94000244140625">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text fill="#f1f1f1" layoutX="205.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Traveling, Hiking, or both " wrappingWidth="451.27325439453125">
+                  <Text fill="#f1f1f1" layoutX="205.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Traveling, Hiking, or both " wrappingWidth="451.27325439453125">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text fill="#f1f1f1" layoutX="72.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: ‘Ours is not to reason why, ours is but to do and die’ by Alfred Lord Tennyson" textAlignment="CENTER" wrappingWidth="737.2732543945312">
+                  <Text fill="#f1f1f1" layoutX="71.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: ‘Ours is not to reason why, ours is but to do and die’ by Alfred Lord Tennyson" textAlignment="CENTER" wrappingWidth="737.2732543945312">
                      <font>
                         <Font size="24.0" />
                      </font>

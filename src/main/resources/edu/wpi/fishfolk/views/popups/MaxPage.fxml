@@ -27,7 +27,7 @@
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#f1f1f1" layoutX="135.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science Bachelor's Degree">
+                        <Text fill="#f1f1f1" layoutX="137.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science Bachelor's Degree">
                            <font>
                               <Font size="24.0" />
                            </font>
