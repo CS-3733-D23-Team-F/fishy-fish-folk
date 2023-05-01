@@ -8,6 +8,7 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -38,15 +39,20 @@ public class RootController {
   @FXML StackPane sidebar;
   @FXML HBox serviceBox;
   @FXML VBox buttonsBox;
+
+  @FXML Label username, welcome;
   // @FXML MFXButton moveEditorNav;
   // @FXML AnchorPane sideBar;
 
   @FXML
   public void initialize() throws IOException {
-
     updatePermissionsAccess();
 
     SharedResources.setRootController(this);
+
+    // if (Screen.values().equals(Screen.ADMIN_DASHBOARD)) {
+
+    // }
 
     viewOrders.setOnMouseClicked(
         event -> {

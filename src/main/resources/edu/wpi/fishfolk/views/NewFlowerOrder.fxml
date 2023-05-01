@@ -26,17 +26,17 @@
                             <children>
                                 <MFXButton fx:id="springTab" minWidth="390.0" style="-fx-background-color: #012d5a;" text="Spring Collection" textFill="WHITE">
                                     <font>
-                                        <Font name="Open Sans Regular" size="26.0" />
+                                        <Font name="Open Sans Bold" size="23.0" />
                                     </font>
                                 </MFXButton>
                                 <MFXButton fx:id="gratitudeTab" minWidth="390.0" style="-fx-background-color: #012d5a;" text="Gratitude Collection" textFill="WHITE">
                                     <font>
-                                        <Font name="Open Sans Regular" size="26.0" />
+                                        <Font name="Open Sans Bold" size="23.0" />
                                     </font>
                                 </MFXButton>
                                 <MFXButton fx:id="sympathyTab" minWidth="390.0" style="-fx-background-color: #012d5a;" text="Sympathy Collection" textFill="WHITE">
                                     <font>
-                                        <Font name="Open Sans Regular" size="26.0" />
+                                        <Font name="Open Sans Bold" size="23.0" />
                                     </font>
                                 </MFXButton>
                             </children>
@@ -68,13 +68,13 @@
                                                                <children>
                                                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Chocolate Cake">
                                                                                       <font>
-                                                                                          <Font name="Open Sans Regular" size="26.0" />
+                                                                                          <Font name="Open Sans Bold" size="24.0" />
                                                                                       </font>
                                                                                   </Text>
                                                                   <HBox HBox.hgrow="ALWAYS" />
                                                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.50" textAlignment="RIGHT">
                                                                                       <font>
-                                                                                          <Font name="Open Sans Regular" size="26.0" />
+                                                                                          <Font name="Open Sans Bold" size="24.0" />
                                                                                       </font>
                                                                                   </Text>
                                                                </children>
@@ -86,7 +86,7 @@
                                                                             </Text>
                                                                             <MFXButton prefHeight="43.0" prefWidth="330.0" style="-fx-background-color: #012d5a;" text="Add to Order" textFill="WHITE">
                                                                                 <font>
-                                                                                    <Font name="Open Sans Regular" size="20.0" />
+                                                                                    <Font name="Open Sans Bold" size="23.0" />
                                                                                 </font>
                                                                             </MFXButton>
                                                          </children>
@@ -116,12 +116,12 @@
                             <children>
                                 <MFXButton fx:id="cancelButton" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #012d5a;" text="Cancel" textFill="WHITE" HBox.hgrow="ALWAYS">
                                     <font>
-                                        <Font name="Open Sans Regular" size="26.0" />
+                                        <Font name="Open Sans Bold" size="23.0" />
                                     </font>
                                 </MFXButton>
                                 <MFXButton fx:id="clearButton" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #012d5a;" text="Clear" textFill="WHITE" HBox.hgrow="ALWAYS">
                                     <font>
-                                        <Font name="Open Sans Regular" size="26.0" />
+                                        <Font name="Open Sans Bold" size="23.0" />
                                     </font>
                                     <HBox.margin>
                                         <Insets left="150.0" />
@@ -129,7 +129,7 @@
                                 </MFXButton>
                                 <MFXButton fx:id="checkoutButton" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #f0Bf4c;" text="Checkout" textFill="#012d5a" HBox.hgrow="ALWAYS">
                                     <font>
-                                        <Font name="Open Sans Regular" size="26.0" />
+                                        <Font name="Open Sans Bold" size="23.0" />
                                     </font>
                                     <HBox.margin>
                                         <Insets left="350.0" />
@@ -161,7 +161,7 @@
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Chocolate Cake" wrappingWidth="300.0">
                                                          <font>
-                                                            <Font name="Open Sans Regular" size="26.0" />
+                                                            <Font name="Open Sans Bold" size="24.0" />
                                                          </font>
                                                       </Text>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.50" wrappingWidth="79.0">
@@ -190,7 +190,7 @@
                                                       </Text>
                                                       <MFXButton fx:id="removeButton" prefHeight="55.0" prefWidth="280.0" style="-fx-background-color: #900000;" text="Remove from Order" textFill="WHITE">
                                                          <font>
-                                                            <Font name="Open Sans Regular" size="26.0" />
+                                                            <Font name="Open Sans Bold" size="24.0" />
                                                          </font>
                                                          <HBox.margin>
                                                             <Insets left="15.0" />
@@ -234,13 +234,13 @@
                                              <children>
                                                 <MFXButton fx:id="backButton" alignment="CENTER" prefHeight="55.0" prefWidth="225.0" style="-fx-background-color: #012d5a;" text="Back to Menu" textFill="WHITE">
                                                    <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
+                                                      <Font name="Open Sans Bold" size="24.0" />
                                                    </font>
                                                 </MFXButton>
                                                 <HBox HBox.hgrow="ALWAYS" />
                                                 <MFXButton fx:id="submitButton" alignment="CENTER" prefHeight="55.0" prefWidth="225.0" style="-fx-background-color: #f0Bf4c;" text="Confirm Order" textFill="#012d5a">
                                                    <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
+                                                      <Font name="Open Sans Bold" size="24.0" />
                                                    </font>
                                                    <HBox.margin>
                                                       <Insets />
