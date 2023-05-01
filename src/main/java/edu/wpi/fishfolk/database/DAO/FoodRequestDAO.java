@@ -540,6 +540,8 @@ public class FoodRequestDAO
 
     String[] pathArr = tableFilepath.split("/");
 
+    HashMap<LocalDateTime, FoodRequest> backupMap = new HashMap<>(tableMap);
+
     if (backup) {
 
       // tableFilepath except for last part (actual file name)
@@ -617,6 +619,25 @@ public class FoodRequestDAO
 
     } catch (Exception e) {
       System.out.println(e.getMessage());
+
+      tableMap.clear();
+
+      try {
+
+        int threadCount = backupMap.size() - Thread.activeCount();
+
+        for (Map.Entry<LocalDateTime, FoodRequest> entry : backupMap.entrySet()) {
+          insertEntry(entry.getValue());
+          Thread.sleep(20);
+        }
+
+        while (Thread.activeCount() > threadCount) {
+          Thread.sleep(20);
+        }
+
+      } catch (InterruptedException ignore) {
+      }
+
       return false;
     }
   }

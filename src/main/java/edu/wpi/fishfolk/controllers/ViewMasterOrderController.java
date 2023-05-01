@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -18,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Paint;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import org.controlsfx.control.PopOver;
 
 public class ViewMasterOrderController extends AbsController {
   @FXML MFXButton refreshButton;
@@ -571,7 +573,25 @@ public class ViewMasterOrderController extends AbsController {
     String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
     fileChooser.setTitle("Select the Food Request Subtable CSV file");
     String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST);
+
+    String message;
+    if (dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST)) {
+      message = "Import successful";
+    } else {
+      message = "Error importing CSVs, please try again";
+    }
+
+    PopOver errorPopup = new PopOver();
+
+    Label label = new Label(message);
+    label.setStyle(" -fx-background-color: white;");
+    label.setMinWidth(220);
+    label.setMinHeight(30);
+
+    errorPopup.setContentNode(label);
+    errorPopup.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+    errorPopup.show(foodImportCSVButton);
+
     refreshOrders();
   }
 
