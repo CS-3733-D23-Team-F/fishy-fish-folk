@@ -40,6 +40,6 @@ public class Location {
 
   @Override
   public String toString() {
-    return "[" + longName + "] [" + shortName + "] [" + nodeType + "].";
+    return "[" + longName + "; " + shortName + "; " + nodeType + "]";
   }
 }

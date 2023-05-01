@@ -3,9 +3,9 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -164,7 +164,7 @@
       <VBox alignment="CENTER" spacing="20.0">
          <HBox alignment="CENTER" maxWidth="1020.0" spacing="20.0">
             <children>
-               <ScrollPane hbarPolicy="NEVER" maxHeight="700.0" minHeight="300.0" minWidth="1020.0" style="-fx-border-radius: 20; -fx-border-width: 3;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+               <MFXScrollPane styleClass="newScrolls">
                   <content>
                      <VBox style="-fx-border-radius: 20; -fx-border-width: 3;">
                         <children>
@@ -321,7 +321,7 @@
                         </children>
                      </VBox>
                   </content>
-               </ScrollPane>
+               </MFXScrollPane>
             </children>
             <VBox.margin>
                <Insets />

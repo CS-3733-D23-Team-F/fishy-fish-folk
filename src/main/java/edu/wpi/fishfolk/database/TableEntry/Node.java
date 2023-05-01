@@ -45,8 +45,24 @@ public class Node {
     return getPoint().getX();
   }
 
+  public void setX(double x) {
+    pointProperty.setValue(new Point2D(x, getY()));
+  }
+
+  public void incrX(double dx) {
+    setX(getX() + dx);
+  }
+
   public double getY() {
     return getPoint().getY();
+  }
+
+  public void setY(double y) {
+    pointProperty.setValue(new Point2D(getX(), y));
+  }
+
+  public void incrY(double dy) {
+    setY(getY() + dy);
   }
 
   public Point2D getPoint() {
@@ -55,6 +71,14 @@ public class Node {
 
   public void setPoint(Point2D point) {
     this.pointProperty.setValue(point);
+  }
+
+  public Node deepCopy() {
+    return new Node(this.nodeID, this.getPoint(), this.floor, this.building);
+  }
+
+  public String toString() {
+    return "[nodeID: " + nodeID + "; point: " + getPoint() + "]";
   }
 
   public void addMove(Location location, LocalDate date) {

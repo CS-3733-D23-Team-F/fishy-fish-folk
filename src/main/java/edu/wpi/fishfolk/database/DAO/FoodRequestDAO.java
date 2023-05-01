@@ -198,6 +198,7 @@ public class FoodRequestDAO implements IDAO<FoodRequest>, IHasSubtable<NewFoodIt
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[FoodRequestDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 

@@ -32,7 +32,7 @@
       <VBox alignment="TOP_CENTER" StackPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" VBox.vgrow="ALWAYS" />
-            <VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="670.0" maxWidth="500.0" minHeight="670.0" minWidth="500.0" opacity="0.9" spacing="10.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30;">
+            <VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="670.0" maxWidth="500.0" minHeight="670.0" minWidth="500.0" opacity="0.95" spacing="10.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30;">
                <children>
                   <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -105,7 +105,7 @@
                         <Font name="Open Sans Regular" size="16.0" />
                      </font>
                   </Label>
-                  <MFXButton fx:id="loginBtn" buttonType="RAISED" depthLevel="LEVEL1" minHeight="50.0" minWidth="225.0" style="-fx-background-color: #012D5A; -fx-background-radius: 5;" text="Login" textFill="WHITE">
+                  <MFXButton fx:id="loginBtn" buttonType="RAISED" depthLevel="LEVEL1" minHeight="55.0" minWidth="220.0" style="-fx-background-color: #012D5A; -fx-background-radius: 5;" text="Login" textFill="WHITE">
                      <font>
                         <Font name="Open Sans Bold" size="24.0" />
                      </font>
@@ -113,7 +113,7 @@
                         <Insets />
                      </VBox.margin>
                   </MFXButton>
-                  <MFXButton fx:id="GuestLoginBtn" buttonType="RAISED" depthLevel="LEVEL1" minHeight="50.0" minWidth="225.0" style="-fx-background-color: #012D5A; -fx-background-radius: 5;" text="Login as Guest" textFill="WHITE">
+                  <MFXButton fx:id="GuestLoginBtn" buttonType="RAISED" depthLevel="LEVEL1" minHeight="55.0" minWidth="220.0" style="-fx-background-color: #012D5A; -fx-background-radius: 5;" text="Login as Guest" textFill="WHITE">
                      <font>
                         <Font name="Open Sans Bold" size="24.0" />
                      </font>

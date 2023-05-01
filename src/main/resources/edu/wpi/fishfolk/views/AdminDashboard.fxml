@@ -21,7 +21,52 @@
 
 <VBox minHeight="670.0" minWidth="1080.0" style="-fx-background-color: #F4F4F4;" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AdminDashboardController">
    <children>
-      <HBox style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
+      <HBox alignment="TOP_CENTER" style="-fx-background-color: #EEEEEE;" VBox.vgrow="ALWAYS">
+         <children>
+            <StackPane>
+               <children>
+                  <MFXButton fx:id="outstandingFilter" buttonType="RAISED" minHeight="50.0" minWidth="300.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Outstanding Service" textFill="WHITE">
+                     <font>
+                        <Font name="Open Sans Bold" size="17.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXButton fx:id="unassignedTasks" buttonType="RAISED" disable="true" minHeight="50.0" minWidth="300.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Unassigned Tasks" textFill="WHITE" visible="false">
+                     <font>
+                        <Font name="Open Sans Bold" size="17.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </StackPane>
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+               <children>
+                  <MFXButton fx:id="toMapEditor" buttonType="RAISED" minHeight="50.0" minWidth="225.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Map Editor" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="20.0" />
+                     </font>
+                  </MFXButton>
+                  <HBox HBox.hgrow="ALWAYS" />
+                  <MFXButton fx:id="toMoveEditor" buttonType="RAISED" minHeight="50.0" minWidth="225.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Move Editor" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="20.0" />
+                     </font>
+                  </MFXButton>
+                  <HBox HBox.hgrow="ALWAYS" />
+                  <MFXButton fx:id="toSignageEditor" buttonType="RAISED" minHeight="50.0" minWidth="225.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Signage Editor" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans Bold" size="20.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+               <HBox.margin>
+                  <Insets left="25.0" />
+               </HBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="25.0" right="25.0" top="25.0" />
+         </padding>
+      </HBox>
+      <HBox style="-fx-background-color: #EEEEEE;" VBox.vgrow="ALWAYS">
          <children>
             <VBox>
                <children>
@@ -34,7 +79,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <MFXScrollPane fx:id="scroll" hbarPolicy="NEVER" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                  <MFXScrollPane hbarPolicy="NEVER" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" styleClass="newScrolls" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                      <content>
                         <GridPane fx:id="grid">
                           <rowConstraints>
@@ -45,7 +90,7 @@
                   </MFXScrollPane>
                </children>
                <HBox.margin>
-                  <Insets bottom="50.0" left="50.0" top="50.0" />
+                  <Insets bottom="25.0" left="25.0" top="25.0" />
                </HBox.margin>
             </VBox>
             <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
@@ -61,15 +106,15 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" minHeight="300.0" minWidth="700.0" prefHeight="300.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
+                        <HBox alignment="CENTER" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <TabPane fx:id="tabPane" minHeight="300.0" minWidth="700.0" prefHeight="300.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+                              <TabPane fx:id="tabPane" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
                                  <tabs>
                                     <Tab text="Food Orders">
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="foodTable" prefHeight="400.0" prefWidth="719.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="foodTable" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="foodid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="foodtotalprice" prefWidth="75.0" text="Total Price" />
@@ -93,7 +138,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="supplyTable" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="supplyTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="supplyid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="supplystatus" prefWidth="75.0" text="Form Status" />
@@ -115,7 +160,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="flowerTable" minHeight="270.0" minWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="flowerTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="flowerid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="flowertotalprice" prefWidth="75.0" text="Total Price" />
@@ -138,7 +183,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="furnitureTable" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="furnitureTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
@@ -176,9 +221,9 @@
                                     </Label>
                                  </children>
                               </HBox>
-                              <VBox VBox.vgrow="ALWAYS">
+                              <VBox style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <MFXScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="100.0" minWidth="475.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                                    <MFXScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="100.0" minWidth="475.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" styleClass="newScrolls" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                                        <VBox.margin>
                                           <Insets left="10.0" right="10.0" top="10.0" />
                                        </VBox.margin>
@@ -211,59 +256,6 @@
                               <Insets />
                            </HBox.margin>
                         </VBox>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <StackPane>
-                                 <children>
-                                    <MFXButton fx:id="outstandingFilter" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Outstanding Service" textFill="WHITE">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="17.0" />
-                                       </font>
-                                    </MFXButton>
-                                    <MFXButton fx:id="unassignedTasks" buttonType="RAISED" disable="true" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a;" text="Unassigned Tasks" textFill="WHITE" visible="false">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="17.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </StackPane>
-                              <HBox VBox.vgrow="ALWAYS" />
-                              <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-                                 <children>
-                                    <MFXButton fx:id="toMapEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Map Editor" textFill="#012d5a">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="20.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </MFXButton>
-                                    <MFXButton fx:id="toMoveEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Move Editor" textFill="#012d5a">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="20.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </MFXButton>
-                                    <MFXButton fx:id="toSignageEditor" buttonType="RAISED" minHeight="50.0" minWidth="200.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Signage Editor" textFill="#012d5a">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="20.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </MFXButton>
-                                 </children>
-                              </VBox>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </VBox>
                      </children>
                      <VBox.margin>
                         <Insets top="25.0" />
@@ -271,7 +263,7 @@
                   </HBox>
                </children>
                <HBox.margin>
-                  <Insets bottom="50.0" left="25.0" right="50.0" top="50.0" />
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                </HBox.margin>
             </VBox>
          </children>
