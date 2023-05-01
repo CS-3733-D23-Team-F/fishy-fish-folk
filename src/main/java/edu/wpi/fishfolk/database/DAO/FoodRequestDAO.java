@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.concurrent.Task;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
@@ -540,7 +541,7 @@ public class FoodRequestDAO
 
     String[] pathArr = tableFilepath.split("/");
 
-    HashMap<LocalDateTime, FoodRequest> backupMap = new HashMap<>(tableMap);
+    final HashMap<LocalDateTime, FoodRequest> backupMap = new HashMap<>(tableMap);
 
     if (backup) {
 
@@ -618,26 +619,52 @@ public class FoodRequestDAO
       return true;
 
     } catch (Exception e) {
+
       System.out.println(e.getMessage());
 
+      // something went wrong:
+
+      // revert local copy to backup made before inserting
       tableMap.clear();
+      tableMap.putAll(backupMap);
 
+      // clear the database
       try {
-
-        int threadCount = backupMap.size() - Thread.activeCount();
-
-        for (Map.Entry<LocalDateTime, FoodRequest> entry : backupMap.entrySet()) {
-          insertEntry(entry.getValue());
-          Thread.sleep(20);
-        }
-
-        while (Thread.activeCount() > threadCount) {
-          Thread.sleep(20);
-        }
-
-      } catch (InterruptedException ignore) {
+        dbConnection
+            .createStatement()
+            .executeUpdate(
+                "DELETE FROM "
+                    + dbConnection.getSchema()
+                    + "."
+                    + tableName
+                    + ";"
+                    + "ALTER SEQUENCE foodrequest_fooditems_seq RESTART WITH 1;");
+      } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
       }
 
+      // fill in database from backup
+      // thread reads from backup in case tablemap changes, which will update database on its own
+
+      Task<Integer> task =
+          new Task<>() {
+            // return how many backup entries are inserted
+            @Override
+            protected Integer call() {
+              int count = 0;
+              for (Map.Entry<LocalDateTime, FoodRequest> entry : backupMap.entrySet()) {
+                if (insertEntry(entry.getValue())) count++;
+              }
+              return count;
+            }
+          };
+
+      Thread th = new Thread(task);
+      //thread should terminate after completing the task
+      th.setDaemon(true);
+      th.start();
+
+      // failed to import correctly
       return false;
     }
   }
