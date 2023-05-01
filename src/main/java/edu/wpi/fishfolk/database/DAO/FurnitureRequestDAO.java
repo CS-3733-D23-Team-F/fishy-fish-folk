@@ -190,6 +190,7 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest>, ICSVNoSubtab
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[FurnitureRequestDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 

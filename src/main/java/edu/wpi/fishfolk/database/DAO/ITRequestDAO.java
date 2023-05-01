@@ -173,6 +173,7 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[ITRequestDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 

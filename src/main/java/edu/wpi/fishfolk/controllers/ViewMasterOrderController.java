@@ -64,6 +64,7 @@ public class ViewMasterOrderController extends AbsController {
       conferenceroom,
       conferencestart,
       conferenceend,
+      conferenceDateReserved,
       conferencebooker,
       conferenceattendees,
       conferencerecurring,
@@ -195,6 +196,8 @@ public class ViewMasterOrderController extends AbsController {
         new PropertyValueFactory<ConferenceRequestObservable, String>("conferencestart"));
     conferenceend.setCellValueFactory(
         new PropertyValueFactory<ConferenceRequestObservable, String>("conferenceend"));
+    conferenceDateReserved.setCellValueFactory(
+        new PropertyValueFactory<ConferenceRequestObservable, String>("conferenceDateReserved"));
     conferencebooker.setCellValueFactory(
         new PropertyValueFactory<ConferenceRequestObservable, String>("conferencebooker"));
     conferenceattendees.setCellValueFactory(

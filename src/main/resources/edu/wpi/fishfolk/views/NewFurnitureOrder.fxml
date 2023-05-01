@@ -4,9 +4,9 @@
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -27,8 +27,8 @@
                      <Font name="Open Sans SemiBold" size="26.0" />
                   </font>
                </Text>
-                <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a; -fx-border-width: 3;" vbarPolicy="ALWAYS">
-                    <content>
+                     <MFXScrollPane styleClass="newScrolls">
+                        <content>
                         <VBox>
                             <children>
                            <HBox>
@@ -78,8 +78,8 @@
                            </HBox>
                             </children>
                      </VBox>
-                    </content>
-                </ScrollPane>
+                        </content>
+                     </MFXScrollPane>
                   </children>
                </VBox>
                <VBox prefHeight="200.0" prefWidth="100.0">
@@ -89,8 +89,8 @@
                      <Font name="Open Sans SemiBold" size="26.0" />
                   </font>
                </Text>
-               <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-color: #012d5a; -fx-border-width: 3; -fx-border-radius: 5;" vbarPolicy="ALWAYS">
-                  <content>
+                     <MFXScrollPane styleClass="newScrolls">
+                        <content>
                      <VBox minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="620.0">
                         <children>
                            <HBox>
@@ -149,8 +149,8 @@
                            </HBox>
                         </children>
                      </VBox>
-                  </content>
-               </ScrollPane>
+                        </content>
+                     </MFXScrollPane>
                   </children>
                </VBox>
             </children>
@@ -185,23 +185,23 @@
    </HBox>
    <HBox alignment="CENTER" maxWidth="1020.0">
       <children>
-         <MFXButton fx:id="cancelButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #012d5a;" text="CANCEL" textFill="WHITE">
+         <MFXButton fx:id="cancelButton" prefHeight="55.0" prefWidth="220.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #012d5a;" text="Cancel" textFill="WHITE">
             <font>
-               <Font name="Open Sans Bold" size="26.0" />
+               <Font name="Open Sans Bold" size="24.0" />
             </font>
          </MFXButton>
          <VBox HBox.hgrow="ALWAYS" />
-         <MFXButton fx:id="clearButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #012d5a;" text="CLEAR" textFill="WHITE">
+         <MFXButton fx:id="clearButton" prefHeight="55.0" prefWidth="220.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #012d5a;" text="Clear" textFill="WHITE">
             <font>
-               <Font name="Open Sans Bold" size="26.0" />
+               <Font name="Open Sans Bold" size="24.0" />
             </font>
          </MFXButton>
          <VBox HBox.hgrow="ALWAYS" />
                <VBox HBox.hgrow="ALWAYS" />
                <VBox HBox.hgrow="ALWAYS" />
-         <MFXButton fx:id="furnituresubmitButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #f0bf4c;" text="SUBMIT" textFill="#012d5a">
+         <MFXButton fx:id="furnituresubmitButton" prefHeight="55.0" prefWidth="220.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #f0bf4c;" text="Submit" textFill="#012d5a">
             <font>
-               <Font name="Open Sans Bold" size="26.0" />
+               <Font name="Open Sans Bold" size="24.0" />
             </font>
             <HBox.margin>
                <Insets />

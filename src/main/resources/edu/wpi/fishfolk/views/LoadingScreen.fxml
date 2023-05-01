@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="stacks" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.LoadingScreenController">
+   <children>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="evolve" stylesheets="@../Styles/style.css">
+         <children>
+            <StackPane>
+               <children>
+                  <ImageView fx:id="evolved" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../images/NavigationBar/magikarp-evolve.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="evolving" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../images/NavigationBar/Untitled.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="evolvedA" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../images/FFF.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="defaultForm" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/NavigationBar/magikarp-f.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="150.0" />
+               </VBox.margin>
+            </StackPane>
+         </children>
+         <padding>
+            <Insets left="15.0" right="15.0" top="100.0" />
+         </padding>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </VBox>
+      <HBox fx:id="textBox" alignment="CENTER" maxHeight="108.0" maxWidth="1050.0" prefHeight="108.0" prefWidth="1050.0" style="-fx-border-color: #64646c; -fx-border-width: 2; -fx-border-radius: 5;">
+         <children>
+            <HBox alignment="CENTER" style="-fx-border-color: #fff76d; -fx-border-width: 2; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER" style="-fx-background-color: #64646c; -fx-border-width: 2; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="5.0" left="15.0" right="55.0" top="5.0" />
+                     </padding>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" maxHeight="88.0" maxWidth="927.0" minHeight="88.0" minWidth="927.0" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="loading" text="What?&#10;MAGIKARP is evolving!" textFill="#64646c">
+                                 <font>
+                                    <Font name="Lucida Console" size="36.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="35.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <Polygon fill="#eeeeee" points="-13.0, 40.0, 15.0, 40.0, 0.0, 12.0" rotate="180.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                           <HBox.margin>
+                              <Insets left="15.0" top="30.0" />
+                           </HBox.margin>
+                        </Polygon>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+         </padding>
+         <StackPane.margin>
+            <Insets bottom="15.0" />
+         </StackPane.margin>
+      </HBox>
+   </children>
+</StackPane>

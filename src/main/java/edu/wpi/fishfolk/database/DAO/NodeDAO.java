@@ -4,6 +4,10 @@ import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
+import edu.wpi.fishfolk.database.DataEditQueue;
+import edu.wpi.fishfolk.database.EntryStatus;
+import edu.wpi.fishfolk.database.IDAO;
+import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Node;
 import java.io.*;
 import java.sql.*;
@@ -15,7 +19,7 @@ import lombok.Getter;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
+public class NodeDAO implements IDAO<Node>, ICSVNoSubtable, IProcessEdit {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -26,7 +30,8 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
   private final HashMap<Integer, Node> tableMap;
   private final DataEditQueue<Node> dataEditQueue;
 
-  private final HashSet<Integer> freeIDs;
+  private final Stack<Integer> freeIDs;
+  private int maxID = 4000;
   @Getter private int numNodes;
 
   /** DAO for Node table in PostgreSQL database. */
@@ -36,7 +41,7 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
     this.headers = new ArrayList<>(List.of("id", "x", "y", "floor", "building"));
     this.tableMap = new HashMap<>(800); // a little more than (3000-100)/5 * 4/3 = 730
     this.dataEditQueue = new DataEditQueue<>();
-    freeIDs = new HashSet<>(800);
+    freeIDs = new Stack<>();
 
     init(false);
     prepareListener();
@@ -46,7 +51,7 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
   @Override
   public void init(boolean drop) {
 
-    for (int i = 100; i < 4000; i += 5) {
+    for (int i = maxID; i >= 100; i -= 5) {
       freeIDs.add(i);
     }
 
@@ -101,6 +106,8 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
       preparedGetAll.execute();
       ResultSet results = preparedGetAll.getResultSet();
 
+      HashSet<Integer> takenIDs = new HashSet<>();
+
       // For each Node in the results, create a new Node object and put it in the local table
       while (results.next()) {
         Node node =
@@ -110,8 +117,11 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
                 results.getString(4),
                 results.getString(5));
         tableMap.put(node.getNodeID(), node);
+        takenIDs.add(node.getNodeID());
         numNodes++;
       }
+
+      freeIDs.removeIf(takenIDs::contains);
 
     } catch (SQLException | NumberFormatException e) {
       System.out.println(e.getMessage());
@@ -119,6 +129,21 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
   }
 
   @Override
+  public void processEdit(DataEdit<Object> edit) {
+
+    switch (edit.getType()) {
+      case INSERT:
+        insertEntry((Node) edit.getNewEntry());
+        break;
+      case REMOVE:
+        removeEntry((int) edit.getNewEntry());
+        break;
+      case UPDATE:
+        updateEntry((Node) edit.getNewEntry());
+        break;
+    }
+  }
+
   public void prepareListener() {
 
     try {
@@ -175,6 +200,7 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[NodeDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
@@ -199,8 +225,8 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
     // Mark entry Node status as NEW
     entry.setStatus(EntryStatus.NEW);
 
-    // record that ID is taken
-    freeIDs.remove(entry.getNodeID());
+    // ensure that ID is taken if not already
+    freeIDs.remove((Integer) entry.getNodeID());
     numNodes++;
 
     // Push an INSERT to the data edit stack, update the db if the batch limit has been reached
@@ -264,7 +290,8 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
     }
 
     // free up id
-    freeIDs.add(nodeID);
+
+    freeIDs.push(nodeID);
     numNodes--;
 
     // Get entry from local table
@@ -540,7 +567,7 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
                 parts[4]);
 
         // record that id is taken
-        freeIDs.remove(n.getNodeID());
+        freeIDs.remove(Integer.valueOf(n.getNodeID()));
 
         // store node in local table
         tableMap.put(n.getNodeID(), n);
@@ -600,11 +627,19 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable {
   }
 
   /**
-   * Gets the next free id but does not reserve it.
+   * Gets the next free id, removing it from usage. IDs are only put back when the node is removed.
    *
-   * @return
+   * @return a unique id
    */
   public int getNextID() {
-    return freeIDs.iterator().next();
+
+    if (freeIDs.isEmpty()) {
+      // add 200 new ids if empty
+      for (int i = maxID + 1000; i >= maxID; i -= 5) {
+        freeIDs.push(i);
+      }
+      maxID += 1000;
+    }
+    return freeIDs.pop();
   }
 }

@@ -180,6 +180,7 @@ public class SupplyRequestDAO
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[SupplyRequestDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 

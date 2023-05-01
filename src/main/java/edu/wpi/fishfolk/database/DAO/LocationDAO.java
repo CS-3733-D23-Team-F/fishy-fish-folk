@@ -4,6 +4,10 @@ import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
+import edu.wpi.fishfolk.database.DataEditQueue;
+import edu.wpi.fishfolk.database.EntryStatus;
+import edu.wpi.fishfolk.database.IDAO;
+import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.util.NodeType;
 import java.io.*;
@@ -17,7 +21,7 @@ import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class LocationDAO implements IDAO<Location>, ICSVNoSubtable {
+public class LocationDAO implements IDAO<Location>, ICSVNoSubtable, IProcessEdit {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -111,6 +115,20 @@ public class LocationDAO implements IDAO<Location>, ICSVNoSubtable {
   }
 
   @Override
+  public void processEdit(DataEdit<Object> edit) {
+    switch (edit.getType()) {
+      case INSERT:
+        insertEntry((Location) edit.getNewEntry());
+        break;
+      case REMOVE:
+        removeEntry((String) edit.getNewEntry());
+        break;
+      case UPDATE:
+        updateEntry((Location) edit.getNewEntry());
+        break;
+    }
+  }
+
   public void prepareListener() {
 
     try {
@@ -167,6 +185,7 @@ public class LocationDAO implements IDAO<Location>, ICSVNoSubtable {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[LocationDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 

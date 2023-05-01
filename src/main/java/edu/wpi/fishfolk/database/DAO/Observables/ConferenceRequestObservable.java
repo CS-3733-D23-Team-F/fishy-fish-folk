@@ -13,6 +13,7 @@ public class ConferenceRequestObservable {
       conferenceroom,
       conferencestart,
       conferenceend,
+      conferenceDateReserved,
       conferencebooker,
       conferenceattendees,
       conferencerecurring,
@@ -23,6 +24,7 @@ public class ConferenceRequestObservable {
     conferenceroom = request.getRoomName();
     conferencestart = request.getStartTime();
     conferenceend = request.getEndTime();
+    conferenceDateReserved = String.valueOf(request.getDateReserved()).substring(0, 10);
     conferencebooker = request.getUsername();
     conferenceattendees = "" + request.getNumAttendees();
     id = request.getConferenceRequestID();
