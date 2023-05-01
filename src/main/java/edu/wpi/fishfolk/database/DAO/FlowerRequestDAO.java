@@ -536,6 +536,8 @@ public class FlowerRequestDAO
   public boolean importCSV(String tableFilepath, String subtableFilepath, boolean backup) {
     String[] pathArr = tableFilepath.split("/");
 
+    final HashMap<LocalDateTime, FlowerRequest> backupMap = new HashMap<>(tableMap);
+
     if (backup) {
 
       // tableFilepath except for last part (actual file name)
@@ -610,7 +612,58 @@ public class FlowerRequestDAO
       return true;
 
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      System.out.println("Error importing CSV: " + e.getMessage() + "  -->  Restoring backup...");
+
+      // something went wrong:
+
+      // revert local copy to backup made before inserting
+      tableMap.clear();
+      tableMap.putAll(backupMap);
+
+      // clear the database
+      try {
+        dbConnection
+            .createStatement()
+            .executeUpdate(
+                "DELETE FROM "
+                    + dbConnection.getSchema()
+                    + "."
+                    + tableName
+                    + ";"
+                    + "ALTER SEQUENCE flowerrequest_items_seq RESTART WITH 1;");
+
+        String insert =
+            "INSERT INTO "
+                + dbConnection.getSchema()
+                + "."
+                + this.tableName
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
+        PreparedStatement insertPS = dbConnection.prepareStatement(insert);
+
+        // fill in database from backup
+        for (Map.Entry<LocalDateTime, FlowerRequest> entry : backupMap.entrySet()) {
+          tableMap.put(entry.getValue().getFlowerRequestID(), entry.getValue());
+
+          insertPS.setTimestamp(1, Timestamp.valueOf(entry.getValue().getFlowerRequestID()));
+          insertPS.setString(2, entry.getValue().getAssignee());
+          insertPS.setString(3, entry.getValue().getFormStatus().toString());
+          insertPS.setString(4, entry.getValue().getNotes());
+          insertPS.setString(5, entry.getValue().getRecipientName());
+          insertPS.setString(6, entry.getValue().getDeliveryLocation());
+          insertPS.setTimestamp(7, Timestamp.valueOf(entry.getValue().getDeliveryTime()));
+          insertPS.setDouble(8, entry.getValue().getTotalPrice());
+
+          insertPS.executeUpdate();
+
+          setSubtableItems(entry.getValue().getFlowerRequestID(), entry.getValue().getItems());
+        }
+
+      } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
+      }
+
+      // failed to import correctly
       return false;
     }
   }

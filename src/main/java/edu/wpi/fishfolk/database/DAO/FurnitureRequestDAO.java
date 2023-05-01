@@ -527,6 +527,8 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest>, ICSVNoSubtab
   public boolean importCSV(String filepath, boolean backup) {
     String[] pathArr = filepath.split("/");
 
+    final HashMap<LocalDateTime, FurnitureRequest> backupMap = new HashMap<>(tableMap);
+
     if (backup) {
 
       // filepath except for last part (actual file name)
@@ -561,7 +563,7 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest>, ICSVNoSubtab
 
         String[] parts = line.split(",");
 
-        FurnitureRequest fr =
+        FurnitureRequest furnitureRequest =
             new FurnitureRequest(
                 LocalDateTime.parse(parts[0]),
                 parts[1],
@@ -572,16 +574,16 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest>, ICSVNoSubtab
                 parts[6],
                 LocalDateTime.parse(parts[7]));
 
-        tableMap.put(fr.getFurnitureRequestID(), fr);
+        tableMap.put(furnitureRequest.getFurnitureRequestID(), furnitureRequest);
 
-        insertPS.setTimestamp(1, Timestamp.valueOf(fr.getFurnitureRequestID()));
-        insertPS.setString(2, fr.getAssignee());
-        insertPS.setString(3, fr.getFormStatus().toString());
-        insertPS.setString(4, fr.getNotes());
-        insertPS.setString(5, fr.getItem().furnitureName);
-        insertPS.setString(6, fr.getServiceType().toString());
-        insertPS.setString(7, fr.getRoomNumber());
-        insertPS.setTimestamp(8, Timestamp.valueOf(fr.getDeliveryDate()));
+        insertPS.setTimestamp(1, Timestamp.valueOf(furnitureRequest.getFurnitureRequestID()));
+        insertPS.setString(2, furnitureRequest.getAssignee());
+        insertPS.setString(3, furnitureRequest.getFormStatus().toString());
+        insertPS.setString(4, furnitureRequest.getNotes());
+        insertPS.setString(5, furnitureRequest.getItem().furnitureName);
+        insertPS.setString(6, furnitureRequest.getServiceType().toString());
+        insertPS.setString(7, furnitureRequest.getRoomNumber());
+        insertPS.setTimestamp(8, Timestamp.valueOf(furnitureRequest.getDeliveryDate()));
 
         insertPS.executeUpdate();
       }
@@ -589,7 +591,50 @@ public class FurnitureRequestDAO implements IDAO<FurnitureRequest>, ICSVNoSubtab
       return true;
 
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      System.out.println("Error importing CSV: " + e.getMessage() + "  -->  Restoring backup...");
+
+      // something went wrong:
+
+      // revert local copy to backup made before inserting
+      tableMap.clear();
+      tableMap.putAll(backupMap);
+
+      // clear the database
+      try {
+        dbConnection
+            .createStatement()
+            .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+
+        String insert =
+            "INSERT INTO "
+                + dbConnection.getSchema()
+                + "."
+                + this.tableName
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
+        PreparedStatement insertPS = dbConnection.prepareStatement(insert);
+
+        // fill in database from backup
+        for (Map.Entry<LocalDateTime, FurnitureRequest> entry : backupMap.entrySet()) {
+          tableMap.put(entry.getValue().getFurnitureRequestID(), entry.getValue());
+
+          insertPS.setTimestamp(1, Timestamp.valueOf(entry.getValue().getFurnitureRequestID()));
+          insertPS.setString(2, entry.getValue().getAssignee());
+          insertPS.setString(3, entry.getValue().getFormStatus().toString());
+          insertPS.setString(4, entry.getValue().getNotes());
+          insertPS.setString(5, entry.getValue().getItem().furnitureName);
+          insertPS.setString(6, entry.getValue().getServiceType().toString());
+          insertPS.setString(7, entry.getValue().getRoomNumber());
+          insertPS.setTimestamp(8, Timestamp.valueOf(entry.getValue().getDeliveryDate()));
+
+          insertPS.executeUpdate();
+        }
+
+      } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
+      }
+
+      // failed to import correctly
       return false;
     }
   }

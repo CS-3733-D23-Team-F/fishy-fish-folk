@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javafx.concurrent.Task;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
@@ -620,7 +619,7 @@ public class FoodRequestDAO
 
     } catch (Exception e) {
 
-      System.out.println(e.getMessage());
+      System.out.println("Error importing CSV: " + e.getMessage() + "  -->  Restoring backup...");
 
       // something went wrong:
 
@@ -639,30 +638,37 @@ public class FoodRequestDAO
                     + tableName
                     + ";"
                     + "ALTER SEQUENCE foodrequest_fooditems_seq RESTART WITH 1;");
+
+        String insert =
+            "INSERT INTO "
+                + dbConnection.getSchema()
+                + "."
+                + this.tableName
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
+        PreparedStatement insertPS = dbConnection.prepareStatement(insert);
+
+        // fill in database from backup
+        for (Map.Entry<LocalDateTime, FoodRequest> entry : backupMap.entrySet()) {
+          tableMap.put(entry.getValue().getFoodRequestID(), entry.getValue());
+
+          insertPS.setTimestamp(1, Timestamp.valueOf(entry.getValue().getFoodRequestID()));
+          insertPS.setString(2, entry.getValue().getAssignee());
+          insertPS.setString(3, entry.getValue().getFormStatus().toString());
+          insertPS.setString(4, entry.getValue().getNotes());
+          insertPS.setDouble(5, entry.getValue().getTotalPrice());
+          insertPS.setString(6, entry.getValue().getDeliveryRoom());
+          insertPS.setTimestamp(7, Timestamp.valueOf(entry.getValue().getDeliveryTime()));
+          insertPS.setString(8, entry.getValue().getRecipientName());
+
+          insertPS.executeUpdate();
+
+          setSubtableItems(entry.getValue().getFoodRequestID(), entry.getValue().getFoodItems());
+        }
+
       } catch (SQLException ex) {
         System.out.println(ex.getMessage());
       }
-
-      // fill in database from backup
-      // thread reads from backup in case tablemap changes, which will update database on its own
-
-      Task<Integer> task =
-          new Task<>() {
-            // return how many backup entries are inserted
-            @Override
-            protected Integer call() {
-              int count = 0;
-              for (Map.Entry<LocalDateTime, FoodRequest> entry : backupMap.entrySet()) {
-                if (insertEntry(entry.getValue())) count++;
-              }
-              return count;
-            }
-          };
-
-      Thread th = new Thread(task);
-      //thread should terminate after completing the task
-      th.setDaemon(true);
-      th.start();
 
       // failed to import correctly
       return false;

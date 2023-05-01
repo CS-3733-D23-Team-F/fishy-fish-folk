@@ -600,7 +600,25 @@ public class ViewMasterOrderController extends AbsController {
     String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
     fileChooser.setTitle("Select the Supply Request Subtable CSV file");
     String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.SUPPLY_REQUEST);
+
+    String message;
+    if (dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.SUPPLY_REQUEST)) {
+      message = "Import successful";
+    } else {
+      message = "Error importing CSVs, please try again";
+    }
+
+    PopOver errorPopup = new PopOver();
+
+    Label label = new Label(message);
+    label.setStyle(" -fx-background-color: white;");
+    label.setMinWidth(220);
+    label.setMinHeight(30);
+
+    errorPopup.setContentNode(label);
+    errorPopup.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+    errorPopup.show(supplyImportCSVButton);
+
     refreshOrders();
   }
 
@@ -609,21 +627,75 @@ public class ViewMasterOrderController extends AbsController {
     String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
     fileChooser.setTitle("Select the Flower Request Subtable CSV file");
     String subtablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-    dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FLOWER_REQUEST);
+
+    String message;
+    if (dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FLOWER_REQUEST)) {
+      message = "Import successful";
+    } else {
+      message = "Error importing CSVs, please try again";
+    }
+
+    PopOver errorPopup = new PopOver();
+
+    Label label = new Label(message);
+    label.setStyle(" -fx-background-color: white;");
+    label.setMinWidth(220);
+    label.setMinHeight(30);
+
+    errorPopup.setContentNode(label);
+    errorPopup.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+    errorPopup.show(flowerImportCSVButton);
+
     refreshOrders();
   }
 
   private void furnitureImportCSV() {
     fileChooser.setTitle("Select the Furniture Request Main Table CSV file");
     String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-    dbConnection.importCSV(mainTablePath, false, TableEntryType.FURNITURE_REQUEST);
+
+    String message;
+    if (dbConnection.importCSV(mainTablePath, false, TableEntryType.FURNITURE_REQUEST)) {
+      message = "Import successful";
+    } else {
+      message = "Error importing CSV, please try again";
+    }
+
+    PopOver errorPopup = new PopOver();
+
+    Label label = new Label(message);
+    label.setStyle(" -fx-background-color: white;");
+    label.setMinWidth(220);
+    label.setMinHeight(30);
+
+    errorPopup.setContentNode(label);
+    errorPopup.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+    errorPopup.show(furnitureImportCSVButton);
+
     refreshOrders();
   }
 
   private void conferenceImportCSV() {
     fileChooser.setTitle("Select the Conference Request Main Table CSV file");
     String mainTablePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
-    dbConnection.importCSV(mainTablePath, false, TableEntryType.CONFERENCE_REQUEST);
+
+    String message;
+    if (dbConnection.importCSV(mainTablePath, false, TableEntryType.CONFERENCE_REQUEST)) {
+      message = "Import successful";
+    } else {
+      message = "Error importing CSV, please try again";
+    }
+
+    PopOver errorPopup = new PopOver();
+
+    Label label = new Label(message);
+    label.setStyle(" -fx-background-color: white;");
+    label.setMinWidth(220);
+    label.setMinHeight(30);
+
+    errorPopup.setContentNode(label);
+    errorPopup.setArrowLocation(PopOver.ArrowLocation.LEFT_CENTER);
+    errorPopup.show(conferenceImportCSVButton);
+
     refreshOrders();
   }
 
