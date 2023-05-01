@@ -26,6 +26,10 @@ import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import lombok.Getter;
@@ -950,7 +954,60 @@ public class MapEditorController extends AbsController {
           editQueue.add(new DataEdit<>(move, DataEditType.INSERT, TableEntryType.MOVE), false);
           // dbConnection.insertEntry(move);
         });
+
+    state = EDITOR_STATE.LASSO;
+
+    mapImg.setOnMousePressed(
+        event -> {
+          if (state == EDITOR_STATE.LASSO) {
+
+            gesturePane.setGestureEnabled(false);
+            Rectangle selectionRectangle = new Rectangle(event.getX(), event.getY(), 0, 0);
+            selectionRectangle.setFill(Color.TRANSPARENT);
+            selectionRectangle.setStroke(Color.BLUE);
+            selectionRectangle.setStrokeWidth(2);
+            selectionRectangle.setStrokeLineCap(StrokeLineCap.ROUND);
+            selectionRectangle.setStrokeLineJoin(StrokeLineJoin.ROUND);
+            System.out.println("hello" + event.getX() + " " + event.getY());
+            mapImg.setOnMouseDragged(
+                event1 -> {
+                  double width = event1.getX() - selectionRectangle.getX();
+                  double height = event1.getY() - selectionRectangle.getY();
+                  System.out.println("hello " + width + " " + height);
+                  drawGroup.getChildren().remove(selectionRectangle);
+                  drawGroup.getChildren().add(selectionRectangle);
+                  if (width < 0) {
+                    selectionRectangle.setX(event1.getX());
+                    selectionRectangle.setWidth(Math.abs(width));
+                  } else {
+                    selectionRectangle.setWidth(width);
+                  }
+
+                  if (height < 0) {
+                    selectionRectangle.setY(event1.getY());
+                    selectionRectangle.setHeight(Math.abs(height));
+                  } else {
+                    selectionRectangle.setHeight(height);
+                  }
+                });
+            mapImg.setOnMouseReleased(
+                event1 -> {
+                  System.out.println(
+                      "hi "
+                          + selectionRectangle.getX()
+                          + " "
+                          + selectionRectangle.getWidth()
+                          + " "
+                          + selectionRectangle.getHeight());
+
+                  // drawGroup.getChildren().add(selectionRectangle);
+                  gesturePane.setGestureEnabled(true);
+                });
+          }
+        });
   }
+
+  private void dragSelect() {}
 
   private void switchFloor(String floor) {
 
@@ -1393,6 +1450,7 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
 
 enum EDITOR_STATE {
   IDLE,
+  LASSO,
 
   ADDING_NODE,
   EDITING_NODE,
