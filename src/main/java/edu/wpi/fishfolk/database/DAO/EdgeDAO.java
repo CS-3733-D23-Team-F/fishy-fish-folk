@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
@@ -16,7 +17,7 @@ import java.util.*;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class EdgeDAO implements IDAO<Edge>, IProcessEdit {
+public class EdgeDAO implements IDAO<Edge>, ICSVNoSubtable, IProcessEdit {
 
   private final Connection dbConnection;
   private Connection dbListener;

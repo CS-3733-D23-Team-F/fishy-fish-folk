@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.scene.image.Image;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 public abstract class AbsController {
 
@@ -24,6 +26,9 @@ public abstract class AbsController {
   HashMap<String, Image> images;
 
   public static final LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
+
+  private FileChooser fileChooser = new FileChooser();
+  private DirectoryChooser dirChooser = new DirectoryChooser();
 
   public AbsController() {
 
@@ -47,5 +52,33 @@ public abstract class AbsController {
     }
 
     // dbConnection = new Fdb();
+  }
+
+  /**
+   * Opens dialog to choose a file from the explorer. Handles any Exceptions.
+   *
+   * @return The absolute path of the chosen file, empty string on error
+   */
+  public String fileChooserPrompt() {
+    try {
+      return fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return "";
+    }
+  }
+
+  /**
+   * Opens dialog to choose a directory from the explorer. Handles any Exceptions.
+   *
+   * @return The absolute path of the chosen directory, empty string on error
+   */
+  public String dirChooserPrompt() {
+    try {
+      return dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return "";
+    }
   }
 }

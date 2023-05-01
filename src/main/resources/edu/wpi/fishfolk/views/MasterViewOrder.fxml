@@ -12,11 +12,24 @@
 <?import javafx.scene.text.Font?>
 
 <VBox spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.ViewMasterOrderController">
-   <MFXButton fx:id="refreshButton" style="-fx-background-color: #012d5a;" text="Refresh Orders" textFill="WHITE">
-      <font>
-         <Font name="Open Sans Bold" size="26.0" />
-      </font>
-   </MFXButton>
+   <HBox>
+      <children>
+         <MFXButton fx:id="refreshButton" style="-fx-background-color: #012d5a;" text="Refresh Orders" textFill="WHITE">
+            <font>
+               <Font name="Open Sans Bold" size="26.0" />
+            </font>
+         </MFXButton>
+         <HBox HBox.hgrow="ALWAYS" />
+         <MFXButton fx:id="filterOrdersButton" style="-fx-background-color: #012d5a;" text="Show my Orders" textFill="WHITE">
+            <font>
+               <Font name="Open Sans Bold" size="26.0" />
+            </font>
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+         </MFXButton>
+      </children>
+   </HBox>
    <TabPane fx:id="tabPane" layoutX="50.0" layoutY="50.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
      <tabs>
        <Tab text="Food Orders">
@@ -43,7 +56,7 @@
                         <children>
                            <MFXButton fx:id="foodFillButton" style="-fx-background-color: #012d5a;" text="Mark Filled" textFill="WHITE">
                            <font>
-                              <Font name="Open Sans Bold" size="26.0" />
+                              <Font name="System Bold" size="26.0" />
                            </font></MFXButton>
                            <MFXButton fx:id="foodCancelButton" layoutX="1397.0" layoutY="10.0" style="-fx-background-color: #012d5a;" text="Cancel" textFill="WHITE">
                            <font>
@@ -63,13 +76,15 @@
                               <Font name="Open Sans Bold" size="26.0" />
                            </font></MFXButton>
                         <VBox HBox.hgrow="ALWAYS" />
-                        <MFXButton fx:id="foodFilterOrdersButton" layoutX="817.0" layoutY="14.0" style="-fx-background-color: #012d5a;" text="Show my Orders" textFill="WHITE">
+                        <MFXButton fx:id="foodImportCSVButton" style="-fx-background-color: #012d5a;" text="Import CSV" textFill="WHITE">
                            <font>
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
+                        </MFXButton>
+                        <MFXButton fx:id="foodExportCSVButton" style="-fx-background-color: #012d5a;" text="Export CSV" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
                         </MFXButton>
                         </children>
                      </HBox>
@@ -118,14 +133,16 @@
                             <Font name="Open Sans Bold" size="26.0" />
                          </font></MFXButton>
                       <VBox HBox.hgrow="ALWAYS" />
-                      <MFXButton fx:id="supplyFilterOrdersButton" layoutX="817.0" layoutY="14.0" style="-fx-background-color: #012d5a;" text="Show my Orders" textFill="WHITE">
-                         <font>
-                            <Font name="Open Sans Bold" size="26.0" />
-                         </font>
-                         <HBox.margin>
-                            <Insets />
-                         </HBox.margin>
-                      </MFXButton>
+                        <MFXButton fx:id="supplyImportCSVButton" style="-fx-background-color: #012d5a;" text="Import CSV" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
+                        </MFXButton>
+                        <MFXButton fx:id="supplyExportCSVButton" style="-fx-background-color: #012d5a;" text="Export CSV" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
+                        </MFXButton>
                    </children>
                 </HBox>
              </children>
@@ -175,13 +192,15 @@
                               <Font name="Open Sans Bold" size="26.0" />
                            </font></MFXButton>
                         <VBox HBox.hgrow="ALWAYS" />
-                        <MFXButton fx:id="flowerFilterOrdersButton" layoutX="817.0" layoutY="14.0" style="-fx-background-color: #012d5a;" text="Show my Orders" textFill="WHITE">
+                        <MFXButton fx:id="flowerImportCSVButton" style="-fx-background-color: #012d5a;" text="Import CSV" textFill="WHITE">
                            <font>
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
+                        </MFXButton>
+                        <MFXButton fx:id="flowerExportCSVButton" style="-fx-background-color: #012d5a;" text="Export CSV" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
                         </MFXButton>
                      </children>
                   </HBox>
@@ -277,13 +296,15 @@
                               <Font name="Open Sans Bold" size="26.0" />
                            </font></MFXButton>
                         <VBox HBox.hgrow="ALWAYS" />
-                        <MFXButton fx:id="furnitureFilterOrdersButton" layoutX="817.0" layoutY="14.0" style="-fx-background-color: #012d5a;" text="Show my Orders" textFill="WHITE">
+                        <MFXButton fx:id="furnitureImportCSVButton" style="-fx-background-color: #012d5a;" text="Import CSV" textFill="WHITE">
                            <font>
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
+                        </MFXButton>
+                        <MFXButton fx:id="furnitureExportCSVButton" style="-fx-background-color: #012d5a;" text="Export CSV" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="26.0" />
+                           </font>
                         </MFXButton>
                      </children>
                   </HBox>
@@ -314,6 +335,17 @@
                      <HBox alignment="CENTER_LEFT" spacing="20.0" VBox.vgrow="NEVER">
                         <children>
                            <MFXButton fx:id="conferenceRemoveButton" layoutX="1422.0" layoutY="10.0" style="-fx-background-color: #012d5a;" text="Remove" textFill="WHITE">
+                              <font>
+                                 <Font name="Open Sans Bold" size="26.0" />
+                              </font>
+                           </MFXButton>
+                           <VBox prefHeight="56.0" prefWidth="0.0" />
+                           <MFXButton fx:id="conferenceImportCSVButton" style="-fx-background-color: #012d5a;" text="Import CSV" textFill="WHITE">
+                              <font>
+                                 <Font name="Open Sans Bold" size="26.0" />
+                              </font>
+                           </MFXButton>
+                           <MFXButton fx:id="conferenceExportCSVButton" style="-fx-background-color: #012d5a;" text="Export CSV" textFill="WHITE">
                               <font>
                                  <Font name="Open Sans Bold" size="26.0" />
                               </font>

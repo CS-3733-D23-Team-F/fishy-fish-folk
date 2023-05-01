@@ -42,4 +42,13 @@ public interface IHasSubtable<T> {
    * @param requestID ID of the request to remove subtable items from
    */
   void deleteAllSubtableItems(LocalDateTime requestID);
+
+  //  /**
+  //   *
+  //   * @param filepath
+  //   * @param backup
+  //   */
+  //  void importSubtableFromCSV(String filepath, boolean backup);
+  //
+  //  void exportSubtableToCSV(String directory);
 }
