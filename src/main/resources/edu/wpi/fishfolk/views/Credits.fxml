@@ -77,7 +77,7 @@
             </HBox>
             <StackPane>
                <children>
-                  <MFXScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;">
+                  <MFXScrollPane fx:id="navigationPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;">
                      <content>
                         <VBox style="-fx-background-color: #F4F4F4;">
                            <children>
@@ -217,6 +217,366 @@
                         </VBox>
                      </content>
                   </MFXScrollPane>
+                  <MFXScrollPane fx:id="hospitalImagesPane" disable="true" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;" visible="false">
+                     <content>
+                        <VBox style="-fx-background-color: #F4F4F4;">
+                           <children>
+                              <HBox fx:id="hospitalImage" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="30.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Hospital Image" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="hospitalIcon" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Hospital Icon" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </MFXScrollPane>
+                  <MFXScrollPane fx:id="serviceRequestPane" disable="true" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;" visible="false">
+                     <content>
+                        <VBox style="-fx-background-color: #F4F4F4;">
+                           <children>
+                              <HBox fx:id="gratitude1" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="30.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Gratitude 1" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="gratitude2" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Gratitude 2" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="gratitude3" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Gratitude 3" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="gratitude4" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Gratitude 4" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="gratitude5" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Gratitude 5" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="spring1" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Spring 1" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="spring2" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Spring 2" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="spring3" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Spring 3" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="spring4" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <children>
+                                    <Label text="Spring 4" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="spring5" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <children>
+                                    <Label text="Spring 5" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="sympathy1" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <children>
+                                    <Label text="Sympathy 1" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="sympathy2" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <children>
+                                    <Label text="Sympathy 2" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="sympathy3" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <children>
+                                    <Label text="Sympathy 3" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="sympathy4" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <children>
+                                    <Label text="Sympathy 4" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="sympathy5" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <children>
+                                    <Label text="Sympathy 5" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </MFXScrollPane>
+                  <MFXScrollPane fx:id="miscPane" disable="true" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;" visible="false">
+                     <content>
+                        <VBox style="-fx-background-color: #F4F4F4;">
+                           <children>
+                              <HBox fx:id="mapEditor12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="30.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Map Editor" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="signage12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Signage" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="request12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Service Request" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="pathfinding12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Pathfinding" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="accounts12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Account Manager" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="viewOrders12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="View Orders" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="down12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Down" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="up12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="Up" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="upArrow12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <children>
+                                    <Label text="Up Arrow" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="left12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <children>
+                                    <Label text="Turn Left Arrow" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="right12" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                                 <children>
+                                    <Label text="Turn Right Arrow" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Regular" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </MFXScrollPane>
                </children>
             </StackPane>
          </children>
@@ -281,9 +641,9 @@
             </VBox>
             <VBox alignment="TOP_CENTER" style="-fx-border-color: #012d5a; -fx-border-width: 2; -fx-border-radius: 10;" VBox.vgrow="ALWAYS">
                <children>
-                  <StackPane style="-fx-background-color: #3c3d3c;">
+                  <StackPane minHeight="150.0" style="-fx-background-color: #3c3d3c; -fx-background-radius: 10;">
                      <VBox.margin>
-                        <Insets top="25.0" />
+                        <Insets left="25.0" right="25.0" top="25.0" />
                      </VBox.margin>
                      <children>
                         <ImageView fx:id="displayImage" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
