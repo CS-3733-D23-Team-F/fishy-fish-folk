@@ -6,6 +6,8 @@ import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.TableEntry.ITRequest;
 import edu.wpi.fishfolk.ui.FormStatus;
+import edu.wpi.fishfolk.ui.ITComponent;
+import edu.wpi.fishfolk.ui.ITPriority;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -32,7 +34,17 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
   public ITRequestDAO(Connection dbConnection) {
     this.dbConnection = dbConnection;
     this.tableName = "itrequest";
-    this.headers = new ArrayList<>(List.of("id", "assignee", "status", "notes"));
+    this.headers =
+        new ArrayList<>(
+            List.of(
+                "id",
+                "assignee",
+                "status",
+                "notes",
+                "component",
+                "priority",
+                "roomnumber",
+                "contactinfo"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
     this.dataEditQueue.setBatchLimit(1);
@@ -75,7 +87,11 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
                 + "id TIMESTAMP PRIMARY KEY,"
                 + "assignee VARCHAR(64),"
                 + "status VARCHAR(12),"
-                + "notes VARCHAR(256)"
+                + "notes VARCHAR(256),"
+                + "component VARCHAR(64),"
+                + "priority VARCHAR(64),"
+                + "roomnumber VARCHAR(64),"
+                + "contactinfo VARCHAR(64)"
                 + ");";
         statement.executeUpdate(query);
       }
@@ -107,7 +123,11 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
                 results.getTimestamp(headers.get(0)).toLocalDateTime(),
                 results.getString(headers.get(1)),
                 FormStatus.valueOf(results.getString(headers.get(2))),
-                results.getString(headers.get(3)));
+                results.getString(headers.get(3)),
+                ITComponent.valueOf(results.getString(headers.get(4))),
+                ITPriority.valueOf(results.getString(headers.get(5))),
+                results.getString(headers.get(6)),
+                results.getString(headers.get(7)));
         tableMap.put(itRequest.getItRequestID(), itRequest);
       }
 
@@ -375,7 +395,7 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
       String update =
           "UPDATE "
@@ -390,6 +410,14 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
               + headers.get(2)
               + " = ?, "
               + headers.get(3)
+              + " = ?, "
+              + headers.get(4)
+              + " = ?, "
+              + headers.get(5)
+              + " = ?, "
+              + headers.get(6)
+              + " = ?, "
+              + headers.get(7)
               + " = ? WHERE "
               + headers.get(0)
               + " = ?;";
@@ -434,6 +462,10 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
             preparedInsert.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedInsert.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedInsert.setString(4, dataEdit.getNewEntry().getNotes());
+            preparedInsert.setString(5, dataEdit.getNewEntry().getComponent().toString());
+            preparedInsert.setString(6, dataEdit.getNewEntry().getPriority().toString());
+            preparedInsert.setString(7, dataEdit.getNewEntry().getRoomNumber());
+            preparedInsert.setString(8, dataEdit.getNewEntry().getContactInfo());
 
             // Execute the query
             preparedInsert.executeUpdate();
@@ -448,8 +480,12 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
             preparedUpdate.setString(2, dataEdit.getNewEntry().getAssignee());
             preparedUpdate.setString(3, dataEdit.getNewEntry().getFormStatus().toString());
             preparedUpdate.setString(4, dataEdit.getNewEntry().getNotes());
+            preparedUpdate.setString(5, dataEdit.getNewEntry().getComponent().toString());
+            preparedUpdate.setString(6, dataEdit.getNewEntry().getPriority().toString());
+            preparedUpdate.setString(7, dataEdit.getNewEntry().getRoomNumber());
+            preparedUpdate.setString(8, dataEdit.getNewEntry().getContactInfo());
             preparedUpdate.setTimestamp(
-                5, Timestamp.valueOf(dataEdit.getNewEntry().getItRequestID()));
+                9, Timestamp.valueOf(dataEdit.getNewEntry().getItRequestID()));
 
             // Execute the query
             preparedUpdate.executeUpdate();
@@ -522,7 +558,7 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
       PreparedStatement insertPS = dbConnection.prepareStatement(insert);
 
@@ -530,16 +566,27 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
 
         String[] parts = line.split(",");
 
-        ITRequest ir =
+        ITRequest itRequest =
             new ITRequest(
-                LocalDateTime.parse(parts[0]), parts[1], FormStatus.valueOf(parts[2]), parts[3]);
+                LocalDateTime.parse(parts[0]),
+                parts[1],
+                FormStatus.valueOf(parts[2]),
+                parts[3],
+                ITComponent.valueOf(parts[4]),
+                ITPriority.valueOf(parts[5]),
+                parts[6],
+                parts[7]);
 
-        tableMap.put(ir.getItRequestID(), ir);
+        tableMap.put(itRequest.getItRequestID(), itRequest);
 
-        insertPS.setTimestamp(1, Timestamp.valueOf(ir.getItRequestID()));
-        insertPS.setString(2, ir.getAssignee());
-        insertPS.setString(3, ir.getFormStatus().toString());
-        insertPS.setString(4, ir.getNotes());
+        insertPS.setTimestamp(1, Timestamp.valueOf(itRequest.getItRequestID()));
+        insertPS.setString(2, itRequest.getAssignee());
+        insertPS.setString(3, itRequest.getFormStatus().toString());
+        insertPS.setString(4, itRequest.getNotes());
+        insertPS.setString(5, itRequest.getComponent().toString());
+        insertPS.setString(6, itRequest.getPriority().toString());
+        insertPS.setString(7, itRequest.getRoomNumber());
+        insertPS.setString(8, itRequest.getContactInfo());
 
         insertPS.executeUpdate();
       }
@@ -567,15 +614,23 @@ public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
       out.println(String.join(",", headers));
 
       for (Map.Entry<LocalDateTime, ITRequest> entry : tableMap.entrySet()) {
-        ITRequest ir = entry.getValue();
+        ITRequest itRequest = entry.getValue();
         out.println(
-            ir.getItRequestID()
+            itRequest.getItRequestID()
                 + ","
-                + ir.getAssignee()
+                + itRequest.getAssignee()
                 + ","
-                + ir.getFormStatus()
+                + itRequest.getFormStatus()
                 + ","
-                + ir.getNotes());
+                + itRequest.getNotes()
+                + ","
+                + itRequest.getComponent()
+                + ","
+                + itRequest.getPriority()
+                + ","
+                + itRequest.getRoomNumber()
+                + ","
+                + itRequest.getContactInfo());
       }
 
       out.close();

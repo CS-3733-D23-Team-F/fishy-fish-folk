@@ -240,6 +240,29 @@
                                           </AnchorPane>
                                        </content>
                                     </Tab>
+                                    <Tab styleClass="tabEnd" text="IT Requests">
+                                       <content>
+                                          <AnchorPane>
+                                             <children>
+                                                <TableView fx:id="itTable" minHeight="200.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="itid" prefWidth="75.0" text="ID" />
+                                                      <TableColumn fx:id="itstatus" prefWidth="75.0" text="Status" />
+                                                      <TableColumn fx:id="itissue" prefWidth="98.7999267578125" text="Issue" />
+                                                      <TableColumn fx:id="itcomponent" prefWidth="94.0" text="Component" />
+                                                      <TableColumn fx:id="itpriority" prefWidth="67.99996948242188" text="Priority" />
+                                                      <TableColumn fx:id="itroom" prefWidth="89.20001220703125" text="Room" />
+                                                      <TableColumn fx:id="itcontactinfo" prefWidth="78.4000244140625" text="Contact Info" />
+                                                      <TableColumn fx:id="itassignee" prefWidth="75.0" text="Assignee" />
+                                                   </columns>
+                                                   <columnResizePolicy>
+                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                   </columnResizePolicy>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
                                  </tabs>
                               </TabPane>
                            </children>
@@ -278,7 +301,7 @@
                               </StackPane>
                               <VBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <MFXScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="100.0" minWidth="475.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" styleClass="newScrolls" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                                    <MFXScrollPane fx:id="alertsPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="100.0" minWidth="475.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" styleClass="newScrolls" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                                        <VBox.margin>
                                           <Insets left="10.0" right="10.0" top="10.0" />
                                        </VBox.margin>

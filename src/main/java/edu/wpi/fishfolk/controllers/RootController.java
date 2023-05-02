@@ -22,6 +22,7 @@ public class RootController {
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
   @FXML MFXButton conferenceNav;
+  @FXML MFXButton ITNav;
   @FXML MFXButton switchAccsButton;
   @FXML MFXButton AccManagerBtn;
   @FXML VBox serviceBar;
@@ -101,6 +102,11 @@ public class RootController {
         event -> {
           setupServiceNavButton();
           Navigation.navigate(Screen.CONFERENCE);
+        });
+    ITNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.IT_REQUEST);
         });
 
     // accountManagerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));

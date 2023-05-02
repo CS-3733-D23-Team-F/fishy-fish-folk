@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.database.TableEntry.ITRequest;
 import edu.wpi.fishfolk.ui.*;
 import edu.wpi.fishfolk.util.NodeType;
 import edu.wpi.fishfolk.util.PermissionLevel;
@@ -471,23 +472,62 @@ public class DAOTests {
   }
 
   @Test
+  @SneakyThrows
   public void itDAOTests() {
 
     Fdb fdb = new Fdb();
 
     fdb.insertEntry(
         new ITRequest(
-            LocalDateTime.of(2020, 2, 2, 2, 2), "Person A", FormStatus.submitted, "Notes"));
+            LocalDateTime.of(2020, 2, 2, 2, 2),
+            "Person A",
+            FormStatus.submitted,
+            "Notes",
+            ITComponent.COMPUTER,
+            ITPriority.MEDIUM,
+            "Room 1",
+            "123-456-7890"));
+
+    Thread.sleep(200);
+
     fdb.insertEntry(
         new ITRequest(
-            LocalDateTime.of(2021, 2, 2, 2, 2), "Person B", FormStatus.submitted, "Notes"));
+            LocalDateTime.of(2021, 2, 2, 2, 2),
+            "Person B",
+            FormStatus.submitted,
+            "Notes",
+            ITComponent.COMPUTER,
+            ITPriority.MEDIUM,
+            "Room 1",
+            "123-456-7890"));
+
+    Thread.sleep(200);
+
     fdb.insertEntry(
         new ITRequest(
-            LocalDateTime.of(2022, 2, 2, 2, 2), "Person C", FormStatus.submitted, "Notes"));
+            LocalDateTime.of(2022, 2, 2, 2, 2),
+            "Person C",
+            FormStatus.submitted,
+            "Notes",
+            ITComponent.COMPUTER,
+            ITPriority.MEDIUM,
+            "Room 1",
+            "123-456-7890"));
+
+    Thread.sleep(200);
 
     fdb.updateEntry(
         new ITRequest(
-            LocalDateTime.of(2021, 2, 2, 2, 2), "Person B", FormStatus.submitted, "NEW Notes"));
+            LocalDateTime.of(2021, 2, 2, 2, 2),
+            "Person B",
+            FormStatus.submitted,
+            "NEW Notes",
+            ITComponent.COMPUTER,
+            ITPriority.MEDIUM,
+            "Room 1",
+            "123-456-7890"));
+
+    Thread.sleep(200);
 
     System.out.println(
         "[Main]: " + fdb.getEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.IT_REQUEST));
@@ -495,7 +535,16 @@ public class DAOTests {
 
     fdb.updateEntry(
         new ITRequest(
-            LocalDateTime.of(2020, 2, 2, 2, 2), "Person A", FormStatus.submitted, "NEWER Notes"));
+            LocalDateTime.of(2020, 2, 2, 2, 2),
+            "Person A",
+            FormStatus.submitted,
+            "NEWER Notes",
+            ITComponent.COMPUTER,
+            ITPriority.MEDIUM,
+            "Room 1",
+            "123-456-7890"));
+
+    Thread.sleep(200);
 
     fdb.removeEntry(LocalDateTime.of(2022, 2, 2, 2, 2), TableEntryType.IT_REQUEST);
   }
