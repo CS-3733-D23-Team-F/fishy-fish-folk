@@ -34,9 +34,9 @@
             <VBox alignment="CENTER" VBox.vgrow="ALWAYS" />
             <VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="670.0" maxWidth="500.0" minHeight="670.0" minWidth="500.0" opacity="0.95" spacing="10.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30;">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/FFF.png" />
+                        <Image url="@../images/brighamlogo.png" />
                      </image>
                      <VBox.margin>
                         <Insets top="50.0" />
