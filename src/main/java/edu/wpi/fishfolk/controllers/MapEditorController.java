@@ -72,24 +72,32 @@ public class MapEditorController extends AbsController {
   private Group nodeGroup, edgeGroup, locationGroup, labelPreviewGroup;
 
   // observable lists of map objects. listeners automatically update the ui
-  // the new Observable[] {} syntax is called an extractor and allows listeners to receive update
-  // calls
+  // extractor syntax: Observable[] {}  allows listeners to receive updates from internal fields
 
+  // NODES
   private ObservableList<Node> nodes =
       FXCollections.observableArrayList(
-          node -> new Observable[] {node.getNodeProperty(), node.getPointProperty()});
+          // listen to node, point, and moves properties
+          node ->
+              new Observable[] {
+                node.getNodeProperty(), node.getPointProperty(), node.getMovesProperty()
+              });
   // easy access to a specific node via its id
   private static HashMap<Integer, Integer> nodeID2idx = new HashMap<>();
   private HashMap<Integer, Node> removedNodes = new HashMap<>();
 
+  // EDGES
   private ObservableList<Edge> edges =
       FXCollections.observableArrayList(edge -> new Observable[] {edge.getEdgeProperty()});
 
+  // LOCATIONS
   private ObservableList<Location> locations =
-      FXCollections.observableArrayList(loc -> new Observable[] {loc.getLocationProperty()});
+      FXCollections.observableArrayList(
+          loc -> new Observable[] {loc.getLocationProperty(), loc.getMovesProperty()});
   // easy access to a specific location via its longname
   private HashMap<String, Integer> longname2idx = new HashMap<>();
 
+  // MOVES
   private ObservableList<Move> moves =
       FXCollections.observableArrayList(move -> new Observable[] {move.getMoveProperty()});
 
@@ -209,7 +217,7 @@ public class MapEditorController extends AbsController {
               node.addMove(location, move.getDate());
 
               // link the node the location
-              location.setNode(node);
+              location.addMove(node, move.getDate());
 
               moves.add(move);
             });
@@ -320,7 +328,65 @@ public class MapEditorController extends AbsController {
           }
         });
 
-    // no listeners needed for general location and move lists
+    locations.addListener(
+        new ListChangeListener<Location>() {
+          @Override
+          public void onChanged(Change<? extends Location> change) {
+
+            while (change.next()) {
+              // possible operations: updated, added or (TODO) removed
+
+            }
+          }
+        });
+
+    moves.addListener(
+        new ListChangeListener<Move>() {
+          @Override
+          public void onChanged(Change<? extends Move> change) {
+
+            while (change.next()) {
+              // possible operations: added or removed
+
+              // update the nodes and locations observable lists
+
+              change
+                  .getRemoved()
+                  .forEach(
+                      removedMove -> {
+
+                        // unlink location from node
+                        nodes.get(nodeID2idx.get(removedMove.getNodeID())).removeMove(removedMove);
+
+                        // set location's node to null instead of removing which would shift the
+                        // other elements
+                        locations
+                            .get(longname2idx.get(removedMove.getLongName()))
+                            .removeMove(removedMove);
+                      });
+
+              change
+                  .getAddedSubList()
+                  .forEach(
+                      addedMove -> {
+
+                        // get the location object from its longname and add it to the node
+                        nodes
+                            .get(nodeID2idx.get(addedMove.getNodeID()))
+                            .addMove(
+                                locations.get(longname2idx.get(addedMove.getLongName())),
+                                addedMove.getDate());
+
+                        // get the node object from its id and add it to the location
+                        locations
+                            .get(longname2idx.get(addedMove.getLongName()))
+                            .addMove(
+                                nodes.get(nodeID2idx.get(addedMove.getNodeID())),
+                                addedMove.getDate());
+                      });
+            }
+          }
+        });
 
     // listeners for observable lists of selected items
 
@@ -800,7 +866,10 @@ public class MapEditorController extends AbsController {
 
     locationSearch.setOnAction(
         event -> {
-          Node searchedNode = locations.get(longname2idx.get(locationSearch.getValue())).getNode();
+          // get the location object from the searched longname
+          // then get its node on the given date
+          Node searchedNode =
+              locations.get(longname2idx.get(locationSearch.getValue())).getNode(today);
           if (searchedNode != null) {
 
             if (!searchedNode.getFloor().equals(allFloors.get(currentFloor))) {
@@ -1383,7 +1452,7 @@ public class MapEditorController extends AbsController {
                   controller.setOrigin(nodes.get(nodeID2idx.get(selectedNodes.get(0))));
                 }
 
-                Node previewNode = nodes.get(nodeID2idx.get(controller.nodeID));
+                Node previewNode = nodes.get(nodeID2idx.get(controller.getNodeID()));
 
                 if (!previewNode.getFloor().equals(allFloors.get(currentFloor))) {
                   // floor selector's onAction switches floors
@@ -1432,11 +1501,19 @@ public class MapEditorController extends AbsController {
               }
             });
 
+        controller.delete.setOnMouseClicked(
+            event -> {
+              moves.remove(controller.getMove());
+            });
+
         controller.submit.setOnMouseClicked(
             event -> {
               // put move in database
               Move newMove =
-                  new Move(controller.nodeID, controller.longnameText.getText(), controller.date);
+                  new Move(
+                      controller.getNodeID(),
+                      controller.longnameText.getText(),
+                      controller.getDate());
               System.out.println("adding " + newMove);
               moves.add(newMove);
               editQueue.add(new DataEdit<>(newMove, DataEditType.INSERT), false);

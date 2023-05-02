@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.database.TableEntry.Location;
+import edu.wpi.fishfolk.database.TableEntry.Move;
 import edu.wpi.fishfolk.database.TableEntry.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -14,12 +15,14 @@ public class MapEditorLocationController {
 
   @FXML MFXTextField longnameText, shortnameText, typeText, nodeIDText;
   @FXML MFXDatePicker datePicker;
-  @FXML MFXButton preview, submit;
+  @FXML MFXButton preview, delete, submit;
 
   @Getter @Setter Node origin;
   private boolean validNodeID = false, validDate = false;
-  int nodeID;
-  LocalDate date;
+
+  @Getter @Setter private int nodeID;
+  @Getter @Setter private Location location;
+  @Getter @Setter private LocalDate date;
 
   @FXML
   private void initialize() {
@@ -57,6 +60,10 @@ public class MapEditorLocationController {
     longnameText.setText(location.getLongName());
 
     datePicker.setValue(date);
+  }
+
+  public Move getMove() {
+    return new Move(nodeID, location.getLongName(), date);
   }
 
   private void updateButtons() {

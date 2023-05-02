@@ -96,17 +96,25 @@
       </HBox>
       <HBox>
          <children>
-            <MFXButton fx:id="preview" alignment="CENTER" buttonType="RAISED" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #012d5a;" text="Preview" textFill="WHITE">
+            <MFXButton fx:id="preview" alignment="CENTER" buttonType="RAISED" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #012d5a;" text="Preview" textFill="WHITE">
                <font>
                   <Font name="Open Sans Regular" size="12.0" />
                </font>
             </MFXButton>
-            <MFXButton fx:id="submit" alignment="CENTER" buttonType="RAISED" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #F0BF4C;" text="Submit" textFill="#012d5a">
+            <MFXButton fx:id="delete" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #012d5a;" text="Delete" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Regular" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="submit" alignment="CENTER" buttonType="RAISED" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #F0BF4C;" text="Submit" textFill="#012d5a">
                <font>
                   <Font name="Open Sans Bold" size="12.0" />
                </font>
                <HBox.margin>
-                  <Insets left="70.0" />
+                  <Insets left="10.0" />
                </HBox.margin>
             </MFXButton>
          </children>

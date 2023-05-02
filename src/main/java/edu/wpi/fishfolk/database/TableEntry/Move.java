@@ -41,6 +41,11 @@ public class Move {
     return longName + date.toString();
   }
 
+  @Override
+  public boolean equals(Object other) {
+    return this.getMoveID().equals(((Move) other).getMoveID());
+  }
+
   /**
    * Sanitize dates stored as strings to fit dd/MM/yyyy format. Adds leading zeroes and "20" in
    * front of shorthand years.
