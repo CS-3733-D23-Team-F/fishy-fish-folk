@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AboutMeController">
+<VBox alignment="CENTER" maxHeight="670.0" maxWidth="1180.0" minHeight="670.0" minWidth="1180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AboutMeController">
    <children>
       <HBox alignment="TOP_CENTER" prefHeight="150.0" prefWidth="1974.0">
          <children>
@@ -41,15 +41,15 @@
             <Insets />
          </opaqueInsets>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="620.0" prefWidth="1974.0">
+      <HBox alignment="CENTER" prefHeight="435.0" prefWidth="1180.0">
          <children>
             <VBox alignment="CENTER" prefHeight="782.0" prefWidth="1968.0">
                <children>
                   <StackPane fx:id="stack">
                      <children>
-                        <ScrollPane hbarPolicy="NEVER" prefHeight="899.0" prefWidth="1968.0">
+                        <ScrollPane prefHeight="899.0" prefWidth="1968.0">
                            <content>
-                              <AnchorPane maxWidth="1080.0" minHeight="449.0" minWidth="1080.0" prefHeight="795.0" prefWidth="1080.0">
+                              <AnchorPane>
                                  <children>
                                     <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1085.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -62,13 +62,13 @@
                                        </font>
                                     </Text>
                                     <MFXButton fx:id="Bernhardt" layoutX="1060.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Adler, Bernhardt" textFill="#f1f1f1" />
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="277.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/About/Meg.jpg" />
                                        </image>
                                     </ImageView>
-                                    <MFXButton fx:id="Meg" layoutX="213.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Aloise, Megan" textFill="#f1f1f1" />
-                                    <Text layoutX="174.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aloise, Megan - Software Engineer" textAlignment="CENTER">
+                                    <MFXButton fx:id="Meg" layoutX="67.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Aloise, Megan" textFill="#f1f1f1" />
+                                    <Text layoutX="33.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aloise, Megan - Software Engineer" textAlignment="CENTER">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
@@ -95,13 +95,13 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Text>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1510.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1085.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/About/Brendan.png" />
                                        </image>
                                     </ImageView>
-                                    <MFXButton fx:id="Brendan" layoutX="1459.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Byrne, Brendan" textFill="#f1f1f1" />
-                                    <Text layoutX="1386.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Byrne, Brendan - Software Engineer" textAlignment="CENTER">
+                                    <MFXButton fx:id="Brendan" layoutX="1060.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Byrne, Brendan" textFill="#f1f1f1" />
+                                    <Text layoutX="1015.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Byrne, Brendan - Software Engineer" textAlignment="CENTER">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
@@ -128,13 +128,13 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Text>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1570.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="151.0" layoutY="775.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/About/Sam.jpg" />
                                        </image>
                                     </ImageView>
-                                    <MFXButton fx:id="Sam" layoutX="1516.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rooney, Sam" textFill="#f1f1f1" />
-                                    <Text layoutX="1460.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rooney, Sam - Product Owner">
+                                    <MFXButton fx:id="Sam" layoutX="67.0" layoutY="958.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rooney, Sam" textFill="#f1f1f1" />
+                                    <Text layoutX="54.0" layoutY="953.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rooney, Sam - Product Owner">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
@@ -150,24 +150,24 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Text>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="910.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="633.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/About/Max.jpg" />
                                        </image>
                                     </ImageView>
-                                    <MFXButton fx:id="Max" layoutX="862.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Smith, Max" textFill="#f1f1f1" />
-                                    <Text layoutX="813.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Smith, Max - Software Engineer">
+                                    <MFXButton fx:id="Max" layoutX="579.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Smith, Max" textFill="#f1f1f1" />
+                                    <Text layoutX="535.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Smith, Max - Software Engineer">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
                                     </Text>
-                                    <ImageView fitHeight="151.0" fitWidth="118.0" layoutX="1555.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="151.0" fitWidth="118.0" layoutX="633.0" layoutY="775.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/About/tristin.png" />
                                        </image>
                                     </ImageView>
-                                    <MFXButton fx:id="Tristin" layoutX="1489.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Youtz, Tristin" textFill="#f1f1f1" />
-                                    <Text layoutX="1437.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Product Manager">
+                                    <MFXButton fx:id="Tristin" layoutX="579.0" layoutY="958.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Youtz, Tristin" textFill="#f1f1f1" />
+                                    <Text layoutX="535.0" layoutY="953.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Product Manager">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
@@ -183,14 +183,14 @@
          </children></HBox>
       <HBox alignment="CENTER" prefHeight="94.0" prefWidth="1974.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="242.0" prefWidth="1512.0">
+            <VBox alignment="CENTER" prefHeight="83.0" prefWidth="1525.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thanks to Andrew Shinn for time and input!">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham &amp; Women’s Hospital mapsand data used in this application are copyrighted and provided for the sole use of educational purposes.">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham &amp; Women’s Hospital mapsand data used in this application are copyrighted and provided for the sole use of educational purposes." textAlignment="CENTER" wrappingWidth="1092.515625">
                      <font>
                         <Font size="24.0" />
                      </font>
