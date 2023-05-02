@@ -6,12 +6,11 @@ import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-
-import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
