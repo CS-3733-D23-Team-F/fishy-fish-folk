@@ -6,9 +6,12 @@ import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import edu.wpi.fishfolk.ui.FormStatus;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -74,6 +77,7 @@ public class StaffDashboardController {
       flowerdeliverytime,
       flowerrecipientname,
       floweritems;
+  @FXML MFXButton serviceRefresh, alertsRefresh, movesRefresh;
   @FXML
   TableColumn<ITRequestObservable, String> itid,
       itstatus,
@@ -91,7 +95,33 @@ public class StaffDashboardController {
     // TODO fix this to load alerts in db and fix adding to alerts grid
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
-    // toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.));
+    serviceRefresh.setOnMouseClicked(event -> setTable());
+
+    populateMoves(moves);
+
+    movesRefresh.setOnMouseClicked(
+        event -> {
+          ArrayList<Move> moves2 =
+              (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
+          grid.getChildren().removeAll(grid.getChildren());
+          populateMoves(moves2);
+        });
+
+    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+    alertsRefresh.setOnMouseClicked(
+        event -> {
+          alertGrid.getChildren().removeAll(alertGrid.getChildren());
+
+          dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+
+          System.out.println(
+              "[AdminDashboardController.initialize]: Alerts refreshed ("
+                  + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+                  + ")");
+        });
+  }
+
+  private void populateMoves(ArrayList<Move> moves) {
     int col = 0;
     int row = 1;
     try {
@@ -124,7 +154,6 @@ public class StaffDashboardController {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
     dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
     alertsPane.setVvalue(1);
   }

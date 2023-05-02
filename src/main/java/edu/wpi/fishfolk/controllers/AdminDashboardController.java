@@ -30,9 +30,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -53,6 +50,8 @@ public class AdminDashboardController {
   @FXML TableView<ITRequestObservable> itTable;
   @FXML MFXTextField addAlert;
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
+  @FXML MFXScrollPane scroll;
+  @FXML MFXButton movesRefresh, alertsRefresh, serviceRefresh;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodassignee,
@@ -127,60 +126,63 @@ public class AdminDashboardController {
           tableHeader.setText("Unassigned Tasks");
         });
 
-    int col = 0;
-    int row = 1;
-    try {
-      LocalDate currentDate = LocalDate.now();
-      for (Move move : moves) {
-        if (!move.getDate().isBefore(currentDate)) {
-          System.out.println(move.getLongName() + " " + move.getDate());
-
-          FXMLLoader fxmlLoader = new FXMLLoader();
-          fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
-          AnchorPane anchorPane = fxmlLoader.load();
-          FutureMovesController futureMoves = fxmlLoader.getController();
-          futureMoves.setData(move.getLongName(), "" + move.getDate());
-          futureMoves.notify.setOnMouseClicked(
-              event -> {
-                String longname = futureMoves.longname;
-                LocalDate date = LocalDate.parse(futureMoves.sDate);
-                // truncate example:
-                // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
-                Alert alert =
-                    new Alert(
-                        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
-                        SharedResources.getUsername(),
-                        longname,
-                        date,
-                        "");
-
-                addAlert(alert);
-              });
-
-          if (col == 1) {
-            col = 0;
-            row++;
+    serviceRefresh.setOnMouseClicked(
+        event -> {
+          if (tableHeader.getText().equals("Unassigned Tasks")) {
+            setTable();
+          } else {
+            setOutstandingTable();
           }
+        });
 
-          // col++;
-          grid.add(anchorPane, col++, row);
+    populateMoves(moves);
 
-          grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-          grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-          grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+    movesRefresh.setOnMouseClicked(
+        event -> {
+          ArrayList<Move> moves2 =
+              (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
+          grid.getChildren().removeAll(grid.getChildren());
+          populateMoves(moves2);
+        });
 
-          grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-          grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-          grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+    /*
+    // Recurring refresh of alerts table
+    ScheduledExecutorService alertRefreshScheduler = Executors.newScheduledThreadPool(1);
+    alertRefreshScheduler.scheduleAtFixedRate(
+        () -> {
+          try {
 
-          GridPane.setMargin(anchorPane, new Insets(10));
-        }
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+            // v v v v v
+            alertGrid.getChildren().removeAll();
 
+            dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+
+            System.out.println(
+                    "[AdminDashboardController.initialize]: Alerts refreshed ("
+                            + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+                            + ")");
+            // ^ ^ ^ ^ ^
+
+          } catch (Exception e) {
+            System.out.println(e.getMessage());
+          }
+        },
+        0,
+        TimeUnit.SECONDS.toSeconds(15),
+        TimeUnit.SECONDS);
+        */
     dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+    alertsRefresh.setOnMouseClicked(
+        event -> {
+          alertGrid.getChildren().removeAll(alertGrid.getChildren());
+
+          dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+
+          System.out.println(
+              "[AdminDashboardController.initialize]: Alerts refreshed ("
+                  + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+                  + ")");
+        });
 
     addAlert.setOnAction(
         event -> {
@@ -204,8 +206,59 @@ public class AdminDashboardController {
     alertsPane.setVvalue(1);
   }
 
-  public void addAlert(Alert alert) {
+  private void populateMoves(ArrayList<Move> moves) {
 
+    int col = 0, row = 1;
+
+    try {
+      for (Move move : moves) {
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
+        AnchorPane anchorPane = fxmlLoader.load();
+        FutureMovesController futureMoves = fxmlLoader.getController();
+        futureMoves.setData(move.getLongName(), "" + move.getDate());
+        futureMoves.notify.setOnMouseClicked(
+            event -> {
+              String longname = futureMoves.longname;
+              LocalDate date = LocalDate.parse(futureMoves.sDate);
+              // truncate example:
+              // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
+              Alert alert =
+                  new Alert(
+                      LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                      SharedResources.getUsername(),
+                      longname,
+                      date,
+                      "");
+
+              addAlert(alert);
+            });
+
+        if (col == 1) {
+          col = 0;
+          row++;
+        }
+
+        // col++;
+        grid.add(anchorPane, col++, row);
+
+        grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+        grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+        grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+        grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+        GridPane.setMargin(anchorPane, new Insets(10));
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void addAlert(Alert alert) {
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
@@ -500,10 +553,6 @@ public class AdminDashboardController {
     supplyTable.setEditable(true);
     flowerTable.setEditable(true);
     itTable.setEditable(true);
-
-    // foodTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-
-    // foodTable.autosize();
 
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());
