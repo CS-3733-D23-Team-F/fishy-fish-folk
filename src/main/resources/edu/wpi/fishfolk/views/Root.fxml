@@ -20,7 +20,7 @@
                <children>
                   <HBox alignment="CENTER" maxWidth="100.0" minWidth="100.0" styleClass="navIcon">
                      <children>
-                        <MFXButton fx:id="homeButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="0.0" maxHeight="50.0" maxWidth="95.0" minHeight="50.0" minWidth="95.0" style="-fx-background-color: #012d5a; -fx-background-radius: 0;" text=" ">
+                        <MFXButton fx:id="homeButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="0.0" maxHeight="50.0" maxWidth="95.0" minHeight="50.0" minWidth="95.0" styleClass="sideNav" text=" ">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>

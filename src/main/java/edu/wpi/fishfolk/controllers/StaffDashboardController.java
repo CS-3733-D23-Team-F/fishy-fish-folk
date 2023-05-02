@@ -7,6 +7,7 @@ import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.ui.FormStatus;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class StaffDashboardController {
   // @FXML MFXButton navigateButton;
   @FXML GridPane grid;
   @FXML GridPane alertGrid;
+  @FXML MFXScrollPane alertsPane;
   // @FXML MFXPaginatedTableView paginated;
   @FXML TableView<FoodOrderObservable> foodTable;
   @FXML TableView<FurnitureOrderObservable> furnitureTable;
@@ -124,6 +126,7 @@ public class StaffDashboardController {
     }
 
     dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+    alertsPane.setVvalue(1);
   }
 
   public void addAlert(Alert alert) {
@@ -149,6 +152,7 @@ public class StaffDashboardController {
       GridPane.setValignment(alertPane, VPos.TOP);
       rowA += 1;
 
+      alertsPane.setVvalue(1);
     } catch (IOException e) {
       e.printStackTrace();
     }

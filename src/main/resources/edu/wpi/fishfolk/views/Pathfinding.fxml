@@ -48,7 +48,7 @@
             </Group>
          </content>
       </GesturePane>
-      <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" maxHeight="290.0" maxWidth="275.0" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
+      <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" maxHeight="315.0" maxWidth="275.0" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
          <children>
             <HBox alignment="CENTER" minHeight="45.0" prefHeight="45.0" prefWidth="275.0">
                <children>
@@ -60,19 +60,31 @@
                         <Insets />
                      </HBox.margin>
                   </Text>
-                  <MFXButton fx:id="closeSettings" style="-fx-background-color: #900000;" text="X" textFill="WHITE">
+                  <MFXButton fx:id="closeSettings" ellipsisString="" maxHeight="30.0" maxWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" style="-fx-background-color: #f1f1f1;">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0">
+                           <image>
+                              <Image url="@../images/003-remove.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                      <HBox.margin>
-                        <Insets left="167.0" />
+                        <Insets left="155.0" />
                      </HBox.margin>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
                   </MFXButton>
                </children>
             </HBox>
             <VBox prefHeight="140.0" prefWidth="200.0">
                <children>
                   <MFXToggleButton fx:id="noStairs" contentDisplay="TOP" prefHeight="42.0" prefWidth="145.0" text="Avoid Stairs" textFill="#012d5a">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </MFXToggleButton>
+                  <MFXToggleButton fx:id="locationMoves" contentDisplay="TOP" prefHeight="42.0" prefWidth="145.0" text="See Location Moves" textFill="#012d5a">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -174,10 +186,10 @@
             <Insets />
          </opaqueInsets>
          <StackPane.margin>
-            <Insets bottom="13.0" right="20.0" />
+            <Insets right="20.0" top="36.0" />
          </StackPane.margin>
       </VBox>
-      <VBox fx:id="adminBox" alignment="TOP_CENTER" disable="true" maxHeight="267.0" maxWidth="250.0" minHeight="267.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="267.0" prefWidth="250.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
+      <VBox fx:id="adminBox" alignment="TOP_CENTER" disable="true" maxHeight="315.0" maxWidth="250.0" minHeight="267.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="267.0" prefWidth="250.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
          <children>
             <HBox alignment="CENTER" minHeight="50.0">
                <children>
@@ -189,13 +201,17 @@
                         <Insets />
                      </HBox.margin>
                   </Text>
-                  <MFXButton fx:id="closeAdmin" style="-fx-background-color: #900000;" text="X" textFill="WHITE">
+                  <MFXButton fx:id="closeAdmin" ellipsisString="" maxHeight="30.0" maxWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" style="-fx-background-color: #f1f1f1;">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0">
+                           <image>
+                              <Image url="@../images/003-remove.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                      <HBox.margin>
-                        <Insets left="90.0" />
+                        <Insets left="80.0" />
                      </HBox.margin>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
                   </MFXButton>
                </children>
             </HBox>
@@ -210,6 +226,28 @@
                      </VBox.margin>
                   </Text>
                   <MFXFilterComboBox fx:id="methodSelector" alignment="TOP_LEFT" minHeight="37.0" minWidth="220.0" promptText="Ending point" style="-fx-background-color: #ffffff; -fx-border-color: #012D5A;" text="Method">
+                     <textFill>
+                        <Color red="0.6196078658103943" green="0.6392157077789307" blue="0.658823549747467" opacity="0.8700000047683716" />
+                     </textFill>
+                     <font>
+                        <Font name="Open Sans Regular" size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </VBox.margin>
+                  </MFXFilterComboBox>
+                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Set Current Location:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="15.0" top="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <MFXFilterComboBox fx:id="currLocation" alignment="TOP_LEFT" minHeight="37.0" minWidth="220.0" promptText="Ending point" style="-fx-background-color: #ffffff; -fx-border-color: #012D5A;" text="Method">
                      <textFill>
                         <Color red="0.6196078658103943" green="0.6392157077789307" blue="0.658823549747467" opacity="0.8700000047683716" />
                      </textFill>
@@ -260,7 +298,7 @@
             <Insets />
          </opaqueInsets>
          <StackPane.margin>
-            <Insets bottom="35.0" right="305.0" />
+            <Insets right="305.0" top="36.0" />
          </StackPane.margin>
       </VBox>
       <VBox maxHeight="165.0" maxWidth="55.0" minHeight="162.0" minWidth="55.0" nodeOrientation="LEFT_TO_RIGHT" StackPane.alignment="TOP_RIGHT">

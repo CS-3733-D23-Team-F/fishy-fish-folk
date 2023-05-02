@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -54,6 +55,13 @@ public class RootController {
     // if (Screen.values().equals(Screen.ADMIN_DASHBOARD)) {
 
     // }
+
+    signageNav.setTooltip(new Tooltip("Signage"));
+    pathfindingNav.setTooltip(new Tooltip("Pathfinding"));
+    serviceNav.setTooltip(new Tooltip("Service Request"));
+    mapEditorNav.setTooltip(new Tooltip("Map Editor"));
+    viewOrders.setTooltip(new Tooltip("View Orders"));
+    AccManagerBtn.setTooltip(new Tooltip("Account Manager"));
 
     viewOrders.setOnMouseClicked(
         event -> {
