@@ -197,7 +197,7 @@ public class FoodMenuLoader {
 
     returnable.add(
         new NewFoodMenuItem(
-            "Chocolate Shake",
+            "Strawberry Shake",
             "It's so nice, we added it twice! Also, we couldn't decide which category to put it in so we just did both.",
             "images/Food/milkshake.png",
             7.50f,
@@ -205,7 +205,7 @@ public class FoodMenuLoader {
 
     returnable.add(
         new NewFoodMenuItem(
-            "Chocolate Shake",
+            "Strawberry Shake",
             "It's so nice, we added it twice! Also, we couldn't decide which category to put it in so we just did both.",
             "images/Food/milkshake.png",
             7.50f,
