@@ -60,13 +60,17 @@
                         <Insets />
                      </HBox.margin>
                   </Text>
-                  <MFXButton fx:id="closeSettings" style="-fx-background-color: #900000;" text="X" textFill="WHITE">
+                  <MFXButton fx:id="closeSettings" ellipsisString="" maxHeight="30.0" maxWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" style="-fx-background-color: #f1f1f1;">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0">
+                           <image>
+                              <Image url="@../images/003-remove.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                      <HBox.margin>
-                        <Insets left="167.0" />
+                        <Insets left="155.0" />
                      </HBox.margin>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
                   </MFXButton>
                </children>
             </HBox>
@@ -197,13 +201,17 @@
                         <Insets />
                      </HBox.margin>
                   </Text>
-                  <MFXButton fx:id="closeAdmin" style="-fx-background-color: #900000;" text="X" textFill="WHITE">
+                  <MFXButton fx:id="closeAdmin" ellipsisString="" maxHeight="30.0" maxWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" style="-fx-background-color: #f1f1f1;">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0">
+                           <image>
+                              <Image url="@../images/003-remove.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                      <HBox.margin>
-                        <Insets left="90.0" />
+                        <Insets left="80.0" />
                      </HBox.margin>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
                   </MFXButton>
                </children>
             </HBox>
