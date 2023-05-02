@@ -206,10 +206,12 @@ public class PathfindingController extends AbsController {
             settingBox.setTranslateX(1000);
           } else {
             textInstruct.setTranslateY(252);
-            slideUp.setDisable(false);
-            slideUp.setVisible(true);
-            slideDown.setVisible(false);
-            slideDown.setDisable(true);
+            if (!slideUp.isDisabled() || !slideDown.isDisabled()) {
+              slideUp.setDisable(false);
+              slideUp.setVisible(true);
+              slideDown.setVisible(false);
+              slideDown.setDisable(true);
+            }
 
             adminBox.setTranslateX(0);
             settingBox.setTranslateX(0);
