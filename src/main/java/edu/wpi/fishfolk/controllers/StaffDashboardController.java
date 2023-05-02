@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -29,6 +31,7 @@ public class StaffDashboardController {
   // @FXML MFXButton navigateButton;
   @FXML GridPane grid;
   @FXML GridPane alertGrid;
+  @FXML MFXScrollPane alertsPane;
   // @FXML MFXPaginatedTableView paginated;
   @FXML TableView<FoodOrderObservable> foodTable;
   @FXML TableView<FurnitureOrderObservable> furnitureTable;
@@ -113,6 +116,7 @@ public class StaffDashboardController {
     }
 
     dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+    alertsPane.setVvalue(1);
   }
 
   public void addAlert(Alert alert) {
@@ -138,6 +142,7 @@ public class StaffDashboardController {
       GridPane.setValignment(alertPane, VPos.TOP);
       rowA += 1;
 
+      alertsPane.setVvalue(1);
     } catch (IOException e) {
       e.printStackTrace();
     }

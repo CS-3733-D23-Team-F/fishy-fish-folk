@@ -220,6 +220,7 @@ public class AdminDashboardController {
       GridPane.setValignment(alertPane, VPos.TOP);
       rowA += 1;
       addAlert.clear();
+      alertsPane.setVvalue(1);
 
     } catch (IOException e) {
       e.printStackTrace();
