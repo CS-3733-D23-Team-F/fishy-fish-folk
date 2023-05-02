@@ -48,18 +48,19 @@
                      <children>
                         <ScrollPane hbarPolicy="NEVER" prefHeight="899.0" prefWidth="1968.0">
                            <content>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" layoutX="328.0" layoutY="10.0" minWidth="-Infinity" prefHeight="207.0" prefWidth="10.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/christian.jpg" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="110.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rua, Christian - Assistant Lead">
@@ -67,25 +68,25 @@
                                                       <Font size="24.0" />
                                                    </font>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Christian" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rua, Christian" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="30.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
                                           </VBox>
-                                          <VBox minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="150.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/trajan.png" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="140.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Espelien, Trajan - Lead Software Engineer" textAlignment="CENTER">
@@ -93,25 +94,25 @@
                                                       <Font size="24.0" />
                                                    </font>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Trajan" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Espelien, Trajan" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="90.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
                                           </VBox>
-                                          <VBox layoutX="338.0" layoutY="10.0" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" layoutX="338.0" layoutY="10.0" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/Sam.jpg" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="90.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rooney, Sam - Product Owner">
@@ -119,12 +120,12 @@
                                                       <Font size="24.0" />
                                                    </font>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Sam" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rooney, Sam" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="30.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
@@ -132,16 +133,17 @@
                                        </children>
                                     </HBox>
                                     <HBox minHeight="25.0" prefHeight="15.0" prefWidth="1186.0" />
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="207.0" prefWidth="10.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/Louis.png" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="90.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pham, Louis - Software Engineer">
@@ -149,48 +151,51 @@
                                                       <Font size="24.0" />
                                                    </font>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Louis" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Pham, Louis" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="30.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
                                           </VBox>
-                                          <VBox minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="157.0" fitWidth="221.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/jon.jpg" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="60.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pantojas, Jonathan - Scrum Master" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="24.0" />
                                                    </font>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Jon" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Pantojas, Jonathan" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="30.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
                                           </VBox>
-                                          <VBox layoutX="362.0" layoutY="10.0" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" layoutX="362.0" layoutY="10.0" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/bernhardt.jpg" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="85.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Adler, Bernhardt - Assistant Lead " textAlignment="CENTER">
@@ -198,12 +203,12 @@
                                                       <Font size="24.0" />
                                                    </font>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Bernhardt" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Adler, Bernhardt" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="50.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
@@ -211,16 +216,17 @@
                                        </children>
                                     </HBox>
                                     <HBox layoutX="10.0" layoutY="217.0" minHeight="25.0" prefHeight="15.0" prefWidth="1186.0" />
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="207.0" prefWidth="10.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/Meg.jpg" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="90.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Aloise, Megan - Software Engineer" textAlignment="CENTER">
@@ -228,25 +234,25 @@
                                                       <Font size="24.0" />
                                                    </font>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Meg" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Aloise, Megan" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="30.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
                                           </VBox>
-                                          <VBox minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/Max.jpg" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="90.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Smith, Max - Software Engineer">
@@ -254,25 +260,25 @@
                                                       <Font size="24.0" />
                                                    </font>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Max" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Smith, Max" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="30.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
                                           </VBox>
-                                          <VBox layoutX="385.0" layoutY="10.0" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" layoutX="385.0" layoutY="10.0" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="151.0" fitWidth="118.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/tristin.png" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="110.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Product Manager">
@@ -280,12 +286,12 @@
                                                       <Font size="24.0" />
                                                    </font>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Tristin" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Youtz, Tristin" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="50.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
@@ -293,16 +299,17 @@
                                        </children>
                                     </HBox>
                                     <HBox layoutX="10.0" layoutY="449.0" minHeight="25.0" prefHeight="15.0" prefWidth="1186.0" />
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="207.0" prefWidth="10.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="150.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/Charlie.jpg" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="145.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Anderson, Charles - Documentation Analyst" textAlignment="CENTER">
@@ -310,25 +317,25 @@
                                                       <Font size="24.0" />
                                                    </font>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Charlie" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Anderson, Charles" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="75.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
                                           </VBox>
-                                          <VBox minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
                                                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/About/Brendan.png" />
                                                    </image>
                                                    <VBox.margin>
-                                                      <Insets left="90.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Byrne, Brendan - Software Engineer" textAlignment="CENTER">
@@ -336,12 +343,12 @@
                                                       <Font size="24.0" />
                                                    </font>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </Text>
                                                 <MFXButton fx:id="Brendan" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Byrne, Brendan" textFill="#f1f1f1">
                                                    <VBox.margin>
-                                                      <Insets left="60.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                 </MFXButton>
                                              </children>
@@ -349,6 +356,9 @@
                                        </children>
                                     </HBox>
                                  </children>
+                                 <padding>
+                                    <Insets bottom="20.0" top="20.0" />
+                                 </padding>
                               </VBox>
                            </content>
                         </ScrollPane>
