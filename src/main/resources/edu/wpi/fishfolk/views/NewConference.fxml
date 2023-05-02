@@ -7,6 +7,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -32,7 +33,7 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                      <children>
-                        <MFXScrollPane hbarPolicy="NEVER" minHeight="311.0" minWidth="472.0" prefHeight="311.0" prefWidth="563.0" styleClass="newScrolls" thumbColor="#012d5a" thumbHoverColor="#f0bf4c" vbarPolicy="ALWAYS">
+                        <MFXScrollPane fx:id="scrolly" hbarPolicy="NEVER" minHeight="311.0" minWidth="472.0" prefHeight="311.0" prefWidth="563.0" styleClass="newScrolls" thumbColor="#012d5a" thumbHoverColor="#f0bf4c" vbarPolicy="ALWAYS">
                            <content>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
@@ -163,14 +164,22 @@
                         </Text>
                      </children>
                   </HBox>
-                  <MFXTextField fx:id="notesBox" minHeight="176.0" minWidth="1190.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;">
+                  <MFXTextField fx:id="notesBox" minHeight="100.0" minWidth="1190.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a;">
                      <VBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets />
                      </VBox.margin>
                      <font>
                         <Font name="Open Sans Regular" size="26.0" />
                      </font>
                   </MFXTextField>
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <Label fx:id="errors" contentDisplay="CENTER">
+                           <font>
+                              <Font name="Open Sans Regular" size="15.0" />
+                           </font></Label>
+                     </children>
+                  </HBox>
                   <HBox spacing="20.0">
                      <children>
                         <MFXButton fx:id="confCancelButton" minHeight="55.0" minWidth="220.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="Cancel" textFill="WHITE">

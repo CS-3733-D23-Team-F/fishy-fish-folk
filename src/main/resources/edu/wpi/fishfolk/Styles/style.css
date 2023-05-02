@@ -239,18 +239,19 @@
     -fx-background-color: #EEEEEE;
 }
 
-
-
 .rectToggle:selected {
-    -fx-background-color: #fcd474;
-    -fx-border-color: #fcd474;
+    -fx-background-color: #fcd474 !important;
+    -fx-border-color: #fcd474 !important;
+    -fx-background-radius: 0 !important;
 }
 
 .rectToggle{
     -fx-background-color: #ffffff;
+    -fx-background-radius: 0;
 }
 
 .rectToggle:hover{
     -fx-background-color: #f9e4b3;
+    -fx-background-radius: 0;
 }
 
