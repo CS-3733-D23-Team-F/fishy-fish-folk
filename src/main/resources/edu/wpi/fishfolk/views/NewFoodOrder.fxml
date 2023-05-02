@@ -2,17 +2,19 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -27,27 +29,27 @@
                      <children>
                         <MFXButton fx:id="appsTab" minWidth="234.0" style="-fx-background-color: #012d5a;" text="Appetizers" textFill="WHITE">
                            <font>
-                              <Font name="Open Sans Regular" size="26.0" />
+                              <Font name="Open Sans Bold" size="24.0" />
                            </font>
                         </MFXButton>
                         <MFXButton fx:id="sidesTab" minWidth="234.0" style="-fx-background-color: #012d5a;" text="Sides" textFill="WHITE">
                            <font>
-                              <Font name="Open Sans Regular" size="26.0" />
+                              <Font name="Open Sans Bold" size="24.0" />
                            </font>
                         </MFXButton>
                         <MFXButton fx:id="mainsTab" minWidth="234.0" style="-fx-background-color: #012d5a;" text="Mains" textFill="WHITE">
                            <font>
-                              <Font name="Open Sans Regular" size="26.0" />
+                              <Font name="Open Sans Bold" size="24.0" />
                            </font>
                         </MFXButton>
                         <MFXButton fx:id="drinksTab" minWidth="234.0" style="-fx-background-color: #012d5a;" text="Drinks" textFill="WHITE">
                            <font>
-                              <Font name="Open Sans Regular" size="26.0" />
+                              <Font name="Open Sans Bold" size="24.0" />
                            </font>
                         </MFXButton>
                         <MFXButton fx:id="dessertsTab" minWidth="234.0" style="-fx-background-color: #012d5a;" text="Desserts" textFill="WHITE">
                            <font>
-                              <Font name="Open Sans Regular" size="26.0" />
+                              <Font name="Open Sans Bold" size="24.0" />
                            </font>
                         </MFXButton>
                      </children>
@@ -58,7 +60,7 @@
                   <HBox VBox.vgrow="ALWAYS">
                      <children>
                         <HBox HBox.hgrow="ALWAYS" />
-                        <ScrollPane fx:id="menuItemsPane" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="500.0" prefWidth="1170.0" style="-fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
+                        <MFXScrollPane fx:id="menuItemsPane" fitToWidth="true" hbarPolicy="NEVER" minHeight="500.0" minWidth="1170.0" pannable="true" prefHeight="500.0" prefWidth="1170.0" style="-fx-border-color: #012d5a; -fx-border-radius: 5;" vbarPolicy="NEVER">
                            <content>
                               <VBox spacing="25.0">
                                  <children>
@@ -74,7 +76,7 @@
                                                 </ImageView>
                                                 <Text layoutX="225.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chocolate Cake" wrappingWidth="345.0">
                                                    <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
+                                                      <Font name="Open Sans Bold" size="24.0" />
                                                    </font>
                                                 </Text>
                                                 <Text layoutX="225.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A slice of Delicious, Scrumptious, Overly well described Chocolate Cake. Optionally served with whipped cream." wrappingWidth="345.0">
@@ -84,12 +86,12 @@
                                                 </Text>
                                                 <MFXButton layoutX="225.0" layoutY="177.0" prefHeight="43.0" prefWidth="330.0" style="-fx-background-color: #012d5a;" text="Add to Order" textFill="WHITE">
                                                    <font>
-                                                      <Font name="Open Sans Regular" size="20.0" />
+                                                      <Font name="Open Sans Bold" size="23.0" />
                                                    </font>
                                                 </MFXButton>
                                                 <Text layoutX="225.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.50" textAlignment="RIGHT" wrappingWidth="345.0">
                                                    <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
+                                                      <Font name="Open Sans Bold" size="24.0" />
                                                    </font>
                                                 </Text>
                                              </children>
@@ -100,7 +102,7 @@
                                  </children>
                               </VBox>
                            </content>
-                        </ScrollPane>
+                        </MFXScrollPane>
                         <HBox HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -108,12 +110,12 @@
                      <children>
                         <MFXButton fx:id="cancelButton" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #012d5a;" text="Cancel" textFill="WHITE" HBox.hgrow="ALWAYS">
                            <font>
-                              <Font name="Open Sans Regular" size="26.0" />
+                              <Font name="Open Sans Bold" size="23.0" />
                            </font>
                         </MFXButton>
                         <MFXButton fx:id="clearButton" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #012d5a;" text="Clear" textFill="WHITE" HBox.hgrow="ALWAYS">
                            <font>
-                              <Font name="Open Sans Regular" size="26.0" />
+                              <Font name="Open Sans Bold" size="24.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="150.0" />
@@ -121,7 +123,7 @@
                         </MFXButton>
                         <MFXButton fx:id="checkoutButton" prefHeight="55.0" prefWidth="220.0" style="-fx-background-color: #f0Bf4c;" text="Checkout" textFill="#012d5a" HBox.hgrow="ALWAYS">
                            <font>
-                              <Font name="Open Sans Regular" size="26.0" />
+                              <Font name="Open Sans Bold" size="24.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="350.0" />
@@ -135,15 +137,15 @@
                </children>
             </VBox>
             <HBox fx:id="blur" alignment="CENTER" disable="true" minHeight="650.0" minWidth="1180.0" opacity="0.76" style="-fx-background-color: #000000;" visible="false" StackPane.alignment="CENTER" />
-            <HBox fx:id="cartWrap" alignment="CENTER" disable="true" visible="false">
+            <HBox fx:id="cartWrap" alignment="CENTER" disable="true" visible="false" StackPane.alignment="CENTER">
                <children>
                   <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
                   <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                      <children>
                         <VBox alignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
+                        <VBox alignment="TOP_CENTER" maxHeight="635.0" maxWidth="1180.0" minHeight="635.0" minWidth="1180.0" style="-fx-background-color: #ffffff;">
                            <children>
-                              <ScrollPane fx:id="cartItemsPane" fitToWidth="true" hbarPolicy="NEVER" minHeight="300.0" minWidth="1150.0" pannable="true" prefHeight="300.0" prefWidth="1150.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER">
+                              <MFXScrollPane fx:id="cartItemsPane" minHeight="300.0" minWidth="1150.0" prefHeight="300.0" prefWidth="1150.0" styleClass="newScrolls">
                                  <content>
                                     <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="1100.0">
                                        <children>
@@ -153,7 +155,7 @@
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Chocolate Cake" wrappingWidth="300.0">
                                                          <font>
-                                                            <Font name="Open Sans Regular" size="26.0" />
+                                                            <Font name="Open Sans Bold" size="24.0" />
                                                          </font>
                                                       </Text>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.50" wrappingWidth="79.0">
@@ -182,7 +184,7 @@
                                                       </Text>
                                                       <MFXButton fx:id="removeButton" prefHeight="55.0" prefWidth="280.0" style="-fx-background-color: #900000;" text="Remove from Order" textFill="WHITE">
                                                          <font>
-                                                            <Font name="Open Sans Regular" size="26.0" />
+                                                            <Font name="Open Sans Bold" size="24.0" />
                                                          </font>
                                                          <HBox.margin>
                                                             <Insets left="15.0" />
@@ -195,47 +197,58 @@
                                        </children>
                                     </VBox>
                                  </content>
-                                 <padding>
-                                    <Insets left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </ScrollPane>
+                              </MFXScrollPane>
                               <HBox alignment="TOP_CENTER">
                                  <children>
-                                    <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+                                    <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                                        <children>
                                           <AnchorPane>
                                              <children>
-                                                <MFXFilterComboBox fx:id="roomSelector" floatMode="DISABLED" prefColumnCount="0" prefHeight="56.0" promptText="Delivery Location:" style="-fx-border-color: #012d5a;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <MFXFilterComboBox fx:id="roomSelector" floatingText="Delivery Location:" prefColumnCount="0" prefHeight="56.0" style="-fx-border-color: #012d5a;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
+                                                      <Font name="Open Sans Regular" size="15.0" />
                                                    </font>
                                                    <cursor>
                                                       <Cursor fx:constant="DEFAULT" />
                                                    </cursor>
+                                                   <textFill>
+                                                      <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                                   </textFill>
                                                 </MFXFilterComboBox>
                                              </children>
                                           </AnchorPane>
-                                          <TextField fx:id="timeSelector" prefHeight="56.0" promptText="Delivery Time (H:MM [AM/PM]):" style="-fx-border-color: #012d5a; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+                                          <MFXTextField fx:id="timeSelector" floatingText="Delivery Time (H:MM [AM/PM]):" prefHeight="56.0" prefWidth="467.2" VBox.vgrow="ALWAYS">
+                                             <textFill>
+                                                <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                             </textFill>
                                              <font>
-                                                <Font name="Open Sans Regular" size="26.0" />
+                                                <Font name="Open Sans Regular" size="15.0" />
                                              </font>
-                                          </TextField>
-                                          <TextField fx:id="recipientField" prefHeight="56.0" promptText="Recipient Name:" style="-fx-border-color: #012d5a; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+                                          </MFXTextField>
+                                          <MFXTextField fx:id="recipientField" floatingText="Recipient Name:" prefHeight="56.0" prefWidth="467.2">
+                                             <textFill>
+                                                <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                                             </textFill>
                                              <font>
-                                                <Font name="Open Sans Regular" size="26.0" />
+                                                <Font name="Open Sans Regular" size="15.0" />
                                              </font>
-                                          </TextField>
+                                          </MFXTextField>
+                                          <HBox alignment="CENTER_RIGHT" VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <Label fx:id="errors" text="Label" />
+                                             </children>
+                                          </HBox>
                                           <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                                              <children>
                                                 <MFXButton fx:id="backButton" alignment="CENTER" prefHeight="55.0" prefWidth="225.0" style="-fx-background-color: #012d5a;" text="Back to Menu" textFill="WHITE">
                                                    <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
+                                                      <Font name="Open Sans Bold" size="24.0" />
                                                    </font>
                                                 </MFXButton>
                                                 <HBox HBox.hgrow="ALWAYS" />
                                                 <MFXButton fx:id="submitButton" alignment="CENTER" prefHeight="55.0" prefWidth="225.0" style="-fx-background-color: #f0Bf4c;" text="Confirm Order" textFill="#012d5a">
                                                    <font>
-                                                      <Font name="Open Sans Regular" size="26.0" />
+                                                      <Font name="Open Sans Bold" size="24.0" />
                                                    </font>
                                                    <HBox.margin>
                                                       <Insets />

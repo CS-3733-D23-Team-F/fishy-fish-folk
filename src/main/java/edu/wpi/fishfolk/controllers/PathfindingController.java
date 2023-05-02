@@ -9,6 +9,8 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.Location;
+import edu.wpi.fishfolk.database.TableEntry.Node;
+import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.pathfinding.*;
@@ -16,6 +18,7 @@ import edu.wpi.fishfolk.util.NodeType;
 import edu.wpi.fishfolk.util.PermissionLevel;
 import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +32,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -37,6 +41,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -64,7 +69,7 @@ public class PathfindingController extends AbsController {
   @FXML VBox textInstruct;
 
   @FXML VBox settingBox;
-  @FXML ImageView settingButton;
+  @FXML MFXButton settingButton;
 
   @FXML MFXButton closeSettings;
 
@@ -98,6 +103,12 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXToggleButton noStairs;
 
+  @FXML MFXButton upFloor, downFloor;
+
+  @FXML MFXToggleButton locationMoves;
+
+  Group alertGroup;
+
   private PathfindSingleton pathfinder;
 
   int start, end;
@@ -111,8 +122,21 @@ public class PathfindingController extends AbsController {
 
   ArrayList<MFXCheckbox> displayButtons;
 
+  ArrayList<Location> mapAlerts;
+
+  ArrayList<LocalDate> alertDates;
+
+  Map<Location, Node> alertsNodes;
+
   ArrayList<String> floors;
+
   int currentFloor;
+
+  int currFloorNoPath;
+
+  ParallelTransition parallelTransition;
+
+  ArrayList<String> eachFloor;
 
   ArrayList<ParallelTransition> pathAnimations;
 
@@ -141,6 +165,11 @@ public class PathfindingController extends AbsController {
 
     methodSelector.getItems().addAll("A*", "BFS", "DFS", "Dijkstra's");
 
+    slideUp.setVisible(false);
+    slideDown.setVisible(false);
+    slideUp.setDisable(true);
+    slideDown.setDisable(true);
+
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
@@ -155,6 +184,8 @@ public class PathfindingController extends AbsController {
 
       pathTextBox.getChildren().clear();
       pathTextBox.getChildren().add(alertPane);
+      alertPane.setStyle("-fx-background-radius: 15");
+
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
@@ -174,6 +205,14 @@ public class PathfindingController extends AbsController {
             adminBox.setTranslateX(1000);
             settingBox.setTranslateX(1000);
           } else {
+            textInstruct.setTranslateY(252);
+            if (!slideUp.isDisabled() || !slideDown.isDisabled()) {
+              slideUp.setDisable(false);
+              slideUp.setVisible(true);
+              slideDown.setVisible(false);
+              slideDown.setDisable(true);
+            }
+
             adminBox.setTranslateX(0);
             settingBox.setTranslateX(0);
             settingBox.setVisible(true);
@@ -205,8 +244,19 @@ public class PathfindingController extends AbsController {
           submitSettings();
         });
 
+    locationMoves.setOnMouseClicked(
+        event -> {
+          alertGroup.setVisible(locationMoves.isSelected());
+        });
+
     slideUp.setOnMouseClicked(
         event -> {
+          settingBox.setTranslateX(1000);
+          settingBox.setVisible(false);
+          settingBox.setDisable(true);
+          adminBox.setTranslateX(1000);
+          adminBox.setVisible(false);
+          adminBox.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(textInstruct);
@@ -259,6 +309,58 @@ public class PathfindingController extends AbsController {
     endSelector.getItems().addAll(nodeNames); // same options for start and end
     endSelector.setDisable(true);
 
+    eachFloor = new ArrayList<>(Arrays.asList("L2", "L1", "1", "2", "3"));
+    currFloorNoPath = 1;
+    floorDisplay.setText("Floor " + "L1");
+
+    upFloor.setOnMouseClicked(
+        event -> {
+          downFloor.setDisable(false);
+          currFloorNoPath++;
+          if (currFloorNoPath == 4) {
+            upFloor.setDisable(true);
+          }
+          mapImg.setImage(images.get(eachFloor.get(currFloorNoPath)));
+          floorDisplay.setText("Floor " + eachFloor.get(currFloorNoPath));
+
+          locationGroup.getChildren().clear();
+          generateAlertBoxs();
+
+          locationGroup.setVisible(true);
+
+          for (int typeNum = 0; typeNum < displayButtons.size() - 1; typeNum++) {
+
+            NodeType type = displayTypes.get(typeNum);
+
+            drawLocations(
+                eachFloor.get(currFloorNoPath), locationsButtons.get(type).isSelected(), type);
+          }
+        });
+
+    downFloor.setOnMouseClicked(
+        event -> {
+          upFloor.setDisable(false);
+          currFloorNoPath--;
+          if (currFloorNoPath == 0) {
+            downFloor.setDisable(true);
+          }
+          mapImg.setImage(images.get(eachFloor.get(currFloorNoPath)));
+          floorDisplay.setText("Floor " + eachFloor.get(currFloorNoPath));
+
+          locationGroup.getChildren().clear();
+          generateAlertBoxs();
+
+          locationGroup.setVisible(true);
+
+          for (int typeNum = 0; typeNum < displayButtons.size() - 1; typeNum++) {
+
+            NodeType type = displayTypes.get(typeNum);
+
+            drawLocations(
+                eachFloor.get(currFloorNoPath), locationsButtons.get(type).isSelected(), type);
+          }
+        });
+
     startSelector.setOnAction(
         event -> {
           if (startSelector.getValue() != null) {
@@ -302,11 +404,21 @@ public class PathfindingController extends AbsController {
 
             System.out.println(paths);
 
+            slideUp.setVisible(true);
+            slideUp.setDisable(false);
+            downFloor.setDisable(true);
+            upFloor.setDisable(true);
+
             textDirections = new LinkedList<>();
             populateTextDirections(paths);
 
             // index 0 in floors in this path - not allFloors
             currentFloor = 0;
+
+            for (int i = 0; i < paths.size(); i++) {
+              Path path = paths.get(i);
+              floors.add(path.getFloor());
+            }
 
             drawPaths(paths);
             if (paths.size() > 0) {
@@ -323,6 +435,19 @@ public class PathfindingController extends AbsController {
     clearBtn.setOnMouseClicked(
         event -> {
           // clear paths
+
+          slideUp.setVisible(false);
+          slideDown.setVisible(false);
+          slideUp.setDisable(true);
+          slideDown.setDisable(true);
+          if (!(currFloorNoPath == 4)) {
+            upFloor.setDisable(false);
+          }
+          if (!(currFloorNoPath == 0)) {
+            downFloor.setDisable(false);
+          }
+
+          textInstruct.setTranslateY(252);
 
           drawGroup.getChildren().clear();
           drawGroup.getChildren().add(mapImg);
@@ -459,18 +584,26 @@ public class PathfindingController extends AbsController {
       locationsButtons.put(type, displayButtons.get(typeNum));
 
       drawLocations("L1", locationsButtons.get(type).isSelected(), type);
-
-      locationGroup.getChildren().add(locationGroups.get(type));
     }
 
     allCheck.setOnAction(
         event -> {
           for (int typeNum = 0; typeNum < displayButtons.size() - 1; typeNum++) {
+
             NodeType type = displayTypes.get(typeNum);
-            locationsButtons.get(type).setSelected(allCheck.isSelected());
-            locationGroups.get(type).setVisible(allCheck.isSelected());
+            if (allCheck.isSelected()) {
+              locationsButtons.get(type).setSelected(true);
+              drawLocations(
+                  eachFloor.get(currFloorNoPath), locationsButtons.get(type).isSelected(), type);
+            } else {
+              locationsButtons.get(type).setSelected(false);
+              locationGroups.get(type).setVisible(false);
+            }
           }
         });
+
+    setAlerts();
+    generateAlertBoxs();
 
     graph = new Graph(dbConnection, AbsController.today);
   }
@@ -489,7 +622,7 @@ public class PathfindingController extends AbsController {
         // create points to move along path
         int numPoints = (int) (pathLength * 0.04);
 
-        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition = new ParallelTransition();
         Duration duration = new Duration(1000);
         Point2D[] points = path.interpolate(numPoints);
 
@@ -509,8 +642,6 @@ public class PathfindingController extends AbsController {
           animation.setAutoReverse(false);
           parallelTransition.getChildren().add(animation);
         }
-
-        pathAnimations.add(parallelTransition);
         // add buttons to start and end of paths on each floor
 
         if (i == 0) {
@@ -525,10 +656,11 @@ public class PathfindingController extends AbsController {
             g.getChildren()
                 .add(
                     generatePathButtons(
-                        p2.getX(),
-                        p2.getY(),
+                        p2.getX() - 50,
+                        p2.getY() - 25,
                         direction(path.getFloor(), paths.get(1).getFloor()),
-                        true));
+                        true,
+                        i));
           }
 
         } else if (i == paths.size() - 1) { // last path segment
@@ -539,10 +671,11 @@ public class PathfindingController extends AbsController {
             g.getChildren()
                 .add(
                     generatePathButtons(
-                        p1.getX(),
-                        p1.getY(),
+                        p1.getX() - 50,
+                        p1.getY() - 25,
                         direction(path.getFloor(), paths.get(paths.size() - 2).getFloor()),
-                        false));
+                        false,
+                        i));
           }
 
           Point2D p2 = path.points.get(path.numNodes - 1);
@@ -555,26 +688,35 @@ public class PathfindingController extends AbsController {
           g.getChildren()
               .add(
                   generatePathButtons(
-                      p1.getX(),
-                      p1.getY(),
+                      p1.getX() - 50,
+                      p1.getY() - 25,
                       direction(
                           path.getFloor(), // this button goes in reverse
                           paths.get(i - 1).getFloor()),
-                      false));
+                      false,
+                      i));
 
           Point2D p2 = path.points.get(path.numNodes - 1);
           g.getChildren()
               .add(
                   generatePathButtons(
-                      p2.getX(),
-                      p2.getY(),
+                      p2.getX() - 50,
+                      p2.getY() - 25,
                       direction(path.getFloor(), paths.get(i + 1).getFloor()),
-                      true));
+                      true,
+                      i));
+        }
+
+        pathAnimations.add(parallelTransition);
+
+        if (paths.size() == 1) {
+          Point2D p2 = path.points.get(path.numNodes - 1);
+          NodeCircle end = new NodeCircle(-1, p2.getX(), p2.getY(), 12);
+          end.setFill(Color.rgb(1, 45, 90));
+          g.getChildren().add(end);
         }
         drawGroup.getChildren().add(g);
         g.setVisible(false);
-
-        floors.add(path.getFloor());
       }
     }
   }
@@ -583,43 +725,53 @@ public class PathfindingController extends AbsController {
 
     locationGroups.put(type, new Group());
 
-    // copied directly from mapeditor function
-    dbConnection
-        .getNodesOnFloor(floor)
-        .forEach(
-            node -> {
-              List<Location> locations =
-                  dbConnection.getLocations(node.getNodeID(), today).stream().toList();
+    if (visibility) {
+      dbConnection
+          .getNodesOnFloor(floor)
+          .forEach(
+              node -> {
+                List<Location> locations =
+                    dbConnection.getLocations(node.getNodeID(), today).stream().toList();
 
-              List<String> shortnames = new ArrayList<>();
-              for (int locatNum = 0; locatNum < locations.size(); locatNum++) {
-                if (locations.get(locatNum).getNodeType() == type) {
-                  shortnames.add(locations.get(locatNum).getShortName());
+                List<String> shortnames = new ArrayList<>();
+                for (int locatNum = 0; locatNum < locations.size(); locatNum++) {
+                  if (locations.get(locatNum).getNodeType() == type) {
+                    shortnames.add(locations.get(locatNum).getShortName());
+                  }
                 }
-              }
 
-              if (!shortnames.isEmpty()) {
-                String label = String.join(", ", shortnames);
-                locationGroups
-                    .get(type)
-                    .getChildren()
-                    .add(
-                        new NodeText(
-                            node.getNodeID(),
-                            node.getX() - label.length() * 5,
-                            node.getY() - 10,
-                            label));
-              }
-            });
+                if (!shortnames.isEmpty()) {
+                  String label = String.join(", ", shortnames);
+                  locationGroups
+                      .get(type)
+                      .getChildren()
+                      .add(
+                          new NodeText(
+                              node.getNodeID(),
+                              node.getX() - label.length() * 5,
+                              node.getY() - 10,
+                              label));
+                }
+              });
 
-    locationsButtons
-        .get(type)
-        .setOnAction(
-            event -> {
-              locationGroups.get(type).setVisible(locationsButtons.get(type).isSelected());
-            });
+      locationsButtons
+          .get(type)
+          .setOnAction(
+              event -> {
+                locationGroups.get(type).setVisible(locationsButtons.get(type).isSelected());
+              });
 
-    locationGroups.get(type).setVisible(visibility);
+      locationGroups.get(type).setVisible(visibility);
+      locationGroup.getChildren().add(locationGroups.get(type));
+
+    } else {
+      locationsButtons
+          .get(type)
+          .setOnAction(
+              event -> {
+                drawLocations(floor, true, type);
+              });
+    }
   }
 
   /**
@@ -631,19 +783,55 @@ public class PathfindingController extends AbsController {
    * @param forwards true if this button goes forwards in the path, false if backwards
    * @return a JavaFX Node object to draw
    */
-  private javafx.scene.Node generatePathButtons(double x, double y, boolean up, boolean forwards) {
+  private javafx.scene.Node generatePathButtons(
+      double x, double y, boolean up, boolean forwards, int floorNum) {
+
+    HBox floorBox = new HBox();
+    floorBox.setMinHeight(50);
+    floorBox.setMinWidth(100);
+    floorBox.setStyle("-fx-background-radius:15; -fx-background-color: #f1f1f1");
+    floorBox.setEffect(new DropShadow(0, 0, 1, Color.web("#000000")));
+    floorBox.setLayoutX(x);
+    floorBox.setLayoutY(y);
+    floorBox.setVisible(true);
+
+    Text floorText = new Text();
 
     Polygon triangle = new Polygon();
+
+    Polyline segment = new Polyline();
 
     if (up) {
       triangle.getPoints().addAll(x - 15, y + 15, x + 15, y + 15, x, y - 15);
       triangle.setFill(Color.rgb(0, 100, 0));
+      segment =
+          new Polyline(
+              floorBox.getLayoutX() + 3,
+              floorBox.getLayoutY() - 3,
+              floorBox.getLayoutX() + 3,
+              floorBox.getLayoutY() + 3);
+
     } else {
       triangle.getPoints().addAll(x - 15, y - 15, x + 15, y - 15, x, y + 15);
       triangle.setFill(Color.rgb(100, 0, 0));
+      segment =
+          new Polyline(
+              floorBox.getLayoutX() + 3,
+              floorBox.getLayoutY() + 3,
+              floorBox.getLayoutX() + 3,
+              floorBox.getLayoutY() - 3);
     }
 
-    triangle.setOnMouseClicked(
+    if (forwards) {
+      floorText.setText("Floor: " + floors.get(floorNum + 1));
+    } else {
+      floorText.setText("Floor: " + floors.get(floorNum - 1));
+    }
+
+    floorText.setFont(new Font("OpenSans", 15));
+    floorBox.setAlignment(Pos.CENTER);
+
+    floorBox.setOnMouseClicked(
         event -> {
           if (forwards) {
             nextFloor();
@@ -654,7 +842,20 @@ public class PathfindingController extends AbsController {
           }
           displayFloor();
         });
-    return triangle;
+
+    Duration duration = new Duration(750);
+
+    PathTransition animation = new PathTransition(duration, segment, triangle);
+    animation.setInterpolator(Interpolator.LINEAR);
+    animation.setCycleCount(Timeline.INDEFINITE);
+    animation.setAutoReverse(true);
+    parallelTransition.getChildren().add(animation);
+
+    floorBox.getChildren().add(floorText);
+
+    floorBox.getChildren().add(triangle);
+
+    return floorBox;
   }
 
   private void nextFloor() {
@@ -672,6 +873,8 @@ public class PathfindingController extends AbsController {
   /** Display the floor indexed by the class variable currentFloor */
   private void displayFloor() {
 
+    currFloorNoPath = eachFloor.indexOf(floors.get(currentFloor));
+
     mapImg.setImage(images.get(floors.get(currentFloor)));
     floorDisplay.setText("Floor " + floors.get(currentFloor));
 
@@ -682,6 +885,7 @@ public class PathfindingController extends AbsController {
     }
 
     locationGroup.getChildren().clear();
+    generateAlertBoxs();
 
     locationGroup.setVisible(true);
 
@@ -690,8 +894,6 @@ public class PathfindingController extends AbsController {
       NodeType type = displayTypes.get(typeNum);
 
       drawLocations(floors.get(currentFloor), locationsButtons.get(type).isSelected(), type);
-
-      locationGroup.getChildren().add(locationGroups.get(type));
     }
 
     // stop all animations
@@ -755,8 +957,8 @@ public class PathfindingController extends AbsController {
 
   private void populateTextDirections(ArrayList<Path> paths) {
     int lastFloorIdx = paths.size() - 1;
-    System.out.println("path size: " + lastFloorIdx);
     for (int i = 0; i <= lastFloorIdx; i++) {
+
       List<TextDirection> floorDirections = new LinkedList<>(paths.get(i).getDirections());
 
       if (i == 0) {
@@ -770,20 +972,16 @@ public class PathfindingController extends AbsController {
 
       if (i == lastFloorIdx) {
         if (lastFloorIdx > 0) {
-          floorDirections.add(
-              textDirectionBetweenFloors(
-                  paths.get(lastFloorIdx - 1).getToNextPath(), paths.get(lastFloorIdx).getFloor()));
+          ((LinkedList<TextDirection>) floorDirections)
+              .addFirst(
+                  textDirectionBetweenFloors(
+                      paths.get(lastFloorIdx - 1).getToNextPath(),
+                      paths.get(lastFloorIdx).getFloor()));
         }
         floorDirections.add(new TextDirection(Direction.START, "End at " + endSelector.getValue()));
       }
 
       if (!floorDirections.isEmpty()) {
-
-        System.out.println(
-            "floor dir: "
-                + floorDirections.get(i).getDirection()
-                + " dist "
-                + floorDirections.get(i).getDistance());
         textDirections.add(floorDirections);
       }
     }
@@ -806,7 +1004,6 @@ public class PathfindingController extends AbsController {
         text = "Take the stairs down to " + second;
         break;
     }
-    System.out.println(text);
     return new TextDirection(direction, text);
   }
 
@@ -830,5 +1027,81 @@ public class PathfindingController extends AbsController {
     adminBox.setDisable(true);
     settingBox.setVisible(false);
     settingBox.setDisable(true);
+  }
+
+  private void setAlerts() {
+    mapAlerts = new ArrayList<Location>();
+    alertDates = new ArrayList<LocalDate>();
+    alertsNodes = new HashMap<Location, Node>();
+    dbConnection
+        .getAllEntries(TableEntryType.ALERT)
+        .forEach(
+            obj -> {
+              edu.wpi.fishfolk.database.TableEntry.Alert a =
+                  (edu.wpi.fishfolk.database.TableEntry.Alert) obj;
+
+              String name = a.getLongName();
+              if (!name.equals("no location")) {
+                int alertID = dbConnection.getNodeIDFromLocation(name, today);
+                List<Location> mapLocations =
+                    dbConnection.getLocations(alertID, today).stream().toList();
+                for (int i = 0; i < mapLocations.size(); i++) {
+                  if (!mapAlerts.contains(mapLocations.get(i))
+                      && (mapLocations.get(i)).isDestination()) {
+                    mapAlerts.add(mapLocations.get(i));
+                    alertDates.add(a.getDate());
+                  }
+                }
+              }
+            });
+
+    dbConnection
+        .getAllEntries(TableEntryType.NODE)
+        .forEach(
+            node -> {
+              edu.wpi.fishfolk.database.TableEntry.Node n =
+                  (edu.wpi.fishfolk.database.TableEntry.Node) node;
+              for (int i = 0; i < mapAlerts.size(); i++) {
+                if (n.getNodeID()
+                    == dbConnection.getNodeIDFromLocation(mapAlerts.get(i).getLongName(), today)) {
+                  alertsNodes.put(mapAlerts.get(i), n);
+                }
+              }
+            });
+  }
+
+  private void generateAlertBoxs() {
+    alertGroup = new Group();
+    for (int locat = 0; locat < mapAlerts.size(); locat++) {
+      Location currLocat = mapAlerts.get(locat);
+      if (alertsNodes.get(currLocat).getFloor().equals(eachFloor.get(currFloorNoPath))) {
+        VBox mapAlert = new VBox();
+        mapAlert.setMinHeight(50);
+        mapAlert.setMinWidth(100);
+        mapAlert.setStyle("-fx-background-radius:15; -fx-background-color: #f1f1f1");
+        mapAlert.setEffect(new DropShadow(0, 0, 1, Color.web("#000000")));
+        mapAlert.setLayoutX(alertsNodes.get(currLocat).getX());
+        mapAlert.setLayoutY(alertsNodes.get(currLocat).getY());
+        mapAlert.setVisible(true);
+
+        Text alertText = new Text();
+        alertText.setFont(new Font("OpenSans", 15));
+        alertText.setText(currLocat.getShortName());
+
+        Text moveDate = new Text();
+        moveDate.setFont(new Font("OpenSans", 15));
+        moveDate.setText("Moves On " + alertDates.get(locat));
+
+        mapAlert.setAlignment(Pos.CENTER);
+
+        mapAlert.getChildren().add(alertText);
+        mapAlert.getChildren().add(moveDate);
+        mapAlert.setPadding(new Insets(0, 5, 0, 5));
+
+        alertGroup.getChildren().add(mapAlert);
+      }
+    }
+    alertGroup.setVisible(locationMoves.isSelected());
+    locationGroup.getChildren().add(alertGroup);
   }
 }

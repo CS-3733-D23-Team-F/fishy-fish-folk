@@ -1,11 +1,13 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
+import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Edge;
 import java.io.*;
 import java.sql.*;
@@ -15,7 +17,7 @@ import java.util.*;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class EdgeDAO implements IDAO<Edge> {
+public class EdgeDAO implements IDAO<Edge>, ICSVNoSubtable, IProcessEdit {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -103,6 +105,22 @@ public class EdgeDAO implements IDAO<Edge> {
   }
 
   @Override
+  public void processEdit(DataEdit<Object> edit) {
+    Edge newEdge = (Edge) edit.getNewEntry();
+    switch (edit.getType()) {
+      case INSERT:
+        this.insertEntry(newEdge);
+        break;
+      case REMOVE:
+        removeEntry(newEdge);
+        break;
+      case UPDATE:
+        // updating edge is meaningless
+        // updateEntry(edit.getNewEntry());
+        break;
+    }
+  }
+
   public void prepareListener() {
 
     try {
@@ -159,6 +177,7 @@ public class EdgeDAO implements IDAO<Edge> {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[EdgeDAO.verifyLocalTable]: Notification received!");
+        edgeSet.clear();
         populateLocalTable();
       }
 

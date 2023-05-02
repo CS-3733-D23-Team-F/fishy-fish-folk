@@ -36,6 +36,8 @@ public class NewSignageController extends AbsController {
   ArrayList<ImageView> listIcons = new ArrayList<>();
   ArrayList<Text> listSubText = new ArrayList<>();
 
+  SignagePreset latest = new SignagePreset("baseline", LocalDate.now().minusYears(1000), null);
+
   public void initialize() {
 
     // pulls all SignagePresets into an ArrayList to call in for loops
@@ -45,9 +47,10 @@ public class NewSignageController extends AbsController {
     // if the current date matches a date in one of the SignagePresets
     // the identifier is set to the name of that SignagePreset
     for (int i = 0; i < allPresets.size(); i++) {
-      if (allPresets.get(i).getDate().equals(LocalDate.now()))
-        identifier = allPresets.get(i).getName();
+      if (allPresets.get(i).getDate().isBefore(LocalDate.now())
+          && allPresets.get(i).getDate().isAfter(latest.getDate())) latest = allPresets.get(i);
     }
+    identifier = latest.getName();
 
     // sets identifier to presetSelect value only if a preset has been selected
     if (!(presetSelect.getValue() == null)) identifier = presetSelect.getValue();
@@ -69,7 +72,7 @@ public class NewSignageController extends AbsController {
       } else {
         listTexts.get(i).setOpacity(1);
         listIcons.get(i).setOpacity(1);
-        listSubText.get(i).setOpacity(1); // CHANGE ONCE SUBTEXT IS ADDED TO DB
+        listSubText.get(i).setOpacity(1);
         listTexts
             .get(i)
             .setText(
@@ -94,11 +97,13 @@ public class NewSignageController extends AbsController {
     // dictates what do do if preset is selected
     presetSelect.setOnAction(
         event -> {
-          for (int i = 0; i < allPresets.size(); i++) {
-            if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
-              identifier = presetSelect.getValue();
-              initialize();
-              break;
+          if (!(presetSelect.getValue() == null)) {
+            for (int i = 0; i < allPresets.size(); i++) {
+              if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
+                identifier = presetSelect.getValue();
+                initialize();
+                break;
+              }
             }
           }
         });

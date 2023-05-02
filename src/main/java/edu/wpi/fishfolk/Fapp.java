@@ -17,20 +17,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Fapp extends Application {
 
-  @Setter @Getter private static Stage primaryStage;
-  @Setter @Getter private static BorderPane rootPane;
+  @Setter @Getter public static Stage primaryStage;
+  @Setter @Getter public static BorderPane rootPane;
 
   @Override
-  public void init() {
+  public void init() throws Exception {
     log.info("Starting Up");
+    /* the fish :(
+      LoadingScreenController loadingScreen = new LoadingScreenController();
+      loadingScreen.checkFunctions();
+    */
   }
 
   @Override
   public void start(Stage primaryStage) throws IOException {
     /* primaryStage is generally only used if one of your components require the stage to display */
-    Fapp.primaryStage = primaryStage;
-    primaryStage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
-
+    // Fapp.primaryStage = primaryStage;
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Root.fxml"));
     final BorderPane root = loader.load();
     root.getLeft().setDisable(true);
@@ -41,11 +43,15 @@ public class Fapp extends Application {
 
     final Scene scene = new Scene(root);
     scene.getStylesheets().add(Fapp.class.getResource("Styles/style.css").toExternalForm());
+    Stage stage = new Stage();
 
-    primaryStage.setScene(scene);
-    primaryStage.setMaximized(true);
-    primaryStage.show();
+    stage.setScene(scene);
+    stage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/bwlogo.png")));
+    // primaryStage.setMaximized(true);
+    stage.setMaximized(true);
 
+    Fapp.primaryStage = stage;
+    this.primaryStage.show();
     Navigation.navigate(Screen.LOGIN);
     root.getLeft().setDisable(true);
     root.getLeft().setVisible(false);
