@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
@@ -18,7 +19,7 @@ import lombok.Getter;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class NodeDAO implements IDAO<Node>, IProcessEdit {
+public class NodeDAO implements IDAO<Node>, ICSVNoSubtable, IProcessEdit {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -199,6 +200,7 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[NodeDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
@@ -246,6 +248,9 @@ public class NodeDAO implements IDAO<Node>, IProcessEdit {
 
   @Override
   public boolean updateEntry(Node entry) {
+
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getNodeID())) return false;
 
     // Mark entry Node status as NEW
     entry.setStatus(EntryStatus.NEW);

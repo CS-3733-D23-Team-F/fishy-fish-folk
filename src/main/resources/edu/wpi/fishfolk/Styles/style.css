@@ -119,10 +119,6 @@
     -fx-font-weight: bold;
 }
 
-.rectToggle:selected {
-    -fx-background-color: #F0BF4C;
-    -fx-border-color: #F0BF4C;
-}
 .rectToggle .mfx-ripple-generator{
     -mfx-ripple-color: transparent;
 }
@@ -145,17 +141,73 @@
     -fx-max-height: 0;
 }
 
-.table-view .column-header-background .label {
-    -fx-text-fill: white;
-    -fx-background-color: #012D5A;
-    -fx-background-radius: 5;
+
+
+.table-view .column-header-background .column-header{
+    -fx-background-color: white;
+    -fx-pref-height: 65;
+    -fx-border-color: #012D5A;
+    -fx-border-width: 0 0 2 0;
 }
+
+.table-cell{
+    -fx-wrap-text: true;
+}
+
+
+.table-view .column-header-background .label{
+    -fx-text-fill: #012D5A;
+    -fx-alignment: CENTER-LEFT;
+    -fx-label-padding: 0 0 0 10;
+}
+
+.table-view {
+    -fx-border-width: 0.5;
+}
+
+.tab-pane{
+    -fx-padding: 5 5 0 5;
+
+}
+
+
+.tab-pane .tab-header-area .tab{
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 5 0;
+
+}
+
 
 .tab-pane .tab .tab-label{
-    -fx-stroke: transparent;
     -fx-text-fill: #012D5A;
-
+    -fx-font-size: 15;
+    -fx-label-padding: 0 15 0 15;
+    -fx-font-weight: bold;
 }
+
+.tab-pane .tab:selected .tab-label{
+    -fx-background-color: #F0BF4C;
+    -fx-text-fill: #012D5A;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+}
+
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: #f5f5f5;
+    -fx-focus-color: transparent;
+}
+
+.tab-pane .tab-header-area .tab-header-background{
+    -fx-background-color: white;
+    -fx-wrap-text: true;
+}
+
+
+
+
+
 
 .choice-box{
     -fx-border-color: #012D5A;
@@ -169,4 +221,44 @@
 }
 
 
+.newScrolls{
+    -fx-background-radius: 5;
+    -fx-border-color: #012d5a;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
+    -thumb-color: #012d5a;
+    -fx-background-color: #ffffff;
+    -thumb-hover-color: #fcd474;
+    -track-color: #ffffff;
+    -fx-hbar-policy: "NEVER";
+    -fx-vbar-policy: "ALWAYS";
+}
+
+.newScrolls:hover{
+    -thumb-hover-color: #fcd474;
+    -thumb-color: #fcd474;
+}
+
+.evolve{
+    -fx-background-color: linear-gradient(to bottom, rgb(2,0,36), rgb(55,121,107), rgb(255,255,255));
+}
+
+.userNav:hover{
+    -fx-background-color: #EEEEEE;
+}
+
+
+
+.rectToggle:selected {
+    -fx-background-color: #fcd474;
+    -fx-border-color: #fcd474;
+}
+
+.rectToggle{
+    -fx-background-color: #ffffff;
+}
+
+.rectToggle:hover{
+    -fx-background-color: #f9e4b3;
+}
 
