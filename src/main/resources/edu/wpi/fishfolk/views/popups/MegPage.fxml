@@ -1,76 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="535.0" maxWidth="825.0" minHeight="535.0" minWidth="825.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
+<VBox alignment="CENTER" maxHeight="535.0" maxWidth="825.0" minHeight="535.0" minWidth="825.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
    <children>
-      <HBox prefHeight="382.0" prefWidth="825.0">
+      <HBox alignment="CENTER">
          <children>
-            <VBox minWidth="825.0" prefHeight="337.0" prefWidth="825.0">
+            <VBox alignment="CENTER">
                <children>
-                  <AnchorPane prefHeight="359.0" prefWidth="1080.0">
-                     <children>
-                        <Text fill="#f1f1f1" layoutX="365.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Megan Aloise">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#f1f1f1" layoutX="342.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Software Engineer">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#f1f1f1" layoutX="167.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Robotics Engineering Bachelor's Degree">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Text>
-                        <ImageView fitHeight="188.0" fitWidth="155.0" layoutX="357.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../images/About/Meg.jpg" />
-                           </image>
-                        </ImageView>
-                        <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
-                        <Text fill="#f1f1f1" layoutX="105.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minoring in Computer Science, Electrical Engineering, and Mechanical Engineering" textAlignment="CENTER" wrappingWidth="625.1810302734375">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </AnchorPane>
+                  <MFXButton fx:id="back" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back">
+                     <VBox.margin>
+                        <Insets right="600.0" top="15.0" />
+                     </VBox.margin>
+                  </MFXButton>
+                  <ImageView fitHeight="188.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/About/Meg.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Megan Aloise">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Software Engineer">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Robotics Engineering Bachelor's Degree">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Minoring in CS, ECE, and ME" textAlignment="CENTER" wrappingWidth="812.1810302734375">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Blueberries" wrappingWidth="290.2734375">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Reading &amp; Thrifting" wrappingWidth="388.940185546875">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: “The instant you take control. Interesting things will happen to you. I guarantee it.” by Dirk Gently" textAlignment="CENTER" wrappingWidth="578.2734375">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
                </children>
             </VBox>
          </children>
       </HBox>
-      <HBox prefHeight="362.0" prefWidth="1080.0">
-         <children>
-            <AnchorPane minWidth="1080.0" prefHeight="289.0" prefWidth="1080.0">
-               <children>
-                  <Text fill="#f1f1f1" layoutX="280.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Blueberries" wrappingWidth="290.2734375">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#f1f1f1" layoutX="231.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Reading &amp; Thrifting" wrappingWidth="388.940185546875">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#f1f1f1" layoutX="131.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: “The instant you take control. Interesting things will happen to you. I guarantee it.” by Dirk Gently" textAlignment="CENTER" wrappingWidth="578.2734375">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Text>
-               </children>
-            </AnchorPane>
-         </children>
-      </HBox>
    </children>
+   <padding>
+      <Insets bottom="15.0" />
+   </padding>
 </VBox>

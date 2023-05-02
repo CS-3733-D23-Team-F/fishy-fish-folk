@@ -1,71 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="535.0" maxWidth="825.0" minHeight="535.0" minWidth="825.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
+<VBox alignment="CENTER" maxHeight="535.0" maxWidth="825.0" minHeight="535.0" minWidth="825.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
    <children>
-      <HBox prefHeight="358.0" prefWidth="1080.0">
+      <HBox alignment="CENTER">
          <children>
-            <VBox minWidth="825.0" prefHeight="345.0" prefWidth="825.0">
+            <VBox alignment="CENTER">
                <children>
-                  <AnchorPane prefHeight="359.0" prefWidth="1080.0">
-                     <children>
-                        <Text fill="#f1f1f1" layoutX="352.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tristin Youtz">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#f1f1f1" layoutX="327.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Project Manager">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#f1f1f1" layoutX="179.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Robotics Engineering and Mechanical Engineering Bachelor's Degree" textAlignment="CENTER" wrappingWidth="462.5559387207031">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Text>
-                        <ImageView fitHeight="216.0" fitWidth="251.0" layoutX="336.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../images/About/tristin.png" />
-                           </image>
-                        </ImageView>
-                        <MFXButton fx:id="back" layoutX="44.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back" />
-                     </children>
-                  </AnchorPane>
+                  <MFXButton fx:id="back" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back">
+                     <VBox.margin>
+                        <Insets right="600.0" top="15.0" />
+                     </VBox.margin>
+                  </MFXButton>
+                  <ImageView fitHeight="216.0" fitWidth="251.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/About/tristin.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Tristin Youtz">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Project Manager">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Robotics Engineering and Mechanical Engineering Bachelor's Degree" textAlignment="CENTER" wrappingWidth="462.5559387207031">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Crayons" wrappingWidth="252.606689453125">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Camping, writing music, and rowing" wrappingWidth="559.606689453125">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Fun Fact: I have a gallon sized bag of Kit Kats in my dorm room" textAlignment="CENTER" wrappingWidth="380.606689453125">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
                </children>
             </VBox>
          </children>
       </HBox>
-      <HBox prefHeight="362.0" prefWidth="1080.0">
-         <children>
-            <AnchorPane minWidth="826.0" prefHeight="190.0" prefWidth="826.0">
-               <children>
-                  <Text fill="#f1f1f1" layoutX="287.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Crayons" wrappingWidth="252.606689453125">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#f1f1f1" layoutX="133.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Camping, writing music, and rowing" wrappingWidth="559.606689453125">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#f1f1f1" layoutX="223.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fun Fact: I have a gallon sized bag of Kit Kats in my dorm room" textAlignment="CENTER" wrappingWidth="380.606689453125">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Text>
-               </children>
-            </AnchorPane>
-         </children>
-      </HBox>
    </children>
+   <padding>
+      <Insets bottom="15.0" />
+   </padding>
 </VBox>
