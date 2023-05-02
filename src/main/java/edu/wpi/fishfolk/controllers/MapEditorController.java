@@ -523,7 +523,7 @@ public class MapEditorController extends AbsController {
 
     save.setOnMouseClicked(
         event -> {
-          System.out.println("saving " + editQueue.size() + " edits");
+          System.out.println("saving " + editQueue.size() + " edits:");
 
           dbConnection.processEditQueue(editQueue);
 
@@ -1069,16 +1069,23 @@ public class MapEditorController extends AbsController {
 
     newLocationSubmit.setOnMouseClicked(
         event -> {
+          // create location object, store it locally, add to edits queue
           Location newLocation =
               new Location(
                   newLocationLongname.getText(),
                   newLocationShortname.getText(),
                   newLocationType.getValue());
+
+          longname2idx.put(newLocation.getLongName(), locations.size());
+          locations.add(newLocation);
+
           editQueue.add(
               new DataEdit<>(newLocation, DataEditType.INSERT, TableEntryType.LOCATION), false);
 
+          // create move object, save it locally, add to edits queue
           Move move =
               new Move(selectedNodes.get(0), newLocation.getLongName(), newLocationDate.getValue());
+          moves.add(move);
           editQueue.add(new DataEdit<>(move, DataEditType.INSERT, TableEntryType.MOVE), false);
         });
   }
@@ -1509,45 +1516,58 @@ public class MapEditorController extends AbsController {
 
         controller.submit.setOnMouseClicked(
             event -> {
-              // put move in database
+              // clear nodeid field to show submission
+              controller.nodeIDText.clear();
+              // reset to the move previously shown
+              controller.datePicker.setValue(move.getDate());
+
+              // check for duplicate move
               Move newMove =
                   new Move(
                       controller.getNodeID(),
                       controller.longnameText.getText(),
                       controller.getDate());
-              System.out.println("adding " + newMove);
-              moves.add(newMove);
-              editQueue.add(new DataEdit<>(newMove, DataEditType.INSERT), false);
 
-              // if user didnt press back after previewing, submit also takes them back
-              if (state == EDITOR_STATE.PREVIEWING) {
-                Node origin = controller.getOrigin();
+              if (moves.contains(newMove)) {
+                System.out.println("duplicate move " + newMove);
 
-                if (origin != null) {
+              } else {
 
-                  // clear preview location label
-                  labelPreviewGroup.getChildren().clear();
+                System.out.println("adding move " + newMove);
+                moves.add(newMove);
+                editQueue.add(
+                    new DataEdit<>(newMove, DataEditType.INSERT, TableEntryType.MOVE), false);
 
-                  if (!origin.getFloor().equals(allFloors.get(currentFloor))) {
-                    // floor selector's onAction switches floors
-                    floorSelector.setValue(origin.getFloor());
+                // if user didnt press back after previewing, submit also takes them back
+                if (state == EDITOR_STATE.PREVIEWING) {
+                  Node origin = controller.getOrigin();
+
+                  if (origin != null) {
+
+                    // clear preview location label
+                    labelPreviewGroup.getChildren().clear();
+
+                    if (!origin.getFloor().equals(allFloors.get(currentFloor))) {
+                      // floor selector's onAction switches floors
+                      floorSelector.setValue(origin.getFloor());
+                    }
+                    gesturePane.centreOn(origin.getPoint());
+                    gesturePane.zoomTo(1.0, origin.getPoint());
+
+                    // highlight origin node again
+                    nodeGroup
+                        .getChildren()
+                        .forEach(
+                            fxnode -> {
+                              NodeCircle nodeCircle = (NodeCircle) fxnode;
+                              if (nodeCircle.getNodeID() == origin.getNodeID()) {
+                                nodeCircle.highlight();
+                              }
+                            });
+
+                    // back to editing the currently selected node
+                    state = EDITOR_STATE.EDITING_NODE;
                   }
-                  gesturePane.centreOn(origin.getPoint());
-                  gesturePane.zoomTo(1.0, origin.getPoint());
-
-                  // highlight origin node again
-                  nodeGroup
-                      .getChildren()
-                      .forEach(
-                          fxnode -> {
-                            NodeCircle nodeCircle = (NodeCircle) fxnode;
-                            if (nodeCircle.getNodeID() == origin.getNodeID()) {
-                              nodeCircle.highlight();
-                            }
-                          });
-
-                  // back to editing the currently selected node
-                  state = EDITOR_STATE.EDITING_NODE;
                 }
               }
             });
