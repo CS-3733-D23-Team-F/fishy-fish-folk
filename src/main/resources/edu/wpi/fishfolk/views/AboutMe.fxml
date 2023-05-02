@@ -6,14 +6,13 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" maxHeight="670.0" maxWidth="1180.0" minHeight="670.0" minWidth="1180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AboutMeController">
+<VBox alignment="CENTER" minHeight="670.0" minWidth="1180.0" prefHeight="670.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AboutMeController">
    <children>
       <HBox alignment="TOP_CENTER" prefHeight="150.0" prefWidth="1974.0">
          <children>
@@ -29,7 +28,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="AboutM11" alignment="CENTER" maxHeight="620.0" maxWidth="880.0" minHeight="7.0" minWidth="503.0" prefHeight="46.0" prefWidth="880.0" text="Team Coach: Luke Alder" textAlignment="CENTER">
+                  <Label fx:id="AboutM11" alignment="CENTER" maxHeight="620.0" maxWidth="880.0" minHeight="7.0" minWidth="503.0" prefHeight="46.0" prefWidth="880.0" text="Team Coach: Luke Deratzou" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -47,133 +46,310 @@
                <children>
                   <StackPane fx:id="stack">
                      <children>
-                        <ScrollPane prefHeight="899.0" prefWidth="1968.0">
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="899.0" prefWidth="1968.0">
                            <content>
-                              <AnchorPane>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1085.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/bernhardt.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <Text layoutX="1015.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adler, Bernhardt - Assistant Lead " textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <MFXButton fx:id="Bernhardt" layoutX="1060.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Adler, Bernhardt" textFill="#f1f1f1" />
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/Meg.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <MFXButton fx:id="Meg" layoutX="67.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Aloise, Megan" textFill="#f1f1f1" />
-                                    <Text layoutX="33.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aloise, Megan - Software Engineer" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <ImageView fitHeight="163.0" fitWidth="149.0" layoutX="1100.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/Charlie.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <MFXButton fx:id="Charlie" layoutX="1031.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Anderson, Charles" textFill="#f1f1f1" />
-                                    <Text layoutX="914.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Anderson, Charles - Documentation Analyst" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <ImageView fitHeight="155.0" fitWidth="154.0" layoutX="633.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/trajan.png" />
-                                       </image>
-                                    </ImageView>
-                                    <MFXButton fx:id="Trajan" layoutX="579.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Espelien, Trajan" textFill="#f1f1f1" />
-                                    <Text layoutX="481.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Espelien, Trajan - Lead Software Engineer" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1085.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/Brendan.png" />
-                                       </image>
-                                    </ImageView>
-                                    <MFXButton fx:id="Brendan" layoutX="1060.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Byrne, Brendan" textFill="#f1f1f1" />
-                                    <Text layoutX="1015.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Byrne, Brendan - Software Engineer" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="606.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/jon.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <MFXButton fx:id="Jon" layoutX="579.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Pantojas, Jonathan" textFill="#f1f1f1" />
-                                    <Text layoutX="504.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pantojas, Jonathan - Scrum Master" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="259.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/Louis.png" />
-                                       </image>
-                                    </ImageView>
-                                    <MFXButton fx:id="Louis" layoutX="67.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Pham, Louis" textFill="#f1f1f1" />
-                                    <Text layoutX="33.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pham, Louis - Software Engineer">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="151.0" layoutY="775.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/Sam.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <MFXButton fx:id="Sam" layoutX="67.0" layoutY="958.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rooney, Sam" textFill="#f1f1f1" />
-                                    <Text layoutX="54.0" layoutY="953.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rooney, Sam - Product Owner">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="151.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/christian.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <MFXButton fx:id="Christian" layoutX="67.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rua, Christian" textFill="#f1f1f1" />
-                                    <Text layoutX="54.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rua, Christian - Assistant Lead">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="633.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/Max.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <MFXButton fx:id="Max" layoutX="579.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Smith, Max" textFill="#f1f1f1" />
-                                    <Text layoutX="535.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Smith, Max - Software Engineer">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
-                                    <ImageView fitHeight="151.0" fitWidth="118.0" layoutX="633.0" layoutY="775.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/About/tristin.png" />
-                                       </image>
-                                    </ImageView>
-                                    <MFXButton fx:id="Tristin" layoutX="579.0" layoutY="958.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Youtz, Tristin" textFill="#f1f1f1" />
-                                    <Text layoutX="535.0" layoutY="953.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Product Manager">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/christian.jpg" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="110.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rua, Christian - Assistant Lead">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <MFXButton fx:id="Christian" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rua, Christian" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="30.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                          <VBox minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="150.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/trajan.png" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="140.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Espelien, Trajan - Lead Software Engineer" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <MFXButton fx:id="Trajan" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Espelien, Trajan" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="90.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                          <VBox layoutX="338.0" layoutY="10.0" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/Sam.jpg" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="90.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rooney, Sam - Product Owner">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <MFXButton fx:id="Sam" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rooney, Sam" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="30.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox minHeight="25.0" prefHeight="15.0" prefWidth="1186.0" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/Louis.png" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="90.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pham, Louis - Software Engineer">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <MFXButton fx:id="Louis" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Pham, Louis" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="30.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                          <VBox minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="157.0" fitWidth="221.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/jon.jpg" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="60.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pantojas, Jonathan - Scrum Master" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                </Text>
+                                                <MFXButton fx:id="Jon" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Pantojas, Jonathan" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="30.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                          <VBox layoutX="362.0" layoutY="10.0" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/bernhardt.jpg" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="85.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Adler, Bernhardt - Assistant Lead " textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <MFXButton fx:id="Bernhardt" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Adler, Bernhardt" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="50.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="217.0" minHeight="25.0" prefHeight="15.0" prefWidth="1186.0" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/Meg.jpg" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="90.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Aloise, Megan - Software Engineer" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <MFXButton fx:id="Meg" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Aloise, Megan" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="30.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                          <VBox minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/Max.jpg" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="90.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Smith, Max - Software Engineer">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <MFXButton fx:id="Max" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Smith, Max" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="30.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                          <VBox layoutX="385.0" layoutY="10.0" minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="151.0" fitWidth="118.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/tristin.png" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="110.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Product Manager">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <MFXButton fx:id="Tristin" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Youtz, Tristin" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="50.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="449.0" minHeight="25.0" prefHeight="15.0" prefWidth="1186.0" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="150.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/Charlie.jpg" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="145.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Anderson, Charles - Documentation Analyst" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <MFXButton fx:id="Charlie" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Anderson, Charles" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="75.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                          <VBox minWidth="-Infinity" prefHeight="207.0" prefWidth="25.0" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/About/Brendan.png" />
+                                                   </image>
+                                                   <VBox.margin>
+                                                      <Insets left="90.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Byrne, Brendan - Software Engineer" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <MFXButton fx:id="Brendan" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Byrne, Brendan" textFill="#f1f1f1">
+                                                   <VBox.margin>
+                                                      <Insets left="60.0" />
+                                                   </VBox.margin>
+                                                </MFXButton>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </AnchorPane>
+                              </VBox>
                            </content>
                         </ScrollPane>
                      </children>
