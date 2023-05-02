@@ -10,7 +10,7 @@ public class ConnectionBuilder {
   private static final String username = "teamf";
   private static final String password = "teamf60";
   private static final String dbName = "teamfdb";
-  private static String schema = "testing";
+  private static String schema = "iter2db";
   private static final String URL = "jdbc:postgresql://database.cs.wpi.edu:5432/";
 
   /**
