@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -44,135 +45,139 @@
          <children>
             <VBox alignment="CENTER" prefHeight="782.0" prefWidth="1968.0">
                <children>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="899.0" prefWidth="1968.0">
-                     <content>
-                        <AnchorPane maxWidth="1080.0" minHeight="449.0" minWidth="1080.0" prefHeight="795.0" prefWidth="1080.0">
-                           <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1085.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/bernhardt.jpg" />
-                                 </image>
-                              </ImageView>
-                              <Text layoutX="1031.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bernhardt - Assistant Lead " textAlignment="CENTER">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <MFXButton fx:id="Bernhardt" layoutX="1060.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Bernhardt" textFill="#f1f1f1" />
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="277.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/Meg.jpg" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="Meg" layoutX="213.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Aloise, Megan" textFill="#f1f1f1" />
-                              <Text layoutX="174.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aloise, Megan - Software Engineer" textAlignment="CENTER">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="163.0" fitWidth="149.0" layoutX="1100.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/Charlie.jpg" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="Charlie" layoutX="1031.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Anderson, Charles" textFill="#f1f1f1" />
-                              <Text layoutX="914.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Anderson, Charles - Documentation Analyst" textAlignment="CENTER">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="155.0" fitWidth="154.0" layoutX="633.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/trajan.png" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="Trajan" layoutX="579.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Espelien, Trajan" textFill="#f1f1f1" />
-                              <Text layoutX="481.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Espelien, Trajan - Lead Software Engineer" textAlignment="CENTER">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1510.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/Brendan.png" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="Brendan" layoutX="1459.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Byrne, Brendan" textFill="#f1f1f1" />
-                              <Text layoutX="1386.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Byrne, Brendan - Software Engineer" textAlignment="CENTER">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="606.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/jon.jpg" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="Jon" layoutX="579.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Pantojas, Jonathan" textFill="#f1f1f1" />
-                              <Text layoutX="504.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pantojas, Jonathan - Scrum Master" textAlignment="CENTER">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="259.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/Louis.png" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="Louis" layoutX="67.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Pham, Louis" textFill="#f1f1f1" />
-                              <Text layoutX="33.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pham, Louis - Software Engineer">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1570.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/Sam.jpg" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="Sam" layoutX="1516.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rooney, Sam" textFill="#f1f1f1" />
-                              <Text layoutX="1460.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rooney, Sam - Product Owner">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="151.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/christian.jpg" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="Christian" layoutX="67.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rua, Christian" textFill="#f1f1f1" />
-                              <Text layoutX="54.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rua, Christian - Assistant Lead">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="910.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/Max.jpg" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="Max" layoutX="862.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Smith, Max" textFill="#f1f1f1" />
-                              <Text layoutX="813.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Smith, Max - Software Engineer">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="151.0" fitWidth="118.0" layoutX="1555.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/About/tristin.png" />
-                                 </image>
-                              </ImageView>
-                              <MFXButton fx:id="Tristin" layoutX="1489.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Youtz, Tristin" textFill="#f1f1f1" />
-                              <Text layoutX="1437.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Product Manager">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </ScrollPane>
+                  <StackPane fx:id="stack">
+                     <children>
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="899.0" prefWidth="1968.0">
+                           <content>
+                              <AnchorPane maxWidth="1080.0" minHeight="449.0" minWidth="1080.0" prefHeight="795.0" prefWidth="1080.0">
+                                 <children>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1085.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/bernhardt.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Text layoutX="1031.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bernhardt - Assistant Lead " textAlignment="CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <MFXButton fx:id="Bernhardt" layoutX="1060.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Bernhardt" textFill="#f1f1f1" />
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="277.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/Meg.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <MFXButton fx:id="Meg" layoutX="213.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Aloise, Megan" textFill="#f1f1f1" />
+                                    <Text layoutX="174.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aloise, Megan - Software Engineer" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <ImageView fitHeight="163.0" fitWidth="149.0" layoutX="1100.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/Charlie.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <MFXButton fx:id="Charlie" layoutX="1031.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Anderson, Charles" textFill="#f1f1f1" />
+                                    <Text layoutX="914.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Anderson, Charles - Documentation Analyst" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <ImageView fitHeight="155.0" fitWidth="154.0" layoutX="633.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/trajan.png" />
+                                       </image>
+                                    </ImageView>
+                                    <MFXButton fx:id="Trajan" layoutX="579.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Espelien, Trajan" textFill="#f1f1f1" />
+                                    <Text layoutX="481.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Espelien, Trajan - Lead Software Engineer" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1510.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/Brendan.png" />
+                                       </image>
+                                    </ImageView>
+                                    <MFXButton fx:id="Brendan" layoutX="1459.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Byrne, Brendan" textFill="#f1f1f1" />
+                                    <Text layoutX="1386.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Byrne, Brendan - Software Engineer" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="606.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/jon.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <MFXButton fx:id="Jon" layoutX="579.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Pantojas, Jonathan" textFill="#f1f1f1" />
+                                    <Text layoutX="504.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pantojas, Jonathan - Scrum Master" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="259.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/Louis.png" />
+                                       </image>
+                                    </ImageView>
+                                    <MFXButton fx:id="Louis" layoutX="67.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Pham, Louis" textFill="#f1f1f1" />
+                                    <Text layoutX="33.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pham, Louis - Software Engineer">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1570.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/Sam.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <MFXButton fx:id="Sam" layoutX="1516.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rooney, Sam" textFill="#f1f1f1" />
+                                    <Text layoutX="1460.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rooney, Sam - Product Owner">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="151.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/christian.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <MFXButton fx:id="Christian" layoutX="67.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Rua, Christian" textFill="#f1f1f1" />
+                                    <Text layoutX="54.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rua, Christian - Assistant Lead">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="910.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/Max.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <MFXButton fx:id="Max" layoutX="862.0" layoutY="703.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Smith, Max" textFill="#f1f1f1" />
+                                    <Text layoutX="813.0" layoutY="695.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Smith, Max - Software Engineer">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <ImageView fitHeight="151.0" fitWidth="118.0" layoutX="1555.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/About/tristin.png" />
+                                       </image>
+                                    </ImageView>
+                                    <MFXButton fx:id="Tristin" layoutX="1489.0" layoutY="448.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Youtz, Tristin" textFill="#f1f1f1" />
+                                    <Text layoutX="1437.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Product Manager">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </StackPane>
                </children>
             </VBox>
          </children></HBox>
