@@ -267,49 +267,53 @@ public class AdminDashboardController {
     int col = 0, row = 1;
 
     try {
+      LocalDate currentDate = LocalDate.now();
+
       for (Move move : moves) {
+        if (!move.getDate().isBefore(currentDate)) {
 
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
-        AnchorPane anchorPane = fxmlLoader.load();
-        FutureMovesController futureMoves = fxmlLoader.getController();
+          FXMLLoader fxmlLoader = new FXMLLoader();
+          fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
+          AnchorPane anchorPane = fxmlLoader.load();
+          FutureMovesController futureMoves = fxmlLoader.getController();
 
-        futureMoves.setData(move.getLongName(), "" + move.getDate());
+          futureMoves.setData(move.getLongName(), "" + move.getDate());
 
-        futureMoves.notify.setOnMouseClicked(
-            event -> {
-              String longname = futureMoves.longname;
-              LocalDate date = LocalDate.parse(futureMoves.sDate);
-              // truncate example:
-              // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
-              Alert alert =
-                  new Alert(
-                      LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
-                      SharedResources.getUsername(),
-                      longname,
-                      date,
-                      "");
+          futureMoves.notify.setOnMouseClicked(
+              event -> {
+                String longname = futureMoves.longname;
+                LocalDate date = LocalDate.parse(futureMoves.sDate);
+                // truncate example:
+                // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
+                Alert alert =
+                    new Alert(
+                        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                        SharedResources.getUsername(),
+                        longname,
+                        date,
+                        "");
 
-              addAlert(alert);
-            });
+                addAlert(alert);
+              });
 
-        if (col == 1) {
-          col = 0;
-          row++;
+          if (col == 1) {
+            col = 0;
+            row++;
+          }
+
+          // col++;
+          grid.add(anchorPane, col++, row);
+
+          grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+          grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+          grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+          grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+          grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+          grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+          GridPane.setMargin(anchorPane, new Insets(10));
         }
-
-        // col++;
-        grid.add(anchorPane, col++, row);
-
-        grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-        grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-        grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-        grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-        GridPane.setMargin(anchorPane, new Insets(10));
       }
     } catch (IOException e) {
       e.printStackTrace();
