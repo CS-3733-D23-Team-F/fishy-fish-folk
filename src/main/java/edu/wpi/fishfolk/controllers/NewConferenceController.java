@@ -60,12 +60,18 @@ public class NewConferenceController extends AbsController {
 
   /** Sets all borders back to blue */
   public void setToBlue() {
-    scrolly.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
-    datePicker.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
-    numAttnBox.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
-    startTimeDrop.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
-    endTimeDrop.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
-    recurringDrop.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    scrolly.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    datePicker.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    numAttnBox.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    startTimeDrop.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    endTimeDrop.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    recurringDrop.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
   }
 
   /** Clears all fields and boxes, activated when you hit the clear button. */

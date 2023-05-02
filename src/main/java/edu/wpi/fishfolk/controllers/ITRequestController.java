@@ -100,11 +100,14 @@ public class ITRequestController extends AbsController {
 
   /** Sets all borders back to blue */
   public void setToBlue() {
-    compScroll.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1;");
-    roomPicker.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
-    issueText.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    compScroll.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    roomPicker.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    issueText.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
     contactInfoText.setStyle(
-        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
     priority0.setStyle(
         "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
     priority1.setStyle(
@@ -153,7 +156,8 @@ public class ITRequestController extends AbsController {
    * @param node the area it will pop up next to.
    */
   private void submissionError(String error, Node node) {
-    node.setStyle("-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1");
+    node.setStyle(
+        "-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
     if (thugShaker == null || thugShaker.getNode() != node) {
       thugShaker = new TranslateTransition(Duration.millis(100), node);
     }
