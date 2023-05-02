@@ -1,14 +1,199 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" minHeight="670.0" minWidth="1180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.CreditsController">
+
+<HBox minHeight="670.0" minWidth="1180.0" style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.CreditsController">
    <children>
-      <Label fx:id="CredM" alignment="CENTER" maxHeight="627.0" maxWidth="965.0" minHeight="500.0" minWidth="800.0" prefHeight="627.0" prefWidth="965.0" text="APIs and Components UsedEnvironmentJava 17, via openjdk-17.0.6JavaFX version 19.0.2.1GradlePostgreSQLDevelopment ToolsIntelliJ IDEA 2022.3.3SceneBuilder version 19MaterialFX 11.13.5 Plugin for SceneBuilderGestureFXControlsFXpgAdmin 4 v6 Project ManagementJira Git GitHubCommunicationSlack, to communicate with the professor and SAsDiscord, to communicate within the team and with our coachDiagrammingDraw.io/Diagrams.netFigma">
-         <font>
-            <Font size="24.0" />
-         </font></Label>
+      <VBox prefHeight="670.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-background-color: #012d5a; -fx-border-width: 2;">
+               <children>
+                  <Label text="Libaries" textFill="WHITE">
+                     <font>
+                        <Font name="Open Sans Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-background-color: #ffffff; -fx-border-width: 2;">
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
+               <children>
+                  <Label text="MaterialFX(paladex)" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans SemiBold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-background-color: #ffffff; -fx-border-width: 2;">
+               <children>
+                  <Label text="MaterialFX(glavo)" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans SemiBold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-background-color: #ffffff; -fx-border-width: 2;">
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
+               <children>
+                  <Label text="ControlFX" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans SemiBold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-background-color: #ffffff; -fx-border-width: 2;">
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
+               <children>
+                  <Label text="GestureFX" textFill="#012d5a">
+                     <font>
+                        <Font name="Open Sans SemiBold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <MFXScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="670.0" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;">
+               <content>
+                  <VBox style="-fx-background-color: #F4F4F4;">
+                     <children>
+                        <HBox alignment="TOP_CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" top="30.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" top="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" top="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" top="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" top="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" top="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" top="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" top="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </content>
+            </MFXScrollPane>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <HBox.margin>
+            <Insets left="15.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox prefWidth="680.0" HBox.hgrow="ALWAYS">
+         <HBox.margin>
+            <Insets right="15.0" />
+         </HBox.margin>
+         <children>
+            <VBox minHeight="250.0" prefHeight="250.0">
+               <children>
+                  <HBox alignment="CENTER" prefWidth="125.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <MFXButton maxHeight="115.0" maxWidth="115.0" minHeight="115.0" minWidth="115.0" style="-fx-background-color: #012d5a;" text="Service &#10;Request" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="55.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <MFXButton maxHeight="115.0" maxWidth="115.0" minHeight="115.0" minWidth="115.0" style="-fx-background-color: #012d5a;" text="Navigation" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                        </MFXButton>
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <MFXButton maxHeight="115.0" maxWidth="115.0" minHeight="115.0" minWidth="115.0" style="-fx-background-color: #012d5a;" text="Pathfinding" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="55.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefWidth="125.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <MFXButton maxHeight="115.0" maxWidth="115.0" minHeight="115.0" minWidth="115.0" style="-fx-background-color: #012d5a;" text="Map Editor" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="55.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <MFXButton maxHeight="115.0" maxWidth="115.0" minHeight="115.0" minWidth="115.0" style="-fx-background-color: #012d5a;" text="Hospital&#10;Images" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                        </MFXButton>
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <MFXButton maxHeight="115.0" maxWidth="115.0" minHeight="115.0" minWidth="115.0" style="-fx-background-color: #012d5a;" text="Cat#6" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Bold" size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="55.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
    </children>
-</VBox>
+</HBox>
