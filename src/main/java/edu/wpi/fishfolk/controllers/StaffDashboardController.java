@@ -6,6 +6,7 @@ import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.ui.FormStatus;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -180,6 +181,7 @@ public class StaffDashboardController {
     supplyCompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
     furnitureCompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
     flowerCompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
+    itcompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
 
     supplyid.setCellValueFactory(
         new PropertyValueFactory<SupplyOrderObservable, String>("supplyid"));
@@ -258,16 +260,25 @@ public class StaffDashboardController {
   private void onSetSupplyCompleted(TableColumn.CellEditEvent<SupplyOrderObservable, String> t) {
     System.out.println(t.getNewValue());
     if (t.getNewValue().equals("Yes")) {
-      System.out.println(t.getNewValue());
       SupplyOrderObservable row = t.getRowValue();
-      //dbConnection.removeEntry(row.id, TableEntryType.SUPPLY_REQUEST);
+      row.setSupplystatus("Filled");
+      SupplyRequest rowItem =
+          (SupplyRequest) dbConnection.getEntry(row.id, TableEntryType.SUPPLY_REQUEST);
+      rowItem.setFormStatus(FormStatus.filled);
+      dbConnection.updateEntry(rowItem);
+      supplyTable.refresh();
     }
   }
 
   private void onSetFoodCompleted(TableColumn.CellEditEvent<FoodOrderObservable, String> t) {
     if (t.getNewValue().equals("Yes")) {
       FoodOrderObservable row = t.getRowValue();
-      //dbConnection.removeEntry(row.id, TableEntryType.FOOD_REQUEST);
+      FoodRequest rowItem =
+          (FoodRequest) dbConnection.getEntry(row.id, TableEntryType.FOOD_REQUEST);
+      row.setFoodstatus("Filled");
+      rowItem.setFormStatus(FormStatus.filled);
+      dbConnection.updateEntry(rowItem);
+      foodTable.refresh();
     }
   }
 
@@ -275,21 +286,35 @@ public class StaffDashboardController {
       TableColumn.CellEditEvent<FurnitureOrderObservable, String> t) {
     if (t.getNewValue().equals("Yes")) {
       FurnitureOrderObservable row = t.getRowValue();
-      //dbConnection.removeEntry(row.id, TableEntryType.FURNITURE_REQUEST);
+      FurnitureRequest rowItem =
+          (FurnitureRequest) dbConnection.getEntry(row.id, TableEntryType.FURNITURE_REQUEST);
+      row.setFurniturestatus("Filled");
+      rowItem.setFormStatus(FormStatus.filled);
+      dbConnection.updateEntry(rowItem);
+      furnitureTable.refresh();
     }
   }
 
   private void onSetFlowerCompleted(TableColumn.CellEditEvent<FlowerOrderObservable, String> t) {
     if (t.getNewValue().equals("Yes")) {
       FlowerOrderObservable row = t.getRowValue();
-      //dbConnection.removeEntry(row.id, TableEntryType.FLOWER_REQUEST);
+      FlowerRequest rowItem =
+          (FlowerRequest) dbConnection.getEntry(row.id, TableEntryType.FLOWER_REQUEST);
+      row.setFlowerstatus("Filled");
+      rowItem.setFormStatus(FormStatus.filled);
+      dbConnection.updateEntry(rowItem);
+      flowerTable.refresh();
     }
   }
 
   private void onSetITCompleted(TableColumn.CellEditEvent<ITRequestObservable, String> t) {
     if (t.getNewValue().equals("Yes")) {
       ITRequestObservable row = t.getRowValue();
-      //dbConnection.removeEntry(row.id, TableEntryType.IT_REQUEST);
+      ITRequest rowItem = (ITRequest) dbConnection.getEntry(row.id, TableEntryType.IT_REQUEST);
+      row.setItstatus("Filled");
+      rowItem.setFormStatus(FormStatus.filled);
+      dbConnection.updateEntry(rowItem);
+      itTable.refresh();
     }
   }
 
