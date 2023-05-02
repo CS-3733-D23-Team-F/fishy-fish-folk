@@ -10,6 +10,7 @@ import edu.wpi.fishfolk.database.TableEntry.Alert;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -40,6 +41,7 @@ public class AdminDashboardController {
 
   // @FXML MFXButton navigateButton;
   @FXML GridPane grid;
+  @FXML MFXScrollPane alertsPane;
   @FXML GridPane alertGrid;
   @FXML Label tableHeader;
   @FXML MFXButton outstandingFilter, unassignedTasks;
@@ -188,6 +190,7 @@ public class AdminDashboardController {
     toMapEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
     toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE_EDITOR));
+    alertsPane.setVvalue(1);
   }
 
   public void addAlert(Alert alert) {
