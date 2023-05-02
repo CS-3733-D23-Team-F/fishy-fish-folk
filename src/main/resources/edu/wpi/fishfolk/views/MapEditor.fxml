@@ -370,15 +370,44 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </VBox>
+            <Line endY="80.0" fill="#454343" stroke="#454343" strokeWidth="0.5">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Line>
+            <VBox layoutX="846.0" layoutY="20.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <MFXDatePicker fx:id="todayPicker" graphicTextGap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="130.0" promptText="View date">
+                     <font>
+                        <Font name="Open Sans Regular" size="12.0" />
+                     </font>
+                     <textFill>
+                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXDatePicker>
+                  <HBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label alignment="TOP_LEFT" text="Date" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Regular" size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
             <HBox HBox.hgrow="SOMETIMES" />
          </children>
          <padding>
             <Insets top="10.0" />
          </padding>
       </HBox>
-      <HBox alignment="CENTER" fillHeight="false" maxHeight="60.0" maxWidth="400.0" minHeight="60.0" minWidth="400.0" style="-fx-background-radius: 15; -fx-background-color: #F1F1F1;" StackPane.alignment="TOP_CENTER">
+      <HBox alignment="CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="360.0" style="-fx-background-radius: 10; -fx-background-color: #F1F1F1;" StackPane.alignment="TOP_CENTER">
          <children>
-            <MFXButton fx:id="backButton" buttonType="RAISED" ellipsisString="" graphicTextGap="0.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" style="-fx-text-fill: #012D5A; -fx-border-color: #012D5A; -fx-border-radius: 5;" text="&lt;" textFill="WHITE" HBox.hgrow="ALWAYS">
+            <MFXButton fx:id="backButton" buttonType="RAISED" ellipsisString="" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" style="-fx-text-fill: #012D5A; -fx-border-color: #012D5A; -fx-border-radius: 5;" text="&lt;" textFill="WHITE" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Open Sans Regular" size="23.0" />
                </font>
@@ -411,7 +440,7 @@
                   <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                </textFill>
             </MFXComboBox>
-            <MFXButton fx:id="nextButton" buttonType="RAISED" ellipsisString="" graphicTextGap="0.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" text="&gt;" textAlignment="CENTER" textFill="#012d5a" HBox.hgrow="ALWAYS">
+            <MFXButton fx:id="nextButton" buttonType="RAISED" ellipsisString="" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" text="&gt;" textAlignment="CENTER" textFill="#012d5a" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Open Sans Regular" size="24.0" />
                </font>
@@ -419,7 +448,7 @@
                   <Insets left="15.0" />
                </HBox.margin>
                <padding>
-                  <Insets top="-2.0" />
+                  <Insets top="-3.0" />
                </padding>
             </MFXButton>
          </children>
@@ -430,10 +459,10 @@
             <DropShadow height="9.28" offsetY="1.0" radius="4.14" width="9.28" />
          </effect>
          <StackPane.margin>
-            <Insets top="120.0" />
+            <Insets top="110.0" />
          </StackPane.margin>
       </HBox>
-      <VBox fx:id="sidePane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #F1F1F1;" StackPane.alignment="TOP_RIGHT">
+      <VBox fx:id="sidePane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" style="-fx-background-color: #F1F1F1; -fx-background-radius: 10;" StackPane.alignment="TOP_RIGHT">
          <effect>
             <DropShadow height="6.0" offsetX="1.0" offsetY="1.0" radius="2.5" width="6.0" />
          </effect>
@@ -538,9 +567,9 @@
                   </Line>
                </children>
             </VBox>
-            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" maxHeight="0.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefWidth="220.0" VBox.vgrow="ALWAYS">
+            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" maxHeight="0.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefWidth="220.0" style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fx:id="locationsVbox" minHeight="0.0" minWidth="220.0" />
+                  <VBox fx:id="locationsVbox" minHeight="0.0" minWidth="220.0" style="-fx-background-color: #f1f1f1;" />
                </content>
                <VBox.margin>
                   <Insets />
@@ -552,8 +581,11 @@
                      <font>
                         <Font name="Open Sans Bold" size="12.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
                   </Label>
-                  <MFXTextField fx:id="newLocationLongname" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="220.0" promptText="Enter long name">
+                  <MFXTextField fx:id="newLocationLongname" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" promptText="Enter long name">
                      <textFill>
                         <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                      </textFill>
@@ -568,7 +600,7 @@
                               <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                            </textFill>
                         </MFXTextField>
-                        <MFXComboBox fx:id="newLocationType" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" measureUnitGap="0.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="90.0" text="Type">
+                        <MFXComboBox fx:id="newLocationType" alignment="CENTER" graphicTextGap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" measureUnitGap="0.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="70.0" text="Type">
                            <font>
                               <Font name="Open Sans Regular" size="12.0" />
                            </font>
@@ -589,8 +621,14 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                        <MFXDatePicker fx:id="newLocationDate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
-                        <MFXButton fx:id="newLocationSubmit" alignment="CENTER_RIGHT" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: #F0BF4C;" text="Add to node" textFill="#012d5a">
+                        <MFXDatePicker fx:id="newLocationDate" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="130.0" promptText="Move date">
+                           <textFill>
+                              <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                           </textFill>
+                           <font>
+                              <Font name="Open Sans Regular" size="12.0" />
+                           </font></MFXDatePicker>
+                        <MFXButton fx:id="newLocationSubmit" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #F0BF4C;" text="Submit" textFill="#012d5a">
                            <font>
                               <Font name="Open Sans Bold" size="12.0" />
                            </font>
@@ -610,10 +648,10 @@
             </VBox>
          </children>
          <StackPane.margin>
-            <Insets top="120.0" />
+            <Insets right="10.0" top="160.0" />
          </StackPane.margin>
          <padding>
-            <Insets bottom="10.0" left="20.0" top="10.0" />
+            <Insets bottom="10.0" left="10.0" top="5.0" />
          </padding>
       </VBox>
    </children>

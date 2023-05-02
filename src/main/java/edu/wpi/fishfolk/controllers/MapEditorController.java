@@ -53,6 +53,8 @@ public class MapEditorController extends AbsController {
   @FXML MFXFilterComboBox<String> locationSearch;
   @FXML CheckComboBox<NodeType> showLocationType;
 
+  @FXML MFXDatePicker todayPicker;
+
   @FXML MFXTextField nodeidText, xText, yText, buildingText;
 
   @FXML MFXScrollPane locationScrollpane;
@@ -60,7 +62,7 @@ public class MapEditorController extends AbsController {
 
   @FXML VBox newLocationVbox;
   @FXML MFXTextField newLocationLongname, newLocationShortname;
-  @FXML MFXComboBox<String> newLocationType;
+  @FXML MFXComboBox<NodeType> newLocationType;
   @FXML MFXDatePicker newLocationDate;
   @FXML MFXButton newLocationSubmit;
 
@@ -134,6 +136,8 @@ public class MapEditorController extends AbsController {
 
     locationSearch.getItems().addAll(dbConnection.getDestLongnames());
     showLocationType.getItems().addAll(observableNodeTypes);
+
+    newLocationType.getItems().addAll(observableNodeTypes);
 
     nodeGroup = new Group();
     edgeGroup = new Group();
@@ -457,7 +461,6 @@ public class MapEditorController extends AbsController {
           editQueue.clear();
         });
 
-    // TODO WIP: instead of storing list of undone edits, just move pointer back in edit queue
     undo.setOnMouseClicked(
         event -> {
           if (!editQueue.canUndo()) {
@@ -986,13 +989,19 @@ public class MapEditorController extends AbsController {
               });
         });
 
+    todayPicker.setOnAction(
+        event -> {
+          today = todayPicker.getValue();
+          System.out.println("changed date to " + today);
+        });
+
     newLocationSubmit.setOnMouseClicked(
         event -> {
           Location newLocation =
               new Location(
                   newLocationLongname.getText(),
                   newLocationShortname.getText(),
-                  NodeType.valueOf(newLocationType.getValue()));
+                  newLocationType.getValue());
           editQueue.add(
               new DataEdit<>(newLocation, DataEditType.INSERT, TableEntryType.LOCATION), false);
 
@@ -1428,6 +1437,8 @@ public class MapEditorController extends AbsController {
               // put move in database
               Move newMove =
                   new Move(controller.nodeID, controller.longnameText.getText(), controller.date);
+              System.out.println("adding " + newMove);
+              moves.add(newMove);
               editQueue.add(new DataEdit<>(newMove, DataEditType.INSERT), false);
 
               // if user didnt press back after previewing, submit also takes them back
