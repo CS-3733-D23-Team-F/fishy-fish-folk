@@ -38,6 +38,10 @@ public class SharedResources {
     return currentAccount;
   }
 
+  public static String getUsername() {
+    return currentAccount.getUsername();
+  }
+
   /** Log out of the currently logged in account. If not logged in, do nothing. */
   public static void logout() {
     currentAccount = new UserAccount("extremely_guest", "", "", GUEST);

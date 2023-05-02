@@ -17,7 +17,7 @@ import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class ITRequestDAO implements IDAO<ITRequest> {
+public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -217,6 +217,9 @@ public class ITRequestDAO implements IDAO<ITRequest> {
 
   @Override
   public boolean updateEntry(ITRequest entry) {
+
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getItRequestID())) return false;
 
     // Mark entry FoodRequest status as NEW
     entry.setStatus(EntryStatus.NEW);

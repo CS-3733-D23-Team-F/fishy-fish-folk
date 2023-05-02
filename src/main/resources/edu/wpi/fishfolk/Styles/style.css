@@ -133,17 +133,73 @@
     -fx-max-height: 0;
 }
 
-.table-view .column-header-background .label {
-    -fx-text-fill: white;
-    -fx-background-color: #012D5A;
-    -fx-background-radius: 5;
+
+
+.table-view .column-header-background .column-header{
+    -fx-background-color: white;
+    -fx-pref-height: 65;
+    -fx-border-color: #012D5A;
+    -fx-border-width: 0 0 2 0;
 }
+
+.table-cell{
+    -fx-wrap-text: true;
+}
+
+
+.table-view .column-header-background .label{
+    -fx-text-fill: #012D5A;
+    -fx-alignment: CENTER-LEFT;
+    -fx-label-padding: 0 0 0 10;
+}
+
+.table-view {
+    -fx-border-width: 0.5;
+}
+
+.tab-pane{
+    -fx-padding: 5 5 0 5;
+
+}
+
+
+.tab-pane .tab-header-area .tab{
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 5 0;
+
+}
+
 
 .tab-pane .tab .tab-label{
-    -fx-stroke: transparent;
     -fx-text-fill: #012D5A;
-
+    -fx-font-size: 15;
+    -fx-label-padding: 0 15 0 15;
+    -fx-font-weight: bold;
 }
+
+.tab-pane .tab:selected .tab-label{
+    -fx-background-color: #F0BF4C;
+    -fx-text-fill: #012D5A;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+}
+
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: #f5f5f5;
+    -fx-focus-color: transparent;
+}
+
+.tab-pane .tab-header-area .tab-header-background{
+    -fx-background-color: white;
+    -fx-wrap-text: true;
+}
+
+
+
+
+
 
 .choice-box{
     -fx-border-color: #012D5A;
@@ -155,6 +211,7 @@
     -fx-border-width: 0 0 0.5 0;
     -fx-border-color: #012D5A;
 }
+
 
 .newScrolls{
     -fx-background-radius: 5;
@@ -197,3 +254,4 @@
     -fx-background-color: #f9e4b3;
     -fx-background-radius: 0;
 }
+
