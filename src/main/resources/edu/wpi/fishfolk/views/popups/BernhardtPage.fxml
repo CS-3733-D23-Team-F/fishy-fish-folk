@@ -48,17 +48,17 @@
          <children>
             <AnchorPane minWidth="825.0" prefHeight="200.0" prefWidth="825.0">
                <children>
-                  <Text fill="#f1f1f1" layoutX="281.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Dumpling" wrappingWidth="261.94000244140625">
+                  <Text fill="#f1f1f1" layoutX="126.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Anything you consider a dumpling" wrappingWidth="573.9400024414062">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text fill="#f1f1f1" layoutX="251.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: No-life gaming" wrappingWidth="349.4179687499999">
+                  <Text fill="#f1f1f1" layoutX="273.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Gaming" wrappingWidth="276.4179687499999">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text fill="#f1f1f1" layoutX="132.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: Bonus fact: Former competitive Curler" wrappingWidth="614.6067504882812">
+                  <Text fill="#f1f1f1" layoutX="203.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bonus fact: Former competitive Curler" wrappingWidth="417.60675048828125">
                      <font>
                         <Font size="24.0" />
                      </font>

@@ -56,12 +56,12 @@
                                           <Image url="@../images/About/bernhardt.jpg" />
                                        </image>
                                     </ImageView>
-                                    <Text layoutX="1031.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bernhardt - Assistant Lead " textAlignment="CENTER">
+                                    <Text layoutX="1015.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adler, Bernhardt - Assistant Lead " textAlignment="CENTER">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
                                     </Text>
-                                    <MFXButton fx:id="Bernhardt" layoutX="1060.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Bernhardt" textFill="#f1f1f1" />
+                                    <MFXButton fx:id="Bernhardt" layoutX="1060.0" layoutY="206.0" prefHeight="29.0" prefWidth="253.0" style="-fx-background-color: #012D5A;" text="Adler, Bernhardt" textFill="#f1f1f1" />
                                     <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="277.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/About/Meg.jpg" />
