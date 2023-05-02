@@ -249,6 +249,9 @@ public class NodeDAO implements IDAO<Node>, ICSVNoSubtable, IProcessEdit {
   @Override
   public boolean updateEntry(Node entry) {
 
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getNodeID())) return false;
+
     // Mark entry Node status as NEW
     entry.setStatus(EntryStatus.NEW);
 

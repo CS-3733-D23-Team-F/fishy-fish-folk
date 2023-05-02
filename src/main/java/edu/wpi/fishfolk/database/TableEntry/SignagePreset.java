@@ -26,4 +26,6 @@ public class SignagePreset {
     this.signs = signs;
     this.status = EntryStatus.OLD;
   }
+
+  public SignagePreset() {}
 }

@@ -10,12 +10,14 @@ import edu.wpi.fishfolk.ui.ServiceType;
 import io.github.palexdev.materialfx.controls.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import org.controlsfx.control.PopOver;
+import javafx.util.Duration;
 
 public class NewFurnitureOrderController extends AbsController {
 
@@ -41,14 +43,19 @@ public class NewFurnitureOrderController extends AbsController {
   @FXML HBox confirmBox;
   @FXML AnchorPane confirmPane;
   @FXML MFXButton okButton;
+  @FXML Label errors;
+  @FXML MFXScrollPane serviceScroll, furnitureScroll;
 
   FurnitureOrder currentFurnitureOrder = new FurnitureOrder();
   ArrayList<FurnitureItem> furnitureOptions = new ArrayList<>();
+  private static TranslateTransition thugShaker;
 
   // initialize() sets the preliminary fields for the page and defines the functionality of the
   // relevant items
   // ex. radioButton functionality, drop-down menus, etc.
   public void initialize() {
+    setToBlue();
+    clearError();
     loadOptions();
     loadRoomChoice();
     okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
@@ -121,6 +128,21 @@ public class NewFurnitureOrderController extends AbsController {
     furnitureOptions.add(FurnitureItem.trashCan);
   }
 
+  /** sets all borders back to blue */
+  public void setToBlue() {
+    deliveryDate.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    roomSelector.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    serviceScroll.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    furnitureScroll.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+  }
+
+  /** Clears the error field */
+  private void clearError() {
+    errors.setText("");
+    errors.setVisible(false);
+  }
+
   public void clearAllFields() {
     deselectRadios(radioButton1, radioButton2, radioButton3, radioButton4, radioButton5);
     radioButton6.setSelected(false);
@@ -132,6 +154,8 @@ public class NewFurnitureOrderController extends AbsController {
     notesTextField.setText("");
     roomSelector.setValue(null);
     deliveryDate.setValue(null);
+    setToBlue();
+    clearError();
   }
 
   // loadRoomChoice() fills the possible options in the Room Numver choicebox
@@ -195,19 +219,28 @@ public class NewFurnitureOrderController extends AbsController {
   // submit() creates the final currentFurnitureOrder and uses its fields to send data to the
   // furnitureorder table
   void submit() {
+    setToBlue();
+    clearError();
     setServiceTypeToRadios();
     setItemToRadios();
 
-    if (currentFurnitureOrder.furnitureItem == null
-        || currentFurnitureOrder.serviceType == null
-        || roomSelector.getValue() == null
-        || deliveryDate.getValue() == null) {
-      PopOver error = new PopOver();
-      Text errorText = new Text("One or more required fields have not been filled");
-      errorText.setFont(new Font("Open Sans", 26));
-      error.setContentNode(errorText);
-      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
-      error.show(furnituresubmitButton);
+    if (currentFurnitureOrder.serviceType == null) {
+      submissionError("You must choose a type of service.", serviceScroll);
+      return;
+    }
+
+    if (currentFurnitureOrder.furnitureItem == null) {
+      submissionError("You must choose a furniture item.", furnitureScroll);
+      return;
+    }
+
+    if (roomSelector.getValue() == null) {
+      submissionError("You must choose a room.", roomSelector);
+      return;
+    }
+
+    if (deliveryDate.getValue() == null) {
+      submissionError("You must choose a delivery date.", deliveryDate);
       return;
     }
 
@@ -216,12 +249,7 @@ public class NewFurnitureOrderController extends AbsController {
     currentFurnitureOrder.addDate(getDate());
 
     if (currentFurnitureOrder.deliveryDate.isBefore(LocalDateTime.now().minusDays(1))) {
-      PopOver error = new PopOver();
-      Text errorText = new Text("Cannot set delivery date before current date");
-      errorText.setFont(new Font("Open Sans", 26));
-      error.setContentNode(errorText);
-      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
-      error.show(furnituresubmitButton);
+      submissionError("Cannot set delivery date before current date", deliveryDate);
       return;
     }
 
@@ -242,5 +270,21 @@ public class NewFurnitureOrderController extends AbsController {
     confirmBox.setVisible(true);
     confirmPane.setVisible(true);
     confirmPane.setDisable(false);
+  }
+
+  private void submissionError(String error, Node node) {
+    node.setStyle("-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1");
+    if (thugShaker == null || thugShaker.getNode() != node) {
+      thugShaker = new TranslateTransition(Duration.millis(100), node);
+    }
+    thugShaker.setFromX(0f);
+    thugShaker.setCycleCount(4);
+    thugShaker.setAutoReverse(true);
+    thugShaker.setByX(15f);
+    thugShaker.playFromStart();
+    errors.setText(error);
+    errors.setVisible(true);
+    errors.setStyle("-fx-text-fill:  red;");
+    errors.setFont(Font.font("Open Sans", 15.0));
   }
 }

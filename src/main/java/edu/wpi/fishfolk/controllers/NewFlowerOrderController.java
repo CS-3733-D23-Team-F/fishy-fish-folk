@@ -8,14 +8,17 @@ import edu.wpi.fishfolk.ui.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -27,21 +30,22 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import org.controlsfx.control.PopOver;
+import javafx.util.Duration;
 
 public class NewFlowerOrderController extends AbsController {
   @FXML MFXButton springTab, gratitudeTab, sympathyTab; // tab buttons
   @FXML MFXButton clearButton, cancelButton, checkoutButton; // main page buttons
   @FXML MFXButton submitButton, backButton; // cart view buttons
   @FXML MFXFilterComboBox<String> roomSelector;
-  @FXML TextField recipientField, timeSelector;
+  @FXML MFXTextField recipientField, timeSelector;
   @FXML TextArea notesField;
   @FXML MFXScrollPane menuItemsPane, cartItemsPane;
   @FXML AnchorPane confirmPane;
   @FXML HBox cartWrap, blur, confirmBlur, confirmBox;
   @FXML MFXButton okButton;
+  @FXML Label errors;
   Font oSans26, oSans20, oSans26bold;
-
+  private static TranslateTransition thugShaker;
   private List<FlowerMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
   private FlowerCart cart;
   MFXButton[] tabButtons;
@@ -55,6 +59,8 @@ public class NewFlowerOrderController extends AbsController {
   private void initialize() {
     loadMenu();
     loadRooms();
+    setToBlue();
+    clearError();
     cart = new FlowerCart();
 
     cancelButton.setOnAction(event -> cancel());
@@ -111,6 +117,8 @@ public class NewFlowerOrderController extends AbsController {
   /** remove all items from the cart */
   private void clear() {
     cart = new FlowerCart();
+    setToBlue();
+    clearError();
   }
 
   /** Clear the cart, and Return Home */
@@ -128,6 +136,8 @@ public class NewFlowerOrderController extends AbsController {
     cartWrap.setDisable(false);
     blur.setDisable(false);
     blur.setVisible(true);
+    setToBlue();
+    clearError();
   }
 
   /** Hide the cart */
@@ -136,10 +146,14 @@ public class NewFlowerOrderController extends AbsController {
     cartWrap.setDisable(true);
     blur.setDisable(true);
     blur.setVisible(false);
+    setToBlue();
+    clearError();
   }
 
   /** Confirm the order, and add it to the Database */
   private void submit() {
+    setToBlue();
+    clearError();
     String notes = notesField.getText();
     LocalTime time = parseTime();
     String room = roomSelector.getValue();
@@ -222,35 +236,58 @@ public class NewFlowerOrderController extends AbsController {
 
   /** Informs the user they have not input a valid time */
   private void timeError() {
-    submissionError("Please enter a valid time.");
+    submissionError("Please enter a valid time.", timeSelector);
   }
 
   /** informs the user they have not selected a room */
   private void roomError() {
-    submissionError("Please select a room.");
+    submissionError("Please select a room.", roomSelector);
   }
 
   /** informs the user they have not selected any items */
   private void itemsError() {
-    submissionError("Please select at least one item.");
+    submissionError("Please select at least one item.", cartItemsPane);
   }
 
   /** informs the user they have not specified the recipient of the order */
   private void recipientError() {
-    submissionError("Please enter a recipient.");
+    submissionError("Please enter a recipient.", recipientField);
+  }
+
+  /** Clears the error field */
+  private void clearError() {
+    errors.setText("");
+    errors.setVisible(false);
+  }
+
+  /** Sets all borders back to blue */
+  public void setToBlue() {
+    cartItemsPane.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    recipientField.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    timeSelector.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    roomSelector.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
   }
 
   /**
-   * pops up an error if the submission is invalid
+   * Creates an error popup for the given values.
    *
-   * @param error the error message to display
+   * @param error the error message you want to present.
+   * @param node the area it will pop up next to.
    */
-  private void submissionError(String error) {
-    PopOver popup = new PopOver();
-    Text popText = new Text(error);
-    popText.setFont(oSans26);
-    popup.setContentNode(popText);
-    popup.show(submitButton);
+  private void submissionError(String error, Node node) {
+    node.setStyle("-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1");
+    if (thugShaker == null || thugShaker.getNode() != node) {
+      thugShaker = new TranslateTransition(Duration.millis(100), node);
+    }
+    thugShaker.setFromX(0f);
+    thugShaker.setCycleCount(4);
+    thugShaker.setAutoReverse(true);
+    thugShaker.setByX(15f);
+    thugShaker.playFromStart();
+    errors.setText(error);
+    errors.setVisible(true);
+    errors.setStyle("-fx-text-fill:  red;");
+    errors.setFont(Font.font("Open Sans", 15.0));
   }
 
   /**
@@ -344,7 +381,7 @@ public class NewFlowerOrderController extends AbsController {
           itemRow.getChildren().add(itemPane);
         } catch (Exception E) {
           // This row does not have a 2nd item - thrown here by indexOutOfBoundsException
-          System.out.println("Should only get here once, here's what happened " + E.toString());
+          // System.out.println("Should only get here once, here's what happened " + E.toString());
           AnchorPane itemPane = new AnchorPane();
           itemPane.setPrefHeight(250);
           itemPane.setPrefWidth(585);

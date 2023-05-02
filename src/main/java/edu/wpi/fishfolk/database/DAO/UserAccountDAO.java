@@ -215,6 +215,9 @@ public class UserAccountDAO implements IDAO<UserAccount>, ICSVNoSubtable {
   @Override
   public boolean updateEntry(UserAccount entry) {
 
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getUsername())) return false;
+
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 

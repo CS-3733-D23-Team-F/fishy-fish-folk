@@ -3,18 +3,22 @@ package edu.wpi.fishfolk.controllers;
 import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.database.TableEntry.Alert;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import javafx.collections.FXCollections;
@@ -37,6 +41,7 @@ public class AdminDashboardController {
 
   // @FXML MFXButton navigateButton;
   @FXML GridPane grid;
+  @FXML MFXScrollPane alertsPane;
   @FXML GridPane alertGrid;
   @FXML Label tableHeader;
   @FXML MFXButton outstandingFilter, unassignedTasks;
@@ -45,6 +50,7 @@ public class AdminDashboardController {
   @FXML TableView<FurnitureOrderObservable> furnitureTable;
   @FXML TableView<FlowerOrderObservable> flowerTable;
   @FXML TableView<SupplyOrderObservable> supplyTable;
+  @FXML TableView<ITRequestObservable> itTable;
   @FXML MFXTextField addAlert;
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
   @FXML
@@ -83,12 +89,22 @@ public class AdminDashboardController {
       flowerdeliverytime,
       flowerrecipientname,
       floweritems;
+  @FXML
+  TableColumn<ITRequestObservable, String> itid,
+      itassignee,
+      itstatus,
+      itissue,
+      itcomponent,
+      itpriority,
+      itroom,
+      itcontactinfo;
 
   private int rowA = 0;
 
   @FXML
   public void initialize() {
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
+    Collections.sort(moves, Comparator.comparing(Move::getDate));
     setTable();
 
     outstandingFilter.setOnMouseClicked(
@@ -114,45 +130,51 @@ public class AdminDashboardController {
     int col = 0;
     int row = 1;
     try {
+      LocalDate currentDate = LocalDate.now();
       for (Move move : moves) {
+        if (!move.getDate().isBefore(currentDate)) {
+          System.out.println(move.getLongName() + " " + move.getDate());
 
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
-        AnchorPane anchorPane = fxmlLoader.load();
-        FutureMovesController futureMoves = fxmlLoader.getController();
+          FXMLLoader fxmlLoader = new FXMLLoader();
+          fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
+          AnchorPane anchorPane = fxmlLoader.load();
+          FutureMovesController futureMoves = fxmlLoader.getController();
+          futureMoves.setData(move.getLongName(), "" + move.getDate());
+          futureMoves.notify.setOnMouseClicked(
+              event -> {
+                String longname = futureMoves.longname;
+                LocalDate date = LocalDate.parse(futureMoves.sDate);
+                // truncate example:
+                // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
+                Alert alert =
+                    new Alert(
+                        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                        SharedResources.getUsername(),
+                        longname,
+                        date,
+                        "");
 
-        futureMoves.setData(move.getLongName(), "" + move.getDate());
+                addAlert(alert);
+              });
 
-        futureMoves.notify.setOnMouseClicked(
-            event -> {
-              String longname = futureMoves.longname;
-              LocalDate date = LocalDate.parse(futureMoves.sDate);
-              // truncate example:
-              // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
-              Alert alert =
-                  new Alert(
-                      LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), longname, date, "");
+          if (col == 1) {
+            col = 0;
+            row++;
+          }
 
-              addAlert(alert);
-            });
+          // col++;
+          grid.add(anchorPane, col++, row);
 
-        if (col == 1) {
-          col = 0;
-          row++;
+          grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+          grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+          grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+          grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+          grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+          grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+          GridPane.setMargin(anchorPane, new Insets(10));
         }
-
-        // col++;
-        grid.add(anchorPane, col++, row);
-
-        grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-        grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-        grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-        grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-        GridPane.setMargin(anchorPane, new Insets(10));
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -163,7 +185,10 @@ public class AdminDashboardController {
     addAlert.setOnAction(
         event -> {
           Alert alert =
-              new Alert(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), addAlert.getText());
+              new Alert(
+                  LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                  SharedResources.getUsername(),
+                  addAlert.getText());
           addAlert(alert);
         });
 
@@ -171,13 +196,16 @@ public class AdminDashboardController {
     foodassignee.setOnEditCommit(this::onSetFoodEdit);
     flowerassignee.setOnEditCommit(this::onSetFlowerEdit);
     furnitureassignee.setOnEditCommit(this::onSetFurnitureEdit);
+    itassignee.setOnEditCommit(this::onSetITEdit);
 
     toMapEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
     toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE_EDITOR));
+    alertsPane.setVvalue(1);
   }
 
   public void addAlert(Alert alert) {
+
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
@@ -203,6 +231,7 @@ public class AdminDashboardController {
       GridPane.setValignment(alertPane, VPos.TOP);
       rowA += 1;
       addAlert.clear();
+      alertsPane.setVvalue(1);
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -233,6 +262,15 @@ public class AdminDashboardController {
     FurnitureOrderObservable row = t.getRowValue();
     FurnitureRequest entry =
         (FurnitureRequest) dbConnection.getEntry(row.id, TableEntryType.FURNITURE_REQUEST);
+    String value = t.getNewValue();
+    entry.setAssignee(value);
+    dbConnection.updateEntry(entry);
+  }
+
+  public void onSetITEdit(TableColumn.CellEditEvent<ITRequestObservable, String> t) {
+
+    ITRequestObservable row = t.getRowValue();
+    ITRequest entry = (ITRequest) dbConnection.getEntry(row.id, TableEntryType.IT_REQUEST);
     String value = t.getNewValue();
     entry.setAssignee(value);
     dbConnection.updateEntry(entry);
@@ -321,20 +359,53 @@ public class AdminDashboardController {
     floweritems.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
 
+    flowerid.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));
+    flowerassignee.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerassignee"));
+    flowertotalprice.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowertotalprice"));
+    flowerstatus.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerstatus"));
+    flowerdeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliveryroom"));
+    flowerdeliverytime.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliverytime"));
+    flowerrecipientname.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerrecipientname"));
+    floweritems.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
+
+    itid.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itid"));
+    itassignee.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itassignee"));
+    itstatus.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itstatus"));
+    itissue.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itissue"));
+    itcomponent.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcomponent"));
+    itpriority.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itpriority"));
+    itroom.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itroom"));
+    itcontactinfo.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcontactinfo"));
+
     ObservableList<String> ol = FXCollections.observableList(getAssignees());
     supplyassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     foodassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     furnitureassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     flowerassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    itassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     foodTable.setEditable(true);
     furnitureTable.setEditable(true);
     supplyTable.setEditable(true);
     flowerTable.setEditable(true);
+    itTable.setEditable(true);
 
     foodTable.setItems(getOutstandingFoodOrderRows());
     supplyTable.setItems(getOutstandingSupplyOrderRows());
     furnitureTable.setItems(getOutstandingFurnitureOrderRows());
     flowerTable.setItems(getOutstandingFlowerOrderRows());
+    itTable.setItems(getOutstandingITOrderRows());
   }
 
   public void setTable() {
@@ -405,25 +476,40 @@ public class AdminDashboardController {
     floweritems.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
 
+    itid.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itid"));
+    itassignee.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itassignee"));
+    itstatus.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itstatus"));
+    itissue.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itissue"));
+    itcomponent.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcomponent"));
+    itpriority.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itpriority"));
+    itroom.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itroom"));
+    itcontactinfo.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcontactinfo"));
+
     ObservableList<String> ol = FXCollections.observableList(getAssignees());
     supplyassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     foodassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     furnitureassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     flowerassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    itassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     foodTable.setEditable(true);
     furnitureTable.setEditable(true);
     supplyTable.setEditable(true);
     flowerTable.setEditable(true);
+    itTable.setEditable(true);
 
     // foodTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
     // foodTable.autosize();
 
     foodTable.setItems(getFoodOrderRows());
-
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
     flowerTable.setItems(getFlowerOrderRows());
+    itTable.setItems(getITOrderRows());
   }
 
   public ObservableList<FoodOrderObservable> getFoodOrderRows() {
@@ -475,6 +561,18 @@ public class AdminDashboardController {
     return filteredList;
   }
 
+  public ObservableList<ITRequestObservable> getITOrderRows() {
+    ArrayList<ITRequest> itList =
+        (ArrayList<ITRequest>) dbConnection.getAllEntries(TableEntryType.IT_REQUEST);
+    ObservableList<ITRequestObservable> returnable = FXCollections.observableArrayList();
+    for (ITRequest request : itList) {
+      returnable.add(new ITRequestObservable(request));
+    }
+    Predicate<ITRequestObservable> filter = p -> p.getItassignee().isEmpty();
+    FilteredList<ITRequestObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
   public ObservableList<FoodOrderObservable> getOutstandingFoodOrderRows() {
     ArrayList<FoodRequest> foodList =
         (ArrayList<FoodRequest>) dbConnection.getAllEntries(TableEntryType.FOOD_REQUEST);
@@ -521,6 +619,18 @@ public class AdminDashboardController {
     }
     Predicate<FlowerOrderObservable> filter = p -> p.getFlowerstatus().equals("Submitted");
     FilteredList<FlowerOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<ITRequestObservable> getOutstandingITOrderRows() {
+    ArrayList<ITRequest> itList =
+        (ArrayList<ITRequest>) dbConnection.getAllEntries(TableEntryType.IT_REQUEST);
+    ObservableList<ITRequestObservable> returnable = FXCollections.observableArrayList();
+    for (ITRequest request : itList) {
+      returnable.add(new ITRequestObservable(request));
+    }
+    Predicate<ITRequestObservable> filter = p -> p.getItstatus().equals("Submitted");
+    FilteredList<ITRequestObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
 

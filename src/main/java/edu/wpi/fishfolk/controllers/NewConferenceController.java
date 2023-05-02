@@ -6,13 +6,14 @@ import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.ui.Recurring;
 import io.github.palexdev.materialfx.controls.*;
 import java.util.ArrayList;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import org.controlsfx.control.PopOver;
+import javafx.util.Duration;
 
 public class NewConferenceController extends AbsController {
   @FXML MFXButton confClearButton, confCancelButton, confSubmitButton;
@@ -24,10 +25,11 @@ public class NewConferenceController extends AbsController {
   @FXML AnchorPane confirmPane;
   @FXML MFXButton okButton;
   @FXML MFXDatePicker datePicker;
-  Font oSans26;
-
+  @FXML MFXScrollPane scrolly;
+  @FXML Label errors;
   ArrayList<String> times = new ArrayList<>();
   ArrayList<Recurring> recurring = new ArrayList<>();
+  private static TranslateTransition thugShaker;
 
   public NewConferenceController() {
     super();
@@ -36,6 +38,8 @@ public class NewConferenceController extends AbsController {
   @FXML
   public void initialize() {
     addDropdownOptions();
+    clearError();
+    setToBlue();
     okButton.setOnAction(event -> Navigation.navigate(SharedResources.getHome()));
     confCancelButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
     confClearButton.setOnMouseClicked(event -> clearFields());
@@ -54,6 +58,16 @@ public class NewConferenceController extends AbsController {
     nameBox.setText(SharedResources.getCurrentUser().getUsername());
   }
 
+  /** Sets all borders back to blue */
+  public void setToBlue() {
+    scrolly.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    datePicker.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    numAttnBox.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    startTimeDrop.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    endTimeDrop.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    recurringDrop.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+  }
+
   /** Clears all fields and boxes, activated when you hit the clear button. */
   public void clearFields() {
     rec1.setSelected(false);
@@ -69,6 +83,14 @@ public class NewConferenceController extends AbsController {
     numAttnBox.clear();
     notesBox.clear();
     datePicker.setValue(null);
+    clearError();
+    setToBlue();
+  }
+
+  /** Clears the error field */
+  private void clearError() {
+    errors.setText("");
+    errors.setVisible(false);
   }
 
   /** Initializing the dropdowns so they have all the required options. */
@@ -172,45 +194,9 @@ public class NewConferenceController extends AbsController {
     return false;
   }
 
-  /**
-   * checks to see if the given timeframe is interrupted by another booked conference
-   *
-   * @return returns true if there is a time interference
-   */
-  /*
-  public boolean timeInterference(String start, String end){
-    if (){
-
-    }
-  }*/
-
-  /**
-   * Checks to see if the meeting you want to schedule has any conflicts with already existing
-   * meetings.
-   *
-   * @return returns true if there's no conflicts, false if there is
-   */
-  /*
-  public boolean isItFree() {
-    ArrayList<ConferenceRequest> allrequests =
-        (ArrayList<ConferenceRequest>)
-            dbConnection.getAllEntries(TableEntryType.CONFERENCE_REQUEST);
-    for (int i = 0; i < allrequests.size(); i++) {
-      if (recurringDrop.getText().equals(Recurring.NEVER)) {
-        if (whichConf().equals(allrequests.get(i).getRoomName())) {
-          if (datePicker.getValue().atStartOfDay().equals(allrequests.get(i).getDateReserved())) {
-            if(timeInterference(allrequests.get(i).getStartTime(), allrequests.get(i).getEndTime())){
-              return false;
-            }
-          }
-        }
-      }
-    }
-    return true;
-  }
-  */
   /** Attempts to submit the form, but if it Doesn't pass the tests it sends errors to the users. */
   public void attemptSubmit() {
+    setToBlue();
     if (rec1.isSelected()
         || rec2.isSelected()
         || rec3.isSelected()
@@ -235,44 +221,33 @@ public class NewConferenceController extends AbsController {
                   }
                   if (numba < 21 && numba > 1 && numba != 75) {
                     if (!(recurringDrop.getText().isEmpty())) {
-                      // if (isItFree()) {
                       submit();
-                      /*} else {
-                        submissionError(
-                            "There is already a meeting scheduled for this time.",
-                            confSubmitButton);
-                      }*/
                     } else {
-                      submissionError(
-                          "You must choose your setting for recurring.",
-                          confSubmitButton); // recurringDrop);
+                      submissionError("You must choose your setting for recurring.", recurringDrop);
                     }
                   } else {
-                    submissionError(
-                        "Invalid Input for number of attendees.", confSubmitButton); // numAttnBox);
+                    submissionError("Invalid Input for number of attendees.", numAttnBox);
                   }
                 } else {
-                  submissionError(
-                      "You must put in the number of attendees.", confSubmitButton); // numAttnBox);
+                  submissionError("You must put in the number of attendees.", numAttnBox);
                 }
               } else {
-                submissionError(
-                    "You must choose a date in the future.", confSubmitButton); // datePicker);
+                submissionError("You must choose a date in the future.", datePicker);
               }
             } else {
-              submissionError("You must include a date", confSubmitButton); // datePicker);
+              submissionError("You must include a date", datePicker);
             }
           } else {
-            submissionError("That's not how time works.", confSubmitButton); // endTimeDrop);
+            submissionError("That's not how time works.", endTimeDrop);
           }
         } else {
-          submissionError("You must put in a time.", confSubmitButton); // endTimeDrop);
+          submissionError("You must put in a time.", endTimeDrop);
         }
       } else {
-        submissionError("You must put in a time.", confSubmitButton); // startTimeDrop);
+        submissionError("You must put in a time.", startTimeDrop);
       }
     } else {
-      submissionError("You must select a room.", confSubmitButton); // rec1);
+      submissionError("You must select a room.", scrolly);
     }
   }
 
@@ -283,11 +258,19 @@ public class NewConferenceController extends AbsController {
    * @param node the area it will pop up next to.
    */
   private void submissionError(String error, Node node) {
-    PopOver popup = new PopOver();
-    Text popText = new Text(error);
-    popText.setFont(oSans26);
-    popup.setContentNode(popText);
-    popup.show(node);
+    node.setStyle("-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1");
+    if (thugShaker == null || thugShaker.getNode() != node) {
+      thugShaker = new TranslateTransition(Duration.millis(100), node);
+    }
+    thugShaker.setFromX(0f);
+    thugShaker.setCycleCount(4);
+    thugShaker.setAutoReverse(true);
+    thugShaker.setByX(15f);
+    thugShaker.playFromStart();
+    errors.setText(error);
+    errors.setVisible(true);
+    errors.setStyle("-fx-text-fill:  red;");
+    errors.setFont(Font.font("Open Sans", 15.0));
   }
 
   /**

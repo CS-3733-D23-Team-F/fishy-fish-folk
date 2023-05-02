@@ -20,7 +20,7 @@
                <children>
                   <HBox alignment="CENTER" maxWidth="100.0" minWidth="100.0" styleClass="navIcon">
                      <children>
-                        <MFXButton fx:id="homeButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="0.0" maxHeight="50.0" maxWidth="95.0" minHeight="50.0" minWidth="95.0" style="-fx-background-color: #012d5a; -fx-background-radius: 0;" text=" ">
+                        <MFXButton fx:id="homeButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="0.0" maxHeight="50.0" maxWidth="95.0" minHeight="50.0" minWidth="95.0" styleClass="sideNav" text=" ">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -139,6 +139,14 @@
                                        </padding>
                                     </MFXButton>
                                     <MFXButton fx:id="furnitureNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Furniture Delivery" textFill="#012d5a">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="15.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </MFXButton>
+                                    <MFXButton fx:id="ITNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" layoutX="10.0" layoutY="310.0" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="IT Request" textFill="#012d5a">
                                        <font>
                                           <Font name="Open Sans Bold" size="15.0" />
                                        </font>

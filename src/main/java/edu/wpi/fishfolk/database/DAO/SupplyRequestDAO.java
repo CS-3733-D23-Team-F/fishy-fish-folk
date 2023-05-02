@@ -225,6 +225,9 @@ public class SupplyRequestDAO
   @Override
   public boolean updateEntry(SupplyRequest entry) {
 
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getSupplyRequestID())) return false;
+
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 
@@ -515,6 +518,8 @@ public class SupplyRequestDAO
   public boolean importCSV(String tableFilepath, String subtableFilepath, boolean backup) {
     String[] pathArr = tableFilepath.split("/");
 
+    final HashMap<LocalDateTime, SupplyRequest> backupMap = new HashMap<>(tableMap);
+
     if (backup) {
 
       // tableFilepath except for last part (actual file name)
@@ -586,7 +591,56 @@ public class SupplyRequestDAO
       return true;
 
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      System.out.println("Error importing CSV: " + e.getMessage() + "  -->  Restoring backup...");
+
+      // something went wrong:
+
+      // revert local copy to backup made before inserting
+      tableMap.clear();
+      tableMap.putAll(backupMap);
+
+      // clear the database
+      try {
+        dbConnection
+            .createStatement()
+            .executeUpdate(
+                "DELETE FROM "
+                    + dbConnection.getSchema()
+                    + "."
+                    + tableName
+                    + ";"
+                    + "ALTER SEQUENCE supplyrequest_supplies_seq RESTART WITH 1;");
+
+        String insert =
+            "INSERT INTO "
+                + dbConnection.getSchema()
+                + "."
+                + this.tableName
+                + " VALUES (?, ?, ?, ?, ?, ?);";
+
+        PreparedStatement insertPS = dbConnection.prepareStatement(insert);
+
+        // fill in database from backup
+        for (Map.Entry<LocalDateTime, SupplyRequest> entry : backupMap.entrySet()) {
+          tableMap.put(entry.getValue().getSupplyRequestID(), entry.getValue());
+
+          insertPS.setTimestamp(1, Timestamp.valueOf(entry.getValue().getSupplyRequestID()));
+          insertPS.setString(2, entry.getValue().getAssignee());
+          insertPS.setString(3, entry.getValue().getFormStatus().toString());
+          insertPS.setString(4, entry.getValue().getNotes());
+          insertPS.setString(5, entry.getValue().getLink());
+          insertPS.setString(6, entry.getValue().getRoomNumber());
+
+          insertPS.executeUpdate();
+
+          setSubtableItems(entry.getValue().getSupplyRequestID(), entry.getValue().getSupplies());
+        }
+
+      } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
+      }
+
+      // failed to import correctly
       return false;
     }
   }

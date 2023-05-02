@@ -46,9 +46,10 @@ public class Fapp extends Application {
     Stage stage = new Stage();
 
     stage.setScene(scene);
-    stage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/magikarp.png")));
+    stage.getIcons().add(new Image(Fapp.class.getResourceAsStream("images/bwlogo.png")));
     // primaryStage.setMaximized(true);
     stage.setMaximized(true);
+
     Fapp.primaryStage = stage;
     this.primaryStage.show();
     Navigation.navigate(Screen.LOGIN);

@@ -192,7 +192,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
   public boolean insertEntry(SignagePreset entry) {
 
     // Check if the entry already exists.
-    if (tableMap.containsKey(entry.getName())) return false;
+    if (tableMap.containsKey(entry.getName())) return updateEntry(entry);
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
@@ -216,6 +216,9 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
 
   @Override
   public boolean updateEntry(SignagePreset entry) {
+
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getName())) return false;
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);

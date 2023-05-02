@@ -6,6 +6,8 @@ import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.ui.FormStatus;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +31,13 @@ public class StaffDashboardController {
   // @FXML MFXButton navigateButton;
   @FXML GridPane grid;
   @FXML GridPane alertGrid;
+  @FXML MFXScrollPane alertsPane;
   // @FXML MFXPaginatedTableView paginated;
   @FXML TableView<FoodOrderObservable> foodTable;
   @FXML TableView<FurnitureOrderObservable> furnitureTable;
   @FXML TableView<FlowerOrderObservable> flowerTable;
   @FXML TableView<SupplyOrderObservable> supplyTable;
+  @FXML TableView<ITRequestObservable> itTable;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodCompletion,
@@ -70,6 +74,15 @@ public class StaffDashboardController {
       flowerdeliverytime,
       flowerrecipientname,
       floweritems;
+  @FXML
+  TableColumn<ITRequestObservable, String> itid,
+      itstatus,
+      itissue,
+      itcomponent,
+      itpriority,
+      itroom,
+      itcontactinfo,
+      itcompletion;
 
   private int rowA = 0;
 
@@ -113,6 +126,7 @@ public class StaffDashboardController {
     }
 
     dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+    alertsPane.setVvalue(1);
   }
 
   public void addAlert(Alert alert) {
@@ -138,6 +152,7 @@ public class StaffDashboardController {
       GridPane.setValignment(alertPane, VPos.TOP);
       rowA += 1;
 
+      alertsPane.setVvalue(1);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -170,6 +185,7 @@ public class StaffDashboardController {
     supplyCompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
     furnitureCompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
     flowerCompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
+    itcompletion.setCellFactory(ChoiceBoxTableCell.forTableColumn("Yes"));
 
     supplyid.setCellValueFactory(
         new PropertyValueFactory<SupplyOrderObservable, String>("supplyid"));
@@ -215,35 +231,58 @@ public class StaffDashboardController {
     floweritems.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
 
+    itid.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itid"));
+    itstatus.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itstatus"));
+    itissue.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itissue"));
+    itcomponent.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcomponent"));
+    itpriority.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itpriority"));
+    itroom.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itroom"));
+    itcontactinfo.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcontactinfo"));
+
     foodTable.setEditable(true);
     furnitureTable.setEditable(true);
     supplyTable.setEditable(true);
     flowerTable.setEditable(true);
+    itTable.setEditable(true);
 
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
     flowerTable.setItems(getFlowerOrderRows());
+    itTable.setItems(getITRequestRows());
 
     supplyCompletion.setOnEditCommit(this::onSetSupplyCompleted);
     foodCompletion.setOnEditCommit(this::onSetFoodCompleted);
     flowerCompletion.setOnEditCommit(this::onSetFlowerCompleted);
     furnitureCompletion.setOnEditCommit(this::onSetFurnitureCompleted);
+    itcompletion.setOnEditCommit(this::onSetITCompleted);
   }
 
   private void onSetSupplyCompleted(TableColumn.CellEditEvent<SupplyOrderObservable, String> t) {
     System.out.println(t.getNewValue());
     if (t.getNewValue().equals("Yes")) {
-      System.out.println(t.getNewValue());
       SupplyOrderObservable row = t.getRowValue();
-      dbConnection.removeEntry(row.id, TableEntryType.SUPPLY_REQUEST);
+      row.setSupplystatus("Filled");
+      SupplyRequest rowItem =
+          (SupplyRequest) dbConnection.getEntry(row.id, TableEntryType.SUPPLY_REQUEST);
+      rowItem.setFormStatus(FormStatus.filled);
+      dbConnection.updateEntry(rowItem);
+      supplyTable.refresh();
     }
   }
 
   private void onSetFoodCompleted(TableColumn.CellEditEvent<FoodOrderObservable, String> t) {
     if (t.getNewValue().equals("Yes")) {
       FoodOrderObservable row = t.getRowValue();
-      dbConnection.removeEntry(row.id, TableEntryType.FOOD_REQUEST);
+      FoodRequest rowItem =
+          (FoodRequest) dbConnection.getEntry(row.id, TableEntryType.FOOD_REQUEST);
+      row.setFoodstatus("Filled");
+      rowItem.setFormStatus(FormStatus.filled);
+      dbConnection.updateEntry(rowItem);
+      foodTable.refresh();
     }
   }
 
@@ -251,14 +290,35 @@ public class StaffDashboardController {
       TableColumn.CellEditEvent<FurnitureOrderObservable, String> t) {
     if (t.getNewValue().equals("Yes")) {
       FurnitureOrderObservable row = t.getRowValue();
-      dbConnection.removeEntry(row.id, TableEntryType.FURNITURE_REQUEST);
+      FurnitureRequest rowItem =
+          (FurnitureRequest) dbConnection.getEntry(row.id, TableEntryType.FURNITURE_REQUEST);
+      row.setFurniturestatus("Filled");
+      rowItem.setFormStatus(FormStatus.filled);
+      dbConnection.updateEntry(rowItem);
+      furnitureTable.refresh();
     }
   }
 
   private void onSetFlowerCompleted(TableColumn.CellEditEvent<FlowerOrderObservable, String> t) {
     if (t.getNewValue().equals("Yes")) {
       FlowerOrderObservable row = t.getRowValue();
-      dbConnection.removeEntry(row.id, TableEntryType.FLOWER_REQUEST);
+      FlowerRequest rowItem =
+          (FlowerRequest) dbConnection.getEntry(row.id, TableEntryType.FLOWER_REQUEST);
+      row.setFlowerstatus("Filled");
+      rowItem.setFormStatus(FormStatus.filled);
+      dbConnection.updateEntry(rowItem);
+      flowerTable.refresh();
+    }
+  }
+
+  private void onSetITCompleted(TableColumn.CellEditEvent<ITRequestObservable, String> t) {
+    if (t.getNewValue().equals("Yes")) {
+      ITRequestObservable row = t.getRowValue();
+      ITRequest rowItem = (ITRequest) dbConnection.getEntry(row.id, TableEntryType.IT_REQUEST);
+      row.setItstatus("Filled");
+      rowItem.setFormStatus(FormStatus.filled);
+      dbConnection.updateEntry(rowItem);
+      itTable.refresh();
     }
   }
 
@@ -312,6 +372,19 @@ public class StaffDashboardController {
     Predicate<FlowerOrderObservable> filter =
         p -> p.getFlowerassignee().equals(SharedResources.getCurrentUser().getUsername());
     FilteredList<FlowerOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<ITRequestObservable> getITRequestRows() {
+    ArrayList<ITRequest> itList =
+        (ArrayList<ITRequest>) dbConnection.getAllEntries(TableEntryType.IT_REQUEST);
+    ObservableList<ITRequestObservable> returnable = FXCollections.observableArrayList();
+    for (ITRequest request : itList) {
+      returnable.add(new ITRequestObservable(request));
+    }
+    Predicate<ITRequestObservable> filter =
+        p -> p.getItassignee().equals(SharedResources.getCurrentUser().getUsername());
+    FilteredList<ITRequestObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
 

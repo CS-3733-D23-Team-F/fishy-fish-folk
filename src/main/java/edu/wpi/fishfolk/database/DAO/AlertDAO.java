@@ -33,7 +33,8 @@ public class AlertDAO implements IDAO<Alert> {
   public AlertDAO(Connection dbConnection) {
     this.dbConnection = dbConnection;
     this.tableName = "alert";
-    this.headers = new ArrayList<>(List.of("timestamp", "longname", "date", "text", "type"));
+    this.headers =
+        new ArrayList<>(List.of("timestamp", "username", "longname", "date", "text", "type"));
     this.dataEditQueue.setBatchLimit(1);
 
     init(false);
@@ -71,6 +72,7 @@ public class AlertDAO implements IDAO<Alert> {
             "CREATE TABLE "
                 + tableName
                 + " (timestamp TIMESTAMP PRIMARY KEY," // compatible with LocalDataTime
+                + " username VARCHAR(32)," // same as in accounts table
                 + " longname VARCHAR(64)," // same as in location table
                 + " date DATE," // same as in move table
                 + " text VARCHAR(256),"
@@ -107,13 +109,14 @@ public class AlertDAO implements IDAO<Alert> {
             alert =
                 new Alert(
                     timestamp,
+                    results.getString("username"),
                     results.getString("longname"),
                     LocalDate.parse(results.getString("date")),
                     results.getString("text"));
             break;
 
           case OTHER:
-            alert = new Alert(timestamp, results.getString("text"));
+            alert = new Alert(timestamp, results.getString("username"), results.getString("text"));
         }
 
         alerts.put(alert.getTimestamp(), alert);
@@ -362,7 +365,7 @@ public class AlertDAO implements IDAO<Alert> {
               + dbConnection.getSchema()
               + "."
               + this.tableName
-              + " VALUES (?, ?, ?, ?, ?);";
+              + " VALUES (?, ?, ?, ?, ?, ?);";
 
       String update =
           "UPDATE "
@@ -379,6 +382,8 @@ public class AlertDAO implements IDAO<Alert> {
               + headers.get(3)
               + " = ?, "
               + headers.get(4)
+              + " = ?, "
+              + headers.get(5)
               + " = ? WHERE "
               + headers.get(0)
               + " = ?;";
@@ -421,10 +426,11 @@ public class AlertDAO implements IDAO<Alert> {
 
             // Put the new Edge's data into the prepared query
             preparedInsert.setTimestamp(1, Timestamp.valueOf(newAlertEntry.getTimestamp()));
-            preparedInsert.setString(2, newAlertEntry.getLongName());
-            preparedInsert.setDate(3, Date.valueOf(newAlertEntry.getDate()));
-            preparedInsert.setString(4, newAlertEntry.getText());
-            preparedInsert.setString(5, newAlertEntry.getType().toString());
+            preparedInsert.setString(2, newAlertEntry.getUsername());
+            preparedInsert.setString(3, newAlertEntry.getLongName());
+            preparedInsert.setDate(4, Date.valueOf(newAlertEntry.getDate()));
+            preparedInsert.setString(5, newAlertEntry.getText());
+            preparedInsert.setString(6, newAlertEntry.getType().toString());
 
             // Execute the query
             preparedInsert.executeUpdate();
@@ -434,11 +440,12 @@ public class AlertDAO implements IDAO<Alert> {
 
             // Put the new Node's data into the prepared query
             preparedUpdate.setTimestamp(1, Timestamp.valueOf(newAlertEntry.getTimestamp()));
-            preparedUpdate.setString(2, newAlertEntry.getLongName());
-            preparedUpdate.setDate(3, Date.valueOf(newAlertEntry.getDate()));
-            preparedUpdate.setString(4, newAlertEntry.getText());
-            preparedUpdate.setString(5, newAlertEntry.getType().toString());
-            preparedUpdate.setTimestamp(6, Timestamp.valueOf(newAlertEntry.getTimestamp()));
+            preparedUpdate.setString(2, newAlertEntry.getUsername());
+            preparedUpdate.setString(3, newAlertEntry.getLongName());
+            preparedUpdate.setDate(4, Date.valueOf(newAlertEntry.getDate()));
+            preparedUpdate.setString(5, newAlertEntry.getText());
+            preparedUpdate.setString(6, newAlertEntry.getType().toString());
+            preparedUpdate.setTimestamp(7, Timestamp.valueOf(newAlertEntry.getTimestamp()));
 
             // Execute the query
             preparedUpdate.executeUpdate();
