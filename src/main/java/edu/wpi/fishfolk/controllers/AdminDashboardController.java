@@ -1,15 +1,19 @@
 package edu.wpi.fishfolk.controllers;
 
 import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
+import static edu.wpi.fishfolk.controllers.AbsController.fdbConnections;
 
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
+import edu.wpi.fishfolk.database.DBSource;
+import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.database.TableEntry.Alert;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
@@ -52,6 +56,12 @@ public class AdminDashboardController {
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
   @FXML MFXScrollPane scroll;
   @FXML MFXButton movesRefresh, alertsRefresh, serviceRefresh;
+  @FXML MFXComboBox<String> serverSelectorCombo;
+  @FXML HBox confirmBox;
+  @FXML AnchorPane confirmPane;
+  @FXML MFXButton yesSwitchDB;
+  @FXML MFXButton cancelSwitchDB;
+  @FXML HBox confirmBlur;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodassignee,
@@ -105,7 +115,6 @@ public class AdminDashboardController {
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     Collections.sort(moves, Comparator.comparing(Move::getDate));
     setTable();
-
     outstandingFilter.setOnMouseClicked(
         event -> {
           setOutstandingTable();
@@ -124,6 +133,53 @@ public class AdminDashboardController {
           outstandingFilter.setDisable(false);
           outstandingFilter.setVisible(true);
           tableHeader.setText("Unassigned Tasks");
+        });
+
+    serverSelectorCombo.setItems(FXCollections.observableList(List.of("DB_WPI", "DB_AWS")));
+    serverSelectorCombo.setPromptText("Current DB: " + dbConnection.getDbSource().toString());
+    serverSelectorCombo.setOnAction(
+        event -> {
+          confirmBox.setDisable(false);
+          confirmBox.setVisible(true);
+          confirmPane.setDisable(false);
+          confirmPane.setVisible(true);
+          confirmBlur.setDisable(false);
+          confirmBlur.setVisible(true);
+        });
+
+    yesSwitchDB.setOnAction(
+        event -> {
+          System.out.println("[AdminDashboard]: Switching DB...");
+          DBSource src = DBSource.valueOf(serverSelectorCombo.getSelectedItem());
+
+          switch (src) {
+            case DB_WPI:
+              if (fdbConnections[0] == null) {
+                fdbConnections[0] = new Fdb(DBSource.DB_WPI);
+              }
+              dbConnection = fdbConnections[0];
+              break;
+            case DB_AWS:
+              if (fdbConnections[1] == null) {
+                fdbConnections[1] = new Fdb(DBSource.DB_AWS);
+              }
+              dbConnection = fdbConnections[1];
+              break;
+          }
+
+          // dbConnection = new Fdb(src);
+          SharedResources.logout();
+          Navigation.navigate(Screen.LOGIN);
+        });
+    cancelSwitchDB.setOnAction(
+        event -> {
+          System.out.println("[AdminDashboard]: Cancelled DB switch.");
+          confirmPane.setDisable(true);
+          confirmPane.setVisible(false);
+          confirmBox.setDisable(true);
+          confirmBox.setVisible(false);
+          confirmBlur.setDisable(true);
+          confirmBlur.setVisible(false);
         });
 
     serviceRefresh.setOnMouseClicked(
@@ -217,7 +273,9 @@ public class AdminDashboardController {
         fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
         AnchorPane anchorPane = fxmlLoader.load();
         FutureMovesController futureMoves = fxmlLoader.getController();
+
         futureMoves.setData(move.getLongName(), "" + move.getDate());
+
         futureMoves.notify.setOnMouseClicked(
             event -> {
               String longname = futureMoves.longname;
@@ -394,23 +452,6 @@ public class AdminDashboardController {
         new PropertyValueFactory<FurnitureOrderObservable, String>("furnitureservicetype"));
     furniturefurniture.setCellValueFactory(
         new PropertyValueFactory<FurnitureOrderObservable, String>("furniturefurniture"));
-
-    flowerid.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));
-    flowerassignee.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerassignee"));
-    flowertotalprice.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowertotalprice"));
-    flowerstatus.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerstatus"));
-    flowerdeliveryroom.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliveryroom"));
-    flowerdeliverytime.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliverytime"));
-    flowerrecipientname.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerrecipientname"));
-    floweritems.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
 
     flowerid.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));

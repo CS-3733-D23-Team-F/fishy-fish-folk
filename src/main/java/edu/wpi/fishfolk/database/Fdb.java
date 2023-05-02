@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.ArrayList;
 import lombok.Getter;
@@ -22,6 +24,8 @@ public class Fdb {
   @Getter
   private final List<NodeType> nodeTypes =
       List.of(BATH, CONF, DEPT, ELEV, EXIT, HALL, INFO, LABS, REST, RETL, SERV, STAI);
+
+  @Getter private final DBSource dbSource;
 
   // Hospital Map Tables
   private final NodeDAO nodeTable;
@@ -48,9 +52,23 @@ public class Fdb {
   // TODO refactor: use map from tabletype -> dao table object to simplify delegation
 
   /** Singleton facade for managing all PostgreSQL database communication. */
-  public Fdb() {
+  public Fdb(DBSource dbSource) {
 
-    this.dbConnection = connect();
+    System.out.println(
+        "NEW INSTANCE OF FDB: "
+            + dbSource.toString()
+            + " - "
+            + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+
+    this.dbSource = dbSource;
+    switch (dbSource) {
+      case DB_WPI:
+        this.dbConnection = connect("teamfdb", "teamf", "teamf60", dbSource);
+        break;
+      default:
+        this.dbConnection = connect("teamfdb", "teamf", "bingus7223", dbSource);
+        break;
+    }
 
     // Hospital Map Tables
     this.nodeTable = new NodeDAO(dbConnection);
@@ -108,17 +126,30 @@ public class Fdb {
    *
    * @return Database connection object (null if no connection is made)
    */
-  private Connection connect() {
-
+  private Connection connect(String dbName, String dbUser, String dbPass, DBSource dbSource) {
+    switch (dbSource) {
+      case DB_WPI:
+        ConnectionBuilder.setURL("jdbc:postgresql://database.cs.wpi.edu:5432/");
+        ConnectionBuilder.setUsername(dbUser);
+        ConnectionBuilder.setPassword(dbPass);
+        ConnectionBuilder.setDbName(dbName);
+        break;
+      default:
+        ConnectionBuilder.setURL(
+            "jdbc:postgresql://postgres.thesamrooney.com:5432/"); // i.e. DB_AWS
+        ConnectionBuilder.setUsername(dbUser);
+        ConnectionBuilder.setPassword(dbPass);
+        ConnectionBuilder.setDbName(dbName);
+        break;
+    }
     try {
 
       // Attempt a database connection
       Connection db = ConnectionBuilder.buildConnection();
 
       if (db != null) {
-
-        // Notify console of successful connection
-        System.out.println("[Fdb.connect]: Connection established.");
+        System.out.println("[Fdb.connect]: Connection established with " + dbSource.toString());
+        db.setSchema("iter2db");
 
         // Set timeout to 1 day (86400000 ms)
         String query = "SET idle_session_timeout = 86400000;";

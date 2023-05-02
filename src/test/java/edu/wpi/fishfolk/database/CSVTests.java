@@ -16,7 +16,7 @@ public class CSVTests {
 
   @Test
   public void foodRequestSubtableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     HashMap<Integer, ArrayList<NewFoodItem>> items =
         (HashMap<Integer, ArrayList<NewFoodItem>>)
@@ -28,7 +28,7 @@ public class CSVTests {
 
   @Test
   public void foodRequestTableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.importCSV(
         "D:\\CSVTests\\foodrequest.csv",
@@ -39,14 +39,14 @@ public class CSVTests {
 
   @Test
   public void foodRequestTableExport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.FOOD_REQUEST);
   }
 
   @Test
   public void supplyRequestSubtableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     HashMap<Integer, ArrayList<SupplyItem>> items =
         (HashMap<Integer, ArrayList<SupplyItem>>)
@@ -58,7 +58,7 @@ public class CSVTests {
 
   @Test
   public void supplyRequestTableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.importCSV(
         "D:\\CSVTests\\supplyrequest.csv",
@@ -69,14 +69,14 @@ public class CSVTests {
 
   @Test
   public void supplyRequestTableExport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.SUPPLY_REQUEST);
   }
 
   @Test
   public void flowerRequestSubtableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     HashMap<Integer, ArrayList<FlowerItem>> items =
         (HashMap<Integer, ArrayList<FlowerItem>>)
@@ -88,7 +88,7 @@ public class CSVTests {
 
   @Test
   public void flowerRequestTableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.importCSV(
         "D:\\CSVTests\\flowerrequest.csv",
@@ -99,14 +99,14 @@ public class CSVTests {
 
   @Test
   public void flowerRequestTableExport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.FLOWER_REQUEST);
   }
 
   @Test
   public void signagePresetSubtableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     HashMap<Integer, Sign[]> items =
         (HashMap<Integer, Sign[]>)
@@ -118,7 +118,7 @@ public class CSVTests {
 
   @Test
   public void signagePresetTableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.importCSV(
         "D:\\CSVTests\\signagepreset.csv",
@@ -129,49 +129,49 @@ public class CSVTests {
 
   @Test
   public void signageRequestTableExport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.SIGNAGE_PRESET);
   }
 
   @Test
   public void furnitureRequestTableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.importCSV("D:\\CSVTests\\furniturerequest.csv", false, TableEntryType.FURNITURE_REQUEST);
   }
 
   @Test
   public void furnitureRequestTableExport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.FURNITURE_REQUEST);
   }
 
   @Test
   public void conferenceRequestTableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.importCSV("D:\\CSVTests\\conferencerequest.csv", false, TableEntryType.CONFERENCE_REQUEST);
   }
 
   @Test
   public void conferenceRequestTableExport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.CONFERENCE_REQUEST);
   }
 
   @Test
   public void userAccountTableImport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.importCSV("D:\\CSVTests\\account.csv", false, TableEntryType.USER_ACCOUNT);
   }
 
   @Test
   public void userAccountTableExport() {
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.exportCSV("D:\\CSVTests\\out", TableEntryType.USER_ACCOUNT);
   }
