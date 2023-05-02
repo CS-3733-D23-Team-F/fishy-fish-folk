@@ -71,6 +71,7 @@ public class CreditsController {
       right,
       accounts,
       viewOrders;
+  @FXML HBox close, megaphone, walk, hide, user, password, undo;
   @FXML HBox hospitalImage, hospitalIcon;
 
   @FXML
@@ -122,6 +123,56 @@ public class CreditsController {
           navigationPane.setDisable(true);
           serviceRequestPane.setVisible(false);
           serviceRequestPane.setDisable(true);
+        });
+
+    undo.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/undo-arrow.png")));
+          link.setText(
+              "https://www.flaticon.com/free-icon/undo_3185863?term=undo&page=1&position=1&origin=search&related_id=3185863");
+        });
+
+    walk.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/walk.png")));
+          link.setText(
+              "https://www.flaticon.com/free-icon/walk_5604658?term=walk&page=1&position=1&origin=search&related_id=5604658");
+        });
+
+    user.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/003-user-1.png")));
+          link.setText(
+              "https://www.flaticon.com/free-icon/user_747376?term=user&page=1&position=2&origin=search&related_id=747376");
+        });
+
+    password.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/002-padlock.png")));
+          link.setText(
+              "https://www.flaticon.com/free-icon/padlock_2889676?term=padlock&page=1&position=2&origin=search&related_id=2889676");
+        });
+
+    megaphone.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/megaphone.png")));
+          link.setText(
+              "https://www.flaticon.com/free-icon/megaphone_2011858?term=megaphone&page=1&position=2&origin=search&related_id=2011858");
+        });
+
+    hide.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/hide.png")));
+          link.setText(
+              "https://www.flaticon.com/free-icon/private_876769?term=hide&page=1&position=3&origin=search&related_id=876769");
+        });
+
+    close.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/close.png")));
+          link.setText(
+              "https://www.flaticon.com/free-icon/close_2997911?term=cross&page=1&position=2&origin=search&related_id=2997911");
         });
 
     gratitude1.setOnMouseClicked(
@@ -368,6 +419,7 @@ public class CreditsController {
               new Image(Fapp.class.getResourceAsStream("images/Food/veggieburger.png")));
           link.setText("https://www.flaticon.com/free-icon/vegan-burger_2738717");
         });
+
     water.setOnMouseClicked(
         event -> {
           displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/Food/water.png")));
