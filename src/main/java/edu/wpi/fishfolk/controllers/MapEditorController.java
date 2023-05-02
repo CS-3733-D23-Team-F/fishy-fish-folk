@@ -640,7 +640,9 @@ public class MapEditorController extends AbsController {
 
             state = EDITOR_STATE.EDITING_NODE;
 
-          } else if (state == EDITOR_STATE.EDITING_NODE || state == EDITOR_STATE.EDITING_EDGE) {
+          } else if (state == EDITOR_STATE.EDITING_NODE
+              || state == EDITOR_STATE.EDITING_EDGE
+              || state == EDITOR_STATE.PREVIEWING) {
 
             // clear node stuff
             selectedNodes.clear();
@@ -1011,8 +1013,6 @@ public class MapEditorController extends AbsController {
 
   private void switchFloor(String floor) {
 
-      //TODO modify to check if in the previewing state
-
     mapImg.setImage(images.get(floor));
 
     /* TODO optional
@@ -1071,23 +1071,23 @@ public class MapEditorController extends AbsController {
               List<NodeType> nodeTypes =
                   node.getLocations(today).stream().map(Location::getNodeType).toList();
 
-              boolean visible = false;
-              for (NodeType type : nodeTypes) {
-                if (visibleNodeTypes.contains(type)) {
-                  visible = true;
-                  break;
-                }
-              }
-              label.setVisible(visible);
-
               // add location labels to the correct group (dependent on node type)
               // nodes with multiple locations share a label so it gets added to both type groups
               nodeTypes.forEach(
                   nodeType -> locationTypeGroups.get(nodeType).getChildren().add(label));
             });
 
-    selectedNodes.clear();
-    selectedEdges.clear();
+    // show only needed location labels
+    locationTypeGroups.forEach(
+        (nodeType, group) -> {
+          group.setVisible(visibleNodeTypes.contains(nodeType));
+        });
+
+    if (state != EDITOR_STATE.PREVIEWING) {
+
+      selectedNodes.clear();
+      selectedEdges.clear();
+    }
 
     // TODO bring back drawing locations
     // drawLocations(floor, toggleLocations.isSelected());
@@ -1376,19 +1376,24 @@ public class MapEditorController extends AbsController {
             event -> {
 
               // click preview to preview
-              if (!controller.isPreviewing()) {
+              if (state != EDITOR_STATE.PREVIEWING) {
 
-                Node node = nodes.get(nodeID2idx.get(controller.nodeID));
-                controller.setOrigin(node);
+                state = EDITOR_STATE.PREVIEWING;
 
-                if (!node.getFloor().equals(allFloors.get(currentFloor))) {
-                  // floor selector's onAction switches floors
-                  floorSelector.setValue(node.getFloor());
+                if (!selectedNodes.isEmpty()) {
+                  controller.setOrigin(nodes.get(nodeID2idx.get(selectedNodes.get(0))));
                 }
-                gesturePane.centreOn(node.getPoint());
-                gesturePane.zoomTo(1.25, node.getPoint());
 
-                NodeText label = drawLocationLabel(node);
+                Node previewNode = nodes.get(nodeID2idx.get(controller.nodeID));
+
+                if (!previewNode.getFloor().equals(allFloors.get(currentFloor))) {
+                  // floor selector's onAction switches floors
+                  floorSelector.setValue(previewNode.getFloor());
+                }
+                gesturePane.centreOn(previewNode.getPoint());
+                gesturePane.zoomTo(1.0, previewNode.getPoint());
+
+                NodeText label = drawLocationLabel(previewNode);
                 labelPreviewGroup.getChildren().add(label);
                 controller.preview.setText("Back");
 
@@ -1396,16 +1401,33 @@ public class MapEditorController extends AbsController {
 
                 Node origin = controller.getOrigin();
 
-                // maybe unnecessary since the only way to fall into this else
+                // maybe unnecessary since the only way to fall into this else statement
                 // is after the origin has already been set
                 if (origin != null) {
+
+                  // clear preview location label
+                  labelPreviewGroup.getChildren().clear();
 
                   if (!origin.getFloor().equals(allFloors.get(currentFloor))) {
                     // floor selector's onAction switches floors
                     floorSelector.setValue(origin.getFloor());
                   }
                   gesturePane.centreOn(origin.getPoint());
-                  gesturePane.zoomTo(1.25, origin.getPoint());
+                  gesturePane.zoomTo(1.0, origin.getPoint());
+
+                  // highlight origin node again
+                  nodeGroup
+                      .getChildren()
+                      .forEach(
+                          fxnode -> {
+                            NodeCircle nodeCircle = (NodeCircle) fxnode;
+                            if (nodeCircle.getNodeID() == origin.getNodeID()) {
+                              nodeCircle.highlight();
+                            }
+                          });
+
+                  // back to editing the currently selected node
+                  state = EDITOR_STATE.EDITING_NODE;
                 }
                 controller.preview.setText("Preview");
               }
@@ -1434,6 +1456,18 @@ public class MapEditorController extends AbsController {
     locationScrollpane.setVisible(false);
     locationScrollpane.setDisable(true);
     locationScrollpane.setMaxHeight(0);
+  }
+
+  private void refreshSelectedNodes() {
+    List<Integer> selectedNodesCopy = selectedNodes.stream().toList();
+    selectedNodes.clear();
+    selectedNodes.addAll(selectedNodesCopy);
+  }
+
+  private void refreshSelectedEdges() {
+    List<Edge> selectedEdgesCopy = selectedEdges.stream().toList();
+    selectedEdges.clear();
+    selectedEdges.addAll(selectedEdgesCopy);
   }
 }
 
@@ -1507,7 +1541,7 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
 
 enum EDITOR_STATE {
   IDLE,
-    PREVIEWING,
+  PREVIEWING,
 
   ADDING_NODE,
   EDITING_NODE,

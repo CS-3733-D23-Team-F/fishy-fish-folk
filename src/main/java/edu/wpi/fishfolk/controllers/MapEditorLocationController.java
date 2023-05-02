@@ -16,7 +16,6 @@ public class MapEditorLocationController {
   @FXML MFXDatePicker datePicker;
   @FXML MFXButton preview, submit;
 
-  @Getter @Setter private boolean previewing = false;
   @Getter @Setter Node origin;
   private boolean validNodeID = false, validDate = false;
   int nodeID;
