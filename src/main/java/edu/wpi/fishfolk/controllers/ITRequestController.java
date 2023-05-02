@@ -147,7 +147,17 @@ public class ITRequestController extends AbsController {
 
     currentITRequest.setFormStatus(FormStatus.submitted);
 
-    // insert entry goes here
+    edu.wpi.fishfolk.database.TableEntry.ITRequest tableRequest =
+        new edu.wpi.fishfolk.database.TableEntry.ITRequest(
+            "",
+            FormStatus.submitted,
+            currentITRequest.getIssueNotes(),
+            currentITRequest.getComponent(),
+            currentITRequest.getPriority(),
+            currentITRequest.getRoomNum(),
+            currentITRequest.getContactInfo());
+
+    dbConnection.insertEntry(tableRequest);
 
     confirmBlur.setDisable(false);
     confirmBlur.setVisible(true);
