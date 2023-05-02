@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
@@ -32,6 +33,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.kurobako.gesturefx.GesturePane;
 import org.controlsfx.control.CheckComboBox;
+import org.controlsfx.control.PopOver;
 
 public class MapEditorController extends AbsController {
 
@@ -527,10 +529,45 @@ public class MapEditorController extends AbsController {
           fileChooser.setTitle("Select the Edge CSV file");
           String edgePath = fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
 
-          dbConnection.importCSV(nodePath, false, TableEntryType.NODE);
-          dbConnection.importCSV(locationPath, false, TableEntryType.LOCATION);
-          dbConnection.importCSV(movePath, false, TableEntryType.MOVE);
-          dbConnection.importCSV(edgePath, false, TableEntryType.EDGE);
+          boolean importedNodes = dbConnection.importCSV(nodePath, false, TableEntryType.NODE);
+          boolean importedLocations =
+              dbConnection.importCSV(locationPath, false, TableEntryType.LOCATION);
+          boolean importedMoves = dbConnection.importCSV(movePath, false, TableEntryType.MOVE);
+          boolean importedEdges = dbConnection.importCSV(edgePath, false, TableEntryType.EDGE);
+
+          if (!(importedNodes && importedLocations && importedMoves && importedEdges)) {
+            PopOver errorPopup = new PopOver();
+
+            Label label = new Label("Error importing CSVs, please try again");
+            label.setStyle(" -fx-background-color: white;");
+            label.setMinWidth(220);
+            label.setMinHeight(30);
+
+            errorPopup.setContentNode(label);
+
+            errorPopup.show(importCSV);
+          }
+
+          // clear everything and re-init
+
+          selectedNodes.clear();
+          selectedEdges.clear();
+
+          nodes.clear();
+          nodeID2idx.clear();
+
+          edges.clear();
+
+          locations.clear();
+          longname2idx.clear();
+
+          moves.clear();
+
+          editQueue.clear();
+          nodesOnFloor.clear();
+
+          locationTypeGroups.clear();
+          visibleNodeTypes.clear();
 
           initialize();
         });

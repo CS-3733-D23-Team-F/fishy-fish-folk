@@ -1,11 +1,9 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
-import edu.wpi.fishfolk.database.DataEditQueue;
-import edu.wpi.fishfolk.database.EntryStatus;
-import edu.wpi.fishfolk.database.IDAO;
 import edu.wpi.fishfolk.database.TableEntry.ConferenceRequest;
 import edu.wpi.fishfolk.ui.Recurring;
 import java.io.*;
@@ -19,7 +17,7 @@ import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
+public class ConferenceRequestDAO implements IDAO<ConferenceRequest>, ICSVNoSubtable {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -537,6 +535,8 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
   public boolean importCSV(String filepath, boolean backup) {
     String[] pathArr = filepath.split("/");
 
+    final HashMap<LocalDateTime, ConferenceRequest> backupMap = new HashMap<>(tableMap);
+
     if (backup) {
 
       // filepath except for last part (actual file name)
@@ -571,7 +571,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
 
         String[] parts = line.split(",");
 
-        ConferenceRequest cr =
+        ConferenceRequest conferenceRequest =
             new ConferenceRequest(
                 LocalDateTime.parse(parts[0]),
                 parts[1],
@@ -583,17 +583,17 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
                 Integer.parseInt(parts[7]),
                 parts[8]);
 
-        tableMap.put(cr.getConferenceRequestID(), cr);
+        tableMap.put(conferenceRequest.getConferenceRequestID(), conferenceRequest);
 
-        insertPS.setTimestamp(1, Timestamp.valueOf(cr.getConferenceRequestID()));
-        insertPS.setString(2, cr.getNotes());
-        insertPS.setString(3, cr.getUsername());
-        insertPS.setString(4, cr.getStartTime());
-        insertPS.setString(5, cr.getEndTime());
-        insertPS.setTimestamp(6, Timestamp.valueOf(cr.getDateReserved()));
-        insertPS.setString(7, cr.getRecurringOption().toString());
-        insertPS.setInt(8, cr.getNumAttendees());
-        insertPS.setString(9, cr.getRoomName());
+        insertPS.setTimestamp(1, Timestamp.valueOf(conferenceRequest.getConferenceRequestID()));
+        insertPS.setString(2, conferenceRequest.getNotes());
+        insertPS.setString(3, conferenceRequest.getUsername());
+        insertPS.setString(4, conferenceRequest.getStartTime());
+        insertPS.setString(5, conferenceRequest.getEndTime());
+        insertPS.setTimestamp(6, Timestamp.valueOf(conferenceRequest.getDateReserved()));
+        insertPS.setString(7, conferenceRequest.getRecurringOption().toString());
+        insertPS.setInt(8, conferenceRequest.getNumAttendees());
+        insertPS.setString(9, conferenceRequest.getRoomName());
 
         insertPS.executeUpdate();
       }
@@ -601,7 +601,51 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest> {
       return true;
 
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      System.out.println("Error importing CSV: " + e.getMessage() + "  -->  Restoring backup...");
+
+      // something went wrong:
+
+      // revert local copy to backup made before inserting
+      tableMap.clear();
+      tableMap.putAll(backupMap);
+
+      // clear the database
+      try {
+        dbConnection
+            .createStatement()
+            .executeUpdate("DELETE FROM " + dbConnection.getSchema() + "." + tableName + ";");
+
+        String insert =
+            "INSERT INTO "
+                + dbConnection.getSchema()
+                + "."
+                + this.tableName
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+        PreparedStatement insertPS = dbConnection.prepareStatement(insert);
+
+        // fill in database from backup
+        for (Map.Entry<LocalDateTime, ConferenceRequest> entry : backupMap.entrySet()) {
+          tableMap.put(entry.getValue().getConferenceRequestID(), entry.getValue());
+
+          insertPS.setTimestamp(1, Timestamp.valueOf(entry.getValue().getConferenceRequestID()));
+          insertPS.setString(2, entry.getValue().getNotes());
+          insertPS.setString(3, entry.getValue().getUsername());
+          insertPS.setString(4, entry.getValue().getStartTime());
+          insertPS.setString(5, entry.getValue().getEndTime());
+          insertPS.setTimestamp(6, Timestamp.valueOf(entry.getValue().getDateReserved()));
+          insertPS.setString(7, entry.getValue().getRecurringOption().toString());
+          insertPS.setInt(8, entry.getValue().getNumAttendees());
+          insertPS.setString(9, entry.getValue().getRoomName());
+
+          insertPS.executeUpdate();
+        }
+
+      } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
+      }
+
+      // failed to import correctly
       return false;
     }
   }

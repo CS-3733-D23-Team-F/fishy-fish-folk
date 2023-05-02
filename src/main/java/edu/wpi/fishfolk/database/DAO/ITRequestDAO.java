@@ -17,7 +17,7 @@ import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class ITRequestDAO implements IDAO<ITRequest> {
+public class ITRequestDAO implements IDAO<ITRequest>, ICSVNoSubtable {
 
   private final Connection dbConnection;
   private Connection dbListener;
