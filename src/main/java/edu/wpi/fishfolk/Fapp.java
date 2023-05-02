@@ -50,7 +50,6 @@ public class Fapp extends Application {
     // primaryStage.setMaximized(true);
     stage.setMaximized(true);
 
-
     Fapp.primaryStage = stage;
     this.primaryStage.show();
     Navigation.navigate(Screen.LOGIN);

@@ -392,7 +392,7 @@ public class NewFoodOrderController extends AbsController {
           itemRow.getChildren().add(itemPane);
         } catch (Exception E) {
           // This row does not have a 2nd item - thrown here by indexOutOfBoundsException
-          //System.out.println("Should only get here once, here's what happened " + E.toString());
+          // System.out.println("Should only get here once, here's what happened " + E.toString());
           AnchorPane itemPane = new AnchorPane();
           itemPane.setPrefHeight(250);
           itemPane.setPrefWidth(585);
