@@ -4,9 +4,10 @@
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -17,7 +18,7 @@
 
 <StackPane minHeight="720.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.NewFurnitureOrderController">
     <children>
-<VBox alignment="CENTER" minHeight="720.0" minWidth="1080.0" spacing="20.0">
+<VBox alignment="CENTER" minHeight="720.0" minWidth="1080.0" spacing="15.0">
          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" VBox.vgrow="ALWAYS">
             <children>
                <VBox prefHeight="200.0" prefWidth="100.0">
@@ -27,59 +28,59 @@
                      <Font name="Open Sans SemiBold" size="26.0" />
                   </font>
                </Text>
-                <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-radius: 5; -fx-border-color: #012d5a; -fx-border-width: 3;" vbarPolicy="ALWAYS">
-                    <content>
+                     <MFXScrollPane fx:id="serviceScroll" styleClass="newScrolls">
+                        <content>
                         <VBox>
                             <children>
                            <HBox>
                               <children>
-                                      <MFXRectangleToggleNode fx:id="serviceradioButton1" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     REPLACEMENT" wrapText="true">
+                                      <MFXRectangleToggleNode fx:id="serviceradioButton1" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="REPLACEMENT" textFill="#012d5a" wrapText="true">
                                           <font>
-                                              <Font name="Open Sans Regular" size="30.0" />
+                                              <Font name="Open Sans Regular" size="26.0" />
                                           </font>
                                       </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                            <HBox>
                               <children>
-                                      <MFXRectangleToggleNode fx:id="serviceradioButton2" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     CLEANING">
+                                      <MFXRectangleToggleNode fx:id="serviceradioButton2" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="CLEANING" textFill="#012d5a">
                                           <font>
-                                              <Font name="Open Sans Regular" size="30.0" />
+                                              <Font name="Open Sans Regular" size="26.0" />
                                           </font>
                                       </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                            <HBox>
                               <children>
-                                      <MFXRectangleToggleNode fx:id="serviceradioButton3" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     DELIVERY">
+                                      <MFXRectangleToggleNode fx:id="serviceradioButton3" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="DELIVERY" textFill="#012d5a">
                                           <font>
-                                              <Font name="Open Sans Regular" size="30.0" />
+                                              <Font name="Open Sans Regular" size="26.0" />
                                           </font>
                                       </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                            <HBox>
                               <children>
-                                      <MFXRectangleToggleNode fx:id="serviceradioButton4" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     MAINTENANCE">
+                                      <MFXRectangleToggleNode fx:id="serviceradioButton4" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="MAINTENANCE" textFill="#012d5a">
                                           <font>
-                                              <Font name="Open Sans Regular" size="30.0" />
+                                              <Font name="Open Sans Regular" size="26.0" />
                                           </font>
                                       </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                            <HBox>
                               <children>
-                                      <MFXRectangleToggleNode fx:id="serviceradioButton5" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     REMOVAL">
+                                      <MFXRectangleToggleNode fx:id="serviceradioButton5" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="REMOVAL" textFill="#012d5a">
                                           <font>
-                                              <Font name="Open Sans Regular" size="30.0" />
+                                              <Font name="Open Sans Regular" size="26.0" />
                                           </font>
                                       </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                             </children>
                      </VBox>
-                    </content>
-                </ScrollPane>
+                        </content>
+                     </MFXScrollPane>
                   </children>
                </VBox>
                <VBox prefHeight="200.0" prefWidth="100.0">
@@ -89,75 +90,75 @@
                      <Font name="Open Sans SemiBold" size="26.0" />
                   </font>
                </Text>
-               <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefHeight="500.0" prefWidth="500.0" style="-fx-border-color: #012d5a; -fx-border-width: 3; -fx-border-radius: 5;" vbarPolicy="ALWAYS">
-                  <content>
-                     <VBox minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="620.0">
+                     <MFXScrollPane fx:id="furnitureScroll" styleClass="newScrolls">
+                        <content>
+                     <VBox minHeight="0.0" minWidth="0.0" prefHeight="510.0" prefWidth="620.0">
                         <children>
                            <HBox>
                               <children>
-                                 <MFXRectangleToggleNode fx:id="radioButton1" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     HOSPITAL BED" wrapText="true" HBox.hgrow="ALWAYS">
+                                 <MFXRectangleToggleNode fx:id="radioButton1" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="HOSPITAL BED" textFill="#012d5a" wrapText="true" HBox.hgrow="ALWAYS">
                                     <font>
-                                       <Font name="Open Sans Regular" size="30.0" />
+                                       <Font name="Open Sans Regular" size="26.0" />
                                     </font>
                                  </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                            <HBox>
                               <children>
-                                 <MFXRectangleToggleNode fx:id="radioButton2" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     DESK" HBox.hgrow="ALWAYS">
+                                 <MFXRectangleToggleNode fx:id="radioButton2" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="DESK" textFill="#012d5a" HBox.hgrow="ALWAYS">
                                     <font>
-                                        <Font name="Open Sans Regular" size="30.0" />
+                                        <Font name="Open Sans Regular" size="26.0" />
                                     </font>
                                  </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                            <HBox>
                               <children>
-                                 <MFXRectangleToggleNode fx:id="radioButton3" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     CHAIR" HBox.hgrow="ALWAYS">
+                                 <MFXRectangleToggleNode fx:id="radioButton3" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="CHAIR" textFill="#012d5a" HBox.hgrow="ALWAYS">
                                     <font>
-                                        <Font name="Open Sans Regular" size="30.0" />
+                                        <Font name="Open Sans Regular" size="26.0" />
                                     </font>
                                  </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                            <HBox>
                               <children>
-                                 <MFXRectangleToggleNode fx:id="radioButton4" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     FILE CABINET" HBox.hgrow="ALWAYS">
+                                 <MFXRectangleToggleNode fx:id="radioButton4" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="FILE CABINET" textFill="#012d5a" HBox.hgrow="ALWAYS">
                                     <font>
-                                        <Font name="Open Sans Regular" size="30.0" />
+                                        <Font name="Open Sans Regular" size="26.0" />
                                     </font>
                                  </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                            <HBox>
                               <children>
-                                 <MFXRectangleToggleNode fx:id="radioButton5" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     CLOCK" HBox.hgrow="ALWAYS">
+                                 <MFXRectangleToggleNode fx:id="radioButton5" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="CLOCK" textFill="#012d5a" HBox.hgrow="ALWAYS">
                                     <font>
-                                        <Font name="Open Sans Regular" size="30.0" />
+                                        <Font name="Open Sans Regular" size="26.0" />
                                     </font>
                                  </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                            <HBox>
                               <children>
-                                 <MFXRectangleToggleNode fx:id="radioButton6" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="490.0" styleClass="rectToggle" text="     TRASHCAN" HBox.hgrow="ALWAYS">
+                                 <MFXRectangleToggleNode fx:id="radioButton6" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="490.0" styleClass="rectToggle" text="TRASHCAN" textFill="#012d5a" HBox.hgrow="ALWAYS">
                                     <font>
-                                        <Font name="Open Sans Regular" size="30.0" />
+                                        <Font name="Open Sans Regular" size="26.0" />
                                     </font>
                                  </MFXRectangleToggleNode>
                               </children>
                            </HBox>
                         </children>
                      </VBox>
-                  </content>
-               </ScrollPane>
+                        </content>
+                     </MFXScrollPane>
                   </children>
                </VBox>
             </children>
          </HBox>
-    <MFXTextField fx:id="notesTextField" floatingText="ADDITIONAL NOTES" minHeight="86.0" minWidth="1020.0" style="-fx-border-color: #012d5a; -fx-border-width: 3;">
+    <MFXTextField fx:id="notesTextField" floatingText="ADDITIONAL NOTES" minHeight="86.0" minWidth="1020.0" style="-fx-border-color: #012d5a; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-radius: 5;">
         <font>
-            <Font name="Open Sans Regular" size="26.0" />
+            <Font name="Open Sans Regular" size="15.0" />
         </font>
         <textFill>
             <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
@@ -167,7 +168,7 @@
       <children>
           <MFXFilterComboBox fx:id="roomSelector" floatingText="ROOM" minHeight="86.0" minWidth="500.0" popupOffsetY="-2620.0" style="-fx-border-color: #012d5a; -fx-border-width: 3;" HBox.hgrow="ALWAYS">
               <font>
-                  <Font name="Open Sans Regular" size="26.0" />
+                  <Font name="Open Sans Regular" size="15.0" />
               </font>
               <textFill>
                   <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
@@ -175,7 +176,7 @@
           </MFXFilterComboBox>
          <MFXDatePicker fx:id="deliveryDate" floatMode="INLINE" floatingText="DELIVERY DATE" minHeight="86.0" minWidth="500.0" popupOffsetY="-4150.0" style="-fx-border-width: 3; -fx-border-radius: 5; -fx-border-color: #012d5a;" HBox.hgrow="ALWAYS">
             <font>
-               <Font name="Open Sans Light" size="26.0" />
+               <Font name="Open Sans Light" size="15.0" />
             </font>
                   <textFill>
                      <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
@@ -183,25 +184,32 @@
          </MFXDatePicker>
       </children>
    </HBox>
+         <HBox alignment="CENTER" prefHeight="18.0" prefWidth="1126.0">
+            <children>
+               <Label fx:id="errors" text="Label" HBox.hgrow="ALWAYS" />
+            </children>
+         </HBox>
    <HBox alignment="CENTER" maxWidth="1020.0">
       <children>
-         <MFXButton fx:id="cancelButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #012d5a;" text="CANCEL" textFill="WHITE">
+         <MFXButton fx:id="cancelButton" prefHeight="55.0" prefWidth="220.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #012d5a;" text="Cancel" textFill="WHITE">
             <font>
-               <Font name="Open Sans Bold" size="26.0" />
+               <Font name="Open Sans Bold" size="24.0" />
             </font>
          </MFXButton>
          <VBox HBox.hgrow="ALWAYS" />
-         <MFXButton fx:id="clearButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #012d5a;" text="CLEAR" textFill="WHITE">
+         <MFXButton fx:id="clearButton" prefHeight="55.0" prefWidth="220.0" rippleBackgroundOpacity="1.0" rippleColor="#f0bf4c" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #012d5a;" text="Clear" textFill="WHITE">
             <font>
-               <Font name="Open Sans Bold" size="26.0" />
+               <Font name="Open Sans Bold" size="24.0" />
             </font>
          </MFXButton>
          <VBox HBox.hgrow="ALWAYS" />
                <VBox HBox.hgrow="ALWAYS" />
                <VBox HBox.hgrow="ALWAYS" />
-         <MFXButton fx:id="furnituresubmitButton" prefHeight="63.0" prefWidth="188.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #f0bf4c;" text="SUBMIT" textFill="#012d5a">
+               <VBox HBox.hgrow="ALWAYS" />
+               <VBox HBox.hgrow="ALWAYS" />
+         <MFXButton fx:id="furnituresubmitButton" prefHeight="55.0" prefWidth="220.0" rippleBackgroundOpacity="1.0" rippleColor="#012d5a" rippleRadius="50.0" style="-fx-background-radius: 5; -fx-background-color: #f0bf4c;" text="Submit" textFill="#012d5a">
             <font>
-               <Font name="Open Sans Bold" size="26.0" />
+               <Font name="Open Sans Bold" size="24.0" />
             </font>
             <HBox.margin>
                <Insets />
@@ -221,7 +229,7 @@
                 <children>
                     <AnchorPane fx:id="confirmPane" disable="true" style="-fx-border-color: #012d5a; -fx-border-radius: 3; -fx-background-color: WHITE; -fx-background-radius: 8; -fx-border-width: 2;" visible="false">
                         <children>
-                            <VBox alignment="CENTER" spacing="15.0">
+                            <VBox alignment="CENTER" spacing="15.0" visible="false">
                                 <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Order Confirmed">
                                         <font>
@@ -236,7 +244,8 @@
                                 </children>
                                 <padding>
                                     <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-                                </padding></VBox>
+                                </padding>
+                        </VBox>
                         </children>
                     </AnchorPane>
                 </children>

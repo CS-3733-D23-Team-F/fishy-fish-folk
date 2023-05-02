@@ -65,6 +65,6 @@ public class Edge {
 
   @Override
   public String toString() {
-    return edgeID;
+    return "[start: " + startNode + "; end: " + endNode + "]";
   }
 }

@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
@@ -20,7 +21,7 @@ import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class MoveDAO implements IDAO<Move>, IProcessEdit {
+public class MoveDAO implements IDAO<Move>, ICSVNoSubtable, IProcessEdit {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -184,6 +185,7 @@ public class MoveDAO implements IDAO<Move>, IProcessEdit {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[MoveDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
@@ -228,6 +230,10 @@ public class MoveDAO implements IDAO<Move>, IProcessEdit {
 
   @Override
   public boolean updateEntry(Move entry) {
+
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getMoveID())) return false;
+
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
 

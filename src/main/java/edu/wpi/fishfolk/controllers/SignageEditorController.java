@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.SharedResources;
+import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.ui.Sign;
 import edu.wpi.fishfolk.ui.SignagePreset;
@@ -8,7 +9,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -34,14 +35,33 @@ public class SignageEditorController extends AbsController {
   ImageView iconr0, iconr1, iconr2, iconr3; // direction arrows for right side (0-3 is top-bottom)
   @FXML MFXTextField subtextl0, subtextl1, subtextl2, subtextl3;
   @FXML MFXTextField subtextr0, subtextr1, subtextr2, subtextr3;
+  @FXML MFXFilterComboBox<String> presetSelect;
   @FXML
-  MFXButton cancelButton, clearButton, submitButton; // cancel form, clear fields, and submit form
+  MFXButton cancelButton,
+      clearButton,
+      submitButton,
+      loadButton,
+      deleteButton; // cancel form, clear fields, and submit form
+  String identifier = "TEST";
+
+  ArrayList<MFXFilterComboBox<String>> listTexts = new ArrayList<>();
+  ArrayList<ImageView> listIcons = new ArrayList<>();
+  ArrayList<MFXTextField> listSubText = new ArrayList<>();
 
   SignagePreset currentPreset =
       new SignagePreset(); // SignagePreset object stores room selectors and sign orientations
 
+  ArrayList<edu.wpi.fishfolk.database.TableEntry.SignagePreset> allPresets =
+      (ArrayList<edu.wpi.fishfolk.database.TableEntry.SignagePreset>)
+          dbConnection.getAllEntries(TableEntryType.SIGNAGE_PRESET);
+
   public void initialize() {
     loadRooms(); // read documentation for loadRooms()
+
+    loadPresetSelect();
+    loadListTexts();
+    loadListIcons();
+    loadListSubtexts();
 
     // all direction arrows are disabled at start
     fullDisable(iconl0);
@@ -120,6 +140,41 @@ public class SignageEditorController extends AbsController {
         event -> clearAll()); // clear button clears and resets all objects on the form
     submitButton.setOnMouseClicked(
         event -> submit()); // submit button does submit(), read documentation for submit()
+    loadButton.setOnMouseClicked(event -> loadPreset());
+    deleteButton.setOnMouseClicked(event -> deletePreset());
+  }
+
+  private void loadListTexts() {
+    listTexts.add(rooml0);
+    listTexts.add(rooml1);
+    listTexts.add(rooml2);
+    listTexts.add(rooml3);
+    listTexts.add(roomr0);
+    listTexts.add(roomr1);
+    listTexts.add(roomr2);
+    listTexts.add(roomr3);
+  }
+
+  private void loadListIcons() {
+    listIcons.add(iconl0);
+    listIcons.add(iconl1);
+    listIcons.add(iconl2);
+    listIcons.add(iconl3);
+    listIcons.add(iconr0);
+    listIcons.add(iconr1);
+    listIcons.add(iconr2);
+    listIcons.add(iconr3);
+  }
+
+  private void loadListSubtexts() {
+    listSubText.add(subtextl0);
+    listSubText.add(subtextl1);
+    listSubText.add(subtextl2);
+    listSubText.add(subtextl3);
+    listSubText.add(subtextr0);
+    listSubText.add(subtextr1);
+    listSubText.add(subtextr2);
+    listSubText.add(subtextr3);
   }
 
   // fullDisable() resets the direction arrows by disabling them, lowering their opacity, and resets
@@ -166,6 +221,15 @@ public class SignageEditorController extends AbsController {
     roomr2.setValue(null);
     roomr3.setValue(null);
 
+    rooml0.setText(""); // set all eight room selector values to null
+    rooml1.setText("");
+    rooml2.setText("");
+    rooml3.setText("");
+    roomr0.setText("");
+    roomr1.setText("");
+    roomr2.setText("");
+    roomr3.setText("");
+
     fullDisable(iconl0); // fully disables all eight direction arrows
     fullDisable(iconl1);
     fullDisable(iconl2);
@@ -195,6 +259,68 @@ public class SignageEditorController extends AbsController {
 
     presetText.setText(""); // resets preset name text box
     datePicker.setValue(null); // rests date picker with null value
+  }
+
+  // loads MFXFilterCombobox with list of Signage Preset names
+  private void loadPresetSelect() {
+    for (int i = 0; i < allPresets.size(); i++) {
+      presetSelect.getItems().add(allPresets.get(i).getName());
+    }
+  }
+
+  // when preset is selected in MFXFilterComboBox and Load button is pressed
+  // loads given preset fields into editor
+  private void loadPreset() {
+
+    if (!(presetSelect.getValue() == null)) identifier = presetSelect.getValue();
+    else return;
+    clearAll();
+
+    edu.wpi.fishfolk.database.TableEntry.SignagePreset preset =
+        (edu.wpi.fishfolk.database.TableEntry.SignagePreset)
+            dbConnection.getEntry(identifier, TableEntryType.SIGNAGE_PRESET);
+
+    presetText.setText(preset.getName());
+    datePicker.setValue(preset.getDate());
+
+    for (int i = 0; i < 8; i++) {
+      if (preset.getSigns()[i] == null) {
+        listSubText.get(i).setOpacity(0);
+      } else {
+        listTexts.get(i).setOpacity(1);
+        listTexts.get(i).setDisable(false);
+        listIcons.get(i).setOpacity(1);
+        listIcons.get(i).setDisable(false);
+        listSubText.get(i).setOpacity(1);
+        listSubText.get(i).setDisable(false);
+        listTexts
+            .get(i)
+            .setText(
+                preset.getSigns()[i]
+                    .getLabel()); // otherwise set the i'th text to the i'th Sign's name
+        listTexts
+            .get(i)
+            .setValue(
+                preset.getSigns()[i].getLabel()); // the same thing again but with "value" instead
+        listIcons
+            .get(i)
+            .setRotate(
+                preset.getSigns()[i]
+                    .getDirection()); // and same for the i'th direction for the arrow
+        listSubText.get(i).setText(preset.getSigns()[i].getSubtext());
+      }
+    }
+  }
+
+  private void deletePreset() {
+    for (int i = 0; i < allPresets.size(); i++) {
+      if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
+        System.out.println("deleting " + allPresets.get(i).getName());
+        dbConnection.removeEntry(allPresets.get(i).getName(), TableEntryType.SIGNAGE_PRESET);
+        presetSelect.getItems().remove(i);
+        return;
+      }
+    }
   }
 
   // submit() fills the created SignagePreset object with the fields of the form for database
@@ -243,19 +369,6 @@ public class SignageEditorController extends AbsController {
         || datePicker.getValue() == null) {
       PopOver error = new PopOver();
       Text errorText = new Text("Insufficient fields entered");
-      errorText.setFont(new Font("Open Sans", 26));
-      error.setContentNode(errorText);
-      error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
-      error.show(submitButton);
-      return;
-    }
-
-    if (currentPreset
-        .getImplementationDate()
-        .atStartOfDay()
-        .isBefore(LocalDateTime.now().minusDays(1))) {
-      PopOver error = new PopOver();
-      Text errorText = new Text("Cannot set implementation date before current date");
       errorText.setFont(new Font("Open Sans", 26));
       error.setContentNode(errorText);
       error.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);

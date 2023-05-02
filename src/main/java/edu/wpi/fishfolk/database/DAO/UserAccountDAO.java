@@ -1,11 +1,9 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
-import edu.wpi.fishfolk.database.DataEditQueue;
-import edu.wpi.fishfolk.database.EntryStatus;
-import edu.wpi.fishfolk.database.IDAO;
 import edu.wpi.fishfolk.database.TableEntry.UserAccount;
 import edu.wpi.fishfolk.util.PermissionLevel;
 import java.io.*;
@@ -19,7 +17,7 @@ import java.util.Map;
 import org.postgresql.PGConnection;
 import org.postgresql.util.PSQLException;
 
-public class UserAccountDAO implements IDAO<UserAccount> {
+public class UserAccountDAO implements IDAO<UserAccount>, ICSVNoSubtable {
 
   private final Connection dbConnection;
   private Connection dbListener;
@@ -172,6 +170,7 @@ public class UserAccountDAO implements IDAO<UserAccount> {
       // See if there is a notification
       if (driver.getNotifications().length > 0) {
         System.out.println("[UserAccountDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
         populateLocalTable();
       }
 
@@ -215,6 +214,9 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
   @Override
   public boolean updateEntry(UserAccount entry) {
+
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getUsername())) return false;
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);

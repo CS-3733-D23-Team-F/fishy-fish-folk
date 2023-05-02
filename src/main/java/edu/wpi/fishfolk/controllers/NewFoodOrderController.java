@@ -7,15 +7,18 @@ import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.ui.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -27,25 +30,26 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import org.controlsfx.control.PopOver;
+import javafx.util.Duration;
 
 public class NewFoodOrderController extends AbsController {
   @FXML MFXButton appsTab, sidesTab, mainsTab, drinksTab, dessertsTab; // tab buttons
   @FXML MFXButton clearButton, cancelButton, checkoutButton; // main page buttons
   @FXML MFXButton submitButton, backButton; // cart view buttons
   @FXML MFXFilterComboBox<String> roomSelector;
-  @FXML TextField recipientField, timeSelector;
+  @FXML MFXTextField recipientField, timeSelector;
   @FXML TextArea notesField;
-  @FXML ScrollPane menuItemsPane, cartItemsPane;
+  @FXML MFXScrollPane menuItemsPane, cartItemsPane;
   @FXML HBox cartWrap, blur, confirmBlur;
   @FXML HBox confirmBox;
   @FXML AnchorPane confirmPane;
   @FXML MFXButton okButton;
+  @FXML Label errors;
   Font oSans26, oSans20, oSans26bold;
-
   private List<NewFoodMenuItem>[] menuTabs; // Apps, Sides, Mains, Drinks, Desserts
   private NewFoodCart cart;
   MFXButton[] tabButtons;
+  private static TranslateTransition thugShaker;
 
   public NewFoodOrderController() {
     super();
@@ -56,6 +60,8 @@ public class NewFoodOrderController extends AbsController {
   private void initialize() {
     loadMenu();
     loadRooms();
+    setToBlue();
+    clearError();
     cart = new NewFoodCart();
     cancelButton.setOnAction(event -> cancel());
     clearButton.setOnAction(event -> clear());
@@ -123,6 +129,8 @@ public class NewFoodOrderController extends AbsController {
   /** remove all items from the cart */
   private void clear() {
     cart = new NewFoodCart();
+    setToBlue();
+    clearError();
   }
 
   /** Clear the cart, and Return Home */
@@ -135,6 +143,8 @@ public class NewFoodOrderController extends AbsController {
   /** Load cart items into viewable format, and put the cart on screen */
   private void openCart() {
     loadCart();
+    setToBlue();
+    clearError();
     notesField.setWrapText(true);
     cartWrap.setVisible(true);
     cartWrap.setDisable(false);
@@ -144,6 +154,8 @@ public class NewFoodOrderController extends AbsController {
 
   /** Hide the cart */
   private void closeCart() {
+    setToBlue();
+    clearError();
     cartWrap.setVisible(false);
     cartWrap.setDisable(true);
     blur.setDisable(true);
@@ -152,6 +164,8 @@ public class NewFoodOrderController extends AbsController {
 
   /** Confirm the order, and add it to the Database */
   private void submit() {
+    setToBlue();
+    clearError();
     String notes = notesField.getText();
     LocalTime time = parseTime();
     String room = roomSelector.getValue();
@@ -233,35 +247,58 @@ public class NewFoodOrderController extends AbsController {
 
   /** Informs the user they have not input a valid time */
   private void timeError() {
-    submissionError("Please enter a valid time.");
+    submissionError("Please enter a valid time.", timeSelector);
   }
 
   /** informs the user they have not selected a room */
   private void roomError() {
-    submissionError("Please select a room.");
+    submissionError("Please select a room.", roomSelector);
   }
 
   /** informs the user they have not selected any items */
   private void itemsError() {
-    submissionError("Please select at least one item.");
+    submissionError("Please select at least one item.", cartItemsPane);
   }
 
   /** informs the user they have not specified the recipient of the order */
   private void recipientError() {
-    submissionError("Please enter a recipient.");
+    submissionError("Please enter a recipient.", recipientField);
+  }
+
+  /** Clears the error field */
+  private void clearError() {
+    errors.setText("");
+    errors.setVisible(false);
+  }
+
+  /** Sets all borders back to blue */
+  public void setToBlue() {
+    cartItemsPane.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    recipientField.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    timeSelector.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
+    roomSelector.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
   }
 
   /**
-   * pops up an error if the submission is invalid
+   * Creates an error popup for the given values.
    *
-   * @param error the error message to display
+   * @param error the error message you want to present.
+   * @param node the area it will pop up next to.
    */
-  private void submissionError(String error) {
-    PopOver popup = new PopOver();
-    Text popText = new Text(error);
-    popText.setFont(oSans26);
-    popup.setContentNode(popText);
-    popup.show(submitButton);
+  private void submissionError(String error, Node node) {
+    node.setStyle("-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1");
+    if (thugShaker == null || thugShaker.getNode() != node) {
+      thugShaker = new TranslateTransition(Duration.millis(100), node);
+    }
+    thugShaker.setFromX(0f);
+    thugShaker.setCycleCount(4);
+    thugShaker.setAutoReverse(true);
+    thugShaker.setByX(15f);
+    thugShaker.playFromStart();
+    errors.setText(error);
+    errors.setVisible(true);
+    errors.setStyle("-fx-text-fill:  red;");
+    errors.setFont(Font.font("Open Sans", 15.0));
   }
 
   /**
@@ -274,21 +311,21 @@ public class NewFoodOrderController extends AbsController {
     int numRows = (items.size() + 1) / 2;
     System.out.printf("%d items, %d rows\n", items.size(), numRows);
     VBox itemRows = new VBox();
-    itemRows.setSpacing(25);
-    itemRows.setPrefHeight(Math.max(0, (275 * numRows) - 25));
-    itemRows.setPrefWidth(1195);
+    itemRows.setSpacing(10);
+    itemRows.setPrefHeight(Math.max(0, (265 * numRows) - 25));
+    itemRows.setPrefWidth(1175);
     for (int i = 0; i < numRows; i++) {
       HBox itemRow = new HBox();
-      itemRow.setSpacing(25);
-      itemRow.setPrefHeight(250);
-      itemRow.setPrefWidth(1195);
+      itemRow.setSpacing(10);
+      itemRow.setPrefHeight(240);
+      itemRow.setPrefWidth(1175);
       for (int j = 0; j < 2; j++) {
         NewFoodMenuItem currentItem = null;
         try {
           currentItem = items.get(i * 2 + j);
           AnchorPane itemPane = new AnchorPane();
-          itemPane.setPrefHeight(250);
-          itemPane.setPrefWidth(585);
+          itemPane.setPrefHeight(240);
+          itemPane.setPrefWidth(575);
           Rectangle bgRectangle = new Rectangle();
           bgRectangle.setArcHeight(5);
           bgRectangle.setArcWidth(5);
@@ -355,7 +392,7 @@ public class NewFoodOrderController extends AbsController {
           itemRow.getChildren().add(itemPane);
         } catch (Exception E) {
           // This row does not have a 2nd item - thrown here by indexOutOfBoundsException
-          System.out.println("Should only get here once, here's what happened " + E.toString());
+          // System.out.println("Should only get here once, here's what happened " + E.toString());
           AnchorPane itemPane = new AnchorPane();
           itemPane.setPrefHeight(250);
           itemPane.setPrefWidth(585);
@@ -379,17 +416,17 @@ public class NewFoodOrderController extends AbsController {
     List<NewFoodCart.quantityItem> items = cart.getItems();
     VBox itemsBox = new VBox();
     itemsBox.setPrefHeight(130 * items.size());
-    itemsBox.setPrefWidth(1190);
+    itemsBox.setPrefWidth(1150);
     for (NewFoodCart.quantityItem item : items) {
       AnchorPane itemPane = new AnchorPane();
       itemPane.setPrefHeight(130);
-      itemPane.setPrefWidth(1190);
+      itemPane.setPrefWidth(1150);
       Rectangle bgRectangle = new Rectangle();
       bgRectangle.setArcHeight(5);
       bgRectangle.setArcWidth(5);
       bgRectangle.setFill(Paint.valueOf("WHITE"));
       bgRectangle.setHeight(90);
-      bgRectangle.setWidth(1150);
+      bgRectangle.setWidth(1100);
       bgRectangle.setLayoutX(20);
       bgRectangle.setLayoutY(20);
       bgRectangle.setStroke(Paint.valueOf("#012d5a"));
@@ -408,7 +445,7 @@ public class NewFoodOrderController extends AbsController {
       Text unitPrice = new Text();
       unitPrice.setText(String.format("$%.2f", item.getItem().getPrice()));
       unitPrice.setLayoutY(75);
-      unitPrice.setLayoutX(302);
+      unitPrice.setLayoutX(300);
       unitPrice.setStrokeType(StrokeType.OUTSIDE);
       unitPrice.setStrokeWidth(0);
       unitPrice.setWrappingWidth(100);
@@ -418,7 +455,7 @@ public class NewFoodOrderController extends AbsController {
       Text quantityText = new Text();
       quantityText.setText(String.format("x%d", item.getQuantity()));
       quantityText.setLayoutY(75);
-      quantityText.setLayoutX(497);
+      quantityText.setLayoutX(485);
       quantityText.setStrokeType(StrokeType.OUTSIDE);
       quantityText.setStrokeWidth(0);
       quantityText.setWrappingWidth(100);
@@ -428,15 +465,15 @@ public class NewFoodOrderController extends AbsController {
       Text totalPrice = new Text();
       totalPrice.setText(String.format("$%.2f", item.getItem().getPrice() * item.getQuantity()));
       totalPrice.setLayoutY(75);
-      totalPrice.setLayoutX(700);
+      totalPrice.setLayoutX(660);
       totalPrice.setStrokeType(StrokeType.OUTSIDE);
       totalPrice.setStrokeWidth(0);
       totalPrice.setWrappingWidth(100);
       totalPrice.setFont(oSans26);
-      totalPrice.setTextAlignment(TextAlignment.LEFT);
+      totalPrice.setTextAlignment(TextAlignment.CENTER);
       itemPane.getChildren().add(totalPrice);
       MFXButton minusButton = new MFXButton();
-      minusButton.setLayoutX(450);
+      minusButton.setLayoutX(445);
       minusButton.setLayoutY(51);
       minusButton.setText("-");
       minusButton.setMinHeight(28);
@@ -450,7 +487,7 @@ public class NewFoodOrderController extends AbsController {
           });
       itemPane.getChildren().add(minusButton);
       MFXButton plusButton = new MFXButton();
-      plusButton.setLayoutX(616);
+      plusButton.setLayoutX(590);
       plusButton.setLayoutY(51);
       plusButton.setText("+");
       plusButton.setMinHeight(28);
@@ -464,10 +501,10 @@ public class NewFoodOrderController extends AbsController {
       itemPane.getChildren().add(plusButton);
       MFXButton removeButton = new MFXButton();
       removeButton.setText("Remove from Order");
-      removeButton.setLayoutX(844);
+      removeButton.setLayoutX(800);
       removeButton.setLayoutY(38);
       removeButton.setPrefHeight(55);
-      removeButton.setPrefWidth(309);
+      removeButton.setPrefWidth(300);
       removeButton.setFont(oSans26);
       removeButton.setStyle("-fx-background-color: #900000;");
       removeButton.setTextFill(Paint.valueOf("WHITE"));

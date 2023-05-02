@@ -8,6 +8,8 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -20,6 +22,7 @@ public class RootController {
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
   @FXML MFXButton conferenceNav;
+  @FXML MFXButton ITNav;
   @FXML MFXButton switchAccsButton;
   @FXML MFXButton AccManagerBtn;
   @FXML VBox serviceBar;
@@ -38,15 +41,27 @@ public class RootController {
   @FXML StackPane sidebar;
   @FXML HBox serviceBox;
   @FXML VBox buttonsBox;
+
+  @FXML Label username, welcome;
   // @FXML MFXButton moveEditorNav;
   // @FXML AnchorPane sideBar;
 
   @FXML
   public void initialize() throws IOException {
-
     updatePermissionsAccess();
 
     SharedResources.setRootController(this);
+
+    // if (Screen.values().equals(Screen.ADMIN_DASHBOARD)) {
+
+    // }
+
+    signageNav.setTooltip(new Tooltip("Signage"));
+    pathfindingNav.setTooltip(new Tooltip("Pathfinding"));
+    serviceNav.setTooltip(new Tooltip("Service Request"));
+    mapEditorNav.setTooltip(new Tooltip("Map Editor"));
+    viewOrders.setTooltip(new Tooltip("View Orders"));
+    AccManagerBtn.setTooltip(new Tooltip("Account Manager"));
 
     viewOrders.setOnMouseClicked(
         event -> {
@@ -87,6 +102,11 @@ public class RootController {
         event -> {
           setupServiceNavButton();
           Navigation.navigate(Screen.CONFERENCE);
+        });
+    ITNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.IT_REQUEST);
         });
 
     // accountManagerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
@@ -161,28 +181,15 @@ public class RootController {
         });
   }
 
+  /** logs user out of their current account and brings them back to the login screen */
   public void accSwitch() {
     setupServiceNavButton();
     SharedResources.logout();
     Navigation.navigate(Screen.LOGIN);
   }
 
+  /** updates what permissions you have access to depending on what account you're signed into */
   public void updatePermissionsAccess() {
-    viewOrders.setDisable(false);
-
-    flowerNav.setDisable(false);
-    mealNav.setDisable(false);
-    furnitureNav.setDisable(false);
-    supplyNav.setDisable(false);
-    serviceNav.setDisable(false);
-
-    signageNav.setDisable(false);
-    // accountManagerNav.setDisable(false);
-    pathfindingNav.setDisable(false);
-
-    // moveEditorNav.setDisable(false);
-    mapEditorNav.setDisable(false);
-
     switch (SharedResources.getCurrentUser().getLevel()) {
       case GUEST:
         // Features that are inaccessible
@@ -202,6 +209,8 @@ public class RootController {
         AccManagerBtn.setVisible(false);
         mapEditorNav.setDisable(true);
         mapEditorNav.setVisible(false);
+        conferenceNav.setDisable(true);
+        conferenceNav.setVisible(false);
         break;
       case STAFF:
         // Features that are inaccessible
@@ -223,6 +232,8 @@ public class RootController {
         furnitureNav.setVisible(true);
         supplyNav.setVisible(true);
         mealNav.setVisible(true);
+        conferenceNav.setDisable(false);
+        conferenceNav.setVisible(true);
         break;
       case ADMIN:
         // Features that are accessible
@@ -242,6 +253,8 @@ public class RootController {
         AccManagerBtn.setVisible(true);
         mapEditorNav.setDisable(false);
         mapEditorNav.setVisible(true);
+        conferenceNav.setDisable(false);
+        conferenceNav.setVisible(true);
         break;
       case ROOT:
         // Features that are accessible
@@ -261,6 +274,8 @@ public class RootController {
         AccManagerBtn.setVisible(true);
         mapEditorNav.setDisable(false);
         mapEditorNav.setVisible(true);
+        conferenceNav.setDisable(false);
+        conferenceNav.setVisible(true);
         break;
     }
   }
