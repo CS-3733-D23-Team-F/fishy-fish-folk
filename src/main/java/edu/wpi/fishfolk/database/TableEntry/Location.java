@@ -71,7 +71,17 @@ public class Location {
         .getNode();
   }
 
-  public List<NodeDate> getMoves(LocalDate date) {
+  public List<NodeDate> getMovesBefore(LocalDate date) {
     return movesProperty.stream().filter(move -> move.getDate().isBefore(date)).toList();
+  }
+
+  public boolean movesBetween(LocalDate start, LocalDate end) {
+
+    for (NodeDate nodeDate : movesProperty) {
+      if (nodeDate.getDate().isAfter(start) && nodeDate.getDate().isBefore(end)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

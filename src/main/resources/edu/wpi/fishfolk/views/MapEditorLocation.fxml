@@ -76,14 +76,17 @@
       </Label>
       <HBox>
          <children>
-            <MFXTextField fx:id="nodeIDText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="65.0" promptText="Node ID" style="-fx-border-color: #012d5a;">
+            <MFXTextField fx:id="nodeIDText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" promptText="Node ID" style="-fx-border-color: #012d5a;">
                <textFill>
                   <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                </textFill>
+               <font>
+                  <Font name="Open Sans Regular" size="10.0" />
+               </font>
             </MFXTextField>
-            <MFXDatePicker fx:id="datePicker" graphicTextGap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" popupOffsetX="-90.0" prefHeight="30.0" prefWidth="115.0" promptText="Move date">
+            <MFXDatePicker fx:id="datePicker" graphicTextGap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" popupOffsetX="-90.0" prefHeight="30.0" prefWidth="120.0" promptText="Move date">
                <HBox.margin>
-                  <Insets left="20.0" />
+                  <Insets left="15.0" />
                </HBox.margin>
                <textFill>
                   <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />

@@ -567,9 +567,9 @@
                   </Line>
                </children>
             </VBox>
-            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" maxHeight="300.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefViewportWidth="200.0" prefWidth="210.0" style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
+            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" minHeight="0.0" pannable="true" style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fx:id="locationsVbox" alignment="TOP_CENTER" minHeight="0.0" minWidth="210.0" style="-fx-background-color: #f1f1f1;" />
+                  <VBox fx:id="locationsVbox" alignment="TOP_CENTER" style="-fx-background-color: #f1f1f1;" />
                </content>
                <VBox.margin>
                   <Insets />

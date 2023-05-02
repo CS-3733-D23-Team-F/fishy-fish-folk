@@ -102,10 +102,6 @@ public class Node {
         .toList();
   }
 
-  public List<LocationDate> getMoves(LocalDate date) {
-    return movesProperty.stream().filter(move -> move.getDate().isBefore(date)).toList();
-  }
-
   public boolean containsType(NodeType type) {
     for (LocationDate move : movesProperty) {
       if (move.getLocation().getNodeType() == type) return true;

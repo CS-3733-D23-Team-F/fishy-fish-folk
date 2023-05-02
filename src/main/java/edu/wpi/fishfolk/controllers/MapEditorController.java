@@ -1431,7 +1431,7 @@ public class MapEditorController extends AbsController {
 
     try {
 
-      for (LocationDate move : node.getMoves(today)) {
+      for (LocationDate move : getMoves(node)) {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(Fapp.class.getResource("views/MapEditorLocation.fxml"));
@@ -1574,6 +1574,21 @@ public class MapEditorController extends AbsController {
 
     locationScrollpane.setVisible(false);
     locationScrollpane.setDisable(true);
+  }
+
+  private List<LocationDate> getMoves(Node node) {
+
+    return node.getMovesProperty().stream()
+        .filter(
+            locationDate -> {
+              // move has already happened
+              // and location at move does not move again before today
+              return locationDate.getDate().isBefore(today)
+                  && !locations
+                      .get(longname2idx.get(locationDate.getLocation().getLongName()))
+                      .movesBetween(locationDate.getDate(), today);
+            })
+        .toList();
   }
 
   private void refreshSelectedNodes() {
