@@ -32,7 +32,7 @@
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#f1f1f1" layoutX="133.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science Bachelor's Degree Cyber Security Consetration" textAlignment="CENTER" wrappingWidth="523.4896240234375">
+                        <Text fill="#f1f1f1" layoutX="133.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science Bachelor's Degree Cyber Security Concentration" textAlignment="CENTER" wrappingWidth="523.4896240234375">
                            <font>
                               <Font size="24.0" />
                            </font>
