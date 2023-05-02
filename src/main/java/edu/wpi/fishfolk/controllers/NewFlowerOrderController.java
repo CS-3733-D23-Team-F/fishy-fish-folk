@@ -266,7 +266,6 @@ public class NewFlowerOrderController extends AbsController {
     recipientField.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
     timeSelector.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
     roomSelector.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
-    notesField.setStyle("-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1");
   }
 
   /**

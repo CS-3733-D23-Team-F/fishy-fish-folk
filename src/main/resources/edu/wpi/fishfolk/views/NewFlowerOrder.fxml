@@ -148,7 +148,7 @@
                 <HBox fx:id="cartWrap" alignment="CENTER" disable="true" visible="false" StackPane.alignment="CENTER">
                     <children>
                         <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
-                        <VBox alignment="CENTER" style="-fx-background-radius: 5; -fx-background-color: #ffffff; -fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #012d5a;" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                             <children>
                                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS" />
                         <VBox alignment="TOP_CENTER" maxHeight="635.0" maxWidth="1180.0" minHeight="635.0" minWidth="1180.0" style="-fx-background-color: #ffffff;">
