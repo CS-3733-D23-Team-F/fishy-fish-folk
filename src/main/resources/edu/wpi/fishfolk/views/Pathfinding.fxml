@@ -48,7 +48,7 @@
             </Group>
          </content>
       </GesturePane>
-      <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" maxHeight="330.0" maxWidth="275.0" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
+      <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" maxHeight="315.0" maxWidth="275.0" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
          <children>
             <HBox alignment="CENTER" minHeight="45.0" prefHeight="45.0" prefWidth="275.0">
                <children>
@@ -182,10 +182,10 @@
             <Insets />
          </opaqueInsets>
          <StackPane.margin>
-            <Insets right="20.0" top="50.0" />
+            <Insets right="20.0" top="36.0" />
          </StackPane.margin>
       </VBox>
-      <VBox fx:id="adminBox" alignment="TOP_CENTER" disable="true" maxHeight="267.0" maxWidth="250.0" minHeight="267.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="267.0" prefWidth="250.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
+      <VBox fx:id="adminBox" alignment="TOP_CENTER" disable="true" maxHeight="315.0" maxWidth="250.0" minHeight="267.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="267.0" prefWidth="250.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
          <children>
             <HBox alignment="CENTER" minHeight="50.0">
                <children>
@@ -218,6 +218,28 @@
                      </VBox.margin>
                   </Text>
                   <MFXFilterComboBox fx:id="methodSelector" alignment="TOP_LEFT" minHeight="37.0" minWidth="220.0" promptText="Ending point" style="-fx-background-color: #ffffff; -fx-border-color: #012D5A;" text="Method">
+                     <textFill>
+                        <Color red="0.6196078658103943" green="0.6392157077789307" blue="0.658823549747467" opacity="0.8700000047683716" />
+                     </textFill>
+                     <font>
+                        <Font name="Open Sans Regular" size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </VBox.margin>
+                  </MFXFilterComboBox>
+                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Set Current Location:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="15.0" top="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <MFXFilterComboBox fx:id="currLocation" alignment="TOP_LEFT" minHeight="37.0" minWidth="220.0" promptText="Ending point" style="-fx-background-color: #ffffff; -fx-border-color: #012D5A;" text="Method">
                      <textFill>
                         <Color red="0.6196078658103943" green="0.6392157077789307" blue="0.658823549747467" opacity="0.8700000047683716" />
                      </textFill>
@@ -268,7 +290,7 @@
             <Insets />
          </opaqueInsets>
          <StackPane.margin>
-            <Insets bottom="12.0" right="305.0" />
+            <Insets right="305.0" top="36.0" />
          </StackPane.margin>
       </VBox>
       <VBox maxHeight="165.0" maxWidth="55.0" minHeight="162.0" minWidth="55.0" nodeOrientation="LEFT_TO_RIGHT" StackPane.alignment="TOP_RIGHT">

@@ -54,6 +54,8 @@ public class PathfindingController extends AbsController {
   @FXML MFXFilterComboBox<String> startSelector;
   @FXML MFXFilterComboBox<String> endSelector;
   @FXML MFXFilterComboBox<String> methodSelector;
+
+  @FXML MFXFilterComboBox<String> currLocation;
   @FXML MFXButton clearBtn;
 
   @FXML Group drawGroup;
@@ -134,6 +136,10 @@ public class PathfindingController extends AbsController {
 
   int currFloorNoPath;
 
+  String pathMethod;
+
+  String defaultLocation;
+
   ParallelTransition parallelTransition;
 
   ArrayList<String> eachFloor;
@@ -164,6 +170,10 @@ public class PathfindingController extends AbsController {
         });
 
     methodSelector.getItems().addAll("A*", "BFS", "DFS", "Dijkstra's");
+
+    pathMethod = "A*";
+    methodSelector.setValue(pathMethod);
+    methodSelector.setText(pathMethod);
 
     slideUp.setVisible(false);
     slideDown.setVisible(false);
@@ -204,6 +214,11 @@ public class PathfindingController extends AbsController {
             adminBox.setDisable(true);
             adminBox.setTranslateX(1000);
             settingBox.setTranslateX(1000);
+            currLocation.setValue(defaultLocation);
+            currLocation.setText(defaultLocation);
+            methodSelector.setValue(pathMethod);
+            methodSelector.setText(pathMethod);
+
           } else {
             textInstruct.setTranslateY(252);
             if (!slideUp.isDisabled() || !slideDown.isDisabled()) {
@@ -305,7 +320,12 @@ public class PathfindingController extends AbsController {
 
     List<String> nodeNames = dbConnection.getDestLongnames();
 
+    startSelector.getItems().add("Current Location");
     startSelector.getItems().addAll(nodeNames);
+    defaultLocation = nodeNames.get(0);
+    currLocation.getItems().addAll(nodeNames);
+    currLocation.setValue(defaultLocation);
+    currLocation.setText(defaultLocation);
     endSelector.getItems().addAll(nodeNames); // same options for start and end
     endSelector.setDisable(true);
 
@@ -374,7 +394,12 @@ public class PathfindingController extends AbsController {
 
             // clear list of floors
             floors.clear();
-            start = dbConnection.getNodeIDFromLocation(startSelector.getValue(), today);
+            if (startSelector.getValue().equals("Current Location")) {
+              start = dbConnection.getNodeIDFromLocation(defaultLocation, today);
+            } else {
+              start = dbConnection.getNodeIDFromLocation(startSelector.getValue(), today);
+            }
+
             // floor of the selected unode id
             currentFloor = 0;
             System.out.println("start node: " + start);
@@ -390,13 +415,16 @@ public class PathfindingController extends AbsController {
             end = dbConnection.getNodeIDFromLocation(endSelector.getValue(), today);
             System.out.println("end node: " + end);
             pathfinder = PathfindSingleton.PATHFINDER;
-            if (methodSelector.getValue() == null || methodSelector.getValue().equals("A*")) {
+            if (pathMethod.equals("A*")) {
               pathfinder.setPathMethod(new AStar(graph));
-            } else if (methodSelector.getValue().equals("BFS")) {
+            }
+            if (pathMethod.equals("BFS")) {
               pathfinder.setPathMethod(new BFS(graph));
-            } else if (methodSelector.getValue().equals("DFS")) {
+            }
+            if (pathMethod.equals("DFS")) {
               pathfinder.setPathMethod(new DFS(graph));
-            } else if (methodSelector.getValue().equals("Dijkstra's")) {
+            }
+            if (pathMethod.equals("Dijkstra's")) {
               pathfinder.setPathMethod(new Dijkstras(graph));
             }
 
@@ -1023,6 +1051,13 @@ public class PathfindingController extends AbsController {
     if (!(pathDate.getValue() == null)) {
       graph = new Graph(dbConnection, pathDate.getValue());
     }
+    if (!(methodSelector.getValue() == null)) {
+      pathMethod = methodSelector.getValue();
+    }
+    if (!(currLocation.getValue() == null)) {
+      defaultLocation = currLocation.getValue();
+    }
+
     adminBox.setVisible(false);
     adminBox.setDisable(true);
     settingBox.setVisible(false);
