@@ -9,6 +9,8 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.Location;
+import edu.wpi.fishfolk.database.TableEntry.Node;
+import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.mapeditor.NodeText;
 import edu.wpi.fishfolk.pathfinding.*;
@@ -16,6 +18,7 @@ import edu.wpi.fishfolk.util.NodeType;
 import edu.wpi.fishfolk.util.PermissionLevel;
 import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -102,6 +105,10 @@ public class PathfindingController extends AbsController {
 
   @FXML MFXButton upFloor, downFloor;
 
+  @FXML MFXToggleButton locationMoves;
+
+  Group alertGroup;
+
   private PathfindSingleton pathfinder;
 
   int start, end;
@@ -115,7 +122,14 @@ public class PathfindingController extends AbsController {
 
   ArrayList<MFXCheckbox> displayButtons;
 
+  ArrayList<Location> mapAlerts;
+
+  ArrayList<LocalDate> alertDates;
+
+  Map<Location, Node> alertsNodes;
+
   ArrayList<String> floors;
+
   int currentFloor;
 
   int currFloorNoPath;
@@ -191,6 +205,14 @@ public class PathfindingController extends AbsController {
             adminBox.setTranslateX(1000);
             settingBox.setTranslateX(1000);
           } else {
+            textInstruct.setTranslateY(252);
+            if (!slideUp.isDisabled() || !slideDown.isDisabled()) {
+              slideUp.setDisable(false);
+              slideUp.setVisible(true);
+              slideDown.setVisible(false);
+              slideDown.setDisable(true);
+            }
+
             adminBox.setTranslateX(0);
             settingBox.setTranslateX(0);
             settingBox.setVisible(true);
@@ -222,8 +244,19 @@ public class PathfindingController extends AbsController {
           submitSettings();
         });
 
+    locationMoves.setOnMouseClicked(
+        event -> {
+          alertGroup.setVisible(locationMoves.isSelected());
+        });
+
     slideUp.setOnMouseClicked(
         event -> {
+          settingBox.setTranslateX(1000);
+          settingBox.setVisible(false);
+          settingBox.setDisable(true);
+          adminBox.setTranslateX(1000);
+          adminBox.setVisible(false);
+          adminBox.setDisable(true);
           TranslateTransition slide = new TranslateTransition();
           slide.setDuration(Duration.seconds(0.4));
           slide.setNode(textInstruct);
@@ -291,6 +324,7 @@ public class PathfindingController extends AbsController {
           floorDisplay.setText("Floor " + eachFloor.get(currFloorNoPath));
 
           locationGroup.getChildren().clear();
+          generateAlertBoxs();
 
           locationGroup.setVisible(true);
 
@@ -314,6 +348,7 @@ public class PathfindingController extends AbsController {
           floorDisplay.setText("Floor " + eachFloor.get(currFloorNoPath));
 
           locationGroup.getChildren().clear();
+          generateAlertBoxs();
 
           locationGroup.setVisible(true);
 
@@ -567,6 +602,9 @@ public class PathfindingController extends AbsController {
           }
         });
 
+    setAlerts();
+    generateAlertBoxs();
+
     graph = new Graph(dbConnection, AbsController.today);
   }
 
@@ -687,7 +725,6 @@ public class PathfindingController extends AbsController {
 
     locationGroups.put(type, new Group());
 
-    // copied directly from mapeditor function
     if (visibility) {
       dbConnection
           .getNodesOnFloor(floor)
@@ -848,6 +885,7 @@ public class PathfindingController extends AbsController {
     }
 
     locationGroup.getChildren().clear();
+    generateAlertBoxs();
 
     locationGroup.setVisible(true);
 
@@ -989,5 +1027,81 @@ public class PathfindingController extends AbsController {
     adminBox.setDisable(true);
     settingBox.setVisible(false);
     settingBox.setDisable(true);
+  }
+
+  private void setAlerts() {
+    mapAlerts = new ArrayList<Location>();
+    alertDates = new ArrayList<LocalDate>();
+    alertsNodes = new HashMap<Location, Node>();
+    dbConnection
+        .getAllEntries(TableEntryType.ALERT)
+        .forEach(
+            obj -> {
+              edu.wpi.fishfolk.database.TableEntry.Alert a =
+                  (edu.wpi.fishfolk.database.TableEntry.Alert) obj;
+
+              String name = a.getLongName();
+              if (!name.equals("no location")) {
+                int alertID = dbConnection.getNodeIDFromLocation(name, today);
+                List<Location> mapLocations =
+                    dbConnection.getLocations(alertID, today).stream().toList();
+                for (int i = 0; i < mapLocations.size(); i++) {
+                  if (!mapAlerts.contains(mapLocations.get(i))
+                      && (mapLocations.get(i)).isDestination()) {
+                    mapAlerts.add(mapLocations.get(i));
+                    alertDates.add(a.getDate());
+                  }
+                }
+              }
+            });
+
+    dbConnection
+        .getAllEntries(TableEntryType.NODE)
+        .forEach(
+            node -> {
+              edu.wpi.fishfolk.database.TableEntry.Node n =
+                  (edu.wpi.fishfolk.database.TableEntry.Node) node;
+              for (int i = 0; i < mapAlerts.size(); i++) {
+                if (n.getNodeID()
+                    == dbConnection.getNodeIDFromLocation(mapAlerts.get(i).getLongName(), today)) {
+                  alertsNodes.put(mapAlerts.get(i), n);
+                }
+              }
+            });
+  }
+
+  private void generateAlertBoxs() {
+    alertGroup = new Group();
+    for (int locat = 0; locat < mapAlerts.size(); locat++) {
+      Location currLocat = mapAlerts.get(locat);
+      if (alertsNodes.get(currLocat).getFloor().equals(eachFloor.get(currFloorNoPath))) {
+        VBox mapAlert = new VBox();
+        mapAlert.setMinHeight(50);
+        mapAlert.setMinWidth(100);
+        mapAlert.setStyle("-fx-background-radius:15; -fx-background-color: #f1f1f1");
+        mapAlert.setEffect(new DropShadow(0, 0, 1, Color.web("#000000")));
+        mapAlert.setLayoutX(alertsNodes.get(currLocat).getX());
+        mapAlert.setLayoutY(alertsNodes.get(currLocat).getY());
+        mapAlert.setVisible(true);
+
+        Text alertText = new Text();
+        alertText.setFont(new Font("OpenSans", 15));
+        alertText.setText(currLocat.getShortName());
+
+        Text moveDate = new Text();
+        moveDate.setFont(new Font("OpenSans", 15));
+        moveDate.setText("Moves On " + alertDates.get(locat));
+
+        mapAlert.setAlignment(Pos.CENTER);
+
+        mapAlert.getChildren().add(alertText);
+        mapAlert.getChildren().add(moveDate);
+        mapAlert.setPadding(new Insets(0, 5, 0, 5));
+
+        alertGroup.getChildren().add(mapAlert);
+      }
+    }
+    alertGroup.setVisible(locationMoves.isSelected());
+    locationGroup.getChildren().add(alertGroup);
   }
 }
