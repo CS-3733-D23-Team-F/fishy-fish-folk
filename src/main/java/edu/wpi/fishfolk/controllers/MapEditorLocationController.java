@@ -3,7 +3,9 @@ package edu.wpi.fishfolk.controllers;
 import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.database.TableEntry.Move;
 import edu.wpi.fishfolk.database.TableEntry.Node;
+import edu.wpi.fishfolk.util.NodeType;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.time.LocalDate;
@@ -13,7 +15,8 @@ import lombok.Setter;
 
 public class MapEditorLocationController {
 
-  @FXML MFXTextField longnameText, shortnameText, typeText, nodeIDText;
+  @FXML MFXTextField longnameText, shortnameText, nodeIDText;
+  @FXML MFXComboBox<NodeType> type;
   @FXML MFXDatePicker datePicker;
   @FXML MFXButton preview, delete, submit;
 
@@ -24,11 +27,26 @@ public class MapEditorLocationController {
   @Getter @Setter private Location location;
   @Getter @Setter private LocalDate date;
 
+  @Getter @Setter private boolean locationEdited = false;
+  @Getter @Setter private boolean moveEdited = false;
+
   @FXML
   private void initialize() {
 
     preview.setDisable(true);
     submit.setDisable(true);
+
+    shortnameText.setOnAction(
+        event -> {
+          location.setShortName(shortnameText.getText());
+          locationEdited = true;
+        });
+
+    type.setOnAction(
+        event -> {
+          location.setNodeType(type.getSelectedItem());
+          locationEdited = true;
+        });
 
     nodeIDText.setOnAction(
         event -> {
@@ -36,8 +54,8 @@ public class MapEditorLocationController {
           validNodeID = MapEditorController.validateNodeID(nid);
           if (validNodeID) {
             nodeID = nid;
+            moveEdited = true;
           }
-          System.out.println(nid + " valid? " + validNodeID);
           updateButtons();
         });
 
@@ -47,17 +65,18 @@ public class MapEditorLocationController {
           validDate = MapEditorController.validateDate(d);
           if (validDate) {
             date = d;
+            moveEdited = true;
           }
-          System.out.println(d + " valid? " + validDate);
           updateButtons();
         });
   }
 
   public void setData(Location location, LocalDate date) {
 
-    shortnameText.setText(location.getShortName());
-    typeText.setText(location.getNodeType().toString());
     longnameText.setText(location.getLongName());
+
+    shortnameText.setText(location.getShortName());
+    type.setValue(location.getNodeType());
 
     datePicker.setValue(date);
   }
@@ -67,11 +86,16 @@ public class MapEditorLocationController {
   }
 
   private void updateButtons() {
+
     if (validNodeID) {
       preview.setDisable(false);
-      if (validDate) {
-        submit.setDisable(false);
-      }
+    }
+    if (validNodeID && validDate) {
+      submit.setDisable(false);
+    }
+
+    if (locationEdited) {
+      submit.setDisable(false);
     }
   }
 }

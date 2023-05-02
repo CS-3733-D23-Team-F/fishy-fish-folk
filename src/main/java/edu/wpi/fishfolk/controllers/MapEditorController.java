@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
@@ -111,7 +112,7 @@ public class MapEditorController extends AbsController {
   private HashMap<NodeType, Group> locationTypeGroups;
   private HashSet<NodeType> visibleNodeTypes = new HashSet<>();
   private final List<NodeType> observableNodeTypes =
-      FXCollections.observableList(dbConnection.getNodeTypes());
+      FXCollections.observableList(dbConnection.getNodeTypes(SharedResources.isRoot()));
 
   private final BuildingChecker buildingChecker = new BuildingChecker();
 
@@ -155,7 +156,7 @@ public class MapEditorController extends AbsController {
 
     locationTypeGroups = new HashMap<>();
 
-    // getter for a private final field
+    // populate nodeType -> label group map
     dbConnection
         .getNodeTypes()
         .forEach(
@@ -197,6 +198,8 @@ public class MapEditorController extends AbsController {
     dbConnection.getAllEntries(TableEntryType.EDGE).forEach(e -> edges.add((Edge) e));
 
     // populate list of locations
+    locations.add(Location.REMOVED);
+    longname2idx.put(Location.REMOVED.getLongName(), 0);
     dbConnection
         .getAllEntries(TableEntryType.LOCATION)
         .forEach(
@@ -339,6 +342,25 @@ public class MapEditorController extends AbsController {
             while (change.next()) {
               // possible operations: updated, added or (TODO) removed
 
+              change
+                  .getRemoved()
+                  .forEach(
+                      location -> {
+                        // find moves that had this location and replace it with REMOVED
+                        moves.forEach(
+                            move -> {
+                              if (move.getLongName().equals(location.getLongName())) {
+                                move.setLongName(Location.REMOVED.getLongName());
+                              }
+                            });
+                      });
+
+              // insertions come from:
+              // loading from db at start of session
+              // csv import
+              // undoing delete location
+              // user added location from ui
+              // every case already handles longname2idx
             }
           }
         });
@@ -598,6 +620,36 @@ public class MapEditorController extends AbsController {
                 }
 
               case LOCATION:
+                switch (lastEdit.getType()) {
+                  case INSERT:
+                    // undo location adding by removing it from observable list
+                    Location addedLocation = (Location) lastEdit.getNewEntry();
+
+                    // update longname -> idx map
+                    int removedIdx = longname2idx.get(addedLocation.getLongName());
+
+                    for (int i = removedIdx + 1; i < locations.size(); i++) {
+                      longname2idx.put(locations.get(i).getLongName(), i - 1);
+                    }
+                    // remove from list which shifts elements left by 1
+                    locations.remove(removedIdx);
+
+                    break;
+
+                  case REMOVE:
+                    // undo location removal by adding it back
+                    // do not recreate the moves with this edge
+
+                    Location removedLocation = (Location) lastEdit.getNewEntry();
+
+                    longname2idx.put(removedLocation.getLongName(), locations.size());
+                    locations.add(removedLocation);
+                    break;
+
+                  case UPDATE:
+                    // TODO add functionality on ui to edit locations
+
+                }
 
               case MOVE:
             }
@@ -650,6 +702,8 @@ public class MapEditorController extends AbsController {
 
           locations.clear();
           longname2idx.clear();
+          locations.add(Location.REMOVED);
+          longname2idx.put(Location.REMOVED.getLongName(), 0);
 
           moves.clear();
 
@@ -1516,58 +1570,76 @@ public class MapEditorController extends AbsController {
 
         controller.submit.setOnMouseClicked(
             event -> {
-              // clear nodeid field to show submission
-              controller.nodeIDText.clear();
-              // reset to the move previously shown
-              controller.datePicker.setValue(move.getDate());
+              if (controller.isLocationEdited()) {
 
-              // check for duplicate move
-              Move newMove =
-                  new Move(
-                      controller.getNodeID(),
-                      controller.longnameText.getText(),
-                      controller.getDate());
+                Location editedLocation = controller.getLocation();
+                locations.set(longname2idx.get(editedLocation.getLongName()), editedLocation);
 
-              if (moves.contains(newMove)) {
-                System.out.println("duplicate move " + newMove);
-
-              } else {
-
-                System.out.println("adding move " + newMove);
-                moves.add(newMove);
                 editQueue.add(
-                    new DataEdit<>(newMove, DataEditType.INSERT, TableEntryType.MOVE), false);
+                    new DataEdit<>(editedLocation, DataEditType.UPDATE, TableEntryType.LOCATION),
+                    false);
 
-                // if user didnt press back after previewing, submit also takes them back
-                if (state == EDITOR_STATE.PREVIEWING) {
-                  Node origin = controller.getOrigin();
+                controller.setLocationEdited(false);
+              }
 
-                  if (origin != null) {
+              // can do both location and move edits in one button press
+              if (controller.isMoveEdited()) {
 
-                    // clear preview location label
-                    labelPreviewGroup.getChildren().clear();
+                // clear nodeid field to show submission
+                controller.nodeIDText.clear();
+                // reset to the move previously shown
+                controller.datePicker.setValue(move.getDate());
 
-                    if (!origin.getFloor().equals(allFloors.get(currentFloor))) {
-                      // floor selector's onAction switches floors
-                      floorSelector.setValue(origin.getFloor());
+                // check for duplicate move
+                Move newMove =
+                    new Move(
+                        controller.getNodeID(),
+                        controller.getLocation().getLongName(),
+                        controller.getDate());
+
+                if (moves.contains(newMove)) {
+                  System.out.println("duplicate move " + newMove);
+
+                } else {
+
+                  System.out.println("adding move " + newMove);
+                  moves.add(newMove);
+                  editQueue.add(
+                      new DataEdit<>(newMove, DataEditType.INSERT, TableEntryType.MOVE), false);
+
+                  // if user didnt press back after previewing, submit also takes them back
+                  if (state == EDITOR_STATE.PREVIEWING) {
+                    Node origin = controller.getOrigin();
+
+                    if (origin != null) {
+
+                      // clear preview location label
+                      labelPreviewGroup.getChildren().clear();
+
+                      if (!origin.getFloor().equals(allFloors.get(currentFloor))) {
+                        // floor selector's onAction switches floors
+                        floorSelector.setValue(origin.getFloor());
+                      }
+                      gesturePane.centreOn(origin.getPoint());
+                      gesturePane.zoomTo(1.0, origin.getPoint());
+
+                      // highlight origin node again
+                      nodeGroup
+                          .getChildren()
+                          .forEach(
+                              fxnode -> {
+                                NodeCircle nodeCircle = (NodeCircle) fxnode;
+                                if (nodeCircle.getNodeID() == origin.getNodeID()) {
+                                  nodeCircle.highlight();
+                                }
+                              });
+
+                      // back to editing the currently selected node
+                      state = EDITOR_STATE.EDITING_NODE;
                     }
-                    gesturePane.centreOn(origin.getPoint());
-                    gesturePane.zoomTo(1.0, origin.getPoint());
-
-                    // highlight origin node again
-                    nodeGroup
-                        .getChildren()
-                        .forEach(
-                            fxnode -> {
-                              NodeCircle nodeCircle = (NodeCircle) fxnode;
-                              if (nodeCircle.getNodeID() == origin.getNodeID()) {
-                                nodeCircle.highlight();
-                              }
-                            });
-
-                    // back to editing the currently selected node
-                    state = EDITOR_STATE.EDITING_NODE;
                   }
+
+                  controller.setMoveEdited(false);
                 }
               }
             });

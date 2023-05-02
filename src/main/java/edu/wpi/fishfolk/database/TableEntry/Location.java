@@ -22,6 +22,9 @@ public class Location {
   @Getter private ObjectProperty<Location> locationProperty;
   @Getter private ObservableList<NodeDate> movesProperty = FXCollections.observableArrayList();
 
+  // when locations get removed, replace their moves with this one
+  public static Location REMOVED = new Location("Deleted Location", "", NodeType.DEFAULT);
+
   /**
    * Table entry type: Location
    *

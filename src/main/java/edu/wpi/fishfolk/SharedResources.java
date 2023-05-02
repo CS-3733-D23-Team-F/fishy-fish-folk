@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk;
 
 import static edu.wpi.fishfolk.util.PermissionLevel.GUEST;
+import static edu.wpi.fishfolk.util.PermissionLevel.ROOT;
 
 import edu.wpi.fishfolk.controllers.RootController;
 import edu.wpi.fishfolk.database.TableEntry.UserAccount;
@@ -40,6 +41,10 @@ public class SharedResources {
 
   public static String getUsername() {
     return currentAccount.getUsername();
+  }
+
+  public static boolean isRoot() {
+    return currentAccount.getLevel() == ROOT;
   }
 
   /** Log out of the currently logged in account. If not logged in, do nothing. */

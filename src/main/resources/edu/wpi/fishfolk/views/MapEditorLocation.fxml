@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -12,19 +13,35 @@
 
 <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="202.0" style="-fx-background-color: #F1F1F1; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.MapEditorLocationController">
    <children>
+      <Label alignment="TOP_LEFT" text="Long Name: " textFill="#012d5a">
+         <font>
+            <Font name="Open Sans Regular" size="12.0" />
+         </font>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Label>
+      <MFXTextField fx:id="longnameText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0">
+         <textFill>
+            <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+         </textFill>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </MFXTextField>
       <HBox>
          <children>
             <VBox prefWidth="100.0">
                <children>
                   <Label alignment="TOP_LEFT" text="Short Name:" textFill="#012d5a">
                      <font>
-                        <Font name="Open Sans Bold" size="15.0" />
+                        <Font name="Open Sans Regular" size="12.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="5.0" />
+                        <Insets />
                      </VBox.margin>
                   </Label>
-                  <MFXTextField fx:id="shortnameText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" style="-fx-border-color: #012d5a;">
+                  <MFXTextField fx:id="shortnameText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="115.0">
                      <textFill>
                         <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                      </textFill>
@@ -35,48 +52,44 @@
                <children>
                   <Label alignment="TOP_LEFT" text="Type:" textFill="#012d5a">
                      <font>
-                        <Font name="Open Sans Bold" size="15.0" />
+                        <Font name="Open Sans Regular" size="12.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="5.0" />
+                        <Insets />
                      </VBox.margin>
                   </Label>
-                  <MFXTextField fx:id="typeText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-border-color: #012d5a;">
+                  <MFXComboBox fx:id="type" alignment="CENTER" graphicTextGap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" measureUnitGap="0.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="70.0">
+                     <font>
+                        <Font name="Open Sans Regular" size="12.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                      <textFill>
                         <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                      </textFill>
-                  </MFXTextField>
+                  </MFXComboBox>
                </children>
                <HBox.margin>
-                  <Insets left="20.0" />
+                  <Insets left="15.0" />
                </HBox.margin>
             </VBox>
          </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
       </HBox>
-      <Label alignment="TOP_LEFT" text="Long Name: " textFill="#012d5a">
+      <Label alignment="TOP_LEFT" text="Move:" textFill="#012d5a">
          <font>
-            <Font name="Open Sans Bold" size="15.0" />
+            <Font name="Open Sans Regular" size="12.0" />
          </font>
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin>
       </Label>
-      <MFXTextField fx:id="longnameText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: #012d5a;">
-         <textFill>
-            <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
-         </textFill>
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
-      </MFXTextField>
-      <Label alignment="TOP_LEFT" text="Move to:" textFill="#012d5a">
-         <font>
-            <Font name="Open Sans Bold" size="15.0" />
-         </font>
-      </Label>
       <HBox>
          <children>
-            <MFXTextField fx:id="nodeIDText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" promptText="Node ID" style="-fx-border-color: #012d5a;">
+            <MFXTextField fx:id="nodeIDText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="65.0" promptText="Node ID">
                <textFill>
                   <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
                </textFill>
@@ -84,7 +97,7 @@
                   <Font name="Open Sans Regular" size="10.0" />
                </font>
             </MFXTextField>
-            <MFXDatePicker fx:id="datePicker" graphicTextGap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" popupOffsetX="-90.0" prefHeight="30.0" prefWidth="120.0" promptText="Move date">
+            <MFXDatePicker fx:id="datePicker" graphicTextGap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" popupOffsetX="-90.0" prefHeight="30.0" prefWidth="115.0" promptText="Move date">
                <HBox.margin>
                   <Insets left="15.0" />
                </HBox.margin>

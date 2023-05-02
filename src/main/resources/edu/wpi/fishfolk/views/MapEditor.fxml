@@ -426,7 +426,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Label>
-            <MFXComboBox fx:id="floorSelector" alignment="CENTER" floatMode="DISABLED" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" style="-fx-border-color: #012D5A;" text="Floor 1" HBox.hgrow="ALWAYS">
+            <MFXComboBox fx:id="floorSelector" alignment="CENTER" floatMode="DISABLED" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" text="Floor 1" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Open Sans Bold" size="15.0" />
                </font>
@@ -569,7 +569,7 @@
             </VBox>
             <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" minHeight="0.0" pannable="true" style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fx:id="locationsVbox" alignment="TOP_CENTER" style="-fx-background-color: #f1f1f1;" />
+                  <VBox fx:id="locationsVbox" alignment="TOP_CENTER" spacing="5.0" style="-fx-background-color: #f1f1f1;" />
                </content>
                <VBox.margin>
                   <Insets />
@@ -577,9 +577,9 @@
             </MFXScrollPane>
             <VBox fx:id="newLocationVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="0.0" prefWidth="200.0">
                <children>
-                  <Label alignment="TOP_LEFT" text="Add a new location to this node:" textFill="#012d5a">
+                  <Label alignment="TOP_LEFT" text="Create a new location:" textFill="#012d5a">
                      <font>
-                        <Font name="Open Sans Bold" size="12.0" />
+                        <Font name="Open Sans Regular" size="12.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="5.0" />
@@ -616,7 +616,7 @@
                         </MFXComboBox>
                      </children>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets top="5.0" />
                      </VBox.margin>
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
@@ -630,7 +630,7 @@
                            </font></MFXDatePicker>
                         <MFXButton fx:id="newLocationSubmit" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #F0BF4C;" text="Submit" textFill="#012d5a">
                            <font>
-                              <Font name="Open Sans Bold" size="12.0" />
+                              <Font name="Open Sans Regular" size="12.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="10.0" />
@@ -638,7 +638,7 @@
                         </MFXButton>
                      </children>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets top="5.0" />
                      </VBox.margin>
                   </HBox>
                </children>
