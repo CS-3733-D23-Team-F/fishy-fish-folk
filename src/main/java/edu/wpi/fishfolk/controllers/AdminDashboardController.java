@@ -177,7 +177,10 @@ public class AdminDashboardController {
     addAlert.setOnAction(
         event -> {
           Alert alert =
-              new Alert(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), addAlert.getText());
+              new Alert(
+                  LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                  SharedResources.getUsername(),
+                  addAlert.getText());
           addAlert(alert);
         });
 
@@ -198,46 +201,46 @@ public class AdminDashboardController {
     try {
       for (Move move : moves) {
 
-          FXMLLoader fxmlLoader = new FXMLLoader();
-          fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
-          AnchorPane anchorPane = fxmlLoader.load();
-          FutureMovesController futureMoves = fxmlLoader.getController();
-          futureMoves.setData(move.getLongName(), "" + move.getDate());
-          futureMoves.notify.setOnMouseClicked(
-              event -> {
-                String longname = futureMoves.longname;
-                LocalDate date = LocalDate.parse(futureMoves.sDate);
-                // truncate example:
-                // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
-                Alert alert =
-                    new Alert(
-                        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
-                        SharedResources.getUsername(),
-                        longname,
-                        date,
-                        "");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
+        AnchorPane anchorPane = fxmlLoader.load();
+        FutureMovesController futureMoves = fxmlLoader.getController();
+        futureMoves.setData(move.getLongName(), "" + move.getDate());
+        futureMoves.notify.setOnMouseClicked(
+            event -> {
+              String longname = futureMoves.longname;
+              LocalDate date = LocalDate.parse(futureMoves.sDate);
+              // truncate example:
+              // https://stackoverflow.com/questions/31726418/localdatetime-remove-the-milliseconds
+              Alert alert =
+                  new Alert(
+                      LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                      SharedResources.getUsername(),
+                      longname,
+                      date,
+                      "");
 
-                addAlert(alert);
-              });
+              addAlert(alert);
+            });
 
-          if (col == 1) {
-            col = 0;
-            row++;
-          }
-
-          // col++;
-          grid.add(anchorPane, col++, row);
-
-          grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-          grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-          grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-          grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-          grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-          grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-          GridPane.setMargin(anchorPane, new Insets(10));
+        if (col == 1) {
+          col = 0;
+          row++;
         }
+
+        // col++;
+        grid.add(anchorPane, col++, row);
+
+        grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+        grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+        grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+        grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+        GridPane.setMargin(anchorPane, new Insets(10));
+      }
     } catch (IOException e) {
       e.printStackTrace();
     }
