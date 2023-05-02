@@ -122,6 +122,14 @@
 .rectToggle .mfx-ripple-generator{
     -mfx-ripple-color: transparent;
 }
+.priorityToggle {
+    -fx-background-color: #012D5A;
+    -fx-border-color: #012D5A;
+}
+.priorityToggle:selected {
+    -fx-background-color: #F0BF4C;
+    -fx-border-color: #F0BF4C;
+}
 
 .table-view .scroll-bar *{
     -fx-min-width: 0;

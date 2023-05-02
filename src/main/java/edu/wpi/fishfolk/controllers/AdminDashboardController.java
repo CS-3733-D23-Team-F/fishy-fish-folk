@@ -50,6 +50,7 @@ public class AdminDashboardController {
   @FXML TableView<FurnitureOrderObservable> furnitureTable;
   @FXML TableView<FlowerOrderObservable> flowerTable;
   @FXML TableView<SupplyOrderObservable> supplyTable;
+  @FXML TableView<ITRequestObservable> itTable;
   @FXML MFXTextField addAlert;
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
   @FXML
@@ -88,6 +89,15 @@ public class AdminDashboardController {
       flowerdeliverytime,
       flowerrecipientname,
       floweritems;
+  @FXML
+  TableColumn<ITRequestObservable, String> itid,
+      itassignee,
+      itstatus,
+      itissue,
+      itcomponent,
+      itpriority,
+      itroom,
+      itcontactinfo;
 
   private int rowA = 0;
 
@@ -186,6 +196,7 @@ public class AdminDashboardController {
     foodassignee.setOnEditCommit(this::onSetFoodEdit);
     flowerassignee.setOnEditCommit(this::onSetFlowerEdit);
     furnitureassignee.setOnEditCommit(this::onSetFurnitureEdit);
+    itassignee.setOnEditCommit(this::onSetITEdit);
 
     toMapEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
@@ -251,6 +262,15 @@ public class AdminDashboardController {
     FurnitureOrderObservable row = t.getRowValue();
     FurnitureRequest entry =
         (FurnitureRequest) dbConnection.getEntry(row.id, TableEntryType.FURNITURE_REQUEST);
+    String value = t.getNewValue();
+    entry.setAssignee(value);
+    dbConnection.updateEntry(entry);
+  }
+
+  public void onSetITEdit(TableColumn.CellEditEvent<ITRequestObservable, String> t) {
+
+    ITRequestObservable row = t.getRowValue();
+    ITRequest entry = (ITRequest) dbConnection.getEntry(row.id, TableEntryType.IT_REQUEST);
     String value = t.getNewValue();
     entry.setAssignee(value);
     dbConnection.updateEntry(entry);
@@ -339,20 +359,53 @@ public class AdminDashboardController {
     floweritems.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
 
+    flowerid.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));
+    flowerassignee.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerassignee"));
+    flowertotalprice.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowertotalprice"));
+    flowerstatus.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerstatus"));
+    flowerdeliveryroom.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliveryroom"));
+    flowerdeliverytime.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliverytime"));
+    flowerrecipientname.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("flowerrecipientname"));
+    floweritems.setCellValueFactory(
+        new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
+
+    itid.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itid"));
+    itassignee.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itassignee"));
+    itstatus.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itstatus"));
+    itissue.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itissue"));
+    itcomponent.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcomponent"));
+    itpriority.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itpriority"));
+    itroom.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itroom"));
+    itcontactinfo.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcontactinfo"));
+
     ObservableList<String> ol = FXCollections.observableList(getAssignees());
     supplyassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     foodassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     furnitureassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     flowerassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    itassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     foodTable.setEditable(true);
     furnitureTable.setEditable(true);
     supplyTable.setEditable(true);
     flowerTable.setEditable(true);
+    itTable.setEditable(true);
 
     foodTable.setItems(getOutstandingFoodOrderRows());
     supplyTable.setItems(getOutstandingSupplyOrderRows());
     furnitureTable.setItems(getOutstandingFurnitureOrderRows());
     flowerTable.setItems(getOutstandingFlowerOrderRows());
+    itTable.setItems(getOutstandingITOrderRows());
   }
 
   public void setTable() {
@@ -423,25 +476,40 @@ public class AdminDashboardController {
     floweritems.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
 
+    itid.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itid"));
+    itassignee.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itassignee"));
+    itstatus.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itstatus"));
+    itissue.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itissue"));
+    itcomponent.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcomponent"));
+    itpriority.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itpriority"));
+    itroom.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itroom"));
+    itcontactinfo.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcontactinfo"));
+
     ObservableList<String> ol = FXCollections.observableList(getAssignees());
     supplyassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     foodassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     furnitureassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     flowerassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
+    itassignee.setCellFactory(ChoiceBoxTableCell.forTableColumn(ol));
     foodTable.setEditable(true);
     furnitureTable.setEditable(true);
     supplyTable.setEditable(true);
     flowerTable.setEditable(true);
+    itTable.setEditable(true);
 
     // foodTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
     // foodTable.autosize();
 
     foodTable.setItems(getFoodOrderRows());
-
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
     flowerTable.setItems(getFlowerOrderRows());
+    itTable.setItems(getITOrderRows());
   }
 
   public ObservableList<FoodOrderObservable> getFoodOrderRows() {
@@ -493,6 +561,18 @@ public class AdminDashboardController {
     return filteredList;
   }
 
+  public ObservableList<ITRequestObservable> getITOrderRows() {
+    ArrayList<ITRequest> itList =
+        (ArrayList<ITRequest>) dbConnection.getAllEntries(TableEntryType.IT_REQUEST);
+    ObservableList<ITRequestObservable> returnable = FXCollections.observableArrayList();
+    for (ITRequest request : itList) {
+      returnable.add(new ITRequestObservable(request));
+    }
+    Predicate<ITRequestObservable> filter = p -> p.getItassignee().isEmpty();
+    FilteredList<ITRequestObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
   public ObservableList<FoodOrderObservable> getOutstandingFoodOrderRows() {
     ArrayList<FoodRequest> foodList =
         (ArrayList<FoodRequest>) dbConnection.getAllEntries(TableEntryType.FOOD_REQUEST);
@@ -539,6 +619,18 @@ public class AdminDashboardController {
     }
     Predicate<FlowerOrderObservable> filter = p -> p.getFlowerstatus().equals("Submitted");
     FilteredList<FlowerOrderObservable> filteredList = new FilteredList<>(returnable, filter);
+    return filteredList;
+  }
+
+  public ObservableList<ITRequestObservable> getOutstandingITOrderRows() {
+    ArrayList<ITRequest> itList =
+        (ArrayList<ITRequest>) dbConnection.getAllEntries(TableEntryType.IT_REQUEST);
+    ObservableList<ITRequestObservable> returnable = FXCollections.observableArrayList();
+    for (ITRequest request : itList) {
+      returnable.add(new ITRequestObservable(request));
+    }
+    Predicate<ITRequestObservable> filter = p -> p.getItstatus().equals("Submitted");
+    FilteredList<ITRequestObservable> filteredList = new FilteredList<>(returnable, filter);
     return filteredList;
   }
 
