@@ -462,12 +462,12 @@
             <Insets top="110.0" />
          </StackPane.margin>
       </HBox>
-      <VBox fx:id="sidePane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" style="-fx-background-color: #F1F1F1; -fx-background-radius: 10;" StackPane.alignment="TOP_RIGHT">
+      <VBox fx:id="sidePane" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" style="-fx-background-color: #F1F1F1; -fx-background-radius: 10;" StackPane.alignment="TOP_RIGHT">
          <effect>
             <DropShadow height="6.0" offsetX="1.0" offsetY="1.0" radius="2.5" width="6.0" />
          </effect>
          <children>
-            <VBox maxHeight="-Infinity" prefWidth="220.0" VBox.vgrow="ALWAYS">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="220.0">
                      <VBox.margin>
@@ -567,15 +567,15 @@
                   </Line>
                </children>
             </VBox>
-            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" maxHeight="0.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefWidth="220.0" style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
+            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" maxHeight="300.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefViewportWidth="200.0" prefWidth="210.0" style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fx:id="locationsVbox" minHeight="0.0" minWidth="220.0" style="-fx-background-color: #f1f1f1;" />
+                  <VBox fx:id="locationsVbox" alignment="TOP_CENTER" minHeight="0.0" minWidth="210.0" style="-fx-background-color: #f1f1f1;" />
                </content>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </MFXScrollPane>
-            <VBox fx:id="newLocationVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="0.0" prefWidth="220.0">
+            <VBox fx:id="newLocationVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="0.0" prefWidth="200.0">
                <children>
                   <Label alignment="TOP_LEFT" text="Add a new location to this node:" textFill="#012d5a">
                      <font>
@@ -648,10 +648,10 @@
             </VBox>
          </children>
          <StackPane.margin>
-            <Insets right="10.0" top="160.0" />
+            <Insets bottom="65.0" right="10.0" top="160.0" />
          </StackPane.margin>
          <padding>
-            <Insets bottom="10.0" left="10.0" top="5.0" />
+            <Insets bottom="10.0" top="5.0" />
          </padding>
       </VBox>
    </children>

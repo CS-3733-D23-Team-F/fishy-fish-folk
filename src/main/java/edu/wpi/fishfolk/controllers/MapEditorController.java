@@ -174,6 +174,9 @@ public class MapEditorController extends AbsController {
     // other buttons in radio group are deselected by default
     radioNoEdge.setSelected(true);
 
+    // default to today
+    todayPicker.setValue(LocalDate.now());
+
     // ensure the vbox holding the new location & date fields is managed only when visible
     newLocationVbox.managedProperty().bind(newLocationVbox.visibleProperty());
     newLocationVbox.setDisable(true);
@@ -1423,10 +1426,8 @@ public class MapEditorController extends AbsController {
 
     locationScrollpane.setVisible(true);
     locationScrollpane.setDisable(false);
-    locationScrollpane.setMaxHeight(300);
 
     locationsVbox.getChildren().clear();
-    locationsVbox.setMaxHeight(300);
 
     try {
 
@@ -1551,7 +1552,15 @@ public class MapEditorController extends AbsController {
               }
             });
 
+        System.out.println("  adding entry height " + entry.getHeight());
+
         locationsVbox.getChildren().add(entry);
+
+        System.out.println(
+            "location count "
+                + locationsVbox.getChildren().size()
+                + " vbox height "
+                + locationsVbox.getHeight());
       }
 
     } catch (IOException e) {
@@ -1562,11 +1571,9 @@ public class MapEditorController extends AbsController {
   private void clearLocationFields() {
 
     locationsVbox.getChildren().clear();
-    locationsVbox.setMaxHeight(0);
 
     locationScrollpane.setVisible(false);
     locationScrollpane.setDisable(true);
-    locationScrollpane.setMaxHeight(0);
   }
 
   private void refreshSelectedNodes() {
