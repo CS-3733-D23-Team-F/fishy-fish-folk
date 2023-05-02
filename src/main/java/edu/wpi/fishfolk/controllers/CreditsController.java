@@ -34,6 +34,32 @@ public class CreditsController {
       sympathy4,
       sympathy5;
   @FXML
+  HBox pie,
+      sauce,
+      brownie,
+      csalad,
+      cburger,
+      cpie,
+      ctenders,
+      ccake,
+      cola,
+      dump,
+      fries,
+      fsalad,
+      gsalad,
+      hamburger,
+      meatball,
+      milk,
+      mshake,
+      mozz,
+      juice,
+      orings,
+      rav,
+      spaghet,
+      syogurt,
+      vburger,
+      water;
+  @FXML
   HBox mapEditor,
       signage,
       request,
@@ -201,6 +227,151 @@ public class CreditsController {
           displayImage.setImage(
               new Image(Fapp.class.getResourceAsStream("images/Flowers/Sympathy-5.png")));
           link.setText("https://www.perrosflowers.com/best-sellers/cat1070001");
+        });
+
+    pie.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/aplPie.png")));
+          link.setText("https://www.flaticon.com/free-icon/apple-pie_3656851");
+        });
+    sauce.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/applesauce.png")));
+          link.setText("https://www.flaticon.com/free-icon/apple-sauce_6271433");
+        });
+    brownie.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/brownie.png")));
+          link.setText("https://www.flaticon.com/free-icon/brownie_7390074");
+        });
+    csalad.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/caesarsalad.png")));
+          link.setText("https://www.flaticon.com/free-icon/salad_1057357");
+        });
+    cburger.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/cheeseburger.png")));
+          link.setText("https://www.flaticon.com/free-icon/cheeseburger_5049506");
+        });
+    cpie.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/cherryPie.png")));
+          link.setText("https://www.flaticon.com/free-icon/pie_8805623");
+        });
+    ctenders.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/chickentenders.png")));
+          link.setText("https://www.flaticon.com/free-icon/fried-chicken_706853");
+        });
+    ccake.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/chocoCake.png")));
+          link.setText("https://www.flaticon.com/free-icon/chocolate-cake_8301787");
+        });
+    cola.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/Food/cola.png")));
+          link.setText("https://www.flaticon.com/free-icon/soda_3076028");
+        });
+    dump.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/Food/dump.png")));
+          link.setText("https://www.flaticon.com/free-icon/gyoza_6632254");
+        });
+    fries.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/frenchfries.png")));
+          link.setText("https://www.flaticon.com/free-icon/fried-potatoes_1046786");
+        });
+    fsalad.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/fruitsalad.png")));
+          link.setText("https://www.flaticon.com/free-icon/fruit-salad_415693");
+        });
+    gsalad.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/gardensalad.png")));
+          link.setText("https://www.flaticon.com/free-icon/salad_189143");
+        });
+    hamburger.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/hamburger.png")));
+          link.setText("https://www.flaticon.com/free-icon/food_10588511");
+        });
+    meatball.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/meatball.png")));
+          link.setText("https://www.flaticon.com/free-icon/meatball_2403398");
+        });
+    milk.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/Food/milk.png")));
+          link.setText("https://www.flaticon.com/free-icon/milk_869664");
+        });
+    mshake.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/milkshake.png")));
+          link.setText("https://www.flaticon.com/free-icon/milkshake_2447812");
+        });
+    mozz.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/mozzarella.png")));
+          link.setText("https://www.flaticon.com/free-icon/mozzarella_7592355");
+        });
+    juice.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/Food/OJ.png")));
+          link.setText("https://www.flaticon.com/free-icon/orange-juice_2442019");
+        });
+    orings.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/onionrings.png")));
+          link.setText("https://www.flaticon.com/free-icon/onion-ring_9391684");
+        });
+    rav.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/Food/rav.png")));
+          link.setText("https://www.flaticon.com/free-icon/ravioli_10367217");
+        });
+    spaghet.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/spaghet.png")));
+          link.setText("https://www.flaticon.com/free-icon/spaghetti_4465708");
+        });
+    syogurt.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/strawberryyogurt.png")));
+          link.setText("https://www.flaticon.com/free-icon/yogurt_3142859");
+        });
+    vburger.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(
+              new Image(Fapp.class.getResourceAsStream("images/Food/veggieburger.png")));
+          link.setText("https://www.flaticon.com/free-icon/vegan-burger_2738717");
+        });
+    water.setOnMouseClicked(
+        event -> {
+          displayImage.setImage(new Image(Fapp.class.getResourceAsStream("images/Food/water.png")));
+          link.setText("https://www.flaticon.com/free-icon/glass-of-water_3248369");
         });
 
     hospitalImage.setOnMouseClicked(
