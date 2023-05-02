@@ -262,4 +262,12 @@
     -fx-background-radius: 0;
 }
 
+.mfx-radio-button{
+    -mfx-main: #012d5a;
+}
+
+.mfx-filter-combo-box{
+    -mfx-main: #012d5a;
+}
+
 
