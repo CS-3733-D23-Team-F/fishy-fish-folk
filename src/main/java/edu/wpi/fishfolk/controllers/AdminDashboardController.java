@@ -155,14 +155,12 @@ public class AdminDashboardController {
           switch (src) {
             case DB_WPI:
               if (fdbConnections[0] == null) {
-                System.out.println("NEW NULL WPI");
                 fdbConnections[0] = new Fdb(DBSource.DB_WPI);
               }
               dbConnection = fdbConnections[0];
               break;
             case DB_AWS:
               if (fdbConnections[1] == null) {
-                System.out.println("NEW NULL AWS");
                 fdbConnections[1] = new Fdb(DBSource.DB_AWS);
               }
               dbConnection = fdbConnections[1];
