@@ -57,6 +57,7 @@ public class ConferenceRequestDAO implements IDAO<ConferenceRequest>, ICSVNoSubt
   public void init(boolean drop) {
 
     try {
+
       Statement statement = dbConnection.createStatement();
       String query =
           "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = '"

@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.ArrayList;
 import lombok.Getter;
@@ -51,6 +53,13 @@ public class Fdb {
 
   /** Singleton facade for managing all PostgreSQL database communication. */
   public Fdb(DBSource dbSource) {
+
+    System.out.println(
+        "NEW INSTANCE OF FDB: "
+            + dbSource.toString()
+            + " - "
+            + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+
     this.dbSource = dbSource;
     switch (dbSource) {
       case DB_WPI:

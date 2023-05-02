@@ -443,7 +443,7 @@ public class DAOTests {
   @Test
   public void accountDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(
         new UserAccount("cingus", "bongus", "null@null.whatever", PermissionLevel.STAFF));
@@ -475,7 +475,7 @@ public class DAOTests {
   @SneakyThrows
   public void itDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(
         new ITRequest(

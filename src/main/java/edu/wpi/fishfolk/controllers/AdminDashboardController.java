@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
+import static edu.wpi.fishfolk.controllers.AbsController.fdbConnections;
 
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
@@ -150,7 +151,25 @@ public class AdminDashboardController {
         event -> {
           System.out.println("[AdminDashboard]: Switching DB...");
           DBSource src = DBSource.valueOf(serverSelectorCombo.getSelectedItem());
-          dbConnection = new Fdb(src);
+
+          switch (src) {
+            case DB_WPI:
+              if (fdbConnections[0] == null) {
+                System.out.println("NEW NULL WPI");
+                fdbConnections[0] = new Fdb(DBSource.DB_WPI);
+              }
+              dbConnection = fdbConnections[0];
+              break;
+            case DB_AWS:
+              if (fdbConnections[1] == null) {
+                System.out.println("NEW NULL AWS");
+                fdbConnections[1] = new Fdb(DBSource.DB_AWS);
+              }
+              dbConnection = fdbConnections[1];
+              break;
+          }
+
+          // dbConnection = new Fdb(src);
           SharedResources.logout();
           Navigation.navigate(Screen.LOGIN);
         });
