@@ -674,7 +674,7 @@
                               </HBox>
                               <HBox fx:id="rav" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
                                  <children>
-                                    <Label text="Raveolli" textFill="#012d5a">
+                                    <Label text="Ravioli" textFill="#012d5a">
                                        <font>
                                           <Font name="Open Sans Regular" size="15.0" />
                                        </font>
@@ -686,7 +686,7 @@
                               </HBox>
                               <HBox fx:id="spaghet" alignment="CENTER" minHeight="50.0" prefHeight="50.0" style="-fx-border-color: #012D5A; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;">
                                  <children>
-                                    <Label text="Spagetti" textFill="#012d5a">
+                                    <Label text="Spaghetti" textFill="#012d5a">
                                        <font>
                                           <Font name="Open Sans Regular" size="15.0" />
                                        </font>
