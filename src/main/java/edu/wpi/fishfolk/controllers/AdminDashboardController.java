@@ -32,7 +32,6 @@ import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 public class AdminDashboardController {
@@ -50,7 +49,7 @@ public class AdminDashboardController {
   @FXML MFXTextField addAlert;
   @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
   @FXML MFXScrollPane scroll;
-  @FXML ImageView alertsRefresh, serviceRefresh, movesRefresh;
+  @FXML MFXButton movesRefresh, alertsRefresh, serviceRefresh;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodassignee,

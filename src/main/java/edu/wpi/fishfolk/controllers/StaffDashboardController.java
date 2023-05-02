@@ -6,6 +6,7 @@ import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -24,7 +25,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 public class StaffDashboardController {
@@ -73,7 +73,7 @@ public class StaffDashboardController {
       flowerdeliverytime,
       flowerrecipientname,
       floweritems;
-  @FXML ImageView serviceRefresh, alertsRefresh, movesRefresh;
+  @FXML MFXButton serviceRefresh, alertsRefresh, movesRefresh;
 
   private int rowA = 0;
 
