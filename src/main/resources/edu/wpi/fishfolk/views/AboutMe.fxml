@@ -14,7 +14,7 @@
 
 <VBox alignment="CENTER" minHeight="670.0" minWidth="1180.0" prefHeight="670.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AboutMeController">
    <children>
-      <HBox alignment="TOP_CENTER" prefHeight="150.0" prefWidth="1974.0">
+      <HBox alignment="CENTER" prefHeight="150.0" prefWidth="1974.0">
          <children>
             <VBox alignment="CENTER" maxWidth="1973.0" minWidth="1080.0" prefHeight="150.0" prefWidth="1973.0">
                <children>
@@ -390,7 +390,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="83.0" prefWidth="1525.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thanks to Andrew Shinn for time and input!">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thanks to Andrew Shinn for time and input!" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
