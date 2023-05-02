@@ -150,7 +150,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="500.0">
                <children>
-                  <MFXFilterComboBox fx:id="roomPicker" minHeight="55.0" minWidth="500.0" prefHeight="55.0" prefWidth="500.0" promptText="ROOM" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
+                  <MFXFilterComboBox fx:id="roomPicker" minHeight="55.0" minWidth="500.0" popupOffsetY="-2250.0" prefHeight="55.0" prefWidth="500.0" promptText="ROOM" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
                      <font>
                         <Font name="Open Sans Regular" size="20.0" />
                      </font>
