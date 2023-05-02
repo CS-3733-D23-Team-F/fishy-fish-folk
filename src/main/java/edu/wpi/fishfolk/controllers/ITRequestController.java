@@ -135,7 +135,8 @@ public class ITRequestController extends AbsController {
     if (currentITRequest.getComponent() == null
         || currentITRequest.getPriority() == null
         || roomPicker.getValue() == null
-        || issueText.getText().equals("")) {
+        || issueText.getText().equals("")
+        || (!(priority0.isSelected() || priority1.isSelected() || priority2.isSelected()))) {
       PopOver error = new PopOver();
       Text errorText = new Text("Insufficient number of fields filled");
       errorText.setFont(new Font("Open Sans", 26));

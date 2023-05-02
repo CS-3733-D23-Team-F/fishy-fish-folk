@@ -146,7 +146,7 @@
                                           <Insets left="10.0" />
                                        </padding>
                                     </MFXButton>
-                                    <MFXButton fx:id="conferenceNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Conference Request" textFill="#012d5a">
+                                    <MFXButton fx:id="ITNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" layoutX="10.0" layoutY="310.0" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="IT Request" textFill="#012d5a">
                                        <font>
                                           <Font name="Open Sans Bold" size="15.0" />
                                        </font>
@@ -154,7 +154,7 @@
                                           <Insets left="10.0" />
                                        </padding>
                                     </MFXButton>
-                                    <MFXButton fx:id="ITNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" layoutX="10.0" layoutY="310.0" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="IT Request" textFill="#012d5a">
+                                    <MFXButton fx:id="conferenceNav" alignment="BOTTOM_LEFT" buttonType="RAISED" contentDisplay="TEXT_ONLY" maxHeight="60.0" maxWidth="200.0" minHeight="60.0" minWidth="200.0" style="-fx-border-color: #A7A5A5; -fx-border-width: 0.5;" styleClass="service" text="Conference Request" textFill="#012d5a">
                                        <font>
                                           <Font name="Open Sans Bold" size="15.0" />
                                        </font>
