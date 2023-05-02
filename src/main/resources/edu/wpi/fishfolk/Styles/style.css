@@ -203,11 +203,6 @@
     -fx-wrap-text: true;
 }
 
-
-
-
-
-
 .choice-box{
     -fx-border-color: #012D5A;
     -fx-border-radius: 5;
@@ -234,6 +229,20 @@
 }
 
 .newScrolls:hover{
+    -thumb-hover-color: #fcd474;
+    -thumb-color: #fcd474;
+}
+
+.otherScroll{
+    -thumb-color: #012d5a;
+    -fx-background-color: #ffffff;
+    -thumb-hover-color: #fcd474;
+    -track-color: #ffffff;
+    -fx-hbar-policy: "NEVER";
+    -fx-vbar-policy: "ALWAYS";
+}
+
+.otherScroll:hover{
     -thumb-hover-color: #fcd474;
     -thumb-color: #fcd474;
 }

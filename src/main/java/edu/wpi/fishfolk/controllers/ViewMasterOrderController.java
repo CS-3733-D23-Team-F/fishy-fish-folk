@@ -7,6 +7,7 @@ import edu.wpi.fishfolk.ui.FormStatus;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.util.ArrayList;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,9 +17,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import org.controlsfx.control.PopOver;
+import javafx.util.Duration;
 
 public class ViewMasterOrderController extends AbsController {
   @FXML MFXButton refreshButton;
@@ -108,7 +110,7 @@ public class ViewMasterOrderController extends AbsController {
       itImportCSVButton,
       itExportCSVButton;
   @FXML MFXButton conferenceRemoveButton, conferenceImportCSVButton, conferenceExportCSVButton;
-
+  @FXML Label errorfood, errorsupply, errorfurniture, errorflower, errorit, errorconference;
   @FXML MFXFilterComboBox<String> foodAssignSelector;
 
   @FXML MFXFilterComboBox<String> supplyAssignSelector;
@@ -123,12 +125,15 @@ public class ViewMasterOrderController extends AbsController {
 
   FileChooser fileChooser = new FileChooser();
   DirectoryChooser dirChooser = new DirectoryChooser();
+  private static TranslateTransition thugShaker;
 
   public ViewMasterOrderController() {
     super();
   }
 
   public void initialize() {
+    setToBlue();
+    clearError();
     refreshButton.setOnMouseClicked(event -> refreshOrders());
     foodid.setCellValueFactory(new PropertyValueFactory<FoodOrderObservable, String>("foodid"));
     foodassignee.setCellValueFactory(
@@ -313,6 +318,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void setAssigns(String assignee) {
+    setToBlue();
+    clearError();
     foodAssignSelector
         .getSelectionModel()
         .selectIndex(foodAssignSelector.getItems().indexOf(assignee));
@@ -393,6 +400,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void foodSetStatus(FormStatus string) {
+    setToBlue();
+    clearError();
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
     if (food == null) {
@@ -420,6 +429,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void supplySetStatus(FormStatus string) {
+    setToBlue();
+    clearError();
     SupplyOrderObservable food =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
     if (food == null) {
@@ -447,6 +458,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void furnitureSetStatus(FormStatus string) {
+    setToBlue();
+    clearError();
     FurnitureOrderObservable food =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
     if (food == null) {
@@ -474,6 +487,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void flowerSetStatus(FormStatus string) {
+    setToBlue();
+    clearError();
     FlowerOrderObservable food =
         (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
     if (food == null) {
@@ -501,6 +516,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void itSetStatus(FormStatus string) {
+    setToBlue();
+    clearError();
     ITRequestObservable it = (ITRequestObservable) itTable.getSelectionModel().getSelectedItem();
     if (it == null) {
       return;
@@ -526,6 +543,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void foodAssign() {
+    setToBlue();
+    clearError();
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
     if (food == null) {
@@ -541,6 +560,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void supplyAssign() {
+    setToBlue();
+    clearError();
     SupplyOrderObservable supply =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
     if (supply == null) {
@@ -556,6 +577,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void furnitureAssign() {
+    setToBlue();
+    clearError();
     FurnitureOrderObservable furniture =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
     if (furniture == null) {
@@ -571,6 +594,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void flowerAssign() {
+    setToBlue();
+    clearError();
     FlowerOrderObservable flower =
         (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
     if (flower == null) {
@@ -586,6 +611,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void itAssign() {
+    setToBlue();
+    clearError();
     ITRequestObservable it = (ITRequestObservable) itTable.getSelectionModel().getSelectedItem();
     if (it == null) {
       return;
@@ -599,6 +626,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void foodRemove() {
+    setToBlue();
+    clearError();
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
     if (food == null) {
@@ -610,6 +639,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void supplyRemove() {
+    setToBlue();
+    clearError();
     SupplyOrderObservable supply =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
     if (supply == null) {
@@ -621,6 +652,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void furnitureRemove() {
+    setToBlue();
+    clearError();
     FurnitureOrderObservable furniture =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
     if (furniture == null) {
@@ -632,6 +665,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void flowerRemove() {
+    setToBlue();
+    clearError();
     FurnitureOrderObservable flower =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
     if (flower == null) {
@@ -643,6 +678,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void conferenceRemove() {
+    setToBlue();
+    clearError();
     ConferenceRequestObservable conf =
         (ConferenceRequestObservable) conferenceTable.getSelectionModel().getSelectedItem();
     if (conf == null) {
@@ -654,6 +691,8 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void itRemove() {
+    setToBlue();
+    clearError();
     ITRequestObservable it = (ITRequestObservable) itTable.getSelectionModel().getSelectedItem();
     if (it == null) {
       return;
@@ -664,198 +703,201 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void foodImportCSV() {
+    setToBlue();
+    clearError();
     fileChooser.setTitle("Select the Food Request Main Table CSV file");
     String mainTablePath = fileChooserPrompt();
     fileChooser.setTitle("Select the Food Request Subtable CSV file");
     String subtablePath = fileChooserPrompt();
 
-    String message;
-    if (dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST)) {
-      message = "Import successful";
-    } else {
-      message = "Error importing CSVs, please try again";
+    if (!dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST)) {
+      submissionError("Error importing CSV, please try again", foodImportCSVButton, errorfood);
     }
-
-    PopOver errorPopup = new PopOver();
-
-    Label label = new Label(message);
-    label.setStyle(" -fx-background-color: white;");
-    label.setMinWidth(220);
-    label.setMinHeight(30);
-
-    errorPopup.setContentNode(label);
-    errorPopup.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
-    errorPopup.show(foodImportCSVButton);
 
     refreshOrders();
   }
 
   private void supplyImportCSV() {
+    setToBlue();
+    clearError();
     fileChooser.setTitle("Select the Supply Request Main Table CSV file");
     String mainTablePath = fileChooserPrompt();
     fileChooser.setTitle("Select the Supply Request Subtable CSV file");
     String subtablePath = fileChooserPrompt();
 
     String message;
-    if (dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.SUPPLY_REQUEST)) {
-      message = "Import successful";
-    } else {
-      message = "Error importing CSVs, please try again";
+    if (!dbConnection.importCSV(
+        mainTablePath, subtablePath, false, TableEntryType.SUPPLY_REQUEST)) {
+      submissionError("Error importing CSV, please try again", supplyImportCSVButton, errorsupply);
     }
-
-    PopOver errorPopup = new PopOver();
-
-    Label label = new Label(message);
-    label.setStyle(" -fx-background-color: white;");
-    label.setMinWidth(220);
-    label.setMinHeight(30);
-
-    errorPopup.setContentNode(label);
-    errorPopup.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
-    errorPopup.show(supplyImportCSVButton);
 
     refreshOrders();
   }
 
   private void flowerImportCSV() {
+    setToBlue();
+    clearError();
     fileChooser.setTitle("Select the Flower Request Main Table CSV file");
     String mainTablePath = fileChooserPrompt();
     fileChooser.setTitle("Select the Flower Request Subtable CSV file");
     String subtablePath = fileChooserPrompt();
 
-    String message;
-    if (dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FLOWER_REQUEST)) {
-      message = "Import successful";
-    } else {
-      message = "Error importing CSVs, please try again";
+    if (!dbConnection.importCSV(
+        mainTablePath, subtablePath, false, TableEntryType.FLOWER_REQUEST)) {
+      submissionError("Error importing CSV, please try again", flowerImportCSVButton, errorflower);
     }
-
-    PopOver errorPopup = new PopOver();
-
-    Label label = new Label(message);
-    label.setStyle(" -fx-background-color: white;");
-    label.setMinWidth(220);
-    label.setMinHeight(30);
-
-    errorPopup.setContentNode(label);
-    errorPopup.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
-    errorPopup.show(flowerImportCSVButton);
 
     refreshOrders();
   }
 
   private void furnitureImportCSV() {
+    setToBlue();
+    clearError();
     fileChooser.setTitle("Select the Furniture Request Main Table CSV file");
     String mainTablePath = fileChooserPrompt();
 
-    String message;
-    if (dbConnection.importCSV(mainTablePath, false, TableEntryType.FURNITURE_REQUEST)) {
-      message = "Import successful";
-    } else {
-      message = "Error importing CSV, please try again";
+    if (!dbConnection.importCSV(mainTablePath, false, TableEntryType.FURNITURE_REQUEST)) {
+      submissionError(
+          "Error importing CSV, please try again", furnitureImportCSVButton, errorfurniture);
     }
-
-    PopOver errorPopup = new PopOver();
-
-    Label label = new Label(message);
-    label.setStyle(" -fx-background-color: white;");
-    label.setMinWidth(220);
-    label.setMinHeight(30);
-
-    errorPopup.setContentNode(label);
-    errorPopup.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
-    errorPopup.show(furnitureImportCSVButton);
 
     refreshOrders();
   }
 
   private void conferenceImportCSV() {
+    setToBlue();
+    clearError();
     fileChooser.setTitle("Select the Conference Request Main Table CSV file");
     String mainTablePath = fileChooserPrompt();
 
-    String message;
-    if (dbConnection.importCSV(mainTablePath, false, TableEntryType.CONFERENCE_REQUEST)) {
-      message = "Import successful";
-    } else {
-      message = "Error importing CSV, please try again";
+    if (!dbConnection.importCSV(mainTablePath, false, TableEntryType.CONFERENCE_REQUEST)) {
+      submissionError(
+          "Error importing CSV, please try again", conferenceImportCSVButton, errorconference);
     }
-
-    PopOver errorPopup = new PopOver();
-
-    Label label = new Label(message);
-    label.setStyle(" -fx-background-color: white;");
-    label.setMinWidth(220);
-    label.setMinHeight(30);
-
-    errorPopup.setContentNode(label);
-    errorPopup.setArrowLocation(PopOver.ArrowLocation.LEFT_CENTER);
-    errorPopup.show(conferenceImportCSVButton);
 
     refreshOrders();
   }
 
   private void itImportCSV() {
+    setToBlue();
+    clearError();
     fileChooser.setTitle("Select the IT Request Main Table CSV file");
     String mainTablePath = fileChooserPrompt();
 
-    String message;
-    if (dbConnection.importCSV(mainTablePath, false, TableEntryType.IT_REQUEST)) {
-      message = "Import successful";
-    } else {
-      message = "Error importing CSV, please try again";
+    if (!dbConnection.importCSV(mainTablePath, false, TableEntryType.IT_REQUEST)) {
+      submissionError("Error importing CSV, please try again", itImportCSVButton, errorit);
     }
-
-    PopOver errorPopup = new PopOver();
-
-    Label label = new Label(message);
-    label.setStyle(" -fx-background-color: white;");
-    label.setMinWidth(220);
-    label.setMinHeight(30);
-
-    errorPopup.setContentNode(label);
-    errorPopup.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
-    errorPopup.show(itImportCSVButton);
-
     refreshOrders();
   }
 
+  /** Sets all borders back to blue */
+  public void setToBlue() {
+    itImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    conferenceImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    foodImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    flowerImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    supplyImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    furnitureImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+  }
+
+  /** Clears the error field */
+  private void clearError() {
+    errorit.setText("");
+    errorit.setVisible(false);
+    errorfurniture.setText("");
+    errorfurniture.setVisible(false);
+    errorsupply.setText("");
+    errorsupply.setVisible(false);
+    errorfood.setText("");
+    errorfood.setVisible(false);
+    errorflower.setText("");
+    errorflower.setVisible(false);
+    errorconference.setText("");
+    errorconference.setVisible(false);
+  }
+
+  /**
+   * Creates an error popup for the given values.
+   *
+   * @param error the error message you want to present.
+   * @param node the area it will pop up next to.
+   */
+  private void submissionError(String error, MFXButton node, Label errors) {
+    setToBlue();
+    clearError();
+    node.setStyle(
+        "-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    if (thugShaker == null || thugShaker.getNode() != node) {
+      thugShaker = new TranslateTransition(Duration.millis(100), node);
+    }
+    thugShaker.setFromX(0f);
+    thugShaker.setCycleCount(4);
+    thugShaker.setAutoReverse(true);
+    thugShaker.setByX(15f);
+    thugShaker.playFromStart();
+    errors.setText(error);
+    errors.setVisible(true);
+    errors.setStyle("-fx-text-fill:  red;");
+    errors.setFont(Font.font("Open Sans", 15.0));
+  }
+
   private void foodExportCSV() {
+    setToBlue();
+    clearError();
     dirChooser.setTitle("Select export directory");
     String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.FOOD_REQUEST);
   }
 
   private void supplyExportCSV() {
+    setToBlue();
+    clearError();
     dirChooser.setTitle("Select export directory");
     String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.SUPPLY_REQUEST);
   }
 
   private void flowerExportCSV() {
+    setToBlue();
+    clearError();
     dirChooser.setTitle("Select export directory");
     String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.FLOWER_REQUEST);
   }
 
   private void furnitureExportCSV() {
+    setToBlue();
+    clearError();
     dirChooser.setTitle("Select export directory");
     String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.FURNITURE_REQUEST);
   }
 
   private void conferenceExportCSV() {
+    setToBlue();
+    clearError();
     dirChooser.setTitle("Select export directory");
     String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.CONFERENCE_REQUEST);
   }
 
   private void itExportCSV() {
+    setToBlue();
+    clearError();
     dirChooser.setTitle("Select export directory");
     String exportPath = dirChooserPrompt();
     dbConnection.exportCSV(exportPath, TableEntryType.IT_REQUEST);
   }
 
   private void filterOrders() {
+    setToBlue();
+    clearError();
     for (int i = 0; i < foodTable.getItems().size(); i++) {
       if (!SharedResources.getCurrentUser()
           .getUsername()

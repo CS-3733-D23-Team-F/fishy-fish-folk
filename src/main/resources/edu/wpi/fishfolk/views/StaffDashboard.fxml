@@ -51,7 +51,7 @@
                         </HBox>
                      </children>
                   </StackPane>
-                  <MFXScrollPane fx:id="scroll" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+                  <MFXScrollPane fx:id="scroll" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" styleClass="newScrolls" VBox.vgrow="ALWAYS">
                      <content>
                         <GridPane fx:id="grid">
                            <rowConstraints>

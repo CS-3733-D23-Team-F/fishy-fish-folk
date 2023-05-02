@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -33,7 +34,7 @@
    <TabPane fx:id="tabPane" layoutX="50.0" layoutY="50.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
      <tabs>
        <Tab text="Food Orders">
-               <VBox alignment="CENTER" spacing="20.0">
+               <VBox alignment="CENTER" spacing="5.0">
                   <children>
                      <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                         <children>
@@ -52,6 +53,11 @@
                            </TableView>
                         </children>
                      </HBox>
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <Label fx:id="errorfood" text="Label" />
+                     </children>
+                  </HBox>
                      <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
                         <children>
                            <MFXButton fx:id="foodFillButton" style="-fx-background-color: #012d5a;" text="Mark Filled" textFill="WHITE">
@@ -92,7 +98,7 @@
                </VBox>
        </Tab>
        <Tab text="Supply Orders">
-          <VBox alignment="CENTER" spacing="20.0">
+          <VBox alignment="CENTER" spacing="5.0">
              <children>
                 <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                    <children>
@@ -109,6 +115,11 @@
                       </TableView>
                    </children>
                 </HBox>
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <Label fx:id="errorsupply" text="Label" />
+                     </children>
+                  </HBox>
                 <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
                    <children>
                       <MFXButton fx:id="supplyFillButton" style="-fx-background-color: #012d5a;" text="Mark Filled" textFill="WHITE">
@@ -149,7 +160,7 @@
           </VBox>
        </Tab>
          <Tab text="Flower Orders">
-            <VBox alignment="CENTER" spacing="20.0">
+            <VBox alignment="CENTER" spacing="5.0">
                <children>
                   <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                      <children>
@@ -166,6 +177,11 @@
                               <TableColumn fx:id="flowernotes" prefWidth="60.0" text="Notes" />
                            </columns>
                         </TableView>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <Label fx:id="errorflower" text="Label" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
@@ -254,7 +270,7 @@
            </content> -->
          </Tab>
          <Tab text="Furniture Orders">
-            <VBox alignment="CENTER" spacing="20.0">
+            <VBox alignment="CENTER" spacing="5.0">
                <children>
                   <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                      <children>
@@ -270,6 +286,11 @@
                               <TableColumn fx:id="furniturefurniture" prefWidth="100.0" text="Furniture" />
                            </columns>
                         </TableView>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <Label fx:id="errorfurniture" text="Label" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
@@ -313,7 +334,7 @@
          </Tab>
          <Tab text="IT Requests">
             <content>
-               <VBox alignment="CENTER" spacing="20.0">
+               <VBox alignment="CENTER" spacing="5.0">
                   <children>
                      <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                         <children>
@@ -329,6 +350,11 @@
                                  <TableColumn fx:id="itcontactinfo" prefWidth="100.0" text="Contact Info" />
                               </columns>
                            </TableView>
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER_RIGHT">
+                        <children>
+                           <Label fx:id="errorit" text="Label" />
                         </children>
                      </HBox>
                      <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
@@ -377,7 +403,7 @@
          </Tab>
          <Tab text="Conference Room Bookings">
             <content>
-               <VBox alignment="CENTER" spacing="20.0">
+               <VBox alignment="CENTER" spacing="5.0">
                   <children>
                      <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                         <children>
@@ -394,6 +420,11 @@
                                  <TableColumn fx:id="conferencenotes" prefWidth="60.0" text="Notes" />
                               </columns>
                            </TableView>
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER_RIGHT">
+                        <children>
+                           <Label fx:id="errorconference" text="Label" />
                         </children>
                      </HBox>
                      <HBox alignment="CENTER_LEFT" spacing="20.0" VBox.vgrow="NEVER">
