@@ -30,7 +30,7 @@ public class DAOTests {
   @Test
   public void nodeDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(new Node(9997, new Point2D(100, 200), "carpet", "bingus"));
     fdb.insertEntry(new Node(9998, new Point2D(300, 400), "tile", "bingus"));
@@ -52,7 +52,7 @@ public class DAOTests {
   @Test
   public void locationDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(new Location(".Loooong name", "Short name", NodeType.INFO));
     fdb.insertEntry(new Location(".Bingus Tower III", "Bingus", NodeType.DEPT));
@@ -76,7 +76,7 @@ public class DAOTests {
   @Test
   public void foodRequestDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     ArrayList<NewFoodItem> fList1 = new ArrayList<>(List.of(new NewFoodItem("TEST 1", 3)));
     ArrayList<NewFoodItem> fList2 = new ArrayList<>(List.of(new NewFoodItem("TEST 2", 3)));
@@ -151,7 +151,7 @@ public class DAOTests {
   @Test
   public void supplyRequestDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     ArrayList<SupplyItem> s1 = new ArrayList<>(List.of(new SupplyItem("bingus 1", 1)));
     ArrayList<SupplyItem> s2 = new ArrayList<>(List.of(new SupplyItem("bingus 2", 2)));
@@ -216,7 +216,7 @@ public class DAOTests {
   @Test
   public void furnitureRequestDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(
         new FurnitureRequest(
@@ -282,7 +282,7 @@ public class DAOTests {
   @Test
   public void flowerRequestDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     ArrayList<FlowerItem> items1 = new ArrayList<>(List.of(new FlowerItem("red", 1, 5)));
     ArrayList<FlowerItem> items2 = new ArrayList<>(List.of(new FlowerItem("red", 2, 5)));
@@ -358,7 +358,7 @@ public class DAOTests {
   @SneakyThrows
   public void conferenceRequestDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(
         new ConferenceRequest(
@@ -443,7 +443,7 @@ public class DAOTests {
   @Test
   public void accountDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(
         new UserAccount("cingus", "bongus", "null@null.whatever", PermissionLevel.STAFF));
@@ -475,7 +475,7 @@ public class DAOTests {
   @SneakyThrows
   public void itDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(
         new ITRequest(
