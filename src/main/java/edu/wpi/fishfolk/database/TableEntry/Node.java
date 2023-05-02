@@ -92,6 +92,10 @@ public class Node {
         .toList();
   }
 
+  public List<LocationDate> getMoves(LocalDate date) {
+    return moves.stream().filter(move -> move.getDate().isBefore(date)).toList();
+  }
+
   public boolean containsType(NodeType type) {
     for (LocationDate move : moves) {
       if (move.getLocation().getNodeType() == type) return true;
@@ -114,19 +118,5 @@ public class Node {
   public void snapToGrid(double s) {
 
     pointProperty.setValue(new Point2D(Math.round(getX() / s) * s, Math.round(getY() / s) * s));
-  }
-}
-
-class LocationDate {
-  @Getter private Location location;
-  @Getter private LocalDate date;
-
-  public LocationDate(Location location, LocalDate date) {
-    this.location = location;
-    this.date = date;
-  }
-
-  public String toString() {
-    return location.getLongName() + " moving on " + date;
   }
 }

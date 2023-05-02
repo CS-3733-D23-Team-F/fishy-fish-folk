@@ -9,8 +9,6 @@ import edu.wpi.fishfolk.mapeditor.BuildingChecker;
 import edu.wpi.fishfolk.mapeditor.EdgeLine;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.mapeditor.NodeText;
-import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.util.NodeType;
 import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
@@ -45,7 +43,7 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
 
-  @FXML MFXButton moveEditorNav, save, undo;
+  @FXML MFXButton save, undo;
   @FXML MFXButton importCSV, exportCSV;
   @FXML MFXButton addNode, delNode;
   @FXML MFXRadioButton radioAllEdge, radioSelectedEdge, radioNoEdge;
@@ -54,7 +52,6 @@ public class MapEditorController extends AbsController {
 
   @FXML MFXFilterComboBox<String> locationSearch;
   @FXML CheckComboBox<NodeType> showLocationType;
-  @FXML MFXButton clearLocationType;
 
   @FXML MFXTextField nodeidText, xText, yText, buildingText;
 
@@ -375,7 +372,7 @@ public class MapEditorController extends AbsController {
 
                 Node node = nodes.get(nodeID2idx.get(selectedNodes.get(0)));
                 fillNodeFields(node);
-                fillLocationFields(node.getLocations(today));
+                fillLocationFields(node);
                 newLocationVbox.setDisable(false);
 
               } else {
@@ -450,8 +447,6 @@ public class MapEditorController extends AbsController {
     switchFloor(allFloors.get(currentFloor));
 
     // buttons and state switching
-
-    moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
 
     save.setOnMouseClicked(
         event -> {
@@ -659,6 +654,11 @@ public class MapEditorController extends AbsController {
             // clear location search box
             locationSearch.clearSelection();
 
+            // clear the preview location label
+            if (state == EDITOR_STATE.PREVIEWING) {
+              labelPreviewGroup.getChildren().clear();
+            }
+
             state = EDITOR_STATE.IDLE;
           }
         });
@@ -794,15 +794,6 @@ public class MapEditorController extends AbsController {
                     "selected node types: " + showLocationType.getCheckModel().getCheckedItems());
               }
             });
-
-    clearLocationType.setOnMouseClicked(
-        event -> {
-          visibleNodeTypes.clear();
-          observableNodeTypes.forEach(
-              type -> showLocationType.getItemBooleanProperty(type).setValue(false));
-          // observableNodeTypes.forEach(type -> locationLabels.get(type).setVisible(false));
-          // showLocationType.setTitle("");
-        });
 
     locationSearch.setOnAction(
         event -> {
@@ -1350,7 +1341,7 @@ public class MapEditorController extends AbsController {
   }
 
   /** Display current locations in info pane on UI. */
-  private void fillLocationFields(List<Location> locations) {
+  private void fillLocationFields(Node node) {
 
     locationScrollpane.setVisible(true);
     locationScrollpane.setDisable(false);
@@ -1361,7 +1352,7 @@ public class MapEditorController extends AbsController {
 
     try {
 
-      for (Location location : locations) {
+      for (LocationDate move : node.getMoves(today)) {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(Fapp.class.getResource("views/MapEditorLocation.fxml"));
@@ -1369,9 +1360,8 @@ public class MapEditorController extends AbsController {
         VBox entry = fxmlLoader.load();
 
         MapEditorLocationController controller = fxmlLoader.getController();
-        controller.setData(location);
+        controller.setData(move.getLocation(), move.getDate());
 
-        // TODO make this UX better bc switching floors and deselecting the previous node is goofy
         controller.preview.setOnMouseClicked(
             event -> {
 
@@ -1435,9 +1425,42 @@ public class MapEditorController extends AbsController {
 
         controller.submit.setOnMouseClicked(
             event -> {
-              Move move =
+              // put move in database
+              Move newMove =
                   new Move(controller.nodeID, controller.longnameText.getText(), controller.date);
-              editQueue.add(new DataEdit<>(move, DataEditType.INSERT), false);
+              editQueue.add(new DataEdit<>(newMove, DataEditType.INSERT), false);
+
+              // if user didnt press back after previewing, submit also takes them back
+              if (state == EDITOR_STATE.PREVIEWING) {
+                Node origin = controller.getOrigin();
+
+                if (origin != null) {
+
+                  // clear preview location label
+                  labelPreviewGroup.getChildren().clear();
+
+                  if (!origin.getFloor().equals(allFloors.get(currentFloor))) {
+                    // floor selector's onAction switches floors
+                    floorSelector.setValue(origin.getFloor());
+                  }
+                  gesturePane.centreOn(origin.getPoint());
+                  gesturePane.zoomTo(1.0, origin.getPoint());
+
+                  // highlight origin node again
+                  nodeGroup
+                      .getChildren()
+                      .forEach(
+                          fxnode -> {
+                            NodeCircle nodeCircle = (NodeCircle) fxnode;
+                            if (nodeCircle.getNodeID() == origin.getNodeID()) {
+                              nodeCircle.highlight();
+                            }
+                          });
+
+                  // back to editing the currently selected node
+                  state = EDITOR_STATE.EDITING_NODE;
+                }
+              }
             });
 
         locationsVbox.getChildren().add(entry);

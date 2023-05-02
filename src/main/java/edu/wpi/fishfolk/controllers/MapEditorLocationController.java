@@ -50,11 +50,13 @@ public class MapEditorLocationController {
         });
   }
 
-  public void setData(Location location) {
+  public void setData(Location location, LocalDate date) {
 
     shortnameText.setText(location.getShortName());
     typeText.setText(location.getNodeType().toString());
     longnameText.setText(location.getLongName());
+
+    datePicker.setValue(date);
   }
 
   private void updateButtons() {

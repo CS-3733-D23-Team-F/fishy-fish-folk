@@ -53,20 +53,12 @@
             <HBox HBox.hgrow="SOMETIMES" />
             <VBox>
                <children>
-                  <MFXButton fx:id="moveEditorNav" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="90.0" text="Move Editor" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="11.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </MFXButton>
                   <MFXButton fx:id="save" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" graphicTextGap="10.0" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="45.0" text="Save" textFill="#012d5a">
                      <font>
                         <Font name="Open Sans Regular" size="12.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </MFXButton>
                   <HBox>
@@ -93,6 +85,11 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </VBox>
+            <Line endY="80.0" fill="#454343" stroke="#454343" strokeWidth="0.5">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Line>
             <VBox>
                <children>
                   <MFXButton fx:id="importCSV" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="110.0" text="Import CSV" textFill="#012d5a">
@@ -125,6 +122,15 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </MFXButton>
+                  <HBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label alignment="TOP_LEFT" text="File" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Regular" size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
                <HBox.margin>
                   <Insets left="10.0" />
@@ -135,7 +141,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </Line>
-            <VBox HBox.hgrow="NEVER">
+            <VBox alignment="TOP_CENTER" HBox.hgrow="NEVER">
                <children>
                   <MFXButton fx:id="addNode" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="85.0" text="Add" textFill="#012d5a" VBox.vgrow="ALWAYS">
                      <font>
@@ -167,6 +173,15 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </MFXButton>
+                  <HBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label alignment="TOP_LEFT" text="Node" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Regular" size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
                <HBox.margin>
                   <Insets left="10.0" />
@@ -179,89 +194,104 @@
             </Line>
             <VBox>
                <children>
-                  <MFXButton fx:id="addEdge" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="85.0" text="Add" textFill="#012d5a" VBox.vgrow="ALWAYS">
-                     <font>
-                        <Font name="Open Sans Bold" size="11.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/add_edge.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
+                  <HBox>
+                     <children>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <MFXButton fx:id="addEdge" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="85.0" text="Add" textFill="#012d5a" VBox.vgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="11.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add_edge.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </MFXButton>
+                              <MFXButton fx:id="delEdge" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="85.0" text="Delete" textFill="#012d5a">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="11.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/delete_edge.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </MFXButton>
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <MFXRadioButton fx:id="radioAllEdge" gap="6.0" radioGap="2.0" radius="6.0" text="All" textFill="#012d5a">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="edgeToggle" />
+                                 </toggleGroup>
+                                 <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                 </font>
+                              </MFXRadioButton>
+                              <MFXRadioButton fx:id="radioSelectedEdge" gap="6.0" radioGap="2.0" radius="6.0" text="Selected" textFill="#012d5a" toggleGroup="$edgeToggle">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                 </font>
+                              </MFXRadioButton>
+                              <MFXRadioButton fx:id="radioNoEdge" gap="6.0" radioGap="2.0" radius="6.0" text="None" textFill="#012d5a" toggleGroup="$edgeToggle">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                 </font>
+                              </MFXRadioButton>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
-                  </MFXButton>
-                  <MFXButton fx:id="delEdge" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="85.0" text="Delete" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="11.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/delete_edge.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </MFXButton>
+                  </HBox>
+                  <HBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label alignment="TOP_LEFT" text="Edge" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Regular" size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
-               <HBox.margin>
+               <padding>
                   <Insets left="10.0" />
-               </HBox.margin>
-            </VBox>
-            <VBox>
-               <children>
-                  <Label alignment="TOP_LEFT" text="View edges:" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="12.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-                  <MFXRadioButton fx:id="radioAllEdge" gap="6.0" radioGap="2.0" radius="6.0" text="All" textFill="#012d5a">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="edgeToggle" />
-                     </toggleGroup>
-                     <font>
-                        <Font name="Open Sans Regular" size="12.0" />
-                     </font>
-                  </MFXRadioButton>
-                  <MFXRadioButton fx:id="radioSelectedEdge" gap="6.0" radioGap="2.0" radius="6.0" text="Selected" textFill="#012d5a" toggleGroup="$edgeToggle">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Open Sans Regular" size="12.0" />
-                     </font>
-                  </MFXRadioButton>
-                  <MFXRadioButton fx:id="radioNoEdge" gap="6.0" radioGap="2.0" radius="6.0" text="None" textFill="#012d5a" toggleGroup="$edgeToggle">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Open Sans Regular" size="12.0" />
-                     </font>
-                  </MFXRadioButton>
-               </children>
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
+               </padding>
             </VBox>
             <Line endY="80.0" fill="#454343" stroke="#454343" strokeWidth="0.5">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </Line>
-            <VBox>
+            <VBox alignment="TOP_CENTER">
                <children>
                   <MFXButton fx:id="linearAlign" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="110.0" text="Linear Align" textFill="#012a5d">
                      <graphic>
@@ -293,6 +323,18 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </MFXButton>
+                  <HBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <children>
+                        <Label alignment="TOP_LEFT" text="Align" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Regular" size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
                <HBox.margin>
                   <Insets left="10.0" />
@@ -305,37 +347,24 @@
             </Line>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label alignment="TOP_LEFT" text="Show location types:" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="11.0" />
-                     </font>
-                  </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <CheckComboBox fx:id="showLocationType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="125.0" />
-                        <MFXButton fx:id="clearLocationType" alignment="CENTER" buttonType="RAISED" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="45.0" style="-fx-background-color: #012d5a;" text="Clear" textFill="WHITE">
-                           <font>
-                              <Font name="Open Sans Bold" size="11.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </MFXButton>
-                     </children>
-                  </HBox>
-                  <Label alignment="TOP_LEFT" text="Search for a location:" textFill="#012d5a">
-                     <font>
-                        <Font name="Open Sans Bold" size="11.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </Label>
-                  <MFXFilterComboBox fx:id="locationSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="16" prefHeight="25.0" prefWidth="180.0" searchText="Search for location" selectable="true">
+                  <CheckComboBox fx:id="showLocationType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="160.0" style="-fx-background-color: #ffffff; -fx-border-width: 1; -fx-border-radius: 5;" title="Show labels" />
+                  <MFXFilterComboBox fx:id="locationSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="16" prefHeight="25.0" prefWidth="160.0" promptText="Search for location" searchText="" selectable="true">
                      <textFill>
                         <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" />
                      </textFill>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </MFXFilterComboBox>
+                  <HBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label alignment="TOP_LEFT" text="Location" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Regular" size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
                <HBox.margin>
                   <Insets left="10.0" />
@@ -344,7 +373,7 @@
             <HBox HBox.hgrow="SOMETIMES" />
          </children>
          <padding>
-            <Insets bottom="5.0" top="10.0" />
+            <Insets top="10.0" />
          </padding>
       </HBox>
       <HBox alignment="CENTER" fillHeight="false" maxHeight="60.0" maxWidth="400.0" minHeight="60.0" minWidth="400.0" style="-fx-background-radius: 15; -fx-background-color: #F1F1F1;" StackPane.alignment="TOP_CENTER">
@@ -509,9 +538,9 @@
                   </Line>
                </children>
             </VBox>
-            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" maxHeight="0.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" maxHeight="0.0" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" pannable="true" prefWidth="220.0" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fx:id="locationsVbox" minHeight="0.0" minWidth="200.0" />
+                  <VBox fx:id="locationsVbox" minHeight="0.0" minWidth="220.0" />
                </content>
                <VBox.margin>
                   <Insets />
@@ -561,7 +590,7 @@
                   <HBox alignment="CENTER_LEFT">
                      <children>
                         <MFXDatePicker fx:id="newLocationDate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
-                        <MFXButton fx:id="newLocationSubmit" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: #F0BF4C;" text="Add to node" textFill="#012d5a">
+                        <MFXButton fx:id="newLocationSubmit" alignment="CENTER_RIGHT" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: #F0BF4C;" text="Add to node" textFill="#012d5a">
                            <font>
                               <Font name="Open Sans Bold" size="12.0" />
                            </font>
