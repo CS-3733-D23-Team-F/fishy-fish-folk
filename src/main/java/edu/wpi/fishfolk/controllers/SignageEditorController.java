@@ -391,7 +391,8 @@ public class SignageEditorController extends AbsController {
         new edu.wpi.fishfolk.database.TableEntry.SignagePreset(
             currentPreset.getPresetName(),
             currentPreset.getImplementationDate(),
-            currentPreset.signs, currentPreset.getKiosk());
+            currentPreset.signs,
+            currentPreset.getKiosk());
     dbConnection.insertEntry(preset);
 
     Navigation.navigate(SharedResources.getHome()); // go homes
