@@ -7,6 +7,7 @@ import edu.wpi.fishfolk.database.TableEntry.SignagePreset;
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.ui.Sign;
 import edu.wpi.fishfolk.util.PermissionLevel;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
@@ -37,12 +38,17 @@ public class NewSignageController extends AbsController {
   @FXML MFXFilterComboBox<String> presetSelect; // choicebox for manually selecting signage preset
   @FXML MFXButton signageEditorButton;
 
-  String identifier = "TEST";
+  String identifier = "default";
   ArrayList<Text> listTexts = new ArrayList<>();
   ArrayList<ImageView> listIcons = new ArrayList<>();
   ArrayList<Text> listSubText = new ArrayList<>();
 
-  SignagePreset latest = new SignagePreset("baseline", LocalDate.now().minusYears(1000), null);
+  SignagePreset latest =
+      new SignagePreset(
+          identifier,
+          LocalDate.now().minusYears(1000),
+          SharedResources.defaultLocation,
+          new Sign[8]); // TODO: TRISTINNNNNNNNNNNNNNNNNNNN
 
   public void initialize() {
 
@@ -53,8 +59,9 @@ public class NewSignageController extends AbsController {
     // if the current date matches a date in one of the SignagePresets
     // the identifier is set to the name of that SignagePreset
     for (int i = 0; i < allPresets.size(); i++) {
-      if (allPresets.get(i).getDate().isBefore(LocalDate.now())
-          && allPresets.get(i).getDate().isAfter(latest.getDate())) {
+      if (allPresets.get(i).getDate().isBefore(LocalDate.now().plusDays(1))
+          && (allPresets.get(i).getDate().isAfter(latest.getDate())
+              && allPresets.get(i).getKiosk().equals(SharedResources.defaultLocation))) {
         latest = allPresets.get(i);
       }
     }

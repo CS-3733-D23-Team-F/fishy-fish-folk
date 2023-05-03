@@ -38,6 +38,7 @@ public class SignageEditorController extends AbsController {
   @FXML MFXTextField subtextl0, subtextl1, subtextl2, subtextl3;
   @FXML MFXTextField subtextr0, subtextr1, subtextr2, subtextr3;
   @FXML MFXFilterComboBox<String> presetSelect;
+  @FXML MFXFilterComboBox<String> kioskSelect;
   @FXML Label error;
   @FXML
   MFXButton cancelButton,
@@ -65,6 +66,7 @@ public class SignageEditorController extends AbsController {
     loadRooms(); // read documentation for loadRooms()
 
     loadPresetSelect();
+    loadKioskSelect();
     loadListTexts();
     loadListIcons();
     loadListSubtexts();
@@ -267,6 +269,9 @@ public class SignageEditorController extends AbsController {
 
     presetText.setText(""); // resets preset name text box
     datePicker.setValue(null); // rests date picker with null value
+
+    kioskSelect.setText("");
+    kioskSelect.setValue(null);
   }
 
   // loads MFXFilterCombobox with list of Signage Preset names
@@ -274,6 +279,10 @@ public class SignageEditorController extends AbsController {
     for (int i = 0; i < allPresets.size(); i++) {
       presetSelect.getItems().add(allPresets.get(i).getName());
     }
+  }
+
+  private void loadKioskSelect() {
+    kioskSelect.getItems().addAll(dbConnection.getDestLongnames());
   }
 
   // when preset is selected in MFXFilterComboBox and Load button is pressed
@@ -291,6 +300,8 @@ public class SignageEditorController extends AbsController {
 
     presetText.setText(preset.getName());
     datePicker.setValue(preset.getDate());
+    kioskSelect.setValue(preset.getKiosk());
+    kioskSelect.setText(preset.getKiosk());
 
     for (int i = 0; i < 8; i++) {
       if (preset.getSigns()[i] == null) {
@@ -418,9 +429,14 @@ public class SignageEditorController extends AbsController {
       submissionError("You must choose a date.", datePicker);
       return;
     }
+    if (kioskSelect.getValue() == null) {
+      submissionError("You must choose a kiosk.", kioskSelect);
+      return;
+    }
 
     currentPreset.setName(presetText.getText()); // preset name
     currentPreset.setDate(datePicker.getValue()); // preset implementation date
+    currentPreset.setKiosk(kioskSelect.getValue());
 
     // assigns choice box and direction arrow direction to new Sign object and adds to
     // currentPreset's list of Signs
@@ -454,6 +470,7 @@ public class SignageEditorController extends AbsController {
         new edu.wpi.fishfolk.database.TableEntry.SignagePreset(
             currentPreset.getPresetName(),
             currentPreset.getImplementationDate(),
+            currentPreset.getKiosk(),
             currentPreset.signs);
     dbConnection.insertEntry(preset);
 
