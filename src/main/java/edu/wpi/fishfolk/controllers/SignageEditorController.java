@@ -36,6 +36,7 @@ public class SignageEditorController extends AbsController {
   @FXML MFXTextField subtextl0, subtextl1, subtextl2, subtextl3;
   @FXML MFXTextField subtextr0, subtextr1, subtextr2, subtextr3;
   @FXML MFXFilterComboBox<String> presetSelect;
+  @FXML MFXFilterComboBox<String> kioskSelect;
   @FXML
   MFXButton cancelButton,
       clearButton,
@@ -59,6 +60,7 @@ public class SignageEditorController extends AbsController {
     loadRooms(); // read documentation for loadRooms()
 
     loadPresetSelect();
+    loadKioskSelect();
     loadListTexts();
     loadListIcons();
     loadListSubtexts();
@@ -259,6 +261,9 @@ public class SignageEditorController extends AbsController {
 
     presetText.setText(""); // resets preset name text box
     datePicker.setValue(null); // rests date picker with null value
+
+    kioskSelect.setText("");
+    kioskSelect.setValue(null);
   }
 
   // loads MFXFilterCombobox with list of Signage Preset names
@@ -266,6 +271,10 @@ public class SignageEditorController extends AbsController {
     for (int i = 0; i < allPresets.size(); i++) {
       presetSelect.getItems().add(allPresets.get(i).getName());
     }
+  }
+
+  private void loadKioskSelect() {
+    kioskSelect.getItems().addAll(dbConnection.getDestLongnames());
   }
 
   // when preset is selected in MFXFilterComboBox and Load button is pressed
@@ -366,7 +375,7 @@ public class SignageEditorController extends AbsController {
             && roomr2.getText().equals("")
             && roomr3.getText().equals(""))
         || presetText.getText().equals("")
-        || datePicker.getValue() == null) {
+        || datePicker.getValue() == null || kioskSelect.getValue() == null) {
       PopOver error = new PopOver();
       Text errorText = new Text("Insufficient fields entered");
       errorText.setFont(new Font("Open Sans", 26));
