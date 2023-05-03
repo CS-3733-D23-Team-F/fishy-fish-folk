@@ -37,14 +37,14 @@ public class NewSignageController extends AbsController {
   @FXML MFXFilterComboBox<String> presetSelect; // choicebox for manually selecting signage preset
   @FXML MFXButton signageEditorButton;
 
-  String identifier = "TEST";
+  String identifier = "default";
   ArrayList<Text> listTexts = new ArrayList<>();
   ArrayList<ImageView> listIcons = new ArrayList<>();
   ArrayList<Text> listSubText = new ArrayList<>();
 
   SignagePreset latest =
       new SignagePreset(
-          "baseline",
+          identifier,
           LocalDate.now().minusYears(1000),
           null,
           "Watkins Kiosk 1"); // TODO: TRISTINNNNNNNNNNNNNNNNNNNN
