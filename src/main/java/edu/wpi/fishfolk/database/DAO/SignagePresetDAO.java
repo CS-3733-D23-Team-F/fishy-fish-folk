@@ -75,8 +75,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
                 + tableName
                 + " (presetname VARCHAR(256),"
                 + "startdate DATE,"
-                + "signs SERIAL,"
-                + "kiosk VARCHAR(256)"
+                + "kiosk VARCHAR(256)," +
+                    "signs SERIAL"
                 + ");";
         statement.executeUpdate(query);
       }
