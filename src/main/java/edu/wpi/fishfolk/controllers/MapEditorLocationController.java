@@ -120,7 +120,7 @@ public class MapEditorLocationController {
       preview.setDisable(false);
     }
 
-    if (moveEdited || locationEdited) {
+    if (newMove || moveEdited || locationEdited) {
       submit.setDisable(false);
     }
   }
