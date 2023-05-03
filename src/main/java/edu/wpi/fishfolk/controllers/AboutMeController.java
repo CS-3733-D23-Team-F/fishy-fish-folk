@@ -35,6 +35,7 @@ public class AboutMeController {
   @FXML
   public void initialize() {
 
+    // Everyone's about me page is set to their URL
     URL JonPage = Fapp.class.getResource("views/popups/JonPage.fxml");
     URL MaxPage = Fapp.class.getResource("views/popups/MaxPage.fxml");
     URL MegPage = Fapp.class.getResource("views/popups/MegPage.fxml");
@@ -47,6 +48,7 @@ public class AboutMeController {
     URL BernhardtPage = Fapp.class.getResource("views/popups/BernhardtPage.fxml");
     URL BrendanPage = Fapp.class.getResource("views/popups/BrendanPage.fxml");
 
+    // everyone's button opens their page
     Jon.setOnMouseClicked(event -> PopPage(JonPage));
     Max.setOnMouseClicked(event -> PopPage(MaxPage));
     Meg.setOnMouseClicked(event -> PopPage(MegPage));
