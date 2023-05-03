@@ -5,18 +5,10 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import lombok.Getter;
-import lombok.Setter;
 
 public class AboutMeController {
-  @Setter @Getter private static Stage aboutpages;
-  @Setter @Getter private static AnchorPane anchor;
-  @FXML Label AboutM;
   @FXML VBox vbox;
   @FXML MFXButton Jon;
   @FXML MFXButton Meg;
