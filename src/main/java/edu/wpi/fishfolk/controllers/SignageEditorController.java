@@ -375,7 +375,8 @@ public class SignageEditorController extends AbsController {
             && roomr2.getText().equals("")
             && roomr3.getText().equals(""))
         || presetText.getText().equals("")
-        || datePicker.getValue() == null || kioskSelect.getValue() == null) {
+        || datePicker.getValue() == null
+        || kioskSelect.getValue() == null) {
       PopOver error = new PopOver();
       Text errorText = new Text("Insufficient fields entered");
       errorText.setFont(new Font("Open Sans", 26));

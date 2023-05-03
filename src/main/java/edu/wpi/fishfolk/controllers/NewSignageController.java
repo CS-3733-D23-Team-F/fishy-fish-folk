@@ -42,7 +42,7 @@ public class NewSignageController extends AbsController {
   ArrayList<ImageView> listIcons = new ArrayList<>();
   ArrayList<Text> listSubText = new ArrayList<>();
 
-  SignagePreset latest = new SignagePreset("baseline", LocalDate.now().minusYears(1000), null);
+  SignagePreset latest = new SignagePreset("baseline", LocalDate.now().minusYears(1000), null);  // TODO: TRISTINNNNNNNNNNNNNNNNNNNN
 
   public void initialize() {
 
@@ -54,7 +54,7 @@ public class NewSignageController extends AbsController {
     // the identifier is set to the name of that SignagePreset
     for (int i = 0; i < allPresets.size(); i++) {
       if (allPresets.get(i).getDate().isBefore(LocalDate.now())
-          && allPresets.get(i).getDate().isAfter(latest.getDate())){
+          && allPresets.get(i).getDate().isAfter(latest.getDate())) {
         latest = allPresets.get(i);
       }
     }
