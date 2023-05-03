@@ -33,7 +33,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
   public SignagePresetDAO(Connection dbConnection) {
     this.dbConnection = dbConnection;
     this.tableName = "signagepreset";
-    this.headers = new ArrayList<>(List.of("presetname", "startdate", "signs", "kiosk"));
+    this.headers = new ArrayList<>(List.of("presetname", "startdate", "kiosk", "signs"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
     this.dataEditQueue.setBatchLimit(1);
