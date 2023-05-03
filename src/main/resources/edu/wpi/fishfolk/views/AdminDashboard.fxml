@@ -42,6 +42,9 @@
                            </font>
                         </MFXButton>
                      </children>
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
                   </StackPane>
                   <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                      <children>
@@ -60,7 +63,7 @@
                         </MFXButton>
                      </children>
                      <HBox.margin>
-                        <Insets left="25.0" />
+                        <Insets />
                      </HBox.margin>
                   </HBox>
                </children>
@@ -70,7 +73,7 @@
             </HBox>
             <HBox style="-fx-background-color: #EEEEEE;" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox>
+                  <VBox maxWidth="300.0">
                      <children>
                         <StackPane minHeight="50.0">
                            <children>

@@ -351,3 +351,8 @@
     -fx-background-color: #f8f7fa;
     -fx-text-fill: #012d5a;
 }
+
+
+.mfx-text-field {
+    -mfx-main: #012d5a;
+}
