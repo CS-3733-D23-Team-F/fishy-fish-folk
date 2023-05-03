@@ -42,7 +42,7 @@ public class NewSignageController extends AbsController {
   ArrayList<ImageView> listIcons = new ArrayList<>();
   ArrayList<Text> listSubText = new ArrayList<>();
 
-  SignagePreset latest = new SignagePreset("baseline", LocalDate.now().minusYears(1000), null);
+  SignagePreset latest = new SignagePreset("baseline", LocalDate.now().minusYears(1000), null);  // TODO: TRISTINNNNNNNNNNNNNNNNNNNN
 
   public void initialize() {
 
