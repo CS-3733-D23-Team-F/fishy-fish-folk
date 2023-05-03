@@ -511,17 +511,16 @@ public class PathfindingController extends AbsController {
           QRCodeWriter qrCodeWriter = new QRCodeWriter();
 
           String text =
-              "TEXT: "
-                  + textDirections.stream()
-                      .reduce(
-                          new LinkedList<>(),
-                          (lstAccum, lst) -> {
-                            lstAccum.addAll(lst);
-                            return lstAccum;
-                          })
-                      .stream()
-                      .map(TextDirection::toString)
-                      .collect(Collectors.joining());
+              textDirections.stream()
+                  .reduce(
+                      new LinkedList<>(),
+                      (lstAccum, lst) -> {
+                        lstAccum.addAll(lst);
+                        return lstAccum;
+                      })
+                  .stream()
+                  .map(TextDirection::toString)
+                  .collect(Collectors.joining());
 
           try {
 
