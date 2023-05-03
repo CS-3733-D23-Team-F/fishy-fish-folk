@@ -73,17 +73,19 @@ public class NewSignageController extends AbsController {
 
     if (SharedResources.getCurrentUser().getLevel().equals(PermissionLevel.GUEST)
         || SharedResources.getCurrentUser().getLevel().equals(PermissionLevel.STAFF)) {
-      presetSelect.setOpacity(0);
-      presetSelect.setDisable(true);
-
       signageEditorButton.setOpacity(0);
       signageEditorButton.setDisable(true);
     } else {
-      presetSelect.setOpacity(100);
-      presetSelect.setDisable(false);
-
       signageEditorButton.setOpacity(100);
       signageEditorButton.setDisable(false);
+    }
+
+    if (SharedResources.getCurrentUser().getLevel().equals(PermissionLevel.GUEST)) {
+      presetSelect.setOpacity(0);
+      presetSelect.setDisable(true);
+    } else {
+      presetSelect.setOpacity(100);
+      presetSelect.setDisable(false);
     }
 
     // sets all of the signs based on the relevant preset
