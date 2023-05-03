@@ -106,7 +106,7 @@ public class Fdb {
   public List<NodeType> getNodeTypes(boolean root) {
     if (root) {
       List<NodeType> lst = new LinkedList<>(nodeTypes);
-      lst.add(BINGUS);
+      lst.add(BNGS);
       return lst;
     } else {
       return nodeTypes;

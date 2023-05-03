@@ -116,6 +116,9 @@ public class LocationDAO implements IDAO<Location>, ICSVNoSubtable, IProcessEdit
 
   @Override
   public void processEdit(DataEdit<Object> edit) {
+
+    System.out.println(edit.getNewEntry());
+
     switch (edit.getType()) {
       case INSERT:
         insertEntry((Location) edit.getNewEntry());

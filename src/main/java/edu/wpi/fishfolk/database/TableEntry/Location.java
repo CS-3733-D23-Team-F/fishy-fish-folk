@@ -23,7 +23,7 @@ public class Location {
   @Getter private ObservableList<NodeDate> movesProperty = FXCollections.observableArrayList();
 
   // when locations get removed, replace their moves with this one
-  public static Location REMOVED = new Location("Deleted Location", "", NodeType.DEFAULT);
+  public static Location REMOVED = new Location("Deleted Location", "", NodeType.DFLT);
 
   /**
    * Table entry type: Location
@@ -76,6 +76,15 @@ public class Location {
 
   public List<NodeDate> getMovesBefore(LocalDate date) {
     return movesProperty.stream().filter(move -> move.getDate().isBefore(date)).toList();
+  }
+
+  public boolean assignedBefore(LocalDate date) {
+    for (NodeDate nodeDate : movesProperty) {
+      if (nodeDate.getDate().isBefore(date)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public boolean movesBetween(LocalDate start, LocalDate end) {

@@ -560,21 +560,67 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <Line endX="100.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.75">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Line>
                </children>
             </VBox>
+            <Line endX="100.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.75">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Line>
             <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" minHeight="0.0" pannable="true" style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fx:id="locationsVbox" alignment="TOP_CENTER" spacing="5.0" style="-fx-background-color: #f1f1f1;" />
+                  <VBox fx:id="locationsVbox" alignment="TOP_CENTER" spacing="5.0" style="-fx-background-color: #f1f1f1;">
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding></VBox>
                </content>
                <VBox.margin>
-                  <Insets />
+                  <Insets top="5.0" />
                </VBox.margin>
             </MFXScrollPane>
+            <VBox fx:id="unassignedLocationsVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <children>
+                  <MFXComboBox fx:id="unassignedLocationsDropdown" alignment="CENTER" graphicTextGap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" measureUnitGap="0.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" text="Unassigned locations">
+                     <font>
+                        <Font name="Open Sans Regular" size="12.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <textFill>
+                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXComboBox>
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <MFXButton fx:id="unassignedLocationDelete" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #012d5a;" text="Delete" textFill="WHITE">
+                           <font>
+                              <Font name="Open Sans Regular" size="12.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                        <MFXButton fx:id="unassignedLocationAssign" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #F0BF4C;" text="Assign" textFill="#012d5a">
+                           <font>
+                              <Font name="Open Sans Regular" size="12.0" />
+                           </font>
+                        </MFXButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+            <Line endX="100.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.75">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Line>
             <VBox fx:id="newLocationVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="0.0" prefWidth="200.0">
                <children>
                   <Label alignment="TOP_LEFT" text="Create a new location:" textFill="#012d5a">
@@ -582,7 +628,7 @@
                         <Font name="Open Sans Regular" size="12.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="5.0" />
+                        <Insets />
                      </VBox.margin>
                   </Label>
                   <MFXTextField fx:id="newLocationLongname" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" promptText="Enter long name">

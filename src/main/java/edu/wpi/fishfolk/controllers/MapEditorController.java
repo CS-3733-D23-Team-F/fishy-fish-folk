@@ -61,6 +61,10 @@ public class MapEditorController extends AbsController {
   @FXML MFXScrollPane locationScrollpane;
   @FXML VBox locationsVbox;
 
+  @FXML VBox unassignedLocationsVbox;
+  @FXML MFXComboBox<String> unassignedLocationsDropdown;
+  @FXML MFXButton unassignedLocationDelete, unassignedLocationAssign;
+
   @FXML VBox newLocationVbox;
   @FXML MFXTextField newLocationLongname, newLocationShortname;
   @FXML MFXComboBox<NodeType> newLocationType;
@@ -97,6 +101,7 @@ public class MapEditorController extends AbsController {
           loc -> new Observable[] {loc.getLocationProperty(), loc.getMovesProperty()});
   // easy access to a specific location via its longname
   private HashMap<String, Integer> longname2idx = new HashMap<>();
+  private List<Location> unassignedLocations = new LinkedList<>();
 
   // MOVES
   private ObservableList<Move> moves =
@@ -111,7 +116,7 @@ public class MapEditorController extends AbsController {
 
   private HashMap<NodeType, Group> locationTypeGroups;
   private HashSet<NodeType> visibleNodeTypes = new HashSet<>();
-  private final List<NodeType> observableNodeTypes =
+  public static final List<NodeType> observableNodeTypes =
       FXCollections.observableList(dbConnection.getNodeTypes(SharedResources.isRoot()));
 
   private final BuildingChecker buildingChecker = new BuildingChecker();
@@ -178,6 +183,8 @@ public class MapEditorController extends AbsController {
     // default to today
     todayPicker.setValue(LocalDate.now());
 
+    unassignedLocationsVbox.setDisable(true);
+
     // ensure the vbox holding the new location & date fields is managed only when visible
     newLocationVbox.managedProperty().bind(newLocationVbox.visibleProperty());
     newLocationVbox.setDisable(true);
@@ -216,17 +223,23 @@ public class MapEditorController extends AbsController {
         .forEach(
             m -> {
               Move move = (Move) m;
-              Node node = nodes.get(nodeID2idx.get(move.getNodeID()));
-              Location location = locations.get(longname2idx.get(move.getLongName()));
+              if (nodeID2idx.containsKey(move.getNodeID())) {
+                Node node = nodes.get(nodeID2idx.get(move.getNodeID()));
+                if (longname2idx.containsKey(move.getLongName())) {
+                  Location location = locations.get(longname2idx.get(move.getLongName()));
 
-              // link the location to the node and store the date too
-              node.addMove(location, move.getDate());
+                  // link the location to the node and store the date too
+                  node.addMove(location, move.getDate());
 
-              // link the node the location
-              location.addMove(node, move.getDate());
+                  // link the node the location
+                  location.addMove(node, move.getDate());
 
-              moves.add(move);
+                  moves.add(move);
+                }
+              }
             });
+
+    updateUnassignedLocations();
 
     // set up listeners on observables
     // DO NOT modify the lists inside the change handlers nor in another thread
@@ -373,8 +386,8 @@ public class MapEditorController extends AbsController {
             while (change.next()) {
               // possible operations: added or removed
 
-              // update the nodes and locations observable lists
-
+              // removed moves:
+              // unlink nodes and locations that were linked via this move
               change
                   .getRemoved()
                   .forEach(
@@ -388,8 +401,12 @@ public class MapEditorController extends AbsController {
                         locations
                             .get(longname2idx.get(removedMove.getLongName()))
                             .removeMove(removedMove);
+
+                        // update unassigned locations
+                        updateUnassignedLocations();
                       });
 
+              // added moves
               change
                   .getAddedSubList()
                   .forEach(
@@ -458,7 +475,10 @@ public class MapEditorController extends AbsController {
               clearNodeFields();
               clearLocationFields();
 
-              newLocationVbox.setDisable(true);
+              unassignedLocationsVbox.setDisable(true);
+
+              newLocationVbox.setVisible(false);
+              // newLocationVbox.setDisable(true);
 
             } else {
 
@@ -467,15 +487,23 @@ public class MapEditorController extends AbsController {
 
                 Node node = nodes.get(nodeID2idx.get(selectedNodes.get(0)));
                 fillNodeFields(node);
+
+                // show locations for this node
                 fillLocationFields(node);
-                newLocationVbox.setDisable(false);
+                newLocationVbox.setVisible(true);
+                // newLocationVbox.setDisable(false);
+
+                unassignedLocationsVbox.setDisable(false);
 
               } else {
 
                 clearNodeFields();
                 clearLocationFields();
 
-                newLocationVbox.setDisable(true);
+                newLocationVbox.setVisible(true);
+                // newLocationVbox.setDisable(true);
+
+                unassignedLocationsVbox.setDisable(true);
               }
 
               // for any number > 0 of selected nodes
@@ -625,14 +653,7 @@ public class MapEditorController extends AbsController {
                     // undo location adding by removing it from observable list
                     Location addedLocation = (Location) lastEdit.getNewEntry();
 
-                    // update longname -> idx map
-                    int removedIdx = longname2idx.get(addedLocation.getLongName());
-
-                    for (int i = removedIdx + 1; i < locations.size(); i++) {
-                      longname2idx.put(locations.get(i).getLongName(), i - 1);
-                    }
-                    // remove from list which shifts elements left by 1
-                    locations.remove(removedIdx);
+                    removeLocation(addedLocation.getLongName());
 
                     break;
 
@@ -1118,7 +1139,40 @@ public class MapEditorController extends AbsController {
     todayPicker.setOnAction(
         event -> {
           today = todayPicker.getValue();
-          System.out.println("changed date to " + today);
+          updateUnassignedLocations();
+        });
+
+    unassignedLocationDelete.setOnMouseClicked(
+        event -> {
+          String longnameToDelete = unassignedLocationsDropdown.getSelectedItem();
+
+          if (longnameToDelete != null) {
+            removeLocation(longnameToDelete);
+
+            // will fail quietly when attempting to remove "Deleted Location"
+            editQueue.add(
+                new DataEdit<>(longnameToDelete, DataEditType.REMOVE, TableEntryType.LOCATION),
+                false);
+
+            // remove from dropdown
+            unassignedLocations.removeIf(
+                location -> location.getLongName().equals(longnameToDelete));
+            unassignedLocationsDropdown.getItems().remove(longnameToDelete);
+          }
+        });
+
+    unassignedLocationAssign.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING_NODE) {
+            String longnameToAssign = unassignedLocationsDropdown.getSelectedItem();
+
+            if (longnameToAssign != null) {
+              Move newMove = new Move(selectedNodes.get(0), longnameToAssign, today);
+              moves.add(newMove);
+              editQueue.add(
+                  new DataEdit<>(newMove, DataEditType.INSERT, TableEntryType.MOVE), false);
+            }
+          }
         });
 
     newLocationSubmit.setOnMouseClicked(
@@ -1681,6 +1735,37 @@ public class MapEditorController extends AbsController {
                       .movesBetween(locationDate.getDate(), today);
             })
         .toList();
+  }
+
+  /**
+   * Remove the location matching the given longname from the list of locations. This function
+   * handles the arraylist shifting indices but NOT adding to the edit queue.
+   *
+   * @param longname
+   */
+  private void removeLocation(String longname) {
+
+    // update longname -> idx map
+    int removedIdx = longname2idx.get(longname);
+
+    for (int i = removedIdx + 1; i < locations.size(); i++) {
+      longname2idx.put(locations.get(i).getLongName(), i - 1);
+    }
+
+    // remove from list which shifts elements left by 1
+    locations.remove(removedIdx);
+  }
+
+  private void updateUnassignedLocations() {
+
+    unassignedLocations.clear();
+
+    unassignedLocations.addAll(
+        locations.stream().filter(location -> !location.assignedBefore(today)).toList());
+
+    unassignedLocationsDropdown
+        .getItems()
+        .addAll(unassignedLocations.stream().map(Location::getLongName).sorted().toList());
   }
 
   private void refreshSelectedNodes() {

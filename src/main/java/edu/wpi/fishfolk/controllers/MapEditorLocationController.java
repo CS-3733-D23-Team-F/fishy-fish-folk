@@ -36,16 +36,20 @@ public class MapEditorLocationController {
     preview.setDisable(true);
     submit.setDisable(true);
 
+    type.getItems().addAll(MapEditorController.observableNodeTypes);
+
     shortnameText.setOnAction(
         event -> {
           location.setShortName(shortnameText.getText());
           locationEdited = true;
+          updateButtons();
         });
 
     type.setOnAction(
         event -> {
           location.setNodeType(type.getSelectedItem());
           locationEdited = true;
+          updateButtons();
         });
 
     nodeIDText.setOnAction(
@@ -72,6 +76,11 @@ public class MapEditorLocationController {
   }
 
   public void setData(Location location, LocalDate date) {
+
+    this.location = location;
+    this.date = date;
+
+    System.out.println("trying to set location " + location);
 
     longnameText.setText(location.getLongName());
 
