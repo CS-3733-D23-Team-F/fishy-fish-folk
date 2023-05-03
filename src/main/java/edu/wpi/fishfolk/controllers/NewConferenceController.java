@@ -264,7 +264,7 @@ public class NewConferenceController extends AbsController {
    * @param node the area it will pop up next to.
    */
   private void submissionError(String error, Node node) {
-    node.setStyle("-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1");
+    node.setStyle("-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1;");
     if (thugShaker == null || thugShaker.getNode() != node) {
       thugShaker = new TranslateTransition(Duration.millis(100), node);
     }
