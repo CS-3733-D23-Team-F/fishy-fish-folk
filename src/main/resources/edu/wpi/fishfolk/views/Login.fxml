@@ -57,7 +57,7 @@
                                     <Insets left="35.0" />
                                  </padding>
                               </MFXTextField>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="man" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/003-user-1.png" />
                                  </image>
@@ -85,7 +85,7 @@
                                     <Insets left="35.0" />
                                  </padding>
                               </MFXPasswordField>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="lock" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/002-padlock.png" />
                                  </image>

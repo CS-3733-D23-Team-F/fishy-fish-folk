@@ -76,7 +76,7 @@
             </HBox>
             <StackPane>
                <children>
-                  <MFXScrollPane fx:id="navigationPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;">
+                  <MFXScrollPane fx:id="navigationPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;" styleClass="otherScroll">
                      <content>
                         <VBox style="-fx-background-color: #F4F4F4;">
                            <children>
@@ -216,7 +216,7 @@
                         </VBox>
                      </content>
                   </MFXScrollPane>
-                  <MFXScrollPane fx:id="hospitalImagesPane" disable="true" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;" visible="false">
+                  <MFXScrollPane fx:id="hospitalImagesPane" disable="true" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;" styleClass="otherScroll" visible="false">
                      <content>
                         <VBox style="-fx-background-color: #F4F4F4;">
                            <children>
@@ -248,7 +248,7 @@
                         </VBox>
                      </content>
                   </MFXScrollPane>
-                  <MFXScrollPane fx:id="serviceRequestPane" disable="true" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;" visible="false">
+                  <MFXScrollPane fx:id="serviceRequestPane" disable="true" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;" styleClass="otherScroll" visible="false">
                      <content>
                         <VBox style="-fx-background-color: #F4F4F4;">
                            <children>
@@ -736,7 +736,7 @@
                         </VBox>
                      </content>
                   </MFXScrollPane>
-                  <MFXScrollPane fx:id="miscPane" disable="true" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;" visible="false">
+                  <MFXScrollPane fx:id="miscPane" disable="true" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefWidth="500.0" style="-fx-background-color: #F4F4F4;" styleClass="otherScroll" visible="false">
                      <content>
                         <VBox style="-fx-background-color: #F4F4F4;">
                            <children>
