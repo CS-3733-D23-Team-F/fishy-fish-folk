@@ -49,6 +49,9 @@
                                  <TableColumn fx:id="foodtotalprice" prefWidth="75.0" text="Total Price" />
                                  <TableColumn fx:id="foodnotes" prefWidth="60.0" text="Notes" />
                              </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                            </TableView>
                         </children>
                      </HBox>
@@ -106,6 +109,9 @@
                             <TableColumn fx:id="supplynotes" prefWidth="60.0" text="Notes" />
                             <TableColumn fx:id="supplysupplies" prefWidth="100.0" text="Supplies" />
                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                       </TableView>
                    </children>
                 </HBox>
@@ -165,6 +171,9 @@
                               <TableColumn fx:id="flowertotalprice" prefWidth="75.0" text="Total Price" />
                               <TableColumn fx:id="flowernotes" prefWidth="60.0" text="Notes" />
                            </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
                      </children>
                   </HBox>
@@ -269,6 +278,9 @@
                               <TableColumn fx:id="furnitureservicetype" prefWidth="100.0" text="Service Type" />
                               <TableColumn fx:id="furniturefurniture" prefWidth="100.0" text="Furniture" />
                            </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
                      </children>
                   </HBox>
@@ -328,6 +340,9 @@
                                  <TableColumn fx:id="itroom" prefWidth="100.0" text="Room" />
                                  <TableColumn fx:id="itcontactinfo" prefWidth="100.0" text="Contact Info" />
                               </columns>
+                              <columnResizePolicy>
+                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                              </columnResizePolicy>
                            </TableView>
                         </children>
                      </HBox>
@@ -393,6 +408,9 @@
                                  <TableColumn fx:id="conferencerecurring" prefWidth="70.0" text="Recurring?" />
                                  <TableColumn fx:id="conferencenotes" prefWidth="60.0" text="Notes" />
                               </columns>
+                              <columnResizePolicy>
+                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                              </columnResizePolicy>
                            </TableView>
                         </children>
                      </HBox>
