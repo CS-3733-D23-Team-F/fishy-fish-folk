@@ -291,6 +291,8 @@ public class SignageEditorController extends AbsController {
 
     presetText.setText(preset.getName());
     datePicker.setValue(preset.getDate());
+    kioskSelect.setValue(preset.getKiosk());
+    kioskSelect.setText(preset.getKiosk());
 
     for (int i = 0; i < 8; i++) {
       if (preset.getSigns()[i] == null) {

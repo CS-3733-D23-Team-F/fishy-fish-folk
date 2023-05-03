@@ -59,7 +59,7 @@ public class NewSignageController extends AbsController {
     // if the current date matches a date in one of the SignagePresets
     // the identifier is set to the name of that SignagePreset
     for (int i = 0; i < allPresets.size(); i++) {
-      if (allPresets.get(i).getDate().isBefore(LocalDate.now())
+      if (allPresets.get(i).getDate().isBefore(LocalDate.now().plusDays(1))
           && (allPresets.get(i).getDate().isAfter(latest.getDate())
               && allPresets.get(i).getKiosk().equals(SharedResources.defaultLocation))) {
         latest = allPresets.get(i);
