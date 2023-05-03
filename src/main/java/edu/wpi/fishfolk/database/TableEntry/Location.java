@@ -41,6 +41,10 @@ public class Location {
     locationProperty = new SimpleObjectProperty<>(this);
   }
 
+  public Location deepCopy() {
+    return new Location(longName, shortName, nodeType);
+  }
+
   public boolean isDestination() {
     return nodeType != NodeType.HALL && nodeType != NodeType.ELEV && nodeType != NodeType.STAI;
   }

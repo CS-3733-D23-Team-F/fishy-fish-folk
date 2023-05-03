@@ -21,7 +21,6 @@ public class MapEditorLocationController {
   @FXML MFXButton preview, delete, submit;
 
   @Getter @Setter Node origin;
-  private boolean validNodeID = false, validDate = false;
 
   @Getter @Setter private int nodeID;
   @Getter @Setter private Location location;
@@ -29,6 +28,8 @@ public class MapEditorLocationController {
 
   @Getter @Setter private boolean locationEdited = false;
   @Getter @Setter private boolean moveEdited = false;
+
+  @Getter @Setter private boolean newMove = false;
 
   @FXML
   private void initialize() {
@@ -40,36 +41,38 @@ public class MapEditorLocationController {
 
     shortnameText.setOnAction(
         event -> {
-          location.setShortName(shortnameText.getText());
           locationEdited = true;
           updateButtons();
         });
 
     type.setOnAction(
         event -> {
-          location.setNodeType(type.getSelectedItem());
           locationEdited = true;
           updateButtons();
         });
 
     nodeIDText.setOnAction(
         event -> {
-          int nid = Integer.parseInt(nodeIDText.getText());
-          validNodeID = MapEditorController.validateNodeID(nid);
-          if (validNodeID) {
-            nodeID = nid;
-            moveEdited = true;
+          if (nodeIDText.getText().isEmpty()) {
+            newMove = false;
+          } else {
+
+            if (MapEditorController.validateNodeID(Integer.parseInt(nodeIDText.getText()))) {
+              newMove = true;
+              moveEdited = false;
+            }
           }
           updateButtons();
         });
 
     datePicker.setOnAction(
         event -> {
-          LocalDate d = datePicker.getValue();
-          validDate = MapEditorController.validateDate(d);
-          if (validDate) {
-            date = d;
-            moveEdited = true;
+
+          // user changes date has two cases
+          // if the node id is set, this is a new move
+          // if the node is not set, this is updating the current move
+          if (MapEditorController.validateDate(datePicker.getValue())) {
+            moveEdited = !newMove;
           }
           updateButtons();
         });
@@ -79,8 +82,6 @@ public class MapEditorLocationController {
 
     this.location = location;
     this.date = date;
-
-    System.out.println("trying to set location " + location);
 
     longnameText.setText(location.getLongName());
 
@@ -92,20 +93,34 @@ public class MapEditorLocationController {
     datePicker.setValue(date);
   }
 
+  public void acceptEdits() {
+    location.setShortName(shortnameText.getText());
+    location.setNodeType(type.getSelectedItem());
+  }
+
+  public void readNewDate() {
+    date = datePicker.getValue();
+  }
+
+  public void readNewMove() {
+    if (!nodeIDText.getText().isEmpty()) {
+      nodeID = Integer.parseInt(nodeIDText.getText());
+    }
+
+    date = datePicker.getValue();
+  }
+
   public Move getMove() {
     return new Move(nodeID, location.getLongName(), date);
   }
 
   private void updateButtons() {
 
-    if (validNodeID) {
+    if (newMove) {
       preview.setDisable(false);
     }
-    if (validNodeID && validDate) {
-      submit.setDisable(false);
-    }
 
-    if (locationEdited) {
+    if (moveEdited || locationEdited) {
       submit.setDisable(false);
     }
   }

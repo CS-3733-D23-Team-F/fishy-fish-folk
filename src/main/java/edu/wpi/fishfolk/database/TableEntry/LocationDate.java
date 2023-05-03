@@ -12,6 +12,14 @@ public class LocationDate {
     this.date = date;
   }
 
+  public String getMoveID() {
+    return location.getLongName() + date;
+  }
+
+  public String getLongname() {
+    return location.getLongName();
+  }
+
   public String toString() {
     return location.getLongName() + " moving on " + date;
   }

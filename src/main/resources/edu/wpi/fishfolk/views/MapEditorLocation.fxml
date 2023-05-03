@@ -21,7 +21,7 @@
             <Insets />
          </VBox.margin>
       </Label>
-      <MFXTextField fx:id="longnameText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0">
+      <MFXTextField fx:id="longnameText" allowEdit="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0">
          <textFill>
             <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
          </textFill>

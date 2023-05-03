@@ -133,7 +133,7 @@ public class AdminDashboardController {
       LocalDate currentDate = LocalDate.now();
       for (Move move : moves) {
         if (!move.getDate().isBefore(currentDate)) {
-          System.out.println(move.getLongName() + " " + move.getDate());
+          // System.out.println(move.getLongName() + " " + move.getDate());
 
           FXMLLoader fxmlLoader = new FXMLLoader();
           fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
