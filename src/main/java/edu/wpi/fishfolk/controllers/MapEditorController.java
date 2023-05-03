@@ -150,7 +150,6 @@ public class MapEditorController extends AbsController {
     Collections.reverse(floorsReverse);
     floorSelector.getItems().addAll(floorsReverse);
 
-    locationSearch.getItems().addAll(dbConnection.getDestLongnames());
     showLocationType.getItems().addAll(observableNodeTypes);
 
     newLocationType.getItems().addAll(observableNodeTypes);
@@ -241,6 +240,7 @@ public class MapEditorController extends AbsController {
               }
             });
 
+    updateLocationSearch();
     updateUnassignedLocations();
 
     // set up listeners on observables
@@ -359,6 +359,16 @@ public class MapEditorController extends AbsController {
             while (change.next()) {
               // possible operations: updated, added, removed
 
+              if (change.wasUpdated()) {
+
+                for (int i = change.getFrom(); i < change.getTo(); i++) {
+                  Node node = locations.get(i).getNode(today);
+                  if (node != null) {
+                    updateLocationLabel(node);
+                  }
+                }
+              }
+
               // removed locations: fix moves involving this location
               change
                   .getRemoved()
@@ -385,6 +395,25 @@ public class MapEditorController extends AbsController {
                         Node node = location.getNode(today);
                         if (node != null) {
                           updateLocationLabel(node);
+                        }
+                      });
+
+              change
+                  .getRemoved()
+                  .forEach(
+                      location -> {
+                        Node node = location.getNode(today);
+                        if (node != null) {
+
+                          // search for old labels (matching node id) in all groups
+                          locationTypeGroups.forEach(
+                              (nodeType, group) -> {
+                                group
+                                    .getChildren()
+                                    .removeIf(
+                                        fxnode ->
+                                            ((NodeText) fxnode).getNodeID() == node.getNodeID());
+                              });
                         }
                       });
 
@@ -423,9 +452,6 @@ public class MapEditorController extends AbsController {
                         locations
                             .get(longname2idx.get(removedMove.getLongName()))
                             .removeMove(removedMove);
-
-                        // update unassigned locations
-                        updateUnassignedLocations();
                       });
 
               // added moves
@@ -448,6 +474,9 @@ public class MapEditorController extends AbsController {
                                 nodes.get(nodeID2idx.get(addedMove.getNodeID())),
                                 addedMove.getDate());
                       });
+
+              // update unassigned locations
+              updateUnassignedLocations();
             }
           }
         });
@@ -1010,25 +1039,30 @@ public class MapEditorController extends AbsController {
           // get the location object from the searched longname
           // then get its node on the given date
 
-          Node searchedNode =
-              locations.get(longname2idx.get(locationSearch.getValue())).getNode(today);
-          if (searchedNode != null) {
+          Integer locationIdx = longname2idx.get(locationSearch.getValue());
 
-            if (!searchedNode.getFloor().equals(allFloors.get(currentFloor))) {
-              // floor selector's on action automatically switches floor
-              floorSelector.setValue(searchedNode.getFloor());
-              // switchFloor(node.getFloor());
+          if (locationIdx != null) {
+
+            Node searchedNode = locations.get(locationIdx).getNode(today);
+
+            if (searchedNode != null) {
+
+              if (!searchedNode.getFloor().equals(allFloors.get(currentFloor))) {
+                // floor selector's on action automatically switches floor
+                floorSelector.setValue(searchedNode.getFloor());
+                // switchFloor(node.getFloor());
+              }
+              gesturePane.centreOn(searchedNode.getPoint());
+              gesturePane.zoomTo(1.25, searchedNode.getPoint());
+
+              selectedNodes.clear();
+              selectedNodes.add(searchedNode.getNodeID());
+
+              state = EDITOR_STATE.EDITING_NODE;
+
+            } else {
+              System.out.println("location " + locationSearch.getValue() + " not at any node");
             }
-            gesturePane.centreOn(searchedNode.getPoint());
-            gesturePane.zoomTo(1.25, searchedNode.getPoint());
-
-            selectedNodes.clear();
-            selectedNodes.add(searchedNode.getNodeID());
-
-            state = EDITOR_STATE.EDITING_NODE;
-
-          } else {
-            System.out.println("location " + locationSearch.getValue() + " not at any node");
           }
         });
 
@@ -1204,6 +1238,7 @@ public class MapEditorController extends AbsController {
         event -> {
           today = todayPicker.getValue();
           updateLocationLabels();
+          updateLocationSearch();
           updateUnassignedLocations();
         });
 
@@ -1547,14 +1582,17 @@ public class MapEditorController extends AbsController {
    */
   private void removeLocation(String longname) {
 
-    int removedIdx = longname2idx.get(longname);
+    if (longname2idx.containsKey(longname)) {
 
-    for (int i = removedIdx + 1; i < locations.size(); i++) {
-      longname2idx.put(locations.get(i).getLongName(), i - 1);
+      int removedIdx = longname2idx.get(longname);
+
+      for (int i = removedIdx + 1; i < locations.size(); i++) {
+        longname2idx.put(locations.get(i).getLongName(), i - 1);
+      }
+      // remove from list which shifts elements left by 1
+      locations.remove(removedIdx);
+      longname2idx.remove(longname);
     }
-    // remove from list which shifts elements left by 1
-    locations.remove(removedIdx);
-    longname2idx.remove(longname);
   }
 
   private void moveSelectedNodes(double dist, MOVE_DIRECTION dir) {
@@ -1892,6 +1930,13 @@ public class MapEditorController extends AbsController {
               // add new label to matching group
               locationTypeGroups.get(nodeType).getChildren().add(newLabel);
             });
+  }
+
+  private void updateLocationSearch() {
+    locationSearch.clear();
+    locationSearch
+        .getItems()
+        .addAll(locations.stream().map(Location::getLongName).sorted().toList());
   }
 
   private void updateUnassignedLocations() {
