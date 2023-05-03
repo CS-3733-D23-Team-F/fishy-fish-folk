@@ -19,14 +19,14 @@ public class SignagePreset {
    *
    * @param name Name of preset
    * @param date Date to apply preset
-   * @param signs Array of signs in preset
    * @param kiosk Kiosk for the preset
+   * @param signs Array of signs in preset
    */
-  public SignagePreset(String name, LocalDate date, Sign[] signs, String kiosk) {
+  public SignagePreset(String name, LocalDate date, String kiosk, Sign[] signs) {
     this.name = name;
     this.date = date;
-    this.signs = signs;
     this.kiosk = kiosk;
+    this.signs = signs;
     this.status = EntryStatus.OLD;
   }
 

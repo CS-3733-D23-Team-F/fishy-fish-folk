@@ -7,6 +7,7 @@ import edu.wpi.fishfolk.database.TableEntry.SignagePreset;
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.ui.Sign;
 import edu.wpi.fishfolk.util.PermissionLevel;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
@@ -46,8 +47,8 @@ public class NewSignageController extends AbsController {
       new SignagePreset(
           "baseline",
           LocalDate.now().minusYears(1000),
-          null,
-          "Watkins Kiosk 1"); // TODO: TRISTINNNNNNNNNNNNNNNNNNNN
+          SharedResources.defaultLocation,
+          new Sign[8]); // TODO: TRISTINNNNNNNNNNNNNNNNNNNN
 
   public void initialize() {
 

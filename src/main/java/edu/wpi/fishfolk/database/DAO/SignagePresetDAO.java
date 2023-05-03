@@ -81,8 +81,9 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
                 + ");";
         statement.executeUpdate(query);
 
-        insertEntry(new SignagePreset("default", LocalDate.now(), new Sign[8], SharedResources.defaultLocation));
-
+        insertEntry(
+            new SignagePreset(
+                "default", LocalDate.now(), SharedResources.defaultLocation, new Sign[8]));
       }
 
     } catch (SQLException e) {
@@ -110,8 +111,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
             new SignagePreset(
                 results.getString(headers.get(0)),
                 results.getDate(headers.get(1)).toLocalDate(),
-                getSubtableItems(results.getInt(headers.get(2))),
-                results.getString(headers.get(3)));
+                results.getString(headers.get(2)),
+                getSubtableItems(results.getInt(headers.get(3))));
 
         tableMap.put(signagePreset.getName(), signagePreset);
       }
@@ -536,8 +537,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
             new SignagePreset(
                 parts[0],
                 LocalDate.parse(parts[1], DateTimeFormatter.ISO_LOCAL_DATE),
-                subtable.get(Integer.parseInt(parts[2])),
-                parts[3]);
+                parts[3],
+                subtable.get(Integer.parseInt(parts[2])));
 
         tableMap.put(signagePreset.getName(), signagePreset);
 
@@ -582,9 +583,9 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
                 + ","
                 + signagePreset.getDate()
                 + ","
-                + getSubtableItemsID(signagePreset.getName())
+                + signagePreset.getKiosk()
                 + ","
-                + signagePreset.getKiosk());
+                + getSubtableItemsID(signagePreset.getName()));
       }
 
       tableOut.close();
