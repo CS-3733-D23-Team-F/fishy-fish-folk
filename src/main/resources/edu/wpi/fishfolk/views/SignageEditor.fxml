@@ -5,6 +5,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -192,6 +193,11 @@
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER">
+         <children>
+            <Label fx:id="error" text="Label" />
+         </children>
       </HBox>
       <HBox alignment="CENTER" minHeight="50.0" minWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
