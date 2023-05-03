@@ -147,7 +147,7 @@
                                                       <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pham, Louis - Software Engineer">
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pham, Louis - Senior Software Engineer">
                                                    <font>
                                                       <Font size="24.0" />
                                                    </font>
@@ -263,7 +263,7 @@
                                                       <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Smith, Max - Software Engineer">
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Smith, Max - Senior Software Engineer">
                                                    <font>
                                                       <Font size="24.0" />
                                                    </font>
@@ -291,7 +291,7 @@
                                                       <Insets />
                                                    </VBox.margin>
                                                 </ImageView>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Product Manager">
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Youtz, Tristin - Project Manager">
                                                    <font>
                                                       <Font size="24.0" />
                                                    </font>
@@ -395,7 +395,7 @@
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham &amp; Women’s Hospital mapsand data used in this application are copyrighted and provided for the sole use of educational purposes." textAlignment="CENTER" wrappingWidth="1092.515625">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham &amp; Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes." textAlignment="CENTER" wrappingWidth="1092.515625">
                      <font>
                         <Font size="24.0" />
                      </font>

@@ -54,7 +54,7 @@ public class NewSignageController extends AbsController {
     // the identifier is set to the name of that SignagePreset
     for (int i = 0; i < allPresets.size(); i++) {
       if (allPresets.get(i).getDate().isBefore(LocalDate.now())
-          && allPresets.get(i).getDate().isAfter(latest.getDate())){
+          && allPresets.get(i).getDate().isAfter(latest.getDate())) {
         latest = allPresets.get(i);
       }
     }
