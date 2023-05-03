@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
@@ -80,6 +81,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
                 + ");";
         statement.executeUpdate(query);
       }
+
+      insertEntry(new SignagePreset("default", LocalDate.now(), new Sign[8], SharedResources.defaultLocation));
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
