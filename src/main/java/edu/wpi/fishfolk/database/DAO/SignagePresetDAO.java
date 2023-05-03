@@ -80,9 +80,10 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
                 + "signs SERIAL"
                 + ");";
         statement.executeUpdate(query);
-      }
 
-      insertEntry(new SignagePreset("default", LocalDate.now(), new Sign[8], SharedResources.defaultLocation));
+        insertEntry(new SignagePreset("default", LocalDate.now(), new Sign[8], SharedResources.defaultLocation));
+
+      }
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
