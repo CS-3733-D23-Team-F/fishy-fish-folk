@@ -3,10 +3,13 @@ package edu.wpi.fishfolk.controllers;
 import edu.wpi.fishfolk.Fapp;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.net.URL;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class AboutMeController {
   @FXML VBox vbox;
@@ -22,6 +25,8 @@ public class AboutMeController {
   @FXML MFXButton Bernhardt;
   @FXML MFXButton Brendan;
   @FXML StackPane stack;
+
+  @FXML Label AboutM11;
   int counter = 0;
 
   @FXML
@@ -52,6 +57,22 @@ public class AboutMeController {
     Trajan.setOnMouseClicked(event -> PopPage(TrajanPage));
     Bernhardt.setOnMouseClicked(event -> PopPage(BernhardtPage));
     Brendan.setOnMouseClicked(event -> PopPage(BrendanPage));
+
+    AboutM11.setOnMouseClicked(
+        event -> {
+          if (AboutM11.getOpacity() > 0.9) {
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(2000));
+
+            fadeOut.setNode(AboutM11);
+
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.setCycleCount(1);
+            fadeOut.setAutoReverse(false);
+
+            fadeOut.playFromStart();
+          }
+        });
   }
 
   // handler function for everyone's page
