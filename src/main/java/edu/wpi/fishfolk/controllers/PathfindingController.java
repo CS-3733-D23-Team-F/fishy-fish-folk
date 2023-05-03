@@ -6,6 +6,9 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.Location;
@@ -21,6 +24,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -112,6 +117,8 @@ public class PathfindingController extends AbsController {
   Group alertGroup;
 
   private PathfindSingleton pathfinder;
+
+  private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
   int start, end;
   Graph graph;
@@ -492,7 +499,7 @@ public class PathfindingController extends AbsController {
           endSelector.clear();
         });
 
-    generateqr.setDisable(true);
+    generateqr.setDisable(false);
 
     generateqr.setOnMouseClicked(
         event -> {
@@ -516,12 +523,32 @@ public class PathfindingController extends AbsController {
                       .map(TextDirection::toString)
                       .collect(Collectors.joining());
 
+          try {
+
+            HttpResponse<String> response =
+                Unirest.post("https://pathfindingviewer.000webhostapp.com/process.php")
+                    .field("data", text)
+                    .asString();
+
+            // update UI with response status code
+            System.out.println("hello " + response.getStatus());
+
+          } catch (UnirestException e) {
+            e.printStackTrace();
+          }
+
           Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
           hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
           BitMatrix bitMatrix;
           int size = 500;
           try {
-            bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, size, size, hintMap);
+            bitMatrix =
+                qrCodeWriter.encode(
+                    "https://pathfindingviewer.000webhostapp.com/index.html",
+                    BarcodeFormat.QR_CODE,
+                    size,
+                    size,
+                    hintMap);
           } catch (WriterException e) {
             throw new RuntimeException(e);
           }
