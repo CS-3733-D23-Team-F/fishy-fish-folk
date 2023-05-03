@@ -121,6 +121,16 @@ public class Fdb {
                 }));
   }
 
+  public List<NodeType> getNodeTypes(boolean root) {
+    if (root) {
+      List<NodeType> lst = new LinkedList<>(nodeTypes);
+      lst.add(BNGS);
+      return lst;
+    } else {
+      return nodeTypes;
+    }
+  }
+
   /**
    * Connect to a PostgreSQL database.
    *
@@ -769,6 +779,7 @@ public class Fdb {
     return locationTable.getAllEntries().stream().filter(Location::isDestination).toList();
   }
 
+  @Deprecated
   public HashMap<NodeType, List<NodeText>> getLocationLabelsByType(String floor, LocalDate date) {
 
     HashMap<NodeType, List<NodeText>> map = new HashMap<>();

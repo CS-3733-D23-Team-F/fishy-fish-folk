@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
@@ -9,11 +10,10 @@ import edu.wpi.fishfolk.mapeditor.BuildingChecker;
 import edu.wpi.fishfolk.mapeditor.EdgeLine;
 import edu.wpi.fishfolk.mapeditor.NodeCircle;
 import edu.wpi.fishfolk.mapeditor.NodeText;
-import edu.wpi.fishfolk.navigation.Navigation;
-import edu.wpi.fishfolk.navigation.Screen;
 import edu.wpi.fishfolk.util.NodeType;
 import io.github.palexdev.materialfx.controls.*;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -44,7 +44,7 @@ public class MapEditorController extends AbsController {
   @FXML MFXButton nextButton;
   @FXML MFXButton backButton;
 
-  @FXML MFXButton moveEditorNav, save, undo;
+  @FXML MFXButton save, undo, redo;
   @FXML MFXButton importCSV, exportCSV;
   @FXML MFXButton addNode, delNode;
   @FXML MFXRadioButton radioAllEdge, radioSelectedEdge, radioNoEdge;
@@ -53,45 +53,61 @@ public class MapEditorController extends AbsController {
 
   @FXML MFXFilterComboBox<String> locationSearch;
   @FXML CheckComboBox<NodeType> showLocationType;
-  @FXML MFXButton clearLocationType;
+
+  @FXML MFXDatePicker todayPicker;
 
   @FXML MFXTextField nodeidText, xText, yText, buildingText;
 
   @FXML MFXScrollPane locationScrollpane;
   @FXML VBox locationsVbox;
 
+  @FXML VBox unassignedLocationsVbox;
+  @FXML MFXComboBox<String> unassignedLocationsDropdown;
+  @FXML MFXButton unassignedLocationDelete, unassignedLocationAssign;
+
   @FXML VBox newLocationVbox;
   @FXML MFXTextField newLocationLongname, newLocationShortname;
-  @FXML MFXComboBox<String> newLocationType;
+  @FXML MFXComboBox<NodeType> newLocationType;
   @FXML MFXDatePicker newLocationDate;
   @FXML MFXButton newLocationSubmit;
 
   FileChooser fileChooser = new FileChooser();
   DirectoryChooser dirChooser = new DirectoryChooser();
 
-  private Group nodeGroup, edgeGroup, locationGroup;
+  private Group nodeGroup, edgeGroup, locationGroup, labelPreviewGroup;
 
   // observable lists of map objects. listeners automatically update the ui
-  // the new Observable[] {} syntax is called an extractor and allows listeners to receive update
-  // calls
+  // extractor syntax: Observable[] {}  allows listeners to receive updates from internal fields
 
+  // NODES
   private ObservableList<Node> nodes =
       FXCollections.observableArrayList(
-          node -> new Observable[] {node.getNodeProperty(), node.getPointProperty()});
+          // listen to node, point, and moves properties
+          node ->
+              new Observable[] {
+                node.getNodeProperty(), node.getPointProperty(), node.getMovesProperty()
+              });
   // easy access to a specific node via its id
-  private HashMap<Integer, Integer> nodeID2idx = new HashMap<>();
+  private static HashMap<Integer, Integer> nodeID2idx = new HashMap<>();
   private HashMap<Integer, Node> removedNodes = new HashMap<>();
 
+  // EDGES
   private ObservableList<Edge> edges =
       FXCollections.observableArrayList(edge -> new Observable[] {edge.getEdgeProperty()});
 
+  // LOCATIONS
   private ObservableList<Location> locations =
-      FXCollections.observableArrayList(loc -> new Observable[] {loc.getLocationProperty()});
+      FXCollections.observableArrayList(
+          loc -> new Observable[] {loc.getLocationProperty(), loc.getMovesProperty()});
   // easy access to a specific location via its longname
   private HashMap<String, Integer> longname2idx = new HashMap<>();
+  private List<Location> unassignedLocations = new LinkedList<>();
+  private HashMap<String, Location> removedLocations = new HashMap<>();
 
+  // MOVES
   private ObservableList<Move> moves =
       FXCollections.observableArrayList(move -> new Observable[] {move.getMoveProperty()});
+  private HashMap<String, Move> removedMoves = new HashMap<>();
 
   // different listeners than the large lists above containing the entire map
   private ObservableList<Integer> selectedNodes = FXCollections.observableArrayList();
@@ -102,8 +118,8 @@ public class MapEditorController extends AbsController {
 
   private HashMap<NodeType, Group> locationTypeGroups;
   private HashSet<NodeType> visibleNodeTypes = new HashSet<>();
-  private final List<NodeType> observableNodeTypes =
-      FXCollections.observableList(dbConnection.getNodeTypes());
+  public static final List<NodeType> observableNodeTypes =
+      FXCollections.observableList(dbConnection.getNodeTypes(SharedResources.isRoot()));
 
   private final BuildingChecker buildingChecker = new BuildingChecker();
 
@@ -117,6 +133,15 @@ public class MapEditorController extends AbsController {
     super();
   }
 
+  public static boolean validateNodeID(int nodeID) {
+    return nodeID2idx.containsKey(nodeID);
+  }
+
+  public static boolean validateDate(LocalDate date) {
+    // equivalent to matches today or is after today
+    return !date.isBefore(today);
+  }
+
   @FXML
   private void initialize() {
 
@@ -125,15 +150,29 @@ public class MapEditorController extends AbsController {
     Collections.reverse(floorsReverse);
     floorSelector.getItems().addAll(floorsReverse);
 
-    locationSearch.getItems().addAll(dbConnection.getDestLongnames());
     showLocationType.getItems().addAll(observableNodeTypes);
+
+    newLocationType.getItems().addAll(observableNodeTypes);
 
     nodeGroup = new Group();
     edgeGroup = new Group();
     locationGroup = new Group();
-    drawGroup.getChildren().addAll(nodeGroup, edgeGroup, locationGroup);
+    labelPreviewGroup = new Group();
+    locationGroup.getChildren().add(labelPreviewGroup);
 
     locationTypeGroups = new HashMap<>();
+
+    // populate nodeType -> label group map
+    dbConnection
+        .getNodeTypes()
+        .forEach(
+            nodeType -> {
+              Group g = new Group();
+              locationGroup.getChildren().add(g);
+              locationTypeGroups.put(nodeType, g);
+            });
+
+    drawGroup.getChildren().addAll(nodeGroup, edgeGroup, locationGroup);
 
     // set initial zoom and center
     gesturePane.centreOn(new Point2D(1700, 1100));
@@ -142,9 +181,14 @@ public class MapEditorController extends AbsController {
     // other buttons in radio group are deselected by default
     radioNoEdge.setSelected(true);
 
+    // default to today
+    todayPicker.setValue(LocalDate.now());
+
+    unassignedLocationsVbox.setDisable(true);
+
     // ensure the vbox holding the new location & date fields is managed only when visible
     newLocationVbox.managedProperty().bind(newLocationVbox.visibleProperty());
-    newLocationVbox.setDisable(true);
+    newLocationVbox.setVisible(false);
 
     // set up observable lists using data from the db
 
@@ -162,6 +206,8 @@ public class MapEditorController extends AbsController {
     dbConnection.getAllEntries(TableEntryType.EDGE).forEach(e -> edges.add((Edge) e));
 
     // populate list of locations
+    locations.add(Location.REMOVED);
+    longname2idx.put(Location.REMOVED.getLongName(), 0);
     dbConnection
         .getAllEntries(TableEntryType.LOCATION)
         .forEach(
@@ -178,17 +224,24 @@ public class MapEditorController extends AbsController {
         .forEach(
             m -> {
               Move move = (Move) m;
-              Node node = nodes.get(nodeID2idx.get(move.getNodeID()));
-              Location location = locations.get(longname2idx.get(move.getLongName()));
+              if (nodeID2idx.containsKey(move.getNodeID())) {
+                Node node = nodes.get(nodeID2idx.get(move.getNodeID()));
+                if (longname2idx.containsKey(move.getLongName())) {
+                  Location location = locations.get(longname2idx.get(move.getLongName()));
 
-              // link the location to the node and store the date too
-              node.addMove(location, today);
+                  // link the location to the node and store the date too
+                  node.addMove(location, move.getDate());
 
-              // link the node the location
-              location.setNode(node);
+                  // link the node the location
+                  location.addMove(node, move.getDate());
 
-              moves.add(move);
+                  moves.add(move);
+                }
+              }
             });
+
+    updateLocationSearch();
+    updateUnassignedLocations();
 
     // set up listeners on observables
     // DO NOT modify the lists inside the change handlers nor in another thread
@@ -243,8 +296,9 @@ public class MapEditorController extends AbsController {
                 HashSet<Integer> removed =
                     new HashSet<>(change.getRemoved().stream().map(Node::getNodeID).toList());
 
-                // since arraylist removal shifts all subsequent elements to the left, id2idx must
-                // be updated
+                // the removeSelectedNodes handles removing nodes from the array
+
+                // handle what
                 change.getRemoved().forEach(node -> {});
 
                 // remove nodecircles from the draw group
@@ -262,6 +316,7 @@ public class MapEditorController extends AbsController {
                           nodeGroup.getChildren().add(drawNode(node));
                         });
 
+                // draw just added nodes
                 nodeGroup
                     .getChildren()
                     .addAll(change.getAddedSubList().stream().map(node -> drawNode(node)).toList());
@@ -296,7 +351,135 @@ public class MapEditorController extends AbsController {
           }
         });
 
-    // no listeners needed for general location and move lists
+    locations.addListener(
+        new ListChangeListener<Location>() {
+          @Override
+          public void onChanged(Change<? extends Location> change) {
+
+            while (change.next()) {
+              // possible operations: updated, added, removed
+
+              if (change.wasUpdated()) {
+
+                for (int i = change.getFrom(); i < change.getTo(); i++) {
+                  Node node = locations.get(i).getNode(today);
+                  if (node != null) {
+                    updateLocationLabel(node);
+                  }
+                }
+              }
+
+              // removed locations: fix moves involving this location
+              change
+                  .getRemoved()
+                  .forEach(
+                      location -> {
+                        System.out.println("removed: " + location);
+                        removedLocations.put(location.getLongName(), location);
+
+                        // find moves that had this location and replace it with REMOVED
+                        moves.forEach(
+                            move -> {
+                              if (move.getLongName().equals(location.getLongName())) {
+                                move.setLongName(Location.REMOVED.getLongName());
+                              }
+                            });
+                      });
+
+              // make a label for this location to appear when filtered by type
+              change
+                  .getAddedSubList()
+                  .forEach(
+                      location -> {
+                        // updated label for this node
+                        Node node = location.getNode(today);
+                        if (node != null) {
+                          updateLocationLabel(node);
+                        }
+                      });
+
+              change
+                  .getRemoved()
+                  .forEach(
+                      location -> {
+                        Node node = location.getNode(today);
+                        if (node != null) {
+
+                          // search for old labels (matching node id) in all groups
+                          locationTypeGroups.forEach(
+                              (nodeType, group) -> {
+                                group
+                                    .getChildren()
+                                    .removeIf(
+                                        fxnode ->
+                                            ((NodeText) fxnode).getNodeID() == node.getNodeID());
+                              });
+                        }
+                      });
+
+              // insertions come from:
+              // loading from db at start of session
+              // csv import
+              // undoing delete location
+              // user creating new location on ui
+              // every case already handles longname2idx
+            }
+          }
+        });
+
+    moves.addListener(
+        new ListChangeListener<Move>() {
+          @Override
+          public void onChanged(Change<? extends Move> change) {
+
+            while (change.next()) {
+              // possible operations: added or removed
+
+              // removed moves:
+              // unlink nodes and locations that were linked via this move
+              change
+                  .getRemoved()
+                  .forEach(
+                      removedMove -> {
+                        // save removed move for undoing
+                        removedMoves.put(removedMove.getMoveID(), removedMove);
+
+                        // unlink location from node
+                        nodes.get(nodeID2idx.get(removedMove.getNodeID())).removeMove(removedMove);
+
+                        // set location's node to null instead of removing which would shift the
+                        // other elements
+                        locations
+                            .get(longname2idx.get(removedMove.getLongName()))
+                            .removeMove(removedMove);
+                      });
+
+              // added moves
+              change
+                  .getAddedSubList()
+                  .forEach(
+                      addedMove -> {
+
+                        // get the location object from its longname and add it to the node
+                        nodes
+                            .get(nodeID2idx.get(addedMove.getNodeID()))
+                            .addMove(
+                                locations.get(longname2idx.get(addedMove.getLongName())),
+                                addedMove.getDate());
+
+                        // get the node object from its id and add it to the location
+                        locations
+                            .get(longname2idx.get(addedMove.getLongName()))
+                            .addMove(
+                                nodes.get(nodeID2idx.get(addedMove.getNodeID())),
+                                addedMove.getDate());
+                      });
+
+              // update unassigned locations
+              updateUnassignedLocations();
+            }
+          }
+        });
 
     // listeners for observable lists of selected items
 
@@ -343,24 +526,34 @@ public class MapEditorController extends AbsController {
               clearNodeFields();
               clearLocationFields();
 
-              newLocationVbox.setDisable(true);
+              unassignedLocationsVbox.setDisable(true);
+
+              newLocationVbox.setVisible(false);
 
             } else {
 
-              //
+              // exactly one selected node
               if (selectedNodes.size() == 1) {
 
                 Node node = nodes.get(nodeID2idx.get(selectedNodes.get(0)));
                 fillNodeFields(node);
-                fillLocationFields(node.getLocations(today));
-                newLocationVbox.setDisable(false);
 
-              } else {
+                // show locations for this node
+                fillLocationFields(node);
+                newLocationVbox.setVisible(true);
+
+                unassignedLocationsVbox.setDisable(false);
+
+              } else { // do only if >1 node selected
 
                 clearNodeFields();
                 clearLocationFields();
 
-                newLocationVbox.setDisable(true);
+                newLocationVbox.setVisible(false);
+
+                if (!unassignedLocations.isEmpty()) {
+                  unassignedLocationsVbox.setDisable(true);
+                }
               }
 
               // for any number > 0 of selected nodes
@@ -428,18 +621,19 @@ public class MapEditorController extends AbsController {
 
     // buttons and state switching
 
-    moveEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
-
     save.setOnMouseClicked(
         event -> {
-          System.out.println("saving " + editQueue.size() + " edits");
+          System.out.println("saving " + editQueue.size() + " edits:");
 
           dbConnection.processEditQueue(editQueue);
+
+          removedNodes.clear();
+          removedLocations.clear();
+          removedMoves.clear();
 
           editQueue.clear();
         });
 
-    // TODO WIP: instead of storing list of undone edits, just move pointer back in edit queue
     undo.setOnMouseClicked(
         event -> {
           if (!editQueue.canUndo()) {
@@ -447,6 +641,8 @@ public class MapEditorController extends AbsController {
 
           } else {
             DataEdit<Object> lastEdit = editQueue.undoEdit();
+
+            System.out.println("undoing " + lastEdit);
 
             switch (lastEdit.getTable()) {
               case NODE:
@@ -506,13 +702,72 @@ public class MapEditorController extends AbsController {
                     // no update edits for edges
 
                 }
+                break;
 
               case LOCATION:
+                switch (lastEdit.getType()) {
+                  case INSERT:
+                    // undo location adding by removing it from observable list
+                    Location addedLocation = (Location) lastEdit.getNewEntry();
+
+                    removeLocation(addedLocation.getLongName());
+
+                    break;
+
+                  case REMOVE:
+                    // undo location removal by adding it back
+                    // do not recreate the moves with this edge
+
+                    Location removedLocation =
+                        removedLocations.get((String) lastEdit.getNewEntry());
+
+                    longname2idx.put(removedLocation.getLongName(), locations.size());
+                    // add to observable list and listners will do the rest
+                    locations.add(removedLocation);
+                    break;
+
+                  case UPDATE:
+                    // undo location updates to short name & type
+
+                    Location original = (Location) lastEdit.getOldEntry();
+                    Location updated = (Location) lastEdit.getNewEntry();
+
+                    // Location location = locations.get(longname2idx.get(original.getLongName()));
+
+                    updated.setShortName(original.getShortName());
+                    updated.setNodeType(original.getNodeType());
+                    break;
+                }
+                break;
 
               case MOVE:
+                switch (lastEdit.getType()) {
+                  case INSERT:
+                    // undo adding move by deleting this move
+                    moves.remove((Move) lastEdit.getNewEntry());
+                    break;
+
+                  case REMOVE:
+                    // undo removing move by adding it back
+                    Move removedMove = removedMoves.get((String) lastEdit.getNewEntry());
+                    moves.add(removedMove);
+                    break;
+
+                  case UPDATE:
+                    // undo update by setting move back to its previous values
+                    System.out.println(lastEdit.getOldEntry() + " -> " + lastEdit.getNewEntry());
+                    Move original = (Move) lastEdit.getOldEntry();
+                    Move updated = (Move) lastEdit.getNewEntry();
+
+                    // the only non-unique value is the nodeID
+                    updated.setNodeID(original.getNodeID());
+                }
+                break;
             }
           }
         });
+
+    redo.setOnMouseClicked(event -> {});
 
     importCSV.setOnMouseClicked(
         event -> {
@@ -538,12 +793,12 @@ public class MapEditorController extends AbsController {
           if (!(importedNodes && importedLocations && importedMoves && importedEdges)) {
             PopOver errorPopup = new PopOver();
 
-            Label label = new Label("Error importing CSVs, please try again");
-            label.setStyle(" -fx-background-color: white;");
-            label.setMinWidth(220);
-            label.setMinHeight(30);
+            Label popupText = new Label("Error importing CSVs, please try again");
+            popupText.setStyle(" -fx-background-color: white;");
+            popupText.setMinWidth(220);
+            popupText.setMinHeight(30);
 
-            errorPopup.setContentNode(label);
+            errorPopup.setContentNode(popupText);
 
             errorPopup.show(importCSV);
           }
@@ -560,13 +815,15 @@ public class MapEditorController extends AbsController {
 
           locations.clear();
           longname2idx.clear();
+          locations.add(Location.REMOVED);
+          longname2idx.put(Location.REMOVED.getLongName(), 0);
 
           moves.clear();
 
           editQueue.clear();
           nodesOnFloor.clear();
 
-          locationTypeGroups.clear();
+          locationTypeGroups.forEach((nodeType, group) -> group.getChildren().clear());
           visibleNodeTypes.clear();
 
           initialize();
@@ -617,7 +874,9 @@ public class MapEditorController extends AbsController {
 
             state = EDITOR_STATE.EDITING_NODE;
 
-          } else if (state == EDITOR_STATE.EDITING_NODE || state == EDITOR_STATE.EDITING_EDGE) {
+          } else if (state == EDITOR_STATE.EDITING_NODE
+              || state == EDITOR_STATE.EDITING_EDGE
+              || state == EDITOR_STATE.PREVIEWING) {
 
             // clear node stuff
             selectedNodes.clear();
@@ -633,6 +892,11 @@ public class MapEditorController extends AbsController {
 
             // clear location search box
             locationSearch.clearSelection();
+
+            // clear the preview location label
+            if (state == EDITOR_STATE.PREVIEWING) {
+              labelPreviewGroup.getChildren().clear();
+            }
 
             state = EDITOR_STATE.IDLE;
           }
@@ -770,36 +1034,35 @@ public class MapEditorController extends AbsController {
               }
             });
 
-    clearLocationType.setOnMouseClicked(
-        event -> {
-          visibleNodeTypes.clear();
-          observableNodeTypes.forEach(
-              type -> showLocationType.getItemBooleanProperty(type).setValue(false));
-          // observableNodeTypes.forEach(type -> locationLabels.get(type).setVisible(false));
-          // showLocationType.setTitle("");
-        });
-
     locationSearch.setOnAction(
         event -> {
-          int nodeID = dbConnection.getNodeIDFromLocation(locationSearch.getValue(), today);
-          if (nodeID > 0) {
-            Node node = (Node) dbConnection.getEntry(nodeID, TableEntryType.NODE);
-            // switch floor is an expensive operation, only do it if requested node is on a
-            // different floor
-            if (!node.getFloor().equals(allFloors.get(currentFloor))) {
-              floorSelector.setValue(node.getFloor());
-              // switchFloor(node.getFloor());
+          // get the location object from the searched longname
+          // then get its node on the given date
+
+          Integer locationIdx = longname2idx.get(locationSearch.getValue());
+
+          if (locationIdx != null) {
+
+            Node searchedNode = locations.get(locationIdx).getNode(today);
+
+            if (searchedNode != null) {
+
+              if (!searchedNode.getFloor().equals(allFloors.get(currentFloor))) {
+                // floor selector's on action automatically switches floor
+                floorSelector.setValue(searchedNode.getFloor());
+                // switchFloor(node.getFloor());
+              }
+              gesturePane.centreOn(searchedNode.getPoint());
+              gesturePane.zoomTo(1.25, searchedNode.getPoint());
+
+              selectedNodes.clear();
+              selectedNodes.add(searchedNode.getNodeID());
+
+              state = EDITOR_STATE.EDITING_NODE;
+
+            } else {
+              System.out.println("location " + locationSearch.getValue() + " not at any node");
             }
-            gesturePane.centreOn(node.getPoint());
-            gesturePane.zoomTo(1.25, node.getPoint());
-
-            selectedNodes.clear();
-            selectedNodes.add(node.getNodeID());
-
-            state = EDITOR_STATE.EDITING_NODE;
-
-          } else {
-            System.out.println("location " + locationSearch.getValue() + " not at any node");
           }
         });
 
@@ -971,21 +1234,73 @@ public class MapEditorController extends AbsController {
               });
         });
 
+    todayPicker.setOnAction(
+        event -> {
+          today = todayPicker.getValue();
+          updateLocationLabels();
+          updateLocationSearch();
+          updateUnassignedLocations();
+        });
+
+    unassignedLocationDelete.setOnMouseClicked(
+        event -> {
+          String longnameToDelete = unassignedLocationsDropdown.getSelectedItem();
+
+          if (longnameToDelete != null) {
+            removeLocation(longnameToDelete);
+
+            // will fail quietly when attempting to remove "Deleted Location"
+            editQueue.add(
+                new DataEdit<>(longnameToDelete, DataEditType.REMOVE, TableEntryType.LOCATION),
+                false);
+
+            // remove from dropdown
+            unassignedLocations.removeIf(
+                location -> location.getLongName().equals(longnameToDelete));
+            unassignedLocationsDropdown.getItems().remove(longnameToDelete);
+          }
+        });
+
+    unassignedLocationAssign.setOnMouseClicked(
+        event -> {
+          if (state == EDITOR_STATE.EDITING_NODE) {
+            String longnameToAssign = unassignedLocationsDropdown.getSelectedItem();
+
+            if (longnameToAssign != null) {
+              Move newMove = new Move(selectedNodes.get(0), longnameToAssign, today);
+              moves.add(newMove);
+              editQueue.add(
+                  new DataEdit<>(newMove, DataEditType.INSERT, TableEntryType.MOVE), false);
+            }
+          }
+        });
+
     newLocationSubmit.setOnMouseClicked(
         event -> {
+          // create location object, store it locally, add to edits queue
           Location newLocation =
               new Location(
                   newLocationLongname.getText(),
                   newLocationShortname.getText(),
-                  NodeType.valueOf(newLocationType.getValue()));
+                  newLocationType.getValue());
+
+          longname2idx.put(newLocation.getLongName(), locations.size());
+          locations.add(newLocation);
+
           editQueue.add(
               new DataEdit<>(newLocation, DataEditType.INSERT, TableEntryType.LOCATION), false);
-          // dbConnection.insertEntry(newLocation);
 
+          // create move object, save it locally, add to edits queue
           Move move =
               new Move(selectedNodes.get(0), newLocation.getLongName(), newLocationDate.getValue());
+          moves.add(move);
           editQueue.add(new DataEdit<>(move, DataEditType.INSERT, TableEntryType.MOVE), false);
-          // dbConnection.insertEntry(move);
+
+          // clean up inputs on UI
+          newLocationLongname.clear();
+          newLocationShortname.clear();
+          newLocationType.clear();
+          newLocationDate.clear();
         });
   }
 
@@ -1003,7 +1318,6 @@ public class MapEditorController extends AbsController {
     nodeGroup.getChildren().clear();
 
     // add nodecircles from this floor to nodegroup
-    // dbConnection.getNodesOnFloor(floor).forEach(this::drawNode);
     nodeGroup
         .getChildren()
         .addAll(
@@ -1021,8 +1335,6 @@ public class MapEditorController extends AbsController {
     edgeGroup.getChildren().clear();
 
     // add edgelines from this floor to edge group
-    // dbConnection.getEdgesOnFloor(floor).forEach(edge -> drawEdge(edge,
-    // radioAllEdge.isSelected()));
     edgeGroup
         .getChildren()
         .addAll(
@@ -1039,35 +1351,24 @@ public class MapEditorController extends AbsController {
                     })
                 .toList());
 
-    // clear groups in map (type -> group of labels)
+    // clear location labels for this floor
     locationTypeGroups.forEach((key, value) -> value.getChildren().clear());
 
-    // create location labels from this floor and add to location group based on type
-    nodes.stream()
-        .filter(node -> nodesOnFloor.contains(node.getNodeID()))
-        .forEach(
-            node -> {
-              // get locations at this node
-              node.getLocations(today)
-                  .forEach(
-                      loc -> {
-                        // add location labels to the correct group (dependent on node type)
-                        locationTypeGroups
-                            .get(loc.getNodeType())
-                            .getChildren()
-                            .add(
-                                // create text label for each location
-                                new NodeText(
-                                    node.getNodeID(),
-                                    node.getX(),
-                                    node.getY(),
-                                    loc.getShortName()));
-                      });
-            });
+    updateLocationLabels();
 
-    selectedNodes.clear();
-    selectedEdges.clear();
+    // show only needed location labels
+    locationTypeGroups.forEach(
+        (nodeType, group) -> {
+          group.setVisible(visibleNodeTypes.contains(nodeType));
+        });
 
+    if (state != EDITOR_STATE.PREVIEWING) {
+
+      selectedNodes.clear();
+      selectedEdges.clear();
+    }
+
+    // TODO bring back drawing locations
     // drawLocations(floor, toggleLocations.isSelected());
   }
 
@@ -1129,8 +1430,6 @@ public class MapEditorController extends AbsController {
                     Math.pow((nodeCircle.getCenterX() - nodeCircle.getPrevX()), 2)
                         + Math.pow((nodeCircle.getCenterY() - nodeCircle.getPrevY()), 2));
 
-            System.out.println("dragged " + dist);
-
             if (dist > 10) {
 
               Node oldNode = node.deepCopy();
@@ -1143,8 +1442,6 @@ public class MapEditorController extends AbsController {
               // node.setPoint(new Point2D(event.getX(), event.getY()));
               node.setBuilding(
                   buildingChecker.getBuilding(node.getPoint(), allFloors.get(currentFloor)));
-
-              System.out.println(oldNode.getPoint() + " dragged to " + node.getPoint());
 
               // save edit
               editQueue.add(
@@ -1180,6 +1477,16 @@ public class MapEditorController extends AbsController {
     line.setVisible(visibility);
 
     return line;
+  }
+
+  private NodeText drawLocationLabel(Node node) {
+
+    // concat shortnames from locations at this node into one label
+    String labelText =
+        String.join(", ", node.getLocations(today).stream().map(Location::getShortName).toList());
+
+    return new NodeText(
+        node.getNodeID(), node.getX() - labelText.length() * 5 + 5, node.getY() - 15, labelText);
   }
 
   private void insertNode(Point2D point) {
@@ -1224,11 +1531,15 @@ public class MapEditorController extends AbsController {
 
           removedNodes.put(nodeID, nodes.get(removedIdx));
 
+          // delete moves to this node and the moves listener will update the rest
+          moves.removeIf(move -> move.getNodeID() == nodeID);
+
           for (int i = removedIdx + 1; i < nodes.size(); i++) {
             int oldIdx = nodeID2idx.get(nodes.get(i).getNodeID());
             nodeID2idx.put(nodes.get(i).getNodeID(), oldIdx - 1);
           }
           nodes.remove(removedIdx);
+          nodeID2idx.remove(removedIdx);
 
           if (track) {
             // record in edit queue
@@ -1261,6 +1572,27 @@ public class MapEditorController extends AbsController {
         });
 
     selectedEdges.clear();
+  }
+
+  /**
+   * Remove the location matching the given longname from the list of locations. This function
+   * handles the arraylist shifting indices but NOT adding to the edit queue.
+   *
+   * @param longname
+   */
+  private void removeLocation(String longname) {
+
+    if (longname2idx.containsKey(longname)) {
+
+      int removedIdx = longname2idx.get(longname);
+
+      for (int i = removedIdx + 1; i < locations.size(); i++) {
+        longname2idx.put(locations.get(i).getLongName(), i - 1);
+      }
+      // remove from list which shifts elements left by 1
+      locations.remove(removedIdx);
+      longname2idx.remove(longname);
+    }
   }
 
   private void moveSelectedNodes(double dist, MOVE_DIRECTION dir) {
@@ -1320,26 +1652,212 @@ public class MapEditorController extends AbsController {
   }
 
   /** Display current locations in info pane on UI. */
-  private void fillLocationFields(List<Location> locations) {
-
-    locationsVbox.getChildren().clear();
-    locationsVbox.setMaxHeight(300);
+  private void fillLocationFields(Node node) {
 
     locationScrollpane.setVisible(true);
     locationScrollpane.setDisable(false);
-    locationScrollpane.setMaxHeight(300);
+
+    locationsVbox.getChildren().clear();
 
     try {
 
-      for (Location location : locations) {
+      for (LocationDate move : getMoves(node)) {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(Fapp.class.getResource("views/MapEditorLocation.fxml"));
 
         VBox entry = fxmlLoader.load();
 
+        System.out.println("injecting locationdate " + move);
+
         MapEditorLocationController controller = fxmlLoader.getController();
-        controller.setData(location);
+        controller.setData(move.getLocation(), move.getDate());
+
+        controller.preview.setOnMouseClicked(
+            event -> {
+
+              // click preview to preview
+              if (state != EDITOR_STATE.PREVIEWING) {
+
+                state = EDITOR_STATE.PREVIEWING;
+
+                if (!selectedNodes.isEmpty()) {
+                  controller.setOrigin(nodes.get(nodeID2idx.get(selectedNodes.get(0))));
+                }
+
+                Node previewNode = nodes.get(nodeID2idx.get(controller.getNodeID()));
+
+                if (!previewNode.getFloor().equals(allFloors.get(currentFloor))) {
+                  // floor selector's onAction switches floors
+                  floorSelector.setValue(previewNode.getFloor());
+                }
+                gesturePane.centreOn(previewNode.getPoint());
+                gesturePane.zoomTo(1.0, previewNode.getPoint());
+
+                NodeText label = drawLocationLabel(previewNode);
+                labelPreviewGroup.getChildren().add(label);
+                controller.preview.setText("Back");
+
+              } else { // previewing, click back to go back
+
+                Node origin = controller.getOrigin();
+
+                // maybe unnecessary since the only way to fall into this else statement
+                // is after the origin has already been set
+                if (origin != null) {
+
+                  // clear preview location label
+                  labelPreviewGroup.getChildren().clear();
+
+                  if (!origin.getFloor().equals(allFloors.get(currentFloor))) {
+                    // floor selector's onAction switches floors
+                    floorSelector.setValue(origin.getFloor());
+                  }
+                  gesturePane.centreOn(origin.getPoint());
+                  gesturePane.zoomTo(1.0, origin.getPoint());
+
+                  // highlight origin node again
+                  nodeGroup
+                      .getChildren()
+                      .forEach(
+                          fxnode -> {
+                            NodeCircle nodeCircle = (NodeCircle) fxnode;
+                            if (nodeCircle.getNodeID() == origin.getNodeID()) {
+                              nodeCircle.highlight();
+                            }
+                          });
+
+                  // back to editing the currently selected node
+                  state = EDITOR_STATE.EDITING_NODE;
+                }
+                controller.preview.setText("Preview");
+              }
+            });
+
+        controller.delete.setOnMouseClicked(
+            event -> {
+              moves.remove(controller.getMove());
+            });
+
+        controller.submit.setOnMouseClicked(
+            event -> {
+              // edit location
+              if (controller.isLocationEdited()) {
+
+                Location prevLocation = controller.getLocation().deepCopy();
+
+                // read user input and change values
+                controller.acceptEdits();
+
+                // update location with values from user inputs
+                Location location =
+                    locations.get(longname2idx.get(controller.getLocation().getLongName()));
+
+                location.setShortName(controller.getLocation().getShortName());
+                location.setNodeType(controller.getLocation().getNodeType());
+
+                editQueue.add(
+                    new DataEdit<>(
+                        prevLocation,
+                        controller.getLocation(),
+                        DataEditType.UPDATE,
+                        TableEntryType.LOCATION),
+                    false);
+
+                controller.setLocationEdited(false);
+              }
+
+              // edit move's date
+              if (controller.isMoveEdited()) {
+
+                controller.readNewDate();
+
+                Move editedMove =
+                    new Move(
+                        controller.getNodeID(),
+                        controller.getLocation().getLongName(),
+                        controller.getDate());
+
+                // delete move with original date, replace with updated date
+                moves.add(editedMove);
+                moves.removeIf(m -> m.getMoveID().equals(move.getMoveID()));
+
+                System.out.println("replaced " + move + " with " + editedMove);
+
+                // insert then remove so when undoing there are extra locations instead of too few
+                editQueue.add(
+                    new DataEdit<>(editedMove, DataEditType.INSERT, TableEntryType.MOVE), false);
+
+                editQueue.add(
+                    new DataEdit<>(move.getLongname(), DataEditType.REMOVE, TableEntryType.MOVE),
+                    false);
+
+                controller.setMoveEdited(false);
+              }
+
+              // submit new move for this location (user typed node id & selected date)
+              if (controller.isNewMove()) {
+
+                controller.readNewMove();
+
+                // clear nodeid field to show submission
+                controller.nodeIDText.clear();
+                // reset to the move previously shown
+                controller.datePicker.setValue(move.getDate());
+
+                // check for duplicate move
+                Move newMove =
+                    new Move(
+                        controller.getNodeID(),
+                        controller.getLocation().getLongName(),
+                        controller.getDate());
+
+                if (moves.contains(newMove)) {
+                  System.out.println("duplicate move " + newMove);
+
+                } else {
+
+                  System.out.println("adding move " + newMove);
+                  moves.add(newMove);
+                  editQueue.add(
+                      new DataEdit<>(newMove, DataEditType.INSERT, TableEntryType.MOVE), false);
+
+                  controller.setNewMove(false);
+
+                  // if user didnt press back after previewing, submit also takes them back
+                  if (state == EDITOR_STATE.PREVIEWING) {
+                    Node origin = controller.getOrigin();
+
+                    if (origin != null) {
+
+                      // clear preview location label
+                      labelPreviewGroup.getChildren().clear();
+
+                      if (!origin.getFloor().equals(allFloors.get(currentFloor))) {
+                        // floor selector's onAction switches floors
+                        floorSelector.setValue(origin.getFloor());
+                      }
+                      gesturePane.centreOn(origin.getPoint());
+                      gesturePane.zoomTo(1.0, origin.getPoint());
+
+                      // highlight origin node again
+                      nodeGroup
+                          .getChildren()
+                          .forEach(
+                              fxnode -> {
+                                NodeCircle nodeCircle = (NodeCircle) fxnode;
+                                if (nodeCircle.getNodeID() == origin.getNodeID()) {
+                                  nodeCircle.highlight();
+                                }
+                              });
+
+                      // back to editing the currently selected node
+                      state = EDITOR_STATE.EDITING_NODE;
+                    }
+                  }
+                }
+              }
+            });
 
         locationsVbox.getChildren().add(entry);
       }
@@ -1352,11 +1870,105 @@ public class MapEditorController extends AbsController {
   private void clearLocationFields() {
 
     locationsVbox.getChildren().clear();
-    locationsVbox.setMaxHeight(0);
 
     locationScrollpane.setVisible(false);
     locationScrollpane.setDisable(true);
-    locationScrollpane.setMaxHeight(0);
+  }
+
+  private List<LocationDate> getMoves(Node node) {
+
+    return node.getMovesProperty().stream()
+        .filter(
+            locationDate -> {
+              System.out.println(locationDate.getLocation().getLongName());
+              // move has already happened
+              // and location at move does not move again before today
+              return locationDate.getDate().isBefore(today)
+                  && !locations
+                      .get(longname2idx.get(locationDate.getLocation().getLongName()))
+                      .movesBetween(locationDate.getDate(), today);
+            })
+        .toList();
+  }
+
+  private void updateLocationLabels() {
+
+    // create location labels for the current floor and add to location group based on type
+    nodes.stream()
+        .filter(node -> nodesOnFloor.contains(node.getNodeID()))
+        .forEach(
+            node -> {
+              NodeText label = drawLocationLabel(node);
+
+              List<NodeType> nodeTypes =
+                  node.getLocations(today).stream().map(Location::getNodeType).toList();
+
+              // add location labels to the correct group (dependent on node type)
+              // nodes with multiple locations share a label so it gets added to both type groups
+              nodeTypes.forEach(
+                  nodeType -> locationTypeGroups.get(nodeType).getChildren().add(label));
+            });
+  }
+
+  public void updateLocationLabel(Node node) {
+
+    NodeText newLabel = drawLocationLabel(node);
+
+    // search for old labels (matching node id) in all groups
+    locationTypeGroups.forEach(
+        (nodeType, group) -> {
+          group
+              .getChildren()
+              .removeIf(fxnode -> ((NodeText) fxnode).getNodeID() == node.getNodeID());
+        });
+
+    // get the nodetypes for this node
+    node.getLocations(today).stream()
+        .map(Location::getNodeType)
+        .forEach(
+            nodeType -> {
+              // add new label to matching group
+              locationTypeGroups.get(nodeType).getChildren().add(newLabel);
+            });
+  }
+
+  private void updateLocationSearch() {
+    locationSearch.clear();
+    locationSearch
+        .getItems()
+        .addAll(locations.stream().map(Location::getLongName).sorted().toList());
+  }
+
+  private void updateUnassignedLocations() {
+
+    unassignedLocations.clear();
+
+    unassignedLocations.addAll(
+        locations.stream().filter(location -> !location.assignedBefore(today)).toList());
+    unassignedLocations.remove(Location.REMOVED);
+
+    if (unassignedLocations.isEmpty()) {
+      unassignedLocationsVbox.setDisable(true);
+
+    } else {
+      unassignedLocationsVbox.setDisable(false);
+
+      unassignedLocationsDropdown
+          .getItems()
+          .addAll(unassignedLocations.stream().map(Location::getLongName).sorted().toList());
+    }
+  }
+
+  private void refreshSelectedNodes() {
+    List<Integer> selectedNodesCopy = selectedNodes.stream().toList();
+    selectedNodes.clear();
+    selectedNodes.addAll(selectedNodesCopy);
+  }
+
+  private void refreshSelectedEdges() {
+    List<Edge> selectedEdgesCopy = selectedEdges.stream().toList();
+    selectedEdges.clear();
+    selectedEdges.addAll(selectedEdgesCopy);
   }
 }
 
@@ -1383,8 +1995,6 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
 
     undoPointer++;
     endPointer++;
-
-    System.out.println("undo " + undoPointer + " end " + endPointer);
 
     return dataEditQueue.add(dataEdit);
   }
@@ -1430,6 +2040,7 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
 
 enum EDITOR_STATE {
   IDLE,
+  PREVIEWING,
 
   ADDING_NODE,
   EDITING_NODE,

@@ -271,6 +271,23 @@
     -fx-background-radius: 0;
 }
 
+
+.combo-box-base{
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, #ffffff;
+    -fx-background-radius: 5;
+}
+
+.combo-box-base {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, white;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 3px, 3px, 2px, 1px;
+}
+
+.combo-box .combo-box-popup .list-cell:hover {
+    -fx-text-fill: #012d5a;
+    -fx-background-color: #f0bf4c;
+}
+
 .mfx-radio-button{
     -mfx-main: #012d5a;
 }
@@ -321,6 +338,7 @@
 
 .mfx-date-picker .date-picker-popup .mfx-date-cell:selected {
     -fx-background-color: #012d5a;
+    -fx-text-fill: white;
 
 }
 
