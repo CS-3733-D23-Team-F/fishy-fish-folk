@@ -429,6 +429,10 @@ public class SignageEditorController extends AbsController {
       submissionError("You must choose a date.", datePicker);
       return;
     }
+    if (kioskSelect.getValue() == null) {
+      submissionError("You must choose a kiosk.", kioskSelect);
+      return;
+    }
 
     currentPreset.setName(presetText.getText()); // preset name
     currentPreset.setDate(datePicker.getValue()); // preset implementation date
@@ -465,7 +469,8 @@ public class SignageEditorController extends AbsController {
     edu.wpi.fishfolk.database.TableEntry.SignagePreset preset =
         new edu.wpi.fishfolk.database.TableEntry.SignagePreset(
             currentPreset.getPresetName(),
-            currentPreset.getImplementationDate(), currentPreset.getKiosk(),
+            currentPreset.getImplementationDate(),
+            currentPreset.getKiosk(),
             currentPreset.signs);
     dbConnection.insertEntry(preset);
 
