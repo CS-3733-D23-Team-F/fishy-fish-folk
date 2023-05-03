@@ -667,8 +667,8 @@ public class ViewMasterOrderController extends AbsController {
   private void flowerRemove() {
     setToBlue();
     clearError();
-    FurnitureOrderObservable flower =
-        (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
+    FlowerOrderObservable flower =
+        (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
     if (flower == null) {
       return;
     }
