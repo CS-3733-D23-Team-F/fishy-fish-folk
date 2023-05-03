@@ -65,6 +65,7 @@ dependencies {
             'com.jfoenix:jfoenix:9.0.10',
 
             'com.google.zxing:zxing-parent:3.5.1',
+            'com.mashape.unirest:unirest-java:1.4.9',
             'com.google.zxing:core:3.5.1'
 
             //'com.journeyapps:zxing-android-embedded:4.1.0',
