@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -24,6 +25,7 @@ public class LoginController extends AbsController {
   @FXML MFXTextField loginIDField;
   @FXML MFXPasswordField loginPassField;
   @FXML Label errorBox;
+  @FXML ImageView man, lock;
   private static TranslateTransition thugShaker;
 
   /** Initialize state and set event handlers. */
@@ -102,12 +104,14 @@ public class LoginController extends AbsController {
     String password = loginPassField.getText();
 
     if (!loginID.matches("^[a-zA-Z0-9._]+$")) {
+      submissionError("Invalid username: Please only use a-Z, 0-9, dots, and underlines.", man);
       submissionError(
           "Invalid username: Please only use a-Z, 0-9, dots, and underlines.", loginIDField);
       return;
     }
 
     if (!password.matches("^[a-zA-Z0-9._]*$")) { // empty is technically allowed!
+      submissionError("Invalid password: Please only use a-Z, 0-9, dots, and underlines.", lock);
       submissionError(
           "Invalid password: Please only use a-Z, 0-9, dots, and underlines.", loginPassField);
       return;
@@ -126,6 +130,7 @@ public class LoginController extends AbsController {
     }
 
     if (foundAccount == null) {
+      submissionError("Account not found.", man);
       submissionError("Account not found.", loginIDField);
     } else {
       if (SharedResources.login(foundAccount, password)) {
@@ -148,6 +153,7 @@ public class LoginController extends AbsController {
             break;
         }
       } else {
+        submissionError("Incorrect password.", lock);
         submissionError("Incorrect password.", loginPassField);
       }
     }
