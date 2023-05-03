@@ -7,8 +7,12 @@ import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.ui.FormStatus;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -74,6 +78,7 @@ public class StaffDashboardController {
       flowerdeliverytime,
       flowerrecipientname,
       floweritems;
+  @FXML MFXButton serviceRefresh, alertsRefresh, movesRefresh;
   @FXML
   TableColumn<ITRequestObservable, String> itid,
       itstatus,
@@ -91,41 +96,69 @@ public class StaffDashboardController {
     // TODO fix this to load alerts in db and fix adding to alerts grid
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     setTable();
-    // toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.));
+    serviceRefresh.setOnMouseClicked(event -> setTable());
+
+    populateMoves(moves);
+
+    movesRefresh.setOnMouseClicked(
+        event -> {
+          ArrayList<Move> moves2 =
+              (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
+          grid.getChildren().removeAll(grid.getChildren());
+          populateMoves(moves2);
+        });
+
+    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+    alertsRefresh.setOnMouseClicked(
+        event -> {
+          alertGrid.getChildren().removeAll(alertGrid.getChildren());
+
+          dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+
+          System.out.println(
+              "[AdminDashboardController.initialize]: Alerts refreshed ("
+                  + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+                  + ")");
+        });
+  }
+
+  private void populateMoves(ArrayList<Move> moves) {
     int col = 0;
     int row = 1;
     try {
+      LocalDate currentDate = LocalDate.now();
       for (Move move : moves) {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
-        AnchorPane anchorPane = fxmlLoader.load();
-        FutureMovesController futureMoves = fxmlLoader.getController();
-        futureMoves.setData(move.getLongName(), "" + move.getDate());
-        futureMoves.notify.setDisable(true);
-        futureMoves.notify.setVisible(false);
-        if (col == 1) {
-          col = 0;
-          row++;
+        if (!move.getDate().isBefore(currentDate)) {
+          FXMLLoader fxmlLoader = new FXMLLoader();
+          fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
+          AnchorPane anchorPane = fxmlLoader.load();
+          FutureMovesController futureMoves = fxmlLoader.getController();
+          futureMoves.setData(move.getLongName(), "" + move.getDate());
+          futureMoves.notify.setDisable(true);
+          futureMoves.notify.setVisible(false);
+          if (col == 1) {
+            col = 0;
+            row++;
+          }
+
+          // col++;
+          grid.add(anchorPane, col++, row);
+
+          grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+          grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+          grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+          grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+          grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+          grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+          GridPane.setMargin(anchorPane, new Insets(10));
         }
-
-        // col++;
-        grid.add(anchorPane, col++, row);
-
-        grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-        grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-        grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-        grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-        GridPane.setMargin(anchorPane, new Insets(10));
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
-
-    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+    // dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
     alertsPane.setVvalue(1);
   }
 

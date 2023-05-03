@@ -1,15 +1,19 @@
 package edu.wpi.fishfolk.controllers;
 
 import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
+import static edu.wpi.fishfolk.controllers.AbsController.fdbConnections;
 
 import edu.wpi.fishfolk.Fapp;
 import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.DAO.Observables.*;
+import edu.wpi.fishfolk.database.DBSource;
+import edu.wpi.fishfolk.database.Fdb;
 import edu.wpi.fishfolk.database.TableEntry.*;
 import edu.wpi.fishfolk.database.TableEntry.Alert;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
@@ -30,9 +34,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -52,7 +53,15 @@ public class AdminDashboardController {
   @FXML TableView<SupplyOrderObservable> supplyTable;
   @FXML TableView<ITRequestObservable> itTable;
   @FXML MFXTextField addAlert;
-  @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
+  @FXML MFXButton toSignageEditor, toMoveEditor;
+  @FXML MFXScrollPane scroll;
+  @FXML MFXButton movesRefresh, alertsRefresh, serviceRefresh;
+  @FXML MFXComboBox<String> serverSelectorCombo;
+  @FXML HBox confirmBox;
+  @FXML AnchorPane confirmPane;
+  @FXML MFXButton yesSwitchDB;
+  @FXML MFXButton cancelSwitchDB;
+  @FXML HBox confirmBlur;
   @FXML
   TableColumn<FoodOrderObservable, String> foodid,
       foodassignee,
@@ -106,7 +115,6 @@ public class AdminDashboardController {
     ArrayList<Move> moves = (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
     Collections.sort(moves, Comparator.comparing(Move::getDate));
     setTable();
-
     outstandingFilter.setOnMouseClicked(
         event -> {
           setOutstandingTable();
@@ -127,19 +135,149 @@ public class AdminDashboardController {
           tableHeader.setText("Unassigned Tasks");
         });
 
-    int col = 0;
-    int row = 1;
+    serverSelectorCombo.setItems(FXCollections.observableList(List.of("DB_WPI", "DB_AWS")));
+    serverSelectorCombo.setPromptText("Current DB: " + dbConnection.getDbSource().toString());
+    serverSelectorCombo.setOnAction(
+        event -> {
+          confirmBox.setDisable(false);
+          confirmBox.setVisible(true);
+          confirmPane.setDisable(false);
+          confirmPane.setVisible(true);
+          confirmBlur.setDisable(false);
+          confirmBlur.setVisible(true);
+        });
+
+    yesSwitchDB.setOnAction(
+        event -> {
+          System.out.println("[AdminDashboard]: Switching DB...");
+          DBSource src = DBSource.valueOf(serverSelectorCombo.getSelectedItem());
+
+          switch (src) {
+            case DB_WPI:
+              if (fdbConnections[0] == null) {
+                fdbConnections[0] = new Fdb(DBSource.DB_WPI);
+              }
+              dbConnection = fdbConnections[0];
+              break;
+            case DB_AWS:
+              if (fdbConnections[1] == null) {
+                fdbConnections[1] = new Fdb(DBSource.DB_AWS);
+              }
+              dbConnection = fdbConnections[1];
+              break;
+          }
+
+          // dbConnection = new Fdb(src);
+          SharedResources.logout();
+          Navigation.navigate(Screen.LOGIN);
+        });
+    cancelSwitchDB.setOnAction(
+        event -> {
+          System.out.println("[AdminDashboard]: Cancelled DB switch.");
+          confirmPane.setDisable(true);
+          confirmPane.setVisible(false);
+          confirmBox.setDisable(true);
+          confirmBox.setVisible(false);
+          confirmBlur.setDisable(true);
+          confirmBlur.setVisible(false);
+        });
+
+    serviceRefresh.setOnMouseClicked(
+        event -> {
+          if (tableHeader.getText().equals("Unassigned Tasks")) {
+            setTable();
+          } else {
+            setOutstandingTable();
+          }
+        });
+
+    populateMoves(moves);
+
+    movesRefresh.setOnMouseClicked(
+        event -> {
+          ArrayList<Move> moves2 =
+              (ArrayList<Move>) dbConnection.getAllEntries(TableEntryType.MOVE);
+          grid.getChildren().removeAll(grid.getChildren());
+          populateMoves(moves2);
+        });
+
+    /*
+    // Recurring refresh of alerts table
+    ScheduledExecutorService alertRefreshScheduler = Executors.newScheduledThreadPool(1);
+    alertRefreshScheduler.scheduleAtFixedRate(
+        () -> {
+          try {
+
+            // v v v v v
+            alertGrid.getChildren().removeAll();
+
+            dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+
+            System.out.println(
+                    "[AdminDashboardController.initialize]: Alerts refreshed ("
+                            + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+                            + ")");
+            // ^ ^ ^ ^ ^
+
+          } catch (Exception e) {
+            System.out.println(e.getMessage());
+          }
+        },
+        0,
+        TimeUnit.SECONDS.toSeconds(15),
+        TimeUnit.SECONDS);
+        */
+    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+    alertsRefresh.setOnMouseClicked(
+        event -> {
+          alertGrid.getChildren().removeAll(alertGrid.getChildren());
+
+          dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
+
+          System.out.println(
+              "[AdminDashboardController.initialize]: Alerts refreshed ("
+                  + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+                  + ")");
+        });
+
+    addAlert.setOnAction(
+        event -> {
+          Alert alert =
+              new Alert(
+                  LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                  SharedResources.getUsername(),
+                  addAlert.getText());
+          addAlert(alert);
+        });
+
+    supplyassignee.setOnEditCommit(this::onSetSupplyEdit);
+    foodassignee.setOnEditCommit(this::onSetFoodEdit);
+    flowerassignee.setOnEditCommit(this::onSetFlowerEdit);
+    furnitureassignee.setOnEditCommit(this::onSetFurnitureEdit);
+    itassignee.setOnEditCommit(this::onSetITEdit);
+
+    toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
+    toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE_EDITOR));
+    alertsPane.setVvalue(1);
+  }
+
+  private void populateMoves(ArrayList<Move> moves) {
+
+    int col = 0, row = 1;
+
     try {
       LocalDate currentDate = LocalDate.now();
+
       for (Move move : moves) {
         if (!move.getDate().isBefore(currentDate)) {
-          // System.out.println(move.getLongName() + " " + move.getDate());
 
           FXMLLoader fxmlLoader = new FXMLLoader();
           fxmlLoader.setLocation(Fapp.class.getResource("views/FutureMoves.fxml"));
           AnchorPane anchorPane = fxmlLoader.load();
           FutureMovesController futureMoves = fxmlLoader.getController();
+
           futureMoves.setData(move.getLongName(), "" + move.getDate());
+
           futureMoves.notify.setOnMouseClicked(
               event -> {
                 String longname = futureMoves.longname;
@@ -179,33 +317,9 @@ public class AdminDashboardController {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
-    dbConnection.getAllEntries(TableEntryType.ALERT).forEach(obj -> addAlert((Alert) obj));
-
-    addAlert.setOnAction(
-        event -> {
-          Alert alert =
-              new Alert(
-                  LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
-                  SharedResources.getUsername(),
-                  addAlert.getText());
-          addAlert(alert);
-        });
-
-    supplyassignee.setOnEditCommit(this::onSetSupplyEdit);
-    foodassignee.setOnEditCommit(this::onSetFoodEdit);
-    flowerassignee.setOnEditCommit(this::onSetFlowerEdit);
-    furnitureassignee.setOnEditCommit(this::onSetFurnitureEdit);
-    itassignee.setOnEditCommit(this::onSetITEdit);
-
-    toMapEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
-    toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE_EDITOR));
-    alertsPane.setVvalue(1);
   }
 
   public void addAlert(Alert alert) {
-
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(Fapp.class.getResource("views/Alerts.fxml"));
@@ -359,23 +473,6 @@ public class AdminDashboardController {
     floweritems.setCellValueFactory(
         new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
 
-    flowerid.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerid"));
-    flowerassignee.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerassignee"));
-    flowertotalprice.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowertotalprice"));
-    flowerstatus.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerstatus"));
-    flowerdeliveryroom.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliveryroom"));
-    flowerdeliverytime.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerdeliverytime"));
-    flowerrecipientname.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("flowerrecipientname"));
-    floweritems.setCellValueFactory(
-        new PropertyValueFactory<FlowerOrderObservable, String>("floweritems"));
-
     itid.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itid"));
     itassignee.setCellValueFactory(
         new PropertyValueFactory<ITRequestObservable, String>("itassignee"));
@@ -500,10 +597,6 @@ public class AdminDashboardController {
     supplyTable.setEditable(true);
     flowerTable.setEditable(true);
     itTable.setEditable(true);
-
-    // foodTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-
-    // foodTable.autosize();
 
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());

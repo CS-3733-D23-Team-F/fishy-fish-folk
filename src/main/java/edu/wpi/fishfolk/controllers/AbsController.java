@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.DBSource;
 import edu.wpi.fishfolk.database.Fdb;
 import java.time.LocalDate;
 import java.time.Month;
@@ -14,6 +15,7 @@ import javafx.stage.FileChooser;
 public abstract class AbsController {
 
   protected static Fdb dbConnection;
+  protected static Fdb[] fdbConnections = new Fdb[2];
 
   protected static final ArrayList<String> allFloors =
       new ArrayList<>(List.of("L2", "L1", "1", "2", "3"));
@@ -33,7 +35,8 @@ public abstract class AbsController {
   public AbsController() {
 
     if (dbConnection == null) {
-      dbConnection = new Fdb();
+      dbConnection = new Fdb(DBSource.DB_AWS);
+      fdbConnections[1] = dbConnection;
     }
 
     mapImgURLs = new HashMap<>();

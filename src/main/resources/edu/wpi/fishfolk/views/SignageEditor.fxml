@@ -5,6 +5,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -15,7 +16,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1080.0" VBox.vgrow="ALWAYS">
          <children>
-            <MFXTextField fx:id="presetText" minHeight="57.0" minWidth="350.0" promptText="PRESET NAME" style="-fx-border-color: #012D5A; -fx-border-width: 2;">
+            <MFXTextField fx:id="presetText" minHeight="57.0" minWidth="308.0" promptText="PRESET NAME" style="-fx-border-color: #012D5A; -fx-border-width: 2;">
                <HBox.margin>
                   <Insets top="50.0" />
                </HBox.margin>
@@ -23,14 +24,22 @@
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
             </MFXTextField>
-            <MFXDatePicker fx:id="datePicker" alignment="BOTTOM_LEFT" minHeight="57.0" minWidth="350.0" promptText="IMPLEMENTATION DATE" style="-fx-border-width: 2; -fx-border-color: #012D5A;">
+            <MFXDatePicker fx:id="datePicker" alignment="BOTTOM_LEFT" minHeight="57.0" minWidth="308.0" promptText="IMPLEMENTATION DATE" style="-fx-border-width: 2; -fx-border-color: #012D5A;">
                <HBox.margin>
-                  <Insets left="100.0" top="50.0" />
+                  <Insets left="50.0" top="50.0" />
                </HBox.margin>
                <font>
                   <Font name="Open Sans Regular" size="15.0" />
                </font>
             </MFXDatePicker>
+            <MFXFilterComboBox fx:id="kioskSelect" minHeight="57.0" minWidth="308.0" promptText="KIOSK" style="-fx-border-color: #012D5A; -fx-border-width: 2;">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="50.0" top="50.0" />
+               </HBox.margin>
+            </MFXFilterComboBox>
          </children>
       </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="378.0" minHeight="100.0" prefHeight="100.0" prefWidth="1092.0">
@@ -193,6 +202,11 @@
             <Insets bottom="10.0" />
          </VBox.margin>
       </HBox>
+      <HBox alignment="CENTER">
+         <children>
+            <Label fx:id="error" text="Label" />
+         </children>
+      </HBox>
       <HBox alignment="CENTER" minHeight="50.0" minWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
             <MFXButton fx:id="cancelButton" minHeight="57.0" minWidth="200.0" rippleAnimateBackground="false" rippleColor="#bdbdbd00" style="-fx-background-color: #012d5a; -fx-background-radius: 5;" text="CANCEL" textFill="WHITE">
@@ -216,7 +230,7 @@
                   <Insets left="50.0" />
                </HBox.margin>
             </MFXButton>
-            <MFXFilterComboBox fx:id="presetSelect" minHeight="57.0" minWidth="200.0" popupOffsetY="-2120.0" promptText="LOAD PRESET" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
+            <MFXFilterComboBox fx:id="presetSelect" minHeight="57.0" minWidth="200.0" popupOffsetY="-2120.0" promptText="LOAD PRESET" style="-fx-border-color: #012D5A; -fx-border-width: 2;">
                <HBox.margin>
                   <Insets />
                </HBox.margin>

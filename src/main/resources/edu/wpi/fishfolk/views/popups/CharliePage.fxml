@@ -11,15 +11,19 @@
 
 <VBox alignment="CENTER" maxHeight="535.0" maxWidth="825.0" minHeight="535.0" minWidth="825.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
    <children>
-      <HBox alignment="CENTER">
+      <HBox maxHeight="65.0" maxWidth="825.0" minHeight="65.0" minWidth="825.0">
          <children>
-            <VBox alignment="CENTER">
+            <MFXButton fx:id="back" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back">
+               <HBox.margin>
+                  <Insets left="40.0" top="25.0" />
+               </HBox.margin>
+            </MFXButton>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" maxHeight="470.0" maxWidth="825.0" minHeight="470.0" minWidth="825.0">
+         <children>
+            <VBox alignment="CENTER" maxHeight="470.0" maxWidth="825.0" minHeight="470.0" minWidth="825.0">
                <children>
-                  <MFXButton fx:id="back" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back">
-                     <VBox.margin>
-                        <Insets right="600.0" top="15.0" />
-                     </VBox.margin>
-                  </MFXButton>
                   <ImageView fitHeight="219.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/About/Charlie.jpg" />

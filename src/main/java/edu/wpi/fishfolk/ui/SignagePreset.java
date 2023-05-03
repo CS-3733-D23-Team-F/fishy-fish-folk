@@ -7,6 +7,7 @@ import lombok.Setter;
 public class SignagePreset {
   @Getter @Setter private String presetName;
   @Getter @Setter private LocalDate implementationDate;
+  @Getter @Setter private String kiosk;
 
   // ArrayList<Sign> signs;
   public Sign[] signs = new Sign[8];

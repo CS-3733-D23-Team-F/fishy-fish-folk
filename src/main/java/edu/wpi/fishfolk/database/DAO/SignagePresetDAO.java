@@ -1,5 +1,6 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.*;
 import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
@@ -33,7 +34,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
   public SignagePresetDAO(Connection dbConnection) {
     this.dbConnection = dbConnection;
     this.tableName = "signagepreset";
-    this.headers = new ArrayList<>(List.of("presetname", "startdate", "signs"));
+    this.headers = new ArrayList<>(List.of("presetname", "startdate", "kiosk", "signs"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
     this.dataEditQueue.setBatchLimit(1);
@@ -75,9 +76,17 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
                 + tableName
                 + " (presetname VARCHAR(256),"
                 + "startdate DATE,"
+                + "kiosk VARCHAR(256),"
                 + "signs SERIAL"
                 + ");";
         statement.executeUpdate(query);
+
+        insertEntry(
+            new SignagePreset(
+                "default",
+                LocalDate.now().minusYears(1000),
+                SharedResources.defaultLocation,
+                new Sign[8]));
       }
 
     } catch (SQLException e) {
@@ -105,7 +114,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
             new SignagePreset(
                 results.getString(headers.get(0)),
                 results.getDate(headers.get(1)).toLocalDate(),
-                getSubtableItems(results.getInt(headers.get(2))));
+                results.getString(headers.get(2)),
+                getSubtableItems(results.getInt(headers.get(3))));
 
         tableMap.put(signagePreset.getName(), signagePreset);
       }
@@ -371,7 +381,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
 
       // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
       String insert =
-          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?);";
+          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?, ?);";
 
       String update =
           "UPDATE "
@@ -382,6 +392,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
               + headers.get(0)
               + " = ?, "
               + headers.get(1)
+              + " = ? WHERE "
+              + headers.get(2)
               + " = ? WHERE "
               + headers.get(0)
               + " = ?;";
@@ -423,6 +435,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
             // Put the new entry's data into the prepared query
             preparedInsert.setString(1, dataEdit.getNewEntry().getName());
             preparedInsert.setDate(2, Date.valueOf(dataEdit.getNewEntry().getDate()));
+            preparedInsert.setString(3, dataEdit.getNewEntry().getKiosk());
 
             // Execute the query
             preparedInsert.executeUpdate();
@@ -435,7 +448,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
             // Put the new entry's data into the prepared query
             preparedUpdate.setString(1, dataEdit.getNewEntry().getName());
             preparedUpdate.setDate(2, Date.valueOf(dataEdit.getNewEntry().getDate()));
-            preparedUpdate.setString(3, dataEdit.getNewEntry().getName());
+            preparedUpdate.setString(3, dataEdit.getNewEntry().getKiosk());
+            preparedUpdate.setString(4, dataEdit.getNewEntry().getName());
 
             // Execute the query
             preparedUpdate.executeUpdate();
@@ -526,12 +540,14 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
             new SignagePreset(
                 parts[0],
                 LocalDate.parse(parts[1], DateTimeFormatter.ISO_LOCAL_DATE),
+                parts[3],
                 subtable.get(Integer.parseInt(parts[2])));
 
         tableMap.put(signagePreset.getName(), signagePreset);
 
         insertPS.setString(1, signagePreset.getName());
         insertPS.setDate(2, Date.valueOf(signagePreset.getDate()));
+        insertPS.setString(3, signagePreset.getKiosk());
 
         insertPS.executeUpdate();
 
@@ -569,6 +585,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
             signagePreset.getName()
                 + ","
                 + signagePreset.getDate()
+                + ","
+                + signagePreset.getKiosk()
                 + ","
                 + getSubtableItemsID(signagePreset.getName()));
       }
