@@ -337,6 +337,7 @@ public class SignageEditorController extends AbsController {
   private void submit() {
     currentPreset.setName(presetText.getText()); // preset name
     currentPreset.setDate(datePicker.getValue()); // preset implementation date
+    currentPreset.setKiosk(kioskSelect.getValue());
 
     // assigns choice box and direction arrow direction to new Sign object and adds to
     // currentPreset's list of Signs
@@ -375,7 +376,8 @@ public class SignageEditorController extends AbsController {
             && roomr2.getText().equals("")
             && roomr3.getText().equals(""))
         || presetText.getText().equals("")
-        || datePicker.getValue() == null || kioskSelect.getValue() == null) {
+        || datePicker.getValue() == null
+        || kioskSelect.getValue() == null) {
       PopOver error = new PopOver();
       Text errorText = new Text("Insufficient fields entered");
       errorText.setFont(new Font("Open Sans", 26));
@@ -389,7 +391,7 @@ public class SignageEditorController extends AbsController {
         new edu.wpi.fishfolk.database.TableEntry.SignagePreset(
             currentPreset.getPresetName(),
             currentPreset.getImplementationDate(),
-            currentPreset.signs);
+            currentPreset.signs, currentPreset.getKiosk());
     dbConnection.insertEntry(preset);
 
     Navigation.navigate(SharedResources.getHome()); // go homes

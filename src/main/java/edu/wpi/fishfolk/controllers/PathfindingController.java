@@ -322,7 +322,7 @@ public class PathfindingController extends AbsController {
 
     startSelector.getItems().add("Current Location");
     startSelector.getItems().addAll(nodeNames);
-    defaultLocation = nodeNames.get(0);
+    defaultLocation = SharedResources.defaultLocation;
     currLocation.getItems().addAll(nodeNames);
     currLocation.setValue(defaultLocation);
     currLocation.setText(defaultLocation);
@@ -1056,6 +1056,7 @@ public class PathfindingController extends AbsController {
     }
     if (!(currLocation.getValue() == null)) {
       defaultLocation = currLocation.getValue();
+      SharedResources.defaultLocation = currLocation.getValue();
     }
 
     adminBox.setVisible(false);

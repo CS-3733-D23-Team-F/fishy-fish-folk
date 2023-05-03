@@ -12,6 +12,7 @@ public class SharedResources {
   private static UserAccount currentAccount = new UserAccount("extremely_guest", "", "", GUEST);
 
   @Setter private static RootController rootController;
+  @Setter public static String defaultLocation = "Watkins Kiosk 1";
 
   /**
    * Attempt to log into an account. If the user is already logged in, only log them out if the
