@@ -53,7 +53,7 @@ public class AdminDashboardController {
   @FXML TableView<SupplyOrderObservable> supplyTable;
   @FXML TableView<ITRequestObservable> itTable;
   @FXML MFXTextField addAlert;
-  @FXML MFXButton toMapEditor, toSignageEditor, toMoveEditor;
+  @FXML MFXButton toSignageEditor, toMoveEditor;
   @FXML MFXScrollPane scroll;
   @FXML MFXButton movesRefresh, alertsRefresh, serviceRefresh;
   @FXML MFXComboBox<String> serverSelectorCombo;
@@ -256,7 +256,6 @@ public class AdminDashboardController {
     furnitureassignee.setOnEditCommit(this::onSetFurnitureEdit);
     itassignee.setOnEditCommit(this::onSetITEdit);
 
-    toMapEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
     toMoveEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.MOVE_EDITOR));
     toSignageEditor.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE_EDITOR));
     alertsPane.setVvalue(1);

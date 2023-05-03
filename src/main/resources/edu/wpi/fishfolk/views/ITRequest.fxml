@@ -6,12 +6,14 @@
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -38,7 +40,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <MFXScrollPane minHeight="400.0" minWidth="500.0" prefHeight="400.0" prefWidth="500.0" style="-fx-border-width: 3; -fx-border-color: #012D5A; -fx-border-radius: 5;">
+                  <MFXScrollPane fx:id="compScroll" minHeight="400.0" minWidth="500.0" prefHeight="400.0" prefWidth="500.0" style="-fx-border-width: 3; -fx-border-color: #012D5A; -fx-border-radius: 5;" styleClass="newScrolls">
                      <content>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
@@ -126,7 +128,7 @@
                <children>
                   <HBox alignment="CENTER" minHeight="50.0" minWidth="500.0" prefHeight="50.0" prefWidth="500.0">
                      <children>
-                        <MFXRectangleToggleNode fx:id="priority0" minHeight="50.0" minWidth="165.0" prefHeight="50.0" prefWidth="132.0" selected="true" style="-fx-border-radius: 0; -fx-border-width: 3; -fx-border-color: #012D5A;" styleClass="priorityToggle" text="LOW" textFill="WHITE">
+                        <MFXRectangleToggleNode fx:id="priority0" minHeight="50.0" minWidth="165.0" selected="true" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #012D5A; -fx-background-radius: 5;" styleClass="priorityToggle" text="LOW" textFill="WHITE">
                            <font>
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
@@ -134,12 +136,12 @@
                               <ToggleGroup fx:id="priority" />
                            </toggleGroup>
                         </MFXRectangleToggleNode>
-                        <MFXRectangleToggleNode fx:id="priority1" layoutX="29.0" layoutY="13.0" minHeight="50.0" minWidth="165.0" style="-fx-border-radius: 0; -fx-border-width: 3; -fx-border-color: #012D5A;" styleClass="priorityToggle" text="MEDIUM" textFill="WHITE" toggleGroup="$priority">
+                        <MFXRectangleToggleNode fx:id="priority1" layoutX="29.0" layoutY="13.0" minHeight="50.0" minWidth="165.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #012D5A; -fx-background-radius: 5;" styleClass="priorityToggle" text="MEDIUM" textFill="WHITE" toggleGroup="$priority">
                            <font>
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
                         </MFXRectangleToggleNode>
-                        <MFXRectangleToggleNode fx:id="priority2" layoutX="110.0" layoutY="13.0" minHeight="50.0" minWidth="165.0" style="-fx-border-radius: 0; -fx-border-width: 3; -fx-border-color: #012D5A;" styleClass="priorityToggle" text="HIGH" textFill="WHITE" toggleGroup="$priority">
+                        <MFXRectangleToggleNode fx:id="priority2" layoutX="110.0" layoutY="13.0" minHeight="50.0" minWidth="165.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #012D5A; -fx-background-radius: 5;" styleClass="priorityToggle" text="HIGH" textFill="WHITE" toggleGroup="$priority">
                            <font>
                               <Font name="Open Sans Bold" size="26.0" />
                            </font>
@@ -150,22 +152,33 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="500.0">
                <children>
-                  <MFXFilterComboBox fx:id="roomPicker" minHeight="55.0" minWidth="500.0" popupOffsetY="-2250.0" prefHeight="55.0" prefWidth="500.0" promptText="ROOM" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
+                  <MFXFilterComboBox fx:id="roomPicker" floatingText="ROOM" minHeight="55.0" minWidth="500.0" popupOffsetY="-2250.0" prefHeight="55.0" prefWidth="500.0" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
                      <font>
-                        <Font name="Open Sans Regular" size="20.0" />
+                        <Font name="Open Sans Regular" size="15.0" />
                      </font>
+                     <textFill>
+                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                     </textFill>
                   </MFXFilterComboBox>
-                  <MFXTextField fx:id="contactInfoText" minHeight="55.0" minWidth="500.0" prefHeight="55.0" prefWidth="500.0" promptText="ADDITIONAL CONTACT INFO" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
+                  <MFXTextField fx:id="contactInfoText" floatingText="ADDITIONAL CONTACT INFO" minHeight="55.0" minWidth="500.0" prefHeight="55.0" prefWidth="500.0" style="-fx-border-color: #012D5A; -fx-border-width: 3;">
                      <font>
-                        <Font name="Open Sans Regular" size="20.0" />
+                        <Font name="Open Sans Regular" size="15.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="50.0" />
                      </HBox.margin>
+                     <textFill>
+                        <Color red="0.003921568859368563" green="0.1764705926179886" blue="0.3529411852359772" opacity="0.8700000047683716" />
+                     </textFill>
                   </MFXTextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER">
+               <children>
+                  <Label fx:id="errors" text="Label" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER">
                <children>
                   <MFXButton fx:id="cancelButton" minWidth="140.0" prefHeight="55.0" prefWidth="140.0" style="-fx-background-color: #012D5A;" styleClass="blueButton" text="CANCEL" textFill="WHITE">
                      <font>

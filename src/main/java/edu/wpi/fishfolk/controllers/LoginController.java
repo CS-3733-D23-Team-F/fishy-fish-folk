@@ -10,16 +10,23 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.List;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 public class LoginController extends AbsController {
   @FXML MFXButton loginBtn, GuestLoginBtn;
   @FXML MFXTextField loginIDField;
   @FXML MFXPasswordField loginPassField;
   @FXML Label errorBox;
+  @FXML ImageView man, lock;
+  private static TranslateTransition thugShaker;
 
   /** Initialize state and set event handlers. */
   @FXML
@@ -48,6 +55,7 @@ public class LoginController extends AbsController {
       attemptLogin();
     } else {
       clearError();
+      setToBlue();
     }
   }
 
@@ -55,6 +63,36 @@ public class LoginController extends AbsController {
   private void clearError() {
     errorBox.setText("");
     errorBox.setVisible(false);
+  }
+
+  /** Sets all borders back to blue */
+  public void setToBlue() {
+    loginIDField.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 0; -fx-border-width: 0 0 0.5 0;");
+    loginPassField.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 0; -fx-border-width: 0 0 0.5 0;");
+  }
+
+  /**
+   * Creates an error popup for the given values.
+   *
+   * @param error the error message you want to present.
+   * @param node the area it will pop up next to.
+   */
+  private void submissionError(String error, Node node) {
+    node.setStyle("-fx-border-color: red; -fx-border-radius: 0; -fx-border-width: 0 0 0.5 0;");
+    if (thugShaker == null || thugShaker.getNode() != node) {
+      thugShaker = new TranslateTransition(Duration.millis(100), node);
+    }
+    thugShaker.setFromX(0f);
+    thugShaker.setCycleCount(4);
+    thugShaker.setAutoReverse(true);
+    thugShaker.setByX(15f);
+    thugShaker.playFromStart();
+    errorBox.setText(error);
+    errorBox.setVisible(true);
+    errorBox.setStyle("-fx-text-fill:  red; -fx-text-alignment: center;");
+    errorBox.setFont(Font.font("Open Sans", 15.0));
   }
 
   /**
@@ -66,16 +104,16 @@ public class LoginController extends AbsController {
     String password = loginPassField.getText();
 
     if (!loginID.matches("^[a-zA-Z0-9._]+$")) {
-      errorBox.setText("Invalid username: Please only use a-Z, 0-9, dots, and underlines.");
-      errorBox.setVisible(true);
-      errorBox.setStyle("-fx-alignment: center; -fx-text-fill:  red;");
+      submissionError("Invalid username: Please only use a-Z, 0-9, dots, and underlines.", man);
+      submissionError(
+          "Invalid username: Please only use a-Z, 0-9, dots, and underlines.", loginIDField);
       return;
     }
 
     if (!password.matches("^[a-zA-Z0-9._]*$")) { // empty is technically allowed!
-      errorBox.setText("Invalid password: Please only use a-Z, 0-9, dots, and underlines.");
-      errorBox.setVisible(true);
-      errorBox.setStyle("-fx-alignment: center; -fx-text-fill:  red;");
+      submissionError("Invalid password: Please only use a-Z, 0-9, dots, and underlines.", lock);
+      submissionError(
+          "Invalid password: Please only use a-Z, 0-9, dots, and underlines.", loginPassField);
       return;
     }
 
@@ -92,9 +130,8 @@ public class LoginController extends AbsController {
     }
 
     if (foundAccount == null) {
-      errorBox.setText("Account not found.");
-      errorBox.setVisible(true);
-      errorBox.setStyle("-fx-alignment: center; -fx-text-fill:  red;");
+      submissionError("Account not found.", man);
+      submissionError("Account not found.", loginIDField);
     } else {
       if (SharedResources.login(foundAccount, password)) {
         // valid account. We're already logged in if we get here!
@@ -116,9 +153,8 @@ public class LoginController extends AbsController {
             break;
         }
       } else {
-        errorBox.setText("Incorrect password.");
-        errorBox.setVisible(true);
-        errorBox.setStyle("-fx-alignment: center; -fx-text-fill:  red;");
+        submissionError("Incorrect password.", lock);
+        submissionError("Incorrect password.", loginPassField);
       }
     }
   }

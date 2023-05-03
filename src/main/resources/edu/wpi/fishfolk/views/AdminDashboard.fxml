@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AdminDashboardController" stylesheets="@../Styles/style.css">
+<StackPane stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AdminDashboardController">
    <children>
       <VBox minHeight="670.0" minWidth="1080.0" style="-fx-background-color: #F4F4F4;">
          <children>
@@ -42,15 +42,13 @@
                            </font>
                         </MFXButton>
                      </children>
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
                   </StackPane>
                   <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                      <children>
                         <MFXComboBox fx:id="serverSelectorCombo" minHeight="50.0" minWidth="225.0" promptText="Select Server" style="-fx-border-color: #012D5A; -fx-background-color: #FFFFFF; -fx-border-radius: 5; -fx-border-width: 1;" />
-                        <MFXButton fx:id="toMapEditor" buttonType="RAISED" minHeight="50.0" minWidth="225.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Map Editor" textFill="#012d5a">
-                           <font>
-                              <Font name="Open Sans Bold" size="20.0" />
-                           </font>
-                        </MFXButton>
                         <HBox HBox.hgrow="ALWAYS" />
                         <MFXButton fx:id="toMoveEditor" buttonType="RAISED" minHeight="50.0" minWidth="225.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5; -fx-border-width: 1;" text="To Move Editor" textFill="#012d5a">
                            <font>
@@ -65,7 +63,7 @@
                         </MFXButton>
                      </children>
                      <HBox.margin>
-                        <Insets left="25.0" />
+                        <Insets />
                      </HBox.margin>
                   </HBox>
                </children>
@@ -75,7 +73,7 @@
             </HBox>
             <HBox style="-fx-background-color: #EEEEEE;" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox>
+                  <VBox maxWidth="300.0">
                      <children>
                         <StackPane minHeight="50.0">
                            <children>
@@ -103,7 +101,7 @@
                               </HBox>
                            </children>
                         </StackPane>
-                        <MFXScrollPane fx:id="scroll" hbarPolicy="NEVER" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                        <MFXScrollPane fx:id="scroll" hbarPolicy="NEVER" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" styleClass="newScrolls" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                            <content>
                               <GridPane fx:id="grid">
                                  <rowConstraints>

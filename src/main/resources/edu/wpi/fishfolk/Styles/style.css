@@ -203,11 +203,6 @@
     -fx-wrap-text: true;
 }
 
-
-
-
-
-
 .choice-box{
     -fx-border-color: #012D5A;
     -fx-border-radius: 5;
@@ -238,6 +233,20 @@
     -thumb-color: #fcd474;
 }
 
+.otherScroll{
+    -thumb-color: #012d5a;
+    -fx-background-color: #ffffff;
+    -thumb-hover-color: #fcd474;
+    -track-color: #ffffff;
+    -fx-hbar-policy: "NEVER";
+    -fx-vbar-policy: "ALWAYS";
+}
+
+.otherScroll:hover{
+    -thumb-hover-color: #fcd474;
+    -thumb-color: #fcd474;
+}
+
 .evolve{
     -fx-background-color: linear-gradient(to bottom, rgb(2,0,36), rgb(55,121,107), rgb(255,255,255));
 }
@@ -262,4 +271,88 @@
     -fx-background-radius: 0;
 }
 
+.mfx-radio-button{
+    -mfx-main: #012d5a;
+}
 
+.mfx-filter-combo-box{
+    -mfx-main: #012d5a;
+}
+
+.mfx-combo-box{
+    -mfx-main: #012d5a;
+}
+
+.mfx-date-picker{
+    -mfx-main: #012d5a;
+}
+
+
+/*Please don't freak out. This, just, works. Don't question it. JavaFX and MFX just works that way idk.*/
+.mfx-date-picker:focus-within .icon {
+    -mfx-color: #012d5a;
+}
+
+.mfx-date-picker .date-picker-popup .content{
+    -mfx-main: #012d5a;
+    -mfx-color: #012d5a;
+    -fx-text-fill: #012d5a;
+}
+
+
+.mfx-date-picker .date-picker-popup .week-day {
+    -fx-text-fill: #012d5a;
+}
+
+.mfx-date-picker .date-picker-popup .months-combo .virtual-flow .mfx-combo-box-cell:hover,
+.mfx-date-picker .date-picker-popup .years-combo .virtual-flow .mfx-combo-box-cell:hover {
+    -fx-background-color: #EEEEEE;
+}
+
+
+.mfx-date-picker .date-picker-popup .months-combo .virtual-flow .mfx-combo-box-cell:selected,
+.mfx-date-picker .date-picker-popup .years-combo .virtual-flow .mfx-combo-box-cell:selected {
+    -fx-background-color: #c4c4c4;
+}
+
+.mfx-date-picker .date-picker-popup .mfx-date-cell:current {
+    -fx-text-fill: #012d5a;
+}
+
+.mfx-date-picker .date-picker-popup .mfx-date-cell:selected {
+    -fx-background-color: #012d5a;
+
+}
+
+.mfx-toggle-button {
+    -mfx-main: #012d5a;
+}
+
+.mfx-checkbox {
+    -mfx-main: #012d5a;
+
+}
+
+.mfx-date-picker .date-picker-popup .left-arrow .mfx-ripple-generator,
+.mfx-date-picker .date-picker-popup .right-arrow .mfx-ripple-generator {
+    -mfx-ripple-color: #EEEEEE;
+}
+
+
+.mfx-date-picker .date-picker-popup .months-combo .virtual-flow .mfx-combo-box-cell:selected .label,
+.mfx-date-picker .date-picker-popup .years-combo .virtual-flow .mfx-combo-box-cell:selected .label {
+    -fx-text-fill: #012d5a;
+}
+
+
+
+.mfx-date-picker .date-picker-popup .months-combo:focus-within,
+.mfx-date-picker .date-picker-popup .years-combo:focus-within {
+    -fx-background-color: #f8f7fa;
+    -fx-text-fill: #012d5a;
+}
+
+
+.mfx-text-field {
+    -mfx-main: #012d5a;
+}
