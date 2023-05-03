@@ -1351,9 +1351,6 @@ public class MapEditorController extends AbsController {
                     })
                 .toList());
 
-    // clear location labels for this floor
-    locationTypeGroups.forEach((key, value) -> value.getChildren().clear());
-
     updateLocationLabels();
 
     // show only needed location labels
@@ -1681,6 +1678,8 @@ public class MapEditorController extends AbsController {
 
                 state = EDITOR_STATE.PREVIEWING;
 
+                controller.readNodeID();
+
                 if (!selectedNodes.isEmpty()) {
                   controller.setOrigin(nodes.get(nodeID2idx.get(selectedNodes.get(0))));
                 }
@@ -1893,12 +1892,16 @@ public class MapEditorController extends AbsController {
 
   private void updateLocationLabels() {
 
+    // clear location label groups
+    locationTypeGroups.forEach((key, value) -> value.getChildren().clear());
+
     // create location labels for the current floor and add to location group based on type
     nodes.stream()
         .filter(node -> nodesOnFloor.contains(node.getNodeID()))
         .forEach(
             node -> {
               NodeText label = drawLocationLabel(node);
+              System.out.println(label);
 
               List<NodeType> nodeTypes =
                   node.getLocations(today).stream().map(Location::getNodeType).toList();

@@ -102,6 +102,12 @@ public class MapEditorLocationController {
     date = datePicker.getValue();
   }
 
+  public void readNodeID() {
+    if (!nodeIDText.getText().isEmpty()) {
+      nodeID = Integer.parseInt(nodeIDText.getText());
+    }
+  }
+
   public void readNewMove() {
     if (!nodeIDText.getText().isEmpty()) {
       nodeID = Integer.parseInt(nodeIDText.getText());

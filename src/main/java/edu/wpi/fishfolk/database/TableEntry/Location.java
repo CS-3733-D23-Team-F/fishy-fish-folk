@@ -54,8 +54,15 @@ public class Location {
     return "[" + longName + "; " + shortName + "; " + nodeType + "]";
   }
 
-  public void addMove(Node node, LocalDate date) {
+  public boolean addMove(Node node, LocalDate date) {
+
+    for (NodeDate nodeDate : movesProperty) {
+      if (nodeDate.getNode().getNodeID() == node.getNodeID() && nodeDate.getDate().equals(date)) {
+        return false;
+      }
+    }
     movesProperty.add(new NodeDate(node, date));
+    return true;
   }
 
   public void removeMove(Move move) {

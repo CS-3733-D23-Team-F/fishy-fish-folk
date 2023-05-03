@@ -83,9 +83,16 @@ public class Node {
     return "[nodeID: " + nodeID + "; point: " + getPoint() + "]";
   }
 
-  public void addMove(Location location, LocalDate date) {
+  public boolean addMove(Location location, LocalDate date) {
     // movesProperty.getValue().add
+    for (LocationDate locationDate : movesProperty) {
+      if (locationDate.getLocation().getLongName().equals(location.getLongName())
+          && locationDate.getDate().equals(date)) {
+        return false;
+      }
+    }
     movesProperty.add(new LocationDate(location, date));
+    return true;
   }
 
   public void removeMove(Move move) {

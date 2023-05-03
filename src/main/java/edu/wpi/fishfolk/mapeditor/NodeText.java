@@ -14,4 +14,8 @@ public class NodeText extends Text {
     this.setRotate(-25);
     this.nodeID = nodeID;
   }
+
+  public String toString() {
+    return nodeID + " " + this.getText();
+  }
 }
