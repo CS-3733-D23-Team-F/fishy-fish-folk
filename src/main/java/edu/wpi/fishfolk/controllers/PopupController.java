@@ -7,14 +7,5 @@ public class PopupController extends AboutMeController {
   @FXML MFXButton back;
 
   @FXML
-  public void initialize() {
-    back.setOnMouseClicked(
-        event -> {
-          try {
-            stack.getChildren().clear();
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        });
-  }
+  public void initialize() {}
 }
