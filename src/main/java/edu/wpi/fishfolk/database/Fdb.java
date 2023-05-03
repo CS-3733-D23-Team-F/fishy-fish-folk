@@ -635,8 +635,6 @@ public class Fdb {
 
       DataEdit<Object> edit = queue.next();
 
-      System.out.println(edit);
-
       switch (edit.getTable()) {
         case NODE:
           nodeTable.processEdit(edit);

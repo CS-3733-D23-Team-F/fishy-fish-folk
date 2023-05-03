@@ -562,11 +562,6 @@
                   </HBox>
                </children>
             </VBox>
-            <Line endX="100.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.75">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Line>
             <MFXScrollPane fx:id="locationScrollpane" hbarPolicy="NEVER" minHeight="0.0" pannable="true" style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
                <content>
                   <VBox fx:id="locationsVbox" alignment="TOP_CENTER" spacing="5.0" style="-fx-background-color: #f1f1f1;">
@@ -578,9 +573,14 @@
                   <Insets top="5.0" />
                </VBox.margin>
             </MFXScrollPane>
-            <VBox fx:id="unassignedLocationsVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0">
+            <Line endX="100.0" fill="#454343" startX="-100.0" stroke="#454343" strokeWidth="0.75">
                <VBox.margin>
                   <Insets top="5.0" />
+               </VBox.margin>
+            </Line>
+            <VBox fx:id="unassignedLocationsVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
                </VBox.margin>
                <children>
                   <MFXComboBox fx:id="unassignedLocationsDropdown" alignment="CENTER" graphicTextGap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" measureUnitGap="0.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" text="Unassigned locations">

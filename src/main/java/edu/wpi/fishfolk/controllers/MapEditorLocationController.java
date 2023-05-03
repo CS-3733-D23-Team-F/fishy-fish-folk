@@ -85,7 +85,9 @@ public class MapEditorLocationController {
     longnameText.setText(location.getLongName());
 
     shortnameText.setText(location.getShortName());
+
     type.setValue(location.getNodeType());
+    type.setText(location.getNodeType().toString());
 
     datePicker.setValue(date);
   }

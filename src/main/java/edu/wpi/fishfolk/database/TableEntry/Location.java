@@ -66,12 +66,27 @@ public class Location {
 
     // filter out moves after the given date
     // sort by date and take the first
-    return movesProperty.stream()
-        .filter(nodeDate -> nodeDate.getDate().isBefore(date))
-        .sorted(Comparator.comparing(NodeDate::getDate))
-        .toList()
-        .get(0)
-        .getNode();
+    List<NodeDate> moves =
+        movesProperty.stream()
+            .filter(nodeDate -> nodeDate.getDate().isBefore(date))
+            .sorted(Comparator.comparing(NodeDate::getDate))
+            .toList();
+
+    if (moves.isEmpty()) {
+      return null;
+
+    } else {
+      return moves.get(0).getNode();
+    }
+  }
+
+  /**
+   * Delete records of the given node from this Location.
+   *
+   * @param nodeID of the deleted Node
+   */
+  public void deleteNode(int nodeID) {
+    movesProperty.removeIf(nodedate -> nodedate.getNode().getNodeID() == nodeID);
   }
 
   public List<NodeDate> getMovesBefore(LocalDate date) {
