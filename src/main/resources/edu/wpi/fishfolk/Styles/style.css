@@ -338,6 +338,7 @@
 
 .mfx-date-picker .date-picker-popup .mfx-date-cell:selected {
     -fx-background-color: #012d5a;
+    -fx-text-fill: white;
 
 }
 
