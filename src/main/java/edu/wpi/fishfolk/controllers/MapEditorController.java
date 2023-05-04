@@ -767,7 +767,114 @@ public class MapEditorController extends AbsController {
           }
         });
 
-    redo.setOnMouseClicked(event -> {});
+    redo.setOnMouseClicked(
+        event -> {
+          if (!editQueue.canRedo()) {
+            System.out.println("no edits to redo");
+
+          } else {
+            DataEdit<Object> nextEdit = editQueue.redoEdit();
+
+            System.out.println("redoing " + nextEdit);
+
+            switch (nextEdit.getTable()) {
+              case NODE:
+                switch (nextEdit.getType()) {
+                  case INSERT:
+                    // insert this node
+                    Node node = (Node) nextEdit.getNewEntry();
+                    nodes.add(node);
+                    break;
+
+                  case REMOVE:
+                    // remove this nodeid
+                    int nodeID = (int) nextEdit.getNewEntry();
+                    nodes.remove((int) nodeID2idx.get(nodeID));
+                    break;
+
+                  case UPDATE:
+                    // redo update by setting orignial point to moved point
+                    Node origNode = (Node) nextEdit.getOldEntry();
+                    Node movedNode = (Node) nextEdit.getNewEntry();
+
+                    // listeners will draw it in its original spot
+                    origNode.setPoint(movedNode.getPoint());
+
+                    break;
+                }
+                break;
+
+              case EDGE:
+                switch (nextEdit.getType()) {
+                  case INSERT:
+                    // insert edge
+                    Edge edge1 = (Edge) nextEdit.getNewEntry();
+                    edges.add(edge1);
+                    break;
+
+                  case REMOVE:
+                    // remove edge
+                    Edge edge2 = (Edge) nextEdit.getNewEntry();
+                    edges.remove(edge2);
+                    break;
+
+                  case UPDATE:
+                    // no update edits for edges
+
+                }
+                break;
+
+              case LOCATION:
+                switch (nextEdit.getType()) {
+                  case INSERT:
+                    // insert this location
+                    Location location = (Location) nextEdit.getNewEntry();
+                    locations.add(location);
+                    break;
+
+                  case REMOVE:
+                    // remove this location
+                    String longname = (String) nextEdit.getNewEntry();
+                    locations.remove((int) longname2idx.get(longname));
+                    break;
+
+                  case UPDATE:
+                    // redo location updates to short name & type
+
+                    Location original = (Location) nextEdit.getOldEntry();
+                    Location updated = (Location) nextEdit.getNewEntry();
+
+                    original.setShortName(updated.getShortName());
+                    original.setNodeType(updated.getNodeType());
+                    break;
+                }
+                break;
+
+              case MOVE:
+                switch (nextEdit.getType()) {
+                  case INSERT:
+                    // add this move back
+                    moves.add((Move) nextEdit.getNewEntry());
+                    break;
+
+                  case REMOVE:
+                    // remove this move
+                    String moveID = (String) nextEdit.getNewEntry();
+                    moves.removeIf(move -> move.getMoveID().equals(moveID));
+                    break;
+
+                  case UPDATE:
+                    // redo update by setting original move to its changed values
+                    Move original = (Move) nextEdit.getOldEntry();
+                    Move updated = (Move) nextEdit.getNewEntry();
+
+                    // the only non-unique value is the nodeID
+                    original.setNodeID(updated.getNodeID());
+                }
+                break;
+            }
+          }
+        });
 
     importCSV.setOnMouseClicked(
         event -> {
@@ -2023,6 +2130,19 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
     return dataEditQueue.get(--undoPointer);
   }
 
+  public DataEdit<Object> redoEdit() {
+
+    if (dataEditQueue.isEmpty()) {
+      return null;
+    }
+
+    if (undoPointer == editCount - 1) {
+      return dataEditQueue.get(editCount - 1);
+    }
+
+    return dataEditQueue.get(undoPointer++);
+  }
+
   @Override
   public void clear() {
     dataEditQueue.clear();
@@ -2035,6 +2155,10 @@ class MapEditQueue<Object> extends DataEditQueue<Object> {
   public boolean canUndo() {
     // can't undo beyond first element
     return undoPointer > 0;
+  }
+
+  public boolean canRedo() {
+    return undoPointer < endPointer;
   }
 
   // leave the DataEditQueue next() and hasNext() as they are
