@@ -11,6 +11,11 @@ public class NodeText extends Text {
   public NodeText(int nodeID, double x, double y, String text) {
     super(x, y, text);
     this.setFont(Font.font("Open Sans", 20));
+    this.setRotate(-25);
     this.nodeID = nodeID;
+  }
+
+  public String toString() {
+    return nodeID + " " + this.getText();
   }
 }

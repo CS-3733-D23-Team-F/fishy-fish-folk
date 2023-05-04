@@ -1,10 +1,9 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
+import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
-import edu.wpi.fishfolk.database.DataEditQueue;
-import edu.wpi.fishfolk.database.EntryStatus;
-import edu.wpi.fishfolk.database.IDAO;
 import edu.wpi.fishfolk.database.TableEntry.UserAccount;
 import edu.wpi.fishfolk.util.PermissionLevel;
 import java.io.*;
@@ -15,10 +14,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.postgresql.PGConnection;
+import org.postgresql.util.PSQLException;
 
-public class UserAccountDAO implements IDAO<UserAccount> {
+public class UserAccountDAO implements IDAO<UserAccount>, ICSVNoSubtable {
 
   private final Connection dbConnection;
+  private Connection dbListener;
 
   private final String tableName;
   private final ArrayList<String> headers;
@@ -33,8 +35,10 @@ public class UserAccountDAO implements IDAO<UserAccount> {
     this.headers = new ArrayList<>(List.of("username", "password", "email", "level"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
+    this.dataEditQueue.setBatchLimit(1);
 
     init(false);
+    prepareListener();
     populateLocalTable();
   }
 
@@ -110,7 +114,83 @@ public class UserAccountDAO implements IDAO<UserAccount> {
   }
 
   @Override
+  public void prepareListener() {
+
+    try {
+
+      dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
+
+      if (dbListener == null) {
+        System.out.println("[UserAccountDAO.prepareListener]: Listener is null.");
+        return;
+      }
+
+      // Create a function that calls NOTIFY when the table is modified
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE FUNCTION notifyUserAccount() RETURNS TRIGGER AS $account$"
+                  + "BEGIN "
+                  + "NOTIFY account;"
+                  + "RETURN NULL;"
+                  + "END; $account$ language plpgsql")
+          .execute();
+
+      // Create a trigger that calls the function on any change
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE TRIGGER accountUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "account FOR EACH STATEMENT EXECUTE FUNCTION notifyUserAccount()")
+          .execute();
+
+      // Start listener
+      reListen();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void reListen() {
+    try {
+      dbListener.prepareStatement("LISTEN account").execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void verifyLocalTable() {
+
+    try {
+
+      // Check for notifications on the table
+      PGConnection driver = dbListener.unwrap(PGConnection.class);
+
+      // See if there is a notification
+      if (driver.getNotifications().length > 0) {
+        System.out.println("[UserAccountDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
+        populateLocalTable();
+      }
+
+      // Catch a timeout and reset refresh local table
+    } catch (PSQLException e) {
+
+      dbListener = ConnectionBuilder.buildConnection();
+      reListen();
+      populateLocalTable();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
   public boolean insertEntry(UserAccount entry) {
+
+    // Check if the entry already exists.
+    if (tableMap.containsKey(entry.getUsername())) return false;
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
@@ -134,6 +214,9 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
   @Override
   public boolean updateEntry(UserAccount entry) {
+
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getUsername())) return false;
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
@@ -203,6 +286,8 @@ public class UserAccountDAO implements IDAO<UserAccount> {
   @Override
   public UserAccount getEntry(Object identifier) {
 
+    verifyLocalTable();
+
     // Check if input identifier is correct type
     if (!(identifier instanceof String)) {
       System.out.println(
@@ -225,6 +310,8 @@ public class UserAccountDAO implements IDAO<UserAccount> {
 
   @Override
   public ArrayList<UserAccount> getAllEntries() {
+
+    verifyLocalTable();
 
     ArrayList<UserAccount> all = new ArrayList<>();
 

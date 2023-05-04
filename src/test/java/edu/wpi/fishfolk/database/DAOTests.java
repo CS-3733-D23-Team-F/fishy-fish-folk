@@ -1,12 +1,15 @@
 package edu.wpi.fishfolk.database;
 
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.database.TableEntry.ITRequest;
 import edu.wpi.fishfolk.ui.*;
 import edu.wpi.fishfolk.util.NodeType;
+import edu.wpi.fishfolk.util.PermissionLevel;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 public class DAOTests {
@@ -27,7 +30,7 @@ public class DAOTests {
   @Test
   public void nodeDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(new Node(9997, new Point2D(100, 200), "carpet", "bingus"));
     fdb.insertEntry(new Node(9998, new Point2D(300, 400), "tile", "bingus"));
@@ -49,7 +52,7 @@ public class DAOTests {
   @Test
   public void locationDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(new Location(".Loooong name", "Short name", NodeType.INFO));
     fdb.insertEntry(new Location(".Bingus Tower III", "Bingus", NodeType.DEPT));
@@ -67,13 +70,13 @@ public class DAOTests {
 
     fdb.removeEntry(".Bingus Tower III", TableEntryType.LOCATION);
 
-    fdb.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/", TableEntryType.NODE);
+    fdb.exportCSV("src/main/resources/edu/wpi/fishfolk/csv/", TableEntryType.LOCATION);
   }
 
   @Test
   public void foodRequestDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     ArrayList<NewFoodItem> fList1 = new ArrayList<>(List.of(new NewFoodItem("TEST 1", 3)));
     ArrayList<NewFoodItem> fList2 = new ArrayList<>(List.of(new NewFoodItem("TEST 2", 3)));
@@ -148,7 +151,7 @@ public class DAOTests {
   @Test
   public void supplyRequestDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     ArrayList<SupplyItem> s1 = new ArrayList<>(List.of(new SupplyItem("bingus 1", 1)));
     ArrayList<SupplyItem> s2 = new ArrayList<>(List.of(new SupplyItem("bingus 2", 2)));
@@ -213,7 +216,7 @@ public class DAOTests {
   @Test
   public void furnitureRequestDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(
         new FurnitureRequest(
@@ -279,7 +282,7 @@ public class DAOTests {
   @Test
   public void flowerRequestDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     ArrayList<FlowerItem> items1 = new ArrayList<>(List.of(new FlowerItem("red", 1, 5)));
     ArrayList<FlowerItem> items2 = new ArrayList<>(List.of(new FlowerItem("red", 2, 5)));
@@ -352,68 +355,197 @@ public class DAOTests {
   }
 
   @Test
+  @SneakyThrows
   public void conferenceRequestDAOTests() {
 
-    Fdb fdb = new Fdb();
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
 
     fdb.insertEntry(
         new ConferenceRequest(
             LocalDateTime.of(2020, 2, 2, 2, 2),
-            "Nobody",
-            "start",
+            "NOTE A",
+            "Ian",
             "start",
             "end",
+            LocalDateTime.of(9999, 1, 1, 0, 0),
             Recurring.DAILY,
             5,
             "roomname"));
+
+    Thread.sleep(200);
+
     fdb.insertEntry(
         new ConferenceRequest(
             LocalDateTime.of(2021, 2, 2, 2, 2),
-            "Jon",
-            "start",
+            "NOTE B",
+            "Michael",
             "start",
             "end",
+            LocalDateTime.of(9999, 1, 1, 0, 0),
             Recurring.DAILY,
             5,
             "roomname"));
+
+    Thread.sleep(200);
+
     fdb.insertEntry(
         new ConferenceRequest(
             LocalDateTime.of(2022, 2, 2, 2, 2),
+            "NOTE C",
             "Qui",
             "start",
-            "start",
             "end",
+            LocalDateTime.of(9999, 1, 1, 0, 0),
             Recurring.DAILY,
             5,
             "roomname"));
+
+    Thread.sleep(200);
 
     fdb.updateEntry(
         new ConferenceRequest(
             LocalDateTime.of(2021, 2, 2, 2, 2),
-            "NEW PERSON",
-            "start",
+            "NOTE B",
+            "Wong",
             "start",
             "end",
+            LocalDateTime.of(9999, 1, 1, 0, 0),
             Recurring.DAILY,
             5,
             "roomname"));
 
-    fdb.undoChange(TableEntryType.CONFERENCE_REQUEST);
-    fdb.undoChange(TableEntryType.CONFERENCE_REQUEST);
+    Thread.sleep(200);
+
+    // fdb.undoChange(TableEntryType.CONFERENCE_REQUEST);
+    // fdb.undoChange(TableEntryType.CONFERENCE_REQUEST);
 
     fdb.updateEntry(
         new ConferenceRequest(
             LocalDateTime.of(2020, 2, 2, 2, 2),
-            "ANOTHER NEW PERSON",
-            "start",
+            "NOTE A",
+            "Luke",
             "start",
             "end",
+            LocalDateTime.of(9999, 1, 1, 0, 0),
             Recurring.DAILY,
             5,
             "roomname"));
 
+    Thread.sleep(200);
+
     fdb.removeEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.CONFERENCE_REQUEST);
 
+    Thread.sleep(200);
+
     fdb.exportCSV("D:\\", TableEntryType.CONFERENCE_REQUEST);
+  }
+
+  @Test
+  public void accountDAOTests() {
+
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
+
+    fdb.insertEntry(
+        new UserAccount("cingus", "bongus", "null@null.whatever", PermissionLevel.STAFF));
+    fdb.insertEntry(
+        new UserAccount("dingus", "dongus", "null@null.whatever", PermissionLevel.GUEST));
+    fdb.insertEntry(
+        new UserAccount("fingus", "fongus", "null@null.whatever", PermissionLevel.ADMIN));
+    fdb.insertEntry(
+        new UserAccount("gingus", "gongus", "null@null.whatever", PermissionLevel.ROOT));
+    fdb.insertEntry(
+        new UserAccount("hingus", "hongus", "null@null.whatever", PermissionLevel.GUEST));
+    fdb.insertEntry(
+        new UserAccount("jingus", "jongus", "null@null.whatever", PermissionLevel.ADMIN));
+
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      // >:(
+    }
+
+    fdb.undoChange(TableEntryType.USER_ACCOUNT);
+    fdb.undoChange(TableEntryType.USER_ACCOUNT);
+    fdb.undoChange(TableEntryType.USER_ACCOUNT);
+    fdb.undoChange(TableEntryType.USER_ACCOUNT);
+    fdb.undoChange(TableEntryType.USER_ACCOUNT);
+  }
+
+  @Test
+  @SneakyThrows
+  public void itDAOTests() {
+
+    Fdb fdb = new Fdb(DBSource.DB_WPI);
+
+    fdb.insertEntry(
+        new ITRequest(
+            LocalDateTime.of(2020, 2, 2, 2, 2),
+            "Person A",
+            FormStatus.submitted,
+            "Notes",
+            ITComponent.COMPUTER,
+            ITPriority.MEDIUM,
+            "Room 1",
+            "123-456-7890"));
+
+    Thread.sleep(200);
+
+    fdb.insertEntry(
+        new ITRequest(
+            LocalDateTime.of(2021, 2, 2, 2, 2),
+            "Person B",
+            FormStatus.submitted,
+            "Notes",
+            ITComponent.COMPUTER,
+            ITPriority.MEDIUM,
+            "Room 1",
+            "123-456-7890"));
+
+    Thread.sleep(200);
+
+    fdb.insertEntry(
+        new ITRequest(
+            LocalDateTime.of(2022, 2, 2, 2, 2),
+            "Person C",
+            FormStatus.submitted,
+            "Notes",
+            ITComponent.COMPUTER,
+            ITPriority.MEDIUM,
+            "Room 1",
+            "123-456-7890"));
+
+    Thread.sleep(200);
+
+    fdb.updateEntry(
+        new ITRequest(
+            LocalDateTime.of(2021, 2, 2, 2, 2),
+            "Person B",
+            FormStatus.submitted,
+            "NEW Notes",
+            ITComponent.COMPUTER,
+            ITPriority.MEDIUM,
+            "Room 1",
+            "123-456-7890"));
+
+    Thread.sleep(200);
+
+    System.out.println(
+        "[Main]: " + fdb.getEntry(LocalDateTime.of(2021, 2, 2, 2, 2), TableEntryType.IT_REQUEST));
+    System.out.println("[Main]: " + fdb.getAllEntries(TableEntryType.IT_REQUEST));
+
+    fdb.updateEntry(
+        new ITRequest(
+            LocalDateTime.of(2020, 2, 2, 2, 2),
+            "Person A",
+            FormStatus.submitted,
+            "NEWER Notes",
+            ITComponent.COMPUTER,
+            ITPriority.MEDIUM,
+            "Room 1",
+            "123-456-7890"));
+
+    Thread.sleep(200);
+
+    fdb.removeEntry(LocalDateTime.of(2022, 2, 2, 2, 2), TableEntryType.IT_REQUEST);
   }
 }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" maxHeight="535.0" maxWidth="825.0" minHeight="535.0" minWidth="825.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
+   <children>
+      <HBox maxHeight="65.0" maxWidth="825.0" minHeight="65.0" minWidth="825.0">
+         <children>
+            <MFXButton fx:id="back" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back">
+               <HBox.margin>
+                  <Insets left="40.0" top="25.0" />
+               </HBox.margin>
+            </MFXButton>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" maxHeight="470.0" maxWidth="825.0" minHeight="470.0" minWidth="825.0">
+         <children>
+            <VBox alignment="CENTER" maxHeight="470.0" maxWidth="825.0" minHeight="470.0" minWidth="825.0">
+               <children>
+                  <ImageView fitHeight="200.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/About/Louis.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Louis Pham">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Senior Software Engineer">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Computer Science Bachelor's Degree">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Poke Bowl" wrappingWidth="275.9400634765625">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: No-life gaming " wrappingWidth="344.93994140625">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: &quot;Reality is harsh and bleak, sometimes painful. But it's still brighter than delusions&quot; " textAlignment="CENTER" wrappingWidth="586.2733154296875">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="by MOROHA" wrappingWidth="152.273193359375">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="15.0" />
+   </padding>
+</VBox>

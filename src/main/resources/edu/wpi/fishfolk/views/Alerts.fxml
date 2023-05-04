@@ -6,18 +6,43 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="600.0" style="-fx-background-color: #F1F1F1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.AlertsController">
    <children>
-      <Label fx:id="alertText" minHeight="22.0" minWidth="40.0" text="Text" textFill="#012d5a" HBox.hgrow="ALWAYS">
-         <font>
-            <Font name="Open Sans Regular" size="15.0" />
-         </font>
+      <VBox>
+         <children>
+            <HBox>
+               <children>
+                  <Label fx:id="alertUsername" minHeight="22.0" minWidth="40.0" text="Text" textFill="#012d5a" wrapText="true">
+                     <font>
+                        <Font name="Open Sans SemiBold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="alertTime" minHeight="22.0" minWidth="40.0" text="Time" textFill="#012d5a" wrapText="true">
+                     <font>
+                        <Font name="Open Sans Light" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Label fx:id="alertText" minHeight="22.0" minWidth="40.0" text="Text" textFill="#012d5a" wrapText="true">
+               <font>
+                  <Font name="Open Sans Regular" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="-5.0" />
+               </VBox.margin>
+            </Label>
+         </children>
          <HBox.margin>
             <Insets left="15.0" />
          </HBox.margin>
-      </Label>
+      </VBox>
       <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
          <children>
             <MFXButton fx:id="closeAlert" contentDisplay="GRAPHIC_ONLY" style="-fx-background-color: #F1F1F1;">

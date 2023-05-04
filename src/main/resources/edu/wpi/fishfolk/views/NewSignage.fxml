@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
@@ -189,11 +190,19 @@
       </HBox>
       <HBox alignment="CENTER" minHeight="75.0">
          <children>
-            <MFXFilterComboBox fx:id="presetSelect" promptText="PRESET" style="-fx-border-radius: 2; -fx-border-color: #000000;" styleClass="fx">
+            <MFXFilterComboBox fx:id="presetSelect" popupOffsetY="-2115.0" promptText="PRESET" style="-fx-border-radius: 5; -fx-border-width: 3; -fx-border-color: #012d5a;" styleClass="fx">
                <font>
                   <Font size="15.0" />
                </font>
             </MFXFilterComboBox>
+            <MFXButton fx:id="signageEditorButton" style="-fx-background-color: #012d5a;" text="Signage Editor" textFill="WHITE">
+               <font>
+                  <Font name="Open Sans Bold" size="26.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </MFXButton>
          </children>
       </HBox>
    </children>

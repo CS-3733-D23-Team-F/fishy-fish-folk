@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" maxHeight="535.0" maxWidth="825.0" minHeight="535.0" minWidth="825.0" style="-fx-background-color: #012D5A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.fishfolk.controllers.PopupController">
+   <children>
+      <HBox maxHeight="65.0" maxWidth="825.0" minHeight="65.0" minWidth="825.0">
+         <children>
+            <MFXButton fx:id="back" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f1f1f1;" text="Back">
+               <HBox.margin>
+                  <Insets left="40.0" top="25.0" />
+               </HBox.margin>
+            </MFXButton>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" maxHeight="470.0" maxWidth="825.0" minHeight="470.0" minWidth="825.0">
+         <children>
+            <VBox alignment="CENTER" maxHeight="470.0" maxWidth="825.0" minHeight="470.0" minWidth="825.0">
+               <children>
+                  <ImageView fitHeight="224.0" fitWidth="186.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/About/Sam.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Sam Rooney">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Owner">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Majoring in Robotics Engineering Bachelor's Degree">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Food: Clam Chowder" wrappingWidth="316.9400634765625">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Hobby: Hockey, Hockey, Hockey" wrappingWidth="456.93994140625">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f1f1f1" strokeType="OUTSIDE" strokeWidth="0.0" text="Favorite Quote: &quot;Be who you are and say what you will, because those who mind don't matter, and those who matter don't mind.&quot; by Bernard Baruch" textAlignment="CENTER" wrappingWidth="700.9400634765625">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="15.0" />
+   </padding>
+</VBox>

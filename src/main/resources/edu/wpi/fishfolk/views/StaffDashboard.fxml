@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -7,10 +8,14 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -20,16 +25,33 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                  <StackPane minHeight="50.0">
                      <children>
-                        <Label text="Future Moves" textFill="WHITE">
-                           <font>
-                              <Font name="Open Sans Bold" size="24.0" />
-                           </font>
-                        </Label>
+                        <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                           <children>
+                              <Label text="Future Moves" textFill="WHITE">
+                                 <font>
+                                    <Font name="Open Sans Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
+                           <children>
+                              <MFXButton fx:id="movesRefresh" contentDisplay="CENTER" style="-fx-background-color: #012d5a;" text=" ">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/refresh.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </MFXButton>
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
-                  <MFXScrollPane fx:id="scroll" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+                  </StackPane>
+                  <MFXScrollPane fx:id="scroll" minWidth="300.0" pannable="true" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" styleClass="newScrolls" VBox.vgrow="ALWAYS">
                      <content>
                         <GridPane fx:id="grid">
                            <rowConstraints>
@@ -45,26 +67,43 @@
             </VBox>
             <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox alignment="TOP_CENTER" minHeight="300.0" minWidth="700.0" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: #012D5A; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                        <StackPane minHeight="50.0">
                            <children>
-                              <Label text="Assigned Tasks" textFill="WHITE">
-                                 <font>
-                                    <Font name="Open Sans Bold" size="24.0" />
-                                 </font>
-                              </Label>
+                              <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                                 <children>
+                                    <Label fx:id="tableHeader" text="Unassigned Tasks" textFill="WHITE">
+                                       <font>
+                                          <Font name="Open Sans Bold" size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
+                                 <children>
+                                    <MFXButton fx:id="serviceRefresh" contentDisplay="CENTER" style="-fx-background-color: #012d5a;" text=" ">
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/refresh.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </MFXButton>
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
+                        </StackPane>
                         <HBox alignment="CENTER" minHeight="300.0" minWidth="700.0" prefHeight="300.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <TabPane fx:id="tabPane" minHeight="300.0" minWidth="700.0" prefHeight="300.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+                              <TabPane fx:id="tabPane" minHeight="250.0" minWidth="700.0" prefHeight="250.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
                                  <tabs>
                                     <Tab text="Food Orders">
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="foodTable" prefHeight="400.0" prefWidth="719.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="foodTable" minHeight="150.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="foodid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="foodtotalprice" prefWidth="75.0" text="Total Price" />
@@ -88,7 +127,7 @@
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="supplyTable" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="supplyTable" minHeight="150.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="supplyid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="supplystatus" prefWidth="75.0" text="Form Status" />
@@ -106,34 +145,11 @@
                                           </AnchorPane>
                                        </content>
                                     </Tab>
-                                    <Tab text="Furniture Orders">
-                                       <content>
-                                          <AnchorPane>
-                                             <children>
-                                                <TableView fx:id="furnitureTable" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <columns>
-                                                      <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
-                                                      <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
-                                                      <TableColumn fx:id="furnituredeliveryroom" prefWidth="98.7999267578125" text="Delivery Room" />
-                                                      <TableColumn fx:id="furnituredeliverydate" prefWidth="94.0" text="Delivery Date" />
-                                                      <TableColumn fx:id="furniturenotes" prefWidth="67.99996948242188" text="Notes" />
-                                                      <TableColumn fx:id="furnitureservicetype" prefWidth="89.20001220703125" text="Service Type" />
-                                                      <TableColumn fx:id="furniturefurniture" prefWidth="78.4000244140625" text="Furniture" />
-                                                      <TableColumn fx:id="furnitureCompletion" prefWidth="75.0" text="Completion" />
-                                                   </columns>
-                                                   <columnResizePolicy>
-                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                   </columnResizePolicy>
-                                                </TableView>
-                                             </children>
-                                          </AnchorPane>
-                                       </content>
-                                    </Tab>
                                     <Tab text="Flower Orders">
                                        <content>
                                           <AnchorPane>
                                              <children>
-                                                <TableView fx:id="flowerTable" minHeight="270.0" minWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="flowerTable" minHeight="150.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="flowerid" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="flowertotalprice" prefWidth="75.0" text="Total Price" />
@@ -152,36 +168,99 @@
                                           </AnchorPane>
                                        </content>
                                     </Tab>
+                                    <Tab text="Furniture Orders">
+                                       <content>
+                                          <AnchorPane>
+                                             <children>
+                                                <TableView fx:id="furnitureTable" minHeight="150.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="furnitureid" prefWidth="75.0" text="ID" />
+                                                      <TableColumn fx:id="furniturestatus" prefWidth="75.0" text="Status" />
+                                                      <TableColumn fx:id="furnituredeliveryroom" prefWidth="98.7999267578125" text="Delivery Room" />
+                                                      <TableColumn fx:id="furnituredeliverydate" prefWidth="94.0" text="Delivery Date" />
+                                                      <TableColumn fx:id="furniturenotes" prefWidth="67.99996948242188" text="Notes" />
+                                                      <TableColumn fx:id="furnitureservicetype" prefWidth="89.20001220703125" text="Service Type" />
+                                                      <TableColumn fx:id="furniturefurniture" prefWidth="78.4000244140625" text="Furniture" />
+                                                      <TableColumn fx:id="furnitureCompletion" prefWidth="75.0" text="Completion" />
+                                                   </columns>
+                                                   <columnResizePolicy>
+                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                   </columnResizePolicy>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
+                                    <Tab styleClass="tabEnd" text="IT Requests">
+                                       <content>
+                                          <AnchorPane>
+                                             <children>
+                                                <TableView fx:id="itTable" minHeight="150.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="itid" prefWidth="75.0" text="ID" />
+                                                      <TableColumn fx:id="itstatus" prefWidth="75.0" text="Status" />
+                                                      <TableColumn fx:id="itissue" prefWidth="98.7999267578125" text="Issue" />
+                                                      <TableColumn fx:id="itcomponent" prefWidth="94.0" text="Component" />
+                                                      <TableColumn fx:id="itpriority" prefWidth="67.99996948242188" text="Priority" />
+                                                      <TableColumn fx:id="itroom" prefWidth="89.20001220703125" text="Room" />
+                                                      <TableColumn fx:id="itcontactinfo" prefWidth="78.4000244140625" text="Contact Info" />
+                                                      <TableColumn fx:id="itcompletion" prefWidth="75.0" text="Completion" />
+                                                   </columns>
+                                                   <columnResizePolicy>
+                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                   </columnResizePolicy>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
                                  </tabs>
                               </TabPane>
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox>
+                  <HBox VBox.vgrow="ALWAYS">
                      <children>
                         <VBox style="-fx-border-color: #012D5A; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
                            <children>
-                              <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                              <StackPane minHeight="50.0">
                                  <children>
-                                    <Label text="Alerts" textFill="WHITE">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="24.0" />
-                                       </font>
-                                    </Label>
+                                    <HBox alignment="CENTER" minHeight="50.0" style="-fx-background-color: #012d5a; -fx-background-radius: 5;">
+                                       <children>
+                                          <Label text="Alerts" textFill="WHITE">
+                                             <font>
+                                                <Font name="Open Sans Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minHeight="50.0" StackPane.alignment="CENTER_RIGHT">
+                                       <children>
+                                          <MFXButton fx:id="alertsRefresh" contentDisplay="CENTER" style="-fx-background-color: #012d5a;" text=" ">
+                                             <graphic>
+                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/refresh.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </MFXButton>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
+                              </StackPane>
                               <VBox alignment="TOP_CENTER" minWidth="450.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <MFXScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="300.0" minHeight="100.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                                    <MFXScrollPane fx:id="alertsPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="300.0" minHeight="100.0" pannable="true" style="-fx-border-radius: 5; -fx-border-width: 0.5; -fx-border-color: #012D5A;" styleClass="newScrolls" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                                        <VBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </VBox.margin>
                                        <content>
                                           <GridPane fx:id="alertGrid" maxWidth="1.7976931348623157E308">
-                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                             </rowConstraints>
+                                             <columnConstraints>
+                                                <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
                                           </GridPane>
                                        </content>
                                     </MFXScrollPane>

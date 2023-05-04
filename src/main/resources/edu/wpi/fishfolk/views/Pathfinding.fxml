@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
@@ -33,7 +34,7 @@
          <content>
             <Group fx:id="drawGroup">
                <children>
-                  <ImageView fx:id="mapImg" pickOnBounds="true" AnchorPane.leftAnchor="-459.0" AnchorPane.topAnchor="-145.0">
+                  <ImageView fx:id="mapImg" layoutX="-8.0" layoutY="-14.0" pickOnBounds="true" AnchorPane.leftAnchor="-8.0" AnchorPane.topAnchor="-14.0">
                      <image>
                         <Image url="@../map/clean/00_thelowerlevel1.png" />
                      </image>
@@ -41,11 +42,266 @@
                         <Rectangle2D />
                      </viewport>
                   </ImageView>
+                  <Group fx:id="locationGroup">
+                  </Group>
                </children>
             </Group>
          </content>
       </GesturePane>
-      <VBox maxHeight="165.0" maxWidth="55.0" minHeight="162.0" minWidth="55.0" nodeOrientation="RIGHT_TO_LEFT" StackPane.alignment="TOP_RIGHT">
+      <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" maxHeight="315.0" maxWidth="275.0" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
+         <children>
+            <HBox alignment="CENTER" minHeight="45.0" prefHeight="45.0" prefWidth="275.0">
+               <children>
+                  <Text fx:id="floorDisplay1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="floorDisplay" text="Settings">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Text>
+                  <MFXButton fx:id="closeSettings" ellipsisString="" maxHeight="30.0" maxWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" style="-fx-background-color: #f1f1f1;">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0">
+                           <image>
+                              <Image url="@../images/003-remove.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets left="155.0" />
+                     </HBox.margin>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <VBox prefHeight="140.0" prefWidth="200.0">
+               <children>
+                  <MFXToggleButton fx:id="noStairs" contentDisplay="TOP" prefHeight="42.0" prefWidth="145.0" text="Avoid Stairs" textFill="#012d5a">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </MFXToggleButton>
+                  <MFXToggleButton fx:id="locationMoves" contentDisplay="TOP" prefHeight="42.0" prefWidth="145.0" text="See Location Moves" textFill="#012d5a">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </MFXToggleButton>
+                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Activate Location Names:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Text>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <MFXCheckbox fx:id="infoCheck" text="Info Desk" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="retlCheck" text="Food" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="restCheck" text="Restroom" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="servCheck" text="Service" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="exitCheck" text="Exit" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="allCheck" text="Activate All" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="15.0" top="10.0" />
+                                 </VBox.margin>
+                              </MFXCheckbox>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <MFXCheckbox fx:id="elevCheck" text="Elevator" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="staiCheck" text="Stairs" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="deptCheck" text="Department" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="confCheck" text="Conference" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                              <MFXCheckbox fx:id="labsCheck" text="Lab" textFill="#012d5a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </MFXCheckbox>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <StackPane.margin>
+            <Insets right="20.0" top="36.0" />
+         </StackPane.margin>
+      </VBox>
+      <VBox fx:id="adminBox" alignment="TOP_CENTER" disable="true" maxHeight="315.0" maxWidth="250.0" minHeight="267.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="267.0" prefWidth="250.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" StackPane.alignment="CENTER_RIGHT">
+         <children>
+            <HBox alignment="CENTER" minHeight="50.0">
+               <children>
+                  <Text fx:id="floorDisplay11" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="floorDisplay" text="Admin Settings">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Text>
+                  <MFXButton fx:id="closeAdmin" ellipsisString="" maxHeight="30.0" maxWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" style="-fx-background-color: #f1f1f1;">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0">
+                           <image>
+                              <Image url="@../images/003-remove.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets left="80.0" />
+                     </HBox.margin>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Pathfinding Method:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Text>
+                  <MFXFilterComboBox fx:id="methodSelector" alignment="TOP_LEFT" minHeight="37.0" minWidth="220.0" promptText="Ending point" style="-fx-background-color: #ffffff; -fx-border-color: #012D5A;" text="Method">
+                     <textFill>
+                        <Color red="0.6196078658103943" green="0.6392157077789307" blue="0.658823549747467" opacity="0.8700000047683716" />
+                     </textFill>
+                     <font>
+                        <Font name="Open Sans Regular" size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </VBox.margin>
+                  </MFXFilterComboBox>
+                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Set Current Location:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="15.0" top="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <MFXFilterComboBox fx:id="currLocation" alignment="TOP_LEFT" minHeight="37.0" minWidth="220.0" promptText="Ending point" style="-fx-background-color: #ffffff; -fx-border-color: #012D5A;" text="Method">
+                     <textFill>
+                        <Color red="0.6196078658103943" green="0.6392157077789307" blue="0.658823549747467" opacity="0.8700000047683716" />
+                     </textFill>
+                     <font>
+                        <Font name="Open Sans Regular" size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </VBox.margin>
+                  </MFXFilterComboBox>
+                  <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Date To Pathfind On:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="15.0" top="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <MFXDatePicker fx:id="pathDate" alignment="BOTTOM_LEFT" measureUnitGap="0.0" minWidth="220.0" popupOffsetX="-325.0" popupOffsetY="-2500.0" prefHeight="220.0">
+                     <VBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </VBox.margin>
+                  </MFXDatePicker>
+                  <MFXButton fx:id="submitSetting" buttonType="RAISED" contentDisplay="CENTER" depthLevel="LEVEL3" graphicTextGap="0.0" minHeight="37.0" minWidth="100.0" style="-fx-background-color: #F0BF4C; -fx-border-radius: 10;" text="Submit" textAlignment="CENTER">
+                     <font>
+                        <Font name="Open Sans Bold" size="15.0" />
+                     </font>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                     <VBox.margin>
+                        <Insets left="75.0" top="10.0" />
+                     </VBox.margin>
+                  </MFXButton>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets right="20.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <StackPane.margin>
+            <Insets right="305.0" top="36.0" />
+         </StackPane.margin>
+      </VBox>
+      <VBox maxHeight="165.0" maxWidth="55.0" minHeight="162.0" minWidth="55.0" nodeOrientation="LEFT_TO_RIGHT" StackPane.alignment="TOP_RIGHT">
          <children>
             <MFXButton fx:id="zoomIn" buttonType="RAISED" depthLevel="LEVEL3" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" style="-fx-background-color: #012D5A;" text="+" textFill="WHITE" VBox.vgrow="ALWAYS">
                <font>
@@ -57,174 +313,20 @@
                   <Font name="Open Sans Bold" size="24.0" />
                </font>
             </MFXButton>
-            <VBox maxWidth="90.0" minWidth="90.0" nodeOrientation="RIGHT_TO_LEFT">
-               <children>
-                  <ImageView fx:id="settingButton" accessibleRole="BUTTON" fitHeight="55.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+
+            <MFXButton fx:id="settingButton" ellipsisString="" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" style="-fx-background-color: #012D5A;">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/Gear.png" />
                      </image>
                   </ImageView>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <VBox fx:id="settingBox" alignment="TOP_CENTER" disable="true" minHeight="186.0" minWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="200.0" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" visible="false">
-                           <children>
-                              <HBox alignment="CENTER" minHeight="50.0">
-                                 <children>
-                                    <Text fx:id="floorDisplay1" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="floorDisplay" text="Settings">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="15.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                    </Text>
-                                    <MFXButton fx:id="closeSettings" style="-fx-background-color: #900000;" text="X" textFill="WHITE">
-                                       <HBox.margin>
-                                          <Insets left="90.0" />
-                                       </HBox.margin>
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                              <VBox prefHeight="140.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXToggleButton fx:id="noStairs" contentDisplay="TOP" prefHeight="72.0" prefWidth="180.0" text="Disable Stairs" textFill="#012d5a">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </MFXToggleButton>
-                                    <MFXToggleButton fx:id="showLocations" contentDisplay="TOP" gap="10.0" prefHeight="42.0" prefWidth="199.0" text="Display Locations" textFill="#012d5a">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                    </MFXToggleButton>
-                                 </children>
-                              </VBox>
-                           </children>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <HBox.margin>
-                              <Insets right="25.0" />
-                           </HBox.margin>
-                        </VBox>
-                        <VBox fx:id="adminBox" alignment="TOP_CENTER" disable="true" minHeight="320.0" minWidth="250.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: #f1f1f1; -fx-background-radius: 15;" visible="false">
-                           <children>
-                              <HBox alignment="CENTER" minHeight="50.0">
-                                 <children>
-                                    <Text fx:id="floorDisplay11" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="floorDisplay" text="Admin Settings">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="15.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                    </Text>
-                                    <MFXButton fx:id="closeAdmin" style="-fx-background-color: #900000;" text="X" textFill="WHITE">
-                                       <HBox.margin>
-                                          <Insets left="90.0" />
-                                       </HBox.margin>
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Pathfinding Method:">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets left="15.0" />
-                                       </VBox.margin>
-                                    </Text>
-                                    <MFXFilterComboBox fx:id="methodSelector" alignment="TOP_LEFT" minHeight="37.0" minWidth="220.0" promptText="Ending point" style="-fx-background-color: #ffffff; -fx-border-color: #012D5A;" text="Method">
-                                       <textFill>
-                                          <Color red="0.6196078658103943" green="0.6392157077789307" blue="0.658823549747467" opacity="0.8700000047683716" />
-                                       </textFill>
-                                       <font>
-                                          <Font name="Open Sans Regular" size="15.0" />
-                                       </font>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                       <VBox.margin>
-                                          <Insets left="15.0" top="5.0" />
-                                       </VBox.margin>
-                                    </MFXFilterComboBox>
-                                    <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Path Display Message:">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets left="15.0" top="10.0" />
-                                       </VBox.margin>
-                                    </Text>
-                                    <MFXTextField fx:id="pathMessage" floatMode="DISABLED" minHeight="36.0" minWidth="220.0" prefHeight="36.0" prefWidth="220.0">
-                                       <VBox.margin>
-                                          <Insets left="15.0" top="5.0" />
-                                       </VBox.margin>
-                                    </MFXTextField>
-                                    <Text fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" text="Date To Pathfind On:">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets left="15.0" top="10.0" />
-                                       </VBox.margin>
-                                    </Text>
-                                    <MFXDatePicker fx:id="pathDate" alignment="BOTTOM_LEFT" measureUnitGap="0.0" minWidth="220.0" popupOffsetX="-325.0" popupOffsetY="-2500.0" prefHeight="220.0">
-                                       <VBox.margin>
-                                          <Insets left="15.0" top="5.0" />
-                                       </VBox.margin>
-                                    </MFXDatePicker>
-                                    <MFXButton fx:id="submitSetting" buttonType="RAISED" contentDisplay="CENTER" depthLevel="LEVEL3" graphicTextGap="0.0" minHeight="37.0" minWidth="100.0" style="-fx-background-color: #F0BF4C; -fx-border-radius: 10;" text="Submit" textAlignment="CENTER">
-                                       <font>
-                                          <Font name="Open Sans Bold" size="15.0" />
-                                       </font>
-                                       <effect>
-                                          <DropShadow />
-                                       </effect>
-                                       <VBox.margin>
-                                          <Insets left="75.0" top="10.0" />
-                                       </VBox.margin>
-                                    </MFXButton>
-                                 </children>
-                                 <opaqueInsets>
-                                    <Insets />
-                                 </opaqueInsets>
-                                 <VBox.margin>
-                                    <Insets right="20.0" />
-                                 </VBox.margin>
-                              </VBox>
-                           </children>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <HBox.margin>
-                              <Insets right="40.0" />
-                           </HBox.margin>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                  </HBox>
-               </children>
+               </graphic>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-            </VBox>
+
+            </MFXButton>
          </children>
          <StackPane.margin>
             <Insets right="25.0" top="40.0" />
@@ -239,17 +341,68 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
+                        <MFXButton fx:id="upFloor" alignment="CENTER" cacheShape="false" centerShape="false" ellipsisString="" focusTraversable="false" graphicTextGap="0.0" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="75.0" prefHeight="10.0" prefWidth="10.0" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" scaleShape="false" style="-fx-background-color: #012D5A; -fx-background-radius: 8;" text=" ">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="15.0" fitWidth="15.0" scaleX="2.0" scaleY="2.0" scaleZ="0.0">
+                                 <image>
+                                    <Image url="@../images/Signage/arrowsquare.PNG" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </MFXButton>
                         <Text fill="#454343" strokeType="OUTSIDE" strokeWidth="0.0" text="Viewing: ">
                            <font>
                               <Font name="Open Sans Regular" size="15.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets left="8.0" />
+                           </VBox.margin>
                         </Text>
                         <Text fx:id="floorDisplay" fill="#012d5a" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="floorDisplay" text="Floor 1">
                            <font>
                               <Font name="Open Sans Bold" size="15.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets left="7.0" />
+                           </VBox.margin>
                         </Text>
+                        <MFXButton fx:id="downFloor" alignment="CENTER" cacheShape="false" centerShape="false" ellipsisString="" focusTraversable="false" graphicTextGap="0.0" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="75.0" prefHeight="10.0" prefWidth="10.0" rippleAnimateBackground="false" rippleAnimationSpeed="0.0" rippleBackgroundOpacity="0.0" rippleRadius="0.0" rippleRadiusMultiplier="0.0" scaleShape="false" style="-fx-background-color: #012D5A; -fx-background-radius: 8;" text=" ">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="15.0" fitWidth="15.0" rotate="180.0" scaleX="2.0" scaleY="2.0" scaleZ="0.0">
+                                 <image>
+                                    <Image url="@../images/Signage/arrowsquare.PNG" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </MFXButton>
                      </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
@@ -283,7 +436,7 @@
                         </MFXFilterComboBox>
                      </children>
                      <HBox.margin>
-                        <Insets left="15.0" />
+                        <Insets left="25.0" />
                      </HBox.margin>
                   </VBox>
                   <MFXButton fx:id="clearBtn" buttonType="RAISED" contentDisplay="CENTER" depthLevel="LEVEL3" graphicTextGap="0.0" minHeight="37.0" minWidth="75.0" style="-fx-background-color: #012D5A; -fx-border-radius: 10;" text="Clear" textAlignment="CENTER" textFill="WHITE" HBox.hgrow="ALWAYS">

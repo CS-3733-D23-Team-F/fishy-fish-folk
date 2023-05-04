@@ -55,7 +55,11 @@ public class Graph {
                 elt -> {
                   Node node = (Node) elt;
 
-                  dbConnection.getLocations(node.getNodeID(), date).forEach(node::addLocation);
+                  // add moves to node objects to use location data later
+                  // for checking node type and elevators
+                  dbConnection
+                      .getLocations(node.getNodeID(), date)
+                      .forEach(loc -> node.addMove(loc, date));
 
                   id2idx.put(node.getNodeID(), nodeCount[0]);
                   nodeCount[0]++;
@@ -139,15 +143,14 @@ public class Graph {
     Integer idx2 = id2idx.get(nid2);
     int adjust = 0;
 
+    // System.out.println(nodes[idx1].getLocations(date));
+
     if (idx1 != null && idx2 != null) {
 
       // Add weights to stairs
-      // TODO: make this dependent on a boolean parameter passed by the pathfinding controller
       if (nodes[idx1].containsType(NodeType.STAI) && nodes[idx2].containsType(NodeType.STAI)) {
         adjust = 500;
       }
-
-      // System.out.println(edge.id);
 
       Point2D point1 = nodes[idx1].getPoint();
       Point2D point2 = nodes[idx2].getPoint();

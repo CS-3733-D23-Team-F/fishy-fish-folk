@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.SharedResources;
+import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
 import edu.wpi.fishfolk.navigation.Navigation;
 import edu.wpi.fishfolk.ui.Sign;
 import edu.wpi.fishfolk.ui.SignagePreset;
@@ -8,8 +9,14 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.util.ArrayList;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 public class SignageEditorController extends AbsController {
   @FXML MFXTextField presetText; // name for the signage preset
@@ -30,14 +37,39 @@ public class SignageEditorController extends AbsController {
   ImageView iconr0, iconr1, iconr2, iconr3; // direction arrows for right side (0-3 is top-bottom)
   @FXML MFXTextField subtextl0, subtextl1, subtextl2, subtextl3;
   @FXML MFXTextField subtextr0, subtextr1, subtextr2, subtextr3;
+  @FXML MFXFilterComboBox<String> presetSelect;
+  @FXML MFXFilterComboBox<String> kioskSelect;
+  @FXML Label error;
   @FXML
-  MFXButton cancelButton, clearButton, submitButton; // cancel form, clear fields, and submit form
+  MFXButton cancelButton,
+      clearButton,
+      submitButton,
+      loadButton,
+      deleteButton; // cancel form, clear fields, and submit form
+  String identifier = "TEST";
+
+  ArrayList<MFXFilterComboBox<String>> listTexts = new ArrayList<>();
+  ArrayList<ImageView> listIcons = new ArrayList<>();
+  ArrayList<MFXTextField> listSubText = new ArrayList<>();
 
   SignagePreset currentPreset =
       new SignagePreset(); // SignagePreset object stores room selectors and sign orientations
 
+  ArrayList<edu.wpi.fishfolk.database.TableEntry.SignagePreset> allPresets =
+      (ArrayList<edu.wpi.fishfolk.database.TableEntry.SignagePreset>)
+          dbConnection.getAllEntries(TableEntryType.SIGNAGE_PRESET);
+  private static TranslateTransition thugShaker;
+
   public void initialize() {
+    setToBlue();
+    clearError();
     loadRooms(); // read documentation for loadRooms()
+
+    loadPresetSelect();
+    loadKioskSelect();
+    loadListTexts();
+    loadListIcons();
+    loadListSubtexts();
 
     // all direction arrows are disabled at start
     fullDisable(iconl0);
@@ -116,6 +148,41 @@ public class SignageEditorController extends AbsController {
         event -> clearAll()); // clear button clears and resets all objects on the form
     submitButton.setOnMouseClicked(
         event -> submit()); // submit button does submit(), read documentation for submit()
+    loadButton.setOnMouseClicked(event -> loadPreset());
+    deleteButton.setOnMouseClicked(event -> deletePreset());
+  }
+
+  private void loadListTexts() {
+    listTexts.add(rooml0);
+    listTexts.add(rooml1);
+    listTexts.add(rooml2);
+    listTexts.add(rooml3);
+    listTexts.add(roomr0);
+    listTexts.add(roomr1);
+    listTexts.add(roomr2);
+    listTexts.add(roomr3);
+  }
+
+  private void loadListIcons() {
+    listIcons.add(iconl0);
+    listIcons.add(iconl1);
+    listIcons.add(iconl2);
+    listIcons.add(iconl3);
+    listIcons.add(iconr0);
+    listIcons.add(iconr1);
+    listIcons.add(iconr2);
+    listIcons.add(iconr3);
+  }
+
+  private void loadListSubtexts() {
+    listSubText.add(subtextl0);
+    listSubText.add(subtextl1);
+    listSubText.add(subtextl2);
+    listSubText.add(subtextl3);
+    listSubText.add(subtextr0);
+    listSubText.add(subtextr1);
+    listSubText.add(subtextr2);
+    listSubText.add(subtextr3);
   }
 
   // fullDisable() resets the direction arrows by disabling them, lowering their opacity, and resets
@@ -153,6 +220,8 @@ public class SignageEditorController extends AbsController {
 
   // clearAll() sets room selectors to default null values and disables all direction arrows
   private void clearAll() {
+    setToBlue();
+    clearError();
     rooml0.setValue(null); // set all eight room selector values to null
     rooml1.setValue(null);
     rooml2.setValue(null);
@@ -161,6 +230,15 @@ public class SignageEditorController extends AbsController {
     roomr1.setValue(null);
     roomr2.setValue(null);
     roomr3.setValue(null);
+
+    rooml0.setText(""); // set all eight room selector values to null
+    rooml1.setText("");
+    rooml2.setText("");
+    rooml3.setText("");
+    roomr0.setText("");
+    roomr1.setText("");
+    roomr2.setText("");
+    roomr3.setText("");
 
     fullDisable(iconl0); // fully disables all eight direction arrows
     fullDisable(iconl1);
@@ -171,15 +249,194 @@ public class SignageEditorController extends AbsController {
     fullDisable(iconr2);
     fullDisable(iconr3);
 
+    subtextl0.setText("");
+    subtextl1.setText("");
+    subtextl2.setText("");
+    subtextl3.setText("");
+    subtextr0.setText("");
+    subtextr1.setText("");
+    subtextr2.setText("");
+    subtextr3.setText("");
+
+    subtextl0.setOpacity(0);
+    subtextl1.setOpacity(0);
+    subtextl2.setOpacity(0);
+    subtextl3.setOpacity(0);
+    subtextr0.setOpacity(0);
+    subtextr1.setOpacity(0);
+    subtextr2.setOpacity(0);
+    subtextr3.setOpacity(0);
+
     presetText.setText(""); // resets preset name text box
     datePicker.setValue(null); // rests date picker with null value
+
+    kioskSelect.setText("");
+    kioskSelect.setValue(null);
+  }
+
+  // loads MFXFilterCombobox with list of Signage Preset names
+  private void loadPresetSelect() {
+    for (int i = 0; i < allPresets.size(); i++) {
+      presetSelect.getItems().add(allPresets.get(i).getName());
+    }
+  }
+
+  private void loadKioskSelect() {
+    kioskSelect.getItems().addAll(dbConnection.getDestLongnames());
+  }
+
+  // when preset is selected in MFXFilterComboBox and Load button is pressed
+  // loads given preset fields into editor
+  private void loadPreset() {
+    setToBlue();
+    clearError();
+    if (!(presetSelect.getValue() == null)) identifier = presetSelect.getValue();
+    else return;
+    clearAll();
+
+    edu.wpi.fishfolk.database.TableEntry.SignagePreset preset =
+        (edu.wpi.fishfolk.database.TableEntry.SignagePreset)
+            dbConnection.getEntry(identifier, TableEntryType.SIGNAGE_PRESET);
+
+    presetText.setText(preset.getName());
+    datePicker.setValue(preset.getDate());
+    kioskSelect.setValue(preset.getKiosk());
+    kioskSelect.setText(preset.getKiosk());
+
+    for (int i = 0; i < 8; i++) {
+      if (preset.getSigns()[i] == null) {
+        listSubText.get(i).setOpacity(0);
+      } else {
+        listTexts.get(i).setOpacity(1);
+        listTexts.get(i).setDisable(false);
+        listIcons.get(i).setOpacity(1);
+        listIcons.get(i).setDisable(false);
+        listSubText.get(i).setOpacity(1);
+        listSubText.get(i).setDisable(false);
+        listTexts
+            .get(i)
+            .setText(
+                preset.getSigns()[i]
+                    .getLabel()); // otherwise set the i'th text to the i'th Sign's name
+        listTexts
+            .get(i)
+            .setValue(
+                preset.getSigns()[i].getLabel()); // the same thing again but with "value" instead
+        listIcons
+            .get(i)
+            .setRotate(
+                preset.getSigns()[i]
+                    .getDirection()); // and same for the i'th direction for the arrow
+        listSubText.get(i).setText(preset.getSigns()[i].getSubtext());
+      }
+    }
+  }
+
+  private void deletePreset() {
+    setToBlue();
+    clearError();
+    for (int i = 0; i < allPresets.size(); i++) {
+      if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
+        System.out.println("deleting " + allPresets.get(i).getName());
+        dbConnection.removeEntry(allPresets.get(i).getName(), TableEntryType.SIGNAGE_PRESET);
+        presetSelect.getItems().remove(i);
+        return;
+      }
+    }
+  }
+
+  /** Sets all borders back to blue */
+  public void setToBlue() {
+    presetText.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    datePicker.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    rooml0.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    rooml1.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    rooml2.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    rooml3.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    roomr0.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    roomr1.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    roomr2.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+    roomr3.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-radius: 5");
+  }
+
+  /** Clears the error field */
+  private void clearError() {
+    error.setText("");
+    error.setVisible(false);
+  }
+
+  /**
+   * Creates an error popup for the given values.
+   *
+   * @param errorLine the error message you want to present.
+   * @param node the area it will pop up next to.
+   */
+  private void submissionError(String errorLine, Node node) {
+    node.setStyle("-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1;");
+    if (thugShaker == null || thugShaker.getNode() != node) {
+      thugShaker = new TranslateTransition(Duration.millis(100), node);
+    }
+    thugShaker.setFromX(0f);
+    thugShaker.setCycleCount(4);
+    thugShaker.setAutoReverse(true);
+    thugShaker.setByX(15f);
+    thugShaker.playFromStart();
+    error.setText(errorLine);
+    error.setVisible(true);
+    error.setStyle("-fx-text-fill:  red;");
+    error.setFont(Font.font("Open Sans", 15.0));
   }
 
   // submit() fills the created SignagePreset object with the fields of the form for database
   // storage, then navigates to HOME page
   private void submit() {
+    clearError();
+    setToBlue();
+
+    if (rooml0.getText().equals("")
+        && rooml1.getText().equals("")
+        && rooml2.getText().equals("")
+        && rooml3.getText().equals("")
+        && roomr0.getText().equals("")
+        && roomr1.getText().equals("")
+        && roomr2.getText().equals("")
+        && roomr3.getText().equals("")) {
+      submissionError("", rooml0);
+      submissionError("", rooml1);
+      submissionError("", rooml2);
+      submissionError("", rooml3);
+      submissionError("", roomr0);
+      submissionError("", roomr1);
+      submissionError("", roomr2);
+      submissionError("You must fill out at least one room field.", roomr3);
+      return;
+    }
+    if (presetText.getText().equals("")) {
+      submissionError("You must fill in the name of the signage preset.", presetText);
+      return;
+    }
+    if (datePicker.getValue() == null) {
+      submissionError("You must choose a date.", datePicker);
+      return;
+    }
+    if (kioskSelect.getValue() == null) {
+      submissionError("You must choose a kiosk.", kioskSelect);
+      return;
+    }
+
     currentPreset.setName(presetText.getText()); // preset name
     currentPreset.setDate(datePicker.getValue()); // preset implementation date
+    currentPreset.setKiosk(kioskSelect.getValue());
 
     // assigns choice box and direction arrow direction to new Sign object and adds to
     // currentPreset's list of Signs
@@ -213,6 +470,7 @@ public class SignageEditorController extends AbsController {
         new edu.wpi.fishfolk.database.TableEntry.SignagePreset(
             currentPreset.getPresetName(),
             currentPreset.getImplementationDate(),
+            currentPreset.getKiosk(),
             currentPreset.signs);
     dbConnection.insertEntry(preset);
 

@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk;
 
 import static edu.wpi.fishfolk.util.PermissionLevel.GUEST;
+import static edu.wpi.fishfolk.util.PermissionLevel.ROOT;
 
 import edu.wpi.fishfolk.controllers.RootController;
 import edu.wpi.fishfolk.database.TableEntry.UserAccount;
@@ -12,6 +13,7 @@ public class SharedResources {
   private static UserAccount currentAccount = new UserAccount("extremely_guest", "", "", GUEST);
 
   @Setter private static RootController rootController;
+  @Setter public static String defaultLocation = "Watkins Kiosk 1";
 
   /**
    * Attempt to log into an account. If the user is already logged in, only log them out if the
@@ -36,6 +38,14 @@ public class SharedResources {
 
   public static UserAccount getCurrentUser() {
     return currentAccount;
+  }
+
+  public static String getUsername() {
+    return currentAccount.getUsername();
+  }
+
+  public static boolean isRoot() {
+    return currentAccount.getLevel() == ROOT;
   }
 
   /** Log out of the currently logged in account. If not logged in, do nothing. */

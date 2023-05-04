@@ -2,8 +2,14 @@ package edu.wpi.fishfolk.controllers;
 
 import static edu.wpi.fishfolk.controllers.AbsController.dbConnection;
 
+import edu.wpi.fishfolk.SharedResources;
 import edu.wpi.fishfolk.database.TableEntry.SignagePreset;
 import edu.wpi.fishfolk.database.TableEntry.TableEntryType;
+import edu.wpi.fishfolk.navigation.Navigation;
+import edu.wpi.fishfolk.navigation.Screen;
+import edu.wpi.fishfolk.ui.Sign;
+import edu.wpi.fishfolk.util.PermissionLevel;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,11 +36,19 @@ public class NewSignageController extends AbsController {
   ImageView iconr0, iconr1, iconr2, iconr3; // direction arrows for right side (0-3 is top-bottom)
 
   @FXML MFXFilterComboBox<String> presetSelect; // choicebox for manually selecting signage preset
+  @FXML MFXButton signageEditorButton;
 
-  String identifier = "TEST";
+  String identifier = "default";
   ArrayList<Text> listTexts = new ArrayList<>();
   ArrayList<ImageView> listIcons = new ArrayList<>();
   ArrayList<Text> listSubText = new ArrayList<>();
+
+  SignagePreset latest =
+      new SignagePreset(
+          identifier,
+          LocalDate.now().minusYears(1000),
+          SharedResources.defaultLocation,
+          new Sign[8]); // TODO: TRISTINNNNNNNNNNNNNNNNNNNN
 
   public void initialize() {
 
@@ -45,9 +59,13 @@ public class NewSignageController extends AbsController {
     // if the current date matches a date in one of the SignagePresets
     // the identifier is set to the name of that SignagePreset
     for (int i = 0; i < allPresets.size(); i++) {
-      if (allPresets.get(i).getDate().equals(LocalDate.now()))
-        identifier = allPresets.get(i).getName();
+      if (allPresets.get(i).getDate().isBefore(LocalDate.now().plusDays(1))
+          && (allPresets.get(i).getDate().isAfter(latest.getDate())
+              && allPresets.get(i).getKiosk().equals(SharedResources.defaultLocation))) {
+        latest = allPresets.get(i);
+      }
     }
+    identifier = latest.getName();
 
     // sets identifier to presetSelect value only if a preset has been selected
     if (!(presetSelect.getValue() == null)) identifier = presetSelect.getValue();
@@ -60,6 +78,23 @@ public class NewSignageController extends AbsController {
     initIconsList(); // loads all arrow icons into ArrayList<ImageView> to call in for loops
     initSubtextList();
 
+    if (SharedResources.getCurrentUser().getLevel().equals(PermissionLevel.GUEST)
+        || SharedResources.getCurrentUser().getLevel().equals(PermissionLevel.STAFF)) {
+      signageEditorButton.setOpacity(0);
+      signageEditorButton.setDisable(true);
+    } else {
+      signageEditorButton.setOpacity(100);
+      signageEditorButton.setDisable(false);
+    }
+
+    if (SharedResources.getCurrentUser().getLevel().equals(PermissionLevel.GUEST)) {
+      presetSelect.setOpacity(0);
+      presetSelect.setDisable(true);
+    } else {
+      presetSelect.setOpacity(100);
+      presetSelect.setDisable(false);
+    }
+
     // sets all of the signs based on the relevant preset
     for (int i = 0; i < 8; i++) {
       if (preset.getSigns()[i] == null) {
@@ -69,7 +104,7 @@ public class NewSignageController extends AbsController {
       } else {
         listTexts.get(i).setOpacity(1);
         listIcons.get(i).setOpacity(1);
-        listSubText.get(i).setOpacity(1); // CHANGE ONCE SUBTEXT IS ADDED TO DB
+        listSubText.get(i).setOpacity(1);
         listTexts
             .get(i)
             .setText(
@@ -94,13 +129,20 @@ public class NewSignageController extends AbsController {
     // dictates what do do if preset is selected
     presetSelect.setOnAction(
         event -> {
-          for (int i = 0; i < allPresets.size(); i++) {
-            if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
-              identifier = presetSelect.getValue();
-              initialize();
-              break;
+          if (!(presetSelect.getValue() == null)) {
+            for (int i = 0; i < allPresets.size(); i++) {
+              if (presetSelect.getValue().equals(allPresets.get(i).getName())) {
+                identifier = presetSelect.getValue();
+                initialize();
+                break;
+              }
             }
           }
+        });
+
+    signageEditorButton.setOnMouseClicked(
+        event -> {
+          Navigation.navigate(Screen.SIGNAGE_EDITOR);
         });
   }
 

@@ -14,6 +14,15 @@ public interface IDAO<T> {
   /** Take all entries from a PostgreSQL database and populate a local table. */
   void populateLocalTable();
 
+  /** Prepares an adjacent connection to listen for updates to the table. */
+  void prepareListener();
+
+  /** Re-listens to the table updates, used every time the connection is refreshed. */
+  void reListen();
+
+  /** Check if local refresh is necessary, refresh if needed. */
+  void verifyLocalTable();
+
   /**
    * Insert an entry into a local table.
    *
@@ -64,21 +73,4 @@ public interface IDAO<T> {
    * @return True on successful update, false otherwise
    */
   boolean updateDatabase(boolean updateAll);
-
-  /**
-   * Imports data from a CSV file, overwriting the data stored in the table.
-   *
-   * @param filepath The CSV file to read from
-   * @param backup True if a backup should get saved before overwriting.
-   * @return True on succesful import, false otherwise.
-   */
-  boolean importCSV(String filepath, boolean backup);
-
-  /**
-   * Exports the entire table to a CSV file.
-   *
-   * @param directory The directory to place the CSV file.
-   * @return True on successful export, false otherwise.
-   */
-  boolean exportCSV(String directory);
 }

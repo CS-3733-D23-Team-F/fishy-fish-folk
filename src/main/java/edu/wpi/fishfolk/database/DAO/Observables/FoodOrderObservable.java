@@ -24,7 +24,7 @@ public class FoodOrderObservable {
     this.foodtotalprice = String.format("%.2f", order.getTotalPrice());
     switch (order.getFormStatus()) {
       case submitted:
-        this.foodstatus = "submitted";
+        this.foodstatus = "Submitted";
         break;
       case notSubmitted:
         this.foodstatus = "Not Submitted";

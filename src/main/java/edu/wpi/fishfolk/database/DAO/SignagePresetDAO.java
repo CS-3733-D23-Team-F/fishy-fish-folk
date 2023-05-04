@@ -1,21 +1,28 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.SharedResources;
+import edu.wpi.fishfolk.database.*;
+import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
-import edu.wpi.fishfolk.database.DataEditQueue;
-import edu.wpi.fishfolk.database.EntryStatus;
-import edu.wpi.fishfolk.database.IDAO;
 import edu.wpi.fishfolk.database.TableEntry.SignagePreset;
 import edu.wpi.fishfolk.ui.Sign;
 import java.io.*;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.postgresql.PGConnection;
+import org.postgresql.util.PSQLException;
 
-public class SignagePresetDAO implements IDAO<SignagePreset> {
+public class SignagePresetDAO implements IDAO<SignagePreset>, ICSVWithSubtable {
 
   private final Connection dbConnection;
+  private Connection dbListener;
 
   private final String tableName;
   private final ArrayList<String> headers;
@@ -27,18 +34,14 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
   public SignagePresetDAO(Connection dbConnection) {
     this.dbConnection = dbConnection;
     this.tableName = "signagepreset";
-    this.headers = new ArrayList<>(List.of("presetname", "startdate", "signs"));
+    this.headers = new ArrayList<>(List.of("presetname", "startdate", "kiosk", "signs"));
     this.tableMap = new HashMap<>();
     this.dataEditQueue = new DataEditQueue<>();
-
-    /*
-                   + "room VARCHAR(256),"
-               + "direction DOUBLE,"
-               + "arrindex INT
-    */
+    this.dataEditQueue.setBatchLimit(1);
 
     init(false);
     initSubtable(false);
+    prepareListener();
     populateLocalTable();
   }
 
@@ -73,9 +76,17 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
                 + tableName
                 + " (presetname VARCHAR(256),"
                 + "startdate DATE,"
+                + "kiosk VARCHAR(256),"
                 + "signs SERIAL"
                 + ");";
         statement.executeUpdate(query);
+
+        insertEntry(
+            new SignagePreset(
+                "default",
+                LocalDate.now().minusYears(1000),
+                SharedResources.defaultLocation,
+                new Sign[8]));
       }
 
     } catch (SQLException e) {
@@ -103,7 +114,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
             new SignagePreset(
                 results.getString(headers.get(0)),
                 results.getDate(headers.get(1)).toLocalDate(),
-                getSubtableItems(results.getInt(headers.get(2))));
+                results.getString(headers.get(2)),
+                getSubtableItems(results.getInt(headers.get(3))));
 
         tableMap.put(signagePreset.getName(), signagePreset);
       }
@@ -114,7 +126,83 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
   }
 
   @Override
+  public void prepareListener() {
+
+    try {
+
+      dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
+
+      if (dbListener == null) {
+        System.out.println("[SignagePresetDAO.prepareListener]: Listener is null.");
+        return;
+      }
+
+      // Create a function that calls NOTIFY when the table is modified
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE FUNCTION notifySignagePreset() RETURNS TRIGGER AS $signagepreset$"
+                  + "BEGIN "
+                  + "NOTIFY signagepreset;"
+                  + "RETURN NULL;"
+                  + "END; $signagepreset$ language plpgsql")
+          .execute();
+
+      // Create a trigger that calls the function on any change
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE TRIGGER signagePresetUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "signagepreset FOR EACH STATEMENT EXECUTE FUNCTION notifySignagePreset()")
+          .execute();
+
+      // Start listener
+      reListen();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void reListen() {
+    try {
+      dbListener.prepareStatement("LISTEN signagepreset").execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void verifyLocalTable() {
+
+    try {
+
+      // Check for notifications on the table
+      PGConnection driver = dbListener.unwrap(PGConnection.class);
+
+      // See if there is a notification
+      if (driver.getNotifications().length > 0) {
+        System.out.println("[SignagePresetDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
+        populateLocalTable();
+      }
+
+      // Catch a timeout and reset refresh local table
+    } catch (PSQLException e) {
+
+      dbListener = ConnectionBuilder.buildConnection();
+      reListen();
+      populateLocalTable();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
   public boolean insertEntry(SignagePreset entry) {
+
+    // Check if the entry already exists.
+    if (tableMap.containsKey(entry.getName())) return updateEntry(entry);
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
@@ -138,6 +226,9 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
   @Override
   public boolean updateEntry(SignagePreset entry) {
+
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getName())) return false;
 
     // Mark entry status as NEW
     entry.setStatus(EntryStatus.NEW);
@@ -206,6 +297,9 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
   @Override
   public SignagePreset getEntry(Object identifier) {
+
+    verifyLocalTable();
+
     // Check if input identifier is correct type
     if (!(identifier instanceof String)) {
       System.out.println(
@@ -230,6 +324,9 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
   @Override
   public ArrayList<SignagePreset> getAllEntries() {
+
+    verifyLocalTable();
+
     ArrayList<SignagePreset> allSignagePresets = new ArrayList<>();
 
     // Add all entries in local table to a list
@@ -284,7 +381,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
 
       // Prepare SQL queries for INSERT, UPDATE, and REMOVE actions
       String insert =
-          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?);";
+          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?, ?);";
 
       String update =
           "UPDATE "
@@ -295,6 +392,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
               + headers.get(0)
               + " = ?, "
               + headers.get(1)
+              + " = ? WHERE "
+              + headers.get(2)
               + " = ? WHERE "
               + headers.get(0)
               + " = ?;";
@@ -336,6 +435,7 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
             // Put the new entry's data into the prepared query
             preparedInsert.setString(1, dataEdit.getNewEntry().getName());
             preparedInsert.setDate(2, Date.valueOf(dataEdit.getNewEntry().getDate()));
+            preparedInsert.setString(3, dataEdit.getNewEntry().getKiosk());
 
             // Execute the query
             preparedInsert.executeUpdate();
@@ -348,7 +448,8 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
             // Put the new entry's data into the prepared query
             preparedUpdate.setString(1, dataEdit.getNewEntry().getName());
             preparedUpdate.setDate(2, Date.valueOf(dataEdit.getNewEntry().getDate()));
-            preparedUpdate.setString(3, dataEdit.getNewEntry().getName());
+            preparedUpdate.setString(3, dataEdit.getNewEntry().getKiosk());
+            preparedUpdate.setString(4, dataEdit.getNewEntry().getName());
 
             // Execute the query
             preparedUpdate.executeUpdate();
@@ -393,13 +494,113 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
   }
 
   @Override
-  public boolean importCSV(String filepath, boolean backup) {
-    return false;
+  public boolean importCSV(String tableFilepath, String subtableFilepath, boolean backup) {
+    String[] pathArr = tableFilepath.split("/");
+
+    if (backup) {
+
+      // tableFilepath except for last part (actual file name)
+      StringBuilder folder = new StringBuilder();
+      for (int i = 0; i < pathArr.length - 1; i++) {
+        folder.append(pathArr[i]).append("/");
+      }
+      exportCSV(folder.toString());
+    }
+
+    try (BufferedReader br =
+        new BufferedReader(new InputStreamReader(new FileInputStream(tableFilepath)))) {
+
+      // delete the old data
+      dbConnection
+          .createStatement()
+          .executeUpdate(
+              "DELETE FROM "
+                  + dbConnection.getSchema()
+                  + "."
+                  + tableName
+                  + ";"
+                  + "ALTER SEQUENCE signagepreset_signs_seq RESTART WITH 1;");
+
+      // Get map representation of subtable
+      HashMap<Integer, Sign[]> subtable = importSubtable(subtableFilepath);
+
+      // skip first row of csv which has the headers
+      String line = br.readLine();
+
+      String insert =
+          "INSERT INTO " + dbConnection.getSchema() + "." + this.tableName + " VALUES (?, ?);";
+
+      PreparedStatement insertPS = dbConnection.prepareStatement(insert);
+
+      while ((line = br.readLine()) != null) {
+
+        String[] parts = line.split(",");
+
+        SignagePreset signagePreset =
+            new SignagePreset(
+                parts[0],
+                LocalDate.parse(parts[1], DateTimeFormatter.ISO_LOCAL_DATE),
+                parts[3],
+                subtable.get(Integer.parseInt(parts[2])));
+
+        tableMap.put(signagePreset.getName(), signagePreset);
+
+        insertPS.setString(1, signagePreset.getName());
+        insertPS.setDate(2, Date.valueOf(signagePreset.getDate()));
+        insertPS.setString(3, signagePreset.getKiosk());
+
+        insertPS.executeUpdate();
+
+        setSubtableItems(signagePreset.getName(), signagePreset.getSigns());
+      }
+
+      return true;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
   }
 
   @Override
   public boolean exportCSV(String directory) {
-    return false;
+
+    LocalDateTime dateTime = LocalDateTime.now();
+
+    // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ofPattern-java.lang.String-
+
+    try {
+
+      String tableFilename =
+          tableName + "_" + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm")) + ".csv";
+
+      PrintStream tableOut =
+          new PrintStream(new FileOutputStream(directory + "\\" + tableFilename));
+
+      tableOut.println(String.join(",", headers));
+
+      for (Map.Entry<String, SignagePreset> entry : tableMap.entrySet()) {
+        SignagePreset signagePreset = entry.getValue();
+        tableOut.println(
+            signagePreset.getName()
+                + ","
+                + signagePreset.getDate()
+                + ","
+                + signagePreset.getKiosk()
+                + ","
+                + getSubtableItemsID(signagePreset.getName()));
+      }
+
+      tableOut.close();
+
+      exportSubtable(directory);
+
+      return true;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
   }
 
   /**
@@ -600,6 +801,102 @@ public class SignagePresetDAO implements IDAO<SignagePreset> {
       preparedDeleteAll.executeUpdate();
 
     } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  public HashMap<Integer, Sign[]> importSubtable(String subtableFilepath) {
+
+    // Create empty output
+    HashMap<Integer, Sign[]> subtable = new HashMap<>();
+
+    // Create buffered reader for CSV
+    try (BufferedReader br =
+        new BufferedReader(new InputStreamReader(new FileInputStream(subtableFilepath)))) {
+
+      // Delete the old data
+      dbConnection
+          .createStatement()
+          .executeUpdate(
+              "DELETE FROM " + dbConnection.getSchema() + "." + tableName + "signs" + ";");
+
+      // Iterate through each line of the CSV
+      String line = br.readLine();
+      while ((line = br.readLine()) != null) {
+
+        // Split the input row into parts
+        String[] parts = line.split(",");
+
+        // Read the item ID (table link)
+        int itemID = Integer.parseInt(parts[0]);
+
+        // Make new array entry from row
+        Sign sign = new Sign(parts[1], Double.parseDouble(parts[2]), parts[3]);
+
+        // If there is no array at the item ID in the map, make one
+        if (!subtable.containsKey(itemID)) {
+          subtable.put(itemID, new Sign[8]);
+        }
+
+        // Add the entry to the array at the item ID in the map
+        subtable.get(itemID)[Integer.parseInt(parts[4])] = sign;
+      }
+
+      // Return the map representation of the subtable
+      return subtable;
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+
+      // Return empty map on error, rather than null
+      return new HashMap<>();
+    }
+  }
+
+  public void exportSubtable(String directory) {
+
+    LocalDateTime dateTime = LocalDateTime.now();
+
+    try {
+
+      String subtableFilename =
+          tableName
+              + "signs"
+              + "_"
+              + dateTime.format(DateTimeFormatter.ofPattern("yy-MM-dd HH-mm"))
+              + ".csv";
+
+      PrintStream subtableOut =
+          new PrintStream(new FileOutputStream(directory + "\\" + subtableFilename));
+
+      subtableOut.println("signkey,signroom,signdirection,signsubject,signindex");
+
+      for (Map.Entry<String, SignagePreset> entry : tableMap.entrySet()) {
+
+        Sign[] signagePresets = entry.getValue().getSigns();
+        int subtableID = getSubtableItemsID(entry.getValue().getName());
+
+        for (int i = 0; i < 8; i++) {
+
+          if (signagePresets[i] != null) {
+
+            subtableOut.println(
+                subtableID
+                    + ","
+                    + signagePresets[i].getLabel()
+                    + ","
+                    + signagePresets[i].getDirection()
+                    + ","
+                    + signagePresets[i].getSubtext()
+                    + ","
+                    + i);
+          }
+        }
+      }
+
+      subtableOut.close();
+
+    } catch (Exception e) {
       System.out.println(e.getMessage());
     }
   }

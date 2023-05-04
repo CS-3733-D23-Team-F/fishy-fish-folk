@@ -13,6 +13,6 @@ public enum NodeType {
   STAI,
   INFO,
   BATH,
-  DEFAULT,
-  BINGUS;
+  DFLT,
+  BNGS;
 }

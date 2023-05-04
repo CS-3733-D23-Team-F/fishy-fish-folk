@@ -3,6 +3,7 @@ package edu.wpi.fishfolk.database.TableEntry;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.ui.Recurring;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class ConferenceRequest {
   @Getter @Setter private String username;
   @Getter @Setter private String startTime;
   @Getter @Setter private String endTime;
+  @Getter @Setter private LocalDateTime dateReserved;
   @Getter @Setter private Recurring recurringOption;
   @Getter @Setter private int numAttendees;
   @Getter @Setter private String roomName;
@@ -28,14 +30,16 @@ public class ConferenceRequest {
       String username,
       String startTime,
       String endTime,
+      LocalDateTime dateReserved,
       Recurring recurringOption,
       int numAttendees,
       String roomName) {
-    this.conferenceRequestID = LocalDateTime.now();
+    this.conferenceRequestID = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     this.notes = notes;
     this.username = username;
     this.startTime = startTime;
     this.endTime = endTime;
+    this.dateReserved = dateReserved;
     this.recurringOption = recurringOption;
     this.numAttendees = numAttendees;
     this.roomName = roomName;
@@ -48,6 +52,7 @@ public class ConferenceRequest {
       String username,
       String startTime,
       String endTime,
+      LocalDateTime dateReserved,
       Recurring recurringOption,
       int numAttendees,
       String roomName) {
@@ -56,6 +61,7 @@ public class ConferenceRequest {
     this.username = username;
     this.startTime = startTime;
     this.endTime = endTime;
+    this.dateReserved = dateReserved;
     this.recurringOption = recurringOption;
     this.numAttendees = numAttendees;
     this.roomName = roomName;

@@ -7,17 +7,24 @@ import edu.wpi.fishfolk.ui.FormStatus;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.util.ArrayList;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 public class ViewMasterOrderController extends AbsController {
-  @FXML TableView foodTable, supplyTable, furnitureTable, flowerTable, conferenceTable;
+  @FXML MFXButton refreshButton;
+  @FXML TableView foodTable, supplyTable, furnitureTable, flowerTable, conferenceTable, itTable;
   @FXML
   TableColumn foodid,
       foodassignee,
@@ -60,36 +67,50 @@ public class ViewMasterOrderController extends AbsController {
       conferenceroom,
       conferencestart,
       conferenceend,
+      conferenceDateReserved,
       conferencebooker,
       conferenceattendees,
       conferencerecurring,
       conferencenotes;
   @FXML
+  TableColumn itid, itassignee, itstatus, itissue, itcomponent, itpriority, itroom, itcontactinfo;
+  @FXML
   MFXButton foodFillButton,
       foodCancelButton,
       foodRemoveButton,
       foodAssignButton,
-      foodFilterOrdersButton;
+      foodImportCSVButton,
+      foodExportCSVButton;
   @FXML
   MFXButton supplyFillButton,
       supplyCancelButton,
       supplyRemoveButton,
       supplyAssignButton,
-      supplyFilterOrdersButton;
+      supplyImportCSVButton,
+      supplyExportCSVButton;
   @FXML
   MFXButton furnitureFillButton,
       furnitureCancelButton,
       furnitureRemoveButton,
       furnitureAssignButton,
-      furnitureFilterOrdersButton;
+      furnitureImportCSVButton,
+      furnitureExportCSVButton;
   @FXML
   MFXButton flowerFillButton,
       flowerCancelButton,
       flowerRemoveButton,
       flowerAssignButton,
-      flowerFilterOrdersButton;
-  @FXML MFXButton conferenceRemoveButton;
-
+      flowerImportCSVButton,
+      flowerExportCSVButton;
+  @FXML
+  MFXButton itFillButton,
+      itCancelButton,
+      itRemoveButton,
+      itAssignButton,
+      itImportCSVButton,
+      itExportCSVButton;
+  @FXML MFXButton conferenceRemoveButton, conferenceImportCSVButton, conferenceExportCSVButton;
+  @FXML Label errorfood, errorsupply, errorfurniture, errorflower, errorit, errorconference;
   @FXML MFXFilterComboBox<String> foodAssignSelector;
 
   @FXML MFXFilterComboBox<String> supplyAssignSelector;
@@ -97,14 +118,23 @@ public class ViewMasterOrderController extends AbsController {
   @FXML MFXFilterComboBox<String> furnitureAssignSelector;
 
   @FXML MFXFilterComboBox<String> flowerAssignSelector;
+  @FXML MFXFilterComboBox<String> itAssignSelector;
+  @FXML MFXButton filterOrdersButton;
 
   @FXML TabPane tabPane;
+
+  FileChooser fileChooser = new FileChooser();
+  DirectoryChooser dirChooser = new DirectoryChooser();
+  private static TranslateTransition thugShaker;
 
   public ViewMasterOrderController() {
     super();
   }
 
   public void initialize() {
+    setToBlue();
+    clearError();
+    refreshButton.setOnMouseClicked(event -> refreshOrders());
     foodid.setCellValueFactory(new PropertyValueFactory<FoodOrderObservable, String>("foodid"));
     foodassignee.setCellValueFactory(
         new PropertyValueFactory<FoodOrderObservable, String>("foodassignee"));
@@ -182,6 +212,8 @@ public class ViewMasterOrderController extends AbsController {
         new PropertyValueFactory<ConferenceRequestObservable, String>("conferencestart"));
     conferenceend.setCellValueFactory(
         new PropertyValueFactory<ConferenceRequestObservable, String>("conferenceend"));
+    conferenceDateReserved.setCellValueFactory(
+        new PropertyValueFactory<ConferenceRequestObservable, String>("conferenceDateReserved"));
     conferencebooker.setCellValueFactory(
         new PropertyValueFactory<ConferenceRequestObservable, String>("conferencebooker"));
     conferenceattendees.setCellValueFactory(
@@ -191,37 +223,66 @@ public class ViewMasterOrderController extends AbsController {
     conferencenotes.setCellValueFactory(
         new PropertyValueFactory<ConferenceRequestObservable, String>("conferencenotes"));
 
+    itid.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itid"));
+    itassignee.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itassignee"));
+    itstatus.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itstatus"));
+    itissue.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itissue"));
+    itcomponent.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcomponent"));
+    itpriority.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itpriority"));
+    itroom.setCellValueFactory(new PropertyValueFactory<ITRequestObservable, String>("itroom"));
+    itcontactinfo.setCellValueFactory(
+        new PropertyValueFactory<ITRequestObservable, String>("itcontactinfo"));
+
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());
     furnitureTable.setItems(getFurnitureOrderRows());
     flowerTable.setItems(getFlowerOrderRows());
     conferenceTable.setItems(getConferenceRows());
+    itTable.setItems(getITRequestRows());
 
     foodFillButton.setOnMouseClicked(event -> foodSetStatus(FormStatus.filled));
     foodCancelButton.setOnMouseClicked(event -> foodSetStatus(FormStatus.cancelled));
     foodAssignButton.setOnMouseClicked(event -> foodAssign());
     foodRemoveButton.setOnMouseClicked(event -> foodRemove());
-    foodFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
+    foodImportCSVButton.setOnMouseClicked(event -> foodImportCSV());
+    foodExportCSVButton.setOnMouseClicked(event -> foodExportCSV());
 
     supplyFillButton.setOnMouseClicked(event -> supplySetStatus(FormStatus.filled));
     supplyCancelButton.setOnMouseClicked(event -> supplySetStatus(FormStatus.cancelled));
     supplyAssignButton.setOnMouseClicked(event -> supplyAssign());
     supplyRemoveButton.setOnMouseClicked(event -> supplyRemove());
-    supplyFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
+    supplyImportCSVButton.setOnMouseClicked(event -> supplyImportCSV());
+    supplyExportCSVButton.setOnMouseClicked(event -> supplyExportCSV());
 
     furnitureFillButton.setOnMouseClicked(event -> furnitureSetStatus(FormStatus.filled));
     furnitureCancelButton.setOnMouseClicked(event -> furnitureSetStatus(FormStatus.cancelled));
     furnitureAssignButton.setOnMouseClicked(event -> furnitureAssign());
     furnitureRemoveButton.setOnMouseClicked(event -> furnitureRemove());
-    furnitureFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
+    furnitureImportCSVButton.setOnMouseClicked(event -> furnitureImportCSV());
+    furnitureExportCSVButton.setOnMouseClicked(event -> furnitureExportCSV());
 
     flowerFillButton.setOnMouseClicked(event -> flowerSetStatus(FormStatus.filled));
     flowerCancelButton.setOnMouseClicked(event -> flowerSetStatus(FormStatus.cancelled));
     flowerAssignButton.setOnMouseClicked(event -> flowerAssign());
     flowerRemoveButton.setOnMouseClicked(event -> flowerRemove());
-    flowerFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
+    flowerImportCSVButton.setOnMouseClicked(event -> flowerImportCSV());
+    flowerExportCSVButton.setOnMouseClicked(event -> flowerExportCSV());
 
     conferenceRemoveButton.setOnMouseClicked(event -> conferenceRemove());
+    conferenceImportCSVButton.setOnMouseClicked(event -> conferenceImportCSV());
+    conferenceExportCSVButton.setOnMouseClicked(event -> conferenceExportCSV());
+
+    itFillButton.setOnMouseClicked(event -> itSetStatus(FormStatus.filled));
+    itCancelButton.setOnMouseClicked(event -> itSetStatus(FormStatus.cancelled));
+    itAssignButton.setOnMouseClicked(event -> itAssign());
+    itRemoveButton.setOnMouseClicked(event -> itRemove());
+    itImportCSVButton.setOnMouseClicked(event -> itImportCSV());
+    itExportCSVButton.setOnMouseClicked(event -> itExportCSV());
+
+    filterOrdersButton.setOnMouseClicked(event -> filterOrders());
 
     ArrayList<UserAccount> users =
         (ArrayList<UserAccount>) dbConnection.getAllEntries(TableEntryType.USER_ACCOUNT);
@@ -232,24 +293,33 @@ public class ViewMasterOrderController extends AbsController {
       supplyAssignSelector.getItems().add(User.getUsername());
       furnitureAssignSelector.getItems().add(User.getUsername());
       flowerAssignSelector.getItems().add(User.getUsername());
+      itAssignSelector.getItems().add(User.getUsername());
+
       if (User.getUsername().equals(SharedResources.getCurrentUser().getUsername())) {
+
         foodAssignSelector.getSelectionModel().selectIndex(user);
         flowerAssignSelector.getSelectionModel().selectIndex(user);
         furnitureAssignSelector.getSelectionModel().selectIndex(user);
         supplyAssignSelector.getSelectionModel().selectIndex(user);
+        itAssignSelector.getSelectionModel().selectIndex(user);
+
         foodAssignSelector.setText(SharedResources.getCurrentUser().getUsername());
         flowerAssignSelector.setText(SharedResources.getCurrentUser().getUsername());
         furnitureAssignSelector.setText(SharedResources.getCurrentUser().getUsername());
         supplyAssignSelector.setText(SharedResources.getCurrentUser().getUsername());
+        itAssignSelector.setText(SharedResources.getCurrentUser().getUsername());
       }
     }
     foodAssignSelector.setOnAction(event -> setAssigns(foodAssignSelector.getValue()));
     flowerAssignSelector.setOnAction(event -> setAssigns(flowerAssignSelector.getValue()));
     supplyAssignSelector.setOnAction(event -> setAssigns(supplyAssignSelector.getValue()));
     furnitureAssignSelector.setOnAction(event -> setAssigns(furnitureAssignSelector.getValue()));
+    itAssignSelector.setOnAction(event -> setAssigns(itAssignSelector.getValue()));
   }
 
   private void setAssigns(String assignee) {
+    setToBlue();
+    clearError();
     foodAssignSelector
         .getSelectionModel()
         .selectIndex(foodAssignSelector.getItems().indexOf(assignee));
@@ -319,9 +389,24 @@ public class ViewMasterOrderController extends AbsController {
     return returnable;
   }
 
+  public ObservableList<ITRequestObservable> getITRequestRows() {
+    ArrayList<ITRequest> itList =
+        (ArrayList<ITRequest>) dbConnection.getAllEntries(TableEntryType.IT_REQUEST);
+    ObservableList<ITRequestObservable> returnable = FXCollections.observableArrayList();
+    for (ITRequest request : itList) {
+      returnable.add(new ITRequestObservable(request));
+    }
+    return returnable;
+  }
+
   private void foodSetStatus(FormStatus string) {
+    setToBlue();
+    clearError();
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     FoodRequest dbRequest =
         (FoodRequest) dbConnection.getEntry(food.id, TableEntryType.FOOD_REQUEST);
     switch (string) {
@@ -344,8 +429,13 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void supplySetStatus(FormStatus string) {
+    setToBlue();
+    clearError();
     SupplyOrderObservable food =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     SupplyRequest dbRequest =
         (SupplyRequest) dbConnection.getEntry(food.id, TableEntryType.SUPPLY_REQUEST);
     switch (string) {
@@ -368,8 +458,13 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void furnitureSetStatus(FormStatus string) {
+    setToBlue();
+    clearError();
     FurnitureOrderObservable food =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     FurnitureRequest dbRequest =
         (FurnitureRequest) dbConnection.getEntry(food.id, TableEntryType.FURNITURE_REQUEST);
     switch (string) {
@@ -392,8 +487,13 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void flowerSetStatus(FormStatus string) {
+    setToBlue();
+    clearError();
     FlowerOrderObservable food =
         (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     FlowerRequest dbRequest =
         (FlowerRequest) dbConnection.getEntry(food.id, TableEntryType.FLOWER_REQUEST);
     switch (string) {
@@ -415,9 +515,41 @@ public class ViewMasterOrderController extends AbsController {
     flowerTable.refresh();
   }
 
+  private void itSetStatus(FormStatus string) {
+    setToBlue();
+    clearError();
+    ITRequestObservable it = (ITRequestObservable) itTable.getSelectionModel().getSelectedItem();
+    if (it == null) {
+      return;
+    }
+    ITRequest dbRequest = (ITRequest) dbConnection.getEntry(it.id, TableEntryType.IT_REQUEST);
+    switch (string) {
+      case filled:
+        {
+          dbRequest.setFormStatus(FormStatus.filled);
+          dbConnection.updateEntry(dbRequest);
+          it.itstatus = "Filled";
+          break;
+        }
+      case cancelled:
+        {
+          dbRequest.setFormStatus(FormStatus.cancelled);
+          dbConnection.updateEntry(dbRequest);
+          it.itstatus = "Cancelled";
+          break;
+        }
+    }
+    itTable.refresh();
+  }
+
   private void foodAssign() {
+    setToBlue();
+    clearError();
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     FoodRequest dbRequest =
         (FoodRequest) dbConnection.getEntry(food.id, TableEntryType.FOOD_REQUEST);
     String assignee = foodAssignSelector.getValue();
@@ -428,8 +560,13 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void supplyAssign() {
+    setToBlue();
+    clearError();
     SupplyOrderObservable supply =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
+    if (supply == null) {
+      return;
+    }
     SupplyRequest dbRequest =
         (SupplyRequest) dbConnection.getEntry(supply.id, TableEntryType.SUPPLY_REQUEST);
     String assignee = supplyAssignSelector.getValue();
@@ -440,8 +577,13 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void furnitureAssign() {
+    setToBlue();
+    clearError();
     FurnitureOrderObservable furniture =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
+    if (furniture == null) {
+      return;
+    }
     FurnitureRequest dbRequest =
         (FurnitureRequest) dbConnection.getEntry(furniture.id, TableEntryType.FURNITURE_REQUEST);
     String assignee = furnitureAssignSelector.getValue();
@@ -452,8 +594,13 @@ public class ViewMasterOrderController extends AbsController {
   }
 
   private void flowerAssign() {
+    setToBlue();
+    clearError();
     FlowerOrderObservable flower =
         (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
+    if (flower == null) {
+      return;
+    }
     FlowerRequest dbRequest =
         (FlowerRequest) dbConnection.getEntry(flower.id, TableEntryType.FLOWER_REQUEST);
     String assignee = flowerAssignSelector.getValue();
@@ -463,47 +610,294 @@ public class ViewMasterOrderController extends AbsController {
     flowerTable.refresh();
   }
 
+  private void itAssign() {
+    setToBlue();
+    clearError();
+    ITRequestObservable it = (ITRequestObservable) itTable.getSelectionModel().getSelectedItem();
+    if (it == null) {
+      return;
+    }
+    ITRequest dbRequest = (ITRequest) dbConnection.getEntry(it.id, TableEntryType.IT_REQUEST);
+    String assignee = itAssignSelector.getValue();
+    dbRequest.setAssignee(assignee);
+    it.itassignee = assignee;
+    dbConnection.updateEntry(dbRequest);
+    itTable.refresh();
+  }
+
   private void foodRemove() {
+    setToBlue();
+    clearError();
     FoodOrderObservable food =
         (FoodOrderObservable) foodTable.getSelectionModel().getSelectedItem();
+    if (food == null) {
+      return;
+    }
     dbConnection.removeEntry(food.id, TableEntryType.FOOD_REQUEST);
     foodTable.getItems().remove(food);
     foodTable.refresh();
   }
 
   private void supplyRemove() {
+    setToBlue();
+    clearError();
     SupplyOrderObservable supply =
         (SupplyOrderObservable) supplyTable.getSelectionModel().getSelectedItem();
+    if (supply == null) {
+      return;
+    }
     dbConnection.removeEntry(supply.id, TableEntryType.SUPPLY_REQUEST);
     supplyTable.getItems().remove(supply);
     supplyTable.refresh();
   }
 
   private void furnitureRemove() {
+    setToBlue();
+    clearError();
     FurnitureOrderObservable furniture =
         (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
+    if (furniture == null) {
+      return;
+    }
     dbConnection.removeEntry(furniture.id, TableEntryType.FURNITURE_REQUEST);
     furnitureTable.getItems().remove(furniture);
     furnitureTable.refresh();
   }
 
   private void flowerRemove() {
-    FurnitureOrderObservable flower =
-        (FurnitureOrderObservable) furnitureTable.getSelectionModel().getSelectedItem();
+    setToBlue();
+    clearError();
+    FlowerOrderObservable flower =
+        (FlowerOrderObservable) flowerTable.getSelectionModel().getSelectedItem();
+    if (flower == null) {
+      return;
+    }
     dbConnection.removeEntry(flower.id, TableEntryType.FLOWER_REQUEST);
     flowerTable.getItems().remove(flower);
     flowerTable.refresh();
   }
 
   private void conferenceRemove() {
+    setToBlue();
+    clearError();
     ConferenceRequestObservable conf =
         (ConferenceRequestObservable) conferenceTable.getSelectionModel().getSelectedItem();
+    if (conf == null) {
+      return;
+    }
     dbConnection.removeEntry(conf.id, TableEntryType.CONFERENCE_REQUEST);
     conferenceTable.getItems().remove(conf);
     conferenceTable.refresh();
   }
 
+  private void itRemove() {
+    setToBlue();
+    clearError();
+    ITRequestObservable it = (ITRequestObservable) itTable.getSelectionModel().getSelectedItem();
+    if (it == null) {
+      return;
+    }
+    dbConnection.removeEntry(it.id, TableEntryType.IT_REQUEST);
+    itTable.getItems().remove(it);
+    itTable.refresh();
+  }
+
+  private void foodImportCSV() {
+    setToBlue();
+    clearError();
+    fileChooser.setTitle("Select the Food Request Main Table CSV file");
+    String mainTablePath = fileChooserPrompt();
+    fileChooser.setTitle("Select the Food Request Subtable CSV file");
+    String subtablePath = fileChooserPrompt();
+
+    if (!dbConnection.importCSV(mainTablePath, subtablePath, false, TableEntryType.FOOD_REQUEST)) {
+      submissionError("Error importing CSV, please try again", foodImportCSVButton, errorfood);
+    }
+
+    refreshOrders();
+  }
+
+  private void supplyImportCSV() {
+    setToBlue();
+    clearError();
+    fileChooser.setTitle("Select the Supply Request Main Table CSV file");
+    String mainTablePath = fileChooserPrompt();
+    fileChooser.setTitle("Select the Supply Request Subtable CSV file");
+    String subtablePath = fileChooserPrompt();
+
+    String message;
+    if (!dbConnection.importCSV(
+        mainTablePath, subtablePath, false, TableEntryType.SUPPLY_REQUEST)) {
+      submissionError("Error importing CSV, please try again", supplyImportCSVButton, errorsupply);
+    }
+
+    refreshOrders();
+  }
+
+  private void flowerImportCSV() {
+    setToBlue();
+    clearError();
+    fileChooser.setTitle("Select the Flower Request Main Table CSV file");
+    String mainTablePath = fileChooserPrompt();
+    fileChooser.setTitle("Select the Flower Request Subtable CSV file");
+    String subtablePath = fileChooserPrompt();
+
+    if (!dbConnection.importCSV(
+        mainTablePath, subtablePath, false, TableEntryType.FLOWER_REQUEST)) {
+      submissionError("Error importing CSV, please try again", flowerImportCSVButton, errorflower);
+    }
+
+    refreshOrders();
+  }
+
+  private void furnitureImportCSV() {
+    setToBlue();
+    clearError();
+    fileChooser.setTitle("Select the Furniture Request Main Table CSV file");
+    String mainTablePath = fileChooserPrompt();
+
+    if (!dbConnection.importCSV(mainTablePath, false, TableEntryType.FURNITURE_REQUEST)) {
+      submissionError(
+          "Error importing CSV, please try again", furnitureImportCSVButton, errorfurniture);
+    }
+
+    refreshOrders();
+  }
+
+  private void conferenceImportCSV() {
+    setToBlue();
+    clearError();
+    fileChooser.setTitle("Select the Conference Request Main Table CSV file");
+    String mainTablePath = fileChooserPrompt();
+
+    if (!dbConnection.importCSV(mainTablePath, false, TableEntryType.CONFERENCE_REQUEST)) {
+      submissionError(
+          "Error importing CSV, please try again", conferenceImportCSVButton, errorconference);
+    }
+
+    refreshOrders();
+  }
+
+  private void itImportCSV() {
+    setToBlue();
+    clearError();
+    fileChooser.setTitle("Select the IT Request Main Table CSV file");
+    String mainTablePath = fileChooserPrompt();
+
+    if (!dbConnection.importCSV(mainTablePath, false, TableEntryType.IT_REQUEST)) {
+      submissionError("Error importing CSV, please try again", itImportCSVButton, errorit);
+    }
+    refreshOrders();
+  }
+
+  /** Sets all borders back to blue */
+  public void setToBlue() {
+    itImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    conferenceImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    foodImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    flowerImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    supplyImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    furnitureImportCSVButton.setStyle(
+        "-fx-border-color: #012d5a; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+  }
+
+  /** Clears the error field */
+  private void clearError() {
+    errorit.setText("");
+    errorit.setVisible(false);
+    errorfurniture.setText("");
+    errorfurniture.setVisible(false);
+    errorsupply.setText("");
+    errorsupply.setVisible(false);
+    errorfood.setText("");
+    errorfood.setVisible(false);
+    errorflower.setText("");
+    errorflower.setVisible(false);
+    errorconference.setText("");
+    errorconference.setVisible(false);
+  }
+
+  /**
+   * Creates an error popup for the given values.
+   *
+   * @param error the error message you want to present.
+   * @param node the area it will pop up next to.
+   */
+  private void submissionError(String error, MFXButton node, Label errors) {
+    setToBlue();
+    clearError();
+    node.setStyle(
+        "-fx-border-color: red; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #012d5a; -fx-background-radius: 5");
+    if (thugShaker == null || thugShaker.getNode() != node) {
+      thugShaker = new TranslateTransition(Duration.millis(100), node);
+    }
+    thugShaker.setFromX(0f);
+    thugShaker.setCycleCount(4);
+    thugShaker.setAutoReverse(true);
+    thugShaker.setByX(15f);
+    thugShaker.playFromStart();
+    errors.setText(error);
+    errors.setVisible(true);
+    errors.setStyle("-fx-text-fill:  red;");
+    errors.setFont(Font.font("Open Sans", 15.0));
+  }
+
+  private void foodExportCSV() {
+    setToBlue();
+    clearError();
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooserPrompt();
+    dbConnection.exportCSV(exportPath, TableEntryType.FOOD_REQUEST);
+  }
+
+  private void supplyExportCSV() {
+    setToBlue();
+    clearError();
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooserPrompt();
+    dbConnection.exportCSV(exportPath, TableEntryType.SUPPLY_REQUEST);
+  }
+
+  private void flowerExportCSV() {
+    setToBlue();
+    clearError();
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooserPrompt();
+    dbConnection.exportCSV(exportPath, TableEntryType.FLOWER_REQUEST);
+  }
+
+  private void furnitureExportCSV() {
+    setToBlue();
+    clearError();
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooserPrompt();
+    dbConnection.exportCSV(exportPath, TableEntryType.FURNITURE_REQUEST);
+  }
+
+  private void conferenceExportCSV() {
+    setToBlue();
+    clearError();
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooserPrompt();
+    dbConnection.exportCSV(exportPath, TableEntryType.CONFERENCE_REQUEST);
+  }
+
+  private void itExportCSV() {
+    setToBlue();
+    clearError();
+    dirChooser.setTitle("Select export directory");
+    String exportPath = dirChooserPrompt();
+    dbConnection.exportCSV(exportPath, TableEntryType.IT_REQUEST);
+  }
+
   private void filterOrders() {
+    setToBlue();
+    clearError();
     for (int i = 0; i < foodTable.getItems().size(); i++) {
       if (!SharedResources.getCurrentUser()
           .getUsername()
@@ -538,48 +932,57 @@ public class ViewMasterOrderController extends AbsController {
         i--;
       }
     }
+    for (int i = 0; i < conferenceTable.getItems().size(); i++) {
+      if (!SharedResources.getCurrentUser()
+          .getUsername()
+          .equals(
+              ((ConferenceRequestObservable) conferenceTable.getItems().get(i))
+                  .getConferencebooker())) {
+        conferenceTable.getItems().remove(i);
+        i--;
+      }
+    }
+    for (int i = 0; i < itTable.getItems().size(); i++) {
+      if (!SharedResources.getCurrentUser()
+          .getUsername()
+          .equals(((ITRequestObservable) itTable.getItems().get(i)).getItassignee())) {
+        itTable.getItems().remove(i);
+        i--;
+      }
+    }
 
-    foodFilterOrdersButton.setStyle("-fx-background-color: #f0Bf4c;");
-    foodFilterOrdersButton.setTextFill(Paint.valueOf("#012d5a"));
-    foodFilterOrdersButton.setOnMouseClicked(event -> unfilterOrders());
-    supplyFilterOrdersButton.setStyle("-fx-background-color: #f0Bf4c;");
-    supplyFilterOrdersButton.setTextFill(Paint.valueOf("#012d5a"));
-    supplyFilterOrdersButton.setOnMouseClicked(event -> unfilterOrders());
-    furnitureFilterOrdersButton.setStyle("-fx-background-color: #f0Bf4c;");
-    furnitureFilterOrdersButton.setTextFill(Paint.valueOf("#012d5a"));
-    furnitureFilterOrdersButton.setOnMouseClicked(event -> unfilterOrders());
-    flowerFilterOrdersButton.setStyle("-fx-background-color: #f0Bf4c;");
-    flowerFilterOrdersButton.setTextFill(Paint.valueOf("#012d5a"));
-    flowerFilterOrdersButton.setOnMouseClicked(event -> unfilterOrders());
+    filterOrdersButton.setStyle("-fx-background-color: #f0Bf4c;");
+    filterOrdersButton.setTextFill(Paint.valueOf("#012d5a"));
+    filterOrdersButton.setOnMouseClicked(event -> unfilterOrders());
 
     foodTable.refresh();
     flowerTable.refresh();
     furnitureTable.refresh();
     supplyTable.refresh();
+    itTable.refresh();
+    conferenceTable.refresh();
   }
 
   private void unfilterOrders() {
+    refreshOrders();
+
+    filterOrdersButton.setStyle("-fx-background-color: #012d5a;");
+    filterOrdersButton.setTextFill(Paint.valueOf("WHITE"));
+    filterOrdersButton.setOnMouseClicked(event -> filterOrders());
+  }
+
+  private void refreshOrders() {
     foodTable.setItems(getFoodOrderRows());
     supplyTable.setItems(getSupplyOrderRows());
-    furnitureTable.setItems(getFurnitureOrderRows());
     flowerTable.setItems(getFlowerOrderRows());
-
-    foodFilterOrdersButton.setStyle("-fx-background-color: #012d5a;");
-    foodFilterOrdersButton.setTextFill(Paint.valueOf("WHITE"));
-    foodFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
-    supplyFilterOrdersButton.setStyle("-fx-background-color: #012d5a;");
-    supplyFilterOrdersButton.setTextFill(Paint.valueOf("WHITE"));
-    supplyFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
-    furnitureFilterOrdersButton.setStyle("-fx-background-color: #012d5a;");
-    furnitureFilterOrdersButton.setTextFill(Paint.valueOf("WHITE"));
-    furnitureFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
-    flowerFilterOrdersButton.setStyle("-fx-background-color: #012d5a;");
-    flowerFilterOrdersButton.setTextFill(Paint.valueOf("WHITE"));
-    flowerFilterOrdersButton.setOnMouseClicked(event -> filterOrders());
-
+    furnitureTable.setItems(getFurnitureOrderRows());
+    itTable.setItems(getITRequestRows());
+    conferenceTable.setItems(getConferenceRows());
     foodTable.refresh();
+    supplyTable.refresh();
     flowerTable.refresh();
     furnitureTable.refresh();
-    supplyTable.refresh();
+    itTable.refresh();
+    conferenceTable.refresh();
   }
 }

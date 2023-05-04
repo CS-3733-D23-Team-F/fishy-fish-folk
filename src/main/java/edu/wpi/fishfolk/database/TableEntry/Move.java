@@ -3,6 +3,8 @@ package edu.wpi.fishfolk.database.TableEntry;
 import edu.wpi.fishfolk.database.EntryStatus;
 import java.sql.Date;
 import java.time.LocalDate;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +14,8 @@ public class Move {
   @Getter @Setter private String longName;
   @Getter @Setter private LocalDate date;
   @Getter @Setter private EntryStatus status;
+
+  @Getter private ObjectProperty<Move> moveProperty;
 
   /**
    * Table entry type: Move
@@ -24,6 +28,8 @@ public class Move {
     this.nodeID = nodeID;
     this.longName = longName;
     this.date = date;
+
+    moveProperty = new SimpleObjectProperty<>(this);
   }
 
   /**
@@ -33,6 +39,11 @@ public class Move {
    */
   public String getMoveID() {
     return longName + date.toString();
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    return this.getMoveID().equals(((Move) other).getMoveID());
   }
 
   /**
@@ -62,6 +73,6 @@ public class Move {
 
   @Override
   public String toString() {
-    return longName + " moving to " + nodeID + " on " + date;
+    return "[longname: " + longName + "; nodeID:" + nodeID + "; date: " + date + "]";
   }
 }

@@ -1,6 +1,7 @@
 package edu.wpi.fishfolk.controllers;
 
 import edu.wpi.fishfolk.Fapp;
+import edu.wpi.fishfolk.database.DBSource;
 import edu.wpi.fishfolk.database.Fdb;
 import java.time.LocalDate;
 import java.time.Month;
@@ -8,10 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.scene.image.Image;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 public abstract class AbsController {
 
   protected static Fdb dbConnection;
+  protected static Fdb[] fdbConnections = new Fdb[2];
 
   protected static final ArrayList<String> allFloors =
       new ArrayList<>(List.of("L2", "L1", "1", "2", "3"));
@@ -23,12 +27,16 @@ public abstract class AbsController {
   HashMap<String, String> mapImgURLs;
   HashMap<String, Image> images;
 
-  public static final LocalDate today = LocalDate.of(2023, Month.JUNE, 1);
+  public static LocalDate today = LocalDate.of(2023, Month.MAY, 1);
+
+  private FileChooser fileChooser = new FileChooser();
+  private DirectoryChooser dirChooser = new DirectoryChooser();
 
   public AbsController() {
 
     if (dbConnection == null) {
-      dbConnection = new Fdb();
+      dbConnection = new Fdb(DBSource.DB_AWS);
+      fdbConnections[1] = dbConnection;
     }
 
     mapImgURLs = new HashMap<>();
@@ -47,5 +55,33 @@ public abstract class AbsController {
     }
 
     // dbConnection = new Fdb();
+  }
+
+  /**
+   * Opens dialog to choose a file from the explorer. Handles any Exceptions.
+   *
+   * @return The absolute path of the chosen file, empty string on error
+   */
+  public String fileChooserPrompt() {
+    try {
+      return fileChooser.showOpenDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return "";
+    }
+  }
+
+  /**
+   * Opens dialog to choose a directory from the explorer. Handles any Exceptions.
+   *
+   * @return The absolute path of the chosen directory, empty string on error
+   */
+  public String dirChooserPrompt() {
+    try {
+      return dirChooser.showDialog(Fapp.getPrimaryStage()).getAbsolutePath();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return "";
+    }
   }
 }

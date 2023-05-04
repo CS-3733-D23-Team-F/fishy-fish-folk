@@ -8,6 +8,8 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -20,6 +22,7 @@ public class RootController {
   @FXML MFXButton pathfindingNav;
   @FXML MFXButton mapEditorNav;
   @FXML MFXButton conferenceNav;
+  @FXML MFXButton ITNav;
   @FXML MFXButton switchAccsButton;
   @FXML MFXButton AccManagerBtn;
   @FXML VBox serviceBar;
@@ -38,28 +41,85 @@ public class RootController {
   @FXML StackPane sidebar;
   @FXML HBox serviceBox;
   @FXML VBox buttonsBox;
+
+  @FXML Label username, welcome;
   // @FXML MFXButton moveEditorNav;
   // @FXML AnchorPane sideBar;
 
   @FXML
   public void initialize() throws IOException {
-
     updatePermissionsAccess();
 
     SharedResources.setRootController(this);
 
-    viewOrders.setOnMouseClicked(event -> Navigation.navigate(Screen.VIEW_MASTER_ORDER));
-    creditButton.setOnMouseClicked(event -> Navigation.navigate(Screen.CREDITS));
-    aboutButton.setOnMouseClicked(event -> Navigation.navigate(Screen.ABOUTME));
-    flowerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_REQUEST));
-    mealNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_FOOD_ORDER));
-    supplyNav.setOnMouseClicked(event -> Navigation.navigate(Screen.SUPPLIES_REQUEST));
-    furnitureNav.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
-    conferenceNav.setOnMouseClicked(event -> Navigation.navigate(Screen.CONFERENCE));
+    // if (Screen.values().equals(Screen.ADMIN_DASHBOARD)) {
+
+    // }
+
+    signageNav.setTooltip(new Tooltip("Signage"));
+    pathfindingNav.setTooltip(new Tooltip("Pathfinding"));
+    serviceNav.setTooltip(new Tooltip("Service Request"));
+    mapEditorNav.setTooltip(new Tooltip("Map Editor"));
+    viewOrders.setTooltip(new Tooltip("View Orders"));
+    AccManagerBtn.setTooltip(new Tooltip("Account Manager"));
+
+    viewOrders.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.VIEW_MASTER_ORDER);
+        });
+    creditButton.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.CREDITS);
+        });
+    aboutButton.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.ABOUTME);
+        });
+    flowerNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.FLOWER_REQUEST);
+        });
+    mealNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.NEW_FOOD_ORDER);
+        });
+    supplyNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.SUPPLIES_REQUEST);
+        });
+    furnitureNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.FURNITURE_REQUEST);
+        });
+    conferenceNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.CONFERENCE);
+        });
+    ITNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.IT_REQUEST);
+        });
 
     // accountManagerNav.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
-    mapEditorNav.setOnMouseClicked(event -> Navigation.navigate(Screen.MAP_EDITOR));
-    pathfindingNav.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    mapEditorNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.MAP_EDITOR);
+        });
+    pathfindingNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.PATHFINDING);
+        });
     /*
     switchAccountButton.setOnMouseClicked(
         event -> {
@@ -70,11 +130,23 @@ public class RootController {
 
     */
     switchAccsButton.setOnMouseClicked(event -> accSwitch());
-    AccManagerBtn.setOnMouseClicked(event -> Navigation.navigate(Screen.ACCOUNT_MANAGER));
-    signageNav.setOnMouseClicked(event -> Navigation.navigate(Screen.NEW_SIGNAGE));
+    AccManagerBtn.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.ACCOUNT_MANAGER);
+        });
+    signageNav.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(Screen.NEW_SIGNAGE);
+        });
     exitButton.setOnMouseClicked(event -> System.exit(0));
 
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(SharedResources.getHome()));
+    homeButton.setOnMouseClicked(
+        event -> {
+          setupServiceNavButton();
+          Navigation.navigate(SharedResources.getHome());
+        });
 
     setupServiceNavButton();
     /*
@@ -87,6 +159,11 @@ public class RootController {
   }
 
   public void setupServiceNavButton() {
+    serviceNav.setStyle(null);
+    serviceBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+    serviceBar.setVisible(false);
+    serviceBar.setDisable(true);
+    buttonsBox.setAlignment(Pos.TOP_RIGHT);
     serviceNav.setOnMouseClicked(
         event -> {
           serviceNav.setStyle(
@@ -99,37 +176,20 @@ public class RootController {
           buttonsBox.setAlignment(Pos.TOP_LEFT);
           serviceNav.setOnMouseClicked(
               event2 -> {
-                serviceNav.setStyle(null);
-                serviceBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
-                serviceBar.setVisible(false);
-                serviceBar.setDisable(true);
-                buttonsBox.setAlignment(Pos.TOP_RIGHT);
                 setupServiceNavButton();
               });
         });
   }
 
+  /** logs user out of their current account and brings them back to the login screen */
   public void accSwitch() {
+    setupServiceNavButton();
     SharedResources.logout();
     Navigation.navigate(Screen.LOGIN);
   }
 
+  /** updates what permissions you have access to depending on what account you're signed into */
   public void updatePermissionsAccess() {
-    viewOrders.setDisable(false);
-
-    flowerNav.setDisable(false);
-    mealNav.setDisable(false);
-    furnitureNav.setDisable(false);
-    supplyNav.setDisable(false);
-    serviceNav.setDisable(false);
-
-    signageNav.setDisable(false);
-    // accountManagerNav.setDisable(false);
-    pathfindingNav.setDisable(false);
-
-    // moveEditorNav.setDisable(false);
-    mapEditorNav.setDisable(false);
-
     switch (SharedResources.getCurrentUser().getLevel()) {
       case GUEST:
         // Features that are inaccessible
@@ -149,6 +209,8 @@ public class RootController {
         AccManagerBtn.setVisible(false);
         mapEditorNav.setDisable(true);
         mapEditorNav.setVisible(false);
+        conferenceNav.setDisable(true);
+        conferenceNav.setVisible(false);
         break;
       case STAFF:
         // Features that are inaccessible
@@ -170,6 +232,8 @@ public class RootController {
         furnitureNav.setVisible(true);
         supplyNav.setVisible(true);
         mealNav.setVisible(true);
+        conferenceNav.setDisable(false);
+        conferenceNav.setVisible(true);
         break;
       case ADMIN:
         // Features that are accessible
@@ -189,6 +253,8 @@ public class RootController {
         AccManagerBtn.setVisible(true);
         mapEditorNav.setDisable(false);
         mapEditorNav.setVisible(true);
+        conferenceNav.setDisable(false);
+        conferenceNav.setVisible(true);
         break;
       case ROOT:
         // Features that are accessible
@@ -208,6 +274,8 @@ public class RootController {
         AccManagerBtn.setVisible(true);
         mapEditorNav.setDisable(false);
         mapEditorNav.setVisible(true);
+        conferenceNav.setDisable(false);
+        conferenceNav.setVisible(true);
         break;
     }
   }

@@ -1,10 +1,13 @@
 package edu.wpi.fishfolk.database.DAO;
 
+import edu.wpi.fishfolk.database.*;
+import edu.wpi.fishfolk.database.ConnectionBuilder;
 import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.DataEdit.DataEditType;
 import edu.wpi.fishfolk.database.DataEditQueue;
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.database.IDAO;
+import edu.wpi.fishfolk.database.IProcessEdit;
 import edu.wpi.fishfolk.database.TableEntry.Location;
 import edu.wpi.fishfolk.util.NodeType;
 import java.io.*;
@@ -15,10 +18,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.postgresql.PGConnection;
+import org.postgresql.util.PSQLException;
 
-public class LocationDAO implements IDAO<Location> {
+public class LocationDAO implements IDAO<Location>, ICSVNoSubtable, IProcessEdit {
 
   private final Connection dbConnection;
+  private Connection dbListener;
 
   private final String tableName;
   private final ArrayList<String> headers;
@@ -35,6 +41,7 @@ public class LocationDAO implements IDAO<Location> {
     this.dataEditQueue = new DataEditQueue<>();
 
     init(false);
+    prepareListener();
     populateLocalTable();
   }
 
@@ -108,7 +115,100 @@ public class LocationDAO implements IDAO<Location> {
   }
 
   @Override
+  public void processEdit(DataEdit<Object> edit) {
+
+    System.out.println(edit.getNewEntry());
+
+    switch (edit.getType()) {
+      case INSERT:
+        insertEntry((Location) edit.getNewEntry());
+        break;
+      case REMOVE:
+        removeEntry((String) edit.getNewEntry());
+        break;
+      case UPDATE:
+        updateEntry((Location) edit.getNewEntry());
+        break;
+    }
+  }
+
+  public void prepareListener() {
+
+    try {
+
+      dbListener = edu.wpi.fishfolk.database.ConnectionBuilder.buildConnection();
+
+      if (dbListener == null) {
+        System.out.println("[LocationDAO.prepareListener]: Listener is null.");
+        return;
+      }
+
+      // Create a function that calls NOTIFY when the table is modified
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE FUNCTION notifyLocation() RETURNS TRIGGER AS $location$"
+                  + "BEGIN "
+                  + "NOTIFY location;"
+                  + "RETURN NULL;"
+                  + "END; $location$ language plpgsql")
+          .execute();
+
+      // Create a trigger that calls the function on any change
+      dbListener
+          .prepareStatement(
+              "CREATE OR REPLACE TRIGGER locationUpdate AFTER UPDATE OR INSERT OR DELETE ON "
+                  + "location FOR EACH STATEMENT EXECUTE FUNCTION notifyLocation()")
+          .execute();
+
+      // Start listener
+      reListen();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void reListen() {
+    try {
+      dbListener.prepareStatement("LISTEN location").execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
+  public void verifyLocalTable() {
+
+    try {
+
+      // Check for notifications on the table
+      PGConnection driver = dbListener.unwrap(PGConnection.class);
+
+      // See if there is a notification
+      if (driver.getNotifications().length > 0) {
+        System.out.println("[LocationDAO.verifyLocalTable]: Notification received!");
+        tableMap.clear();
+        populateLocalTable();
+      }
+
+      // Catch a timeout and reset refresh local table
+    } catch (PSQLException e) {
+
+      dbListener = ConnectionBuilder.buildConnection();
+      reListen();
+      populateLocalTable();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Override
   public boolean insertEntry(Location entry) {
+
+    // Check if the entry already exists.
+    if (tableMap.containsKey(entry.getLongName())) return false;
 
     // Mark entry Location status as NEW
     entry.setStatus(EntryStatus.NEW);
@@ -132,6 +232,9 @@ public class LocationDAO implements IDAO<Location> {
 
   @Override
   public boolean updateEntry(Location entry) {
+
+    // Check if the entry already exists.
+    if (!tableMap.containsKey(entry.getLongName())) return false;
 
     // Mark entry Location status as NEW
     entry.setStatus(EntryStatus.NEW);
@@ -201,6 +304,8 @@ public class LocationDAO implements IDAO<Location> {
   @Override
   public Location getEntry(Object identifier) {
 
+    verifyLocalTable();
+
     // Check if input identifier is correct type
     if (!(identifier instanceof String)) {
       System.out.println(
@@ -223,6 +328,9 @@ public class LocationDAO implements IDAO<Location> {
 
   @Override
   public ArrayList<Location> getAllEntries() {
+
+    verifyLocalTable();
+
     ArrayList<Location> allLocs = new ArrayList<>();
 
     // Add all Locations in local table to a list

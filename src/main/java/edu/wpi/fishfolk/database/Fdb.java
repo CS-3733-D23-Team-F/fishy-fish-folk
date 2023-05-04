@@ -1,18 +1,31 @@
 package edu.wpi.fishfolk.database;
 
+import static edu.wpi.fishfolk.util.NodeType.*;
+
 import edu.wpi.fishfolk.database.DAO.*;
+import edu.wpi.fishfolk.database.DataEdit.DataEdit;
 import edu.wpi.fishfolk.database.TableEntry.*;
+import edu.wpi.fishfolk.mapeditor.NodeText;
+import edu.wpi.fishfolk.util.NodeType;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
+import lombok.Getter;
 
 public class Fdb {
 
   private final Connection dbConnection;
+
+  @Getter
+  private final List<NodeType> nodeTypes =
+      List.of(BATH, CONF, DEPT, ELEV, EXIT, HALL, INFO, LABS, REST, RETL, SERV, STAI);
+
+  @Getter private final DBSource dbSource;
 
   // Hospital Map Tables
   private final NodeDAO nodeTable;
@@ -26,6 +39,7 @@ public class Fdb {
   private final FurnitureRequestDAO furnitureRequestTable;
   private final FlowerRequestDAO flowerRequestTable;
   private final ConferenceRequestDAO conferenceRequestTable;
+  private final ITRequestDAO itRequestTable;
 
   // Login & User Accounts Tables
   private final UserAccountDAO userAccountTable;
@@ -35,12 +49,26 @@ public class Fdb {
 
   private final AlertDAO alertTable;
 
-  // TODO refactor use map from tabletype -> dao table object to simplify delegation
+  // TODO refactor: use map from tabletype -> dao table object to simplify delegation
 
   /** Singleton facade for managing all PostgreSQL database communication. */
-  public Fdb() {
+  public Fdb(DBSource dbSource) {
 
-    this.dbConnection = connect("teamfdb", "teamf", "teamf60");
+    System.out.println(
+        "NEW INSTANCE OF FDB: "
+            + dbSource.toString()
+            + " - "
+            + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+
+    this.dbSource = dbSource;
+    switch (dbSource) {
+      case DB_WPI:
+        this.dbConnection = connect("teamfdb", "teamf", "teamf60", dbSource);
+        break;
+      default:
+        this.dbConnection = connect("teamfdb", "teamf", "bingus7223", dbSource);
+        break;
+    }
 
     // Hospital Map Tables
     this.nodeTable = new NodeDAO(dbConnection);
@@ -54,6 +82,7 @@ public class Fdb {
     this.furnitureRequestTable = new FurnitureRequestDAO(dbConnection);
     this.flowerRequestTable = new FlowerRequestDAO(dbConnection);
     this.conferenceRequestTable = new ConferenceRequestDAO(dbConnection);
+    this.itRequestTable = new ITRequestDAO(dbConnection);
 
     // Login & User Accounts Tables
     this.userAccountTable = new UserAccountDAO(dbConnection);
@@ -72,40 +101,76 @@ public class Fdb {
                 () -> {
                   System.out.println("[Fdb]: Shutdown received...");
                   nodeTable.updateDatabase(true);
+                  edgeTable.updateDatabase(true);
                   locationTable.updateDatabase(true);
+                  moveTable.updateDatabase(true);
+
                   foodRequestTable.updateDatabase(true);
                   supplyRequestTable.updateDatabase(true);
                   furnitureRequestTable.updateDatabase(true);
                   flowerRequestTable.updateDatabase(true);
                   conferenceRequestTable.updateDatabase(true);
+                  itRequestTable.updateDatabase(true);
+
                   userAccountTable.updateDatabase(true);
                   signagePresetTable.updateDatabase(true);
+
                   alertTable.updateDatabase(true);
+
                   disconnect();
                 }));
+  }
+
+  public List<NodeType> getNodeTypes(boolean root) {
+    if (root) {
+      List<NodeType> lst = new LinkedList<>(nodeTypes);
+      lst.add(BNGS);
+      return lst;
+    } else {
+      return nodeTypes;
+    }
   }
 
   /**
    * Connect to a PostgreSQL database.
    *
-   * @param dbName Database name
-   * @param dbUser Account
-   * @param dbPass Password
    * @return Database connection object (null if no connection is made)
    */
-  private Connection connect(String dbName, String dbUser, String dbPass) {
-    String dbServer = "jdbc:postgresql://database.cs.wpi.edu:5432/";
+  private Connection connect(String dbName, String dbUser, String dbPass, DBSource dbSource) {
+    switch (dbSource) {
+      case DB_WPI:
+        ConnectionBuilder.setURL("jdbc:postgresql://database.cs.wpi.edu:5432/");
+        ConnectionBuilder.setUsername(dbUser);
+        ConnectionBuilder.setPassword(dbPass);
+        ConnectionBuilder.setDbName(dbName);
+        break;
+      default:
+        ConnectionBuilder.setURL(
+            "jdbc:postgresql://postgres.thesamrooney.com:5432/"); // i.e. DB_AWS
+        ConnectionBuilder.setUsername(dbUser);
+        ConnectionBuilder.setPassword(dbPass);
+        ConnectionBuilder.setDbName(dbName);
+        break;
+    }
     try {
-      Class.forName("org.postgresql.Driver");
-      Connection db = DriverManager.getConnection(dbServer + dbName, dbUser, dbPass);
+
+      // Attempt a database connection
+      Connection db = ConnectionBuilder.buildConnection();
+
       if (db != null) {
-        System.out.println("[Fdb.connect]: Connection established.");
+        System.out.println("[Fdb.connect]: Connection established with " + dbSource.toString());
         db.setSchema("iter2db");
+
+        // Set timeout to 1 day (86400000 ms)
+        String query = "SET idle_session_timeout = 86400000;";
+        Statement statement = db.createStatement();
+        statement.executeUpdate(query);
+
       } else {
         System.out.println("[Fdb.connect]: Connection failed.");
       }
       return db;
-    } catch (ClassNotFoundException | SQLException e) {
+    } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
     return null;
@@ -156,6 +221,9 @@ public class Fdb {
     } else if (entry instanceof ConferenceRequest) {
       return conferenceRequestTable.insertEntry((ConferenceRequest) entry);
 
+    } else if (entry instanceof ITRequest) {
+      return itRequestTable.insertEntry((ITRequest) entry);
+
     } else if (entry instanceof UserAccount) {
       return userAccountTable.insertEntry((UserAccount) entry);
 
@@ -204,6 +272,9 @@ public class Fdb {
     } else if (entry instanceof ConferenceRequest) {
       return conferenceRequestTable.updateEntry((ConferenceRequest) entry);
 
+    } else if (entry instanceof ITRequest) {
+      return itRequestTable.updateEntry((ITRequest) entry);
+
     } else if (entry instanceof UserAccount) {
       return userAccountTable.updateEntry((UserAccount) entry);
 
@@ -245,6 +316,8 @@ public class Fdb {
         return flowerRequestTable.removeEntry(identifier);
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.removeEntry(identifier);
+      case IT_REQUEST:
+        return itRequestTable.removeEntry(identifier);
       case USER_ACCOUNT:
         return userAccountTable.removeEntry(identifier);
       case SIGNAGE_PRESET:
@@ -284,6 +357,8 @@ public class Fdb {
         return flowerRequestTable.getEntry(identifier);
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.getEntry(identifier);
+      case IT_REQUEST:
+        return itRequestTable.getEntry(identifier);
       case USER_ACCOUNT:
         return userAccountTable.getEntry(identifier);
       case SIGNAGE_PRESET:
@@ -322,6 +397,8 @@ public class Fdb {
         return flowerRequestTable.getAllEntries();
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.getAllEntries();
+      case IT_REQUEST:
+        return itRequestTable.getAllEntries();
       case USER_ACCOUNT:
         return userAccountTable.getAllEntries();
       case SIGNAGE_PRESET:
@@ -369,6 +446,9 @@ public class Fdb {
       case CONFERENCE_REQUEST:
         conferenceRequestTable.undoChange();
         break;
+      case IT_REQUEST:
+        itRequestTable.undoChange();
+        break;
       case USER_ACCOUNT:
         userAccountTable.undoChange();
         break;
@@ -408,6 +488,8 @@ public class Fdb {
         return flowerRequestTable.updateDatabase(true);
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.updateDatabase(true);
+      case IT_REQUEST:
+        return itRequestTable.updateDatabase(true);
       case USER_ACCOUNT:
         return userAccountTable.updateDatabase(true);
       case SIGNAGE_PRESET:
@@ -424,52 +506,99 @@ public class Fdb {
    * Import a CSV file into a table
    *
    * @param tableEntryType The type of table to import into
-   * @param filepath
-   * @param backup
+   * @param tableFilepath Filepath of the main table
+   * @param backup Backup the current db to a CSV?
    * @return true on success, false otherwise
    */
-  public boolean importCSV(String filepath, boolean backup, TableEntryType tableEntryType) {
+  public boolean importCSV(String tableFilepath, boolean backup, TableEntryType tableEntryType) {
 
-    System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(filepath).toMatchResult().group());
+    // Commented out due to regex error -Christian
+    // System.out.println(Pattern.compile("(\\.[^.]+)$").matcher(tableFilepath).toMatchResult().group());
 
     switch (tableEntryType) {
       case NODE:
-        return nodeTable.importCSV(filepath, backup);
+        return nodeTable.importCSV(tableFilepath, backup);
 
       case LOCATION:
-        return locationTable.importCSV(filepath, backup);
+        return locationTable.importCSV(tableFilepath, backup);
 
       case MOVE:
-        return moveTable.importCSV(filepath, backup);
+        return moveTable.importCSV(tableFilepath, backup);
 
       case EDGE:
-        return edgeTable.importCSV(filepath, backup);
-
-      case FOOD_REQUEST:
-        return foodRequestTable.importCSV(filepath, backup);
-
-      case SUPPLY_REQUEST:
-        return supplyRequestTable.importCSV(filepath, backup);
+        return edgeTable.importCSV(tableFilepath, backup);
 
       case FURNITURE_REQUEST:
-        return furnitureRequestTable.importCSV(filepath, backup);
-
-      case FLOWER_REQUEST:
-        return flowerRequestTable.importCSV(filepath, backup);
+        return furnitureRequestTable.importCSV(tableFilepath, backup);
 
       case CONFERENCE_REQUEST:
-        return conferenceRequestTable.importCSV(filepath, backup);
+        return conferenceRequestTable.importCSV(tableFilepath, backup);
+
+      case IT_REQUEST:
+        return itRequestTable.importCSV(tableFilepath, backup);
 
       case USER_ACCOUNT:
-        return userAccountTable.importCSV(filepath, backup);
-
-      case SIGNAGE_PRESET:
-        return signagePresetTable.importCSV(filepath, backup);
-
-      case ALERT:
-        return alertTable.importCSV(filepath, backup);
+        return userAccountTable.importCSV(tableFilepath, backup);
     }
     return false;
+  }
+
+  /**
+   * Secondary declaration of importCSV for classes with subtables.
+   *
+   * @param tableFilepath Filepath of the main table
+   * @param subtableFilepath Filepath of the subtable
+   * @param backup Backup the current db to a CSV?
+   * @param tableEntryType Intended table to perform operation
+   * @return True on success, false otherwise
+   */
+  public boolean importCSV(
+      String tableFilepath,
+      String subtableFilepath,
+      boolean backup,
+      TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case FOOD_REQUEST:
+        return foodRequestTable.importCSV(tableFilepath, subtableFilepath, backup);
+
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.importCSV(tableFilepath, subtableFilepath, backup);
+
+      case FLOWER_REQUEST:
+        return flowerRequestTable.importCSV(tableFilepath, subtableFilepath, backup);
+
+      case SIGNAGE_PRESET:
+        return signagePresetTable.importCSV(tableFilepath, subtableFilepath, backup);
+    }
+
+    return false;
+  }
+
+  /**
+   * DEBUG ONLY: Import only a subtable from a CSV.
+   *
+   * @param subtableFilepath Filepath of the subtable
+   * @param tableEntryType Intended table to perform operation
+   * @return Hashmap of Lists with subtable IDs as keys
+   */
+  public HashMap<?, ?> importSubtable(String subtableFilepath, TableEntryType tableEntryType) {
+
+    switch (tableEntryType) {
+      case FOOD_REQUEST:
+        return foodRequestTable.importSubtable(subtableFilepath);
+
+      case SUPPLY_REQUEST:
+        return supplyRequestTable.importSubtable(subtableFilepath);
+
+      case FLOWER_REQUEST:
+        return flowerRequestTable.importSubtable(subtableFilepath);
+
+      case SIGNAGE_PRESET:
+        return signagePresetTable.importSubtable(subtableFilepath);
+    }
+
+    return null;
   }
 
   /**
@@ -509,14 +638,14 @@ public class Fdb {
       case CONFERENCE_REQUEST:
         return conferenceRequestTable.exportCSV(directory);
 
+      case IT_REQUEST:
+        return itRequestTable.exportCSV(directory);
+
       case USER_ACCOUNT:
         return userAccountTable.exportCSV(directory);
 
       case SIGNAGE_PRESET:
         return signagePresetTable.exportCSV(directory);
-
-      case ALERT:
-        return alertTable.exportCSV(directory);
     }
     return false;
   }
@@ -527,6 +656,31 @@ public class Fdb {
     locationTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Location.csv", false);
     moveTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Move.csv", false);
     edgeTable.importCSV("src/main/resources/edu/wpi/fishfolk/csv/Edge.csv", false);
+  }
+
+  public void processEditQueue(DataEditQueue<Object> queue) {
+
+    queue.setPointer(0);
+
+    while (queue.hasNext()) {
+
+      DataEdit<Object> edit = queue.next();
+
+      switch (edit.getTable()) {
+        case NODE:
+          nodeTable.processEdit(edit);
+          break;
+        case LOCATION:
+          locationTable.processEdit(edit);
+          break;
+        case MOVE:
+          moveTable.processEdit(edit);
+          break;
+        case EDGE:
+          edgeTable.processEdit(edit);
+          break;
+      }
+    }
   }
 
   /**
@@ -567,8 +721,9 @@ public class Fdb {
    * Get the Node ID corresponding to the given Location on a given date
    *
    * @param longname the longname of the Location
-   * @param date
-   * @return
+   * @param date the date to search on
+   * @return the ID (int > 0) of the node where the given location is found at the given date,
+   *     otherwise -1.
    */
   public int getNodeIDFromLocation(String longname, LocalDate date) {
 
@@ -624,6 +779,41 @@ public class Fdb {
     return locationTable.getAllEntries().stream().filter(Location::isDestination).toList();
   }
 
+  @Deprecated
+  public HashMap<NodeType, List<NodeText>> getLocationLabelsByType(String floor, LocalDate date) {
+
+    HashMap<NodeType, List<NodeText>> map = new HashMap<>();
+    nodeTypes.forEach(type -> map.put(type, new ArrayList<>()));
+
+    getNodesOnFloor(floor)
+        .forEach(
+            node -> {
+              int[] offset = {0}; // offset multiple labels at the same node
+
+              getLocations(node.getNodeID(), date)
+                  .forEach(
+                      location -> {
+                        // create text label and add it to list of labels in the map
+                        String labelText = location.getShortName();
+                        map.get(location.getNodeType())
+                            .add(
+                                new NodeText(
+                                    node.getNodeID(),
+                                    node.getX() - labelText.length() * 5 + offset[0],
+                                    node.getY() - 10 + offset[0],
+                                    labelText));
+                        offset[0] += 20;
+                      });
+            });
+
+    return map;
+  }
+
+  /**
+   * Get a unique ID from the NodeTable, which reserves the ID.
+   *
+   * @return
+   */
   public int getNextNodeID() {
     return nodeTable.getNextID();
   }

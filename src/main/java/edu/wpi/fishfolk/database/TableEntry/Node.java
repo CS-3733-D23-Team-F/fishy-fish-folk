@@ -2,8 +2,12 @@ package edu.wpi.fishfolk.database.TableEntry;
 
 import edu.wpi.fishfolk.database.EntryStatus;
 import edu.wpi.fishfolk.util.NodeType;
-import java.util.HashSet;
+import java.time.LocalDate;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,13 +15,15 @@ import lombok.Setter;
 public class Node {
 
   @Getter @Setter private int nodeID;
-  @Getter @Setter private Point2D point;
   @Getter @Setter private String floor;
   @Getter @Setter private String building;
   @Getter @Setter private EntryStatus status;
 
-  private HashSet<Location> locations;
-  private HashSet<Integer> neighbors;
+  @Getter private ObjectProperty<Node> nodeProperty;
+  @Getter private ObjectProperty<Point2D> pointProperty;
+  @Getter private ObservableList<LocationDate> movesProperty = FXCollections.observableArrayList();
+
+  // private ArrayList<LocationDate> moves = new ArrayList<>();
 
   /**
    * Table entry type: Node
@@ -29,56 +35,91 @@ public class Node {
    */
   public Node(int nodeID, Point2D point, String floor, String building) {
     this.nodeID = nodeID;
-    this.point = point;
+    this.pointProperty = new SimpleObjectProperty<>(point);
     this.floor = floor;
     this.building = building;
     this.status = EntryStatus.OLD;
-    this.locations = new HashSet<>();
+
+    nodeProperty = new SimpleObjectProperty<>(this);
   }
 
   public double getX() {
-    return point.getX();
+    return getPoint().getX();
+  }
+
+  public void setX(double x) {
+    pointProperty.setValue(new Point2D(x, getY()));
+  }
+
+  public void incrX(double dx) {
+    setX(getX() + dx);
   }
 
   public double getY() {
-    return point.getY();
+    return getPoint().getY();
   }
 
-  public boolean addLocation(Location l) {
-    return locations.add(l);
+  public void setY(double y) {
+    pointProperty.setValue(new Point2D(getX(), y));
   }
 
-  public boolean removeLocation(Location l) {
-    return locations.remove(l);
+  public void incrY(double dy) {
+    setY(getY() + dy);
   }
 
-  public List<Location> getLocations() {
-    return locations.stream().toList();
+  public Point2D getPoint() {
+    return this.pointProperty.getValue();
   }
 
-  public boolean addEdge(int other) {
-    return neighbors.add(other);
+  public void setPoint(Point2D point) {
+    this.pointProperty.setValue(point);
   }
 
-  public boolean removeEdge(int other) {
-    return neighbors.remove(other);
+  public Node deepCopy() {
+    return new Node(this.nodeID, this.getPoint(), this.floor, this.building);
   }
 
-  public List<Integer> getNeighbors() {
-    return neighbors.stream().toList();
+  public String toString() {
+    return "[nodeID: " + nodeID + "; point: " + getPoint() + "]";
+  }
+
+  public boolean addMove(Location location, LocalDate date) {
+    // movesProperty.getValue().add
+    for (LocationDate locationDate : movesProperty) {
+      if (locationDate.getLocation().getLongName().equals(location.getLongName())
+          && locationDate.getDate().equals(date)) {
+        return false;
+      }
+    }
+    movesProperty.add(new LocationDate(location, date));
+    return true;
+  }
+
+  public void removeMove(Move move) {
+    movesProperty.removeIf(
+        locationDate ->
+            locationDate.getLocation().getLongName().equals(move.getLongName())
+                && locationDate.getDate().isEqual(move.getDate()));
+  }
+
+  public List<Location> getLocations(LocalDate date) {
+    return movesProperty.stream()
+        .filter(move -> move.getDate().isBefore(date))
+        .map(LocationDate::getLocation)
+        .toList();
   }
 
   public boolean containsType(NodeType type) {
-    for (Location loc : locations) {
-      if (loc.getNodeType() == type) return true;
+    for (LocationDate move : movesProperty) {
+      if (move.getLocation().getNodeType() == type) return true;
     }
     return false;
   }
 
   public List<String> getElevLetters() {
-    return locations.stream()
-        .filter(loc -> loc.getNodeType() == NodeType.ELEV)
-        .map(loc -> loc.getLongName().substring(8, 10)) // extract elevator letter
+    return movesProperty.stream()
+        .filter(move -> move.getLocation().getNodeType() == NodeType.ELEV)
+        .map(move -> move.getLocation().getLongName().substring(8, 10)) // extract elevator letter
         .toList();
   }
 
@@ -88,6 +129,7 @@ public class Node {
    * @param s sidelength of a square in the grid
    */
   public void snapToGrid(double s) {
-    point = new Point2D(Math.round(point.getX() / s) * s, Math.round(point.getY() / s) * s);
+
+    pointProperty.setValue(new Point2D(Math.round(getX() / s) * s, Math.round(getY() / s) * s));
   }
 }
